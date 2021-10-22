@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611179505112",
+    "project_id": "readr-dev-38eec",
+    "storage_bucket": "readr-dev-38eec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611179505112:android:3f9ef005f342dd88a83ead",
+        "android_client_info": {
+          "package_name": "com.readr.news.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611179505112-s1t1ra4ue2p8ohpmnjn7s6vfpiagnduj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.readr.news.dev",
+            "certificate_hash": "b9fc3b0dcca3d170c110fb06e0b93f675ec053a3"
+          }
+        },
+        {
+          "client_id": "611179505112-asgcs8epofcj5meaevf1aptquoba1fco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtvskGdl6adNYKaJzypCng7Fpbi7-kWr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611179505112-asgcs8epofcj5meaevf1aptquoba1fco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

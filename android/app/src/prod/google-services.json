@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "593370764604",
+    "project_id": "readr-prod",
+    "storage_bucket": "readr-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593370764604:android:3e4c18c6c2b85c71f37a39",
+        "android_client_info": {
+          "package_name": "com.readr.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593370764604-m977tquhke3r5ljflf0q3do6l0reli1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClSKkay9AzjoHCrnOsdzXkIZEeEF-ASls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593370764604-m977tquhke3r5ljflf0q3do6l0reli1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
