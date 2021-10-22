@@ -1,5 +1,4 @@
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/paragrpahList.dart';
 
 class EditorChoiceItem {
   String? id;
@@ -8,7 +7,7 @@ class EditorChoiceItem {
   String? slug;
   String? style;
   String? photoUrl;
-  ParagraphList? summary;
+  String? summary;
   bool isProject;
 
   EditorChoiceItem({
@@ -46,7 +45,7 @@ class EditorChoiceItem {
       id = json['choice'][BaseModel.idKey];
       slug = json['choice'][BaseModel.slugKey];
       style = json['choice']['style'];
-      summary = json['choice']['style'];
+      summary = json['choice']['ogDescription'];
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
       }
@@ -69,6 +68,7 @@ class EditorChoiceItem {
       style: style,
       photoUrl: photoUrl,
       link: link,
+      summary: summary,
       isProject: isProject,
     );
   }

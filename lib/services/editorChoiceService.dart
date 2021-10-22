@@ -35,6 +35,7 @@ class EditorChoiceServices implements EditorChoiceRepos {
           id
           slug
           style
+          ogDescription
           heroImage {
             urlMobileSized
           }
