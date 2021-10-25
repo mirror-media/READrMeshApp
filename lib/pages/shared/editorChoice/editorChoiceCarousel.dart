@@ -76,7 +76,9 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   int _current = 0;
   final double aspectRatio = 16 / 9;
   late Timer timer;
-  int _fadeInDuration = 500;
+  static const _fadeInDurationLong = 4000;
+  static const _fadeInDurationShort = 500;
+  int _fadeInDuration = _fadeInDurationShort;
 
   @override
   void initState() {
@@ -94,10 +96,10 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   _changeToNextPage() {
     if (_current == widget.editorChoiceList.length - 1) {
       _current = 0;
-      _fadeInDuration = 4000;
+      _fadeInDuration = _fadeInDurationLong;
     } else {
       _current++;
-      _fadeInDuration = 800;
+      _fadeInDuration = _fadeInDurationShort;
     }
     _carouselController.animateToPage(
       _current,
@@ -164,7 +166,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                 controller: _carouselController,
                 onPageChanged: (index) {
                   if (index == 0) {
-                    _fadeInDuration = 800;
+                    _fadeInDuration = _fadeInDurationShort;
                   }
                   setState(() {
                     _current = index;
