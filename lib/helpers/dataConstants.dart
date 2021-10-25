@@ -22,7 +22,7 @@ const Color tabBarColor = Color(0xffFFFFFF);
 const Color tabBarSelectedColor = Color(0xffEBF02C);
 const Color tabBarUnselectedColor = Colors.black38;
 const Color editorChoiceTagColor = Color(0xffEBF02C);
-const Color editorChoiceTitleBackgroundColor = Color(0xffFFFFFF);
+const Color editorChoiceBackgroundColor = Color(0xffFFFFFF);
 const Color bottomNavigationBarSelectedColor = Color(0xff04295E);
 const Color bottomNavigationBarUnselectedColor = Colors.grey;
 
