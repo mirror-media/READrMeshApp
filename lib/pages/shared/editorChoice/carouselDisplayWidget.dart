@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
@@ -19,18 +17,25 @@ class CarouselDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      highlightColor: Colors.grey[100],
       child: Column(
         children: [
-          Stack(
-            children: [
-              _displayImage(width, editorChoiceItem),
-              Align(
-                alignment: Alignment.topLeft,
-                child: _displayTag(),
-              ),
-            ],
+          const SizedBox(
+            height: 16.0,
           ),
-          Expanded(child: _displayTitle(editorChoiceItem)),
+          Container(
+            padding: const EdgeInsets.only(left: 8),
+            decoration: const BoxDecoration(
+              color: Color(0xffEBF02C),
+            ),
+            child: Column(
+              children: [
+                _displayTitle(editorChoiceItem),
+                _displaySummary(editorChoiceItem),
+                _displayTimeAndReadingTime(editorChoiceItem),
+              ],
+            ),
+          ),
         ],
       ),
       onTap: () {
@@ -41,63 +46,66 @@ class CarouselDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _displayImage(double width, EditorChoiceItem editorChoiceItem) {
-    return editorChoiceItem.photoUrl == null
-        ? SvgPicture.asset(defaultImageSvg)
-        : CachedNetworkImage(
-            height: width / aspectRatio,
-            width: width,
-            imageUrl: editorChoiceItem.photoUrl!,
-            placeholder: (context, url) => Container(
-              height: width / aspectRatio,
-              width: width,
-              color: Colors.grey,
-            ),
-            errorWidget: (context, url, error) => Container(
-              height: width / aspectRatio,
-              width: width,
-              color: Colors.grey,
-              child: const Icon(Icons.error),
-            ),
-            fit: BoxFit.cover,
-          );
-  }
-
-  Widget _displayTag() {
+  Widget _displayTitle(EditorChoiceItem editorChoiceItem) {
     return Container(
-      decoration: const BoxDecoration(
-        color: editorChoiceTagColor,
-      ),
-      child: const Padding(
-        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        child: Text(
-          '編輯精選',
-          style: TextStyle(
-            color: Colors.white,
+      color: editorChoiceBackgroundColor,
+      padding: const EdgeInsets.fromLTRB(12.0, 0.0, 16.0, 0.0),
+      alignment: Alignment.center,
+      child: RichText(
+        overflow: TextOverflow.ellipsis,
+        maxLines: 3,
+        text: TextSpan(
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 22.0,
           ),
+          text: editorChoiceItem.name,
         ),
       ),
     );
   }
 
-  Widget _displayTitle(EditorChoiceItem editorChoiceItem) {
-    return Container(
-      color: editorChoiceTitleBackgroundColor,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-          child: RichText(
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            text: TextSpan(
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22.0,
+  Widget _displaySummary(EditorChoiceItem editorChoiceItem) {
+    return editorChoiceItem.summary == null
+        ? Container(
+            color: editorChoiceBackgroundColor,
+          )
+        : Container(
+            color: editorChoiceBackgroundColor,
+            padding: const EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 0.0),
+            alignment: Alignment.center,
+            child: RichText(
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              text: TextSpan(
+                style: const TextStyle(
+                  color: Colors.black54,
+                  fontSize: 15.0,
+                ),
+                text: editorChoiceItem.summary!,
               ),
-              text: editorChoiceItem.name,
             ),
-          ),
-        ),
+          );
+  }
+
+  Widget _displayTimeAndReadingTime(EditorChoiceItem editorChoiceItem) {
+    TextStyle style = const TextStyle(
+      fontSize: 12,
+      color: Colors.black54,
+    );
+    return Container(
+      padding: const EdgeInsets.only(top: 12, left: 12),
+      color: editorChoiceBackgroundColor,
+      child: Row(
+        children: [
+          Text(editorChoiceItem.publishTimeString, style: style),
+          if (editorChoiceItem.readingTime != null &&
+              editorChoiceItem.readingTime! > 1.0)
+            Text(
+              '・閱讀時間 ${editorChoiceItem.readingTime!.round().toString()} 分鐘',
+              style: style,
+            ),
+        ],
       ),
     );
   }

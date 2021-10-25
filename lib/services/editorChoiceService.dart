@@ -28,6 +28,7 @@ class EditorChoiceServices implements EditorChoiceRepos {
       ) {
         name
         link
+        publishTime
         heroImage {
           urlMobileSized
         }
@@ -36,6 +37,7 @@ class EditorChoiceServices implements EditorChoiceRepos {
           slug
           style
           ogDescription
+          wordCount
           heroImage {
             urlMobileSized
           }

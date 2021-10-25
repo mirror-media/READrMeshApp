@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:readr/models/baseModel.dart';
 
 class EditorChoiceItem {
@@ -9,16 +10,20 @@ class EditorChoiceItem {
   String? photoUrl;
   String? summary;
   bool isProject;
+  String publishTimeString;
+  double? readingTime;
 
   EditorChoiceItem({
     required this.id,
     required this.name,
     required this.photoUrl,
+    required this.publishTimeString,
     this.style,
     this.slug,
     this.link,
     this.summary,
     this.isProject = false,
+    this.readingTime,
   });
 
   factory EditorChoiceItem.fromJson(Map<String, dynamic> json) {
@@ -40,12 +45,14 @@ class EditorChoiceItem {
     String? slug;
     String? style;
     String? summary;
+    double? readingTime;
     bool isProject = false;
     if (json['choice'] != null) {
       id = json['choice'][BaseModel.idKey];
       slug = json['choice'][BaseModel.slugKey];
       style = json['choice']['style'];
       summary = json['choice']['ogDescription'];
+      readingTime = ((json['choice']['wordCount']) / 8) / 60;
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
       }
@@ -61,6 +68,11 @@ class EditorChoiceItem {
       }
     }
 
+    DateTime publishTime = DateTime.now();
+    if (json['publishTime'] != null) {
+      publishTime = DateTime.parse(json['publishTime']).toLocal();
+    }
+
     return EditorChoiceItem(
       id: id,
       name: json[BaseModel.nameKey],
@@ -70,6 +82,8 @@ class EditorChoiceItem {
       link: link,
       summary: summary,
       isProject: isProject,
+      publishTimeString: DateFormat('MM/dd').format(publishTime),
+      readingTime: readingTime,
     );
   }
 

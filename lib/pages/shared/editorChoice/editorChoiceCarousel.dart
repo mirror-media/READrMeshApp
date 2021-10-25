@@ -1,9 +1,17 @@
+import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/editorChoice/bloc.dart';
 import 'package:readr/blocs/editorChoice/events.dart';
 import 'package:readr/blocs/editorChoice/states.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/shared/editorChoice/carouselDisplayWidget.dart';
 
@@ -39,16 +47,9 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
         if (editorChoiceList.isEmpty) {
           return Container();
         }
-        return Column(
-          children: [
-            const SizedBox(
-              height: 12,
-            ),
-            EditorChoiceCarousel(
-              editorChoiceList: editorChoiceList,
-              aspectRatio: 4 / 3.2,
-            ),
-          ],
+        return EditorChoiceCarousel(
+          editorChoiceList: editorChoiceList,
+          aspectRatio: 4 / 3.2,
         );
       }
 
@@ -71,94 +72,176 @@ class EditorChoiceCarousel extends StatefulWidget {
 }
 
 class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
-  final CarouselController _carouselController = CarouselController();
-  late CarouselOptions _options;
+  final PageController _carouselController = PageController();
+  int _current = 0;
+  final double aspectRatio = 16 / 9;
+  late Timer timer;
+  int _fadeInDuration = 500;
 
   @override
   void initState() {
     super.initState();
+    timer = Timer.periodic(
+        const Duration(seconds: 5), (Timer t) => _changeToNextPage());
   }
 
   @override
   void dispose() {
     super.dispose();
+    timer.cancel();
+  }
+
+  _changeToNextPage() {
+    if (_current == widget.editorChoiceList.length - 1) {
+      _current = 0;
+      _fadeInDuration = 4000;
+    } else {
+      _current++;
+      _fadeInDuration = 800;
+    }
+    _carouselController.animateToPage(
+      _current,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = width / widget.aspectRatio;
-    if (height > 700) {
-      height = 700;
-    } else if (height > 500) {
-      height = (height ~/ 100) * 100;
-    }
-    _options = CarouselOptions(
-      viewportFraction: 1.0,
-      aspectRatio: widget.aspectRatio,
-      autoPlay: true,
-      autoPlayInterval: const Duration(seconds: 8),
-      enlargeCenterPage: true,
-      onPageChanged: (index, reason) {},
-      height: height,
-    );
     return widget.editorChoiceList.isEmpty
         ? Container()
-        : Stack(
+        : Column(
             children: [
-              CarouselSlider(
-                items: _imageSliders(width, widget.editorChoiceList),
-                carouselController: _carouselController,
-                options: _options,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: InkWell(
-                  child: SizedBox(
-                    width: width * 0.1,
-                    height: height,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 4.0),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
+              SizedBox(
+                height: 300,
+                child: GestureDetector(
+                  onTap: () {
+                    if (widget.editorChoiceList.elementAt(_current).id !=
+                        null) {
+                      AutoRouter.of(context).push(StoryRoute(
+                          id: widget.editorChoiceList.elementAt(_current).id!));
+                    }
+                  },
+                  child: Stack(
+                    children: [
+                      FadeIn(
+                        key: UniqueKey(),
+                        duration: Duration(milliseconds: _fadeInDuration),
+                        child: _displayImage(
+                            width, widget.editorChoiceList.elementAt(_current)),
                       ),
-                    ),
+                      if (widget.editorChoiceList.elementAt(_current).isProject)
+                        Container(
+                          alignment: Alignment.topRight,
+                          margin: const EdgeInsets.only(
+                            top: 60,
+                            right: 12,
+                          ),
+                          child: _displayTag(),
+                        ),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: 62,
+                          left: 19,
+                        ),
+                        child: SvgPicture.asset(
+                          logoSimplifySvg,
+                        ),
+                      ),
+                    ],
                   ),
-                  onTap: () {
-                    _carouselController.previousPage();
-                  },
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  child: SizedBox(
-                    width: width * 0.1,
-                    height: height,
-                    child: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    _carouselController.nextPage();
-                  },
-                ),
+              ExpandablePageView.builder(
+                itemCount: widget.editorChoiceList.length,
+                itemBuilder: (context, index) {
+                  return CarouselDisplayWidget(
+                    editorChoiceItem: widget.editorChoiceList.elementAt(index),
+                    width: width,
+                  );
+                },
+                controller: _carouselController,
+                onPageChanged: (index) {
+                  if (index == 0) {
+                    _fadeInDuration = 800;
+                  }
+                  setState(() {
+                    _current = index;
+                  });
+                },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.editorChoiceList.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _carouselController.animateToPage(
+                      entry.key,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    ),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin: const EdgeInsets.only(
+                        top: 24.0,
+                        left: 4.0,
+                        right: 4.0,
+                        bottom: 16,
+                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == entry.key
+                              ? const Color(0xff04295E)
+                              : Colors.black12),
+                    ),
+                  );
+                }).toList(),
+              )
             ],
           );
   }
 
-  List<Widget> _imageSliders(
-      double width, List<EditorChoiceItem> editorChoiceList) {
-    return editorChoiceList
-        .map(
-          (item) => CarouselDisplayWidget(
-            editorChoiceItem: item,
+  Widget _displayImage(double width, EditorChoiceItem editorChoiceItem) {
+    return editorChoiceItem.photoUrl == null
+        ? SvgPicture.asset(defaultImageSvg)
+        : CachedNetworkImage(
+            height: 300,
             width: width,
+            imageUrl: editorChoiceItem.photoUrl!,
+            placeholder: (context, url) => Container(
+              height: width / aspectRatio,
+              width: width,
+              color: Colors.grey,
+            ),
+            errorWidget: (context, url, error) => Container(
+              height: width / aspectRatio,
+              width: width,
+              color: Colors.grey,
+              child: const Icon(Icons.error),
+            ),
+            fit: BoxFit.cover,
+          );
+  }
+
+  Widget _displayTag() {
+    return Container(
+      decoration: BoxDecoration(
+        color: editorChoiceTagColor,
+        borderRadius: BorderRadiusDirectional.circular(2),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 2,
+        ),
+        child: Text(
+          '專題',
+          style: TextStyle(
+            color: Colors.black,
           ),
-        )
-        .toList();
+        ),
+      ),
+    );
   }
 }
