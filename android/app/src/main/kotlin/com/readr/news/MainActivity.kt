@@ -1,4 +1,4 @@
-package com.example.readr
+package com.readr.news
 
 import io.flutter.embedding.android.FlutterActivity
 
