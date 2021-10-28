@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/categories/bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/pages/homePage.dart';
+import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/configService.dart';
 
 class InitialApp extends StatefulWidget {
@@ -12,8 +14,16 @@ class InitialApp extends StatefulWidget {
 class _InitialAppState extends State<InitialApp> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ConfigBloc(configRepos: ConfigServices()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ConfigBloc(configRepos: ConfigServices()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CategoriesBloc(categoryRepos: CategoryServices()),
+        ),
+      ],
       child: HomePage(),
     );
   }
