@@ -12,7 +12,7 @@ class FetchStoryList extends TabStoryListEvents {
 class FetchNextPage extends TabStoryListEvents {
   final int loadingMorePage;
 
-  FetchNextPage({this.loadingMorePage = 20});
+  FetchNextPage({this.loadingMorePage = 14});
 
   @override
   String toString() => 'FetchNextPage { loadingMorePage: $loadingMorePage }';
@@ -32,17 +32,9 @@ class FetchNextPageByCategorySlug extends TabStoryListEvents {
   final String slug;
   final int loadingMorePage;
 
-  FetchNextPageByCategorySlug(this.slug, {this.loadingMorePage = 20});
+  FetchNextPageByCategorySlug(this.slug, {this.loadingMorePage = 14});
 
   @override
   String toString() =>
       'FetchNextPageByCategorySlug { slug: $slug, loadingMorePage: $loadingMorePage }';
-}
-
-class FetchPopularStoryList extends TabStoryListEvents {
-  bool isVideo;
-  FetchPopularStoryList({this.isVideo = false});
-
-  @override
-  String toString() => 'FetchPopularStoryList';
 }

@@ -6,18 +6,26 @@ import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/storyListItemList.dart';
 
 abstract class TabStoryListRepos {
-  void reduceSkip(int reducedNumber);
+  void reduceSkip();
   Future<StoryListItemList> fetchStoryList({bool withCount = true});
-  Future<StoryListItemList> fetchNextPage({int loadingMorePage = 20});
+  Future<StoryListItemList> fetchNextPage({int loadingMorePage = 18});
+  Future<StoryListItemList> fetchProjectList({bool withCount = true});
+  Future<StoryListItemList> fetchProjectListNextPage({int loadingMorePage = 2});
   Future<StoryListItemList> fetchStoryListByCategorySlug(String slug);
   Future<StoryListItemList> fetchNextPageByCategorySlug(String slug,
-      {int loadingMorePage = 20});
+      {int loadingMorePage = 18});
+  Future<StoryListItemList> fetchProjectListByCategorySlug(String slug);
+  Future<StoryListItemList> fetchProjectListNextPageByCategorySlug(String slug,
+      {int loadingMorePage = 2});
 }
 
 class TabStoryListServices implements TabStoryListRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  String? postStyle;
-  int skip = 0, first = 20;
+  int storyListskip = 0,
+      projectListSkip = 0,
+      storyListFirst = 18,
+      projectListFirst = 2;
+  List<String> styleFilterList = ["project3", "embedded", "report"];
   final String query = """
   query (
     \$where: PostWhereInput,
@@ -34,6 +42,16 @@ class TabStoryListServices implements TabStoryListRepos {
       id
       slug
       name
+      publishTime
+      style
+      wordCount
+      categories(where: {
+        state: active
+      }){
+        id
+        name
+        slug
+      }
       heroImage {
         urlMobileSized
       }
@@ -46,34 +64,27 @@ class TabStoryListServices implements TabStoryListRepos {
   }
   """;
 
-  TabStoryListServices({this.postStyle, this.first = 20});
+  TabStoryListServices({this.storyListFirst = 18, this.projectListFirst = 2});
 
   @override
-  void reduceSkip(int reducedNumber) {
-    skip = skip - reducedNumber;
+  void reduceSkip() {
+    storyListskip = storyListskip - 12;
+    projectListSkip = projectListSkip - 2;
   }
 
   @override
   Future<StoryListItemList> fetchStoryList({bool withCount = true}) async {
-    String key = 'fetchStoryList?skip=$skip&first=$first';
-    if (postStyle != null) {
-      key = key + '&postStyle=$postStyle';
-    }
-    List<String> filterIdList = [];
+    String key = 'fetchStoryList?skip=$storyListskip&first=$storyListFirst';
 
     Map<String, dynamic> variables = {
       "where": {
         "state": "published",
-        "slug_not_in": filterIdList,
+        "style_not_in": styleFilterList,
       },
-      "skip": skip,
-      "first": first,
+      "skip": storyListskip,
+      "first": storyListFirst,
       'withCount': withCount,
     };
-
-    if (postStyle != null) {
-      variables["where"].addAll({"style": postStyle});
-    }
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
@@ -82,7 +93,7 @@ class TabStoryListServices implements TabStoryListRepos {
     );
 
     late final dynamic jsonResponse;
-    if (skip > 40) {
+    if (storyListskip > 30) {
       jsonResponse = await _helper.postByUrl(
           Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
           headers: {"Content-Type": "application/json"});
@@ -103,35 +114,26 @@ class TabStoryListServices implements TabStoryListRepos {
   }
 
   @override
-  Future<StoryListItemList> fetchNextPage({int loadingMorePage = 20}) async {
-    skip = skip + first;
-    first = loadingMorePage;
+  Future<StoryListItemList> fetchNextPage({int loadingMorePage = 12}) async {
+    storyListskip = storyListskip + storyListFirst;
+    storyListFirst = loadingMorePage;
     return await fetchStoryList();
   }
 
   @override
-  Future<StoryListItemList> fetchStoryListByCategorySlug(String slug,
-      {bool withCount = true}) async {
+  Future<StoryListItemList> fetchProjectList({bool withCount = true}) async {
     String key =
-        'fetchStoryListByCategorySlug?slug=$slug&skip=$skip&first=$first';
-    if (postStyle != null) {
-      key = key + '&postStyle=$postStyle';
-    }
+        'fetchProjectList?skip=$projectListSkip&first=$projectListFirst';
 
     Map<String, dynamic> variables = {
       "where": {
         "state": "published",
-        "style_not_in": ["wide", "projects", "script", "campaign", "readr"],
-        "categories_some": {"slug": slug},
+        "style_in": styleFilterList,
       },
-      "skip": skip,
-      "first": first,
+      "skip": projectListSkip,
+      "first": projectListFirst,
       'withCount': withCount,
     };
-
-    if (postStyle != null) {
-      variables["where"].addAll({"style": postStyle!});
-    }
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
@@ -140,7 +142,59 @@ class TabStoryListServices implements TabStoryListRepos {
     );
 
     late final dynamic jsonResponse;
-    if (skip > 40) {
+    if (projectListSkip > 4) {
+      jsonResponse = await _helper.postByUrl(
+          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+          headers: {"Content-Type": "application/json"});
+    } else {
+      jsonResponse = await _helper.postByCacheAndAutoCache(key,
+          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+          maxAge: newsTabStoryList,
+          headers: {"Content-Type": "application/json"});
+    }
+
+    StoryListItemList newsList =
+        StoryListItemList.fromJson(jsonResponse['data']['allPosts']);
+    if (withCount) {
+      newsList.allStoryCount = jsonResponse['data']['_allPostsMeta']['count'];
+    }
+
+    return newsList;
+  }
+
+  @override
+  Future<StoryListItemList> fetchProjectListNextPage(
+      {int loadingMorePage = 2}) async {
+    projectListSkip = projectListSkip + projectListFirst;
+    projectListFirst = loadingMorePage;
+    return await fetchProjectList();
+  }
+
+  @override
+  Future<StoryListItemList> fetchStoryListByCategorySlug(String slug,
+      {bool withCount = true}) async {
+    String key =
+        'fetchStoryListByCategorySlug?slug=$slug&skip=$storyListskip&first=$storyListFirst';
+
+    Map<String, dynamic> variables = {
+      "where": {
+        "state": "published",
+        "style_not_in": styleFilterList,
+        "categories_some": {"slug": slug},
+      },
+      "skip": storyListskip,
+      "first": storyListFirst,
+      'withCount': withCount,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    if (storyListskip > 30) {
       jsonResponse = await _helper.postByUrl(
           Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
           headers: {"Content-Type": "application/json"});
@@ -163,9 +217,62 @@ class TabStoryListServices implements TabStoryListRepos {
 
   @override
   Future<StoryListItemList> fetchNextPageByCategorySlug(String slug,
-      {int loadingMorePage = 20}) async {
-    skip = skip + first;
-    first = loadingMorePage;
+      {int loadingMorePage = 12}) async {
+    storyListskip = storyListskip + storyListFirst;
+    storyListFirst = loadingMorePage;
+    return await fetchStoryListByCategorySlug(slug);
+  }
+
+  @override
+  Future<StoryListItemList> fetchProjectListByCategorySlug(String slug,
+      {bool withCount = true}) async {
+    String key =
+        'fetchProjectListByCategorySlug?slug=$slug&skip=$projectListSkip&first=$projectListFirst';
+
+    Map<String, dynamic> variables = {
+      "where": {
+        "state": "published",
+        "style_in": styleFilterList,
+        "categories_some": {"slug": slug},
+      },
+      "skip": projectListSkip,
+      "first": projectListFirst,
+      'withCount': withCount,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    if (projectListSkip > 4) {
+      jsonResponse = await _helper.postByUrl(
+          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+          headers: {"Content-Type": "application/json"});
+    } else {
+      jsonResponse = await _helper.postByCacheAndAutoCache(key,
+          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+          maxAge: newsTabStoryList,
+          headers: {"Content-Type": "application/json"});
+    }
+
+    StoryListItemList newsList =
+        StoryListItemList.fromJson(jsonResponse['data']['allPosts']);
+
+    if (withCount) {
+      newsList.allStoryCount = jsonResponse['data']['_allPostsMeta']['count'];
+    }
+
+    return newsList;
+  }
+
+  @override
+  Future<StoryListItemList> fetchProjectListNextPageByCategorySlug(String slug,
+      {int loadingMorePage = 2}) async {
+    projectListSkip = projectListSkip + projectListFirst;
+    projectListFirst = loadingMorePage;
     return await fetchStoryListByCategorySlug(slug);
   }
 }
