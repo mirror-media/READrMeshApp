@@ -10,6 +10,7 @@ import 'package:readr/blocs/config/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
+import 'package:readr/pages/home/homeWidget.dart';
 import 'package:readr/pages/initLoadingPage.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -45,34 +46,36 @@ class _HomePageState extends State<HomePage> {
           dialogStyle: Platform.isAndroid
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
-          child: AutoTabsScaffold(
-            routes: const [HomeRouter(), CategoryRouter()],
-            bottomNavigationBuilder: (_, tabsRouter) {
-              return BottomNavigationBar(
-                elevation: 10,
-                currentIndex: tabsRouter.activeIndex,
-                onTap: tabsRouter.setActiveIndex,
-                selectedItemColor: bottomNavigationBarSelectedColor,
-                unselectedItemColor: bottomNavigationBarUnselectedColor,
-                items: [
-                  BottomNavigationBarItem(
-                    activeIcon: SvgPicture.asset(
-                      homeIconSvg,
-                    ),
-                    icon: SvgPicture.asset(
-                      homeIconSvg,
-                      color: bottomNavigationBarUnselectedColor,
-                    ),
-                    label: '首頁',
-                  ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.menu),
-                    label: '分類',
-                  ),
-                ],
-              );
-            },
-          ),
+          child: HomeWidget(),
+          // Hide bottomNavigationBar due to only one page now
+          // child: AutoTabsScaffold(
+          //   routes: const [HomeRouter(), CategoryRouter()],
+          //   bottomNavigationBuilder: (_, tabsRouter) {
+          //     return BottomNavigationBar(
+          //       elevation: 10,
+          //       currentIndex: tabsRouter.activeIndex,
+          //       onTap: tabsRouter.setActiveIndex,
+          //       selectedItemColor: bottomNavigationBarSelectedColor,
+          //       unselectedItemColor: bottomNavigationBarUnselectedColor,
+          //       items: [
+          //         BottomNavigationBarItem(
+          //           activeIcon: SvgPicture.asset(
+          //             homeIconSvg,
+          //           ),
+          //           icon: SvgPicture.asset(
+          //             homeIconSvg,
+          //             color: bottomNavigationBarUnselectedColor,
+          //           ),
+          //           label: '首頁',
+          //         ),
+          //         const BottomNavigationBarItem(
+          //           icon: Icon(Icons.menu),
+          //           label: '分類',
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // ),
         );
       }
 
