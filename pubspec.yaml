@@ -85,6 +85,11 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   # dynamic height page view
   expandable_page_view: ^1.0.8
+  # check widget whether visible
+  visibility_detector: ^0.2.2
+  # pausable timer
+  pausable_timer: ^1.0.0+2
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
