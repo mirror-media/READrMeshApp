@@ -1,14 +1,16 @@
 import 'package:readr/models/baseModel.dart';
 
 class Category {
-  String? id;
+  String id;
   String name;
-  String? slug;
+  String slug;
+  DateTime? latestPostTime;
 
   Category({
     required this.id,
     required this.name,
     required this.slug,
+    this.latestPostTime,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
