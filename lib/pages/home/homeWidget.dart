@@ -133,7 +133,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                 pinned: true,
                 primary: false,
                 elevation: 0,
-                toolbarHeight: 25,
+                toolbarHeight: 35,
                 backgroundColor: Colors.white,
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 bottom: TabBar(
