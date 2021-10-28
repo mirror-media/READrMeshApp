@@ -8,14 +8,19 @@ class StoryListItem {
   String? style;
   String? photoUrl;
   CategoryList? categoryList;
-
+  DateTime publishTime;
+  bool isProject;
+  double? readingTime;
   StoryListItem({
     required this.id,
     required this.name,
     required this.slug,
     required this.style,
     required this.photoUrl,
+    required this.publishTime,
     this.categoryList,
+    this.isProject = false,
+    this.readingTime,
   });
 
   factory StoryListItem.fromJson(Map<String, dynamic> json) {
@@ -36,13 +41,32 @@ class StoryListItem {
       allPostsCategory = CategoryList.fromJson(json['categories']);
     }
 
+    double? readingTime;
+    bool isProject = false;
+    if (json['style'] == 'project3' ||
+        json['style'] == 'embedded' ||
+        json['style'] == 'report') {
+      isProject = true;
+    }
+    if (json['wordCount'] != null) {
+      readingTime = ((json['wordCount']) / 8) / 60;
+    }
+    DateTime publishTime = DateTime.now();
+    if (json['publishTime'] != null) {
+      publishTime = DateTime.parse(json['publishTime']).toLocal();
+    }
+
     return StoryListItem(
-        id: json[BaseModel.idKey],
-        name: json[BaseModel.nameKey],
-        slug: json[BaseModel.slugKey],
-        style: json['style'],
-        photoUrl: photoUrl,
-        categoryList: allPostsCategory);
+      id: json[BaseModel.idKey],
+      name: json[BaseModel.nameKey],
+      slug: json[BaseModel.slugKey],
+      style: json['style'],
+      photoUrl: photoUrl,
+      categoryList: allPostsCategory,
+      isProject: isProject,
+      readingTime: readingTime,
+      publishTime: publishTime,
+    );
   }
 
   Map<String, dynamic> toJson() => {
