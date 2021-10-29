@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:readr/pages/category/categoryPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/pages/storyPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
 
 part 'router.gr.dart';
