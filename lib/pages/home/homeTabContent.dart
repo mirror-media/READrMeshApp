@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/pages/home/homeStoryListItem.dart';
@@ -101,7 +104,13 @@ class _HomeTabContentState extends State<HomeTabContent> {
       }
 
       // state is Init, loading, or other
-      return const Center(child: CupertinoActivityIndicator());
+      return Center(
+        child: Platform.isAndroid
+            ? const CircularProgressIndicator(
+                color: hightLightColor,
+              )
+            : const CupertinoActivityIndicator(),
+      );
     });
   }
 
