@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/widgets/story/youtubeViewer.dart';
+import 'package:readr/pages/story/widgets/youtubeViewer.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YoutubePlayer extends StatefulWidget {

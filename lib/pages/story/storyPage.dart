@@ -7,7 +7,7 @@ import 'package:readr/blocs/story/bloc.dart';
 import 'package:readr/blocs/story/events.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/services/storyService.dart';
-import 'package:readr/widgets/storyWidget.dart';
+import 'package:readr/pages/story/storyWidget.dart';
 
 class StoryPage extends StatefulWidget {
   final String id;

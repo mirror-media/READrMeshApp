@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:readr/widgets/story/fbEmbeddedCodeWidget.dart';
-import 'package:readr/widgets/story/googleFormEmbeddedCodeWidget.dart';
+import 'package:readr/pages/story/widgets/fbEmbeddedCodeWidget.dart';
+import 'package:readr/pages/story/widgets/googleFormEmbeddedCodeWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 

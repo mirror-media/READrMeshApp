@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/contentList.dart';
 import 'package:readr/models/paragraph.dart';
-import 'package:readr/widgets/story/annotationWidget.dart';
-import 'package:readr/widgets/story/blockQuoteWidget.dart';
-import 'package:readr/widgets/story/embeddedCodeWidget.dart';
-import 'package:readr/widgets/story/imageAndDescriptionSlideShowWidget.dart';
-import 'package:readr/widgets/story/imageDescriptionWidget.dart';
-import 'package:readr/widgets/story/infoBoxWidget.dart';
-import 'package:readr/widgets/story/mNewsAudioPlayer.dart';
-import 'package:readr/widgets/story/mNewsVideoPlayer.dart';
-import 'package:readr/widgets/story/parseTheTextToHtmlWidget.dart';
-import 'package:readr/widgets/story/quoteByWidget.dart';
-import 'package:readr/widgets/story/youtubeWidget.dart';
+import 'package:readr/pages/story/widgets/annotationWidget.dart';
+import 'package:readr/pages/story/widgets/blockQuoteWidget.dart';
+import 'package:readr/pages/story/widgets/embeddedCodeWidget.dart';
+import 'package:readr/pages/story/widgets/imageAndDescriptionSlideShowWidget.dart';
+import 'package:readr/pages/story/widgets/imageDescriptionWidget.dart';
+import 'package:readr/pages/story/widgets/infoBoxWidget.dart';
+import 'package:readr/pages/story/widgets/mNewsAudioPlayer.dart';
+import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
+import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
+import 'package:readr/pages/story/widgets/quoteByWidget.dart';
+import 'package:readr/pages/story/widgets/youtubeWidget.dart';
 
 class ParagraphFormat {
   Widget parseTheParagraph(

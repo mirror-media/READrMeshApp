@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/widgets/story/parseTheTextToHtmlWidget.dart';
+import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
 
 class BlockQuoteWidget extends StatelessWidget {
   final String content;

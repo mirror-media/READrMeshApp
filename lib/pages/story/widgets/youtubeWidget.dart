@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:readr/widgets/story/youtubePlayer.dart';
+import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 
 class YoutubeWidget extends StatefulWidget {
   final String youtubeId;

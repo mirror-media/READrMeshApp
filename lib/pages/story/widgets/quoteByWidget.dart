@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/widgets/story/quoteByFrameClipper.dart';
+import 'package:readr/pages/story/widgets/quoteByFrameClipper.dart';
 
 class QuoteByWidget extends StatelessWidget {
   final String quote;

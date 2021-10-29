@@ -17,11 +17,11 @@ import 'package:readr/models/story.dart';
 import 'package:readr/models/storyListItem.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/models/tagList.dart';
-import 'package:readr/pages/storyPage.dart';
-import 'package:readr/widgets/story/mNewsVideoPlayer.dart';
-import 'package:readr/widgets/story/parseTheTextToHtmlWidget.dart';
-import 'package:readr/widgets/story/storyBriefFrameClipper.dart';
-import 'package:readr/widgets/story/youtubePlayer.dart';
+import 'package:readr/pages/story/storyPage.dart';
+import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
+import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
+import 'package:readr/pages/story/widgets/storyBriefFrameClipper.dart';
+import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class StoryWidget extends StatefulWidget {
