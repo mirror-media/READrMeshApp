@@ -14,16 +14,11 @@ import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/home/homeTabContent.dart';
-import 'package:readr/pages/initLoadingPage.dart';
 import 'package:readr/pages/shared/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/services/editorChoiceService.dart';
 import 'package:readr/services/tabStoryListService.dart';
 
 class HomeWidget extends StatefulWidget {
-  final bool isInitial;
-
-  const HomeWidget({Key? key, this.isInitial = false}) : super(key: key);
-
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
@@ -92,7 +87,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         builder: (BuildContext context, CategoriesState state) {
       if (state.status == CategoriesStatus.initial ||
           state.status == CategoriesStatus.loading) {
-        if (widget.isInitial) return InitLoadingPage();
         return Container(
           color: Colors.white,
           child: Center(

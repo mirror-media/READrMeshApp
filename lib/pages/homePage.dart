@@ -46,9 +46,7 @@ class _HomePageState extends State<HomePage> {
           dialogStyle: Platform.isAndroid
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
-          child: const HomeWidget(
-            isInitial: true,
-          ),
+          child: HomeWidget(),
           // Hide bottomNavigationBar due to only one page now
           // child: AutoTabsScaffold(
           //   routes: const [HomeRouter(), CategoryRouter()],

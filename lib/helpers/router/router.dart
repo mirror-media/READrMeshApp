@@ -9,6 +9,7 @@ part 'router.gr.dart';
 
 // Run after edited:
 // flutter packages pub run build_runner build
+// Before run code, delete router.gr.dart first
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
