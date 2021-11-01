@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -7,7 +8,8 @@ import 'package:readr/models/storyListItem.dart';
 
 class HomeStoryPjojectItem extends StatelessWidget {
   final StoryListItem projectListItem;
-  const HomeStoryPjojectItem({required this.projectListItem});
+  final ChromeSafariBrowser browser = ChromeSafariBrowser();
+  HomeStoryPjojectItem({required this.projectListItem});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,31 @@ class HomeStoryPjojectItem extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () {});
+        onTap: () async {
+          String projectUrl;
+          switch (projectListItem.style) {
+            case 'embedded':
+              projectUrl = readrProjectLink + 'post/${projectListItem.id}';
+              break;
+            case 'report':
+              projectUrl =
+                  readrProjectLink + '/project/${projectListItem.slug}';
+              break;
+            case 'project3':
+              projectUrl =
+                  readrProjectLink + '/project/3/${projectListItem.slug}';
+              break;
+            default:
+              projectUrl = readrProjectLink;
+          }
+          await browser.open(
+            url: Uri.parse(projectUrl),
+            options: ChromeSafariBrowserClassOptions(
+              android: AndroidChromeCustomTabsOptions(),
+              ios: IOSSafariOptions(barCollapsingEnabled: true),
+            ),
+          );
+        });
   }
 
   Widget _displayTimeAndReadingTime() {
