@@ -89,6 +89,12 @@ dependencies:
   visibility_detector: ^0.2.2
   # pausable timer
   pausable_timer: ^1.0.0+2
+  # embedded code
+  flutter_embedded_webview:
+    git:
+      url: git://github.com/mirror-media/flutter_embedded_webview.git
+      ref: master
+      version: ^0.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -398,6 +398,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.2"
+  flutter_embedded_webview:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "833f25f61e8d7968215a58a7c2635a88f301a986"
+      url: "git://github.com/mirror-media/flutter_embedded_webview.git"
+    source: git
+    version: "0.0.1"
   flutter_fadein:
     dependency: "direct main"
     description:
