@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// url link
-const mNewsMail = 'readr@readr.tw';
+const readrMail = 'readr@readr.tw';
 const youtubeLink = 'https://www.youtube.com/';
+const readrProjectLink = 'https://www.readr.tw/';
 
 /// assets
 const String error400Png = 'assets/image/error404.png';
