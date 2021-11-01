@@ -10,7 +10,7 @@ class StoryListItem {
   CategoryList? categoryList;
   DateTime publishTime;
   bool isProject;
-  double? readingTime;
+  int? readingTime;
   StoryListItem({
     required this.id,
     required this.name,
@@ -41,7 +41,7 @@ class StoryListItem {
       allPostsCategory = CategoryList.fromJson(json['categories']);
     }
 
-    double? readingTime;
+    int? readingTime;
     bool isProject = false;
     if (json['style'] == 'project3' ||
         json['style'] == 'embedded' ||
@@ -49,7 +49,7 @@ class StoryListItem {
       isProject = true;
     }
     if (json['wordCount'] != null) {
-      readingTime = ((json['wordCount']) / 8) / 60;
+      readingTime = (((json['wordCount']) / 8) / 60).round();
     }
     DateTime publishTime = DateTime.now();
     if (json['publishTime'] != null) {

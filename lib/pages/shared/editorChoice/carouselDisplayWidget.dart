@@ -134,7 +134,7 @@ class CarouselDisplayWidget extends StatelessWidget {
           if (editorChoiceItem.readingTime != null &&
               editorChoiceItem.readingTime! > 1.0)
             Text(
-              '・閱讀時間 ${editorChoiceItem.readingTime!.round().toString()} 分鐘',
+              '・閱讀時間 ${editorChoiceItem.readingTime!.toString()} 分鐘',
               style: style,
             ),
         ],

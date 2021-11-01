@@ -138,7 +138,7 @@ class HomeStoryPjojectItem extends StatelessWidget {
           if (projectListItem.readingTime != null &&
               projectListItem.readingTime! > 1.0)
             Text(
-              '・閱讀時間 ${projectListItem.readingTime!.round().toString()} 分鐘',
+              '・閱讀時間 ${projectListItem.readingTime!.toString()} 分鐘',
               style: style,
             ),
         ],

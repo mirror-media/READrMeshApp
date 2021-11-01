@@ -11,7 +11,7 @@ class EditorChoiceItem {
   String? summary;
   bool isProject;
   String publishTimeString;
-  double? readingTime;
+  int? readingTime;
 
   EditorChoiceItem({
     required this.id,
@@ -45,14 +45,14 @@ class EditorChoiceItem {
     String? slug;
     String? style;
     String? summary;
-    double? readingTime;
+    int? readingTime;
     bool isProject = false;
     if (json['choice'] != null) {
       id = json['choice'][BaseModel.idKey];
       slug = json['choice'][BaseModel.slugKey];
       style = json['choice']['style'];
       summary = json['choice']['ogDescription'];
-      readingTime = ((json['choice']['wordCount']) / 8) / 60;
+      readingTime = (((json['choice']['wordCount']) / 8) / 60).round();
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
       }

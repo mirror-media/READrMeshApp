@@ -99,7 +99,7 @@ class HomeStoryListItem extends StatelessWidget {
           if (storyListItem.readingTime != null &&
               storyListItem.readingTime! > 1.0)
             Text(
-              '・閱讀時間 ${storyListItem.readingTime!.round().toString()} 分鐘',
+              '・閱讀時間 ${storyListItem.readingTime!.toString()} 分鐘',
               style: style,
             ),
         ],
