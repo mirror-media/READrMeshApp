@@ -57,20 +57,20 @@ class HomeStoryListItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      text: TextSpan(
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          height: 1.5,
+                    SizedBox(
+                      height: 69,
+                      child: RichText(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        text: TextSpan(
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.0,
+                            height: 1.5,
+                          ),
+                          text: storyListItem.name,
                         ),
-                        text: storyListItem.name,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
                     ),
                     _displayTimeAndReadingTime(),
                   ],
