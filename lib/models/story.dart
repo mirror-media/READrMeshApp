@@ -8,7 +8,8 @@ import 'package:readr/models/tagList.dart';
 class Story {
   final String? style;
   final String? name;
-  final ParagraphList? brief;
+  final ParagraphList? summaryApiData;
+  final int? readingTime;
   final ParagraphList? contentApiData;
   final String? publishTime;
   final String? updatedAt;
@@ -24,8 +25,8 @@ class Story {
   final PeopleList? cameraOperators;
   final PeopleList? designers;
   final PeopleList? engineers;
-  final PeopleList? vocals;
-  final String? otherbyline;
+  final PeopleList? dataAnalysts;
+  final String? otherByline;
 
   final TagList? tags;
   final StoryListItemList? relatedStories;
@@ -33,7 +34,8 @@ class Story {
   Story({
     this.style,
     this.name,
-    this.brief,
+    this.summaryApiData,
+    this.readingTime,
     this.contentApiData,
     this.publishTime,
     this.updatedAt,
@@ -46,17 +48,17 @@ class Story {
     this.cameraOperators,
     this.designers,
     this.engineers,
-    this.vocals,
-    this.otherbyline,
+    this.dataAnalysts,
+    this.otherByline,
     this.tags,
     this.relatedStories,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
-    ParagraphList brief = ParagraphList();
-    if (BaseModel.hasKey(json, 'briefApiData') &&
-        json["briefApiData"] != 'NaN') {
-      brief = ParagraphList.parseResponseBody(json['briefApiData']);
+    ParagraphList summaryApiData = ParagraphList();
+    if (BaseModel.hasKey(json, 'summaryApiData') &&
+        json["summaryApiData"] != 'NaN') {
+      summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
     }
 
     ParagraphList contentApiData = ParagraphList();
@@ -74,11 +76,16 @@ class Story {
     if (BaseModel.checkJsonKeys(json, ['heroVideo', 'url'])) {
       videoUrl = json['heroVideo']['url'];
     }
+    int? readingTime;
+    if (json['wordCount'] != null) {
+      readingTime = (((json['wordCount']) / 8) / 60).round();
+    }
 
     return Story(
       style: json['style'],
       name: json[BaseModel.nameKey],
-      brief: brief,
+      summaryApiData: summaryApiData,
+      readingTime: readingTime,
       contentApiData: contentApiData,
       publishTime: json['publishTime'],
       updatedAt: json['updatedAt'],
@@ -91,8 +98,8 @@ class Story {
       cameraOperators: PeopleList.fromJson(json['cameraOperators']),
       designers: PeopleList.fromJson(json['designers']),
       engineers: PeopleList.fromJson(json['engineers']),
-      vocals: PeopleList.fromJson(json['vocals']),
-      otherbyline: json['otherbyline'],
+      dataAnalysts: PeopleList.fromJson(json['dataAnalysts']),
+      otherByline: json['otherByline'],
       tags: TagList.fromJson(json['tags']),
       relatedStories: StoryListItemList.fromJson(json['relatedPosts']),
     );

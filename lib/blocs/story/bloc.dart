@@ -15,13 +15,12 @@ class StoryBloc extends Bloc<StoryEvents, StoryState> {
 
   @override
   Stream<StoryState> mapEventToState(StoryEvents event) async* {
-    if (event is FetchPublishedStoryBySlug) {
-      print(toString());
+    if (event is FetchPublishedStoryById) {
+      print(event.toString());
       try {
         yield StoryLoading();
-        Story story = await storyRepos.fetchPublishedStoryBySlug(event.slug);
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        double textSize = prefs.getDouble('textSize') ?? 20;
+        Story story = await storyRepos.fetchPublishedStoryById(event.id);
+        double textSize = 18;
         yield StoryLoaded(story: story, textSize: textSize);
       } on SocketException {
         yield StoryError(

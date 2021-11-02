@@ -8,10 +8,10 @@ class ChangeTextSize extends StoryEvents {
   String toString() => "ChangeTextSize";
 }
 
-class FetchPublishedStoryBySlug extends StoryEvents {
-  final String slug;
-  FetchPublishedStoryBySlug(this.slug);
+class FetchPublishedStoryById extends StoryEvents {
+  final String id;
+  FetchPublishedStoryById(this.id);
 
   @override
-  String toString() => 'FetchPublishedStoryBySlug { storySlug: $slug }';
+  String toString() => 'FetchPublishedStoryById { storyId: $id }';
 }

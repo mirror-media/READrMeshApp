@@ -7,15 +7,15 @@ import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/story.dart';
 
 abstract class StoryRepos {
-  Future<Story> fetchPublishedStoryBySlug(String slug);
+  Future<Story> fetchPublishedStoryById(String id);
 }
 
 class StoryServices implements StoryRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   @override
-  Future<Story> fetchPublishedStoryBySlug(String slug) async {
-    final key = 'fetchPublishedStoryBySlug?slug=$slug';
+  Future<Story> fetchPublishedStoryById(String id) async {
+    final key = 'fetchPublishedStoryById?id=$id';
 
     const String query = """
     query (
@@ -26,7 +26,8 @@ class StoryServices implements StoryRepos {
       ) {
         style
         name
-        briefApiData
+        wordCount
+        summaryApiData
         contentApiData
         publishTime
         updatedAt
@@ -49,6 +50,7 @@ class StoryServices implements StoryRepos {
         }
         heroCaption
         categories {
+          id
           slug
           name
         }
@@ -72,18 +74,29 @@ class StoryServices implements StoryRepos {
           name 
           slug
         }
-        vocals {
+        dataAnalysts{
           name
           slug
         }
-        otherbyline
+        otherByline
         tags {
           id
           name
         }
         relatedPosts {
+          id
           slug
           name
+          publishTime
+          style
+          wordCount
+          categories(where: {
+            state: active
+          }){
+            id
+            name
+            slug
+          }
           heroImage {
             urlMobileSized
           }
@@ -93,7 +106,7 @@ class StoryServices implements StoryRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "where": {"state": "published", "slug": slug},
+      "where": {"state": "published", "id": id},
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
