@@ -81,32 +81,4 @@ class _HomePageState extends State<HomePage> {
       return InitLoadingPage();
     });
   }
-
-  Widget _errorMessage() {
-    return Scaffold(
-      backgroundColor: themeColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(logoPng, scale: 4.0),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text('載入失敗',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                )),
-            const Text('請檢查網路連線後再重新開啟',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                )),
-          ],
-        ),
-      ),
-    );
-  }
 }
