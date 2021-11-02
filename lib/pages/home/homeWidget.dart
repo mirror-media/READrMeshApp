@@ -10,9 +10,9 @@ import 'package:readr/blocs/categories/states.dart';
 import 'package:readr/blocs/editorChoice/bloc.dart';
 import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeTabContent.dart';
 import 'package:readr/pages/shared/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/services/editorChoiceService.dart';
@@ -85,82 +85,74 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<CategoriesBloc, CategoriesState>(
         builder: (BuildContext context, CategoriesState state) {
-      if (state.status == CategoriesStatus.initial ||
-          state.status == CategoriesStatus.loading) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: Platform.isAndroid
-                ? const CircularProgressIndicator(
-                    color: hightLightColor,
-                  )
-                : const CupertinoActivityIndicator(),
-          ),
-        );
-      }
-
       if (state.status == CategoriesStatus.error) {
         final error = state.error;
         print('TabStoryListError: ${error.message}');
-        if (error is NoInternetException) {
-          return error.renderWidget(
-              onPressed: () {
-                _fetchCategoryList();
-              },
-              isColumn: true);
-        }
-        return error.renderWidget(isNoButton: true, isColumn: true);
+
+        return ErrorPage(error: error, onPressed: () => _fetchCategoryList());
       }
 
       if (state.status == CategoriesStatus.loaded) {
         categoryList = state.categoryList!;
         _initializeTabController();
-      }
-      return Scaffold(
-        extendBodyBehindAppBar: true,
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverToBoxAdapter(
-                child: AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: SystemUiOverlayStyle.light,
-                  child: BlocProvider(
-                    create: (context) => EditorChoiceBloc(
-                      editorChoiceRepos: EditorChoiceServices(),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: BuildEditorChoiceCarousel(),
+
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          body: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: SystemUiOverlayStyle.light,
+                    child: BlocProvider(
+                      create: (context) => EditorChoiceBloc(
+                        editorChoiceRepos: EditorChoiceServices(),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: BuildEditorChoiceCarousel(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 4,
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 4,
+                  ),
                 ),
-              ),
-              SliverAppBar(
-                pinned: true,
-                primary: false,
-                elevation: 0,
-                toolbarHeight: 35,
-                backgroundColor: Colors.white,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicatorColor: tabBarSelectedColor,
-                  unselectedLabelColor: Colors.black38,
-                  tabs: _tabs.toList(),
-                  controller: _tabController,
+                SliverAppBar(
+                  pinned: true,
+                  primary: false,
+                  elevation: 0,
+                  toolbarHeight: 35,
+                  backgroundColor: Colors.white,
+                  systemOverlayStyle: SystemUiOverlayStyle.dark,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: tabBarSelectedColor,
+                    unselectedLabelColor: Colors.black38,
+                    tabs: _tabs.toList(),
+                    controller: _tabController,
+                  ),
                 ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            children: _tabWidgets.toList(),
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: _tabWidgets.toList(),
+            ),
           ),
+        );
+      }
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: Platform.isAndroid
+              ? const CircularProgressIndicator(
+                  color: hightLightColor,
+                )
+              : const CupertinoActivityIndicator(),
         ),
       );
     });

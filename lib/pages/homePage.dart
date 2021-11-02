@@ -1,15 +1,13 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:readr/pages/initLoadingPage.dart';
 import 'package:upgrader/upgrader.dart';
@@ -37,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       if (state is ConfigError) {
         final error = state.error;
         print('ConfigError: ${error.message}');
-        return _errorMessage();
+        return ErrorPage(error: error, onPressed: () => _loadingConfig());
       }
       if (state is ConfigLoaded) {
         return UpgradeAlert(

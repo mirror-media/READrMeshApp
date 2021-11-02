@@ -9,7 +9,6 @@ import 'package:readr/blocs/story/bloc.dart';
 import 'package:readr/blocs/story/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
-import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
@@ -18,6 +17,7 @@ import 'package:readr/models/story.dart';
 import 'package:readr/models/storyListItem.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/models/tagList.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
@@ -62,11 +62,7 @@ class _StoryWidgetState extends State<StoryWidget> {
       if (state is StoryError) {
         final error = state.error;
         print('NewsCategoriesError: ${error.message}');
-        if (error is NoInternetException) {
-          return error.renderWidget(onPressed: () => _loadStory(_currentId));
-        }
-
-        return error.renderWidget();
+        return ErrorPage(error: error, onPressed: () => _loadStory(_currentId));
       }
       if (state is StoryLoaded) {
         Story? story = state.story;

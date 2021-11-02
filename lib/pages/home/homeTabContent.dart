@@ -7,8 +7,8 @@ import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/storyListItemList.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeStoryListItem.dart';
 import 'package:readr/pages/home/homeStoryPjojectItem.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
@@ -61,12 +61,16 @@ class _HomeTabContentState extends State<HomeTabContent> {
       if (state.status == TabStoryListStatus.error) {
         final error = state.error;
         print('TabStoryListError: ${error.message}');
-        if (error is NoInternetException) {
-          return error.renderWidget(isNoButton: true, isColumn: true);
+        void Function(void) function;
+        if (widget.categorySlug == 'latest') {
+          function = _fetchStoryList();
+        } else {
+          function = _fetchStoryListByCategorySlug();
         }
 
-        return error.renderWidget(isNoButton: true, isColumn: true);
+        return ErrorPage(error: error, onPressed: () => function);
       }
+      return TabContentNoResultWidget();
       if (state.status == TabStoryListStatus.loaded) {
         StoryListItemList mixedStoryList = state.mixedStoryList!;
 

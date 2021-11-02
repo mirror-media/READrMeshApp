@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:readr/pages/error/error400Widget.dart';
-import 'package:readr/pages/error/error500Widget.dart';
-import 'package:readr/pages/error/noSignalWidget.dart';
+import 'package:readr/pages/errorPage.dart';
 
 abstract class MNewException {
   dynamic message;
   MNewException(this.message);
 
   Widget renderWidget({
-    VoidCallback? onPressed,
-    bool isNoButton = false,
-    bool isColumn = false,
+    required void Function() onPressed,
   });
 }
 
@@ -21,11 +17,9 @@ class Error500Exception implements MNewException {
 
   @override
   Widget renderWidget({
-    VoidCallback? onPressed,
-    bool isNoButton = false,
-    bool isColumn = false,
+    required void Function() onPressed,
   }) =>
-      Error500Widget(isNoButton: isNoButton, isColumn: isColumn);
+      ErrorPage(error: this, onPressed: onPressed);
 }
 
 class Error400Exception implements MNewException {
@@ -35,11 +29,9 @@ class Error400Exception implements MNewException {
 
   @override
   Widget renderWidget({
-    VoidCallback? onPressed,
-    bool isNoButton = false,
-    bool isColumn = false,
+    required void Function() onPressed,
   }) =>
-      Error400Widget(isNoButton: isNoButton, isColumn: isColumn);
+      ErrorPage(error: this, onPressed: onPressed);
 }
 
 class NoInternetException implements MNewException {
@@ -49,11 +41,9 @@ class NoInternetException implements MNewException {
 
   @override
   Widget renderWidget({
-    VoidCallback? onPressed,
-    bool isNoButton = false,
-    bool isColumn = false,
+    required void Function() onPressed,
   }) =>
-      NoSignalWidget(onPressed: onPressed, isColumn: isColumn);
+      ErrorPage(error: this, onPressed: onPressed);
 }
 
 class NoServiceFoundException extends Error500Exception {
