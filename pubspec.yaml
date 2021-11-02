@@ -56,7 +56,7 @@ dependencies:
   # a friendly Material or Cupertino UI for video
   chewie: ^1.2.2
   # Widget from html
-  flutter_widget_from_html: ^0.8.0
+  flutter_widget_from_html: ^0.8.1+1
   # Toast Library for Flutter
   fluttertoast: ^8.0.8
   # firebase
@@ -64,7 +64,7 @@ dependencies:
   # firebase cloud messaging
   firebase_messaging: ^10.0.8
   # svg file loader
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.23.0+1
   # shared_preferences
   shared_preferences: ^2.0.8
   # get youtube metadata
@@ -94,7 +94,7 @@ dependencies:
     git:
       url: git://github.com/mirror-media/flutter_embedded_webview.git
       ref: master
-      version: ^0.0.1
+      version: ^0.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
