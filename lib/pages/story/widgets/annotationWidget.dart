@@ -70,21 +70,12 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
               child: Wrap(
                 children: [
                   const SizedBox(width: 8),
-                  Text(
-                    '(註)',
-                    style: TextStyle(
-                      fontSize: textSize,
-                      height: 1.8,
-                      color: annotationColor,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(width: 2.0, color: annotationColor),
+                        color: Color(0xffF6F6FB),
                       ),
                       child: const Icon(
                         Icons.arrow_drop_up,
@@ -113,21 +104,8 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
               child: Container(
                 width: width,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: const Border(
-                    top: BorderSide(
-                      color: annotationColor,
-                      width: 3.0,
-                    ),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 15,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
+                  color: const Color(0xffF6F6FB),
+                  borderRadius: BorderRadius.circular(2.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -136,6 +114,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
                     textStyle: TextStyle(
                       fontSize: textSize,
                       height: 1.8,
+                      color: Colors.black87,
                     ),
                   ),
                 ),
@@ -159,21 +138,12 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
               child: Wrap(
                 children: [
                   const SizedBox(width: 8),
-                  Text(
-                    '(註)',
-                    style: TextStyle(
-                      fontSize: textSize,
-                      height: 1.8,
-                      color: annotationColor,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(width: 2.0, color: annotationColor),
+                        color: Color(0xffF6F6FB),
                       ),
                       child: const Icon(
                         Icons.arrow_drop_down,

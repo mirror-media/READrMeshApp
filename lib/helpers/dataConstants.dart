@@ -28,10 +28,8 @@ const Color bottomNavigationBarSelectedColor = Color(0xff04295E);
 const Color bottomNavigationBarUnselectedColor = Colors.grey;
 
 const Color storyWidgetColor = Color(0xff04295E);
-const Color storyBriefFrameColor = storyWidgetColor;
-const Color storyBriefTextColor = storyWidgetColor;
-const Color blockquoteColor = storyWidgetColor;
-const Color quotebyColor = storyWidgetColor;
-const Color annotationColor = storyWidgetColor;
+const Color storySummaryFrameColor = storyWidgetColor;
+const Color blockquoteColor = Color.fromRGBO(0, 9, 40, 0.1);
+const Color annotationColor = Colors.black87;
 const Color infoBoxTitleColor = storyWidgetColor;
 const Color slideShowColor = storyWidgetColor;

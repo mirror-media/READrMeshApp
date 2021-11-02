@@ -43,7 +43,7 @@ class ImageDescriptionWidget extends StatelessWidget {
             ),
           if (description != null && description != '')
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 8.0, left: 20.0),
               child: Text(
                 description!,
                 style: TextStyle(fontSize: textSize, color: Colors.grey),

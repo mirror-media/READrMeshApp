@@ -19,6 +19,13 @@ class ParseTheTextToHtmlWidget extends StatelessWidget {
 
     return HtmlWidget(
       html!,
+      customStylesBuilder: (element) => html!.contains('href')
+          ? {
+              'border-bottom': '2px solid #ebf02c',
+              'color': 'black',
+              'text-decoration': 'none',
+            }
+          : null,
       textStyle: TextStyle(
         fontSize: fontSize,
         height: 1.8,

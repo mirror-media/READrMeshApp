@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/story/widgets/quoteByFrameClipper.dart';
 
 class QuoteByWidget extends StatelessWidget {
   final String quote;
@@ -11,66 +9,48 @@ class QuoteByWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          quote,
-          style: TextStyle(
-            fontSize: textSize,
-            height: 1.8,
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+      padding: const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 32),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.format_quote,
+            size: 60,
+            color: Colors.black12,
           ),
-        ),
-      ),
-      Positioned(
-        top: 0,
-        left: 0,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: ClipPath(
-            clipper: QuoteByTopFrameClipper(),
-            child: Container(
-              height: width / 8,
-              width: width / 8,
-              decoration: const BoxDecoration(
-                color: quotebyColor,
+          const SizedBox(
+            height: 16,
+          ),
+          SizedBox(
+            width: width,
+            child: Text(
+              quote,
+              style: const TextStyle(
+                fontSize: 20,
+                height: 1.5,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
-        ),
-      ),
-      Positioned(
-        bottom: 0,
-        right: 0,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (quoteBy != null && quoteBy != '') ...[
-              Text(
+          if (quoteBy != null && quoteBy != '') ...[
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              width: width,
+              alignment: Alignment.centerRight,
+              child: Text(
                 '—— $quoteBy',
-                style: TextStyle(
-                  fontSize: textSize - 2,
-                  color: quotebyColor,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-            ],
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: ClipPath(
-                clipper: QuoteByBottomFrameClipper(),
-                child: Container(
-                  height: width / 8,
-                  width: width / 8,
-                  decoration: const BoxDecoration(
-                    color: quotebyColor,
-                  ),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.black54,
                 ),
               ),
             ),
           ],
-        ),
+        ],
       ),
-    ]);
+    );
   }
 }

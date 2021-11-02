@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:readr/blocs/story/events.dart';
 import 'package:readr/blocs/story/bloc.dart';
 import 'package:readr/blocs/story/states.dart';
@@ -11,7 +12,6 @@ import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
-import 'package:readr/models/people.dart';
 import 'package:readr/models/peopleList.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/models/storyListItem.dart';
@@ -20,7 +20,6 @@ import 'package:readr/models/tagList.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
-import 'package:readr/pages/story/widgets/storyBriefFrameClipper.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -51,7 +50,7 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   _loadStory(String id) async {
-    context.read<StoryBloc>().add(FetchPublishedStoryBySlug(id));
+    context.read<StoryBloc>().add(FetchPublishedStoryById(id));
   }
 
   @override
@@ -94,30 +93,27 @@ class _StoryWidgetState extends State<StoryWidget> {
   Widget _storyContent(double width, Story story) {
     return ListView(
       children: [
-        // InlineBannerAdWidget(adUnitId: _adUnitId.hdAdUnitId,),
         _buildHeroWidget(width, story),
         const SizedBox(height: 24),
-        _buildCategoryAndPublishedDate(story),
-        const SizedBox(height: 10),
-        _buildStoryTitle(story.name!),
+        _buildCategory(story),
         const SizedBox(height: 8),
+        _buildStoryTitle(story.name!),
+        const SizedBox(height: 12),
+        _buildPublishedDateAndReadingTime(story),
+        const SizedBox(height: 12),
         _buildAuthors(story),
-        const SizedBox(height: 32),
-        _buildBrief(story.brief!),
+        const SizedBox(height: 24),
+        _buildSummary(story.summaryApiData!),
         _buildContent(story.contentApiData!),
-        const SizedBox(height: 16),
-        Center(child: _buildUpdatedTime(story.updatedAt!)),
-        const SizedBox(height: 32),
+        const SizedBox(height: 48),
         if (story.tags != null && story.tags!.isNotEmpty) ...[
           _buildTags(story.tags),
-          const SizedBox(height: 16),
+          const SizedBox(height: 48),
         ],
-        // InlineBannerAdWidget(adUnitId: _adUnitId.e1AdUnitId,),
         if (story.relatedStories!.isNotEmpty) ...[
           _buildRelatedWidget(width, story.relatedStories!),
           const SizedBox(height: 16),
         ],
-        // InlineBannerAdWidget(adUnitId: _adUnitId.ftAdUnitId,)
       ],
     );
   }
@@ -146,12 +142,12 @@ class _StoryWidgetState extends State<StoryWidget> {
             fit: BoxFit.cover,
           ),
         if (!_isNullOrEmpty(story.heroCaption))
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 0.0),
+          Container(
+            padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 0.0),
+            alignment: Alignment.centerLeft,
             child: Text(
               story.heroCaption!,
-              style: TextStyle(
-                  fontSize: _textSize - 5, color: const Color(0xff757575)),
+              style: const TextStyle(fontSize: 13, color: Colors.black54),
             ),
           ),
       ],
@@ -171,251 +167,309 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
   }
 
-  Widget _buildCategoryAndPublishedDate(Story story) {
-    DateTimeFormat dateTimeFormat = DateTimeFormat();
+  Widget _buildCategory(Story story) {
+    if (story.categoryList!.isEmpty) return Container();
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (story.categoryList!.isEmpty) Container(),
-          if (story.categoryList!.isNotEmpty)
-            Text(
-              story.categoryList![0].name,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+      height: 25,
+      width: MediaQuery.of(context).size.width - 40,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            child: Text(
+              story.categoryList![index].name,
               style: const TextStyle(
                 fontSize: 15,
-                color: storyWidgetColor,
-                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontWeight: FontWeight.w400,
               ),
             ),
-          Text(
-            dateTimeFormat.changeStringToDisplayString(story.publishTime!,
-                'yyyy-MM-ddTHH:mm:ssZ', 'yyyy.MM.dd HH:mm 臺北時間'),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xff757575),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: hightLightColor,
+                  width: 2,
+                ),
+              ),
             ),
-          ),
-        ],
+          );
+        },
+        itemCount: story.categoryList!.length,
+        separatorBuilder: (BuildContext context, int index) {
+          return Container(
+            width: 4,
+            height: 4,
+            margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 2.0),
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black26,
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildStoryTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Text(
         title,
         style: const TextStyle(
           fontFamily: 'PingFang TC',
-          fontSize: 26,
+          fontSize: 24,
           fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
+  Widget _buildPublishedDateAndReadingTime(Story story) {
+    DateTimeFormat dateTimeFormat = DateTimeFormat();
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            dateTimeFormat.changeStringToDisplayString(
+                story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'MM/dd'),
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.black54,
+            ),
+          ),
+          if (story.readingTime != null && story.readingTime! > 1.0)
+            Text(
+              '・閱讀時間 ${story.readingTime!.round().toString()} 分鐘',
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black54,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildAuthors(Story story) {
-    Color authorColor = const Color(0xff757575);
+    Color labelColor = Colors.black54;
     List<Widget> authorItems = List.empty(growable: true);
 
-    // VerticalDivider is broken? so use Container
-    var myVerticalDivider = Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+    var horizontalLine = Padding(
+      padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
       child: Container(
-        color: const Color(0xff757575),
-        width: 1,
-        height: 15,
+        color: const Color(0xff000928),
+        width: 20,
+        height: 1,
       ),
     );
 
     if (story.writers!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "作者",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.writers!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+      authorItems.add(Row(
+        children: [
+          Text(
+            "記者",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.writers!),
+        ],
       ));
     }
 
     if (story.photographers!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "攝影",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.photographers!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+      authorItems.add(Row(
+        children: [
+          Text(
+            "攝影",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.photographers!),
+        ],
       ));
     }
 
     if (story.cameraOperators!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "影音",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.cameraOperators!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+      authorItems.add(Row(
+        children: [
+          Text(
+            "影音",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.cameraOperators!)
+        ],
       ));
     }
 
     if (story.designers!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "設計",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.designers!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+      authorItems.add(Row(
+        children: [
+          Text(
+            "設計",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.designers!),
+        ],
       ));
     }
 
     if (story.engineers!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "工程",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.engineers!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+      authorItems.add(Row(
+        children: [
+          Text(
+            "工程",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.engineers!),
+        ],
       ));
     }
 
-    if (story.vocals!.isNotEmpty) {
-      authorItems.add(
-        Text(
-          "主播",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-
-      authorItems.addAll(_addAuthorItems(story.engineers!));
-      authorItems.add(const SizedBox(
-        width: 12.0,
+    if (story.dataAnalysts!.isNotEmpty) {
+      authorItems.add(Row(
+        children: [
+          Text(
+            "數據分析",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          _addAuthorItems(story.dataAnalysts!),
+        ],
       ));
     }
 
-    if (!_isNullOrEmpty(story.otherbyline)) {
-      authorItems.add(
-        Text(
-          "作者",
-          style: TextStyle(fontSize: 15, color: authorColor),
-        ),
-      );
-      authorItems.add(myVerticalDivider);
-      authorItems.add(Text(story.otherbyline!));
+    if (!_isNullOrEmpty(story.otherByline)) {
+      authorItems.add(Row(
+        children: [
+          Text(
+            "共同製作",
+            style: TextStyle(fontSize: 13, color: labelColor),
+          ),
+          horizontalLine,
+          Text(story.otherByline!)
+        ],
+      ));
     }
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: authorItems,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+      width: MediaQuery.of(context).size.width - 40,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) => authorItems[index],
+        itemCount: authorItems.length,
       ),
     );
   }
 
-  List<Widget> _addAuthorItems(PeopleList peopleList) {
-    List<Widget> authorItems = List.empty(growable: true);
+  Widget _addAuthorItems(PeopleList peopleList) {
+    List<Widget> authorNameList = [];
 
-    for (People author in peopleList) {
-      authorItems.add(Padding(
-        padding: const EdgeInsets.only(right: 4.0),
-        child: Text(
-          author.name,
-          style: const TextStyle(
-            fontSize: 15,
-          ),
+    for (int i = 0; i < peopleList.length; i++) {
+      authorNameList.add(Text(
+        peopleList[i].name,
+        style: const TextStyle(
+          fontSize: 13,
+          color: Colors.black87,
         ),
       ));
+      if (i != peopleList.length - 1) {
+        authorNameList.add(Container(
+          width: 2,
+          height: 2,
+          margin: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black26,
+          ),
+        ));
+      }
     }
-    return authorItems;
+    return Row(
+      children: authorNameList,
+    );
   }
 
   // only display unstyled paragraph type in brief
-  Widget _buildBrief(ParagraphList articles) {
+  Widget _buildSummary(ParagraphList articles) {
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
+      articleWidgets.add(const Padding(
+        padding: EdgeInsets.only(left: 20.0),
+        child: Text(
+          '報導重點摘要',
+          style: TextStyle(color: storyWidgetColor, fontSize: 13),
+        ),
+      ));
+      articleWidgets.add(
+        const SizedBox(height: 4),
+      );
 
-      for (int i = 0; i < articles.length; i++) {
-        if (articles[i].type == 'unstyled') {
-          if (articles[i].contents!.isNotEmpty &&
-              !_isNullOrEmpty(articles[i].contents![0].data)) {
-            articleWidgets.add(
-              ParseTheTextToHtmlWidget(
-                html: articles[i].contents![0].data,
-                color: storyBriefTextColor,
-                fontSize: _textSize,
-              ),
-            );
-          }
+      ParagraphFormat paragraphFormat = ParagraphFormat();
 
-          if (i != articles.length - 1) {
-            articleWidgets.add(
-              const SizedBox(height: 16),
-            );
-          }
-        }
+      if (articles[0].contents!.isNotEmpty &&
+          !_isNullOrEmpty(articles[0].contents![0].data)) {
+        articleWidgets.add(
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: articles.length,
+            itemBuilder: (context, index) {
+              Paragraph paragraph = articles[index];
+              if (paragraph.contents != null &&
+                  paragraph.contents!.isNotEmpty &&
+                  !_isNullOrEmpty(paragraph.contents![0].data)) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child:
+                      paragraphFormat.parseTheParagraph(paragraph, context, 15),
+                );
+              }
+
+              return Container();
+            },
+          ),
+        );
       }
 
-      if (articleWidgets.isEmpty) {
-        return Container();
-      }
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 32.0),
+      return Container(
+        padding: const EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 20.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 24.0),
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: storySummaryFrameColor,
+              width: 12,
+            ),
+            left: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            right: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            bottom: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+          ),
+        ),
         child: Column(
-          children: [
-            ClipPath(
-              clipper: StoryBriefTopFrameClipper(),
-              child: Container(
-                height: 16,
-                decoration: const BoxDecoration(
-                  color: storyBriefFrameColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: articleWidgets,
-              ),
-            ),
-            ClipPath(
-              clipper: StoryBriefBottomFrameClipper(),
-              child: Container(
-                height: 16,
-                decoration: const BoxDecoration(
-                  color: storyBriefFrameColor,
-                ),
-              ),
-            ),
-          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: articleWidgets,
         ),
       );
     }
@@ -425,37 +479,14 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   Widget _buildContent(ParagraphList storyContents) {
     ParagraphFormat paragraphFormat = ParagraphFormat();
-    int _numOfAds = 0;
-    // if(storyContents.length > 0)
-    //   _numOfAds = 1;
-    // else if(storyContents.length >= 5 && storyContents.length < 10)
-    //   _numOfAds = 2;
-    // else if(storyContents.length >= 10)
-    //   _numOfAds = 3;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: storyContents.length + _numOfAds,
+        itemCount: storyContents.length,
         itemBuilder: (context, index) {
-          // if(index == 1){
-          //   return InlineBannerAdWidget(adUnitId: _adUnitId.at1AdUnitId, isInArticle: true,);
-          // }
-          // else if(index == 6){
-          //   return InlineBannerAdWidget(adUnitId: _adUnitId.at2AdUnitId, isInArticle: true);
-          // }
-          // else if(index == 12){
-          //   return InlineBannerAdWidget(adUnitId: _adUnitId.at3AdUnitId, isInArticle: true);
-          // }
-          int _trueIndex = index;
-          // if(index > 1 && index < 6)
-          //   _trueIndex--;
-          // else if(index > 6 && index < 12)
-          //   _trueIndex = _trueIndex - 2;
-          // else if(index > 12)
-          //   _trueIndex = _trueIndex - 3;
-          Paragraph paragraph = storyContents[_trueIndex];
+          Paragraph paragraph = storyContents[index];
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
@@ -472,20 +503,6 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
   }
 
-  Widget _buildUpdatedTime(String updateTime) {
-    DateTimeFormat dateTimeFormat = DateTimeFormat();
-
-    return Text(
-      '更新時間：' +
-          dateTimeFormat.changeStringToDisplayString(
-              updateTime, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy.MM.dd HH:mm 臺北時間'),
-      style: const TextStyle(
-        fontSize: 15,
-        color: Color(0xff757575),
-      ),
-    );
-  }
-
   Widget _buildTags(TagList? tags) {
     if (tags == null) {
       return Container();
@@ -495,19 +512,22 @@ class _StoryWidgetState extends State<StoryWidget> {
         tagWidgets.add(
           Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Container(
-              decoration: BoxDecoration(
-                //color: storyWidgetColor,
-                border: Border.all(width: 2.0, color: storyWidgetColor),
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffF6F6FB),
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  tags[i].name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Color.fromRGBO(0, 9, 40, 0.66)),
+                  strutStyle: const StrutStyle(
+                      forceStrutHeight: true, fontSize: 18, height: 1),
+                ),
               ),
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '#' + tags[i].name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: storyWidgetColor),
-                strutStyle: const StrutStyle(
-                    forceStrutHeight: true, fontSize: 18, height: 1),
-              ),
+              onTap: () {},
             ),
           ),
         );
@@ -518,7 +538,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         }
       }
       return Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Wrap(
           children: tagWidgets,
         ),
@@ -528,7 +548,7 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   Widget _buildRelatedWidget(double width, StoryListItemList relatedStories) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -542,13 +562,17 @@ class _StoryWidgetState extends State<StoryWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      '相關文章',
+                      '相關報導',
                       style: TextStyle(
-                        fontSize: 26,
-                        color: storyWidgetColor,
+                        fontSize: 15,
+                        color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ),
+                    const SizedBox(height: 24),
                     _buildRelatedItem(width, relatedStories[index]),
                   ]);
             }
@@ -558,39 +582,59 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget _buildRelatedItem(double width, StoryListItem story) {
-    double imageWidth = 33 * (width - 48) / 100;
-    double imageHeight = imageWidth;
-
     return InkWell(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           story.photoUrl == null
-              ? SvgPicture.asset(defaultImageSvg)
-              : CachedNetworkImage(
-                  height: imageHeight,
-                  width: imageWidth,
-                  imageUrl: story.photoUrl!,
-                  placeholder: (context, url) => Container(
-                    height: imageHeight,
-                    width: imageWidth,
-                    color: Colors.grey,
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: SizedBox(
+                    width: 90,
+                    height: 90,
+                    child: SvgPicture.asset(defaultImageSvg, fit: BoxFit.cover),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    height: imageHeight,
-                    width: imageWidth,
-                    color: Colors.grey,
-                    child: const Icon(Icons.error),
+                )
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: CachedNetworkImage(
+                    width: 90,
+                    height: 90,
+                    imageUrl: story.photoUrl!,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey,
+                      child: const Icon(Icons.error),
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
                 ),
           const SizedBox(
             width: 16,
           ),
           Expanded(
-            child: Text(
-              story.name,
-              style: const TextStyle(fontSize: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 69,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        height: 1.5,
+                      ),
+                      text: story.name,
+                    ),
+                  ),
+                ),
+                _displayTimeAndReadingTime(story),
+              ],
             ),
           ),
         ],
@@ -600,6 +644,27 @@ class _StoryWidgetState extends State<StoryWidget> {
         StoryPage.of(context)!.id = _currentId;
         _loadStory(_currentId);
       },
+    );
+  }
+
+  Widget _displayTimeAndReadingTime(StoryListItem story) {
+    TextStyle style = const TextStyle(
+      fontSize: 12,
+      color: Colors.black54,
+    );
+    return Container(
+      padding: const EdgeInsets.only(top: 4),
+      color: editorChoiceBackgroundColor,
+      child: Row(
+        children: [
+          Text(DateFormat('MM/dd').format(story.publishTime), style: style),
+          if (story.readingTime != null && story.readingTime! > 1.0)
+            Text(
+              '・閱讀時間 ${story.readingTime!.toString()} 分鐘',
+              style: style,
+            ),
+        ],
+      ),
     );
   }
 }

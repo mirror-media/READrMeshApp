@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_embedded_webview/flutter_embedded_webview.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/contentList.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/pages/story/widgets/annotationWidget.dart';
 import 'package:readr/pages/story/widgets/blockQuoteWidget.dart';
-import 'package:readr/pages/story/widgets/embeddedCodeWidget.dart';
 import 'package:readr/pages/story/widgets/imageAndDescriptionSlideShowWidget.dart';
 import 'package:readr/pages/story/widgets/imageDescriptionWidget.dart';
 import 'package:readr/pages/story/widgets/infoBoxWidget.dart';
@@ -26,9 +26,12 @@ class ParagraphFormat {
       case 'header-one':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return ParseTheTextToHtmlWidget(
-              html: '<h1>' + paragraph.contents![0].data + '</h1>',
-              fontSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ParseTheTextToHtmlWidget(
+                html: '<h1>' + paragraph.contents![0].data + '</h1>',
+                fontSize: textSize,
+              ),
             );
           }
           return Container();
@@ -36,9 +39,12 @@ class ParagraphFormat {
       case 'header-two':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return ParseTheTextToHtmlWidget(
-              html: '<h2>' + paragraph.contents![0].data + '</h2>',
-              fontSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ParseTheTextToHtmlWidget(
+                html: '<h2>' + paragraph.contents![0].data + '</h2>',
+                fontSize: textSize,
+              ),
             );
           }
           return Container();
@@ -47,30 +53,42 @@ class ParagraphFormat {
       case 'unstyled':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return ParseTheTextToHtmlWidget(
-              html: paragraph.contents![0].data,
-              fontSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ParseTheTextToHtmlWidget(
+                html: paragraph.contents![0].data,
+                fontSize: textSize,
+              ),
             );
           }
           return Container();
         }
       case 'ordered-list-item':
         {
-          return buildOrderListWidget(paragraph.contents!, textSize);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: buildOrderListWidget(paragraph.contents!, textSize),
+          );
         }
       case 'unordered-list-item':
         {
-          return buildUnorderListWidget(paragraph.contents!, textSize);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: buildUnorderListWidget(paragraph.contents!, textSize),
+          );
         }
       case 'image':
         {
-          var width = MediaQuery.of(context).size.width - 48;
+          var width = MediaQuery.of(context).size.width;
           if (paragraph.contents!.isNotEmpty) {
-            return ImageDescriptionWidget(
-              imageUrl: paragraph.contents![0].data,
-              description: paragraph.contents![0].description,
-              width: width,
-              textSize: textSize - 4,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: ImageDescriptionWidget(
+                imageUrl: paragraph.contents![0].data,
+                description: paragraph.contents![0].description,
+                width: width,
+                textSize: 13,
+              ),
             );
           }
 
@@ -78,15 +96,21 @@ class ParagraphFormat {
         }
       case 'slideshow':
         {
-          return ImageAndDescriptionSlideShowWidget(
-              contentList: paragraph.contents!, textSize: textSize);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ImageAndDescriptionSlideShowWidget(
+                contentList: paragraph.contents!, textSize: textSize),
+          );
         }
       case 'annotation':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return AnnotationWidget(
-              data: paragraph.contents![0].data,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: AnnotationWidget(
+                data: paragraph.contents![0].data,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -94,9 +118,12 @@ class ParagraphFormat {
       case 'blockquote':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return BlockQuoteWidget(
-              content: paragraph.contents![0].data,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: BlockQuoteWidget(
+                content: paragraph.contents![0].data,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -104,10 +131,13 @@ class ParagraphFormat {
       case 'quoteby':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return QuoteByWidget(
-              quote: paragraph.contents![0].data,
-              quoteBy: paragraph.contents![0].description,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: QuoteByWidget(
+                quote: paragraph.contents![0].data,
+                quoteBy: paragraph.contents![0].description,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -115,10 +145,13 @@ class ParagraphFormat {
       case 'infobox':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return InfoBoxWidget(
-              title: paragraph.contents![0].description ?? '',
-              description: paragraph.contents![0].data,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InfoBoxWidget(
+                title: paragraph.contents![0].description ?? '',
+                description: paragraph.contents![0].data,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -141,11 +174,13 @@ class ParagraphFormat {
               titleAndDescription =
                   paragraph.contents![0].description!.split(';')[0];
             }
-
-            return MNewsAudioPlayer(
-              audioUrl: paragraph.contents![0].data,
-              title: titleAndDescription,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: MNewsAudioPlayer(
+                audioUrl: paragraph.contents![0].data,
+                title: titleAndDescription,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -153,10 +188,13 @@ class ParagraphFormat {
       case 'youtube':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return YoutubeWidget(
-              youtubeId: paragraph.contents![0].data,
-              description: paragraph.contents![0].description,
-              textSize: textSize,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: YoutubeWidget(
+                youtubeId: paragraph.contents![0].data,
+                description: paragraph.contents![0].description,
+                textSize: textSize,
+              ),
             );
           }
           return Container();
@@ -164,9 +202,12 @@ class ParagraphFormat {
       case 'embeddedcode':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return EmbeddedCodeWidget(
-              embeddedCoede: paragraph.contents![0].data,
-              aspectRatio: paragraph.contents![0].aspectRatio,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: EmbeddedCodeWidget(
+                embeddedCode: paragraph.contents![0].data,
+                aspectRatio: paragraph.contents![0].aspectRatio,
+              ),
             );
           }
           return Container();
@@ -233,17 +274,17 @@ class ParagraphFormat {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
+              padding: const EdgeInsets.fromLTRB(0, 15, 0, 8),
               child: Container(
-                width: 8,
-                height: 8,
+                width: 6,
+                height: 6,
                 decoration: const BoxDecoration(
                   color: storyWidgetColor,
                   shape: BoxShape.circle,
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             Expanded(
                 child: ParseTheTextToHtmlWidget(
               html: dataList[index],
