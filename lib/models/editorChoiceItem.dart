@@ -62,9 +62,6 @@ class EditorChoiceItem {
     if (!isProject) {
       if (link.contains('project')) {
         isProject = true;
-      } else {
-        final linkList = link.split("/");
-        id ??= linkList.last;
       }
     }
 
