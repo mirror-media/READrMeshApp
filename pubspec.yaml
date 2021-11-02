@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   # route manage
-  auto_route: ^3.0.1
+  auto_route: ^3.0.4
   # flutter bloc
   flutter_bloc: ^7.1.0
   # The dart library for making HTTP requests.
