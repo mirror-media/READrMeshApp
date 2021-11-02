@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/story/events.dart';
@@ -10,6 +12,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
@@ -638,10 +641,14 @@ class _StoryWidgetState extends State<StoryWidget> {
           ),
         ],
       ),
-      onTap: () {
-        _currentId = story.id;
-        StoryPage.of(context)!.id = _currentId;
-        _loadStory(_currentId);
+      onTap: () async {
+        if (!story.isProject) {
+          _currentId = story.id;
+          StoryPage.of(context)!.id = _currentId;
+          _loadStory(_currentId);
+        } else {
+          await _openProjectBrowser(story);
+        }
       },
     );
   }
@@ -663,6 +670,31 @@ class _StoryWidgetState extends State<StoryWidget> {
               style: style,
             ),
         ],
+      ),
+    );
+  }
+
+  _openProjectBrowser(StoryListItem story) async {
+    final ChromeSafariBrowser browser = ChromeSafariBrowser();
+    String projectUrl;
+    switch (story.style) {
+      case 'embedded':
+        projectUrl = readrProjectLink + 'post/${story.id}';
+        break;
+      case 'report':
+        projectUrl = readrProjectLink + '/project/${story.slug}';
+        break;
+      case 'project3':
+        projectUrl = readrProjectLink + '/project/3/${story.slug}';
+        break;
+      default:
+        projectUrl = readrProjectLink;
+    }
+    await browser.open(
+      url: Uri.parse(projectUrl),
+      options: ChromeSafariBrowserClassOptions(
+        android: AndroidChromeCustomTabsOptions(),
+        ios: IOSSafariOptions(barCollapsingEnabled: true),
       ),
     );
   }
