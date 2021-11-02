@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,9 +8,11 @@ import 'package:readr/helpers/exceptions.dart';
 class ErrorPage extends StatelessWidget {
   final dynamic error;
   final void Function() onPressed;
+  final bool needPop;
   const ErrorPage({
     required this.error,
     required this.onPressed,
+    this.needPop = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,13 @@ class ErrorPage extends StatelessWidget {
       title = '沒有網際網路連線';
       description = '請確認您已連接網路';
       imagePath = noInternetSvg;
+    }
+    void Function() onPressedFunction = onPressed;
+    if (needPop) {
+      onPressedFunction = () {
+        onPressed;
+        context.popRoute();
+      };
     }
 
     return Scaffold(
@@ -103,7 +113,7 @@ class ErrorPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: onPressed),
+                onPressed: onPressedFunction),
           ),
         ],
       ),

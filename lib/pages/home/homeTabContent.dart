@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeStoryListItem.dart';
@@ -56,63 +58,70 @@ class _HomeTabContentState extends State<HomeTabContent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TabStoryListBloc, TabStoryListState>(
-        builder: (BuildContext context, TabStoryListState state) {
-      if (state.status == TabStoryListStatus.error) {
-        final error = state.error;
-        print('TabStoryListError: ${error.message}');
-        void Function(void) function;
-        if (widget.categorySlug == 'latest') {
-          function = _fetchStoryList();
-        } else {
-          function = _fetchStoryListByCategorySlug();
+    return BlocConsumer<TabStoryListBloc, TabStoryListState>(
+      listener: (BuildContext context, TabStoryListState state) async {
+        if (state.status == TabStoryListStatus.error) {
+          await context.pushRoute(ErrorRoute(
+              error: state.error, needPop: true, onPressed: () => true));
+
+          if (widget.categorySlug == 'latest') {
+            _fetchStoryList();
+          } else {
+            _fetchStoryListByCategorySlug();
+          }
+        }
+      },
+      builder: (BuildContext context, TabStoryListState state) {
+        if (state.status == TabStoryListStatus.error) {
+          final error = state.error;
+          print('TabStoryListError: ${error.message}');
+
+          return Container();
+        }
+        if (state.status == TabStoryListStatus.loaded) {
+          StoryListItemList mixedStoryList = state.mixedStoryList!;
+
+          if (mixedStoryList.isEmpty) {
+            return TabContentNoResultWidget();
+          }
+
+          return _tabStoryList(
+            mixedStoryList: mixedStoryList,
+          );
         }
 
-        return ErrorPage(error: error, onPressed: () => function);
-      }
-      if (state.status == TabStoryListStatus.loaded) {
-        StoryListItemList mixedStoryList = state.mixedStoryList!;
-
-        if (mixedStoryList.isEmpty) {
-          return TabContentNoResultWidget();
+        if (state.status == TabStoryListStatus.loadingMore) {
+          StoryListItemList mixedStoryList = state.mixedStoryList!;
+          return _tabStoryList(
+            mixedStoryList: mixedStoryList,
+            isLoading: true,
+          );
         }
 
-        return _tabStoryList(
-          mixedStoryList: mixedStoryList,
-        );
-      }
+        if (state.status == TabStoryListStatus.loadingMoreFail) {
+          StoryListItemList mixedStoryList = state.mixedStoryList!;
 
-      if (state.status == TabStoryListStatus.loadingMore) {
-        StoryListItemList mixedStoryList = state.mixedStoryList!;
-        return _tabStoryList(
-          mixedStoryList: mixedStoryList,
-          isLoading: true,
-        );
-      }
-
-      if (state.status == TabStoryListStatus.loadingMoreFail) {
-        StoryListItemList mixedStoryList = state.mixedStoryList!;
-
-        if (widget.categorySlug == 'latest') {
-          _fetchNextPage();
-        } else {
-          _fetchNextPageByCategorySlug();
+          if (widget.categorySlug == 'latest') {
+            _fetchNextPage();
+          } else {
+            _fetchNextPageByCategorySlug();
+          }
+          return _tabStoryList(
+            mixedStoryList: mixedStoryList,
+            isLoading: true,
+          );
         }
-        return _tabStoryList(
-          mixedStoryList: mixedStoryList,
-          isLoading: true,
-        );
-      }
 
-      // state is Init, loading, or other
-      return Center(
-        child: Platform.isAndroid
-            ? const CircularProgressIndicator(
-                color: hightLightColor,
-              )
-            : const CupertinoActivityIndicator(),
-      );
-    });
+        // state is Init, loading, or other
+        return Center(
+          child: Platform.isAndroid
+              ? const CircularProgressIndicator(
+                  color: hightLightColor,
+                )
+              : const CupertinoActivityIndicator(),
+        );
+      },
+    );
   }
 
   Widget _tabStoryList({

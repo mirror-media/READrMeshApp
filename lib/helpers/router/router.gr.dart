@@ -23,6 +23,16 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: StoryPage(id: args.id));
     },
+    ErrorRoute.name: (routeData) {
+      final args = routeData.argsAs<ErrorRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: ErrorPage(
+              error: args.error,
+              onPressed: args.onPressed,
+              needPop: args.needPop),
+          fullscreenDialog: true);
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
@@ -40,7 +50,8 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(CategoryRouter.name,
               path: 'category', parent: Initial.name)
         ]),
-        RouteConfig(StoryRoute.name, path: '/story-page')
+        RouteConfig(StoryRoute.name, path: '/story-page'),
+        RouteConfig(ErrorRoute.name, path: '/error-page')
       ];
 }
 
@@ -64,6 +75,31 @@ class StoryRouteArgs {
   const StoryRouteArgs({required this.id});
 
   final String id;
+}
+
+/// generated route for [ErrorPage]
+class ErrorRoute extends PageRouteInfo<ErrorRouteArgs> {
+  ErrorRoute(
+      {required dynamic error,
+      required void Function() onPressed,
+      bool needPop = false})
+      : super(name,
+            path: '/error-page',
+            args: ErrorRouteArgs(
+                error: error, onPressed: onPressed, needPop: needPop));
+
+  static const String name = 'ErrorRoute';
+}
+
+class ErrorRouteArgs {
+  const ErrorRouteArgs(
+      {required this.error, required this.onPressed, this.needPop = false});
+
+  final dynamic error;
+
+  final void Function() onPressed;
+
+  final bool needPop;
 }
 
 /// generated route for [HomeWidget]

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
