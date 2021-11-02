@@ -70,14 +70,11 @@ class _HomeTabContentState extends State<HomeTabContent> {
 
         return ErrorPage(error: error, onPressed: () => function);
       }
-      return TabContentNoResultWidget();
       if (state.status == TabStoryListStatus.loaded) {
         StoryListItemList mixedStoryList = state.mixedStoryList!;
 
         if (mixedStoryList.isEmpty) {
-          return Center(
-            child: TabContentNoResultWidget(),
-          );
+          return TabContentNoResultWidget();
         }
 
         return _tabStoryList(
