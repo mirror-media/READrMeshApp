@@ -142,6 +142,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   static const _fadeInDurationShort = 500;
   int _fadeInDuration = _fadeInDurationShort;
   final ChromeSafariBrowser browser = ChromeSafariBrowser();
+  bool _timerIsStart = true;
 
   @override
   void initState() {
@@ -187,11 +188,11 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
               var visiblePercentage = visibilityInfo.visibleFraction * 100;
               if (visiblePercentage < 15) {
                 timer.pause();
-              } else if (timer.isPaused) {
-                timer.start();
-              } else if (timer.isExpired) {
+                _timerIsStart = false;
+              } else if (!_timerIsStart) {
                 timer.reset();
                 timer.start();
+                _timerIsStart = true;
               }
             },
             child: Container(
@@ -255,24 +256,36 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                       ),
                     ),
                   ),
-                  ExpandablePageView.builder(
-                    itemCount: widget.editorChoiceList.length,
-                    itemBuilder: (context, index) {
-                      return CarouselDisplayWidget(
-                        editorChoiceItem:
-                            widget.editorChoiceList.elementAt(index),
-                        width: width,
-                      );
+                  GestureDetector(
+                    onHorizontalDragStart: (DragStartDetails e) {
+                      timer.pause();
                     },
-                    controller: _carouselController,
-                    onPageChanged: (index) {
-                      if (index == 0) {
-                        _fadeInDuration = _fadeInDurationShort;
-                      }
-                      setState(() {
-                        _current = index;
-                      });
+                    onHorizontalDragUpdate: (DragUpdateDetails e) {
+                      timer.pause();
                     },
+                    onHorizontalDragEnd: (DragEndDetails e) {
+                      timer.reset();
+                      timer.start();
+                    },
+                    child: ExpandablePageView.builder(
+                      itemCount: widget.editorChoiceList.length,
+                      itemBuilder: (context, index) {
+                        return CarouselDisplayWidget(
+                          editorChoiceItem:
+                              widget.editorChoiceList.elementAt(index),
+                          width: width,
+                        );
+                      },
+                      controller: _carouselController,
+                      onPageChanged: (index) {
+                        if (index == 0) {
+                          _fadeInDuration = _fadeInDurationShort;
+                        }
+                        setState(() {
+                          _current = index;
+                        });
+                      },
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
