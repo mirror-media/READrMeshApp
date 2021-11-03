@@ -4,6 +4,7 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:readr/blocs/editorChoice/bloc.dart';
@@ -79,6 +80,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   static const _fadeInDurationLong = 4000;
   static const _fadeInDurationShort = 500;
   int _fadeInDuration = _fadeInDurationShort;
+  final ChromeSafariBrowser browser = ChromeSafariBrowser();
 
   @override
   void initState() {
@@ -138,13 +140,52 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                   SizedBox(
                     height: 300,
                     child: GestureDetector(
-                      onTap: () {
-                        if (widget.editorChoiceList.elementAt(_current).id !=
-                            null) {
-                          AutoRouter.of(context).push(StoryRoute(
-                              id: widget.editorChoiceList
-                                  .elementAt(_current)
-                                  .id!));
+                      onTap: () async {
+                        EditorChoiceItem editorChoiceItem =
+                            widget.editorChoiceList.elementAt(_current);
+                        if (editorChoiceItem.isProject) {
+                          String projectUrl;
+                          if (editorChoiceItem.link != null) {
+                            projectUrl = editorChoiceItem.link!;
+                          } else {
+                            switch (editorChoiceItem.style) {
+                              case 'embedded':
+                                projectUrl = readrProjectLink +
+                                    'post/${editorChoiceItem.id}';
+                                break;
+                              case 'report':
+                                projectUrl = readrProjectLink +
+                                    '/project/${editorChoiceItem.slug}';
+                                break;
+                              case 'project3':
+                                projectUrl = readrProjectLink +
+                                    '/project/3/${editorChoiceItem.slug}';
+                                break;
+                              default:
+                                projectUrl = readrProjectLink;
+                            }
+                          }
+                          await browser.open(
+                            url: Uri.parse(projectUrl),
+                            options: ChromeSafariBrowserClassOptions(
+                              android: AndroidChromeCustomTabsOptions(),
+                              ios: IOSSafariOptions(barCollapsingEnabled: true),
+                            ),
+                          );
+                        } else {
+                          if (editorChoiceItem.id != null) {
+                            AutoRouter.of(context)
+                                .push(StoryRoute(id: editorChoiceItem.id!));
+                          } else if (editorChoiceItem.link != null) {
+                            await browser.open(
+                              url: Uri.parse(editorChoiceItem.link!),
+                              options: ChromeSafariBrowserClassOptions(
+                                android: AndroidChromeCustomTabsOptions(),
+                                ios: IOSSafariOptions(
+                                    barCollapsingEnabled: true),
+                              ),
+                            );
+                          }
                         }
                       },
                       child: Stack(
