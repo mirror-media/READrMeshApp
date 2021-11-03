@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +11,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/home/homeSkeletonScreen.dart';
 import 'package:readr/pages/home/homeTabContent.dart';
 import 'package:readr/pages/shared/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/services/editorChoiceService.dart';
@@ -145,16 +144,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
           ),
         );
       }
-      return Container(
-        color: Colors.white,
-        child: Center(
-          child: Platform.isAndroid
-              ? const CircularProgressIndicator(
-                  color: hightLightColor,
-                )
-              : const CupertinoActivityIndicator(),
-        ),
-      );
+      return HomeSkeletonScreen();
     });
   }
 }
