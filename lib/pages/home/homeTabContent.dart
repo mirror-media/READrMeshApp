@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +6,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/pages/home/homeStoryListItem.dart';
-import 'package:readr/pages/home/homeStoryPjojectItem.dart';
+import 'package:readr/pages/home/homeStoryProjectItem.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 import 'package:shimmer/shimmer.dart';
 
