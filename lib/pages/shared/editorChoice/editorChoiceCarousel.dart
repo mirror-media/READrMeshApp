@@ -14,6 +14,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/shared/editorChoice/carouselDisplayWidget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class BuildEditorChoiceCarousel extends StatefulWidget {
@@ -55,7 +56,66 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
       }
 
       // state is Init, loading, or other
-      return Container();
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                  highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                  child: Container(
+                    height: 300,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 62,
+                    left: 19,
+                  ),
+                  child: SvgPicture.asset(
+                    logoSimplifySvg,
+                  ),
+                ),
+              ],
+            ),
+            Shimmer.fromColors(
+              baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+              highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(2.0),
+                      child: Container(
+                        height: 32,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      width: double.infinity,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(2.0),
+                      child: Container(
+                        height: 32,
+                        width: (MediaQuery.of(context).size.width - 40) * 0.4,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     });
   }
 }
