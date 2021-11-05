@@ -9,10 +9,12 @@ class ErrorPage extends StatelessWidget {
   final dynamic error;
   final void Function() onPressed;
   final bool needPop;
+  final bool hideAppbar;
   const ErrorPage({
     required this.error,
     required this.onPressed,
     this.needPop = false,
+    this.hideAppbar = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,15 @@ class ErrorPage extends StatelessWidget {
       };
     }
 
+    if (hideAppbar) {
+      return _errorWidget(
+        title: title,
+        description: description,
+        imagePath: imagePath,
+        onPressedFunction: onPressedFunction,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 4,
@@ -52,8 +63,24 @@ class ErrorPage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: const Color.fromRGBO(246, 246, 251, 1),
-      body: Column(
+      body: _errorWidget(
+        title: title,
+        description: description,
+        imagePath: imagePath,
+        onPressedFunction: onPressedFunction,
+      ),
+    );
+  }
+
+  Widget _errorWidget({
+    required String title,
+    required String description,
+    required String imagePath,
+    required void Function() onPressedFunction,
+  }) {
+    return Container(
+      color: const Color.fromRGBO(246, 246, 251, 1),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(
@@ -91,29 +118,30 @@ class ErrorPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 111),
             child: OutlinedButton(
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  child: Text(
-                    '重新嘗試',
-                    style: TextStyle(
-                      color: Color.fromRGBO(4, 41, 94, 1),
-                    ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                child: Text(
+                  '重新嘗試',
+                  style: TextStyle(
+                    color: Color.fromRGBO(4, 41, 94, 1),
                   ),
                 ),
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(
-                    const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  side: MaterialStateProperty.all(
-                    const BorderSide(
-                      color: Color.fromRGBO(4, 41, 94, 1),
-                    ),
+              ),
+              style: ButtonStyle(
+                textStyle: MaterialStateProperty.all(
+                  const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                onPressed: onPressedFunction),
+                side: MaterialStateProperty.all(
+                  const BorderSide(
+                    color: Color.fromRGBO(4, 41, 94, 1),
+                  ),
+                ),
+              ),
+              onPressed: onPressedFunction,
+            ),
           ),
         ],
       ),
