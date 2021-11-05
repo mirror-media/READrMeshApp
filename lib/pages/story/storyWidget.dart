@@ -63,7 +63,11 @@ class _StoryWidgetState extends State<StoryWidget> {
       if (state is StoryError) {
         final error = state.error;
         print('NewsCategoriesError: ${error.message}');
-        return ErrorPage(error: error, onPressed: () => _loadStory(_currentId));
+        return ErrorPage(
+          error: error,
+          onPressed: () => _loadStory(_currentId),
+          hideAppbar: true,
+        );
       }
       if (state is StoryLoaded) {
         Story? story = state.story;
