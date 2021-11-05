@@ -86,7 +86,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         builder: (BuildContext context, CategoriesState state) {
       if (state.status == CategoriesStatus.error) {
         final error = state.error;
-        print('TabStoryListError: ${error.message}');
+        print('CategoriesError: ${error.message}');
 
         return ErrorPage(error: error, onPressed: () => _fetchCategoryList());
       }
