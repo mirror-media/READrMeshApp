@@ -29,6 +29,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   TabController? _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
   final List<Widget> _tabWidgets = List.empty(growable: true);
+  // ignore: unused_field
   late FirebaseMessagingHelper _firebaseMessangingHelper;
 
   @override
