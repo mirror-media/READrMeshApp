@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/storyListItemList.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeStoryListItem.dart';
 import 'package:readr/pages/home/homeStoryProjectItem.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
@@ -24,7 +23,7 @@ class HomeTabContent extends StatefulWidget {
 }
 
 class _HomeTabContentState extends State<HomeTabContent> {
-  bool loadMoreFailed = false;
+  bool loadingMore = false;
   late StoryListItemList mixedStoryListTemp;
   @override
   void initState() {
@@ -36,7 +35,7 @@ class _HomeTabContentState extends State<HomeTabContent> {
     super.initState();
   }
 
-  _fetchStoryList() async {
+  _fetchStoryList() {
     context.read<TabStoryListBloc>().add(FetchStoryList());
   }
 
@@ -44,7 +43,7 @@ class _HomeTabContentState extends State<HomeTabContent> {
     context.read<TabStoryListBloc>().add(FetchNextPage());
   }
 
-  _fetchStoryListByCategorySlug() async {
+  _fetchStoryListByCategorySlug() {
     context
         .read<TabStoryListBloc>()
         .add(FetchStoryListByCategorySlug(widget.categorySlug));
@@ -58,44 +57,12 @@ class _HomeTabContentState extends State<HomeTabContent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TabStoryListBloc, TabStoryListState>(
-      listener: (BuildContext context, TabStoryListState state) async {
-        if (state.status == TabStoryListStatus.error) {
-          await context.pushRoute(ErrorRoute(
-              error: state.error, needPop: true, onPressed: () => true));
-
-          if (widget.categorySlug == 'latest') {
-            _fetchStoryList();
-          } else {
-            _fetchStoryListByCategorySlug();
-          }
-        }
-      },
-      listenWhen: (previous, current) {
-        if (previous.status == TabStoryListStatus.loadingMore) {
-          if (current.status == TabStoryListStatus.error) {
-            if (!loadMoreFailed) {
-              Fluttertoast.showToast(
-                msg: "加載失敗",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
-            }
-            loadMoreFailed = true;
-          }
-          return false;
-        }
-        return true;
-      },
+    return BlocBuilder<TabStoryListBloc, TabStoryListState>(
       builder: (BuildContext context, TabStoryListState state) {
         if (state.status == TabStoryListStatus.error) {
           final error = state.error;
           print('TabStoryListError: ${error.message}');
-          if (loadMoreFailed) {
+          if (loadingMore) {
             if (widget.categorySlug == 'latest') {
               _fetchNextPage();
             } else {
@@ -107,11 +74,23 @@ class _HomeTabContentState extends State<HomeTabContent> {
             );
           }
 
-          return Container();
+          if (widget.categorySlug == 'latest') {
+            return ErrorPage(
+              error: error,
+              onPressed: () => _fetchNextPage(),
+              hideAppbar: true,
+            );
+          } else {
+            return ErrorPage(
+              error: error,
+              onPressed: () => _fetchNextPageByCategorySlug(),
+              hideAppbar: true,
+            );
+          }
         }
         if (state.status == TabStoryListStatus.loaded) {
           StoryListItemList mixedStoryList = state.mixedStoryList!;
-          loadMoreFailed = false;
+          loadingMore = false;
           mixedStoryListTemp = state.mixedStoryList!;
           if (mixedStoryList.isEmpty) {
             return TabContentNoResultWidget();
@@ -124,7 +103,7 @@ class _HomeTabContentState extends State<HomeTabContent> {
 
         if (state.status == TabStoryListStatus.loadingMore) {
           StoryListItemList mixedStoryList = state.mixedStoryList!;
-          loadMoreFailed = false;
+          loadingMore = true;
           return _tabStoryList(
             mixedStoryList: mixedStoryList,
             isLoading: true,
