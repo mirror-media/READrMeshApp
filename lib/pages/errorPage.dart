@@ -80,8 +80,8 @@ class ErrorPage extends StatelessWidget {
   }) {
     return Container(
       color: const Color.fromRGBO(246, 246, 251, 1),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           const SizedBox(
             height: 120,
