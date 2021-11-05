@@ -49,7 +49,7 @@ class _StoryPageState extends State<StoryPage> {
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      elevation: 0,
+      shadowColor: Colors.white70,
       leading: IconButton(
         icon: Icon(
           Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
