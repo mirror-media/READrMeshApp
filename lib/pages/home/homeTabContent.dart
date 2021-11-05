@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/tabStoryList/bloc.dart';
 import 'package:readr/blocs/tabStoryList/events.dart';
 import 'package:readr/blocs/tabStoryList/states.dart';
