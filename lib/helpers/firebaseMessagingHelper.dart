@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/router/router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -42,6 +43,8 @@ class FirebaseMessagingHelper {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.data.containsKey('story_id')) {
         context.router.push(StoryRoute(id: message.data['story_id']));
+      } else if (message.data.containsKey('project_url')) {
+        OpenProjectHelper().openByUrl(message.data['project_url']);
       }
     });
   }

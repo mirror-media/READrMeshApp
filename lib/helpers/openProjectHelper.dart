@@ -57,4 +57,14 @@ class OpenProjectHelper {
       ),
     );
   }
+
+  openByUrl(String url) async {
+    await browser.open(
+      url: Uri.parse(url),
+      options: ChromeSafariBrowserClassOptions(
+        android: AndroidChromeCustomTabsOptions(),
+        ios: IOSSafariOptions(barCollapsingEnabled: true),
+      ),
+    );
+  }
 }
