@@ -74,7 +74,7 @@ dependencies:
   # version update
   upgrader: ^3.5.1
   # firebase remote config
-  firebase_remote_config: ^0.11.0
+  firebase_remote_config: ^0.11.0+2
   # equatable
   equatable: ^2.0.3
   # in-app webview
