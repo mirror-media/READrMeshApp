@@ -77,58 +77,34 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
         );
       }
     } on SocketException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: NoInternetException('No Internet'),
       );
     } on HttpException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: NoServiceFoundException('No Service Found'),
       );
     } on FormatException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: InvalidFormatException('Invalid Response format'),
       );
     } on FetchDataException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: NoInternetException('Error During Communication'),
       );
     } on BadRequestException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: Error400Exception('Invalid Request'),
       );
     } on UnauthorisedException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: Error400Exception('Unauthorised'),
       );
     } on InvalidInputException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: Error400Exception('Invalid Input'),
       );
     } on InternalServerErrorException {
-      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
-        tabStoryListRepos.reduceSkip();
-      }
       yield TabStoryListState.error(
         error: Error500Exception('Internal Server Error'),
       );
