@@ -62,7 +62,7 @@ dependencies:
   # firebase
   firebase_core: ^1.7.0
   # firebase cloud messaging
-  firebase_messaging: ^10.0.8
+  firebase_messaging: ^11.0.0
   # svg file loader
   flutter_svg: ^0.23.0+1
   # shared_preferences
