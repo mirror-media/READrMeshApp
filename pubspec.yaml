@@ -60,7 +60,7 @@ dependencies:
   # Toast Library for Flutter
   fluttertoast: ^8.0.8
   # firebase
-  firebase_core: ^1.7.0
+  firebase_core: ^1.9.0
   # firebase cloud messaging
   firebase_messaging: ^11.0.0
   # svg file loader
