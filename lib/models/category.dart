@@ -14,10 +14,16 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
+    DateTime? latestPostTime;
+    if (json['relatedPost'] != null) {
+      latestPostTime =
+          DateTime.parse(json['relatedPost'][0]['publishTime']).toLocal();
+    }
     return Category(
       id: json[BaseModel.idKey],
       name: json[BaseModel.nameKey],
       slug: json[BaseModel.slugKey],
+      latestPostTime: latestPostTime,
     );
   }
 
@@ -40,7 +46,12 @@ class Category {
   }
 
   @override
-  int get hashCode => Category(id: id, name: name, slug: slug).hashCode;
+  int get hashCode => Category(
+        id: id,
+        name: name,
+        slug: slug,
+        latestPostTime: latestPostTime,
+      ).hashCode;
 
   @override
   bool operator ==(covariant Category other) {
