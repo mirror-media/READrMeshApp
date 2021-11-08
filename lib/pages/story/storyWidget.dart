@@ -47,7 +47,7 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   bool _isNullOrEmpty(String? input) {
-    return input == null || input == '';
+    return input == null || input == '' || input == ' ';
   }
 
   _loadStory(String id) async {
@@ -403,6 +403,7 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget _buildSummary(ParagraphList articles) {
+    bool noData = false;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
       articleWidgets.add(const Padding(
@@ -435,12 +436,20 @@ class _StoryWidgetState extends State<StoryWidget> {
                   child:
                       paragraphFormat.parseTheParagraph(paragraph, context, 15),
                 );
+              } else {
+                noData = true;
               }
 
               return Container();
             },
           ),
         );
+      } else {
+        return Container();
+      }
+
+      if (noData) {
+        return Container();
       }
 
       return Container(
