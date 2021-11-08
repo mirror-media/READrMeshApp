@@ -11,6 +11,7 @@ class Story {
   final ParagraphList? summaryApiData;
   final int? readingTime;
   final ParagraphList? contentApiData;
+  final ParagraphList? citationApiData;
   final String? publishTime;
   final String? updatedAt;
 
@@ -30,6 +31,7 @@ class Story {
 
   final TagList? tags;
   final StoryListItemList? relatedStories;
+  StoryListItemList? recommendedStories;
 
   Story({
     this.style,
@@ -52,6 +54,8 @@ class Story {
     this.otherByline,
     this.tags,
     this.relatedStories,
+    this.citationApiData,
+    this.recommendedStories,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
@@ -65,6 +69,13 @@ class Story {
     if (BaseModel.hasKey(json, 'contentApiData') &&
         json["contentApiData"] != 'NaN') {
       contentApiData = ParagraphList.parseResponseBody(json["contentApiData"]);
+    }
+
+    ParagraphList citationApiData = ParagraphList();
+    if (BaseModel.hasKey(json, 'citationApiData') &&
+        json["citationApiData"] != 'NaN') {
+      citationApiData =
+          ParagraphList.parseResponseBody(json["citationApiData"]);
     }
 
     String? photoUrl;
@@ -102,6 +113,7 @@ class Story {
       otherByline: json['otherByline'],
       tags: TagList.fromJson(json['tags']),
       relatedStories: StoryListItemList.fromJson(json['relatedPosts']),
+      citationApiData: citationApiData,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/categoryList.dart';
+import 'package:readr/models/tagList.dart';
 
 class StoryListItem {
   String id;
@@ -11,6 +12,7 @@ class StoryListItem {
   DateTime publishTime;
   bool isProject;
   int? readingTime;
+  TagList? tags;
   StoryListItem({
     required this.id,
     required this.name,
@@ -21,6 +23,7 @@ class StoryListItem {
     this.categoryList,
     this.isProject = false,
     this.readingTime,
+    this.tags,
   });
 
   factory StoryListItem.fromJson(Map<String, dynamic> json) {
@@ -37,7 +40,7 @@ class StoryListItem {
     }
 
     CategoryList? allPostsCategory;
-    if (json['categories'] != null) {
+    if (json['categories'] != null && json['categories'].length > 0) {
       allPostsCategory = CategoryList.fromJson(json['categories']);
     }
 
@@ -56,6 +59,11 @@ class StoryListItem {
       publishTime = DateTime.parse(json['publishTime']).toLocal();
     }
 
+    TagList? tags;
+    if (json['tags'] != null && json['tags'].length > 0) {
+      tags = TagList.fromJson(json['tags']);
+    }
+
     return StoryListItem(
       id: json[BaseModel.idKey],
       name: json[BaseModel.nameKey],
@@ -66,6 +74,7 @@ class StoryListItem {
       isProject: isProject,
       readingTime: readingTime,
       publishTime: publishTime,
+      tags: tags,
     );
   }
 

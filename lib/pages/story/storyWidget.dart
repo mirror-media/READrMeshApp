@@ -103,14 +103,17 @@ class _StoryWidgetState extends State<StoryWidget> {
         _buildSummary(story.summaryApiData!),
         _buildContent(story.contentApiData!),
         const SizedBox(height: 48),
+        _buildCitation(story.citationApiData!),
+        const SizedBox(height: 48),
         if (story.tags != null && story.tags!.isNotEmpty) ...[
           _buildTags(story.tags),
           const SizedBox(height: 48),
         ],
         if (story.relatedStories!.isNotEmpty) ...[
           _buildRelatedWidget(width, story.relatedStories!),
-          const SizedBox(height: 16),
+          const SizedBox(height: 48),
         ],
+        _buildRecommendWidget(width, story.recommendedStories!),
       ],
     );
   }
@@ -399,7 +402,6 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
   }
 
-  // only display unstyled paragraph type in brief
   Widget _buildSummary(ParagraphList articles) {
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
@@ -500,6 +502,80 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
   }
 
+  Widget _buildCitation(ParagraphList articles) {
+    if (articles.isNotEmpty) {
+      List<Widget> articleWidgets = List.empty(growable: true);
+      articleWidgets.add(const Padding(
+        padding: EdgeInsets.only(left: 20.0),
+        child: Text(
+          '引用數據',
+          style: TextStyle(color: storyWidgetColor, fontSize: 13),
+        ),
+      ));
+      articleWidgets.add(
+        const SizedBox(height: 4),
+      );
+
+      ParagraphFormat paragraphFormat = ParagraphFormat();
+
+      if (articles[0].contents!.isNotEmpty &&
+          !_isNullOrEmpty(articles[0].contents![0].data)) {
+        articleWidgets.add(
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: articles.length,
+            itemBuilder: (context, index) {
+              Paragraph paragraph = articles[index];
+              if (paragraph.contents != null &&
+                  paragraph.contents!.isNotEmpty &&
+                  !_isNullOrEmpty(paragraph.contents![0].data)) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child:
+                      paragraphFormat.parseTheParagraph(paragraph, context, 15),
+                );
+              }
+
+              return Container();
+            },
+          ),
+        );
+      }
+
+      return Container(
+        padding: const EdgeInsets.fromLTRB(4.0, 20.0, 4.0, 20.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 24.0),
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: storySummaryFrameColor,
+              width: 12,
+            ),
+            left: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            right: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            bottom: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: articleWidgets,
+        ),
+      );
+    }
+
+    return Container();
+  }
+
   Widget _buildTags(TagList? tags) {
     if (tags == null) {
       return Container();
@@ -579,6 +655,111 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget _buildRelatedItem(double width, StoryListItem story) {
+    return InkWell(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          story.photoUrl == null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: SizedBox(
+                    width: 90,
+                    height: 90,
+                    child: SvgPicture.asset(defaultImageSvg, fit: BoxFit.cover),
+                  ),
+                )
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: CachedNetworkImage(
+                    width: 90,
+                    height: 90,
+                    imageUrl: story.photoUrl!,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey,
+                      child: const Icon(Icons.error),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 69,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        height: 1.5,
+                      ),
+                      text: story.name,
+                    ),
+                  ),
+                ),
+                _displayTimeAndReadingTime(story),
+              ],
+            ),
+          ),
+        ],
+      ),
+      onTap: () async {
+        if (!story.isProject) {
+          _currentId = story.id;
+          StoryPage.of(context)!.id = _currentId;
+          _loadStory(_currentId);
+        } else {
+          await _openProjectBrowser(story);
+        }
+      },
+    );
+  }
+
+  Widget _buildRecommendWidget(double width, StoryListItemList relatedStories) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      child: ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          separatorBuilder: (BuildContext context, int index) =>
+              const SizedBox(height: 16.0),
+          itemCount: relatedStories.length,
+          //padding: const EdgeInsets.only(bottom: 16),
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '為你推薦',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Colors.black12,
+                    ),
+                    const SizedBox(height: 24),
+                    _buildRecommendItem(width, relatedStories[index]),
+                  ]);
+            }
+            return _buildRecommendItem(width, relatedStories[index]);
+          }),
+    );
+  }
+
+  Widget _buildRecommendItem(double width, StoryListItem story) {
     return InkWell(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
