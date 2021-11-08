@@ -24,10 +24,12 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
     try {
       yield const TabStoryListState.loading();
       if (event is FetchStoryList) {
-        StoryListItemList storyListItemList =
-            await tabStoryListRepos.fetchStoryList();
-        StoryListItemList projectList =
-            await tabStoryListRepos.fetchProjectList();
+        var storyListFuture = tabStoryListRepos.fetchStoryList();
+        var projectListFuture = tabStoryListRepos.fetchProjectList();
+        List<StoryListItemList> futureList =
+            await Future.wait([storyListFuture, projectListFuture]);
+        StoryListItemList storyListItemList = futureList[0];
+        StoryListItemList projectList = futureList[1];
         mixedStoryList = _mixTwoList(
             storyListItemList: storyListItemList, projectList: projectList);
         yield TabStoryListState.loaded(
