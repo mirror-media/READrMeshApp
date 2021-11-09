@@ -558,7 +558,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
               '推薦閱讀',
@@ -570,6 +570,7 @@ class _StoryWidgetState extends State<StoryWidget> {
             InkWell(
               child: Text(
                 relatedStories[index].name,
+                softWrap: true,
                 style: const TextStyle(
                   color: Colors.black87,
                   decoration: TextDecoration.underline,
