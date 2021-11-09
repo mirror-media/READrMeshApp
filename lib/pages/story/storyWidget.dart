@@ -114,6 +114,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           const SizedBox(height: 48),
         ],
         _buildRecommendWidget(width, story.recommendedStories!),
+        const SizedBox(height: 48),
       ],
     );
   }
