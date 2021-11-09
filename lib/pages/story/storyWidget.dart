@@ -101,7 +101,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         _buildAuthors(story),
         const SizedBox(height: 24),
         _buildSummary(story.summaryApiData!),
-        _buildContent(story.contentApiData!),
+        _buildContent(story),
         const SizedBox(height: 48),
         _buildCitation(story.citationApiData!),
         const SizedBox(height: 48),
@@ -485,8 +485,10 @@ class _StoryWidgetState extends State<StoryWidget> {
     return Container();
   }
 
-  Widget _buildContent(ParagraphList storyContents) {
+  Widget _buildContent(Story story) {
+    ParagraphList storyContents = story.contentApiData!;
     ParagraphFormat paragraphFormat = ParagraphFormat();
+    int addRecommendIndex = 5;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: ListView.builder(
@@ -498,6 +500,20 @@ class _StoryWidgetState extends State<StoryWidget> {
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
+            if (index == addRecommendIndex) {
+              addRecommendIndex = addRecommendIndex + 5;
+              return Column(
+                children: [
+                  _buildInlineRecommended(
+                      story.relatedStories, addRecommendIndex),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: paragraphFormat.parseTheParagraph(
+                        paragraph, context, _textSize),
+                  )
+                ],
+              );
+            }
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: paragraphFormat.parseTheParagraph(
@@ -509,6 +525,75 @@ class _StoryWidgetState extends State<StoryWidget> {
         },
       ),
     );
+  }
+
+  Widget _buildInlineRecommended(
+      StoryListItemList? relatedStories, int addIndex) {
+    int index = 0;
+    if (addIndex != 5) {
+      index = addIndex ~/ 5;
+    }
+    if (relatedStories!.isNotEmpty && index < relatedStories.length) {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 24.0, 16.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 32.0),
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            left: BorderSide(
+              color: storySummaryFrameColor,
+              width: 8,
+            ),
+            right: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+            bottom: BorderSide(
+              color: storySummaryFrameColor,
+              width: 1,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '推薦閱讀',
+              style: TextStyle(color: storyWidgetColor, fontSize: 13),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            InkWell(
+              child: Text(
+                relatedStories[index].name,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  decoration: TextDecoration.underline,
+                  decorationColor: hightLightColor,
+                  decorationThickness: 2,
+                ),
+              ),
+              onTap: () async {
+                if (!relatedStories[index].isProject) {
+                  _currentId = relatedStories[index].id;
+                  StoryPage.of(context)!.id = _currentId;
+                  _loadStory(_currentId);
+                } else {
+                  await OpenProjectHelper()
+                      .phaseByStoryListItem(relatedStories[index]);
+                }
+              },
+            )
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildCitation(ParagraphList articles) {
