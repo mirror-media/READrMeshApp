@@ -18,7 +18,7 @@ class ConfigBloc extends Bloc<ConfigEvents, ConfigState> {
       bool isSuccess = await configRepos.loadTheConfig(event.context);
       RemoteConfig remoteConfig = RemoteConfig.instance;
       remoteConfig
-          .setDefaults(<String, dynamic>{'min_version_number': '1.0.0'});
+          .setDefaults(<String, dynamic>{'min_version_number': '0.0.1'});
       await remoteConfig.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: const Duration(seconds: 10),
         minimumFetchInterval: const Duration(seconds: 1),
