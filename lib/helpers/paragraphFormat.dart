@@ -16,11 +16,17 @@ import 'package:readr/pages/story/widgets/quoteByWidget.dart';
 import 'package:readr/pages/story/widgets/youtubeWidget.dart';
 
 class ParagraphFormat {
+  bool _isCitation = false;
   Widget parseTheParagraph(
-      Paragraph? paragraph, BuildContext context, double textSize) {
+    Paragraph? paragraph,
+    BuildContext context,
+    double textSize, {
+    bool isCitation = false,
+  }) {
     if (paragraph == null) {
       return Container();
     }
+    _isCitation = isCitation;
 
     switch (paragraph.type) {
       case 'header-one':
@@ -53,6 +59,19 @@ class ParagraphFormat {
       case 'unstyled':
         {
           if (paragraph.contents!.isNotEmpty) {
+            if (_isCitation) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Wrap(
+                  children: [
+                    ParseTheTextToHtmlWidget(
+                      html: paragraph.contents![0].data,
+                      fontSize: textSize,
+                    )
+                  ],
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ParseTheTextToHtmlWidget(
@@ -118,6 +137,16 @@ class ParagraphFormat {
       case 'blockquote':
         {
           if (paragraph.contents!.isNotEmpty) {
+            if (_isCitation) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ParseTheTextToHtmlWidget(
+                  html: paragraph.contents![0].data,
+                  fontSize: 13,
+                  color: Colors.black54,
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: BlockQuoteWidget(
@@ -270,11 +299,32 @@ class ParagraphFormat {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: dataList.length,
       itemBuilder: (context, index) {
+        if (_isCitation) {
+          if (dataList.length > 1 && index != dataList.length - 1) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ParseTheTextToHtmlWidget(
+                  html: dataList[index],
+                  fontSize: textSize,
+                ),
+                const Divider(
+                  color: Color.fromRGBO(0, 9, 40, 0.1),
+                  thickness: 1,
+                ),
+              ],
+            );
+          }
+          return ParseTheTextToHtmlWidget(
+            html: dataList[index],
+            fontSize: textSize,
+          );
+        }
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 8),
+              padding: EdgeInsets.fromLTRB(0, textSize - 3, 0, 8),
               child: Container(
                 width: 6,
                 height: 6,

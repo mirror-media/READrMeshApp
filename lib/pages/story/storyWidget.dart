@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/story/events.dart';
@@ -9,6 +8,7 @@ import 'package:readr/blocs/story/bloc.dart';
 import 'package:readr/blocs/story/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
+import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
@@ -536,13 +536,54 @@ class _StoryWidgetState extends State<StoryWidget> {
             itemCount: articles.length,
             itemBuilder: (context, index) {
               Paragraph paragraph = articles[index];
+              Paragraph previousParagraph;
+              if (index != 0) {
+                previousParagraph = articles[index - 1];
+              } else {
+                previousParagraph = articles[0];
+              }
               if (paragraph.contents != null &&
                   paragraph.contents!.isNotEmpty &&
                   !_isNullOrEmpty(paragraph.contents![0].data)) {
+                EdgeInsetsGeometry padding = const EdgeInsets.only(bottom: 0.0);
+                if (paragraph.type == 'unordered-list-item') {
+                  if (previousParagraph.type == 'blockquote' ||
+                      previousParagraph.type == 'unordered-list-item') {
+                    padding = const EdgeInsets.only(bottom: 0.0);
+                    return Column(
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                          child: Divider(
+                            color: Color.fromRGBO(0, 9, 40, 0.1),
+                            thickness: 1,
+                          ),
+                        ),
+                        Padding(
+                          padding: padding,
+                          child: paragraphFormat.parseTheParagraph(
+                            paragraph,
+                            context,
+                            15,
+                            isCitation: true,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  padding = const EdgeInsets.only(top: 24.0);
+                } else if (paragraph.type == 'blockquote') {
+                  padding = const EdgeInsets.only(top: 0.0);
+                }
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child:
-                      paragraphFormat.parseTheParagraph(paragraph, context, 15),
+                  padding: padding,
+                  child: paragraphFormat.parseTheParagraph(
+                    paragraph,
+                    context,
+                    15,
+                    isCitation: true,
+                  ),
                 );
               }
 
@@ -727,7 +768,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           StoryPage.of(context)!.id = _currentId;
           _loadStory(_currentId);
         } else {
-          await _openProjectBrowser(story);
+          await OpenProjectHelper().phaseByStoryListItem(story);
         }
       },
     );
@@ -832,7 +873,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           StoryPage.of(context)!.id = _currentId;
           _loadStory(_currentId);
         } else {
-          await _openProjectBrowser(story);
+          await OpenProjectHelper().phaseByStoryListItem(story);
         }
       },
     );
@@ -855,31 +896,6 @@ class _StoryWidgetState extends State<StoryWidget> {
               style: style,
             ),
         ],
-      ),
-    );
-  }
-
-  _openProjectBrowser(StoryListItem story) async {
-    final ChromeSafariBrowser browser = ChromeSafariBrowser();
-    String projectUrl;
-    switch (story.style) {
-      case 'embedded':
-        projectUrl = readrProjectLink + 'post/${story.id}';
-        break;
-      case 'report':
-        projectUrl = readrProjectLink + '/project/${story.slug}';
-        break;
-      case 'project3':
-        projectUrl = readrProjectLink + '/project/3/${story.slug}';
-        break;
-      default:
-        projectUrl = readrProjectLink;
-    }
-    await browser.open(
-      url: Uri.parse(projectUrl),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(),
-        ios: IOSSafariOptions(barCollapsingEnabled: true),
       ),
     );
   }
