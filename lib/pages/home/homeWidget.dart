@@ -1,4 +1,3 @@
-import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,8 +100,14 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         _initializeTabController();
 
         return Scaffold(
-          body: ColorfulSafeArea(
-            color: Colors.black,
+          appBar: AppBar(
+            primary: false,
+            elevation: 0,
+            toolbarHeight: 0,
+            systemOverlayStyle: SystemUiOverlayStyle.light,
+            backgroundColor: Colors.black,
+          ),
+          body: SafeArea(
             bottom: false,
             child: NestedScrollView(
               headerSliverBuilder:

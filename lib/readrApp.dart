@@ -14,9 +14,9 @@ class ReadrApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xffEBF02C),
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: const AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-        ),
+        // appBarTheme: const AppBarTheme(
+        //   systemOverlayStyle: SystemUiOverlayStyle.light,
+        // ),
       ),
     );
   }
