@@ -265,7 +265,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     var horizontalLine = Padding(
       padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
       child: Container(
-        color: const Color(0xff000928),
+        color: const Color.fromRGBO(0, 9, 40, 0.66),
         width: 20,
         height: 1,
       ),
@@ -357,7 +357,16 @@ class _StoryWidgetState extends State<StoryWidget> {
             style: TextStyle(fontSize: 13, color: labelColor),
           ),
           horizontalLine,
-          Text(story.otherByline!)
+          Expanded(
+            child: Text(
+              story.otherByline!,
+              softWrap: true,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black87,
+              ),
+            ),
+          ),
         ],
       ));
     }

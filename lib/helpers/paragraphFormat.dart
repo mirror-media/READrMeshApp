@@ -33,10 +33,11 @@ class ParagraphFormat {
         {
           if (paragraph.contents!.isNotEmpty) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(
+                  top: 32, bottom: 16, left: 20, right: 20),
               child: ParseTheTextToHtmlWidget(
                 html: '<h1>' + paragraph.contents![0].data + '</h1>',
-                fontSize: textSize,
+                fontSize: 22,
               ),
             );
           }
@@ -46,7 +47,8 @@ class ParagraphFormat {
         {
           if (paragraph.contents!.isNotEmpty) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(
+                  top: 32, bottom: 16, left: 20, right: 20),
               child: ParseTheTextToHtmlWidget(
                 html: '<h2>' + paragraph.contents![0].data + '</h2>',
                 fontSize: textSize,
