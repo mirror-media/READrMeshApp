@@ -13,10 +13,10 @@ class Content {
 
   factory Content.fromJson(dynamic json) {
     if (json is Map<String, dynamic>) {
-      if (BaseModel.checkJsonKeys(json, ['mobile'])) {
+      if (BaseModel.checkJsonKeys(json, ['tablet'])) {
         return Content(
-          data: json['mobile']['url'],
-          aspectRatio: json['mobile']['width'] / json['mobile']['height'],
+          data: json['tablet']['url'],
+          aspectRatio: json['tablet']['width'] / json['tablet']['height'],
           description: json['title'],
         );
       } else if (BaseModel.checkJsonKeys(json, ['youtubeId'])) {
