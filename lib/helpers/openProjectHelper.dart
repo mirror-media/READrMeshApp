@@ -13,10 +13,10 @@ class OpenProjectHelper {
         projectUrl = readrProjectLink + 'post/${projectListItem.id}';
         break;
       case 'report':
-        projectUrl = readrProjectLink + '/project/${projectListItem.slug}';
+        projectUrl = readrProjectLink + 'project/${projectListItem.slug}';
         break;
       case 'project3':
-        projectUrl = readrProjectLink + '/project/3/${projectListItem.slug}';
+        projectUrl = readrProjectLink + 'project/3/${projectListItem.slug}';
         break;
       default:
         projectUrl = readrProjectLink;
