@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'helpers/router/router.dart';
 
 class ReadrApp extends StatelessWidget {
