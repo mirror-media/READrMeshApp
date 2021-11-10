@@ -58,7 +58,6 @@ class HomeStoryListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 69,
                       child: RichText(
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
