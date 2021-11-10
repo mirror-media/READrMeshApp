@@ -21,7 +21,9 @@ class ParseTheTextToHtmlWidget extends StatelessWidget {
       html!,
       customStylesBuilder: (element) => {
         'a':
-            '{text-decoration-color: #ebf02c; color: black; text-decoration-thickness: 200%}',
+            '{text-decoration-color: #ebf02c; color: black; text-decoration-thickness: 100%}',
+        'h1': '{line-height: 28.6px; font-weight: 600; font-size: 22px}',
+        'h2': '{line-height: 27px; font-weight: 500; font-size: 18px}',
       },
       textStyle: TextStyle(
         fontSize: fontSize,
