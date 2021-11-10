@@ -432,6 +432,9 @@ class _StoryWidgetState extends State<StoryWidget> {
               if (paragraph.contents != null &&
                   paragraph.contents!.isNotEmpty &&
                   !_isNullOrEmpty(paragraph.contents![0].data)) {
+                if (paragraph.contents![0].data == '這篇報導想要告訴你的事：') {
+                  return Container();
+                }
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child:
