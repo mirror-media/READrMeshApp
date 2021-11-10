@@ -763,30 +763,31 @@ class _StoryWidgetState extends State<StoryWidget> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(height: 16.0),
-          itemCount: relatedStories.length,
-          //padding: const EdgeInsets.only(bottom: 16),
+              const SizedBox(height: 24.0),
+          itemCount: relatedStories.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       '相關報導',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black87,
                       ),
                     ),
-                    const Divider(
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Divider(
+                      height: 1,
                       thickness: 1,
                       color: Colors.black12,
                     ),
-                    const SizedBox(height: 24),
-                    _buildRelatedItem(width, relatedStories[index]),
                   ]);
             }
-            return _buildRelatedItem(width, relatedStories[index]);
+            return _buildRelatedItem(width, relatedStories[index - 1]);
           }),
     );
   }
@@ -829,7 +830,6 @@ class _StoryWidgetState extends State<StoryWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 69,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
@@ -868,30 +868,32 @@ class _StoryWidgetState extends State<StoryWidget> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(height: 16.0),
-          itemCount: relatedStories.length,
+              const SizedBox(height: 24.0),
+          itemCount: relatedStories.length + 1,
           //padding: const EdgeInsets.only(bottom: 16),
           itemBuilder: (context, index) {
             if (index == 0) {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       '為你推薦',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black87,
                       ),
                     ),
-                    const Divider(
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Divider(
+                      height: 1,
                       thickness: 1,
                       color: Colors.black12,
                     ),
-                    const SizedBox(height: 24),
-                    _buildRecommendItem(width, relatedStories[index]),
                   ]);
             }
-            return _buildRecommendItem(width, relatedStories[index]);
+            return _buildRecommendItem(width, relatedStories[index - 1]);
           }),
     );
   }
@@ -934,7 +936,6 @@ class _StoryWidgetState extends State<StoryWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 69,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
