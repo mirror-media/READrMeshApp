@@ -74,7 +74,7 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    top: 62,
+                    top: 18,
                     left: 19,
                   ),
                   child: SvgPicture.asset(
