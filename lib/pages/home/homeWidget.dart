@@ -1,3 +1,4 @@
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,14 +101,14 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         _initializeTabController();
 
         return Scaffold(
-          extendBodyBehindAppBar: true,
-          body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: AnnotatedRegion<SystemUiOverlayStyle>(
-                    value: SystemUiOverlayStyle.light,
+          body: ColorfulSafeArea(
+            color: Colors.black,
+            bottom: false,
+            child: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return [
+                  SliverToBoxAdapter(
                     child: BlocProvider(
                       create: (context) => EditorChoiceBloc(
                         editorChoiceRepos: EditorChoiceServices(),
@@ -118,32 +119,31 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 4,
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 4,
+                    ),
                   ),
-                ),
-                SliverAppBar(
-                  pinned: true,
-                  primary: false,
-                  elevation: 0,
-                  toolbarHeight: 35,
-                  backgroundColor: Colors.white,
-                  systemOverlayStyle: SystemUiOverlayStyle.dark,
-                  bottom: TabBar(
-                    isScrollable: true,
-                    indicatorColor: tabBarSelectedColor,
-                    unselectedLabelColor: Colors.black38,
-                    tabs: _tabs.toList(),
-                    controller: _tabController,
+                  SliverAppBar(
+                    pinned: true,
+                    primary: false,
+                    elevation: 0,
+                    toolbarHeight: 8,
+                    backgroundColor: Colors.white,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicatorColor: tabBarSelectedColor,
+                      unselectedLabelColor: Colors.black38,
+                      tabs: _tabs.toList(),
+                      controller: _tabController,
+                    ),
                   ),
-                ),
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: _tabWidgets.toList(),
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController,
+                children: _tabWidgets.toList(),
+              ),
             ),
           ),
         );

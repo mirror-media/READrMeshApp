@@ -229,8 +229,11 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                           FadeIn(
                             key: UniqueKey(),
                             duration: Duration(milliseconds: _fadeInDuration),
-                            child: _displayImage(width,
-                                widget.editorChoiceList.elementAt(_current)),
+                            child: Container(
+                              color: Colors.black,
+                              child: _displayImage(width,
+                                  widget.editorChoiceList.elementAt(_current)),
+                            ),
                           ),
                           if (widget.editorChoiceList
                               .elementAt(_current)
@@ -238,14 +241,14 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                             Container(
                               alignment: Alignment.topRight,
                               margin: const EdgeInsets.only(
-                                top: 60,
+                                top: 16,
                                 right: 12,
                               ),
                               child: _displayTag(),
                             ),
                           Container(
                             padding: const EdgeInsets.only(
-                              top: 62,
+                              top: 18,
                               left: 19,
                             ),
                             child: SvgPicture.asset(
