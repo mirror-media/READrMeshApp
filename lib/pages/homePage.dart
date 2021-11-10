@@ -7,8 +7,8 @@ import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/home/homeSkeletonScreen.dart';
 import 'package:readr/pages/home/homeWidget.dart';
-import 'package:readr/pages/initLoadingPage.dart';
 import 'package:upgrader/upgrader.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       // state is Init, loading, or other
-      return InitLoadingPage();
+      return HomeSkeletonScreen();
     });
   }
 }
