@@ -1,3 +1,4 @@
+import 'package:readr/models/annotation.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/models/paragrpahList.dart';
@@ -9,9 +10,12 @@ class Story {
   final String? style;
   final String? name;
   final ParagraphList? summaryApiData;
+  final List<String>? summaryAnnotation;
   final int? readingTime;
   final ParagraphList? contentApiData;
+  final List<String>? contentAnnotation;
   final ParagraphList? citationApiData;
+  final List<String>? citationAnnotation;
   final String? publishTime;
   final String? updatedAt;
 
@@ -56,26 +60,50 @@ class Story {
     this.relatedStories,
     this.citationApiData,
     this.recommendedStories,
+    this.summaryAnnotation,
+    this.citationAnnotation,
+    this.contentAnnotation,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
     ParagraphList summaryApiData = ParagraphList();
+    List<String>? summaryAnnotation;
     if (BaseModel.hasKey(json, 'summaryApiData') &&
         json["summaryApiData"] != 'NaN') {
       summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
+      for (var paragraph in summaryApiData) {
+        if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
+          summaryAnnotation =
+              Annotation.parseSourceData(paragraph.contents![0].data);
+        }
+      }
     }
 
     ParagraphList contentApiData = ParagraphList();
+    List<String>? contentAnnotation;
     if (BaseModel.hasKey(json, 'contentApiData') &&
         json["contentApiData"] != 'NaN') {
       contentApiData = ParagraphList.parseResponseBody(json["contentApiData"]);
+      for (var paragraph in contentApiData) {
+        if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
+          contentAnnotation =
+              Annotation.parseSourceData(paragraph.contents![0].data);
+        }
+      }
     }
 
     ParagraphList citationApiData = ParagraphList();
+    List<String>? citationAnnotation;
     if (BaseModel.hasKey(json, 'citationApiData') &&
         json["citationApiData"] != 'NaN') {
       citationApiData =
           ParagraphList.parseResponseBody(json["citationApiData"]);
+      for (var paragraph in citationApiData) {
+        if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
+          citationAnnotation =
+              Annotation.parseSourceData(paragraph.contents![0].data);
+        }
+      }
     }
 
     String? photoUrl;
@@ -114,6 +142,9 @@ class Story {
       tags: TagList.fromJson(json['tags']),
       relatedStories: StoryListItemList.fromJson(json['relatedPosts']),
       citationApiData: citationApiData,
+      summaryAnnotation: summaryAnnotation,
+      contentAnnotation: contentAnnotation,
+      citationAnnotation: citationAnnotation,
     );
   }
 }

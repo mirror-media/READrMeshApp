@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/story/events.dart';
 import 'package:readr/blocs/story/bloc.dart';
@@ -10,6 +11,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
+import 'package:readr/models/annotation.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
@@ -22,6 +24,7 @@ import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class StoryWidget extends StatefulWidget {
@@ -38,6 +41,8 @@ class _StoryWidgetState extends State<StoryWidget> {
   late String _currentId;
   late double _textSize;
   late Story _story;
+  static final ItemScrollController itemScrollController =
+      ItemScrollController();
 
   @override
   void initState() {
@@ -88,34 +93,41 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget _storyContent(double width, Story story) {
-    return ListView(
-      children: [
-        _buildHeroWidget(width, story),
-        const SizedBox(height: 24),
-        _buildCategory(story),
-        const SizedBox(height: 8),
-        _buildStoryTitle(story.name!),
-        const SizedBox(height: 12),
-        _buildPublishedDateAndReadingTime(story),
-        const SizedBox(height: 12),
-        _buildAuthors(story),
-        const SizedBox(height: 24),
-        _buildSummary(story.summaryApiData!),
-        _buildContent(story),
-        const SizedBox(height: 48),
-        _buildCitation(story.citationApiData!),
-        const SizedBox(height: 48),
-        if (story.tags != null && story.tags!.isNotEmpty) ...[
-          _buildTags(story.tags),
-          const SizedBox(height: 48),
-        ],
-        if (story.relatedStories!.isNotEmpty) ...[
-          _buildRelatedWidget(width, story.relatedStories!),
-          const SizedBox(height: 48),
-        ],
-        _buildRecommendWidget(width, story.recommendedStories!),
+    List<Widget> contentWidgets = [
+      _buildHeroWidget(width, story),
+      const SizedBox(height: 24),
+      _buildCategory(story),
+      const SizedBox(height: 8),
+      _buildStoryTitle(story.name!),
+      const SizedBox(height: 12),
+      _buildPublishedDateAndReadingTime(story),
+      const SizedBox(height: 12),
+      _buildAuthors(story),
+      const SizedBox(height: 24),
+      _buildSummary(story),
+      _buildContent(story),
+      const SizedBox(height: 32),
+      _buildAnnotationBlock(story),
+      const SizedBox(height: 48),
+      _buildCitation(story),
+      const SizedBox(height: 48),
+      if (story.tags != null && story.tags!.isNotEmpty) ...[
+        _buildTags(story.tags),
         const SizedBox(height: 48),
       ],
+      if (story.relatedStories!.isNotEmpty) ...[
+        _buildRelatedWidget(width, story.relatedStories!),
+        const SizedBox(height: 48),
+      ],
+      _buildRecommendWidget(width, story.recommendedStories!),
+      const SizedBox(height: 48),
+    ];
+    return ScrollablePositionedList.builder(
+      itemCount: contentWidgets.length,
+      itemBuilder: (context, index) {
+        return contentWidgets[index];
+      },
+      itemScrollController: itemScrollController,
     );
   }
 
@@ -412,7 +424,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
   }
 
-  Widget _buildSummary(ParagraphList articles) {
+  Widget _buildSummary(Story story) {
+    ParagraphList articles = story.summaryApiData!;
     bool noData = false;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
@@ -446,8 +459,12 @@ class _StoryWidgetState extends State<StoryWidget> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child:
-                      paragraphFormat.parseTheParagraph(paragraph, context, 15),
+                  child: paragraphFormat.parseTheParagraph(
+                    paragraph,
+                    context,
+                    15,
+                    annotation: story.summaryAnnotation,
+                  ),
                 );
               } else {
                 noData = true;
@@ -522,7 +539,13 @@ class _StoryWidgetState extends State<StoryWidget> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: paragraphFormat.parseTheParagraph(
-                        paragraph, context, _textSize),
+                      paragraph,
+                      context,
+                      _textSize,
+                      annotation: story.contentAnnotation,
+                      showAnnotations: true,
+                      itemScrollController: itemScrollController,
+                    ),
                   )
                 ],
               );
@@ -530,7 +553,13 @@ class _StoryWidgetState extends State<StoryWidget> {
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: paragraphFormat.parseTheParagraph(
-                  paragraph, context, _textSize),
+                paragraph,
+                context,
+                _textSize,
+                annotation: story.contentAnnotation,
+                showAnnotations: true,
+                itemScrollController: itemScrollController,
+              ),
             );
           }
 
@@ -610,7 +639,70 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
   }
 
-  Widget _buildCitation(ParagraphList articles) {
+  Widget _buildAnnotationBlock(Story story) {
+    if (story.contentAnnotation != null) {
+      for (int i = 0; i < story.contentAnnotation!.length; i++) {
+        String? annotationData =
+            Annotation.getAnnotation(story.contentAnnotation!);
+        if (annotationData != null) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  (i + 1).toString(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: _textSize - 3,
+                    height: 0.5,
+                  ),
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                HtmlWidget(
+                  annotationData,
+                  customStylesBuilder: (element) {
+                    if (element.localName == 'a') {
+                      return {
+                        'text-decoration-color': '#ebf02c',
+                        'color': 'black',
+                        'text-decoration-thickness': '100%',
+                      };
+                    } else if (element.localName == 'h1') {
+                      return {
+                        'line-height': '130%',
+                        'font-weight': '600',
+                        'font-size': '22px',
+                      };
+                    } else if (element.localName == 'h2') {
+                      return {
+                        'line-height': '150%',
+                        'font-weight': '500',
+                        'font-size': '18px',
+                      };
+                    }
+                    return null;
+                  },
+                  textStyle: TextStyle(
+                    fontSize: _textSize - 3,
+                    height: 0.5,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
+    return Container();
+  }
+
+  Widget _buildCitation(Story story) {
+    ParagraphList articles = story.citationApiData!;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
       articleWidgets.add(const Padding(
@@ -666,6 +758,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                             context,
                             15,
                             isCitation: true,
+                            annotation: story.citationAnnotation,
                           ),
                         ),
                       ],
@@ -682,6 +775,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                     context,
                     15,
                     isCitation: true,
+                    annotation: story.citationAnnotation,
                   ),
                 );
               }

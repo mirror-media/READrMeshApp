@@ -14,6 +14,7 @@ import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
 import 'package:readr/pages/story/widgets/quoteByWidget.dart';
 import 'package:readr/pages/story/widgets/youtubeWidget.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ParagraphFormat {
   bool _isCitation = false;
@@ -22,6 +23,9 @@ class ParagraphFormat {
     BuildContext context,
     double textSize, {
     bool isCitation = false,
+    List<String>? annotation,
+    bool showAnnotations = false,
+    ItemScrollController? itemScrollController,
   }) {
     if (paragraph == null) {
       return Container();
@@ -125,12 +129,14 @@ class ParagraphFormat {
         }
       case 'annotation':
         {
-          if (paragraph.contents!.isNotEmpty) {
+          if (annotation != null && annotation.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AnnotationWidget(
-                data: paragraph.contents![0].data,
+                annotationData: annotation,
                 textSize: textSize,
+                showAnnotations: showAnnotations,
+                itemScrollController: itemScrollController,
               ),
             );
           }
