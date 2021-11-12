@@ -24,8 +24,8 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
   Stream<TabStoryListState> mapEventToState(TabStoryListEvents event) async* {
     print(event.toString());
     try {
-      yield const TabStoryListState.loading();
       if (event is FetchStoryList) {
+        yield const TabStoryListState.loading();
         List<StoryListItemList> futureList =
             await tabStoryListRepos.fetchStoryList();
         storyListItemList = futureList[0];
@@ -60,6 +60,7 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
           mixedStoryList: mixedStoryList,
         );
       } else if (event is FetchStoryListByCategorySlug) {
+        yield const TabStoryListState.loading();
         List<StoryListItemList> futureList =
             await tabStoryListRepos.fetchStoryListByCategorySlug(event.slug);
         storyListItemList = futureList[0];
