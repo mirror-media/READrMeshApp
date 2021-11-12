@@ -14,6 +14,8 @@ import 'package:readr/services/tabStoryListService.dart';
 class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
   final TabStoryListRepos tabStoryListRepos;
   StoryListItemList mixedStoryList = StoryListItemList();
+  StoryListItemList storyListItemList = StoryListItemList();
+  StoryListItemList projectList = StoryListItemList();
 
   TabStoryListBloc({required this.tabStoryListRepos})
       : super(const TabStoryListState.initial());
@@ -24,12 +26,10 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
     try {
       yield const TabStoryListState.loading();
       if (event is FetchStoryList) {
-        var storyListFuture = tabStoryListRepos.fetchStoryList();
-        var projectListFuture = tabStoryListRepos.fetchProjectList();
         List<StoryListItemList> futureList =
-            await Future.wait([storyListFuture, projectListFuture]);
-        StoryListItemList storyListItemList = futureList[0];
-        StoryListItemList projectList = futureList[1];
+            await tabStoryListRepos.fetchStoryList();
+        storyListItemList = futureList[0];
+        projectList = futureList[1];
         mixedStoryList = _mixTwoList(
             storyListItemList: storyListItemList, projectList: projectList);
         yield TabStoryListState.loaded(
@@ -39,23 +39,31 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
         yield TabStoryListState.loadingMore(
           mixedStoryList: mixedStoryList,
         );
-        StoryListItemList newStoryListItemList =
-            await tabStoryListRepos.fetchNextPage();
-        StoryListItemList newprojectList =
-            await tabStoryListRepos.fetchProjectListNextPage();
+        List<StoryListItemList> futureList =
+            await tabStoryListRepos.fetchStoryList(
+          storySkip: storyListItemList.length,
+          storyFirst: 12,
+          projectSkip: projectList.length,
+          withCount: false,
+        );
+        StoryListItemList newStoryListItemList = futureList[0];
+        StoryListItemList newprojectList = futureList[1];
         StoryListItemList newMixedList = _mixTwoList(
-            storyListItemList: newStoryListItemList,
-            projectList: newprojectList,
-            loadMore: true);
+          storyListItemList: newStoryListItemList,
+          projectList: newprojectList,
+          loadMore: true,
+        );
+        storyListItemList.addAll(newStoryListItemList);
+        projectList.addAll(newprojectList);
         mixedStoryList.addAll(newMixedList);
         yield TabStoryListState.loaded(
           mixedStoryList: mixedStoryList,
         );
       } else if (event is FetchStoryListByCategorySlug) {
-        StoryListItemList storyListItemList =
+        List<StoryListItemList> futureList =
             await tabStoryListRepos.fetchStoryListByCategorySlug(event.slug);
-        StoryListItemList projectList =
-            await tabStoryListRepos.fetchProjectListByCategorySlug(event.slug);
+        storyListItemList = futureList[0];
+        projectList = futureList[1];
         mixedStoryList = _mixTwoList(
             storyListItemList: storyListItemList, projectList: projectList);
         yield TabStoryListState.loaded(
@@ -65,53 +73,30 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
         yield TabStoryListState.loadingMore(
           mixedStoryList: mixedStoryList,
         );
-        StoryListItemList newStoryListItemList =
-            await tabStoryListRepos.fetchNextPageByCategorySlug(event.slug);
-        StoryListItemList newprojectList = await tabStoryListRepos
-            .fetchProjectListNextPageByCategorySlug(event.slug);
+        List<StoryListItemList> futureList =
+            await tabStoryListRepos.fetchStoryListByCategorySlug(
+          event.slug,
+          storySkip: storyListItemList.length,
+          storyFirst: 12,
+          projectSkip: projectList.length,
+          withCount: false,
+        );
+        StoryListItemList newStoryListItemList = futureList[0];
+        StoryListItemList newprojectList = futureList[1];
         StoryListItemList newMixedList = _mixTwoList(
-            storyListItemList: newStoryListItemList,
-            projectList: newprojectList,
-            loadMore: true);
+          storyListItemList: newStoryListItemList,
+          projectList: newprojectList,
+          loadMore: true,
+        );
+        storyListItemList.addAll(newStoryListItemList);
+        projectList.addAll(newprojectList);
         mixedStoryList.addAll(newMixedList);
         yield TabStoryListState.loaded(
           mixedStoryList: mixedStoryList,
         );
       }
-    } on SocketException {
-      yield TabStoryListState.error(
-        error: NoInternetException('No Internet'),
-      );
-    } on HttpException {
-      yield TabStoryListState.error(
-        error: NoServiceFoundException('No Service Found'),
-      );
-    } on FormatException {
-      yield TabStoryListState.error(
-        error: InvalidFormatException('Invalid Response format'),
-      );
-    } on FetchDataException {
-      yield TabStoryListState.error(
-        error: NoInternetException('Error During Communication'),
-      );
-    } on BadRequestException {
-      yield TabStoryListState.error(
-        error: Error400Exception('Invalid Request'),
-      );
-    } on UnauthorisedException {
-      yield TabStoryListState.error(
-        error: Error400Exception('Unauthorised'),
-      );
-    } on InvalidInputException {
-      yield TabStoryListState.error(
-        error: Error400Exception('Invalid Input'),
-      );
-    } on InternalServerErrorException {
-      yield TabStoryListState.error(
-        error: Error500Exception('Internal Server Error'),
-      );
     } catch (e) {
-      if (event is FetchNextPage) {
+      if (event is FetchNextPage || event is FetchNextPageByCategorySlug) {
         Fluttertoast.showToast(
             msg: "加載失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -121,23 +106,34 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
             textColor: Colors.white,
             fontSize: 16.0);
         await Future.delayed(const Duration(seconds: 5));
-        tabStoryListRepos.reduceSkip();
         yield TabStoryListState.loadingMoreFail(
           mixedStoryList: mixedStoryList,
         );
-      } else if (event is FetchNextPageByCategorySlug) {
-        Fluttertoast.showToast(
-            msg: "加載失敗",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        await Future.delayed(const Duration(seconds: 5));
-        tabStoryListRepos.reduceSkip();
-        yield TabStoryListState.loadingMoreFail(
-          mixedStoryList: mixedStoryList,
+      } else if (e is SocketException) {
+        yield TabStoryListState.error(
+          error: NoInternetException('No Internet'),
+        );
+      } else if (e is HttpException) {
+        yield TabStoryListState.error(
+          error: NoServiceFoundException('No Service Found'),
+        );
+      } else if (e is FormatException) {
+        yield TabStoryListState.error(
+          error: InvalidFormatException('Invalid Response format'),
+        );
+      } else if (e is FetchDataException) {
+        yield TabStoryListState.error(
+          error: NoInternetException('Error During Communication'),
+        );
+      } else if (e is BadRequestException ||
+          e is UnauthorisedException ||
+          e is InvalidInputException) {
+        yield TabStoryListState.error(
+          error: Error400Exception('Unauthorised'),
+        );
+      } else if (e is InternalServerErrorException) {
+        yield TabStoryListState.error(
+          error: Error500Exception('Internal Server Error'),
         );
       } else {
         yield TabStoryListState.error(
