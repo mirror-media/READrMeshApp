@@ -640,6 +640,7 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget _buildAnnotationBlock(Story story) {
+    double width = MediaQuery.of(context).size.width;
     if (story.contentAnnotation != null) {
       for (int i = 0; i < story.contentAnnotation!.length; i++) {
         String? annotationData =
@@ -656,40 +657,43 @@ class _StoryWidgetState extends State<StoryWidget> {
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: _textSize - 3,
-                    height: 0.5,
+                    height: 1,
                   ),
                 ),
                 const SizedBox(
                   width: 12,
                 ),
-                HtmlWidget(
-                  annotationData,
-                  customStylesBuilder: (element) {
-                    if (element.localName == 'a') {
-                      return {
-                        'text-decoration-color': '#ebf02c',
-                        'color': 'black',
-                        'text-decoration-thickness': '100%',
-                      };
-                    } else if (element.localName == 'h1') {
-                      return {
-                        'line-height': '130%',
-                        'font-weight': '600',
-                        'font-size': '22px',
-                      };
-                    } else if (element.localName == 'h2') {
-                      return {
-                        'line-height': '150%',
-                        'font-weight': '500',
-                        'font-size': '18px',
-                      };
-                    }
-                    return null;
-                  },
-                  textStyle: TextStyle(
-                    fontSize: _textSize - 3,
-                    height: 0.5,
-                    color: Colors.black87,
+                SizedBox(
+                  width: width - 44 - 20,
+                  child: HtmlWidget(
+                    annotationData,
+                    customStylesBuilder: (element) {
+                      if (element.localName == 'a') {
+                        return {
+                          'text-decoration-color': '#ebf02c',
+                          'color': 'black',
+                          'text-decoration-thickness': '100%',
+                        };
+                      } else if (element.localName == 'h1') {
+                        return {
+                          'line-height': '130%',
+                          'font-weight': '600',
+                          'font-size': '22px',
+                        };
+                      } else if (element.localName == 'h2') {
+                        return {
+                          'line-height': '150%',
+                          'font-weight': '500',
+                          'font-size': '18px',
+                        };
+                      }
+                      return null;
+                    },
+                    textStyle: TextStyle(
+                      fontSize: _textSize - 3,
+                      height: 1,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
               ],
