@@ -173,8 +173,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeIn,
     );
-    timer.reset();
-    timer.start();
   }
 
   @override
@@ -265,14 +263,12 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                     ),
                   ),
                   GestureDetector(
-                    onHorizontalDragStart: (DragStartDetails e) {
-                      timer.pause();
+                    onTapDown: (TapDownDetails e) {
+                      timer.cancel();
                     },
-                    onHorizontalDragUpdate: (DragUpdateDetails e) {
-                      timer.pause();
-                    },
-                    onHorizontalDragEnd: (DragEndDetails e) {
-                      timer.reset();
+                    onTapUp: (TapUpDetails e) {
+                      timer = PausableTimer(const Duration(seconds: 5),
+                          () => _changeToNextPage());
                       timer.start();
                     },
                     child: ExpandablePageView.builder(
@@ -289,9 +285,13 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                         if (index == 0) {
                           _fadeInDuration = _fadeInDurationShort;
                         }
+                        timer.cancel();
                         setState(() {
                           _current = index;
                         });
+                        timer = PausableTimer(const Duration(seconds: 5),
+                            () => _changeToNextPage());
+                        timer.start();
                       },
                     ),
                   ),
