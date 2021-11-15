@@ -30,8 +30,14 @@ class _$AppRouter extends RootStackRouter {
           child: ErrorPage(
               error: args.error,
               onPressed: args.onPressed,
-              needPop: args.needPop),
+              needPop: args.needPop,
+              hideAppbar: args.hideAppbar),
           fullscreenDialog: true);
+    },
+    TagRoute.name: (routeData) {
+      final args = routeData.argsAs<TagRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: TagPage(tag: args.tag));
     },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
@@ -51,7 +57,8 @@ class _$AppRouter extends RootStackRouter {
               path: 'category', parent: Initial.name)
         ]),
         RouteConfig(StoryRoute.name, path: '/story-page'),
-        RouteConfig(ErrorRoute.name, path: '/error-page')
+        RouteConfig(ErrorRoute.name, path: '/error-page'),
+        RouteConfig(TagRoute.name, path: '/tag-page')
       ];
 }
 
@@ -82,24 +89,47 @@ class ErrorRoute extends PageRouteInfo<ErrorRouteArgs> {
   ErrorRoute(
       {required dynamic error,
       required void Function() onPressed,
-      bool needPop = false})
+      bool needPop = false,
+      bool hideAppbar = false})
       : super(name,
             path: '/error-page',
             args: ErrorRouteArgs(
-                error: error, onPressed: onPressed, needPop: needPop));
+                error: error,
+                onPressed: onPressed,
+                needPop: needPop,
+                hideAppbar: hideAppbar));
 
   static const String name = 'ErrorRoute';
 }
 
 class ErrorRouteArgs {
   const ErrorRouteArgs(
-      {required this.error, required this.onPressed, this.needPop = false});
+      {required this.error,
+      required this.onPressed,
+      this.needPop = false,
+      this.hideAppbar = false});
 
   final dynamic error;
 
   final void Function() onPressed;
 
   final bool needPop;
+
+  final bool hideAppbar;
+}
+
+/// generated route for [TagPage]
+class TagRoute extends PageRouteInfo<TagRouteArgs> {
+  TagRoute({required Tag tag})
+      : super(name, path: '/tag-page', args: TagRouteArgs(tag: tag));
+
+  static const String name = 'TagRoute';
+}
+
+class TagRouteArgs {
+  const TagRouteArgs({required this.tag});
+
+  final Tag tag;
 }
 
 /// generated route for [HomeWidget]
