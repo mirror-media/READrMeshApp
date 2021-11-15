@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/annotation.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
@@ -41,8 +43,7 @@ class _StoryWidgetState extends State<StoryWidget> {
   late String _currentId;
   late double _textSize;
   late Story _story;
-  static final ItemScrollController itemScrollController =
-      ItemScrollController();
+  final ItemScrollController itemScrollController = ItemScrollController();
 
   @override
   void initState() {
@@ -847,7 +848,9 @@ class _StoryWidgetState extends State<StoryWidget> {
                       forceStrutHeight: true, fontSize: 18, height: 1),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                AutoRouter.of(context).push(TagRoute(tag: tags[i]));
+              },
             ),
           ),
         );
