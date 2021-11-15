@@ -10,12 +10,12 @@ class Story {
   final String? style;
   final String? name;
   final ParagraphList? summaryApiData;
-  final List<String>? summaryAnnotation;
+  final List<List<String>?>? summaryAnnotation;
   final int? readingTime;
   final ParagraphList? contentApiData;
-  final List<String>? contentAnnotation;
+  final List<List<String>?>? contentAnnotation;
   final ParagraphList? citationApiData;
-  final List<String>? citationAnnotation;
+  final List<List<String>?>? citationAnnotation;
   final String? publishTime;
   final String? updatedAt;
 
@@ -67,41 +67,41 @@ class Story {
 
   factory Story.fromJson(Map<String, dynamic> json) {
     ParagraphList summaryApiData = ParagraphList();
-    List<String>? summaryAnnotation;
+    List<List<String>?> summaryAnnotation = [];
     if (BaseModel.hasKey(json, 'summaryApiData') &&
         json["summaryApiData"] != 'NaN') {
       summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
       for (var paragraph in summaryApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          summaryAnnotation =
-              Annotation.parseSourceData(paragraph.contents![0].data);
+          summaryAnnotation
+              .add(Annotation.parseSourceData(paragraph.contents![0].data));
         }
       }
     }
 
     ParagraphList contentApiData = ParagraphList();
-    List<String>? contentAnnotation;
+    List<List<String>?> contentAnnotation = [];
     if (BaseModel.hasKey(json, 'contentApiData') &&
         json["contentApiData"] != 'NaN') {
       contentApiData = ParagraphList.parseResponseBody(json["contentApiData"]);
       for (var paragraph in contentApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          contentAnnotation =
-              Annotation.parseSourceData(paragraph.contents![0].data);
+          contentAnnotation
+              .add(Annotation.parseSourceData(paragraph.contents![0].data));
         }
       }
     }
 
     ParagraphList citationApiData = ParagraphList();
-    List<String>? citationAnnotation;
+    List<List<String>?> citationAnnotation = [];
     if (BaseModel.hasKey(json, 'citationApiData') &&
         json["citationApiData"] != 'NaN') {
       citationApiData =
           ParagraphList.parseResponseBody(json["citationApiData"]);
       for (var paragraph in citationApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          citationAnnotation =
-              Annotation.parseSourceData(paragraph.contents![0].data);
+          citationAnnotation
+              .add(Annotation.parseSourceData(paragraph.contents![0].data));
         }
       }
     }

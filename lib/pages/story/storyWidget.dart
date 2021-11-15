@@ -520,6 +520,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     ParagraphList storyContents = story.contentApiData!;
     ParagraphFormat paragraphFormat = ParagraphFormat();
     int addRecommendIndex = 5;
+    int annotationCounter = -1;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: ListView.builder(
@@ -531,6 +532,11 @@ class _StoryWidgetState extends State<StoryWidget> {
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
+            if (paragraph.type == 'annotation') {
+              if (annotationCounter < story.contentAnnotation!.length - 1) {
+                annotationCounter++;
+              }
+            }
             if (index == addRecommendIndex) {
               addRecommendIndex = addRecommendIndex + 5;
               return Column(
@@ -545,6 +551,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                       _textSize,
                       annotation: story.contentAnnotation,
                       showAnnotations: true,
+                      annotationCounter: annotationCounter,
                       itemScrollController: itemScrollController,
                     ),
                   )
@@ -558,6 +565,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                 context,
                 _textSize,
                 annotation: story.contentAnnotation,
+                annotationCounter: annotationCounter,
                 showAnnotations: true,
                 itemScrollController: itemScrollController,
               ),
@@ -643,65 +651,77 @@ class _StoryWidgetState extends State<StoryWidget> {
   Widget _buildAnnotationBlock(Story story) {
     double width = MediaQuery.of(context).size.width;
     if (story.contentAnnotation != null) {
+      List<String> annotationDataList = [];
       for (int i = 0; i < story.contentAnnotation!.length; i++) {
         String? annotationData =
-            Annotation.getAnnotation(story.contentAnnotation!);
+            Annotation.getAnnotation(story.contentAnnotation![i]);
         if (annotationData != null) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  (i + 1).toString(),
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: _textSize - 3,
-                    height: 1,
-                  ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                SizedBox(
-                  width: width - 44 - 20,
-                  child: HtmlWidget(
-                    annotationData,
-                    customStylesBuilder: (element) {
-                      if (element.localName == 'a') {
-                        return {
-                          'text-decoration-color': '#ebf02c',
-                          'color': 'black',
-                          'text-decoration-thickness': '100%',
-                        };
-                      } else if (element.localName == 'h1') {
-                        return {
-                          'line-height': '130%',
-                          'font-weight': '600',
-                          'font-size': '22px',
-                        };
-                      } else if (element.localName == 'h2') {
-                        return {
-                          'line-height': '150%',
-                          'font-weight': '500',
-                          'font-size': '18px',
-                        };
-                      }
-                      return null;
-                    },
-                    textStyle: TextStyle(
-                      fontSize: _textSize - 3,
-                      height: 1,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          annotationDataList.add(annotationData);
         }
       }
+      if (annotationDataList.isEmpty) {
+        return Container();
+      }
+      return ListView.separated(
+          itemCount: annotationDataList.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    (index + 1).toString(),
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: _textSize - 3,
+                      height: 0.9,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  SizedBox(
+                    width: width - 44 - 20,
+                    child: HtmlWidget(
+                      annotationDataList[index],
+                      customStylesBuilder: (element) {
+                        if (element.localName == 'a') {
+                          return {
+                            'text-decoration-color': '#ebf02c',
+                            'color': 'black',
+                            'text-decoration-thickness': '100%',
+                          };
+                        } else if (element.localName == 'h1') {
+                          return {
+                            'line-height': '130%',
+                            'font-weight': '600',
+                            'font-size': '22px',
+                          };
+                        } else if (element.localName == 'h2') {
+                          return {
+                            'line-height': '150%',
+                            'font-weight': '500',
+                            'font-size': '18px',
+                          };
+                        }
+                        return null;
+                      },
+                      textStyle: TextStyle(
+                        fontSize: _textSize - 3,
+                        height: 1,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
     }
     return Container();
   }

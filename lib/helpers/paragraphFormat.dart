@@ -23,7 +23,8 @@ class ParagraphFormat {
     BuildContext context,
     double textSize, {
     bool isCitation = false,
-    List<String>? annotation,
+    List<List<String>?>? annotation,
+    int annotationCounter = 0,
     bool showAnnotations = false,
     ItemScrollController? itemScrollController,
   }) {
@@ -133,7 +134,7 @@ class ParagraphFormat {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AnnotationWidget(
-                annotationData: annotation,
+                annotationData: annotation[annotationCounter],
                 textSize: textSize,
                 showAnnotations: showAnnotations,
                 itemScrollController: itemScrollController,
