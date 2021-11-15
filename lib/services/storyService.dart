@@ -92,6 +92,7 @@ class StoryServices implements StoryRepos {
         tags {
           id
           name
+          slug
         }
         relatedPosts {
           id
@@ -134,15 +135,15 @@ class StoryServices implements StoryRepos {
     try {
       story = Story.fromJson(jsonResponse['data']['allPosts'][0]);
       List<String> categoriesSlug = [];
-      List<String> tagsName = [];
+      List<String> tagsSlug = [];
       story.categoryList?.forEach((element) {
         categoriesSlug.add(element.slug);
       });
       story.tags?.forEach((element) {
-        tagsName.add(element.name);
+        tagsSlug.add(element.slug);
       });
       story.recommendedStories =
-          await fetchRecommenedStoryList(id, categoriesSlug, tagsName);
+          await fetchRecommenedStoryList(id, categoriesSlug, tagsSlug);
     } catch (e) {
       throw FormatException(e.toString());
     }
@@ -152,7 +153,7 @@ class StoryServices implements StoryRepos {
 
   @override
   Future<StoryListItemList> fetchRecommenedStoryList(
-      String id, List<String> categoriesSlug, List<String> tagsName) async {
+      String id, List<String> categoriesSlug, List<String> tagsSlug) async {
     final key = 'fetchRecommenedStoryExclude$id';
 
     const String query = """
@@ -183,6 +184,7 @@ class StoryServices implements StoryRepos {
         tags {
           id
           name
+          slug
         }
       }
     }
@@ -197,7 +199,7 @@ class StoryServices implements StoryRepos {
             "categories_some": {"slug_in": categoriesSlug}
           },
           {
-            "tags_some": {"name_in": tagsName}
+            "tags_some": {"slug_in": tagsSlug}
           }
         ]
       }
@@ -221,9 +223,9 @@ class StoryServices implements StoryRepos {
           StoryListItemList.fromJson(jsonResponse['data']['allPosts']);
       recommenedStoryList.sort((a, b) {
         bool aIsSameCategory = hasSameCategories(a, categoriesSlug);
-        bool aIsSameTag = hasSameTags(a, tagsName);
+        bool aIsSameTag = hasSameTags(a, tagsSlug);
         bool bIsSameCategory = hasSameCategories(b, categoriesSlug);
-        bool bIsSameTag = hasSameTags(b, tagsName);
+        bool bIsSameTag = hasSameTags(b, tagsSlug);
         int aPriority = 4;
         int bPriority = 4;
         if (aIsSameCategory && aIsSameTag) {
@@ -286,8 +288,8 @@ class StoryServices implements StoryRepos {
   @override
   bool hasSameTags(StoryListItem storyListItem, List<String> tagsName) {
     if (storyListItem.tags != null && storyListItem.tags!.isNotEmpty) {
-      for (String tagName in tagsName) {
-        if (storyListItem.tags!.every((element) => element.name == tagName)) {
+      for (String tagSlug in tagsName) {
+        if (storyListItem.tags!.every((element) => element.slug == tagSlug)) {
           return true;
         }
       }
