@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_embedded_webview/flutter_embedded_webview.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/annotation.dart';
 import 'package:readr/models/contentList.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/pages/story/widgets/annotationWidget.dart';
@@ -18,15 +19,15 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ParagraphFormat {
   bool _isCitation = false;
+  int _annotationCounter = 0;
   Widget parseTheParagraph(
     Paragraph? paragraph,
     BuildContext context,
     double textSize, {
     bool isCitation = false,
-    List<List<String>?>? annotation,
-    int annotationCounter = 0,
     bool showAnnotations = false,
     ItemScrollController? itemScrollController,
+    int annotationLength = 0,
   }) {
     if (paragraph == null) {
       return Container();
@@ -130,14 +131,18 @@ class ParagraphFormat {
         }
       case 'annotation':
         {
-          if (annotation != null && annotation.isNotEmpty) {
+          if (paragraph.contents!.isNotEmpty) {
+            List<String> data =
+                Annotation.parseSourceData(paragraph.contents![0].data);
+            if (_annotationCounter < annotationLength) _annotationCounter++;
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AnnotationWidget(
-                annotationData: annotation[annotationCounter],
+                annotationData: data,
                 textSize: textSize,
                 showAnnotations: showAnnotations,
                 itemScrollController: itemScrollController,
+                annotationNumber: _annotationCounter,
               ),
             );
           }

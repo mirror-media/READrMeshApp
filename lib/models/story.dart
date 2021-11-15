@@ -10,12 +10,10 @@ class Story {
   final String? style;
   final String? name;
   final ParagraphList? summaryApiData;
-  final List<List<String>?>? summaryAnnotation;
   final int? readingTime;
   final ParagraphList? contentApiData;
-  final List<List<String>?>? contentAnnotation;
+  final List<String>? contentAnnotationData;
   final ParagraphList? citationApiData;
-  final List<List<String>?>? citationAnnotation;
   final String? publishTime;
   final String? updatedAt;
 
@@ -60,50 +58,38 @@ class Story {
     this.relatedStories,
     this.citationApiData,
     this.recommendedStories,
-    this.summaryAnnotation,
-    this.citationAnnotation,
-    this.contentAnnotation,
+    this.contentAnnotationData,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
     ParagraphList summaryApiData = ParagraphList();
-    List<List<String>?> summaryAnnotation = [];
     if (BaseModel.hasKey(json, 'summaryApiData') &&
         json["summaryApiData"] != 'NaN') {
       summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
-      for (var paragraph in summaryApiData) {
-        if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          summaryAnnotation
-              .add(Annotation.parseSourceData(paragraph.contents![0].data));
-        }
-      }
     }
 
     ParagraphList contentApiData = ParagraphList();
-    List<List<String>?> contentAnnotation = [];
+    List<String>? contentAnnotationData = [];
     if (BaseModel.hasKey(json, 'contentApiData') &&
         json["contentApiData"] != 'NaN') {
       contentApiData = ParagraphList.parseResponseBody(json["contentApiData"]);
       for (var paragraph in contentApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          contentAnnotation
-              .add(Annotation.parseSourceData(paragraph.contents![0].data));
+          List<String> sourceData =
+              Annotation.parseSourceData(paragraph.contents![0].data);
+          String? annotationData = Annotation.getAnnotation(sourceData);
+          if (annotationData != null) {
+            contentAnnotationData.add(annotationData);
+          }
         }
       }
     }
 
     ParagraphList citationApiData = ParagraphList();
-    List<List<String>?> citationAnnotation = [];
     if (BaseModel.hasKey(json, 'citationApiData') &&
         json["citationApiData"] != 'NaN') {
       citationApiData =
           ParagraphList.parseResponseBody(json["citationApiData"]);
-      for (var paragraph in citationApiData) {
-        if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-          citationAnnotation
-              .add(Annotation.parseSourceData(paragraph.contents![0].data));
-        }
-      }
     }
 
     String? photoUrl;
@@ -142,9 +128,7 @@ class Story {
       tags: TagList.fromJson(json['tags']),
       relatedStories: StoryListItemList.fromJson(json['relatedPosts']),
       citationApiData: citationApiData,
-      summaryAnnotation: summaryAnnotation,
-      contentAnnotation: contentAnnotation,
-      citationAnnotation: citationAnnotation,
+      contentAnnotationData: contentAnnotationData,
     );
   }
 }

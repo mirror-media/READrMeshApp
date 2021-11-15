@@ -9,10 +9,12 @@ class AnnotationWidget extends StatefulWidget {
   final bool showAnnotations;
   final List<String>? annotationData;
   final ItemScrollController? itemScrollController;
+  final int annotationNumber;
   const AnnotationWidget({
     this.textSize = 20,
     required this.showAnnotations,
     required this.annotationData,
+    this.annotationNumber = 1,
     this.itemScrollController,
   });
 
@@ -49,7 +51,6 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
       r'__ANNOTATION__=(.*)',
       caseSensitive: false,
     );
-    int annotationNumber = 1;
     for (int i = 0; i < _annotationList!.length; i++) {
       if (annotationExp.hasMatch(_annotationList![i])) {
         String body = annotationExp.firstMatch(_annotationList![i])!.group(1)!;
@@ -62,10 +63,9 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
               annotation.text +
               '</a>' +
               '<sup id="annotationNumber">' +
-              annotationNumber.toString() +
+              widget.annotationNumber.toString() +
               '</sup> ';
           newHtml = newHtml + annotationTextHtml;
-          annotationNumber++;
         }
       } else {
         newHtml = newHtml + _annotationList![i];

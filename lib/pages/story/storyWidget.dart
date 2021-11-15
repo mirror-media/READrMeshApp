@@ -13,7 +13,6 @@ import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/helpers/router/router.dart';
-import 'package:readr/models/annotation.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
@@ -464,7 +463,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                     paragraph,
                     context,
                     15,
-                    annotation: story.summaryAnnotation,
                   ),
                 );
               } else {
@@ -520,7 +518,6 @@ class _StoryWidgetState extends State<StoryWidget> {
     ParagraphList storyContents = story.contentApiData!;
     ParagraphFormat paragraphFormat = ParagraphFormat();
     int addRecommendIndex = 5;
-    int annotationCounter = -1;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: ListView.builder(
@@ -532,11 +529,6 @@ class _StoryWidgetState extends State<StoryWidget> {
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
-            if (paragraph.type == 'annotation') {
-              if (annotationCounter < story.contentAnnotation!.length - 1) {
-                annotationCounter++;
-              }
-            }
             if (index == addRecommendIndex) {
               addRecommendIndex = addRecommendIndex + 5;
               return Column(
@@ -549,10 +541,9 @@ class _StoryWidgetState extends State<StoryWidget> {
                       paragraph,
                       context,
                       _textSize,
-                      annotation: story.contentAnnotation,
                       showAnnotations: true,
-                      annotationCounter: annotationCounter,
                       itemScrollController: itemScrollController,
+                      annotationLength: story.contentAnnotationData!.length,
                     ),
                   )
                 ],
@@ -564,10 +555,9 @@ class _StoryWidgetState extends State<StoryWidget> {
                 paragraph,
                 context,
                 _textSize,
-                annotation: story.contentAnnotation,
-                annotationCounter: annotationCounter,
                 showAnnotations: true,
                 itemScrollController: itemScrollController,
+                annotationLength: story.contentAnnotationData!.length,
               ),
             );
           }
@@ -650,15 +640,9 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   Widget _buildAnnotationBlock(Story story) {
     double width = MediaQuery.of(context).size.width;
-    if (story.contentAnnotation != null) {
-      List<String> annotationDataList = [];
-      for (int i = 0; i < story.contentAnnotation!.length; i++) {
-        String? annotationData =
-            Annotation.getAnnotation(story.contentAnnotation![i]);
-        if (annotationData != null) {
-          annotationDataList.add(annotationData);
-        }
-      }
+    if (story.contentAnnotationData != null) {
+      List<String> annotationDataList = story.contentAnnotationData!;
+
       if (annotationDataList.isEmpty) {
         return Container();
       }
@@ -783,7 +767,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                             context,
                             15,
                             isCitation: true,
-                            annotation: story.citationAnnotation,
                           ),
                         ),
                       ],
@@ -800,7 +783,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                     context,
                     15,
                     isCitation: true,
-                    annotation: story.citationAnnotation,
                   ),
                 );
               }
