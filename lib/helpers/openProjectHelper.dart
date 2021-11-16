@@ -1,11 +1,9 @@
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/storyListItem.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OpenProjectHelper {
-  final ChromeSafariBrowser browser = ChromeSafariBrowser();
-
   phaseByStoryListItem(StoryListItem projectListItem) async {
     String projectUrl;
     switch (projectListItem.style) {
@@ -21,13 +19,7 @@ class OpenProjectHelper {
       default:
         projectUrl = readrProjectLink;
     }
-    await browser.open(
-      url: Uri.parse(projectUrl),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(),
-        ios: IOSSafariOptions(barCollapsingEnabled: true),
-      ),
-    );
+    await launch(projectUrl);
   }
 
   phaseByEditorChoiceItem(EditorChoiceItem editorChoiceItem) async {
@@ -49,22 +41,10 @@ class OpenProjectHelper {
           projectUrl = readrProjectLink;
       }
     }
-    await browser.open(
-      url: Uri.parse(projectUrl),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(),
-        ios: IOSSafariOptions(barCollapsingEnabled: true),
-      ),
-    );
+    await launch(projectUrl);
   }
 
   openByUrl(String url) async {
-    await browser.open(
-      url: Uri.parse(url),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(),
-        ios: IOSSafariOptions(barCollapsingEnabled: true),
-      ),
-    );
+    await launch(url);
   }
 }
