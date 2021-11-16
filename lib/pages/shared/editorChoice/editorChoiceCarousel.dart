@@ -211,14 +211,8 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                             AutoRouter.of(context)
                                 .push(StoryRoute(id: editorChoiceItem.id!));
                           } else if (editorChoiceItem.link != null) {
-                            await browser.open(
-                              url: Uri.parse(editorChoiceItem.link!),
-                              options: ChromeSafariBrowserClassOptions(
-                                android: AndroidChromeCustomTabsOptions(),
-                                ios: IOSSafariOptions(
-                                    barCollapsingEnabled: true),
-                              ),
-                            );
+                            OpenProjectHelper()
+                                .openByUrl(editorChoiceItem.link!);
                           }
                         }
                       },

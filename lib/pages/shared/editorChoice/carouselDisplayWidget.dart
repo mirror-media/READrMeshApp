@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 
@@ -14,7 +15,6 @@ class CarouselDisplayWidget extends StatelessWidget {
   });
 
   final double aspectRatio = 16 / 9;
-  final ChromeSafariBrowser browser = ChromeSafariBrowser();
 
   @override
   Widget build(BuildContext context) {
@@ -42,44 +42,12 @@ class CarouselDisplayWidget extends StatelessWidget {
       ),
       onTap: () async {
         if (editorChoiceItem.isProject) {
-          String projectUrl;
-          if (editorChoiceItem.link != null) {
-            projectUrl = editorChoiceItem.link!;
-          } else {
-            switch (editorChoiceItem.style) {
-              case 'embedded':
-                projectUrl = readrProjectLink + 'post/${editorChoiceItem.id}';
-                break;
-              case 'report':
-                projectUrl =
-                    readrProjectLink + '/project/${editorChoiceItem.slug}';
-                break;
-              case 'project3':
-                projectUrl =
-                    readrProjectLink + '/project/3/${editorChoiceItem.slug}';
-                break;
-              default:
-                projectUrl = readrProjectLink;
-            }
-          }
-          await browser.open(
-            url: Uri.parse(projectUrl),
-            options: ChromeSafariBrowserClassOptions(
-              android: AndroidChromeCustomTabsOptions(),
-              ios: IOSSafariOptions(barCollapsingEnabled: true),
-            ),
-          );
+          OpenProjectHelper().phaseByEditorChoiceItem(editorChoiceItem);
         } else {
           if (editorChoiceItem.id != null) {
             AutoRouter.of(context).push(StoryRoute(id: editorChoiceItem.id!));
           } else if (editorChoiceItem.link != null) {
-            await browser.open(
-              url: Uri.parse(editorChoiceItem.link!),
-              options: ChromeSafariBrowserClassOptions(
-                android: AndroidChromeCustomTabsOptions(),
-                ios: IOSSafariOptions(barCollapsingEnabled: true),
-              ),
-            );
+            OpenProjectHelper().openByUrl(editorChoiceItem.link!);
           }
         }
       },
