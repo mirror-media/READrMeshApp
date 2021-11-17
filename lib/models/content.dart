@@ -34,11 +34,26 @@ class Content {
           description: json['name'],
         );
       } else if (BaseModel.checkJsonKeys(json, ['embeddedCode'])) {
+        double? aspectRatio;
+        double? widthPercent;
+        if (json['width'] == null || json['height'] == null) {
+          aspectRatio = null;
+        } else {
+          if (json['width'].contains('%')) {
+            String percent = json['width'].replaceAll('%', '');
+            widthPercent = double.parse(percent) / 100;
+          }
+          if (widthPercent == null) {
+            aspectRatio =
+                double.parse(json['width']) / double.parse(json['height']);
+          } else {
+            double width = double.parse(json['height']) * widthPercent;
+            aspectRatio = width / double.parse(json['height']);
+          }
+        }
         return Content(
           data: json['embeddedCode'],
-          aspectRatio: (json['width'] == null || json['height'] == null)
-              ? null
-              : double.parse(json['width']) / double.parse(json['height']),
+          aspectRatio: aspectRatio,
           description: json['caption'],
         );
       } else if (BaseModel.checkJsonKeys(json, ['draftRawObj']) ||
