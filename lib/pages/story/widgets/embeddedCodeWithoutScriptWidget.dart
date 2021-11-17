@@ -19,10 +19,7 @@ class EmbeddedCodeWithoutScriptWidget extends StatefulWidget {
 class _EmbeddedCodeWithoutScriptWidgetState
     extends State<EmbeddedCodeWithoutScriptWidget>
     with AutomaticKeepAliveClientMixin {
-  bool _screenIsReseted = false;
   late WebViewController _webViewController;
-  double? _webViewWidth;
-  double? _webViewHeight;
   late double _webViewAspectRatio;
   late double _webViewBottomPadding;
 
@@ -119,14 +116,10 @@ class _EmbeddedCodeWithoutScriptWidgetState
         javascriptMode: JavascriptMode.unrestricted,
         gestureRecognizers: null,
         onPageFinished: (e) async {
-          _webViewWidth = double.tryParse(
-            await _webViewController
-                .evaluateJavascript("document.documentElement.scrollWidth;"),
-          );
-          _webViewHeight = double.tryParse(
-            await _webViewController
-                .evaluateJavascript("document.documentElement.scrollHeight;"),
-          );
+          await _webViewController
+              .evaluateJavascript("document.documentElement.scrollWidth;");
+          await _webViewController
+              .evaluateJavascript("document.documentElement.scrollHeight;");
         },
       ),
     );
