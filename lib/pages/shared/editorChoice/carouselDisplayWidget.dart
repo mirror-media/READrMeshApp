@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -9,7 +8,7 @@ import 'package:readr/models/editorChoiceItem.dart';
 class CarouselDisplayWidget extends StatelessWidget {
   final EditorChoiceItem editorChoiceItem;
   final double width;
-  CarouselDisplayWidget({
+  const CarouselDisplayWidget({
     required this.editorChoiceItem,
     required this.width,
   });

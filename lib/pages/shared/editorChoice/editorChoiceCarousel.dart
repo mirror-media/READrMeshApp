@@ -185,10 +185,12 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
             onVisibilityChanged: (visibilityInfo) {
               var visiblePercentage = visibilityInfo.visibleFraction * 100;
               if (visiblePercentage < 15) {
-                timer.pause();
+                timer.cancel();
                 _timerIsStart = false;
               } else if (!_timerIsStart) {
-                timer.reset();
+                timer.cancel();
+                timer = PausableTimer(
+                    const Duration(seconds: 5), () => _changeToNextPage());
                 timer.start();
                 _timerIsStart = true;
               }
