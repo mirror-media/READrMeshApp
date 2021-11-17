@@ -7,6 +7,7 @@ import 'package:readr/models/contentList.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/pages/story/widgets/annotationWidget.dart';
 import 'package:readr/pages/story/widgets/blockQuoteWidget.dart';
+import 'package:readr/pages/story/widgets/flourishEmbeddedCodeWidget.dart';
 import 'package:readr/pages/story/widgets/imageAndDescriptionSlideShowWidget.dart';
 import 'package:readr/pages/story/widgets/imageDescriptionWidget.dart';
 import 'package:readr/pages/story/widgets/infoBoxWidget.dart';
@@ -245,6 +246,15 @@ class ParagraphFormat {
       case 'embeddedcode':
         {
           if (paragraph.contents!.isNotEmpty) {
+            if (paragraph.contents![0].data.contains('flourish-embed')) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: FlourishEmbeddedCodeWidget(
+                  embeddedCode: paragraph.contents![0].data,
+                  aspectRatio: paragraph.contents![0].aspectRatio,
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: EmbeddedCodeWidget(
