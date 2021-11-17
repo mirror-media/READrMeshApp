@@ -45,6 +45,7 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
   late Future<bool> _configChewieFuture;
+  bool _isInitialized = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -67,6 +68,7 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
         showOptions: false,
       );
       if (widget.muted) _chewieController.setVolume(0.0);
+      _isInitialized = true;
     } catch (e) {
       print("Video Player error:" + e.toString());
       return false;
@@ -77,8 +79,10 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
-    _chewieController.dispose();
+    if (_isInitialized) {
+      _videoPlayerController.dispose();
+      _chewieController.dispose();
+    }
     super.dispose();
   }
 
