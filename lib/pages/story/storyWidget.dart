@@ -352,7 +352,7 @@ class _StoryWidgetState extends State<StoryWidget> {
       authorItems.add(Row(
         children: [
           Text(
-            "數據分析",
+            "資料分析",
             style: TextStyle(fontSize: 13, color: labelColor),
           ),
           horizontalLine,
@@ -717,7 +717,7 @@ class _StoryWidgetState extends State<StoryWidget> {
       articleWidgets.add(const Padding(
         padding: EdgeInsets.only(left: 20.0),
         child: Text(
-          '引用數據',
+          '引用資料',
           style: TextStyle(color: storyWidgetColor, fontSize: 13),
         ),
       ));
