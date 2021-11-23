@@ -35,7 +35,7 @@ class TagStoryListServices implements TagStoryListRepos {
       name
       publishTime
       style
-      wordCount
+      readingTime
       categories(where: {
         state: active
       }){

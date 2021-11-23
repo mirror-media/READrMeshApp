@@ -47,7 +47,7 @@ class TabStoryListServices implements TabStoryListRepos {
       name
       publishTime
       style
-      wordCount
+      readingTime
       categories(where: {
         state: active
       }){
@@ -70,7 +70,7 @@ class TabStoryListServices implements TabStoryListRepos {
       name
       publishTime
       style
-      wordCount
+      readingTime
       categories(where: {
         state: active
       }){

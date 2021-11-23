@@ -44,15 +44,13 @@ class StoryListItem {
       allPostsCategory = CategoryList.fromJson(json['categories']);
     }
 
-    int? readingTime;
+    int? readingTime = json['readingTime'];
+
     bool isProject = false;
     if (json['style'] == 'project3' ||
         json['style'] == 'embedded' ||
         json['style'] == 'report') {
       isProject = true;
-    }
-    if (json['wordCount'] != null) {
-      readingTime = (((json['wordCount']) / 8) / 60).round();
     }
     DateTime publishTime = DateTime.now();
     if (json['publishTime'] != null) {

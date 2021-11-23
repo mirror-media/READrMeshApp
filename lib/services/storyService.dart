@@ -35,7 +35,7 @@ class StoryServices implements StoryRepos {
       ) {
         style
         name
-        wordCount
+        readingTime
         summaryApiData
         contentApiData
         citationApiData
@@ -100,7 +100,7 @@ class StoryServices implements StoryRepos {
           name
           publishTime
           style
-          wordCount
+          readingTime
           categories(where: {
             state: active
           }){
@@ -170,7 +170,7 @@ class StoryServices implements StoryRepos {
         name
         publishTime
         style
-        wordCount
+        readingTime
         heroImage {
           urlMobileSized
         }
@@ -319,7 +319,7 @@ class StoryServices implements StoryRepos {
         name
         publishTime
         style
-        wordCount
+        readingTime
         heroImage {
           urlMobileSized
         }

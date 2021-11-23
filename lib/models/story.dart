@@ -101,10 +101,7 @@ class Story {
     if (BaseModel.checkJsonKeys(json, ['heroVideo', 'url'])) {
       videoUrl = json['heroVideo']['url'];
     }
-    int? readingTime;
-    if (json['wordCount'] != null) {
-      readingTime = (((json['wordCount']) / 8) / 60).round();
-    }
+    int? readingTime = json['readingTime'];
 
     return Story(
       style: json['style'],

@@ -37,7 +37,7 @@ class EditorChoiceServices implements EditorChoiceRepos {
           slug
           style
           ogDescription
-          wordCount
+          readingTime
           heroImage {
             urlMobileSized
           }

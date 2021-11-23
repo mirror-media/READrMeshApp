@@ -52,7 +52,7 @@ class EditorChoiceItem {
       slug = json['choice'][BaseModel.slugKey];
       style = json['choice']['style'];
       summary = json['choice']['ogDescription'];
-      readingTime = (((json['choice']['wordCount']) / 8) / 60).round();
+      readingTime = json['choice']['readingTime'];
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
       }
