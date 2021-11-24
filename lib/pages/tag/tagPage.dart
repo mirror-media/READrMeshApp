@@ -30,15 +30,15 @@ class _TagPageState extends State<TagPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _buildBar(context),
-        body: BlocProvider(
-            create: (context) => TagStoryListBloc(),
-            child: Container(
-              color: const Color.fromRGBO(246, 246, 251, 1),
-              child: SafeArea(
-                child: TagWidget(_tag),
-              ),
-            )));
+      appBar: _buildBar(context),
+      backgroundColor: const Color.fromRGBO(246, 246, 251, 1),
+      body: BlocProvider(
+        create: (context) => TagStoryListBloc(),
+        child: SafeArea(
+          child: TagWidget(_tag),
+        ),
+      ),
+    );
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {

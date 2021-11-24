@@ -38,13 +38,11 @@ class _StoryPageState extends State<StoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _buildBar(context),
+        backgroundColor: Colors.white,
         body: BlocProvider(
           create: (context) => _bloc,
-          child: Container(
-            color: Colors.white,
-            child: SafeArea(
-              child: StoryWidget(id: _id),
-            ),
+          child: SafeArea(
+            child: StoryWidget(id: _id),
           ),
         ));
   }
