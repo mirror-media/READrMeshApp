@@ -1,4 +1,6 @@
 PODS:
+  - "app_settings (3.0.0+1)":
+    - Flutter
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -165,6 +167,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -217,6 +220,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
   audioplayers:
@@ -267,6 +272,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
