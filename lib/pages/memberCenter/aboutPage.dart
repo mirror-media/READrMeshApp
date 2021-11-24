@@ -16,12 +16,15 @@ class _AboutPageState extends State<AboutPage> {
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
+        disableContextMenu: true,
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
       ),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
+        allowsLinkPreview: false,
+        disableLongPressContextMenuOnLinks: true,
       ));
 
   @override
@@ -61,6 +64,7 @@ class _AboutPageState extends State<AboutPage> {
     return Stack(
       children: [
         InAppWebView(
+          initialOptions: options,
           initialUrlRequest:
               URLRequest(url: Uri.parse("https://www.readr.tw/about")),
           onLoadStop: (controller, url) async {
