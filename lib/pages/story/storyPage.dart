@@ -39,11 +39,14 @@ class _StoryPageState extends State<StoryPage> {
     return Scaffold(
         appBar: _buildBar(context),
         body: BlocProvider(
-            create: (context) => _bloc,
-            child: Container(
-              color: Colors.white,
+          create: (context) => _bloc,
+          child: Container(
+            color: Colors.white,
+            child: SafeArea(
               child: StoryWidget(id: _id),
-            )));
+            ),
+          ),
+        ));
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {

@@ -107,47 +107,51 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
             systemOverlayStyle: SystemUiOverlayStyle.light,
             backgroundColor: Colors.black,
           ),
-          body: SafeArea(
-            bottom: false,
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: BlocProvider(
-                      create: (context) => EditorChoiceBloc(
-                        editorChoiceRepos: EditorChoiceServices(),
+          body: Container(
+            color: Colors.white,
+            child: SafeArea(
+              bottom: false,
+              child: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: BlocProvider(
+                        create: (context) => EditorChoiceBloc(
+                          editorChoiceRepos: EditorChoiceServices(),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: BuildEditorChoiceCarousel(),
+                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: BuildEditorChoiceCarousel(),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: const Color.fromRGBO(246, 246, 251, 1),
+                        height: 4,
                       ),
                     ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 4,
+                    SliverAppBar(
+                      pinned: true,
+                      primary: false,
+                      elevation: 0,
+                      toolbarHeight: 8,
+                      backgroundColor: Colors.white,
+                      bottom: TabBar(
+                        isScrollable: true,
+                        indicatorColor: tabBarSelectedColor,
+                        unselectedLabelColor: Colors.black38,
+                        tabs: _tabs.toList(),
+                        controller: _tabController,
+                      ),
                     ),
-                  ),
-                  SliverAppBar(
-                    pinned: true,
-                    primary: false,
-                    elevation: 0,
-                    toolbarHeight: 8,
-                    backgroundColor: Colors.white,
-                    bottom: TabBar(
-                      isScrollable: true,
-                      indicatorColor: tabBarSelectedColor,
-                      unselectedLabelColor: Colors.black38,
-                      tabs: _tabs.toList(),
-                      controller: _tabController,
-                    ),
-                  ),
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController,
-                children: _tabWidgets.toList(),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: _tabWidgets.toList(),
+                ),
               ),
             ),
           ),

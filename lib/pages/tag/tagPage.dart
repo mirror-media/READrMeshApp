@@ -35,7 +35,9 @@ class _TagPageState extends State<TagPage> {
             create: (context) => TagStoryListBloc(),
             child: Container(
               color: const Color.fromRGBO(246, 246, 251, 1),
-              child: TagWidget(_tag),
+              child: SafeArea(
+                child: TagWidget(_tag),
+              ),
             )));
   }
 
