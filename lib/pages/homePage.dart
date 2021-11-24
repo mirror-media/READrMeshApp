@@ -1,14 +1,16 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeSkeletonScreen.dart';
-import 'package:readr/pages/home/homeWidget.dart';
 import 'package:upgrader/upgrader.dart';
 
 class HomePage extends StatefulWidget {
@@ -43,36 +45,28 @@ class _HomePageState extends State<HomePage> {
           dialogStyle: Platform.isAndroid
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
-          child: HomeWidget(),
-          // Hide bottomNavigationBar due to only one page now
-          // child: AutoTabsScaffold(
-          //   routes: const [HomeRouter(), CategoryRouter()],
-          //   bottomNavigationBuilder: (_, tabsRouter) {
-          //     return BottomNavigationBar(
-          //       elevation: 10,
-          //       currentIndex: tabsRouter.activeIndex,
-          //       onTap: tabsRouter.setActiveIndex,
-          //       selectedItemColor: bottomNavigationBarSelectedColor,
-          //       unselectedItemColor: bottomNavigationBarUnselectedColor,
-          //       items: [
-          //         BottomNavigationBarItem(
-          //           activeIcon: SvgPicture.asset(
-          //             homeIconSvg,
-          //           ),
-          //           icon: SvgPicture.asset(
-          //             homeIconSvg,
-          //             color: bottomNavigationBarUnselectedColor,
-          //           ),
-          //           label: '首頁',
-          //         ),
-          //         const BottomNavigationBarItem(
-          //           icon: Icon(Icons.menu),
-          //           label: '分類',
-          //         ),
-          //       ],
-          //     );
-          //   },
-          // ),
+          child: AutoTabsScaffold(
+            routes: const [HomeRouter(), MemberCenterRouter()],
+            bottomNavigationBuilder: (_, tabsRouter) {
+              return BottomNavigationBar(
+                elevation: 10,
+                currentIndex: tabsRouter.activeIndex,
+                onTap: tabsRouter.setActiveIndex,
+                selectedItemColor: bottomNavigationBarSelectedColor,
+                unselectedItemColor: bottomNavigationBarUnselectedColor,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home_outlined),
+                    label: '首頁',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person_outline_outlined),
+                    label: '會員中心',
+                  ),
+                ],
+              );
+            },
+          ),
         );
       }
 
