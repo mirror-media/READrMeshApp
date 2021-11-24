@@ -80,7 +80,7 @@ class _AboutPageState extends State<AboutPage> {
             controller.evaluateJavascript(
                 source:
                     "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
-            await Future.delayed(const Duration(milliseconds: 1));
+            await Future.delayed(const Duration(milliseconds: 150));
             setState(() {
               _isLoading = false;
             });
