@@ -42,9 +42,9 @@ class _$AppRouter extends RootStackRouter {
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
-    CategoryRouter.name: (routeData) {
+    MemberCenterRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: CategoryPage());
+          routeData: routeData, child: MemberCenterPage());
     }
   };
 
@@ -53,8 +53,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(Initial.name, path: '/', children: [
           RouteConfig(HomeRouter.name,
               path: 'homeWidget', parent: Initial.name),
-          RouteConfig(CategoryRouter.name,
-              path: 'category', parent: Initial.name)
+          RouteConfig(MemberCenterRouter.name,
+              path: 'memberCenter', parent: Initial.name)
         ]),
         RouteConfig(StoryRoute.name, path: '/story-page'),
         RouteConfig(ErrorRoute.name, path: '/error-page'),
@@ -139,9 +139,9 @@ class HomeRouter extends PageRouteInfo<void> {
   static const String name = 'HomeRouter';
 }
 
-/// generated route for [CategoryPage]
-class CategoryRouter extends PageRouteInfo<void> {
-  const CategoryRouter() : super(name, path: 'category');
+/// generated route for [MemberCenterPage]
+class MemberCenterRouter extends PageRouteInfo<void> {
+  const MemberCenterRouter() : super(name, path: 'memberCenter');
 
-  static const String name = 'CategoryRouter';
+  static const String name = 'MemberCenterRouter';
 }

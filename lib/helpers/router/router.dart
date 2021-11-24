@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:readr/pages/category/categoryPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/pages/memberCenter/memberCenterPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
 import 'package:readr/pages/tag/tagPage.dart';
@@ -24,9 +24,9 @@ part 'router.gr.dart';
         page: HomeWidget,
       ),
       AutoRoute(
-        path: "category",
-        name: "CategoryRouter",
-        page: CategoryPage,
+        path: "memberCenter",
+        name: "MemberCenterRouter",
+        page: MemberCenterPage,
       ),
     ]),
     AutoRoute(page: StoryPage),
