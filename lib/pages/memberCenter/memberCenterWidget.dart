@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:readr/blocs/memberCenter/cubit.dart';
@@ -154,7 +155,9 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          _settingButton(text: '推播通知'),
+          _settingButton(
+              text: '推播通知',
+              onPressed: () => AppSettings.openNotificationSettings()),
           const Divider(
             color: Colors.black45,
             height: 1,
