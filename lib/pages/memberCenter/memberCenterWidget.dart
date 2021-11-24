@@ -157,10 +157,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
           _settingButton(text: '推播通知'),
           const Divider(
             color: Colors.black45,
+            height: 1,
           ),
           _settingButton(text: '關於'),
           const Divider(
             color: Colors.black45,
+            height: 1,
           ),
           SizedBox(
             height: 56,
@@ -246,6 +248,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
           ),
           const Divider(
             color: Colors.black45,
+            height: 1,
           ),
           InkWell(
             child: Container(
