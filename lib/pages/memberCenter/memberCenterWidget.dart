@@ -44,7 +44,9 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
           ),
         ),
       ),
-      body: _buildBody(),
+      body: SafeArea(
+        child: _buildBody(),
+      ),
     );
   }
 
@@ -64,7 +66,9 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         }
 
         return ListView(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: MediaQuery.of(context).orientation == Orientation.portrait
+              ? const NeverScrollableScrollPhysics()
+              : null,
           children: [
             _memberTile(email),
             const SizedBox(
