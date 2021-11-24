@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/memberCenter/cubit.dart';
+import 'package:readr/pages/memberCenter/memberCenterWidget.dart';
 
-class MemberCenterPage extends StatefulWidget {
-  @override
-  _MemberCenterPageState createState() => _MemberCenterPageState();
-}
-
-class _MemberCenterPageState extends State<MemberCenterPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class MemberCenterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('這是會員中心頁'),
+    return BlocProvider(
+      create: (BuildContext context) => MemberCenterCubit(),
+      child: MemberCenterWidget(),
     );
   }
 }
