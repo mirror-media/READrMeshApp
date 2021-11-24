@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/pages/memberCenter/aboutPage.dart';
 import 'package:readr/pages/memberCenter/memberCenterPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
@@ -32,6 +33,7 @@ part 'router.gr.dart';
     AutoRoute(page: StoryPage),
     AutoRoute(page: ErrorPage, fullscreenDialog: true),
     AutoRoute(page: TagPage),
+    AutoRoute(page: AboutPage),
   ],
 )
 // extend the generated private router

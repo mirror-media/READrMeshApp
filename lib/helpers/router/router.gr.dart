@@ -39,6 +39,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: TagPage(tag: args.tag));
     },
+    AboutRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(routeData: routeData, child: AboutPage());
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
@@ -58,7 +61,8 @@ class _$AppRouter extends RootStackRouter {
         ]),
         RouteConfig(StoryRoute.name, path: '/story-page'),
         RouteConfig(ErrorRoute.name, path: '/error-page'),
-        RouteConfig(TagRoute.name, path: '/tag-page')
+        RouteConfig(TagRoute.name, path: '/tag-page'),
+        RouteConfig(AboutRoute.name, path: '/about-page')
       ];
 }
 
@@ -130,6 +134,13 @@ class TagRouteArgs {
   const TagRouteArgs({required this.tag});
 
   final Tag tag;
+}
+
+/// generated route for [AboutPage]
+class AboutRoute extends PageRouteInfo<void> {
+  const AboutRoute() : super(name, path: '/about-page');
+
+  static const String name = 'AboutRoute';
 }
 
 /// generated route for [HomeWidget]
