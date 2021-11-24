@@ -14,7 +14,6 @@ class _AboutPageState extends State<AboutPage> {
   bool _isLoading = true;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
         disableContextMenu: true,
       ),
@@ -41,7 +40,10 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildBar(context),
-      body: _buildBody(context),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: _buildBody(context),
+      ),
     );
   }
 
