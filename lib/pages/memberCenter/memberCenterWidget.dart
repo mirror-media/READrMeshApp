@@ -1,9 +1,11 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:readr/blocs/memberCenter/cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/helpers/router/router.dart';
 
 class MemberCenterWidget extends StatefulWidget {
   @override
@@ -162,7 +164,9 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             color: Colors.black45,
             height: 1,
           ),
-          _settingButton(text: '關於'),
+          _settingButton(
+              text: '關於',
+              onPressed: () => AutoRouter.of(context).push(const AboutRoute())),
           const Divider(
             color: Colors.black45,
             height: 1,
