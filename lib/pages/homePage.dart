@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
                 elevation: 10,
+                backgroundColor: Colors.white,
                 currentIndex: tabsRouter.activeIndex,
                 onTap: tabsRouter.setActiveIndex,
                 selectedItemColor: bottomNavigationBarSelectedColor,
