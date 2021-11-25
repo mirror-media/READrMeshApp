@@ -22,7 +22,6 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
       appBar: AppBar(
         centerTitle: true,
         shadowColor: Colors.white,
-        //systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.white,
         title: const Text(
           '刪除帳號',
