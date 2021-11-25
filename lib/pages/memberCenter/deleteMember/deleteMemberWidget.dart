@@ -108,7 +108,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
               }
             },
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
               side: const BorderSide(
                 color: Colors.black,
                 width: 1,
