@@ -50,6 +50,11 @@ class _$AppRouter extends RootStackRouter {
     LoginRoute.name: (routeData) {
       return MaterialPageX<bool>(routeData: routeData, child: LoginPage());
     },
+    SendEmailRoute.name: (routeData) {
+      final args = routeData.argsAs<SendEmailRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: SendEmailPage(args.email));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
@@ -72,7 +77,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(TagRoute.name, path: '/tag-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
-        RouteConfig(LoginRoute.name, path: '/login-page')
+        RouteConfig(LoginRoute.name, path: '/login-page'),
+        RouteConfig(SendEmailRoute.name, path: '/send-email-page')
       ];
 }
 
@@ -174,6 +180,21 @@ class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute() : super(name, path: '/login-page');
 
   static const String name = 'LoginRoute';
+}
+
+/// generated route for [SendEmailPage]
+class SendEmailRoute extends PageRouteInfo<SendEmailRouteArgs> {
+  SendEmailRoute({required String email})
+      : super(name,
+            path: '/send-email-page', args: SendEmailRouteArgs(email: email));
+
+  static const String name = 'SendEmailRoute';
+}
+
+class SendEmailRouteArgs {
+  const SendEmailRouteArgs({required this.email});
+
+  final String email;
 }
 
 /// generated route for [HomeWidget]

@@ -7,6 +7,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:readr/helpers/router/router.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -160,7 +161,12 @@ class _LoginWidgetState extends State<LoginWidget> {
           height: 24,
         ),
         OutlinedButton(
-          onPressed: isEmail(_controller.text) ? () {} : null,
+          onPressed: isEmail(_controller.text)
+              ? () {
+                  AutoRouter.of(context)
+                      .push(SendEmailRoute(email: _controller.text));
+                }
+              : null,
           child: const Text('下一步'),
           style: OutlinedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 16),

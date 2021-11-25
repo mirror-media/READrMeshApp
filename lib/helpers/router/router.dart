@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
 import 'package:readr/pages/memberCenter/deleteMember/deleteMemberPage.dart';
 import 'package:readr/pages/memberCenter/loginMember/loginPage.dart';
+import 'package:readr/pages/memberCenter/loginMember/sendEmailPage.dart';
 import 'package:readr/pages/memberCenter/memberCenterPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
@@ -37,6 +38,7 @@ part 'router.gr.dart';
     AutoRoute(page: AboutPage),
     AutoRoute<bool>(page: DeleteMemberPage),
     AutoRoute<bool>(page: LoginPage),
+    AutoRoute(page: SendEmailPage),
   ],
 )
 // extend the generated private router
