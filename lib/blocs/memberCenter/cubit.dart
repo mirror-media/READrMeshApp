@@ -12,8 +12,9 @@ part 'state.dart';
 class MemberCenterCubit extends Cubit<MemberCenterState> {
   MemberCenterCubit() : super(MemberCenterInitial());
 
-  fetchMemberAndInfo() async {
+  fetchMemberAndInfo(bool login) async {
     print('FetchMemberAndInfo');
+    emit(MemberCenterLoading());
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;
     String buildNumber = packageInfo.buildNumber;
@@ -22,6 +23,7 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
       buildNumber: buildNumber,
       version: version,
       member: member,
+      isLogin: login,
     ));
   }
 
