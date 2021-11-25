@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
+import 'package:readr/models/member.dart';
 
 part 'state.dart';
 
@@ -16,9 +17,11 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;
     String buildNumber = packageInfo.buildNumber;
+    Member? member = Member(email: 'turtle3@gmail.com', firebaseId: 'test');
     emit(MemberCenterLoaded(
       buildNumber: buildNumber,
       version: version,
+      member: member,
     ));
   }
 

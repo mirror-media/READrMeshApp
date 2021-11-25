@@ -14,7 +14,12 @@ class MemberCenterLoading extends MemberCenterState {}
 class MemberCenterLoaded extends MemberCenterState {
   final String version;
   final String buildNumber;
-  const MemberCenterLoaded({required this.version, required this.buildNumber});
+  final Member? member;
+  const MemberCenterLoaded({
+    required this.version,
+    required this.buildNumber,
+    this.member,
+  });
 }
 
 class MemberCenterError extends MemberCenterState {
