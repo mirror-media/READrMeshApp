@@ -6,6 +6,7 @@ import 'package:readr/blocs/memberCenter/cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/models/member.dart';
 
 class MemberCenterWidget extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class MemberCenterWidget extends StatefulWidget {
 class _MemberCenterWidgetState extends State<MemberCenterWidget> {
   bool _isLogin = false;
   String _versionAndBuildNumber = '';
+  Member? member;
 
   @override
   void initState() {
@@ -53,7 +55,6 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
   Widget _buildBody() {
     return BlocBuilder<MemberCenterCubit, MemberCenterState>(
       builder: (context, state) {
-        String? email;
         if (state is MemberCenterError) {
           final error = state.error;
           print('MemberCenterError: ${error.message}');
@@ -62,7 +63,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
         if (state is MemberCenterLoaded) {
           _versionAndBuildNumber = 'v${state.version} (${state.buildNumber})';
-          email = 'turtle3@gmail.com';
+          member = state.member;
         }
 
         return ListView(
@@ -70,7 +71,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
               ? const NeverScrollableScrollPhysics()
               : null,
           children: [
-            _memberTile(email),
+            _memberTile(),
             const SizedBox(
               height: 12,
             ),
@@ -85,10 +86,10 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     );
   }
 
-  Widget _memberTile(String? email) {
+  Widget _memberTile() {
     Widget memberTileContent;
     double height;
-    if (_isLogin && email != null) {
+    if (_isLogin && member != null) {
       height = 98;
       memberTileContent = Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +107,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             height: 4.5,
           ),
           Text(
-            email,
+            member!.email,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -275,9 +276,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
               ),
             ),
             onTap: () {
-              setState(() {
-                _isLogin = false;
-              });
+              AutoRouter.of(context).push(DeleteMemberRoute(member: member!));
             },
           ),
         ],
