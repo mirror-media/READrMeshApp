@@ -104,6 +104,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
               if (_isInitialized) {
                 Navigator.of(context).pop();
               } else {
+                context.popRoute(true);
                 context.navigateTo(const Initial(children: [HomeRouter()]));
               }
             },

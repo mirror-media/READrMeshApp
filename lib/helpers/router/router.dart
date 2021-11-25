@@ -35,7 +35,7 @@ part 'router.gr.dart';
     AutoRoute(page: ErrorPage, fullscreenDialog: true),
     AutoRoute(page: TagPage),
     AutoRoute(page: AboutPage),
-    AutoRoute(page: DeleteMemberPage),
+    AutoRoute<bool>(page: DeleteMemberPage),
     AutoRoute<bool>(page: LoginPage),
   ],
 )

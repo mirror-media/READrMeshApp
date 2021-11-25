@@ -44,7 +44,7 @@ class _$AppRouter extends RootStackRouter {
     },
     DeleteMemberRoute.name: (routeData) {
       final args = routeData.argsAs<DeleteMemberRouteArgs>();
-      return MaterialPageX<dynamic>(
+      return MaterialPageX<bool>(
           routeData: routeData, child: DeleteMemberPage(member: args.member));
     },
     LoginRoute.name: (routeData) {

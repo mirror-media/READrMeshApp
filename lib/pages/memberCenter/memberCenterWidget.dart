@@ -275,8 +275,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
                 ),
               ),
             ),
-            onTap: () {
-              AutoRouter.of(context).push(DeleteMemberRoute(member: member!));
+            onTap: () async {
+              bool? isDeleted =
+                  await context.pushRoute(DeleteMemberRoute(member: member!));
+              if (isDeleted != null && isDeleted) {
+                _loadMemberAndInfo(!isDeleted);
+              }
             },
           ),
         ],
