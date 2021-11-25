@@ -20,12 +20,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
   @override
   void initState() {
-    _loadMemberAndInfo();
+    _loadMemberAndInfo(false);
     super.initState();
   }
 
-  _loadMemberAndInfo() {
-    context.read<MemberCenterCubit>().fetchMemberAndInfo();
+  _loadMemberAndInfo(bool testLogin) {
+    context.read<MemberCenterCubit>().fetchMemberAndInfo(testLogin);
   }
 
   @override
@@ -58,12 +58,13 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         if (state is MemberCenterError) {
           final error = state.error;
           print('MemberCenterError: ${error.message}');
-          _loadMemberAndInfo();
+          _loadMemberAndInfo(false);
         }
 
         if (state is MemberCenterLoaded) {
           _versionAndBuildNumber = 'v${state.version} (${state.buildNumber})';
           member = state.member;
+          _isLogin = state.isLogin;
         }
 
         return ListView(
@@ -119,10 +120,11 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     } else {
       height = 75;
       memberTileContent = InkWell(
-        onTap: () {
-          setState(() {
-            _isLogin = true;
-          });
+        onTap: () async {
+          bool? isLogin = await context.pushRoute(const LoginRoute());
+          if (isLogin != null && isLogin) {
+            _loadMemberAndInfo(isLogin);
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,9 +255,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
               ),
             ),
             onTap: () {
-              setState(() {
-                _isLogin = false;
-              });
+              _loadMemberAndInfo(false);
             },
           ),
           const Divider(
