@@ -47,6 +47,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: DeleteMemberPage(member: args.member));
     },
+    LoginRoute.name: (routeData) {
+      return MaterialPageX<bool>(routeData: routeData, child: LoginPage());
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
@@ -68,7 +71,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(ErrorRoute.name, path: '/error-page'),
         RouteConfig(TagRoute.name, path: '/tag-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
-        RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page')
+        RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
+        RouteConfig(LoginRoute.name, path: '/login-page')
       ];
 }
 
@@ -163,6 +167,13 @@ class DeleteMemberRouteArgs {
   const DeleteMemberRouteArgs({required this.member});
 
   final Member member;
+}
+
+/// generated route for [LoginPage]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute() : super(name, path: '/login-page');
+
+  static const String name = 'LoginRoute';
 }
 
 /// generated route for [HomeWidget]
