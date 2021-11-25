@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'helpers/router/router.dart';
 
 class ReadrApp extends StatelessWidget {
@@ -13,9 +14,9 @@ class ReadrApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xffEBF02C),
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        // appBarTheme: const AppBarTheme(
-        //   systemOverlayStyle: SystemUiOverlayStyle.light,
-        // ),
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
       ),
     );
   }
