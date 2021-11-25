@@ -24,8 +24,8 @@ const Color hightLightColor = Color(0xffEBF02C);
 const Color tabBarSelectedColor = Color(0xffEBF02C);
 const Color editorChoiceTagColor = Color(0xffEBF02C);
 const Color editorChoiceBackgroundColor = Color(0xffFFFFFF);
-const Color bottomNavigationBarSelectedColor = Color(0xff04295E);
-const Color bottomNavigationBarUnselectedColor = Colors.grey;
+const Color bottomNavigationBarSelectedColor = Colors.black;
+const Color bottomNavigationBarUnselectedColor = Colors.black54;
 
 const Color storyWidgetColor = Color(0xff04295E);
 const Color storySummaryFrameColor = storyWidgetColor;
