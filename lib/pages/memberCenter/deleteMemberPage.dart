@@ -99,7 +99,8 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
         ),
         Container(
           height: 48,
-          padding: const EdgeInsets.symmetric(horizontal: 71.5),
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          alignment: Alignment.center,
           child: OutlinedButton(
             onPressed: () {
               if (_isInitialized) {
@@ -109,6 +110,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               }
             },
             style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
               side: const BorderSide(
                 color: Colors.black,
                 width: 1,
@@ -116,7 +118,6 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
             ),
             child: Text(
               buttonText,
-              softWrap: true,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
