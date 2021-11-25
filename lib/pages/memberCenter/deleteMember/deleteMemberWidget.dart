@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:readr/helpers/router/router.dart';
 
-class DeleteMemberPage extends StatefulWidget {
+class DeleteMemberWidget extends StatefulWidget {
   final Member member;
-  const DeleteMemberPage({required this.member});
+  const DeleteMemberWidget({required this.member});
   @override
-  _DeleteMemberPageState createState() => _DeleteMemberPageState();
+  _DeleteMemberWidgetState createState() => _DeleteMemberWidgetState();
 }
 
-class _DeleteMemberPageState extends State<DeleteMemberPage> {
+class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
   bool _isInitialized = true;
   bool _isSuccess = false;
   @override

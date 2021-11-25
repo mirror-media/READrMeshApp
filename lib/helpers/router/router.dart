@@ -4,7 +4,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
-import 'package:readr/pages/memberCenter/deleteMemberPage.dart';
+import 'package:readr/pages/memberCenter/deleteMember/deleteMemberPage.dart';
 import 'package:readr/pages/memberCenter/memberCenterPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
