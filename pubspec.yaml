@@ -111,6 +111,8 @@ dependencies:
   package_info_plus: ^1.3.0
   # open device setting
   app_settings: ^4.1.1
+  # check email format
+  email_validator: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
