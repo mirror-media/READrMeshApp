@@ -4,10 +4,13 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:readr/blocs/login/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -62,9 +65,38 @@ class _LoginWidgetState extends State<LoginWidget> {
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-          child: _buildContent(),
+          child: _buildBody(),
         ),
       ),
+    );
+  }
+
+  Widget _buildBody() {
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state is LoginFailed) {
+          Fluttertoast.showToast(
+            msg: "登入失敗",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0,
+          );
+        } else if (state is SendEmailFailed) {
+          Fluttertoast.showToast(
+            msg: "寄信失敗",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0,
+          );
+        } else if (state is SendEmailSuccess) {
+          AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
+        } else if (state is LoginSuccess) {
+          context.popRoute(true);
+        }
+      },
+      child: _buildContent(),
     );
   }
 
@@ -163,8 +195,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         OutlinedButton(
           onPressed: isEmail(_controller.text)
               ? () {
-                  AutoRouter.of(context)
-                      .push(SendEmailRoute(email: _controller.text));
+                  context
+                      .read<LoginBloc>()
+                      .add(EmailLogin(email: _controller.text));
                 }
               : null,
           child: const Text('下一步'),
