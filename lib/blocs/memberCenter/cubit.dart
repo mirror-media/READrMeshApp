@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
@@ -11,20 +12,31 @@ part 'state.dart';
 
 class MemberCenterCubit extends Cubit<MemberCenterState> {
   MemberCenterCubit() : super(MemberCenterInitial());
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  fetchMemberAndInfo(bool login) async {
+  fetchMemberAndInfo() async {
     print('FetchMemberAndInfo');
     emit(MemberCenterLoading());
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;
     String buildNumber = packageInfo.buildNumber;
-    Member? member = Member(email: 'turtle3@gmail.com', firebaseId: 'test');
+    Member? member;
+    if (_auth.currentUser != null) {
+      member = Member(
+        email: _auth.currentUser!.email!,
+        firebaseId: _auth.currentUser!.uid,
+      );
+    }
     emit(MemberCenterLoaded(
       buildNumber: buildNumber,
       version: version,
       member: member,
-      isLogin: login,
     ));
+  }
+
+  logout() async {
+    await _auth.signOut();
+    await fetchMemberAndInfo();
   }
 
   @override
