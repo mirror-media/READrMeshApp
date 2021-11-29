@@ -20,12 +20,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
   @override
   void initState() {
-    _loadMemberAndInfo(false);
+    _loadMemberAndInfo();
     super.initState();
   }
 
-  _loadMemberAndInfo(bool testLogin) {
-    context.read<MemberCenterCubit>().fetchMemberAndInfo(testLogin);
+  _loadMemberAndInfo() {
+    context.read<MemberCenterCubit>().fetchMemberAndInfo();
   }
 
   @override
@@ -58,13 +58,17 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         if (state is MemberCenterError) {
           final error = state.error;
           print('MemberCenterError: ${error.message}');
-          _loadMemberAndInfo(false);
+          _loadMemberAndInfo();
         }
 
         if (state is MemberCenterLoaded) {
           _versionAndBuildNumber = 'v${state.version} (${state.buildNumber})';
           member = state.member;
-          _isLogin = state.isLogin;
+          if (member != null) {
+            _isLogin = true;
+          } else {
+            _isLogin = false;
+          }
         }
 
         return ListView(
@@ -90,7 +94,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
   Widget _memberTile() {
     Widget memberTileContent;
     double height;
-    if (_isLogin && member != null) {
+    if (_isLogin) {
       height = 98;
       memberTileContent = Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +127,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         onTap: () async {
           bool? isLogin = await context.pushRoute(const LoginRoute());
           if (isLogin != null && isLogin) {
-            _loadMemberAndInfo(isLogin);
+            _loadMemberAndInfo();
           }
         },
         child: Row(
@@ -255,7 +259,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
               ),
             ),
             onTap: () {
-              _loadMemberAndInfo(false);
+              _loadMemberAndInfo();
             },
           ),
           const Divider(
@@ -279,7 +283,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
               bool? isDeleted =
                   await context.pushRoute(DeleteMemberRoute(member: member!));
               if (isDeleted != null && isDeleted) {
-                _loadMemberAndInfo(!isDeleted);
+                _loadMemberAndInfo();
               }
             },
           ),
