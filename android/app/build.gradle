@@ -100,14 +100,17 @@ android {
             dimension "flavors"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "READr dev"
+            resValue "string", "dynamiclink_host", "readrdev.page.link"
         }
         staging {
             dimension "flavors"
             applicationIdSuffix ".staging"
             resValue "string", "app_name", "READr staging"
+            resValue "string", "dynamiclink_host", "readrstaging.page.link"
         }
         prod {
             dimension "flavors"
+            resValue "string", "dynamiclink_host", "readrprod.page.link"
         }
     }
 
