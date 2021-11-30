@@ -12,7 +12,7 @@ import 'package:readr/pages/story/widgets/flourishEmbeddedCodeWidget.dart';
 import 'package:readr/pages/story/widgets/imageAndDescriptionSlideShowWidget.dart';
 import 'package:readr/pages/story/widgets/imageDescriptionWidget.dart';
 import 'package:readr/pages/story/widgets/infoBoxWidget.dart';
-import 'package:readr/pages/story/widgets/mNewsAudioPlayer.dart';
+import 'package:readr/pages/story/widgets/readrAudioPlayer.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
 import 'package:readr/pages/story/widgets/quoteByWidget.dart';
@@ -218,7 +218,7 @@ class ParagraphFormat {
             }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: MNewsAudioPlayer(
+              child: READrAudioPlayer(
                 audioUrl: paragraph.contents![0].data,
                 title: titleAndDescription,
                 textSize: textSize,
