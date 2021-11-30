@@ -126,7 +126,7 @@ class ParagraphFormat {
       case 'slideshow':
         {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 32),
             child: ImageAndDescriptionSlideShowWidget(
                 contentList: paragraph.contents!, textSize: textSize),
           );

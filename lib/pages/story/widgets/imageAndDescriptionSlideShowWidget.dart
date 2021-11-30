@@ -17,34 +17,8 @@ class ImageAndDescriptionSlideShowWidget extends StatefulWidget {
 
 class _ImageAndDescriptionSlideShowWidgetState
     extends State<ImageAndDescriptionSlideShowWidget> {
-  int currentPage = 1;
   late ContentList contentList;
-  late CarouselOptions options;
-  CarouselController imageCarouselController = CarouselController();
-  CarouselController textCarouselController = CarouselController();
   late double textSize;
-
-  Widget backArrowWidget = const Icon(
-    Icons.arrow_back_ios,
-    color: slideShowColor,
-    size: 30,
-  );
-
-  Widget forwardArrowWidget = const Icon(
-    Icons.arrow_forward_ios,
-    color: slideShowColor,
-    size: 30,
-  );
-
-  // VerticalDivider is broken? so use Container
-  Widget myVerticalDivider = Padding(
-    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-    child: Container(
-      color: const Color(0xff757575),
-      width: 1.8,
-      height: 20,
-    ),
-  );
 
   @override
   void initState() {
@@ -54,126 +28,62 @@ class _ImageAndDescriptionSlideShowWidgetState
   }
 
   @override
-  void didUpdateWidget(ImageAndDescriptionSlideShowWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    textSize = widget.textSize;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - 48;
+    var width = MediaQuery.of(context).size.width;
     double imageHeight = width / 16 * 9;
-    options = CarouselOptions(
-      viewportFraction: 1,
-      aspectRatio: 16 / 9,
-      enlargeCenterPage: true,
-      onPageChanged: (index, reason) {
-        setState(() {
-          currentPage = index + 1;
-        });
-      },
-    );
 
     List<Widget> imageSilders = contentList
         .map(
-          (content) => CachedNetworkImage(
-            height: imageHeight,
-            width: width,
-            imageUrl: content.data,
-            placeholder: (context, url) => Container(
-              height: imageHeight,
-              width: width,
-              color: Colors.grey,
-            ),
-            errorWidget: (context, url, error) => Container(
-              height: imageHeight,
-              width: width,
-              color: Colors.grey,
-              child: const Icon(Icons.error),
-            ),
-            fit: BoxFit.fitHeight,
+          (content) => Column(
+            children: [
+              CachedNetworkImage(
+                height: imageHeight,
+                width: width,
+                imageUrl: content.data,
+                placeholder: (context, url) => Container(
+                  height: imageHeight,
+                  width: width,
+                  color: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => Container(
+                  height: imageHeight,
+                  width: width,
+                  color: Colors.grey,
+                  child: const Icon(Icons.error),
+                ),
+                fit: BoxFit.fitHeight,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              RichText(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                text: TextSpan(
+                  style: TextStyle(
+                      color: const Color(0xff757575),
+                      fontSize: textSize - 4,
+                      fontWeight: FontWeight.w400),
+                  text: content.description,
+                ),
+              ),
+              SizedBox(
+                height: _isNullOrEmpty(content.description) ? 12 : 32,
+              ),
+            ],
           ),
         )
         .toList();
 
     return Column(
-      children: [
-        CarouselSlider(
-          items: imageSilders,
-          carouselController: imageCarouselController,
-          options: options,
-        ),
-        const SizedBox(height: 14),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          InkWell(
-            child: backArrowWidget,
-            onTap: () {
-              imageCarouselController.previousPage();
-              textCarouselController.nextPage();
-            },
-          ),
-          Row(
-            children: [
-              Text(
-                currentPage.toString(),
-                style: TextStyle(
-                  color: slideShowColor,
-                  fontSize: textSize,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              myVerticalDivider,
-              Text(
-                imageSilders.length.toString(),
-                style: TextStyle(
-                  fontSize: textSize,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-          InkWell(
-            child: forwardArrowWidget,
-            onTap: () {
-              imageCarouselController.nextPage();
-              textCarouselController.nextPage();
-            },
-          ),
-        ]),
-        const SizedBox(height: 18),
-        _buildTextCarouselSlider(textCarouselController),
-      ],
+      children: imageSilders,
     );
   }
 
-  Widget _buildTextCarouselSlider(CarouselController carouselController) {
-    CarouselOptions options = CarouselOptions(
-      height: 38,
-      viewportFraction: 1,
-      //aspectRatio: 16/9,
-      enlargeCenterPage: true,
-      onPageChanged: (index, reason) {},
-    );
-    List<Widget> textSilders = contentList
-        .map(
-          (content) => RichText(
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            text: TextSpan(
-              style: TextStyle(
-                  color: const Color(0xff757575),
-                  fontSize: textSize - 5,
-                  fontWeight: FontWeight.w400),
-              text: content.description,
-            ),
-          ),
-        )
-        .toList();
-
-    return CarouselSlider(
-      items: textSilders,
-      carouselController: carouselController,
-      options: options,
-    );
+  bool _isNullOrEmpty(String? text) {
+    if (text == null || text == "" || text == " " || text.isEmpty) {
+      return true;
+    }
+    return false;
   }
 }
