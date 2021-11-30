@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:readr/helpers/dataConstants.dart';
 
 class InfoBoxWidget extends StatelessWidget {
   final String title;
@@ -9,29 +8,37 @@ class InfoBoxWidget extends StatelessWidget {
   const InfoBoxWidget({
     required this.title,
     required this.description,
-    this.textSize = 20,
+    this.textSize = 16,
   });
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
+    return Container(
+      color: const Color.fromRGBO(246, 246, 251, 1),
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      margin: const EdgeInsets.symmetric(vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: const Color.fromRGBO(4, 41, 94, 1),
+            padding: const EdgeInsets.only(left: 8),
+            child: Container(
+              color: const Color.fromRGBO(246, 246, 251, 1),
+              padding: const EdgeInsets.only(left: 24),
               child: Text(
                 title,
                 style: TextStyle(
                   fontSize: textSize,
-                  color: infoBoxTitleColor,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            const SizedBox(height: 16.0),
-            HtmlWidget(
+          ),
+          const SizedBox(height: 8.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: HtmlWidget(
               description,
               customStylesBuilder: (element) {
                 if (element.localName == 'a') {
@@ -52,6 +59,15 @@ class InfoBoxWidget extends StatelessWidget {
                     'font-weight': '500',
                     'font-size': '18px',
                   };
+                } else if (element.localName == 'strong') {
+                  return {
+                    'color': 'black',
+                    'font-weight': '700',
+                  };
+                } else if (element.localName == 'ul') {
+                  return {
+                    'padding-left': '18px',
+                  };
                 }
                 return null;
               },
@@ -61,8 +77,8 @@ class InfoBoxWidget extends StatelessWidget {
                 //color: color,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

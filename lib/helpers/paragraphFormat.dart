@@ -190,13 +190,10 @@ class ParagraphFormat {
       case 'infobox':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: InfoBoxWidget(
-                title: paragraph.contents![0].description ?? '',
-                description: paragraph.contents![0].data,
-                textSize: textSize,
-              ),
+            return InfoBoxWidget(
+              title: paragraph.contents![0].description ?? '',
+              description: paragraph.contents![0].data,
+              textSize: textSize - 2,
             );
           }
           return Container();
