@@ -67,26 +67,50 @@ class StoryServices implements StoryRepos {
         writers {
           name
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         photographers {
           name
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         cameraOperators {
           name
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         designers {
           name
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         engineers {
           name 
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         dataAnalysts{
           name
           slug
+          bio
+          image{
+            urlMobileSized
+          }
         }
         otherByline
         tags {
