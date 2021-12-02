@@ -16,6 +16,7 @@ const String defaultImageSvg = 'assets/image/defaultImage.svg';
 const String tabNoContentPng = 'assets/image/tabNoContent.png';
 const String homeIconSvg = 'assets/image/homeIcon.svg';
 const String googleLogoSvg = 'assets/image/googleLogo.svg';
+const String authorDefaultPng = 'assets/image/authorDefaultImage.png';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
