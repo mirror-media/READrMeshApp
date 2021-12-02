@@ -15,7 +15,7 @@ import 'package:readr/models/storyListItemList.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/models/tag.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/storyListSkeletonScreen.dart';
+import 'package:readr/pages/tag/tagSkeletonScreen.dart';
 
 class TagWidget extends StatefulWidget {
   final Tag tag;
@@ -84,7 +84,7 @@ class _TagWidgetState extends State<TagWidget> {
         return _buildList(_tagStoryList);
       }
       // state is Init, loading, or other
-      return StoryListSkeletonScreen();
+      return TagListSkeletonScreen();
     });
   }
 
@@ -103,7 +103,7 @@ class _TagWidgetState extends State<TagWidget> {
               padding: const EdgeInsets.only(bottom: 24),
             );
           }
-          _fetchNextPageByTagSlug();
+          if (!loadingMore) _fetchNextPageByTagSlug();
           return Center(
             child: Platform.isAndroid
                 ? const CircularProgressIndicator()
