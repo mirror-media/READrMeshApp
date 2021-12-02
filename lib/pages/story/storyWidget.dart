@@ -399,11 +399,15 @@ class _StoryWidgetState extends State<StoryWidget> {
     List<Widget> authorNameList = [];
 
     for (int i = 0; i < peopleList.length; i++) {
-      authorNameList.add(Text(
-        peopleList[i].name,
-        style: const TextStyle(
-          fontSize: 13,
-          color: Colors.black87,
+      authorNameList.add(GestureDetector(
+        onTap: () =>
+            AutoRouter.of(context).push(AuthorRoute(people: peopleList[i])),
+        child: Text(
+          peopleList[i].name,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Colors.black87,
+          ),
         ),
       ));
       if (i != peopleList.length - 1) {
