@@ -55,6 +55,11 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: SendEmailPage(args.email));
     },
+    AuthorRoute.name: (routeData) {
+      final args = routeData.argsAs<AuthorRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: AuthorPage(people: args.people));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
     },
@@ -78,7 +83,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
         RouteConfig(LoginRoute.name, path: '/login-page'),
-        RouteConfig(SendEmailRoute.name, path: '/send-email-page')
+        RouteConfig(SendEmailRoute.name, path: '/send-email-page'),
+        RouteConfig(AuthorRoute.name, path: '/author-page')
       ];
 }
 
@@ -195,6 +201,21 @@ class SendEmailRouteArgs {
   const SendEmailRouteArgs({required this.email});
 
   final String email;
+}
+
+/// generated route for [AuthorPage]
+class AuthorRoute extends PageRouteInfo<AuthorRouteArgs> {
+  AuthorRoute({required People people})
+      : super(name,
+            path: '/author-page', args: AuthorRouteArgs(people: people));
+
+  static const String name = 'AuthorRoute';
+}
+
+class AuthorRouteArgs {
+  const AuthorRouteArgs({required this.people});
+
+  final People people;
 }
 
 /// generated route for [HomeWidget]

@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/people.dart';
+import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,7 @@ part 'router.gr.dart';
     AutoRoute<bool>(page: DeleteMemberPage),
     AutoRoute<bool>(page: LoginPage),
     AutoRoute(page: SendEmailPage),
+    AutoRoute(page: AuthorPage),
   ],
 )
 // extend the generated private router
