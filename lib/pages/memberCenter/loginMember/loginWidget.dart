@@ -89,10 +89,10 @@ class _LoginWidgetState extends State<LoginWidget> {
         } else if (state is SendEmailFailed) {
           _emailSendLoading = false;
           Fluttertoast.showToast(
-            msg: "寄信失敗",
+            msg: "Email寄送失敗",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
+            timeInSecForIosWeb: 3,
             fontSize: 16.0,
           );
         } else if (state is SendEmailSuccess) {
