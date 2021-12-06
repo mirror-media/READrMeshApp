@@ -103,6 +103,7 @@ dependencies:
   firebase_auth: ^3.2.0
   # sign in with apple
   sign_in_with_apple: ^3.2.0
+  crypto: ^3.0.1
   # google sign in
   google_sign_in: ^5.2.1
   # facebook sign in

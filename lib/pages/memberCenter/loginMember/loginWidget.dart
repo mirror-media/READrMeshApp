@@ -24,6 +24,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool _emailSendLoading = false;
   bool _googleLoginLoading = false;
   bool _facebookLoginLoading = false;
+  bool _appleLoginLoading = false;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     _emailSendLoading = false;
     _googleLoginLoading = false;
     _facebookLoginLoading = false;
+    _appleLoginLoading = false;
     super.initState();
   }
 
@@ -85,7 +87,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           Fluttertoast.showToast(
             msg: "登入失敗",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             fontSize: 16.0,
           );
@@ -93,12 +95,13 @@ class _LoginWidgetState extends State<LoginWidget> {
             _emailSendLoading = false;
             _googleLoginLoading = false;
             _facebookLoginLoading = false;
+            _appleLoginLoading = false;
           });
         } else if (state is SendEmailFailed) {
           Fluttertoast.showToast(
             msg: "Email寄送失敗",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 3,
             fontSize: 16.0,
           );
@@ -128,10 +131,12 @@ class _LoginWidgetState extends State<LoginWidget> {
           height: 12,
         ),
         _googleButton(),
-        const SizedBox(
-          height: 12,
-        ),
-        _appleButton(),
+        if (Platform.isIOS) ...[
+          const SizedBox(
+            height: 12,
+          ),
+          _appleButton(),
+        ],
         const SizedBox(
           height: 24,
         ),
@@ -313,7 +318,12 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   Widget _appleButton() {
     return OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          _appleLoginLoading = true;
+        });
+        context.read<LoginBloc>().add(AppleLogin());
+      },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(
           color: Colors.black,
@@ -326,14 +336,16 @@ class _LoginWidgetState extends State<LoginWidget> {
         size: 18,
         color: Colors.black,
       ),
-      label: const Text(
-        '以 Apple 帳號繼續',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
-        ),
-      ),
+      label: _appleLoginLoading
+          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
+          : const Text(
+              '以 Apple 帳號繼續',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
     );
   }
 
