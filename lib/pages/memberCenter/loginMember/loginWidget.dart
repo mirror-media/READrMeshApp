@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +21,7 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController _controller = TextEditingController();
   final _textFieldFocusNode = FocusNode();
+  bool _emailSendLoading = false;
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     _controller.addListener(() {
       setState(() {});
     });
+    _emailSendLoading = false;
     super.initState();
   }
 
@@ -75,6 +78,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailed) {
+          _emailSendLoading = false;
           Fluttertoast.showToast(
             msg: "登入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -83,6 +87,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             fontSize: 16.0,
           );
         } else if (state is SendEmailFailed) {
+          _emailSendLoading = false;
           Fluttertoast.showToast(
             msg: "寄信失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -91,6 +96,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             fontSize: 16.0,
           );
         } else if (state is SendEmailSuccess) {
+          _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
         } else if (state is LoginSuccess) {
           context.popRoute(true);
@@ -195,12 +201,17 @@ class _LoginWidgetState extends State<LoginWidget> {
         OutlinedButton(
           onPressed: isEmail(_controller.text)
               ? () {
+                  setState(() {
+                    _emailSendLoading = true;
+                  });
                   context
                       .read<LoginBloc>()
                       .add(EmailLogin(email: _controller.text));
                 }
               : null,
-          child: const Text('下一步'),
+          child: _emailSendLoading
+              ? const SpinKitThreeBounce(color: Colors.black, size: 30)
+              : const Text('下一步'),
           style: OutlinedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 16),
             fixedSize: const Size(double.infinity, 48),
