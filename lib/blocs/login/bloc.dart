@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/helpers/environment.dart';
@@ -20,6 +21,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           isSuccess = await _signInWithEmailAndLink(event.email);
         } else if (event is GoogleLogin) {
           isSuccess = await _signInWithGoogle();
+        } else if (event is FacebookLogin) {
+          isSuccess = await _signInWithFacebook();
         }
 
         if (event is EmailLogin && isSuccess) {
@@ -90,7 +93,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       return true;
     } catch (e) {
-      print('signInWithGoogle failed');
+      print('SignInWithGoogle failed');
+      return false;
+    }
+  }
+
+  Future<bool> _signInWithFacebook() async {
+    try {
+      // Trigger the sign-in flow
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        // Create a credential from the access token
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        // Once signed in, return the UserCredential
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('SignInWithFacebook failed');
       return false;
     }
   }

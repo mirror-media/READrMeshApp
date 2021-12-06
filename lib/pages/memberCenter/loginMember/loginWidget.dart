@@ -23,6 +23,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final _textFieldFocusNode = FocusNode();
   bool _emailSendLoading = false;
   bool _googleLoginLoading = false;
+  bool _facebookLoginLoading = false;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     });
     _emailSendLoading = false;
     _googleLoginLoading = false;
+    _facebookLoginLoading = false;
     super.initState();
   }
 
@@ -80,8 +82,6 @@ class _LoginWidgetState extends State<LoginWidget> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailed) {
-          _emailSendLoading = false;
-          _googleLoginLoading = false;
           Fluttertoast.showToast(
             msg: "登入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -89,6 +89,11 @@ class _LoginWidgetState extends State<LoginWidget> {
             timeInSecForIosWeb: 1,
             fontSize: 16.0,
           );
+          setState(() {
+            _emailSendLoading = false;
+            _googleLoginLoading = false;
+            _facebookLoginLoading = false;
+          });
         } else if (state is SendEmailFailed) {
           _emailSendLoading = false;
           Fluttertoast.showToast(
@@ -241,7 +246,10 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget _facebookButton() {
     return OutlinedButton.icon(
       onPressed: () {
-        context.popRoute(true);
+        setState(() {
+          _facebookLoginLoading = true;
+        });
+        context.read<LoginBloc>().add(FacebookLogin());
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(
@@ -255,14 +263,16 @@ class _LoginWidgetState extends State<LoginWidget> {
         size: 18,
         color: Color.fromRGBO(59, 89, 152, 1),
       ),
-      label: const Text(
-        '以 Facebook 帳號繼續',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
-        ),
-      ),
+      label: _facebookLoginLoading
+          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
+          : const Text(
+              '以 Facebook 帳號繼續',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
     );
   }
 
