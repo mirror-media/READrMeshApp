@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:readr/blocs/memberCenter/cubit.dart';
@@ -258,7 +259,8 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
                 ),
               ),
             ),
-            onTap: () {
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
               _loadMemberAndInfo();
             },
           ),
