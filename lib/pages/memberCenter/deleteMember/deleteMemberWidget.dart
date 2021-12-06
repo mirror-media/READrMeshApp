@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
 import 'package:auto_route/auto_route.dart';
@@ -130,10 +131,19 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
         ),
         if (_isInitialized)
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance.currentUser!.delete();
+                _isSuccess = true;
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'requires-recent-login') {
+                  print(
+                      'The user must reauthenticate before this operation can be executed.');
+                }
+                _isSuccess = false;
+              }
               setState(() {
                 _isInitialized = false;
-                _isSuccess = true;
               });
             },
             child: const Text(
