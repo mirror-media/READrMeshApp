@@ -22,6 +22,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController _controller = TextEditingController();
   final _textFieldFocusNode = FocusNode();
   bool _emailSendLoading = false;
+  bool _googleLoginLoading = false;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       setState(() {});
     });
     _emailSendLoading = false;
+    _googleLoginLoading = false;
     super.initState();
   }
 
@@ -79,6 +81,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       listener: (context, state) {
         if (state is LoginFailed) {
           _emailSendLoading = false;
+          _googleLoginLoading = false;
           Fluttertoast.showToast(
             msg: "登入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -265,7 +268,12 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   Widget _googleButton() {
     return OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          _googleLoginLoading = true;
+        });
+        context.read<LoginBloc>().add(GoogleLogin());
+      },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(
           color: Colors.black,
@@ -278,14 +286,16 @@ class _LoginWidgetState extends State<LoginWidget> {
         width: 16,
         height: 16,
       ),
-      label: const Text(
-        '以 Google 帳號繼續',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
-        ),
-      ),
+      label: _googleLoginLoading
+          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
+          : const Text(
+              '以 Google 帳號繼續',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
     );
   }
 
