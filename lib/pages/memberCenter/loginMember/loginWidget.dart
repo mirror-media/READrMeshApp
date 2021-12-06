@@ -95,7 +95,6 @@ class _LoginWidgetState extends State<LoginWidget> {
             _facebookLoginLoading = false;
           });
         } else if (state is SendEmailFailed) {
-          _emailSendLoading = false;
           Fluttertoast.showToast(
             msg: "Email寄送失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -103,6 +102,9 @@ class _LoginWidgetState extends State<LoginWidget> {
             timeInSecForIosWeb: 3,
             fontSize: 16.0,
           );
+          setState(() {
+            _emailSendLoading = false;
+          });
         } else if (state is SendEmailSuccess) {
           _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
