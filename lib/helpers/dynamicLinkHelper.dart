@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DynamicLinkHelper {
@@ -43,6 +44,12 @@ class DynamicLinkHelper {
       // value.additionalUserInfo.isNewUser;
 
       print('Successfully signed in with email link!');
+      Fluttertoast.showToast(
+        msg: "$email登入成功",
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 5,
+        fontSize: 16.0,
+      );
     }).catchError((onError) {
       print('Error signing in with email link $onError');
     });
