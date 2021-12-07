@@ -100,7 +100,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       return true;
     } catch (e) {
-      print('SignInWithGoogle failed');
+      print('SignInWithGoogle failed: ${e.toString()}');
       return false;
     }
   }
@@ -121,7 +121,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return false;
       }
     } catch (e) {
-      print('SignInWithFacebook failed');
+      print('SignInWithFacebook failed: ${e.toString()}');
       return false;
     }
   }
