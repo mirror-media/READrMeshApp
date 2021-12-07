@@ -99,27 +99,13 @@ android {
         dev {
             dimension "flavors"
             applicationIdSuffix ".dev"
-            resValue "string", "app_name", "READr dev"
-            resValue "string", "dynamiclink_host", "readrdev.page.link"
-            resValue "string", "facebook_app_id", "2138298816406811"
-            resValue "string", "fb_login_protocol_scheme", "fb2138298816406811"
-            resValue "string", "facebook_client_token", "832e761fef78441a976e5dcf649538a7"
         }
         staging {
             dimension "flavors"
             applicationIdSuffix ".staging"
-            resValue "string", "app_name", "READr staging"
-            resValue "string", "dynamiclink_host", "readrstaging.page.link"
-            resValue "string", "facebook_app_id", "2138298816406811"
-            resValue "string", "fb_login_protocol_scheme", "fb2138298816406811"
-            resValue "string", "facebook_client_token", "832e761fef78441a976e5dcf649538a7"
         }
         prod {
             dimension "flavors"
-            resValue "string", "dynamiclink_host", "readrprod.page.link"
-            resValue "string", "facebook_app_id", "2138298816406811"
-            resValue "string", "fb_login_protocol_scheme", "fb2138298816406811"
-            resValue "string", "facebook_client_token", "832e761fef78441a976e5dcf649538a7"
         }
     }
 
