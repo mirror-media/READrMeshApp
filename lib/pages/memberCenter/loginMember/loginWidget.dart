@@ -265,11 +265,13 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         fixedSize: const Size(double.infinity, 48),
       ),
-      icon: const FaIcon(
-        FontAwesomeIcons.facebookSquare,
-        size: 18,
-        color: Color.fromRGBO(59, 89, 152, 1),
-      ),
+      icon: _facebookLoginLoading
+          ? Container()
+          : const FaIcon(
+              FontAwesomeIcons.facebookSquare,
+              size: 18,
+              color: Color.fromRGBO(59, 89, 152, 1),
+            ),
       label: _facebookLoginLoading
           ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
           : const Text(
@@ -298,11 +300,13 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         fixedSize: const Size(double.infinity, 48),
       ),
-      icon: SvgPicture.asset(
-        googleLogoSvg,
-        width: 16,
-        height: 16,
-      ),
+      icon: _googleLoginLoading
+          ? Container()
+          : SvgPicture.asset(
+              googleLogoSvg,
+              width: 16,
+              height: 16,
+            ),
       label: _googleLoginLoading
           ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
           : const Text(
@@ -331,11 +335,13 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         fixedSize: const Size(double.infinity, 48),
       ),
-      icon: const FaIcon(
-        FontAwesomeIcons.apple,
-        size: 18,
-        color: Colors.black,
-      ),
+      icon: _appleLoginLoading
+          ? Container()
+          : const FaIcon(
+              FontAwesomeIcons.apple,
+              size: 18,
+              color: Colors.black,
+            ),
       label: _appleLoginLoading
           ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
           : const Text(
