@@ -41,6 +41,9 @@ class TagStoryListBloc extends Bloc<TagStoryListEvents, TagStoryListState> {
           skip: tagStoryList.length,
           withCount: false,
         );
+        for (var item in tagStoryList) {
+          newStoryListItemList.removeWhere((element) => element.id == item.id);
+        }
         tagStoryList.addAll(newStoryListItemList);
         yield TagStoryListState.loaded(
           tagStoryList: tagStoryList,

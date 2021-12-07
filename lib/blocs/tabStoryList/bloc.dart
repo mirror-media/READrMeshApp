@@ -48,6 +48,12 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
         );
         StoryListItemList newStoryListItemList = futureList[0];
         StoryListItemList newprojectList = futureList[1];
+        for (var item in storyListItemList) {
+          newStoryListItemList.removeWhere((element) => element.id == item.id);
+        }
+        for (var item in projectList) {
+          newprojectList.removeWhere((element) => element.id == item.id);
+        }
         StoryListItemList newMixedList = _mixTwoList(
           storyListItemList: newStoryListItemList,
           projectList: newprojectList,
@@ -84,6 +90,12 @@ class TabStoryListBloc extends Bloc<TabStoryListEvents, TabStoryListState> {
         );
         StoryListItemList newStoryListItemList = futureList[0];
         StoryListItemList newprojectList = futureList[1];
+        for (var item in storyListItemList) {
+          newStoryListItemList.removeWhere((element) => element.id == item.id);
+        }
+        for (var item in projectList) {
+          newprojectList.removeWhere((element) => element.id == item.id);
+        }
         StoryListItemList newMixedList = _mixTwoList(
           storyListItemList: newStoryListItemList,
           projectList: newprojectList,

@@ -43,6 +43,9 @@ class AuthorStoryListBloc
           skip: authorStoryList.length,
           withCount: false,
         );
+        for (var item in authorStoryList) {
+          newStoryListItemList.removeWhere((element) => element.id == item.id);
+        }
         authorStoryList.addAll(newStoryListItemList);
         yield AuthorStoryListState.loaded(
           authorStoryList: authorStoryList,
