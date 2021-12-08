@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readr/blocs/login/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -22,9 +22,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController _controller = TextEditingController();
   final _textFieldFocusNode = FocusNode();
   bool _emailSendLoading = false;
-  bool _googleLoginLoading = false;
-  bool _facebookLoginLoading = false;
-  bool _appleLoginLoading = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -33,9 +31,6 @@ class _LoginWidgetState extends State<LoginWidget> {
       setState(() {});
     });
     _emailSendLoading = false;
-    _googleLoginLoading = false;
-    _facebookLoginLoading = false;
-    _appleLoginLoading = false;
     super.initState();
   }
 
@@ -83,40 +78,39 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget _buildBody() {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginFailed) {
-          Fluttertoast.showToast(
-            msg: "登入失敗",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0,
-          );
+        if (state is MemberLoginFailed) {
+          showToast("登入失敗");
           setState(() {
             _emailSendLoading = false;
-            _googleLoginLoading = false;
-            _facebookLoginLoading = false;
-            _appleLoginLoading = false;
           });
         } else if (state is SendEmailFailed) {
-          Fluttertoast.showToast(
-            msg: "Email寄送失敗",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 3,
-            fontSize: 16.0,
-          );
+          showToast("Email寄送失敗");
           setState(() {
             _emailSendLoading = false;
           });
         } else if (state is SendEmailSuccess) {
           _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
-        } else if (state is LoginSuccess) {
+        } else if (state is MemberLoginSuccess) {
           context.popRoute(true);
         }
       },
       child: _buildContent(),
     );
+  }
+
+  void showToast(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      fontSize: 16.0,
+    );
+  }
+
+  void firebaseLoginSuccess() {
+    BlocProvider.of<LoginBloc>(context).add(FirebaseLoginSuccess());
   }
 
   Widget _buildContent() {
@@ -126,16 +120,34 @@ class _LoginWidgetState extends State<LoginWidget> {
           ? const NeverScrollableScrollPhysics()
           : null,
       children: [
-        _facebookButton(),
+        LoginButton(
+          type: LoginType.facebook,
+          onSuccess: firebaseLoginSuccess,
+          onFailed: () {
+            showToast("登入失敗");
+          },
+        ),
         const SizedBox(
           height: 12,
         ),
-        _googleButton(),
+        LoginButton(
+          type: LoginType.google,
+          onSuccess: firebaseLoginSuccess,
+          onFailed: () {
+            showToast("登入失敗");
+          },
+        ),
         if (Platform.isIOS) ...[
           const SizedBox(
             height: 12,
           ),
-          _appleButton(),
+          LoginButton(
+            type: LoginType.apple,
+            onSuccess: firebaseLoginSuccess,
+            onFailed: () {
+              showToast("登入失敗");
+            },
+          ),
         ],
         const SizedBox(
           height: 24,
@@ -249,111 +261,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   bool isEmail(String input) => EmailValidator.validate(input);
-
-  Widget _facebookButton() {
-    return OutlinedButton.icon(
-      onPressed: () {
-        setState(() {
-          _facebookLoginLoading = true;
-        });
-        context.read<LoginBloc>().add(FacebookLogin());
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(
-          color: Colors.black,
-          width: 1,
-        ),
-        fixedSize: const Size(double.infinity, 48),
-      ),
-      icon: _facebookLoginLoading
-          ? Container()
-          : const FaIcon(
-              FontAwesomeIcons.facebookSquare,
-              size: 18,
-              color: Color.fromRGBO(59, 89, 152, 1),
-            ),
-      label: _facebookLoginLoading
-          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
-          : const Text(
-              '以 Facebook 帳號繼續',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-    );
-  }
-
-  Widget _googleButton() {
-    return OutlinedButton.icon(
-      onPressed: () {
-        setState(() {
-          _googleLoginLoading = true;
-        });
-        context.read<LoginBloc>().add(GoogleLogin());
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(
-          color: Colors.black,
-          width: 1,
-        ),
-        fixedSize: const Size(double.infinity, 48),
-      ),
-      icon: _googleLoginLoading
-          ? Container()
-          : SvgPicture.asset(
-              googleLogoSvg,
-              width: 16,
-              height: 16,
-            ),
-      label: _googleLoginLoading
-          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
-          : const Text(
-              '以 Google 帳號繼續',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-    );
-  }
-
-  Widget _appleButton() {
-    return OutlinedButton.icon(
-      onPressed: () {
-        setState(() {
-          _appleLoginLoading = true;
-        });
-        context.read<LoginBloc>().add(AppleLogin());
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(
-          color: Colors.black,
-          width: 1,
-        ),
-        fixedSize: const Size(double.infinity, 48),
-      ),
-      icon: _appleLoginLoading
-          ? Container()
-          : const FaIcon(
-              FontAwesomeIcons.apple,
-              size: 18,
-              color: Colors.black,
-            ),
-      label: _appleLoginLoading
-          ? const SpinKitThreeBounce(color: Colors.black12, size: 30)
-          : const Text(
-              '以 Apple 帳號繼續',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-    );
-  }
 
   Widget _statement() {
     String html =
