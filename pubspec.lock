@@ -240,7 +240,7 @@ packages:
     source: hosted
     version: "3.0.1"
   crypto:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: crypto
       url: "https://pub.dartlang.org"
@@ -450,7 +450,7 @@ packages:
     source: git
     version: "0.1.1"
   flutter_facebook_auth:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_facebook_auth
       url: "https://pub.dartlang.org"
@@ -498,6 +498,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_login:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "9fcba1914617a0a76defc34556e20f9fae546049"
+      url: "https://github.com/mirror-media/flutter_login.git"
+    source: git
+    version: "0.0.1"
   flutter_native_splash:
     dependency: "direct dev"
     description:
@@ -621,7 +630,7 @@ packages:
     source: hosted
     version: "2.0.2"
   google_sign_in:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_sign_in
       url: "https://pub.dartlang.org"
@@ -1090,7 +1099,7 @@ packages:
     source: hosted
     version: "2.0.0"
   sign_in_with_apple:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sign_in_with_apple
       url: "https://pub.dartlang.org"
