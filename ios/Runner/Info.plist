@@ -34,6 +34,10 @@
 				<string>com.readr.news</string>
 				<string>com.readr.news.staging</string>
 				<string>com.readr.news.dev</string>
+				<string>fb2138298816406811</string>
+				<string>com.googleusercontent.apps.611179505112-65uo53fvr2qfp8n1ttc7ep46s1d3l98e</string>
+				<string>com.googleusercontent.apps.593370764604-5mfjo94aho5d14f20bjqr30ff89mft9c</string>
+				<string>com.googleusercontent.apps.40777440099-904v5qlp53sj0rat93s00rbsm3eg7ho9</string>
 			</array>
 		</dict>
 	</array>
@@ -71,15 +75,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
- 	 	<dict>
-    		<key>CFBundleURLSchemes</key>
-    		<array>
-      			<string>fb2138298816406811</string>
-    		</array>
-  		</dict>
-	</array>
 	<key>FacebookAppID</key>
 	<string>2138298816406811</string>
 	<key>FacebookClientToken</key>
