@@ -33,7 +33,7 @@ class DynamicLinkHelper {
 
   _loginWithEmailLink(String emailLink) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String email = prefs.getString('userEmail') ?? "";
+    String email = prefs.getString('signInEmail') ?? "";
 
     // The client SDK will parse the code from the link for you.
     _auth.signInWithEmailLink(email: email, emailLink: emailLink).then((value) {
