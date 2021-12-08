@@ -15,6 +15,6 @@ class SendEmailSuccess extends LoginState {}
 
 class SendEmailFailed extends LoginState {}
 
-class LoginSuccess extends LoginState {}
+class MemberLoginSuccess extends LoginState {}
 
-class LoginFailed extends LoginState {}
+class MemberLoginFailed extends LoginState {}
