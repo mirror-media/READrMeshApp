@@ -7,19 +7,9 @@ abstract class LoginEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FacebookLogin extends LoginEvent {
+class FirebaseLoginSuccess extends LoginEvent {
   @override
-  String toString() => "Facebook Login";
-}
-
-class GoogleLogin extends LoginEvent {
-  @override
-  String toString() => "Google Login";
-}
-
-class AppleLogin extends LoginEvent {
-  @override
-  String toString() => "Apple Login";
+  String toString() => "Firebase login success";
 }
 
 class EmailLogin extends LoginEvent {
