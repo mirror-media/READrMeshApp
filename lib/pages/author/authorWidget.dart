@@ -392,12 +392,10 @@ class _AuthorWidgetState extends State<AuthorWidget> {
         children: [
           Text(DateFormat('MM/dd').format(storyListItem.publishTime),
               style: style),
-          if (storyListItem.readingTime != null &&
-              storyListItem.readingTime! > 1.0)
-            Text(
-              '・閱讀時間 ${storyListItem.readingTime!.toString()} 分鐘',
-              style: style,
-            ),
+          Text(
+            '・閱讀時間 ${storyListItem.readingTime.toString()} 分鐘',
+            style: style,
+          ),
         ],
       ),
     );

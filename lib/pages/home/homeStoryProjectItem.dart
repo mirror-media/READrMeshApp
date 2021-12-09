@@ -112,12 +112,10 @@ class HomeStoryPjojectItem extends StatelessWidget {
         children: [
           Text(DateFormat('MM/dd').format(projectListItem.publishTime),
               style: style),
-          if (projectListItem.readingTime != null &&
-              projectListItem.readingTime! > 1.0)
-            Text(
-              '・閱讀時間 ${projectListItem.readingTime!.toString()} 分鐘',
-              style: style,
-            ),
+          Text(
+            '・閱讀時間 ${projectListItem.readingTime.toString()} 分鐘',
+            style: style,
+          ),
         ],
       ),
     );

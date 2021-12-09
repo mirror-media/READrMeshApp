@@ -1097,11 +1097,10 @@ class _StoryWidgetState extends State<StoryWidget> {
       child: Row(
         children: [
           Text(DateFormat('MM/dd').format(story.publishTime), style: style),
-          if (story.readingTime != null && story.readingTime! > 1.0)
-            Text(
-              '・閱讀時間 ${story.readingTime!.toString()} 分鐘',
-              style: style,
-            ),
+          Text(
+            '・閱讀時間 ${story.readingTime.toString()} 分鐘',
+            style: style,
+          ),
         ],
       ),
     );
