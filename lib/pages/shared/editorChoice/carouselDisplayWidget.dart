@@ -106,12 +106,10 @@ class CarouselDisplayWidget extends StatelessWidget {
       child: Row(
         children: [
           Text(editorChoiceItem.publishTimeString, style: style),
-          if (editorChoiceItem.readingTime != null &&
-              editorChoiceItem.readingTime! > 1.0)
-            Text(
-              '・閱讀時間 ${editorChoiceItem.readingTime!.toString()} 分鐘',
-              style: style,
-            ),
+          Text(
+            '・閱讀時間 ${editorChoiceItem.readingTime.toString()} 分鐘',
+            style: style,
+          ),
         ],
       ),
     );

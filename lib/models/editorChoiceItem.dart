@@ -11,7 +11,7 @@ class EditorChoiceItem {
   String? summary;
   bool isProject;
   String publishTimeString;
-  int? readingTime;
+  int readingTime;
 
   EditorChoiceItem({
     required this.id,
@@ -23,7 +23,7 @@ class EditorChoiceItem {
     this.link,
     this.summary,
     this.isProject = false,
-    this.readingTime,
+    required this.readingTime,
   });
 
   factory EditorChoiceItem.fromJson(Map<String, dynamic> json) {
@@ -45,14 +45,14 @@ class EditorChoiceItem {
     String? slug;
     String? style;
     String? summary;
-    int? readingTime;
+    int readingTime = 10;
     bool isProject = false;
     if (json['choice'] != null) {
       id = json['choice'][BaseModel.idKey];
       slug = json['choice'][BaseModel.slugKey];
       style = json['choice']['style'];
       summary = json['choice']['ogDescription'];
-      readingTime = json['choice']['readingTime'];
+      readingTime = json['choice']['readingTime'] ?? 10;
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
       }
