@@ -11,7 +11,7 @@ class StoryListItem {
   CategoryList? categoryList;
   DateTime publishTime;
   bool isProject;
-  int? readingTime;
+  int readingTime;
   TagList? tags;
   StoryListItem({
     required this.id,
@@ -22,7 +22,7 @@ class StoryListItem {
     required this.publishTime,
     this.categoryList,
     this.isProject = false,
-    this.readingTime,
+    required this.readingTime,
     this.tags,
   });
 
@@ -44,7 +44,7 @@ class StoryListItem {
       allPostsCategory = CategoryList.fromJson(json['categories']);
     }
 
-    int? readingTime = json['readingTime'];
+    int readingTime = json['readingTime'] ?? 10;
 
     bool isProject = false;
     if (json['style'] == 'project3' ||
