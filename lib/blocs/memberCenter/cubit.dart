@@ -23,7 +23,7 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
     Member? member;
     if (_auth.currentUser != null) {
       member = Member(
-        email: _auth.currentUser!.email!,
+        email: _auth.currentUser!.email ?? '',
         firebaseId: _auth.currentUser!.uid,
       );
     }
