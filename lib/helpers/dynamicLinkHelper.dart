@@ -6,16 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DynamicLinkHelper {
   final _auth = FirebaseAuth.instance;
   void initDynamicLinks() async {
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-      final Uri? deepLink = dynamicLink?.link;
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
+      final Uri? deepLink = dynamicLink.link;
 
       if (deepLink != null) {
         if (_auth.isSignInWithEmailLink(deepLink.toString())) {
           _loginWithEmailLink(deepLink.toString());
         }
       }
-    }, onError: (OnLinkErrorException e) async {
+    }).onError((e) async {
       print('onLinkError');
       print(e.message);
     });
