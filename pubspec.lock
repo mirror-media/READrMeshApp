@@ -60,16 +60,20 @@ packages:
   auto_route:
     dependency: "direct main"
     description:
-      name: auto_route
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: auto_route
+      ref: HEAD
+      resolved-ref: a07eb7811ca4cfde215f81515d1edcf5bfe94e35
+      url: "https://github.com/Agondev/auto_route_library"
+    source: git
     version: "3.1.3"
   auto_route_generator:
     dependency: "direct dev"
     description:
-      name: auto_route_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: auto_route_generator
+      ref: HEAD
+      resolved-ref: a07eb7811ca4cfde215f81515d1edcf5bfe94e35
+      url: "https://github.com/Agondev/auto_route_library"
+    source: git
     version: "3.1.0"
   auto_size_text:
     dependency: "direct main"
@@ -218,6 +222,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  cloud_firestore:
+    dependency: transitive
+    description:
+      name: cloud_firestore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.4"
+  cloud_firestore_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_firestore_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.9"
+  cloud_firestore_web:
+    dependency: transitive
+    description:
+      name: cloud_firestore_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.6.4"
   code_builder:
     dependency: transitive
     description:
@@ -267,6 +292,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  desktop_webview_auth:
+    dependency: transitive
+    description:
+      name: desktop_webview_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   device_info:
     dependency: transitive
     description:
@@ -365,6 +397,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.2"
+  firebase_database:
+    dependency: transitive
+    description:
+      name: firebase_database
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.0.2"
+  firebase_database_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_database_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+2"
+  firebase_database_web:
+    dependency: transitive
+    description:
+      name: firebase_database_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+2"
   firebase_dynamic_links:
     dependency: "direct main"
     description:
@@ -512,12 +565,17 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_login:
     dependency: "direct main"
     description:
       path: "."
       ref: main
-      resolved-ref: "5d0ad0f963728788e640e9853f41e9f819b97127"
+      resolved-ref: dfa327180fabf131bb09c44d3eec0c19ef258bb1
       url: "https://github.com/mirror-media/flutter_login.git"
     source: git
     version: "0.0.1"
@@ -541,7 +599,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.23.0+1"
+    version: "1.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -566,6 +624,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.2"
+  flutterfire_ui:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: acc68e612f7bc10a692203a7485f89c720ea3a3b
+      url: "https://github.com/mirror-media/flutterfire_ui.git"
+    source: git
+    version: "0.2.0+1"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -866,14 +933,14 @@ packages:
       name: path_drawing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1+1"
+    version: "1.0.0"
   path_parsing:
     dependency: transitive
     description:
       name: path_parsing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "1.0.0"
   path_provider:
     dependency: transitive
     description:
@@ -1243,6 +1310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  twitter_login:
+    dependency: transitive
+    description:
+      name: twitter_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   typed_data:
     dependency: transitive
     description:

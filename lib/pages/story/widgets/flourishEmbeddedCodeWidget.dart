@@ -119,12 +119,12 @@ class _FlourishEmbeddedCodeWidgetState extends State<FlourishEmbeddedCodeWidget>
         gestureRecognizers: null,
         onPageFinished: (e) async {
           _webViewWidth = double.tryParse(
-            await _webViewController
-                .evaluateJavascript("document.documentElement.scrollWidth;"),
+            await _webViewController.runJavascriptReturningResult(
+                "document.documentElement.scrollWidth;"),
           );
           _webViewHeight = double.tryParse(
-            await _webViewController
-                .evaluateJavascript("document.documentElement.scrollHeight;"),
+            await _webViewController.runJavascriptReturningResult(
+                "document.documentElement.scrollHeight;"),
           );
 
           // reset the webview size

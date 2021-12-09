@@ -88,18 +88,21 @@ class _$AppRouter extends RootStackRouter {
       ];
 }
 
-/// generated route for [InitialApp]
+/// generated route for
+/// [InitialApp]
 class Initial extends PageRouteInfo<void> {
   const Initial({List<PageRouteInfo>? children})
-      : super(name, path: '/', initialChildren: children);
+      : super(Initial.name, path: '/', initialChildren: children);
 
   static const String name = 'Initial';
 }
 
-/// generated route for [StoryPage]
+/// generated route for
+/// [StoryPage]
 class StoryRoute extends PageRouteInfo<StoryRouteArgs> {
   StoryRoute({required String id})
-      : super(name, path: '/story-page', args: StoryRouteArgs(id: id));
+      : super(StoryRoute.name,
+            path: '/story-page', args: StoryRouteArgs(id: id));
 
   static const String name = 'StoryRoute';
 }
@@ -108,16 +111,22 @@ class StoryRouteArgs {
   const StoryRouteArgs({required this.id});
 
   final String id;
+
+  @override
+  String toString() {
+    return 'StoryRouteArgs{id: $id}';
+  }
 }
 
-/// generated route for [ErrorPage]
+/// generated route for
+/// [ErrorPage]
 class ErrorRoute extends PageRouteInfo<ErrorRouteArgs> {
   ErrorRoute(
       {required dynamic error,
       required void Function() onPressed,
       bool needPop = false,
       bool hideAppbar = false})
-      : super(name,
+      : super(ErrorRoute.name,
             path: '/error-page',
             args: ErrorRouteArgs(
                 error: error,
@@ -142,12 +151,18 @@ class ErrorRouteArgs {
   final bool needPop;
 
   final bool hideAppbar;
+
+  @override
+  String toString() {
+    return 'ErrorRouteArgs{error: $error, onPressed: $onPressed, needPop: $needPop, hideAppbar: $hideAppbar}';
+  }
 }
 
-/// generated route for [TagPage]
+/// generated route for
+/// [TagPage]
 class TagRoute extends PageRouteInfo<TagRouteArgs> {
   TagRoute({required Tag tag})
-      : super(name, path: '/tag-page', args: TagRouteArgs(tag: tag));
+      : super(TagRoute.name, path: '/tag-page', args: TagRouteArgs(tag: tag));
 
   static const String name = 'TagRoute';
 }
@@ -156,19 +171,26 @@ class TagRouteArgs {
   const TagRouteArgs({required this.tag});
 
   final Tag tag;
+
+  @override
+  String toString() {
+    return 'TagRouteArgs{tag: $tag}';
+  }
 }
 
-/// generated route for [AboutPage]
+/// generated route for
+/// [AboutPage]
 class AboutRoute extends PageRouteInfo<void> {
-  const AboutRoute() : super(name, path: '/about-page');
+  const AboutRoute() : super(AboutRoute.name, path: '/about-page');
 
   static const String name = 'AboutRoute';
 }
 
-/// generated route for [DeleteMemberPage]
+/// generated route for
+/// [DeleteMemberPage]
 class DeleteMemberRoute extends PageRouteInfo<DeleteMemberRouteArgs> {
   DeleteMemberRoute({required Member member})
-      : super(name,
+      : super(DeleteMemberRoute.name,
             path: '/delete-member-page',
             args: DeleteMemberRouteArgs(member: member));
 
@@ -179,19 +201,26 @@ class DeleteMemberRouteArgs {
   const DeleteMemberRouteArgs({required this.member});
 
   final Member member;
+
+  @override
+  String toString() {
+    return 'DeleteMemberRouteArgs{member: $member}';
+  }
 }
 
-/// generated route for [LoginPage]
+/// generated route for
+/// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute() : super(name, path: '/login-page');
+  const LoginRoute() : super(LoginRoute.name, path: '/login-page');
 
   static const String name = 'LoginRoute';
 }
 
-/// generated route for [SendEmailPage]
+/// generated route for
+/// [SendEmailPage]
 class SendEmailRoute extends PageRouteInfo<SendEmailRouteArgs> {
   SendEmailRoute({required String email})
-      : super(name,
+      : super(SendEmailRoute.name,
             path: '/send-email-page', args: SendEmailRouteArgs(email: email));
 
   static const String name = 'SendEmailRoute';
@@ -201,12 +230,18 @@ class SendEmailRouteArgs {
   const SendEmailRouteArgs({required this.email});
 
   final String email;
+
+  @override
+  String toString() {
+    return 'SendEmailRouteArgs{email: $email}';
+  }
 }
 
-/// generated route for [AuthorPage]
+/// generated route for
+/// [AuthorPage]
 class AuthorRoute extends PageRouteInfo<AuthorRouteArgs> {
   AuthorRoute({required People people})
-      : super(name,
+      : super(AuthorRoute.name,
             path: '/author-page', args: AuthorRouteArgs(people: people));
 
   static const String name = 'AuthorRoute';
@@ -216,18 +251,26 @@ class AuthorRouteArgs {
   const AuthorRouteArgs({required this.people});
 
   final People people;
+
+  @override
+  String toString() {
+    return 'AuthorRouteArgs{people: $people}';
+  }
 }
 
-/// generated route for [HomeWidget]
+/// generated route for
+/// [HomeWidget]
 class HomeRouter extends PageRouteInfo<void> {
-  const HomeRouter() : super(name, path: 'homeWidget');
+  const HomeRouter() : super(HomeRouter.name, path: 'homeWidget');
 
   static const String name = 'HomeRouter';
 }
 
-/// generated route for [MemberCenterPage]
+/// generated route for
+/// [MemberCenterPage]
 class MemberCenterRouter extends PageRouteInfo<void> {
-  const MemberCenterRouter() : super(name, path: 'memberCenter');
+  const MemberCenterRouter()
+      : super(MemberCenterRouter.name, path: 'memberCenter');
 
   static const String name = 'MemberCenterRouter';
 }

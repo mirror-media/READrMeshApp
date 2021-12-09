@@ -117,9 +117,9 @@ class _EmbeddedCodeWithoutScriptWidgetState
         gestureRecognizers: null,
         onPageFinished: (e) async {
           await _webViewController
-              .evaluateJavascript("document.documentElement.scrollWidth;");
+              .runJavascript("document.documentElement.scrollWidth;");
           await _webViewController
-              .evaluateJavascript("document.documentElement.scrollHeight;");
+              .runJavascript("document.documentElement.scrollHeight;");
         },
       ),
     );
