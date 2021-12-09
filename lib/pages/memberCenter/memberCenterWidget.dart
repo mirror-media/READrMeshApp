@@ -21,7 +21,9 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
   @override
   void initState() {
-    _loadMemberAndInfo();
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+      _loadMemberAndInfo();
+    });
     super.initState();
   }
 
@@ -125,11 +127,8 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     } else {
       height = 75;
       memberTileContent = InkWell(
-        onTap: () async {
-          bool? isLogin = await context.pushRoute(const LoginRoute());
-          if (isLogin != null && isLogin) {
-            _loadMemberAndInfo();
-          }
+        onTap: () {
+          context.pushRoute(const LoginRoute());
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -261,7 +260,6 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             ),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
-              _loadMemberAndInfo();
             },
           ),
           const Divider(
@@ -281,12 +279,8 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
                 ),
               ),
             ),
-            onTap: () async {
-              bool? isDeleted =
-                  await context.pushRoute(DeleteMemberRoute(member: member!));
-              if (isDeleted != null && isDeleted) {
-                _loadMemberAndInfo();
-              }
+            onTap: () {
+              context.pushRoute(DeleteMemberRoute(member: member!));
             },
           ),
         ],

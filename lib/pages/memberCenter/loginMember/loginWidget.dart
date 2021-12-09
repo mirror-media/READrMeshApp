@@ -92,7 +92,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
         } else if (state is MemberLoginSuccess) {
-          context.popRoute(true);
+          Navigator.of(context).pop();
         }
       },
       child: _buildContent(),
