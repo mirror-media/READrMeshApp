@@ -44,11 +44,11 @@ class _$AppRouter extends RootStackRouter {
     },
     DeleteMemberRoute.name: (routeData) {
       final args = routeData.argsAs<DeleteMemberRouteArgs>();
-      return MaterialPageX<bool>(
+      return MaterialPageX<dynamic>(
           routeData: routeData, child: DeleteMemberPage(member: args.member));
     },
     LoginRoute.name: (routeData) {
-      return MaterialPageX<bool>(routeData: routeData, child: LoginPage());
+      return MaterialPageX<dynamic>(routeData: routeData, child: LoginPage());
     },
     SendEmailRoute.name: (routeData) {
       final args = routeData.argsAs<SendEmailRouteArgs>();
