@@ -257,14 +257,13 @@ class _StoryWidgetState extends State<StoryWidget> {
               color: Colors.black54,
             ),
           ),
-          if (story.readingTime != null && story.readingTime! > 1.0)
-            Text(
-              '・閱讀時間 ${story.readingTime!.round().toString()} 分鐘',
-              style: const TextStyle(
-                fontSize: 13,
-                color: Colors.black54,
-              ),
+          Text(
+            '・閱讀時間 ${story.readingTime.round().toString()} 分鐘',
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.black54,
             ),
+          ),
         ],
       ),
     );

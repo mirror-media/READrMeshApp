@@ -10,7 +10,7 @@ class Story {
   final String? style;
   final String? name;
   final ParagraphList? summaryApiData;
-  final int? readingTime;
+  final int readingTime;
   final ParagraphList? contentApiData;
   final List<String>? contentAnnotationData;
   final ParagraphList? citationApiData;
@@ -39,7 +39,7 @@ class Story {
     this.style,
     this.name,
     this.summaryApiData,
-    this.readingTime,
+    this.readingTime = 10,
     this.contentApiData,
     this.publishTime,
     this.updatedAt,
@@ -101,7 +101,7 @@ class Story {
     if (BaseModel.checkJsonKeys(json, ['heroVideo', 'url'])) {
       videoUrl = json['heroVideo']['url'];
     }
-    int? readingTime = json['readingTime'];
+    int readingTime = json['readingTime'] ?? 10;
 
     return Story(
       style: json['style'],
