@@ -25,13 +25,13 @@ class CarouselDisplayWidget extends StatelessWidget {
             height: 16.0,
           ),
           Container(
-            height: 141,
+            height: 150,
             padding: const EdgeInsets.only(left: 8),
             decoration: const BoxDecoration(
               color: Color(0xffEBF02C),
             ),
             child: Container(
-              height: 141,
+              height: 150,
               color: Colors.white,
               child: Column(
                 children: [
