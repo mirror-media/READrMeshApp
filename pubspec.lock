@@ -299,13 +299,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  expandable_page_view:
-    dependency: "direct main"
-    description:
-      name: expandable_page_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.9"
   fake_async:
     dependency: transitive
     description:
@@ -473,14 +466,14 @@ packages:
       name: flutter_facebook_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.5.6+3"
+    version: "3.5.7"
   flutter_facebook_auth_platform_interface:
     dependency: transitive
     description:
       name: flutter_facebook_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.7.1"
   flutter_facebook_auth_web:
     dependency: transitive
     description:
@@ -562,14 +555,14 @@ packages:
       name: flutter_widget_from_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.2"
+    version: "0.8.3"
   flutter_widget_from_html_core:
     dependency: transitive
     description:
       name: flutter_widget_from_html_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.2"
+    version: "0.8.3"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -626,6 +619,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.2"
+  fwfh_text_style:
+    dependency: transitive
+    description:
+      name: fwfh_text_style
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.7.0+1"
   fwfh_url_launcher:
     dependency: transitive
     description:
@@ -639,7 +639,7 @@ packages:
       name: fwfh_webview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2"
+    version: "0.6.2+1"
   glob:
     dependency: transitive
     description:
@@ -884,7 +884,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.8"
   path_provider_android:
     dependency: transitive
     description:
@@ -927,13 +927,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
-  pausable_timer:
-    dependency: "direct main"
-    description:
-      name: pausable_timer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+2"
   pedantic:
     dependency: transitive
     description:
@@ -1066,7 +1059,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.9"
+    version: "2.0.10"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -1456,7 +1449,7 @@ packages:
       name: webview_flutter_wkwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.7.1"
   win32:
     dependency: transitive
     description:
@@ -1494,4 +1487,4 @@ packages:
     version: "1.10.8"
 sdks:
   dart: ">=2.14.0 <3.0.0"
-  flutter: ">=2.5.0"
+  flutter: ">=2.6.0-0"
