@@ -25,16 +25,21 @@ class CarouselDisplayWidget extends StatelessWidget {
             height: 16.0,
           ),
           Container(
+            height: 141,
             padding: const EdgeInsets.only(left: 8),
             decoration: const BoxDecoration(
               color: Color(0xffEBF02C),
             ),
-            child: Column(
-              children: [
-                _displayTitle(editorChoiceItem),
-                _displaySummary(editorChoiceItem),
-                _displayTimeAndReadingTime(editorChoiceItem),
-              ],
+            child: Container(
+              height: 141,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  _displayTitle(editorChoiceItem),
+                  _displaySummary(editorChoiceItem),
+                  _displayTimeAndReadingTime(editorChoiceItem),
+                ],
+              ),
             ),
           ),
         ],
@@ -60,11 +65,12 @@ class CarouselDisplayWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: RichText(
         overflow: TextOverflow.ellipsis,
-        maxLines: 3,
+        maxLines: 2,
         text: TextSpan(
           style: const TextStyle(
             color: Colors.black87,
             fontSize: 22.0,
+            fontWeight: FontWeight.w600,
           ),
           text: editorChoiceItem.name,
         ),
@@ -83,7 +89,7 @@ class CarouselDisplayWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: RichText(
               overflow: TextOverflow.ellipsis,
-              maxLines: 3,
+              maxLines: 2,
               text: TextSpan(
                 style: const TextStyle(
                   color: Colors.black54,
