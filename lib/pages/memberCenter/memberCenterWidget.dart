@@ -21,14 +21,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
   @override
   void initState() {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
-      _loadMemberAndInfo();
-    });
+    _loadMember();
     super.initState();
   }
 
-  _loadMemberAndInfo() {
-    context.read<MemberCenterCubit>().fetchMemberAndInfo();
+  _loadMember({Member? member}) {
+    context.read<MemberCenterCubit>().fetchMember(member: member);
   }
 
   @override
@@ -61,7 +59,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         if (state is MemberCenterError) {
           final error = state.error;
           print('MemberCenterError: ${error.message}');
-          _loadMemberAndInfo();
+          _loadMember();
+        }
+
+        if (state is MemberLoadFailed) {
+          _versionAndBuildNumber = 'v${state.version} (${state.buildNumber})';
+          _isLogin = false;
         }
 
         if (state is MemberCenterLoaded) {
@@ -115,7 +118,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             height: 4.5,
           ),
           Text(
-            member!.email,
+            member!.email ?? '',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -127,8 +130,11 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     } else {
       height = 75;
       memberTileContent = InkWell(
-        onTap: () {
-          context.pushRoute(const LoginRoute());
+        onTap: () async {
+          Member? loginMember = await context.pushRoute(const LoginRoute());
+          if (loginMember != null) {
+            _loadMember(member: loginMember);
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,6 +266,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             ),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
+              _loadMember();
             },
           ),
           const Divider(
@@ -279,8 +286,12 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
                 ),
               ),
             ),
-            onTap: () {
-              context.pushRoute(DeleteMemberRoute(member: member!));
+            onTap: () async {
+              bool? isDeleted =
+                  await context.pushRoute(DeleteMemberRoute(member: member!));
+              if (isDeleted != null && isDeleted) {
+                _loadMember();
+              }
             },
           ),
         ],
