@@ -8,6 +8,8 @@ abstract class LoginEvent extends Equatable {
 }
 
 class FirebaseLoginSuccess extends LoginEvent {
+  final bool isNewUser;
+  const FirebaseLoginSuccess(this.isNewUser);
   @override
   String toString() => "Firebase login success";
 }
