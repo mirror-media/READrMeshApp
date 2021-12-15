@@ -44,13 +44,22 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
   fetchMemberData() async {
     try {
       print('Fetch member data');
-      Member memberData =
+      Member? memberData =
           await _memberService.fetchMemberData(_auth.currentUser!);
-      emit(MemberCenterLoaded(
-        buildNumber: _buildNumber,
-        version: _version,
-        member: memberData,
-      ));
+      if (memberData == null) {
+        print('Fetch member failed, logout firebase');
+        await _auth.signOut();
+        emit(MemberLoadFailed(
+          buildNumber: _buildNumber,
+          version: _version,
+        ));
+      } else {
+        emit(MemberCenterLoaded(
+          buildNumber: _buildNumber,
+          version: _version,
+          member: memberData,
+        ));
+      }
     } catch (exception) {
       print('Fetch member failed, logout firebase');
       print('exception:  $exception');

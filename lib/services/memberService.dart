@@ -57,7 +57,7 @@ class MemberService {
     return token;
   }
 
-  Future<Member> fetchMemberData(User firebaseUser) async {
+  Future<Member?> fetchMemberData(User firebaseUser) async {
     String query = """
     query fetchMemberData(
 	    \$firebaseId: String!
@@ -90,10 +90,10 @@ class MemberService {
     // create new member when firebase is signed in but member is not created
     if (jsonResponse['data']['allMembers'].isEmpty) {
       Member? newMember = await createMember(firebaseUser);
-      if (newMember != null) return newMember;
+      return newMember;
+    } else {
+      return Member.fromJson(jsonResponse['data']['allMembers'][0]);
     }
-
-    return Member.fromJson(jsonResponse['data']['allMembers'][0]);
   }
 
   Future<Member?> createMember(User firebaseUser) async {

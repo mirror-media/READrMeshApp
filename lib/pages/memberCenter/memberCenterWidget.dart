@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,13 +21,20 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
   bool _isLogin = false;
   String _versionAndBuildNumber = '';
   Member? member;
+  late StreamSubscription<User?> memberStream;
 
   @override
   void initState() {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
+    memberStream = FirebaseAuth.instance.userChanges().listen((User? user) {
       _loadMember();
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    memberStream.cancel();
+    super.dispose();
   }
 
   _loadMember() {
