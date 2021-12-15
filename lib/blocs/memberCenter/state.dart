@@ -22,6 +22,15 @@ class MemberCenterLoaded extends MemberCenterState {
   });
 }
 
+class MemberLoadFailed extends MemberCenterState {
+  final String version;
+  final String buildNumber;
+  const MemberLoadFailed({
+    required this.version,
+    required this.buildNumber,
+  });
+}
+
 class MemberCenterError extends MemberCenterState {
   final dynamic error;
   const MemberCenterError({this.error});

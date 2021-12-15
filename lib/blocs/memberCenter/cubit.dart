@@ -7,36 +7,68 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/services/memberService.dart';
 
 part 'state.dart';
 
 class MemberCenterCubit extends Cubit<MemberCenterState> {
   MemberCenterCubit() : super(MemberCenterInitial());
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final MemberService _memberService = MemberService();
+  bool _alreadyGetInfo = false;
+  late final String _version;
+  late final String _buildNumber;
 
-  fetchMemberAndInfo() async {
-    print('FetchMemberAndInfo');
-    emit(MemberCenterLoading());
+  fetchPackageInfo() async {
+    print('Fetch info');
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version = packageInfo.version;
-    String buildNumber = packageInfo.buildNumber;
-    Member? member;
+    _version = packageInfo.version;
+    _buildNumber = packageInfo.buildNumber;
+    _alreadyGetInfo = true;
+  }
+
+  fetchMember({Member? member}) async {
+    emit(MemberCenterLoading());
+    if (!_alreadyGetInfo) await fetchPackageInfo();
     if (_auth.currentUser != null) {
-      member = Member(
-        email: _auth.currentUser!.email ?? '',
-        firebaseId: _auth.currentUser!.uid,
-      );
+      await fetchMemberData(member);
+    } else {
+      emit(MemberCenterLoaded(
+        buildNumber: _buildNumber,
+        version: _version,
+        member: null,
+      ));
     }
-    emit(MemberCenterLoaded(
-      buildNumber: buildNumber,
-      version: version,
-      member: member,
-    ));
+  }
+
+  fetchMemberData(Member? member) async {
+    try {
+      print('Fetch member data');
+      Member memberData;
+      if (member != null) {
+        memberData = member;
+      } else {
+        memberData = await _memberService.fetchMemberData(_auth.currentUser!);
+      }
+      emit(MemberCenterLoaded(
+        buildNumber: _buildNumber,
+        version: _version,
+        member: memberData,
+      ));
+    } catch (exception) {
+      print('Fetch member failed, logout firebase');
+      print('exception:  $exception');
+      await _auth.signOut();
+      emit(MemberLoadFailed(
+        buildNumber: _buildNumber,
+        version: _version,
+      ));
+    }
   }
 
   logout() async {
     await _auth.signOut();
-    await fetchMemberAndInfo();
+    await fetchMember();
   }
 
   @override
