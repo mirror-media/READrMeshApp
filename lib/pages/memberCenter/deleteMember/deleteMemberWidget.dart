@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/services/memberService.dart';
 
 class DeleteMemberWidget extends StatefulWidget {
   final Member member;
@@ -47,9 +48,14 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
   }
 
   Widget _buildContent() {
-    String email = widget.member.email;
+    String email;
+    if (widget.member.email == null) {
+      email = '您';
+    } else {
+      email = '${widget.member.email!} ';
+    }
     String title = '確定要刪除帳號嗎？';
-    String discription = '提醒您，$email 的帳號資訊將永久刪除並無法復原。';
+    String discription = '提醒您，$email的帳號資訊將永久刪除並無法復原。';
     String buttonText = '那我再想想';
     if (!_isInitialized && _isSuccess) {
       title = '刪除帳號成功';
@@ -132,16 +138,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
         if (_isInitialized)
           TextButton(
             onPressed: () async {
-              try {
-                await FirebaseAuth.instance.currentUser!.delete();
-                _isSuccess = true;
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'requires-recent-login') {
-                  print(
-                      'The user must reauthenticate before this operation can be executed.');
-                }
-                _isSuccess = false;
-              }
+              _isSuccess = await _deleteMember();
               setState(() {
                 _isInitialized = false;
               });
@@ -157,5 +154,28 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
           ),
       ],
     );
+  }
+
+  Future<bool> _deleteMember() async {
+    try {
+      String firebaseToken =
+          await FirebaseAuth.instance.currentUser!.getIdToken();
+      await FirebaseAuth.instance.currentUser!.delete();
+      return await MemberService().deleteMember(
+        widget.member.memberId,
+        firebaseToken,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed.');
+        await FirebaseAuth.instance.signOut();
+      }
+      return false;
+    } catch (e) {
+      print('Delete member failed: $e');
+      await FirebaseAuth.instance.signOut();
+      return false;
+    }
   }
 }
