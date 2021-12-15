@@ -87,6 +87,12 @@ class MemberService {
       headers: getHeaders(token),
     );
 
+    // create new member when firebase is signed in but member is not created
+    if (jsonResponse['data']['allMembers'].isEmpty) {
+      Member? newMember = await createMember(firebaseUser);
+      if (newMember != null) return newMember;
+    }
+
     return Member.fromJson(jsonResponse['data']['allMembers'][0]);
   }
 

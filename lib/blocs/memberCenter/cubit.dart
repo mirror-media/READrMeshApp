@@ -27,11 +27,11 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
     _alreadyGetInfo = true;
   }
 
-  fetchMember({Member? member}) async {
+  fetchMember() async {
     emit(MemberCenterLoading());
     if (!_alreadyGetInfo) await fetchPackageInfo();
     if (_auth.currentUser != null) {
-      await fetchMemberData(member);
+      await fetchMemberData();
     } else {
       emit(MemberCenterLoaded(
         buildNumber: _buildNumber,
@@ -41,15 +41,11 @@ class MemberCenterCubit extends Cubit<MemberCenterState> {
     }
   }
 
-  fetchMemberData(Member? member) async {
+  fetchMemberData() async {
     try {
       print('Fetch member data');
-      Member memberData;
-      if (member != null) {
-        memberData = member;
-      } else {
-        memberData = await _memberService.fetchMemberData(_auth.currentUser!);
-      }
+      Member memberData =
+          await _memberService.fetchMemberData(_auth.currentUser!);
       emit(MemberCenterLoaded(
         buildNumber: _buildNumber,
         version: _version,

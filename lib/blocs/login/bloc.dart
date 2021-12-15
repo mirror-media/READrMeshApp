@@ -1,17 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:readr/helpers/environment.dart';
-import 'package:readr/models/member.dart';
-import 'package:readr/services/memberService.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginHelper _helper = LoginHelper();
-  final MemberService _memberService = MemberService();
 
   LoginBloc() : super(LoginInitial()) {
     on<LoginEvent>((event, emit) async {
@@ -28,21 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             emit(SendEmailFailed());
           }
         } else if (event is FirebaseLoginSuccess) {
-          final FirebaseAuth _auth = FirebaseAuth.instance;
-          if (event.isNewUser) {
-            Member? newMember =
-                await _memberService.createMember(_auth.currentUser!);
-            if (newMember == null) {
-              await FirebaseAuth.instance.currentUser!.delete();
-              emit(MemberLoginFailed());
-            } else {
-              emit(MemberLoginSuccess(member: newMember));
-            }
-          } else {
-            Member? member =
-                await _memberService.fetchMemberData(_auth.currentUser!);
-            emit(MemberLoginSuccess(member: member));
-          }
+          emit(const MemberLoginSuccess());
         }
       } catch (e) {
         print('Login error: ${e.toString()}');

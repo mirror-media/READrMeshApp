@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/memberCenter/cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,12 +22,14 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
 
   @override
   void initState() {
-    _loadMember();
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+      _loadMember();
+    });
     super.initState();
   }
 
-  _loadMember({Member? member}) {
-    context.read<MemberCenterCubit>().fetchMember(member: member);
+  _loadMember() {
+    context.read<MemberCenterCubit>().fetchMember();
   }
 
   @override
@@ -65,6 +68,13 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
         if (state is MemberLoadFailed) {
           _versionAndBuildNumber = 'v${state.version} (${state.buildNumber})';
           _isLogin = false;
+          Fluttertoast.showToast(
+            msg: '無法取得會員資料，請重新登入',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0,
+          );
         }
 
         if (state is MemberCenterLoaded) {
@@ -130,11 +140,8 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     } else {
       height = 75;
       memberTileContent = InkWell(
-        onTap: () async {
-          Member? loginMember = await context.pushRoute(const LoginRoute());
-          if (loginMember != null) {
-            _loadMember(member: loginMember);
-          }
+        onTap: () {
+          context.pushRoute(const LoginRoute());
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -286,12 +293,8 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
                 ),
               ),
             ),
-            onTap: () async {
-              bool? isDeleted =
-                  await context.pushRoute(DeleteMemberRoute(member: member!));
-              if (isDeleted != null && isDeleted) {
-                _loadMember();
-              }
+            onTap: () {
+              context.pushRoute(DeleteMemberRoute(member: member!));
             },
           ),
         ],

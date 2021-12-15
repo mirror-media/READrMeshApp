@@ -16,8 +16,7 @@ class SendEmailSuccess extends LoginState {}
 class SendEmailFailed extends LoginState {}
 
 class MemberLoginSuccess extends LoginState {
-  final Member? member;
-  const MemberLoginSuccess({required this.member});
+  const MemberLoginSuccess();
 }
 
 class MemberLoginFailed extends LoginState {}

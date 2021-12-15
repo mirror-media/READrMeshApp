@@ -92,7 +92,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
         } else if (state is MemberLoginSuccess) {
-          context.popRoute(state.member);
+          context.popRoute();
         }
       },
       child: _buildContent(),
@@ -109,8 +109,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
-  void firebaseLoginSuccess(bool isNewUser) {
-    BlocProvider.of<LoginBloc>(context).add(FirebaseLoginSuccess(isNewUser));
+  void firebaseLoginSuccess() {
+    BlocProvider.of<LoginBloc>(context).add(FirebaseLoginSuccess());
   }
 
   Widget _buildContent() {
@@ -122,7 +122,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       children: [
         LoginButton(
           type: LoginType.facebook,
-          onSuccess: firebaseLoginSuccess,
+          onSuccess: (bool isNewUser) {
+            firebaseLoginSuccess();
+          },
           onFailed: () {
             showToast("登入失敗");
           },
@@ -132,7 +134,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         LoginButton(
           type: LoginType.google,
-          onSuccess: firebaseLoginSuccess,
+          onSuccess: (bool isNewUser) {
+            firebaseLoginSuccess();
+          },
           onFailed: () {
             showToast("登入失敗");
           },
@@ -143,7 +147,9 @@ class _LoginWidgetState extends State<LoginWidget> {
           ),
           LoginButton(
             type: LoginType.apple,
-            onSuccess: firebaseLoginSuccess,
+            onSuccess: (bool isNewUser) {
+              firebaseLoginSuccess();
+            },
             onFailed: () {
               showToast("登入失敗");
             },
