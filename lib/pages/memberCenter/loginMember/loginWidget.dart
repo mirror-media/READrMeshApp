@@ -92,7 +92,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           _emailSendLoading = false;
           AutoRouter.of(context).push(SendEmailRoute(email: _controller.text));
         } else if (state is MemberLoginSuccess) {
-          Navigator.of(context).pop();
+          context.popRoute(state.member);
         }
       },
       child: _buildContent(),
@@ -109,8 +109,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
-  void firebaseLoginSuccess() {
-    BlocProvider.of<LoginBloc>(context).add(FirebaseLoginSuccess());
+  void firebaseLoginSuccess(bool isNewUser) {
+    BlocProvider.of<LoginBloc>(context).add(FirebaseLoginSuccess(isNewUser));
   }
 
   Widget _buildContent() {
