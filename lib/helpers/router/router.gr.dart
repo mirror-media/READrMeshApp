@@ -21,7 +21,8 @@ class _$AppRouter extends RootStackRouter {
     StoryRoute.name: (routeData) {
       final args = routeData.argsAs<StoryRouteArgs>();
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: StoryPage(id: args.id));
+          routeData: routeData,
+          child: StoryPage(id: args.id, useWebview: args.useWebview));
     },
     ErrorRoute.name: (routeData) {
       final args = routeData.argsAs<ErrorRouteArgs>();
@@ -44,11 +45,11 @@ class _$AppRouter extends RootStackRouter {
     },
     DeleteMemberRoute.name: (routeData) {
       final args = routeData.argsAs<DeleteMemberRouteArgs>();
-      return MaterialPageX<dynamic>(
+      return MaterialPageX<bool>(
           routeData: routeData, child: DeleteMemberPage(member: args.member));
     },
     LoginRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: LoginPage());
+      return MaterialPageX<Member>(routeData: routeData, child: LoginPage());
     },
     SendEmailRoute.name: (routeData) {
       final args = routeData.argsAs<SendEmailRouteArgs>();
@@ -100,21 +101,24 @@ class Initial extends PageRouteInfo<void> {
 /// generated route for
 /// [StoryPage]
 class StoryRoute extends PageRouteInfo<StoryRouteArgs> {
-  StoryRoute({required String id})
+  StoryRoute({required String id, bool useWebview = false})
       : super(StoryRoute.name,
-            path: '/story-page', args: StoryRouteArgs(id: id));
+            path: '/story-page',
+            args: StoryRouteArgs(id: id, useWebview: useWebview));
 
   static const String name = 'StoryRoute';
 }
 
 class StoryRouteArgs {
-  const StoryRouteArgs({required this.id});
+  const StoryRouteArgs({required this.id, this.useWebview = false});
 
   final String id;
 
+  final bool useWebview;
+
   @override
   String toString() {
-    return 'StoryRouteArgs{id: $id}';
+    return 'StoryRouteArgs{id: $id, useWebview: $useWebview}';
   }
 }
 
