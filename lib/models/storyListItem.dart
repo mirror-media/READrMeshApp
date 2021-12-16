@@ -6,13 +6,14 @@ class StoryListItem {
   String id;
   String name;
   String? slug;
-  String? style;
+  String style;
   String? photoUrl;
   CategoryList? categoryList;
   DateTime publishTime;
   bool isProject;
   int readingTime;
   TagList? tags;
+  bool hasScrollableVideo;
   StoryListItem({
     required this.id,
     required this.name,
@@ -24,6 +25,7 @@ class StoryListItem {
     this.isProject = false,
     required this.readingTime,
     this.tags,
+    this.hasScrollableVideo = false,
   });
 
   factory StoryListItem.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,11 @@ class StoryListItem {
       tags = TagList.fromJson(json['tags']);
     }
 
+    bool hasScrollableVideo = false;
+    if (json['style'] == 'scrollablevideo') {
+      hasScrollableVideo = true;
+    }
+
     return StoryListItem(
       id: json[BaseModel.idKey],
       name: json[BaseModel.nameKey],
@@ -73,6 +80,7 @@ class StoryListItem {
       readingTime: readingTime,
       publishTime: publishTime,
       tags: tags,
+      hasScrollableVideo: hasScrollableVideo,
     );
   }
 

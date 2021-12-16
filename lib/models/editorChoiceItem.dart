@@ -12,6 +12,7 @@ class EditorChoiceItem {
   bool isProject;
   String publishTimeString;
   int readingTime;
+  bool hasScrollableVideo;
 
   EditorChoiceItem({
     required this.id,
@@ -24,6 +25,7 @@ class EditorChoiceItem {
     this.summary,
     this.isProject = false,
     required this.readingTime,
+    this.hasScrollableVideo = false,
   });
 
   factory EditorChoiceItem.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,8 @@ class EditorChoiceItem {
     String? summary;
     int readingTime = 10;
     bool isProject = false;
+    bool hasScrollableVideo = false;
+    String? link;
     if (json['choice'] != null) {
       id = json['choice'][BaseModel.idKey];
       slug = json['choice'][BaseModel.slugKey];
@@ -55,13 +59,15 @@ class EditorChoiceItem {
       readingTime = json['choice']['readingTime'] ?? 10;
       if (style == 'project3' || style == 'embedded' || style == 'report') {
         isProject = true;
+      } else if (json['style'] == 'scrollablevideo') {
+        hasScrollableVideo = true;
       }
-    }
-
-    String link = json['link'];
-    if (!isProject) {
-      if (link.contains('project')) {
-        isProject = true;
+    } else {
+      link = json['link'];
+      if (!isProject) {
+        if (link!.contains('project')) {
+          isProject = true;
+        }
       }
     }
 
@@ -81,6 +87,7 @@ class EditorChoiceItem {
       isProject: isProject,
       publishTimeString: DateFormat('MM/dd').format(publishTime),
       readingTime: readingTime,
+      hasScrollableVideo: hasScrollableVideo,
     );
   }
 
