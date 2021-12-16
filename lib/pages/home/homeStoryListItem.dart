@@ -79,7 +79,10 @@ class HomeStoryListItem extends StatelessWidget {
           ),
         ),
         onTap: () {
-          AutoRouter.of(context).push(StoryRoute(id: storyListItem.id));
+          AutoRouter.of(context).push(StoryRoute(
+            id: storyListItem.id,
+            useWebview: storyListItem.hasScrollableVideo,
+          ));
         });
   }
 

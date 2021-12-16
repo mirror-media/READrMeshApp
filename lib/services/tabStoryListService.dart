@@ -109,7 +109,7 @@ class TabStoryListServices implements TabStoryListRepos {
     Map<String, dynamic> variables = {
       "storyWhere": {
         "state": "published",
-        "style_in": ["news"]
+        "style_in": ["news", "scrollablevideo"]
       },
       "projectWhere": {
         "state": "published",

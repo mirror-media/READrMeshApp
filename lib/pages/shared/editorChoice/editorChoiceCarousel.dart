@@ -172,8 +172,10 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                 OpenProjectHelper().phaseByEditorChoiceItem(editorChoiceItem);
               } else {
                 if (editorChoiceItem.id != null) {
-                  AutoRouter.of(context)
-                      .push(StoryRoute(id: editorChoiceItem.id!));
+                  AutoRouter.of(context).push(StoryRoute(
+                    id: editorChoiceItem.id!,
+                    useWebview: editorChoiceItem.hasScrollableVideo,
+                  ));
                 } else if (editorChoiceItem.link != null) {
                   OpenProjectHelper().openByUrl(editorChoiceItem.link!);
                 }

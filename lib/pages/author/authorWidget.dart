@@ -375,7 +375,10 @@ class _AuthorWidgetState extends State<AuthorWidget> {
         if (storyListItem.isProject) {
           OpenProjectHelper().phaseByStoryListItem(storyListItem);
         } else {
-          AutoRouter.of(context).push(StoryRoute(id: storyListItem.id));
+          AutoRouter.of(context).push(StoryRoute(
+            id: storyListItem.id,
+            useWebview: storyListItem.hasScrollableVideo,
+          ));
         }
       },
     );

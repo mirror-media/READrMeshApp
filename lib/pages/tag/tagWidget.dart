@@ -192,8 +192,10 @@ class _TagWidgetState extends State<TagWidget> {
             if (tagStoryList[index].isProject) {
               OpenProjectHelper().phaseByStoryListItem(tagStoryList[index]);
             } else {
-              AutoRouter.of(context)
-                  .push(StoryRoute(id: tagStoryList[index].id));
+              AutoRouter.of(context).push(StoryRoute(
+                id: tagStoryList[index].id,
+                useWebview: tagStoryList[index].hasScrollableVideo,
+              ));
             }
           },
         );
