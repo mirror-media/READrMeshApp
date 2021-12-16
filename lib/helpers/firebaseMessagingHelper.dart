@@ -34,6 +34,9 @@ class FirebaseMessagingHelper {
         await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null && initialMessage.data.containsKey('story_id')) {
       context.router.push(StoryRoute(id: initialMessage.data['story_id']));
+    } else if (initialMessage != null &&
+        initialMessage.data.containsKey('project_url')) {
+      OpenProjectHelper().openByUrl(initialMessage.data['project_url']);
     }
 
     // Also handle any interaction when the app is in the background via a
