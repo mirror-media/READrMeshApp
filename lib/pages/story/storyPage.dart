@@ -30,6 +30,7 @@ class _StoryPageState extends State<StoryPage> {
   late String _id;
   set id(String value) => _id = value;
   final StoryBloc _bloc = StoryBloc(storyRepos: StoryServices());
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -54,20 +55,58 @@ class _StoryPageState extends State<StoryPage> {
     String url = Environment().config.readrWebsiteLink + 'post/' + _id;
     InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
-          useShouldOverrideUrlLoading: true,
           mediaPlaybackRequiresUserGesture: false,
+          disableContextMenu: true,
         ),
         android: AndroidInAppWebViewOptions(
           useHybridComposition: true,
         ),
         ios: IOSInAppWebViewOptions(
           allowsInlineMediaPlayback: true,
+          allowsLinkPreview: false,
+          disableLongPressContextMenuOnLinks: true,
         ));
-    return InAppWebView(
-      initialUrlRequest: URLRequest(
-        url: Uri.parse(url),
-      ),
-      initialOptions: options,
+    return Stack(
+      children: [
+        InAppWebView(
+          initialOptions: options,
+          initialUrlRequest: URLRequest(url: Uri.parse(url)),
+          onLoadStop: (controller, url) async {
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByTagName('header')[0].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByTagName('footer')[0].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByTagName('footer')[1].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByClassName('news__donate')[0].style.display = 'none';");
+            await Future.delayed(const Duration(milliseconds: 150));
+            setState(() {
+              _isLoading = false;
+            });
+          },
+        ),
+        _isLoading
+            ? Container(
+                color: Colors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: hightLightColor,
+                  ),
+                ),
+              )
+            : Container(),
+      ],
     );
   }
 
