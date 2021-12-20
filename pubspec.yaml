@@ -90,7 +90,7 @@ dependencies:
     git:
       url: git://github.com/mirror-media/flutter_embedded_webview.git
       ref: master
-      version: ^0.1.1
+      version: ^0.2.0
   # skeleton screen effect
   shimmer: ^2.0.0
   # scrollable and positioned listview
@@ -112,7 +112,7 @@ dependencies:
     git:
       url: https://github.com/mirror-media/flutter_login.git
       ref: main
-      version: ^0.0.2
+      version: ^0.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
