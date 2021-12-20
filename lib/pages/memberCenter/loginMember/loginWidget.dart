@@ -125,7 +125,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           onSuccess: (bool isNewUser) {
             firebaseLoginSuccess();
           },
-          onFailed: () {
+          onFailed: (error) {
             showToast("登入失敗");
           },
         ),
@@ -137,7 +137,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           onSuccess: (bool isNewUser) {
             firebaseLoginSuccess();
           },
-          onFailed: () {
+          onFailed: (error) {
             showToast("登入失敗");
           },
         ),
@@ -150,7 +150,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             onSuccess: (bool isNewUser) {
               firebaseLoginSuccess();
             },
-            onFailed: () {
+            onFailed: (error) {
               showToast("登入失敗");
             },
           ),
