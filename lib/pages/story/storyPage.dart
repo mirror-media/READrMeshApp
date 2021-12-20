@@ -90,6 +90,9 @@ class _StoryPageState extends State<StoryPage> {
             controller.evaluateJavascript(
                 source:
                     "document.getElementsByClassName('news__donate')[0].style.display = 'none';");
+            controller.evaluateJavascript(
+                source:
+                    "document.getElementsByClassName('social-list heading__credit-social')[0].style.display = 'none';");
             await Future.delayed(const Duration(milliseconds: 150));
             setState(() {
               _isLoading = false;
