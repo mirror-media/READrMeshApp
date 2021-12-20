@@ -67,7 +67,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         builder: (BuildContext context, StoryState state) {
       if (state is StoryError) {
         final error = state.error;
-        print('NewsCategoriesError: ${error.message}');
+        print('StoryError: ${error.message}');
         return ErrorPage(
           error: error,
           onPressed: () => _loadStory(_currentId),
@@ -274,7 +274,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     List<Widget> authorItems = List.empty(growable: true);
 
     var horizontalLine = Padding(
-      padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
       child: Container(
         color: const Color.fromRGBO(0, 9, 40, 0.66),
         width: 20,
@@ -283,7 +283,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     );
 
     if (story.writers!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "記者",
@@ -296,7 +297,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (story.photographers!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "攝影",
@@ -309,7 +311,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (story.cameraOperators!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "影音",
@@ -322,7 +325,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (story.designers!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "設計",
@@ -335,7 +339,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (story.engineers!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "工程",
@@ -348,7 +353,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (story.dataAnalysts!.isNotEmpty) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "資料分析",
@@ -361,7 +367,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     }
 
     if (!_isNullOrEmpty(story.otherByline)) {
-      authorItems.add(Row(
+      authorItems.add(Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             "共同製作",
@@ -413,7 +420,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         authorNameList.add(Container(
           width: 2,
           height: 2,
-          margin: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+          margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
           alignment: Alignment.center,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
@@ -422,7 +429,8 @@ class _StoryWidgetState extends State<StoryWidget> {
         ));
       }
     }
-    return Row(
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: authorNameList,
     );
   }
