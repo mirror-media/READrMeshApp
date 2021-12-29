@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
@@ -55,13 +56,26 @@ class _RootPageState extends State<RootPage> {
                 onTap: tabsRouter.setActiveIndex,
                 selectedItemColor: bottomNavigationBarSelectedColor,
                 unselectedItemColor: bottomNavigationBarUnselectedColor,
-                items: const [
+                items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined),
-                    label: '首頁',
+                    icon: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: SvgPicture.asset(
+                        logoSimplifySvg,
+                        width: 18,
+                        height: 18,
+                        color: tabsRouter.activeIndex == 0
+                            ? bottomNavigationBarSelectedColor
+                            : bottomNavigationBarUnselectedColor,
+                      ),
+                    ),
+                    label: 'READr',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person_outline_outlined),
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.person_outline_outlined,
+                      size: 21,
+                    ),
                     label: '會員中心',
                   ),
                 ],
