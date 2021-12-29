@@ -6,7 +6,7 @@ class StoryListItem {
   String id;
   String name;
   String? slug;
-  String style;
+  String? style;
   String? photoUrl;
   CategoryList? categoryList;
   DateTime publishTime;
@@ -48,12 +48,6 @@ class StoryListItem {
 
     int readingTime = json['readingTime'] ?? 10;
 
-    bool isProject = false;
-    if (json['style'] == 'project3' ||
-        json['style'] == 'embedded' ||
-        json['style'] == 'report') {
-      isProject = true;
-    }
     DateTime publishTime = DateTime.now();
     if (json['publishTime'] != null) {
       publishTime = DateTime.parse(json['publishTime']).toLocal();
@@ -65,8 +59,16 @@ class StoryListItem {
     }
 
     bool hasScrollableVideo = false;
-    if (json['style'] == 'scrollablevideo') {
-      hasScrollableVideo = true;
+    bool isProject = false;
+    if (json['style'] != null) {
+      if (json['style'] == 'project3' ||
+          json['style'] == 'embedded' ||
+          json['style'] == 'report') {
+        isProject = true;
+      }
+      if (json['style'] == 'scrollablevideo') {
+        hasScrollableVideo = true;
+      }
     }
 
     return StoryListItem(
