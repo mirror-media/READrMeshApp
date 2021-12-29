@@ -7,7 +7,6 @@ import 'package:readr/blocs/readr/categories/states.dart';
 import 'package:readr/blocs/readr/editorChoice/bloc.dart';
 import 'package:readr/blocs/readr/tabStoryList/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/firebaseMessagingHelper.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -28,13 +27,10 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
   TabController? _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
   final List<Widget> _tabWidgets = List.empty(growable: true);
-  // ignore: unused_field
-  late FirebaseMessagingHelper _firebaseMessangingHelper;
 
   @override
   void initState() {
     super.initState();
-    _firebaseMessangingHelper = FirebaseMessagingHelper();
     _fetchCategoryList();
   }
 
