@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/categories/bloc.dart';
+import 'package:readr/blocs/readr/categories/bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
-import 'package:readr/pages/homePage.dart';
+import 'package:readr/pages/rootPage.dart';
 import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/configService.dart';
 
@@ -31,7 +31,7 @@ class _InitialAppState extends State<InitialApp> {
               CategoriesBloc(categoryRepos: CategoryServices()),
         ),
       ],
-      child: HomePage(),
+      child: RootPage(),
     );
   }
 }

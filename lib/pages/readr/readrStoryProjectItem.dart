@@ -6,9 +6,9 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/models/storyListItem.dart';
 
-class HomeStoryPjojectItem extends StatelessWidget {
+class ReadrStoryPjojectItem extends StatelessWidget {
   final StoryListItem projectListItem;
-  const HomeStoryPjojectItem({required this.projectListItem});
+  const ReadrStoryPjojectItem({required this.projectListItem});
 
   @override
   Widget build(BuildContext context) {

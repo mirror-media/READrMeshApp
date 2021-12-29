@@ -112,7 +112,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
                 Navigator.of(context).pop();
               } else {
                 context.popRoute(true);
-                context.navigateTo(const Initial(children: [HomeRouter()]));
+                context.navigateTo(const Initial(children: [ReadrRouter()]));
               }
             },
             style: OutlinedButton.styleFrom(

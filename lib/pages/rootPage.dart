@@ -10,15 +10,15 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/home/homeSkeletonScreen.dart';
+import 'package:readr/pages/readr/readrSkeletonScreen.dart';
 import 'package:upgrader/upgrader.dart';
 
-class HomePage extends StatefulWidget {
+class RootPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _RootPageState createState() => _RootPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     _loadingConfig();
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
           child: AutoTabsScaffold(
-            routes: const [HomeRouter(), MemberCenterRouter()],
+            routes: const [ReadrRouter(), MemberCenterRouter()],
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
                 elevation: 10,
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       // state is Init, loading, or other
-      return HomeSkeletonScreen();
+      return ReadrSkeletonScreen();
     });
   }
 }

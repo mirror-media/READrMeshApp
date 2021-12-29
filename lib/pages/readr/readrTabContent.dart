@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/tabStoryList/bloc.dart';
-import 'package:readr/blocs/tabStoryList/events.dart';
-import 'package:readr/blocs/tabStoryList/states.dart';
+import 'package:readr/blocs/readr/tabStoryList/bloc.dart';
+import 'package:readr/blocs/readr/tabStoryList/events.dart';
+import 'package:readr/blocs/readr/tabStoryList/states.dart';
 import 'package:readr/models/storyListItemList.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/home/homeStoryListItem.dart';
-import 'package:readr/pages/home/homeStoryProjectItem.dart';
+import 'package:readr/pages/readr/readrStoryListItem.dart';
+import 'package:readr/pages/readr/readrStoryProjectItem.dart';
 import 'package:readr/pages/shared/storyListSkeletonScreen.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 
-class HomeTabContent extends StatefulWidget {
+class ReadrTabContent extends StatefulWidget {
   final String categorySlug;
-  const HomeTabContent({
+  const ReadrTabContent({
     required this.categorySlug,
   });
 
   @override
-  _HomeTabContentState createState() => _HomeTabContentState();
+  _ReadrTabContentState createState() => _ReadrTabContentState();
 }
 
-class _HomeTabContentState extends State<HomeTabContent> {
+class _ReadrTabContentState extends State<ReadrTabContent> {
   bool loadingMore = false;
   late StoryListItemList mixedStoryListTemp;
   @override
@@ -151,11 +151,11 @@ class _HomeTabContentState extends State<HomeTabContent> {
           }
           Widget listItem;
           if (mixedStoryList[index].isProject) {
-            listItem = HomeStoryPjojectItem(
+            listItem = ReadrStoryPjojectItem(
               projectListItem: mixedStoryList[index],
             );
           } else {
-            listItem = HomeStoryListItem(
+            listItem = ReadrStoryListItem(
               storyListItem: mixedStoryList[index],
             );
           }

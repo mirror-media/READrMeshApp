@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/categories/bloc.dart';
-import 'package:readr/blocs/categories/events.dart';
-import 'package:readr/blocs/categories/states.dart';
-import 'package:readr/blocs/editorChoice/bloc.dart';
-import 'package:readr/blocs/tabStoryList/bloc.dart';
+import 'package:readr/blocs/readr/categories/bloc.dart';
+import 'package:readr/blocs/readr/categories/events.dart';
+import 'package:readr/blocs/readr/categories/states.dart';
+import 'package:readr/blocs/readr/editorChoice/bloc.dart';
+import 'package:readr/blocs/readr/tabStoryList/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/firebaseMessagingHelper.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/home/homeSkeletonScreen.dart';
-import 'package:readr/pages/home/homeTabContent.dart';
+import 'package:readr/pages/readr/readrSkeletonScreen.dart';
+import 'package:readr/pages/readr/readrTabContent.dart';
 import 'package:readr/pages/shared/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/services/editorChoiceService.dart';
 import 'package:readr/services/tabStoryListService.dart';
 
-class HomeWidget extends StatefulWidget {
+class ReadrPage extends StatefulWidget {
   @override
-  _HomeWidgetState createState() => _HomeWidgetState();
+  _ReadrPageState createState() => _ReadrPageState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
+class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
   late CategoryList categoryList;
   final int _initialTabIndex = 0;
   TabController? _tabController;
@@ -62,7 +62,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
       _tabWidgets.add(BlocProvider(
         create: (context) =>
             TabStoryListBloc(tabStoryListRepos: TabStoryListServices()),
-        child: HomeTabContent(
+        child: ReadrTabContent(
           categorySlug: category.slug,
         ),
       ));
@@ -156,7 +156,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
           ),
         );
       }
-      return HomeSkeletonScreen();
+      return ReadrSkeletonScreen();
     });
   }
 }

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/editorChoice/events.dart';
-import 'package:readr/blocs/editorChoice/states.dart';
+import 'package:readr/blocs/readr/editorChoice/events.dart';
+import 'package:readr/blocs/readr/editorChoice/states.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/services/editorChoiceService.dart';

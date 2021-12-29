@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeSkeletonScreen extends StatelessWidget {
+class ReadrSkeletonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

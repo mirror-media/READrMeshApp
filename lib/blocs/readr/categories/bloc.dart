@@ -3,8 +3,8 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/categories/events.dart';
-import 'package:readr/blocs/categories/states.dart';
+import 'package:readr/blocs/readr/categories/events.dart';
+import 'package:readr/blocs/readr/categories/states.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/categoryList.dart';

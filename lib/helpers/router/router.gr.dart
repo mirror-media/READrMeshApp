@@ -61,8 +61,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: AuthorPage(people: args.people));
     },
-    HomeRouter.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: HomeWidget());
+    ReadrRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
     },
     MemberCenterRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -73,8 +73,8 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(Initial.name, path: '/', children: [
-          RouteConfig(HomeRouter.name,
-              path: 'homeWidget', parent: Initial.name),
+          RouteConfig(ReadrRouter.name,
+              path: 'readrPage', parent: Initial.name),
           RouteConfig(MemberCenterRouter.name,
               path: 'memberCenter', parent: Initial.name)
         ]),
@@ -263,11 +263,11 @@ class AuthorRouteArgs {
 }
 
 /// generated route for
-/// [HomeWidget]
-class HomeRouter extends PageRouteInfo<void> {
-  const HomeRouter() : super(HomeRouter.name, path: 'homeWidget');
+/// [ReadrPage]
+class ReadrRouter extends PageRouteInfo<void> {
+  const ReadrRouter() : super(ReadrRouter.name, path: 'readrPage');
 
-  static const String name = 'HomeRouter';
+  static const String name = 'ReadrRouter';
 }
 
 /// generated route for

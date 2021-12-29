@@ -7,9 +7,9 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/storyListItem.dart';
 
-class HomeStoryListItem extends StatelessWidget {
+class ReadrStoryListItem extends StatelessWidget {
   final StoryListItem storyListItem;
-  const HomeStoryListItem({required this.storyListItem});
+  const ReadrStoryListItem({required this.storyListItem});
 
   @override
   Widget build(BuildContext context) {

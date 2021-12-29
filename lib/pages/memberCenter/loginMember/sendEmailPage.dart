@@ -83,7 +83,7 @@ class SendEmailPage extends StatelessWidget {
           alignment: Alignment.center,
           child: OutlinedButton(
             onPressed: () {
-              context.navigateTo(const Initial(children: [HomeRouter()]));
+              context.navigateTo(const Initial(children: [ReadrRouter()]));
             },
             child: const Text('好的'),
             style: OutlinedButton.styleFrom(

@@ -3,7 +3,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/home/homeWidget.dart';
+import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
 import 'package:readr/pages/memberCenter/deleteMember/deleteMemberPage.dart';
@@ -24,9 +24,9 @@ part 'router.gr.dart';
   routes: <AutoRoute>[
     AutoRoute(name: 'Initial', page: InitialApp, initial: true, children: [
       AutoRoute(
-        path: "homeWidget",
-        name: "HomeRouter",
-        page: HomeWidget,
+        path: "readrPage",
+        name: "ReadrRouter",
+        page: ReadrPage,
       ),
       AutoRoute(
         path: "memberCenter",
