@@ -44,7 +44,7 @@ if (prodKeystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -68,9 +68,12 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.readr.news"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk {
+            debugSymbolLevel 'FULL'
+        }
     }
 
     signingConfigs {
@@ -116,6 +119,8 @@ android {
             productFlavors.dev.signingConfig signingConfigs.dev
             productFlavors.staging.signingConfig signingConfigs.staging
             productFlavors.prod.signingConfig signingConfigs.prod
+            shrinkResources true
+            minifyEnabled true
         }
     }
 }
