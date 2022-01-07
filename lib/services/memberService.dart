@@ -9,6 +9,8 @@ import 'package:readr/models/member.dart';
 
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
+  // TODO: Change to Environment config when all environment built
+  final String api = DevConfig().keystoneApi;
 
   static Map<String, String> getHeaders(String token) {
     Map<String, String> headers = {
@@ -37,8 +39,8 @@ class MemberService {
     """;
 
     Map<String, String> variables = {
-      "email": DevConfig().memberManagerEmail,
-      "password": DevConfig().memberManagerPassword,
+      "email": DevConfig().appHelperEmail,
+      "password": DevConfig().appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -48,7 +50,7 @@ class MemberService {
     );
 
     final jsonResponse = await _helper.postByUrl(
-        Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        api, jsonEncode(graphqlBody.toJson()),
         headers: {"Content-Type": "application/json"});
 
     String token =
@@ -60,13 +62,20 @@ class MemberService {
   Future<Member?> fetchMemberData(User firebaseUser) async {
     String query = """
     query fetchMemberData(
-	    \$firebaseId: String!
+	    \$firebaseId: String
     ){
-	    allMembers(where: {firebaseId: \$firebaseId}){
+	    members(
+        where: {
+          firebaseId: {
+            equals: \$firebaseId
+          }
+        }
+      ){
         id
-		    nickName
+		    nickname
 		    firebaseId
 		    email
+        name
 	    }
     }
     """;
@@ -82,7 +91,7 @@ class MemberService {
     // TODO: Change back to firebase token when verify firebase token is finished
     String token = await _fetchCMSUserToken();
     final jsonResponse = await _helper.postByUrl(
-      Environment().config.graphqlApi,
+      api,
       jsonEncode(graphqlBody.toJson()),
       headers: getHeaders(token),
     );
@@ -92,7 +101,7 @@ class MemberService {
       Member? newMember = await createMember(firebaseUser);
       return newMember;
     } else {
-      return Member.fromJson(jsonResponse['data']['allMembers'][0]);
+      return Member.fromJson(jsonResponse['data']['members'][0]);
     }
   }
 
@@ -100,16 +109,20 @@ class MemberService {
     String mutation = """
     mutation (
 	    \$email: String
-	    \$firebaseId: String!
+	    \$firebaseId: String
+  		\$name: String
+  		\$nickname: String
     ){
 	    createMember(
 		    data: { 
 			    email: \$email,
 			    firebaseId: \$firebaseId,
-			    state: active
+          name: \$name,
+          nickname: \$nickname
 		    }) {
         id
-		    nickName
+		    nickname
+        name
 		    firebaseId
 		    email
       }
@@ -120,9 +133,25 @@ class MemberService {
     String feededEmail =
         firebaseUser.email ?? '[0x0001] - firebaseId:${firebaseUser.uid}';
 
+    String nickname;
+    if (firebaseUser.displayName != null) {
+      nickname = firebaseUser.displayName!;
+    } else if (firebaseUser.email != null) {
+      nickname = firebaseUser.email!.split('@')[0];
+    } else {
+      var splitUid = firebaseUser.uid.split('');
+      String randomName = '';
+      for (int i = 0; i < 5; i++) {
+        randomName = randomName + splitUid[i];
+      }
+      nickname = 'User $randomName';
+    }
+
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
+      "name": '',
+      "nickname": nickname
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -135,7 +164,7 @@ class MemberService {
       // TODO: Change back to firebase token when verify firebase token is finished
       String token = await _fetchCMSUserToken();
       final jsonResponse = await _helper.postByUrl(
-        Environment().config.graphqlApi,
+        api,
         jsonEncode(graphqlBody.toJson()),
         headers: getHeaders(token),
       );
@@ -170,7 +199,7 @@ class MemberService {
 
     try {
       final jsonResponse = await _helper.postByUrl(
-        Environment().config.graphqlApi,
+        api,
         jsonEncode(graphqlBody.toJson()),
         headers: getHeaders(cmsToken),
       );
