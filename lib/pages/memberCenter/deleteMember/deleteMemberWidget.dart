@@ -49,10 +49,10 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
 
   Widget _buildContent() {
     String email;
-    if (widget.member.email == null) {
+    if (widget.member.email.contains('[0x0001]')) {
       email = '您';
     } else {
-      email = '${widget.member.email!} ';
+      email = '${widget.member.email} ';
     }
     String title = '確定要刪除帳號嗎？';
     String discription = '提醒您，$email的帳號資訊將永久刪除並無法復原。';

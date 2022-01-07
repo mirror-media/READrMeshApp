@@ -137,7 +137,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
             height: 4.5,
           ),
           Text(
-            member!.email ?? '',
+            member!.nickname,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
