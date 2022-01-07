@@ -32,9 +32,14 @@ class MemberService {
 	    authenticateUserWithPassword(
 		    email: \$email
 		    password: \$password
-	    ){
-		    token
-	    }
+      ){
+        ... on UserAuthenticationWithPasswordSuccess{
+        	sessionToken
+      	}
+        ... on UserAuthenticationWithPasswordFailure{
+          message
+      	}
+      }
     }
     """;
 
@@ -54,7 +59,7 @@ class MemberService {
         headers: {"Content-Type": "application/json"});
 
     String token =
-        jsonResponse['data']['authenticateUserWithPassword']['token'];
+        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
 
     return token;
   }
@@ -97,7 +102,7 @@ class MemberService {
     );
 
     // create new member when firebase is signed in but member is not created
-    if (jsonResponse['data']['allMembers'].isEmpty) {
+    if (jsonResponse['data']['members'].isEmpty) {
       Member? newMember = await createMember(firebaseUser);
       return newMember;
     } else {
@@ -150,7 +155,7 @@ class MemberService {
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
-      "name": '',
+      "name": nickname,
       "nickname": nickname
     };
 

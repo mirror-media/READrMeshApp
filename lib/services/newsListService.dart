@@ -4,7 +4,7 @@ import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
-import 'package:readr/models/newsListItem.dart';
+import 'package:readr/models/newsListItemList.dart';
 
 class NewsListService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -58,7 +58,7 @@ class NewsListService {
     return token;
   }
 
-  Future<List<NewsListItem>> fetchNewsList() async {
+  Future<NewsListItemList> fetchNewsList() async {
     const String query = """
     query(
         \$storyWhere: StoryWhereInput!
@@ -84,6 +84,7 @@ class NewsListService {
           published_date
           og_image
         }
+        storiesCount
       }
     """;
 
@@ -114,11 +115,10 @@ class NewsListService {
       headers: {"Content-Type": "application/json"},
     );
 
-    List<NewsListItem> newsList = [];
+    NewsListItemList newsList = NewsListItemList();
     if (jsonResponse['data'] != null && jsonResponse['data'].isNotEmpty) {
-      for (var newsListItem in jsonResponse['data']['stories']) {
-        newsList.add(NewsListItem.fromJson(newsListItem));
-      }
+      newsList = NewsListItemList.fromJson(jsonResponse['data']['stories']);
+      newsList.allStoryCount = jsonResponse['data']['storiesCount'];
     }
 
     return newsList;

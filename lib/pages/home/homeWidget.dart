@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
 
@@ -48,7 +49,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Widget _buildHomeList(List<NewsListItem> newsList) {
+  Widget _buildHomeList(NewsListItemList newsList) {
     return ListView.builder(
       itemCount: newsList.length,
       itemBuilder: (context, index) {

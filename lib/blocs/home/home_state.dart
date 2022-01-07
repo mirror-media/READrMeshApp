@@ -14,7 +14,7 @@ class HomeLoading extends HomeState {}
 class HomeLoadingMore extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final List<NewsListItem> newsList;
+  final NewsListItemList newsList;
   const HomeLoaded(this.newsList);
 }
 
@@ -24,7 +24,7 @@ class HomeError extends HomeState {
 }
 
 class HomeLoadingMoreFailed extends HomeState {
-  final List<NewsListItem> newsList;
+  final NewsListItemList newsList;
   final dynamic error;
   const HomeLoadingMoreFailed(this.newsList, this.error);
 }

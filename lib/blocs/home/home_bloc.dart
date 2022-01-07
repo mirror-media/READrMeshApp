@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
-import 'package:readr/models/newsListItem.dart';
+import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/services/newsListService.dart';
 
 part 'home_event.dart';
@@ -14,7 +14,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final NewsListService _newsListService = NewsListService();
-  final List<NewsListItem> _newsList = [];
+  final NewsListItemList _newsList = NewsListItemList();
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
