@@ -3,6 +3,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
@@ -23,6 +24,11 @@ part 'router.gr.dart';
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
     AutoRoute(name: 'Initial', page: InitialApp, initial: true, children: [
+      AutoRoute(
+        path: "homePage",
+        name: "HomeRouter",
+        page: HomePage,
+      ),
       AutoRoute(
         path: "readrPage",
         name: "ReadrRouter",

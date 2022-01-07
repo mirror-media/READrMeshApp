@@ -61,6 +61,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: AuthorPage(people: args.people));
     },
+    HomeRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
+    },
     ReadrRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
     },
@@ -73,6 +76,7 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(Initial.name, path: '/', children: [
+          RouteConfig(HomeRouter.name, path: 'homePage', parent: Initial.name),
           RouteConfig(ReadrRouter.name,
               path: 'readrPage', parent: Initial.name),
           RouteConfig(MemberCenterRouter.name,
@@ -260,6 +264,14 @@ class AuthorRouteArgs {
   String toString() {
     return 'AuthorRouteArgs{people: $people}';
   }
+}
+
+/// generated route for
+/// [HomePage]
+class HomeRouter extends PageRouteInfo<void> {
+  const HomeRouter() : super(HomeRouter.name, path: 'homePage');
+
+  static const String name = 'HomeRouter';
 }
 
 /// generated route for

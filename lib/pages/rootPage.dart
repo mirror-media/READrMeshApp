@@ -47,7 +47,7 @@ class _RootPageState extends State<RootPage> {
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
           child: AutoTabsScaffold(
-            routes: const [ReadrRouter(), MemberCenterRouter()],
+            routes: const [HomeRouter(), ReadrRouter(), MemberCenterRouter()],
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
                 elevation: 10,
@@ -57,6 +57,13 @@ class _RootPageState extends State<RootPage> {
                 selectedItemColor: bottomNavigationBarSelectedColor,
                 unselectedItemColor: bottomNavigationBarUnselectedColor,
                 items: [
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home_outlined,
+                      size: 21,
+                    ),
+                    label: '首頁',
+                  ),
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -64,7 +71,7 @@ class _RootPageState extends State<RootPage> {
                         logoSimplifySvg,
                         width: 18,
                         height: 18,
-                        color: tabsRouter.activeIndex == 0
+                        color: tabsRouter.activeIndex == 1
                             ? bottomNavigationBarSelectedColor
                             : bottomNavigationBarUnselectedColor,
                       ),
