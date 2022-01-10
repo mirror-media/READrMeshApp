@@ -7,13 +7,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/newsListItemList.dart';
-import 'package:readr/services/newsListService.dart';
+import 'package:readr/services/homeScreenService.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final NewsListService _newsListService = NewsListService();
+  final HomeScreenService _homeScreenService = HomeScreenService();
   final NewsListItemList _newsList = NewsListItemList();
 
   HomeBloc() : super(HomeInitial()) {
@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         if (event is FetchHomeStoryList) {
           final futureList = await Future.wait([
-            _newsListService.fetchNewsList(),
+            _homeScreenService.fetchNewsList(),
           ]);
           for (var item in futureList) {
             _newsList.addAll(item);

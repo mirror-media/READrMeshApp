@@ -6,7 +6,7 @@ import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItemList.dart';
 
-class NewsListService {
+class HomeScreenService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
