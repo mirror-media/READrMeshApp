@@ -123,7 +123,8 @@ class MemberService {
 			    email: \$email,
 			    firebaseId: \$firebaseId,
           name: \$name,
-          nickname: \$nickname
+          nickname: \$nickname,
+          is_active: true
 		    }) {
         id
 		    nickname
@@ -186,9 +187,18 @@ class MemberService {
 
   Future<bool> deleteMember(String memberId, String token) async {
     String mutation = """
-    mutation (\$id: ID!) {
-      updateMember(id: \$id, data: { state: inactive }) {
-        state
+    mutation(
+      \$id: ID
+    ){
+      updateMember(
+        where:{
+          id: \$id
+        }
+        data:{
+          is_active: false
+        }
+      ){
+        is_active
       }
     }
     """;
