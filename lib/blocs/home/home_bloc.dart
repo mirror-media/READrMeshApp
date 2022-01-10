@@ -20,7 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>((event, emit) async {
       emit(HomeLoading());
       try {
-        if (event is FetchHomeStoryList) {
+        if (event is LoadHomeScreen) {
           final futureList = await Future.wait([
             _homeScreenService.fetchNewsList(),
           ]);

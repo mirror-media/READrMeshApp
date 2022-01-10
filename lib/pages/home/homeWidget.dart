@@ -20,7 +20,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   _fetchHomeList() async {
-    context.read<HomeBloc>().add(FetchHomeStoryList());
+    context.read<HomeBloc>().add(LoadHomeScreen());
   }
 
   @override
