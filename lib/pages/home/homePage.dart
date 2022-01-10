@@ -20,14 +20,23 @@ class HomePage extends StatelessWidget {
 
   PreferredSizeWidget _buildBar() {
     return AppBar(
-      title: const Text(
-        'NewSelect',
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      backgroundColor: Colors.white,
+      leading: const Text(
+        'Logo',
         style: TextStyle(
           color: Colors.black,
         ),
       ),
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.notifications_none_outlined,
+            color: Colors.black,
+          ),
+        )
+      ],
     );
   }
 }
