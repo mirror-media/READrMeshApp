@@ -49,7 +49,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
 
   Widget _buildContent() {
     String email;
-    if (widget.member.email.contains('[0x0001]')) {
+    if (widget.member.email!.contains('[0x0001]')) {
       email = '您';
     } else {
       email = '${widget.member.email} ';
