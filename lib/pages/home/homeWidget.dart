@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
-import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/newsListItemList.dart';
-import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/home/followingBlock.dart';
+import 'package:readr/pages/home/latestCommentsBlock.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -13,19 +13,41 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  Map<String, dynamic> _data = {};
+
   @override
   void initState() {
     super.initState();
-    _fetchHomeList();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        // print('User is currently signed out!');
+      } else {
+        // print('User is signed in!');
+      }
+      _fetchHomeScreen();
+    });
   }
 
-  _fetchHomeList() async {
-    context.read<HomeBloc>().add(LoadHomeScreen());
+  _fetchHomeScreen() async {
+    context.read<HomeBloc>().add(InitialHomeScreen());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      listener: (context, state) {
+        if (state is HomeReloadFailed) {
+          Fluttertoast.showToast(
+            msg: "加載失敗",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      },
       builder: (context, state) {
         if (state is HomeError) {
           final error = state.error;
@@ -33,13 +55,22 @@ class _HomeWidgetState extends State<HomeWidget> {
 
           return ErrorPage(
             error: error,
-            onPressed: () => _fetchHomeList(),
+            onPressed: () => _fetchHomeScreen(),
             hideAppbar: true,
           );
         }
 
+        if (state is HomeReloading) {
+          return _buildHomeList();
+        }
+
+        if (state is HomeReloadFailed) {
+          return _buildHomeList();
+        }
+
         if (state is HomeLoaded) {
-          return _buildHomeList(state.newsList);
+          _data = state.data;
+          return _buildHomeList();
         }
 
         return const Center(
@@ -49,40 +80,15 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Widget _buildHomeList(NewsListItemList newsList) {
-    return ListView.builder(
-      itemCount: newsList.length,
-      itemBuilder: (context, index) {
-        return _homeListItem(newsList[index]);
-      },
-    );
-  }
-
-  Widget _homeListItem(NewsListItem newsListItem) {
-    double width = MediaQuery.of(context).size.width - 10;
-    double imageHeight = width / (16 / 9);
-    return Card(
-      elevation: 5,
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child: Column(
+  Widget _buildHomeList() {
+    return RefreshIndicator(
+      onRefresh: () => _fetchHomeScreen(),
+      child: ListView(
         children: [
-          CachedNetworkImage(
-            width: width,
-            height: imageHeight,
-            imageUrl: newsListItem.heroImageUrl,
-            placeholder: (context, url) => Container(
-              color: Colors.grey,
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: Colors.grey,
-              child: const Icon(Icons.error),
-            ),
-            fit: BoxFit.cover,
-          ),
-          if (newsListItem.source != null) Text(newsListItem.source!.title),
-          Text(newsListItem.title),
-          if (newsListItem.summary != null) Text(newsListItem.summary!),
+          FollowingBlock(_data['followingNewsList']),
+          const SizedBox(height: 8.5),
+          LatestCommentsBlock(_data['latestCommentsNewsList'], _data['myId']),
+          const SizedBox(height: 8.5),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/home/homeWidget.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
           child: HomeWidget(),
         ),
       ),
+      backgroundColor: homeScreenBackgroundColor,
     );
   }
 
