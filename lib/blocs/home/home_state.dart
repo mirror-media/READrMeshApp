@@ -11,11 +11,11 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeLoadingMore extends HomeState {}
+class HomeReloading extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final NewsListItemList newsList;
-  const HomeLoaded(this.newsList);
+  final Map<String, dynamic> data;
+  const HomeLoaded(this.data);
 }
 
 class HomeError extends HomeState {
@@ -23,8 +23,7 @@ class HomeError extends HomeState {
   const HomeError(this.error);
 }
 
-class HomeLoadingMoreFailed extends HomeState {
-  final NewsListItemList newsList;
+class HomeReloadFailed extends HomeState {
   final dynamic error;
-  const HomeLoadingMoreFailed(this.newsList, this.error);
+  const HomeReloadFailed(this.error);
 }

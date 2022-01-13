@@ -7,6 +7,6 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadHomeScreen extends HomeEvent {}
+class InitialHomeScreen extends HomeEvent {}
 
-class FetchMoreHomeStoryList extends HomeEvent {}
+class ReloadHomeScreen extends HomeEvent {}
