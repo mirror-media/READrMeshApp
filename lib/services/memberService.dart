@@ -224,4 +224,106 @@ class MemberService {
       return false;
     }
   }
+
+  Future<bool> addFollowingMember(
+      String memberId, String targetMemberId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$targetMemberId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          following:{
+            connect:{
+              id: \$targetMemberId
+            } 
+          }
+        }
+      ){
+        following{
+          id
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "targetMemberId": targetMemberId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+    // TODO: Delete when verify firebase token is finished
+    String cmsToken = await _fetchCMSUserToken();
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: getHeaders(cmsToken),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> removeFollowingMember(
+      String memberId, String targetMemberId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$targetMemberId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          following:{
+            disconnect:{
+              id: \$targetMemberId
+            } 
+          }
+        }
+      ){
+        following{
+          id
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "targetMemberId": targetMemberId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+    // TODO: Delete when verify firebase token is finished
+    String cmsToken = await _fetchCMSUserToken();
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: getHeaders(cmsToken),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
 }
