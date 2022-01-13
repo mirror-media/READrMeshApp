@@ -17,6 +17,7 @@ const String tabNoContentPng = 'assets/image/tabNoContent.png';
 const String homeIconSvg = 'assets/image/homeIcon.svg';
 const String googleLogoSvg = 'assets/image/googleLogo.svg';
 const String authorDefaultPng = 'assets/image/authorDefaultImage.png';
+const String commentIconPng = 'assets/image/commentIcon.png';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
@@ -33,3 +34,4 @@ const Color storyWidgetColor = Color(0xff04295E);
 const Color storySummaryFrameColor = storyWidgetColor;
 const Color blockquoteColor = Color.fromRGBO(0, 9, 40, 0.1);
 const Color annotationColor = Colors.black87;
+const Color homeScreenBackgroundColor = Color.fromRGBO(246, 246, 251, 1);
