@@ -63,7 +63,7 @@ class NewsListItem {
     }
 
     if (BaseModel.checkJsonKeys(json, ['category'])) {
-      category = Category.fromJson(json['source']);
+      category = Category.fromNewProductJson(json['category']);
     }
 
     if (BaseModel.checkJsonKeys(json, ['paywall'])) {
@@ -94,7 +94,7 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['followingComments']) &&
         json['followingComments'].isNotEmpty) {
-      for (var comment in json['followingPicks']) {
+      for (var comment in json['followingComments']) {
         followingComments.add(Comment.fromJson(comment));
       }
     }
