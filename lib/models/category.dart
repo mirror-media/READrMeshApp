@@ -15,7 +15,7 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     DateTime? latestPostTime;
-    if (json['relatedPost'] != null) {
+    if (BaseModel.checkJsonKeys(json, ['relatedPost'])) {
       latestPostTime =
           DateTime.parse(json['relatedPost'][0]['publishTime']).toLocal();
     }
@@ -24,6 +24,14 @@ class Category {
       name: json[BaseModel.nameKey],
       slug: json[BaseModel.slugKey],
       latestPostTime: latestPostTime,
+    );
+  }
+
+  factory Category.fromNewProductJson(Map<String, dynamic> json) {
+    return Category(
+      id: json[BaseModel.idKey],
+      name: json['title'],
+      slug: json[BaseModel.slugKey],
     );
   }
 
