@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/newsInfo.dart';
@@ -129,78 +131,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                             ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          // check whether is login
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            bool isSuccess = false;
-                            if (!_isFollowed) {
-                              isSuccess =
-                                  await _memberService.addFollowingMember(
-                                      widget.myId,
-                                      comments[index].member.memberId);
-                              Fluttertoast.showToast(
-                                msg: isSuccess ? "新增追蹤成功" : "新增追蹤失敗，請稍後再試一次",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.grey,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                            } else {
-                              isSuccess =
-                                  await _memberService.removeFollowingMember(
-                                      widget.myId,
-                                      comments[index].member.memberId);
-                              Fluttertoast.showToast(
-                                msg: isSuccess ? "取消追蹤成功" : "取消追蹤失敗，請稍後再試一次",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.grey,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                            }
-                            if (isSuccess) {
-                              _isFollowed = !_isFollowed;
-                              setState(() {});
-                            }
-                          } else {
-                            // if user is not login
-                            Fluttertoast.showToast(
-                              msg: "請先登入",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            );
-                          }
-                        },
-                        child: Card(
-                          color: _isFollowed ? Colors.black87 : Colors.white,
-                          shape: const RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.black87,
-                              width: 1,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0)),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Text(
-                            _isFollowed ? '追蹤中' : '追蹤',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color:
-                                  _isFollowed ? Colors.white : Colors.black87,
-                            ),
-                          ),
-                        ),
-                      ),
+                      _followButton(comments[index]),
                     ],
                   ),
                   const SizedBox(height: 8.5),
@@ -222,6 +153,79 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
         );
       },
       itemCount: comments.length,
+    );
+  }
+
+  Widget _followButton(Comment comment) {
+    return GestureDetector(
+      onTap: () async {
+        // check whether is login
+        if (FirebaseAuth.instance.currentUser != null) {
+          bool isSuccess = false;
+          if (!_isFollowed) {
+            isSuccess = await _memberService.addFollowingMember(
+                widget.myId, comment.member.memberId);
+            Fluttertoast.showToast(
+              msg: isSuccess ? "新增追蹤成功" : "新增追蹤失敗，請稍後再試一次",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          } else {
+            isSuccess = await _memberService.removeFollowingMember(
+                widget.myId, comment.member.memberId);
+            Fluttertoast.showToast(
+              msg: isSuccess ? "取消追蹤成功" : "取消追蹤失敗，請稍後再試一次",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          }
+          if (isSuccess) {
+            _isFollowed = !_isFollowed;
+            setState(() {});
+          }
+        } else {
+          // if user is not login
+          Fluttertoast.showToast(
+            msg: "請先登入",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          AutoRouter.of(context).push(const LoginRoute());
+        }
+      },
+      child: SizedBox(
+        width: 52,
+        child: Card(
+          color: _isFollowed ? Colors.black87 : Colors.white,
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.black87,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Text(
+            _isFollowed ? '追蹤中' : '追蹤',
+            style: TextStyle(
+              fontSize: 14,
+              color: _isFollowed ? Colors.white : Colors.black87,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
