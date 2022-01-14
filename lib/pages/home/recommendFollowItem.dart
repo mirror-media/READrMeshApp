@@ -34,7 +34,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
 
   @override
   Widget build(BuildContext context) {
-    String contentText = '尚無人追蹤';
+    String contentText = '無人追蹤';
     if (_followerCount == 1) {
       contentText = '$_followerNickName的追蹤對象';
     } else if (_followerCount > 1) {
@@ -45,6 +45,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
       onTap: () {},
       child: Card(
         color: Colors.white,
+        elevation: 0,
         shape: const RoundedRectangleBorder(
           side: BorderSide(color: Color.fromRGBO(0, 9, 40, 0.1), width: 1),
           borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -56,7 +57,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              HeadShotWidget(widget.recommendMember.memberId, 64),
+              HeadShotWidget(widget.recommendMember.nickname, 32),
               const SizedBox(height: 12),
               Text(
                 widget.recommendMember.nickname,
@@ -90,8 +91,8 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
   }
 
   Widget _followButton(String targetId) {
-    return GestureDetector(
-      onTap: () async {
+    return OutlinedButton(
+      onPressed: () async {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
           bool isSuccess = false;
@@ -101,9 +102,9 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
             Fluttertoast.showToast(
               msg: isSuccess ? "新增追蹤成功" : "新增追蹤失敗，請稍後再試一次",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.grey[600],
               textColor: Colors.white,
               fontSize: 16.0,
             );
@@ -113,7 +114,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
             Fluttertoast.showToast(
               msg: isSuccess ? "取消追蹤成功" : "取消追蹤失敗，請稍後再試一次",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.grey,
               textColor: Colors.white,
@@ -121,13 +122,6 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
             );
           }
           if (isSuccess) {
-            if (!_isFollowed && _followerCount == 0) {
-              _followerNickName = '您';
-            } else if (!_isFollowed) {
-              _followerCount++;
-            } else {
-              _followerCount--;
-            }
             _isFollowed = !_isFollowed;
             setState(() {});
           }
@@ -136,34 +130,25 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
           Fluttertoast.showToast(
             msg: "請先登入",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.grey[600],
             textColor: Colors.white,
             fontSize: 16.0,
           );
           AutoRouter.of(context).push(const LoginRoute());
         }
       },
-      child: SizedBox(
-        height: 40,
-        child: Card(
-          color: _isFollowed ? Colors.black87 : Colors.white,
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.black87,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(6.0)),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Text(
-            _isFollowed ? '追蹤中' : '追蹤',
-            style: TextStyle(
-              fontSize: 14,
-              color: _isFollowed ? Colors.white : Colors.black87,
-            ),
-          ),
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: Colors.black87, width: 1),
+        backgroundColor: _isFollowed ? Colors.black87 : Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 47),
+      ),
+      child: Text(
+        _isFollowed ? '追蹤中' : '追蹤',
+        style: TextStyle(
+          fontSize: 16,
+          color: _isFollowed ? Colors.white : Colors.black87,
         ),
       ),
     );

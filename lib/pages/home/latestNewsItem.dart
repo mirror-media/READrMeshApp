@@ -13,8 +13,8 @@ import 'package:readr/services/memberService.dart';
 
 class LatestNewsItem extends StatefulWidget {
   final NewsListItem news;
-  final String myId;
-  const LatestNewsItem(this.news, this.myId);
+  final Member? member;
+  const LatestNewsItem(this.news, this.member);
   @override
   _LatestNewsItemState createState() => _LatestNewsItemState();
 }
@@ -31,13 +31,17 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
     if (widget.news.myPickId != null) {
       _isPicked = true;
     }
-    _pickedMembers = widget.news.followingPickMembers;
-    _pickedMembers.addAll(widget.news.otherPickMembers);
     _pickCount = widget.news.pickCount;
   }
 
   @override
   Widget build(BuildContext context) {
+    _pickedMembers = [];
+    if (_isPicked && widget.member != null) {
+      _pickedMembers.add(widget.member!);
+    }
+    _pickedMembers.addAll(widget.news.followingPickMembers);
+    _pickedMembers.addAll(widget.news.otherPickMembers);
     List<Widget> bottom = [];
     if (_pickCount == 0) {
       bottom = [
@@ -52,7 +56,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
       ];
     } else {
       bottom = [
-        HeadShotStack(_pickedMembers, 28),
+        HeadShotStack(_pickedMembers, 14),
         const SizedBox(width: 8),
         RichText(
           maxLines: 1,
@@ -69,7 +73,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
                 text: ' 人精選',
                 style: TextStyle(
                   fontSize: 13,
-                  color: Colors.black87,
+                  color: Colors.black54,
                   fontWeight: FontWeight.w400,
                 ),
               )
@@ -83,39 +87,22 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
       ];
     }
 
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          if (widget.news.source != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                widget.news.source!.title,
-                style: const TextStyle(color: Colors.black54, fontSize: 12),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.news.source != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Text(
+              widget.news.source!.title,
+              style: const TextStyle(color: Colors.black54, fontSize: 12),
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: CachedNetworkImage(
-                  width: 96,
-                  height: 96 / (16 / 9),
-                  imageUrl: widget.news.heroImageUrl,
-                  placeholder: (context, url) => Container(
-                    color: Colors.grey,
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: Colors.grey,
-                    child: const Icon(Icons.error),
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
+          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Text(
                 widget.news.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -125,29 +112,46 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          NewsInfo(widget.news),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: bottom,
-          )
-        ],
-      ),
+            ),
+            const SizedBox(width: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4.0),
+              child: CachedNetworkImage(
+                width: 96,
+                height: 96 / (16 / 9),
+                imageUrl: widget.news.heroImageUrl,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey,
+                  child: const Icon(Icons.error),
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        NewsInfo(widget.news),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: bottom,
+        )
+      ],
     );
   }
 
   Widget _pickButton(NewsListItem news) {
-    return GestureDetector(
-      onTap: () async {
+    return OutlinedButton(
+      onPressed: () async {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
           bool isSuccess = false;
           if (!_isPicked) {
             String? pickId = await _memberService.addPick(
-              memberId: widget.myId,
+              memberId: widget.member!.memberId,
               targetId: news.id,
               objective: PickObjective.story,
               state: PickState.public,
@@ -156,13 +160,14 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
             if (pickId != null) {
               isSuccess = true;
               news.myPickId = pickId;
+              _pickCount++;
             }
             Fluttertoast.showToast(
               msg: isSuccess ? "精選成功" : "精選失敗，請稍後再試一次",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.grey[600],
               textColor: Colors.white,
               fontSize: 16.0,
             );
@@ -171,14 +176,16 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
             Fluttertoast.showToast(
               msg: isSuccess ? "取消精選成功" : "取消精選失敗，請稍後再試一次",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.grey[600],
               textColor: Colors.white,
               fontSize: 16.0,
             );
             if (isSuccess) {
               news.myPickId = null;
+              _pickCount--;
+              _pickedMembers.remove(widget.member!);
             }
           }
           if (isSuccess) {
@@ -190,44 +197,39 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
           Fluttertoast.showToast(
             msg: "請先登入",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.grey[600],
             textColor: Colors.white,
             fontSize: 16.0,
           );
           AutoRouter.of(context).push(const LoginRoute());
         }
       },
-      child: SizedBox(
-        width: 68,
-        child: Card(
-          color: _isPicked ? Colors.black87 : Colors.white,
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.black87,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(6.0)),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: Colors.black87, width: 1),
+        backgroundColor: _isPicked ? Colors.black87 : Colors.white,
+        padding: const EdgeInsets.fromLTRB(11, 3, 12, 4),
+      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            WidgetSpan(
+              child: Icon(
                 _isPicked ? Icons.done_outlined : Icons.add_outlined,
                 size: 18,
                 color: _isPicked ? Colors.white : Colors.black87,
               ),
-              Text(
-                _isPicked ? '已精選' : '精選',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: _isPicked ? Colors.white : Colors.black87,
-                ),
+            ),
+            TextSpan(
+              text: _isPicked ? '已精選' : '精選',
+              style: TextStyle(
+                fontSize: 14,
+                height: 1.9,
+                color: _isPicked ? Colors.white : Colors.black87,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

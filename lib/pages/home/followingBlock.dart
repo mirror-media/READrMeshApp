@@ -8,6 +8,7 @@ import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/pages/home/newsInfo.dart';
 import 'package:readr/pages/shared/headShotStack.dart';
 import 'package:readr/pages/shared/headShotWidget.dart';
+import 'package:readr/pages/shared/timestamp.dart';
 
 class FollowingBlock extends StatelessWidget {
   final NewsListItemList newsHaveCommentsOrPicks;
@@ -34,6 +35,7 @@ class FollowingBlock extends StatelessWidget {
         child: ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(0),
+          shrinkWrap: true,
           itemBuilder: (context, index) =>
               _followingItem(context, newsHaveCommentsOrPicks[index]),
           separatorBuilder: (context, index) => const SizedBox(height: 8.5),
@@ -48,6 +50,7 @@ class FollowingBlock extends StatelessWidget {
       child: Container(
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _pickBar(item.followingPickMembers),
             CachedNetworkImage(
@@ -115,55 +118,55 @@ class FollowingBlock extends StatelessWidget {
       firstTwoMember.add(members[i]);
     }
 
-    Widget text;
+    List<Widget> children = [
+      HeadShotStack(firstTwoMember, 14),
+      const SizedBox(width: 8),
+    ];
     if (firstTwoMember.length == 1) {
-      text = RichText(
-        maxLines: 2,
+      children.add(Text(
+        firstTwoMember[0].nickname,
+        style: const TextStyle(fontSize: 14, color: Colors.black),
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          text: firstTwoMember[0].nickname,
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          children: const [
-            TextSpan(
-              text: '精選了這篇',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
-            )
-          ],
-        ),
-      );
+      ));
+      children.add(const Text(
+        '精選了這篇',
+        style: TextStyle(fontSize: 14, color: Colors.black54),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ));
     } else {
-      text = RichText(
-        maxLines: 2,
+      children.add(Text(
+        firstTwoMember[0].nickname,
+        style: const TextStyle(fontSize: 14, color: Colors.black),
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          text: firstTwoMember[0].nickname,
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          children: [
-            const TextSpan(
-              text: '及',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
-            ),
-            TextSpan(
-              text: firstTwoMember[1].nickname,
-              style: const TextStyle(fontSize: 14, color: Colors.black),
-            ),
-            const TextSpan(
-              text: '都精選了這篇',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
-            )
-          ],
-        ),
-      );
+      ));
+      children.add(const Text(
+        '及',
+        style: TextStyle(fontSize: 14, color: Colors.black54),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ));
+      children.add(Text(
+        firstTwoMember[1].nickname,
+        style: const TextStyle(fontSize: 14, color: Colors.black),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ));
+      children.add(const Text(
+        '都精選了這篇',
+        style: TextStyle(fontSize: 14, color: Colors.black54),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ));
     }
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Row(
-        children: [
-          HeadShotStack(firstTwoMember, 28),
-          text,
-        ],
+        children: children,
       ),
     );
   }
@@ -172,22 +175,19 @@ class FollowingBlock extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20),
       physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemBuilder: (context, index) {
-        bool hasEmail = false;
-        if (comments[index].member.email != null &&
-            comments[index].member.email!.contains('@')) {
-          hasEmail = true;
-        }
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeadShotWidget(
               comments[index].member.nickname,
-              44,
+              22,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     comments[index].member.nickname,
@@ -197,15 +197,7 @@ class FollowingBlock extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (hasEmail)
-                    Text(
-                      '@${comments[index].member.email!.split('@')[0]}',
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                  Timestamp(comments[index].publishDate),
                   const SizedBox(height: 8.5),
                   Text(
                     comments[index].content,

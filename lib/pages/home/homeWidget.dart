@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestCommentsBlock.dart';
@@ -15,6 +16,7 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   Map<String, dynamic> _data = {};
+  Member? _currentMember;
 
   @override
   void initState() {
@@ -31,6 +33,10 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   _fetchHomeScreen() async {
     context.read<HomeBloc>().add(InitialHomeScreen());
+  }
+
+  _reloadHomeScreen() async {
+    context.read<HomeBloc>().add(ReloadHomeScreen());
   }
 
   @override
@@ -61,16 +67,13 @@ class _HomeWidgetState extends State<HomeWidget> {
           );
         }
 
-        if (state is HomeReloading) {
-          return _buildHomeList();
-        }
-
         if (state is HomeReloadFailed) {
           return _buildHomeList();
         }
 
         if (state is HomeLoaded) {
           _data = state.data;
+          _currentMember = _data['member'];
           return _buildHomeList();
         }
 
@@ -83,28 +86,42 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   Widget _buildHomeList() {
     return RefreshIndicator(
-      onRefresh: () => _fetchHomeScreen(),
+      onRefresh: () => _reloadHomeScreen(),
       child: ListView(
         children: [
           FollowingBlock(_data['followingNewsList']),
           const SizedBox(height: 8.5),
-          LatestCommentsBlock(_data['latestCommentsNewsList'], _data['myId']),
+          LatestCommentsBlock(
+              _data['latestCommentsNewsList'], _currentMember?.memberId ?? ""),
           const SizedBox(height: 8.5),
           LatestNewsBlock(
             _data['otherNewsList'],
             _data['recommendedMembers'],
-            _data['myId'],
+            _currentMember,
+          ),
+          Container(
+            height: 16,
+            color: Colors.white,
           ),
           const SizedBox(height: 20),
-          const Center(
-            child: Text(
-              '🎉 你已看完所有新聞囉',
+          Center(
+              child: RichText(
+            text: const TextSpan(
+              text: '🎉 ',
               style: TextStyle(
-                color: Colors.black38,
                 fontSize: 14,
               ),
+              children: [
+                TextSpan(
+                  text: '你已看完所有新聞囉',
+                  style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: 14,
+                  ),
+                )
+              ],
             ),
-          ),
+          )),
           const SizedBox(height: 145),
         ],
       ),

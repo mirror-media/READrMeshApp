@@ -11,21 +11,27 @@ class NewsInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [];
     if (newsListItem.commentCount != 0) {
-      children.add(Row(
-        children: [
-          const ImageIcon(
-            AssetImage(commentIconPng),
-            size: 11,
-            color: Colors.black54,
-          ),
-          Text(
-            newsListItem.commentCount.toString(),
-            style: const TextStyle(
-              fontSize: 13,
+      children.add(SizedBox(
+        height: 22,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const ImageIcon(
+              AssetImage(commentIconPng),
+              size: 17,
               color: Colors.black54,
             ),
-          ),
-        ],
+            const SizedBox(width: 3),
+            Text(
+              newsListItem.commentCount.toString(),
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.black54,
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
       ));
       children.add(Container(
         width: 2,

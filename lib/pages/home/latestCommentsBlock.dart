@@ -19,6 +19,7 @@ class LatestCommentsBlock extends StatelessWidget {
         color: Colors.white,
         child: ListView.separated(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+          shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             if (index == 0) {

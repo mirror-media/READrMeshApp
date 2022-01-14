@@ -8,8 +8,9 @@ import 'package:readr/pages/home/recommendFollowBlock.dart';
 class LatestNewsBlock extends StatefulWidget {
   final NewsListItemList otherNewsList;
   final List<Member> recommendedMembers;
-  final String myId;
-  const LatestNewsBlock(this.otherNewsList, this.recommendedMembers, this.myId);
+  final Member? member;
+  const LatestNewsBlock(
+      this.otherNewsList, this.recommendedMembers, this.member);
 
   @override
   _LatestNewsBlockState createState() => _LatestNewsBlockState();
@@ -34,31 +35,36 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
         child: ListView(
           padding: const EdgeInsets.all(0),
           physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  '最新文章',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 6, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '最新文章',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.filter_list_outlined,
-                    color: Colors.black54,
-                    size: 22,
-                  ),
-                )
-              ],
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.filter_list_outlined,
+                      color: Colors.black54,
+                      size: 22,
+                    ),
+                  )
+                ],
+              ),
             ),
             const SizedBox(height: 22.5),
             _latestNewsList(context, filteredList.sublist(0, 5)),
-            RecommendFollowBlock(widget.recommendedMembers, widget.myId),
+            RecommendFollowBlock(
+                widget.recommendedMembers, widget.member?.memberId ?? ""),
             _latestNewsList(context, filteredList.sublist(5))
           ],
         ),
@@ -70,12 +76,13 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {},
           child: LatestNewsItem(
             newsList[index],
-            widget.myId,
+            widget.member,
           ),
         );
       },

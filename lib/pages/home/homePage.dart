@@ -24,10 +24,13 @@ class HomePage extends StatelessWidget {
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: Colors.white,
-      leading: const Text(
+      centerTitle: false,
+      elevation: 0,
+      title: const Text(
         'Logo',
         style: TextStyle(
           color: Colors.black,
+          fontSize: 18,
         ),
       ),
       actions: [
