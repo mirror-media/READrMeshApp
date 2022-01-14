@@ -6,6 +6,7 @@ import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestCommentsBlock.dart';
+import 'package:readr/pages/home/latestNewsBlock.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -89,6 +90,22 @@ class _HomeWidgetState extends State<HomeWidget> {
           const SizedBox(height: 8.5),
           LatestCommentsBlock(_data['latestCommentsNewsList'], _data['myId']),
           const SizedBox(height: 8.5),
+          LatestNewsBlock(
+            _data['otherNewsList'],
+            _data['recommendedMembers'],
+            _data['myId'],
+          ),
+          const SizedBox(height: 20),
+          const Center(
+            child: Text(
+              '🎉 你已看完所有新聞囉',
+              style: TextStyle(
+                color: Colors.black38,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          const SizedBox(height: 145),
         ],
       ),
     );

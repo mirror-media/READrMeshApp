@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/pages/home/latestNewsItem.dart';
+import 'package:readr/pages/home/recommendFollowBlock.dart';
 
 class LatestNewsBlock extends StatefulWidget {
   final NewsListItemList otherNewsList;
+  final List<Member> recommendedMembers;
   final String myId;
-  const LatestNewsBlock(this.otherNewsList, this.myId);
+  const LatestNewsBlock(this.otherNewsList, this.recommendedMembers, this.myId);
 
   @override
   _LatestNewsBlockState createState() => _LatestNewsBlockState();
@@ -55,6 +58,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             ),
             const SizedBox(height: 22.5),
             _latestNewsList(context, filteredList.sublist(0, 5)),
+            RecommendFollowBlock(widget.recommendedMembers, widget.myId),
             _latestNewsList(context, filteredList.sublist(5))
           ],
         ),
