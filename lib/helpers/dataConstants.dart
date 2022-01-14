@@ -35,3 +35,22 @@ const Color storySummaryFrameColor = storyWidgetColor;
 const Color blockquoteColor = Color.fromRGBO(0, 9, 40, 0.1);
 const Color annotationColor = Colors.black87;
 const Color homeScreenBackgroundColor = Color.fromRGBO(246, 246, 251, 1);
+
+// enum
+enum PickObjective {
+  story,
+  comment,
+  collection,
+}
+
+enum PickState {
+  public,
+  friend,
+  private,
+}
+
+enum PickKind {
+  bookmark,
+  collect,
+  read,
+}
