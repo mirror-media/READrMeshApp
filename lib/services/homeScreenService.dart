@@ -414,6 +414,10 @@ class HomeScreenService {
         id
         nickname
         followerCount
+        follower(take:1){
+          id
+          nickname
+        }
         pickCount(
           where:{
             picked_date:{
@@ -513,7 +517,10 @@ class HomeScreenService {
     List<Member> followedFollowing = [];
     if (jsonResponse['data']['followedFollowing'].isNotEmpty) {
       for (var member in jsonResponse['data']['followedFollowing']) {
-        followedFollowing.add(Member.fromJson(member));
+        for (var followingMember in member) {
+          followedFollowing.add(Member.followedFollowing(
+              followingMember, member['id'], member['nickname']));
+        }
       }
     }
 
@@ -522,7 +529,7 @@ class HomeScreenService {
     List<Member> otherRecommendMembers = [];
     if (jsonResponse['data']['otherRecommendMembers'].isNotEmpty) {
       for (var member in jsonResponse['data']['otherRecommendMembers']) {
-        otherRecommendMembers.add(Member.fromJson(member));
+        otherRecommendMembers.add(Member.otherRecommend(member));
       }
       // sort by amount of comments and picks in last 24 hours
       otherRecommendMembers.sort((a, b) {
@@ -532,12 +539,31 @@ class HomeScreenService {
       });
     }
 
+    // mix the list and remove repeated members
+    List<Member> recommendedMembers = [];
+    if (followedFollowing.isEmpty) {
+      recommendedMembers = otherRecommendMembers;
+    } else {
+      recommendedMembers = followedFollowing;
+      for (var member in followedFollowing) {
+        otherRecommendMembers
+            .removeWhere((element) => element.memberId == member.memberId);
+      }
+      recommendedMembers.addAll(otherRecommendMembers);
+    }
+
+    // remove member already in latestCommentsNewsList
+    for (var news in latestCommentsNewsList) {
+      String commentMemberId = news.otherComments[0].member.memberId;
+      recommendedMembers
+          .removeWhere((element) => element.memberId == commentMemberId);
+    }
+
     Map<String, dynamic> result = {
       'followingNewsList': followingNewsList,
       'latestCommentsNewsList': latestCommentsNewsList,
       'otherNewsList': otherNewsList,
-      'followedFollowing': followedFollowing,
-      'otherRecommendMembers': otherRecommendMembers,
+      'recommendedMembers': recommendedMembers,
       'followingMemberIds': followingMemberIds,
       'followingCategorySlugs': followingCategorySlugs,
       'followingPublisherIds': followingPublisherIds,
