@@ -14,7 +14,7 @@ class NewsListItem {
   final Category? category;
   final DateTime publishedDate;
   final String heroImageUrl;
-  final int pickCount;
+  int pickCount;
   final int commentCount;
   final bool payWall;
   final bool overlayAds;
@@ -22,6 +22,7 @@ class NewsListItem {
   final List<Member> otherPickMembers;
   final List<Comment> followingComments;
   final List<Comment> otherComments;
+  String? myPickId;
 
   NewsListItem({
     required this.id,
@@ -41,6 +42,7 @@ class NewsListItem {
     required this.otherPickMembers,
     required this.followingComments,
     required this.otherComments,
+    this.myPickId,
   });
 
   factory NewsListItem.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,7 @@ class NewsListItem {
     List<Member> otherPickMembers = [];
     List<Comment> followingComments = [];
     List<Comment> otherComments = [];
+    String? myPickId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -103,6 +106,11 @@ class NewsListItem {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
+        json['myPickId'].isNotEmpty) {
+      myPickId = json['myPickId'][0]['id'];
+    }
+
     return NewsListItem(
       id: json["id"],
       title: json["title"],
@@ -120,6 +128,7 @@ class NewsListItem {
       otherPickMembers: otherPickMembers,
       followingComments: followingComments,
       otherComments: otherComments,
+      myPickId: myPickId,
     );
   }
 }
