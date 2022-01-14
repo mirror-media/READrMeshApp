@@ -8,7 +8,7 @@ class Timestamp extends StatefulWidget {
   final Color textColor;
   const Timestamp(
     this.dateTime, {
-    this.textSize = 13.0,
+    this.textSize = 12.0,
     this.textColor = Colors.black54,
   });
 
@@ -61,6 +61,7 @@ class _TimestampState extends State<Timestamp> {
     }
     return Text(
       text,
+      softWrap: true,
       style: TextStyle(
         fontSize: widget.textSize,
         color: widget.textColor,
