@@ -333,6 +333,23 @@ class HomeScreenService {
             }
           }
         )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+          }
+        ){
+          id
+        }
       }
       followedFollowing:members(
         where:{
