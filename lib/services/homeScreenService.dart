@@ -13,11 +13,13 @@ class HomeScreenService {
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
 
-  static Map<String, String> getHeaders(String token) {
+  static Map<String, String> getHeaders({String? token}) {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
-    headers.addAll({"Authorization": "Bearer $token"});
+    if (token != null) {
+      headers.addAll({"Authorization": "Bearer $token"});
+    }
 
     return headers;
   }
@@ -33,9 +35,14 @@ class HomeScreenService {
 	    authenticateUserWithPassword(
 		    email: \$email
 		    password: \$password
-	    ){
-		    token
-	    }
+      ){
+        ... on UserAuthenticationWithPasswordSuccess{
+        	sessionToken
+      	}
+        ... on UserAuthenticationWithPasswordFailure{
+          message
+      	}
+      }
     }
     """;
 
@@ -55,12 +62,12 @@ class HomeScreenService {
         headers: {"Content-Type": "application/json"});
 
     String token =
-        jsonResponse['data']['authenticateUserWithPassword']['token'];
+        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
 
     return token;
   }
 
-  Future<Map<String, dynamic>> fetchMemberFollowing() async {
+  Future<Member> fetchMember() async {
     const String query = """
     query(
       \$firebaseId: String
@@ -73,6 +80,9 @@ class HomeScreenService {
         }
       ){
         id
+        nickname
+        firebaseId
+        email
         following(
           where: {
             is_active: {
@@ -81,12 +91,16 @@ class HomeScreenService {
           }
         ){
           id
+          nickname
         }
         following_category{
+          id
           slug
+          title
         }
         follow_publisher{
           id
+          title
         }
       }
     }
@@ -103,46 +117,13 @@ class HomeScreenService {
     );
 
     late final dynamic jsonResponse;
-    String token = await _fetchCMSUserToken();
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: getHeaders(token),
+      headers: getHeaders(),
     );
 
-    List<String> followingMemberIds = [];
-    List<String> followingCategorySlugs = [];
-    List<String> followingPublisherIds = [];
-    String myId = '';
-    if (jsonResponse['data']['members'].isNotEmpty) {
-      var member = jsonResponse['data']['members'];
-      myId = member['id'];
-      if (member['following'].isNotEmpty) {
-        for (var followingMember in member['following']) {
-          followingMemberIds.add(followingMember['id']);
-        }
-      }
-
-      if (member['following_category'].isNotEmpty) {
-        for (var followingCategory in member['following_category']) {
-          followingCategorySlugs.add(followingCategory['slug']);
-        }
-      }
-
-      if (member['follow_publisher'].isNotEmpty) {
-        for (var followingPublisher in member['follow_publisher']) {
-          followingPublisherIds.add(followingPublisher['id']);
-        }
-      }
-    }
-
-    Map<String, dynamic> memberFollowing = {
-      'followingMemberIds': followingMemberIds,
-      'followingCategorySlugs': followingCategorySlugs,
-      'followingPublisherIds': followingPublisherIds,
-      'myId': myId,
-    };
-    return memberFollowing;
+    return Member.fromJson(jsonResponse['data']['members'][0]);
   }
 
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
@@ -392,22 +373,26 @@ class HomeScreenService {
           is_active: {
             equals: true
           }
-          OR:{
-            follow_publisher:{
-              some:{
-                id:{
-                  in: \$followingPublisherIds
+          OR:[
+            {
+              follow_publisher:{
+                some:{
+                  id:{
+                    in: \$followingPublisherIds
+                  }
+                }
+              }
+            },
+            {
+              following_category:{
+                some:{
+                  slug:{
+                    in: \$followingCategorySlugs
+                  }
                 }
               }
             }
-            following_category:{
-              some:{
-                slug:{
-                  in: \$followingCategorySlugs
-                }
-              }
-            }
-          }
+          ]
         }
         take: 20
       ){
@@ -439,6 +424,7 @@ class HomeScreenService {
     List<String> followingMemberIds = [];
     List<String> followingCategorySlugs = [];
     List<String> followingPublisherIds = [];
+    Member? member;
     // myId must has value, so set it to 0
     String myId = "0";
     //GQL DateTime must be Iso8601 format
@@ -451,12 +437,21 @@ class HomeScreenService {
 
     if (FirebaseAuth.instance.currentUser != null) {
       // fetch user following members, categories, publishers, and member id
-      Map<String, dynamic> memberFollowing = await fetchMemberFollowing();
+      member = await fetchMember();
 
-      followingMemberIds = memberFollowing['followingMemberIds']!;
-      followingCategorySlugs = memberFollowing['followingCategorySlugs']!;
-      followingPublisherIds = memberFollowing['followingPublisherIds']!;
-      myId = memberFollowing['myId']!;
+      for (var memberId in member.following!) {
+        followingMemberIds.add(memberId.memberId);
+      }
+
+      for (var category in member.followingCategory!) {
+        followingCategorySlugs.add(category.slug);
+      }
+
+      for (var publisher in member.followingPublisher!) {
+        followingPublisherIds.add(publisher.id);
+      }
+
+      myId = member.memberId;
     } else {
       // fetch local publisher id and category slug
       // TODO: Change to use local data after choose UI is available
@@ -516,10 +511,12 @@ class HomeScreenService {
     // List of members that followed members' following members
     List<Member> followedFollowing = [];
     if (jsonResponse['data']['followedFollowing'].isNotEmpty) {
-      for (var member in jsonResponse['data']['followedFollowing']) {
-        for (var followingMember in member) {
-          followedFollowing.add(Member.followedFollowing(
-              followingMember, member['id'], member['nickname']));
+      for (var followedMember in jsonResponse['data']['followedFollowing']) {
+        if (followedMember['following'].isNotEmpty) {
+          for (var followingMember in followedMember['following']) {
+            followedFollowing.add(Member.followedFollowing(followingMember,
+                followedMember['id'], followedMember['nickname']));
+          }
         }
       }
     }
@@ -528,8 +525,9 @@ class HomeScreenService {
     // Now take up to 20 members
     List<Member> otherRecommendMembers = [];
     if (jsonResponse['data']['otherRecommendMembers'].isNotEmpty) {
-      for (var member in jsonResponse['data']['otherRecommendMembers']) {
-        otherRecommendMembers.add(Member.otherRecommend(member));
+      for (var otherRecommend in jsonResponse['data']
+          ['otherRecommendMembers']) {
+        otherRecommendMembers.add(Member.otherRecommend(otherRecommend));
       }
       // sort by amount of comments and picks in last 24 hours
       otherRecommendMembers.sort((a, b) {
@@ -545,9 +543,9 @@ class HomeScreenService {
       recommendedMembers = otherRecommendMembers;
     } else {
       recommendedMembers = followedFollowing;
-      for (var member in followedFollowing) {
-        otherRecommendMembers
-            .removeWhere((element) => element.memberId == member.memberId);
+      for (var followedFollowingMember in followedFollowing) {
+        otherRecommendMembers.removeWhere(
+            (element) => element.memberId == followedFollowingMember.memberId);
       }
       recommendedMembers.addAll(otherRecommendMembers);
     }
@@ -564,10 +562,7 @@ class HomeScreenService {
       'latestCommentsNewsList': latestCommentsNewsList,
       'otherNewsList': otherNewsList,
       'recommendedMembers': recommendedMembers,
-      'followingMemberIds': followingMemberIds,
-      'followingCategorySlugs': followingCategorySlugs,
-      'followingPublisherIds': followingPublisherIds,
-      'myId': myId,
+      'member': member,
     };
 
     return result;
