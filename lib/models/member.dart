@@ -1,4 +1,6 @@
 import 'package:readr/models/baseModel.dart';
+import 'package:readr/models/category.dart';
+import 'package:readr/models/publisher.dart';
 
 class Member {
   final String? email;
@@ -10,6 +12,9 @@ class Member {
   final int? pickCount;
   final int? commentCount;
   final List<Member>? follower;
+  final List<Category>? followingCategory;
+  final List<Publisher>? followingPublisher;
+  final List<Member>? following;
 
   Member({
     this.firebaseId,
@@ -21,6 +26,9 @@ class Member {
     this.pickCount,
     this.commentCount,
     this.follower,
+    this.followingCategory,
+    this.followingPublisher,
+    this.following,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -30,6 +38,10 @@ class Member {
     int? followerCount;
     int? pickCount;
     int? commentCount;
+    List<Member> follower = [];
+    List<Category> followingCategory = [];
+    List<Publisher> followingPublisher = [];
+    List<Member> following = [];
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -55,6 +67,32 @@ class Member {
       commentCount = json['commentCount'];
     }
 
+    if (BaseModel.hasKey(json, 'following') && json['following'].isNotEmpty) {
+      for (var member in json['following']) {
+        following.add(Member.fromJson(member));
+      }
+    }
+
+    if (BaseModel.hasKey(json, 'follower') && json['follower'].isNotEmpty) {
+      for (var member in json['follower']) {
+        follower.add(Member.fromJson(member));
+      }
+    }
+
+    if (BaseModel.hasKey(json, 'following_category') &&
+        json['following_category'].isNotEmpty) {
+      for (var category in json['following_category']) {
+        followingCategory.add(Category.fromNewProductJson(category));
+      }
+    }
+
+    if (BaseModel.hasKey(json, 'follow_publisher') &&
+        json['follow_publisher'].isNotEmpty) {
+      for (var publisher in json['follow_publisher']) {
+        followingPublisher.add(Publisher.fromJson(publisher));
+      }
+    }
+
     return Member(
       memberId: json['id'],
       firebaseId: firebaseId,
@@ -64,6 +102,10 @@ class Member {
       followerCount: followerCount,
       pickCount: pickCount,
       commentCount: commentCount,
+      following: following,
+      followingCategory: followingCategory,
+      followingPublisher: followingPublisher,
+      follower: follower,
     );
   }
 
