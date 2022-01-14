@@ -9,6 +9,7 @@ class Member {
   final int? followerCount;
   final int? pickCount;
   final int? commentCount;
+  final List<Member>? follower;
 
   Member({
     this.firebaseId,
@@ -19,6 +20,7 @@ class Member {
     this.followerCount,
     this.pickCount,
     this.commentCount,
+    this.follower,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,36 @@ class Member {
       followerCount: followerCount,
       pickCount: pickCount,
       commentCount: commentCount,
+    );
+  }
+
+  factory Member.followedFollowing(
+      Map<String, dynamic> json, String followerId, String followerNickname) {
+    return Member(
+      memberId: json['id'],
+      nickname: json['nickname'],
+      followerCount: json['followerCount'] ?? 0,
+      follower: [Member(memberId: followerId, nickname: followerNickname)],
+    );
+  }
+
+  factory Member.otherRecommend(Map<String, dynamic> json) {
+    List<Member>? follower;
+    if (json['follower'].isNotEmpty) {
+      follower = [
+        Member(
+          memberId: json['follower'][0]['id'],
+          nickname: json['follower'][0]['nickname'],
+        )
+      ];
+    }
+    return Member(
+      memberId: json['id'],
+      nickname: json['nickname'],
+      followerCount: json['followerCount'] ?? 0,
+      pickCount: json['pickCount'] ?? 0,
+      commentCount: json['commentCount'] ?? 0,
+      follower: follower,
     );
   }
 }
