@@ -9,7 +9,10 @@ class HeadShotStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double padding = radius / 2 + 2;
+    if (members.isEmpty) {
+      return Container();
+    }
+    double padding = radius + 2;
     List<Widget> headShots = [];
     for (int i = 0; i < members.length && i < 4; i++) {
       if (i == 0) {
@@ -23,7 +26,7 @@ class HeadShotStack extends StatelessWidget {
       }
     }
     return Stack(
-      children: headShots,
+      children: headShots.reversed.toList(),
       alignment: Alignment.centerLeft,
     );
   }
