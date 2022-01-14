@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
@@ -12,10 +13,13 @@ class MemberService {
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
 
-  static Map<String, String> getHeaders(String token) {
+  Future<Map<String, String>> getHeaders() async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
+    // TODO: Change back to firebase token when verify firebase token is finished
+    String token = await _fetchCMSUserToken();
+    //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
     headers.addAll({"Authorization": "Bearer $token"});
 
     return headers;
@@ -93,12 +97,10 @@ class MemberService {
       variables: variables,
     );
 
-    // TODO: Change back to firebase token when verify firebase token is finished
-    String token = await _fetchCMSUserToken();
     final jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: getHeaders(token),
+      headers: await getHeaders(),
     );
 
     // create new member when firebase is signed in but member is not created
@@ -167,12 +169,10 @@ class MemberService {
     );
 
     try {
-      // TODO: Change back to firebase token when verify firebase token is finished
-      String token = await _fetchCMSUserToken();
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: getHeaders(token),
+        headers: await getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -209,14 +209,12 @@ class MemberService {
       query: mutation,
       variables: variables,
     );
-    // TODO: Delete when verify firebase token is finished
-    String cmsToken = await _fetchCMSUserToken();
 
     try {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: getHeaders(cmsToken),
+        headers: await getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
@@ -260,14 +258,12 @@ class MemberService {
       query: mutation,
       variables: variables,
     );
-    // TODO: Delete when verify firebase token is finished
-    String cmsToken = await _fetchCMSUserToken();
 
     try {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: getHeaders(cmsToken),
+        headers: await getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
@@ -311,14 +307,175 @@ class MemberService {
       query: mutation,
       variables: variables,
     );
-    // TODO: Delete when verify firebase token is finished
-    String cmsToken = await _fetchCMSUserToken();
 
     try {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: getHeaders(cmsToken),
+        headers: await getHeaders(),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<String?> addPick({
+    required String memberId,
+    required String targetId,
+    required PickObjective objective,
+    required PickState state,
+    required PickKind kind,
+    bool hasComment = false,
+    String? commentContent,
+    bool paywall = false,
+    String? rootCommentId,
+  }) async {
+    String mutation = """
+    mutation(
+      \$data: PickCreateInput!
+    ){
+      createPick(
+        data: \$data
+      ){
+        id
+      }
+    }
+    """;
+
+    Map<String, Map> variables = {
+      "data": {
+        "member": {
+          "connect": {"id": memberId}
+        },
+        "objective": objective.toString().split('.').last,
+        "kind": kind.toString().split('.').last,
+        "state": state.toString().split('.').last,
+        "picked_date": DateTime.now().toUtc().toIso8601String(),
+        "paywall": paywall
+      }
+    };
+
+    Map<String, Map> additionalVariables;
+    if (objective == PickObjective.story) {
+      additionalVariables = {
+        "story": {
+          "connect": {"id": targetId}
+        }
+      };
+    } else if (objective == PickObjective.collection) {
+      additionalVariables = {
+        "collection": {
+          "connect": {"id": targetId}
+        }
+      };
+    } else {
+      additionalVariables = {
+        "comment": {
+          "connect": {"id": targetId}
+        }
+      };
+    }
+
+    if (hasComment && commentContent != null) {
+      if (objective == PickObjective.story) {
+        additionalVariables.addAll({
+          "pick_comment": {
+            "create": {
+              "member": {
+                "connect": {"id": memberId}
+              },
+              "story": {
+                "connect": {"id": targetId}
+              },
+              "content": commentContent,
+              "state": state.toString().split('.').last,
+              "published_date": DateTime.now().toUtc().toIso8601String()
+            }
+          }
+        });
+      } else if (objective == PickObjective.comment) {
+        additionalVariables.addAll({
+          "pick_comment": {
+            "create": {
+              "member": {
+                "connect": {"id": memberId}
+              },
+              "parent": {
+                "connect": {"id": targetId}
+              },
+              "content": commentContent,
+              "state": state.toString().split('.').last,
+              "published_date": DateTime.now().toUtc().toIso8601String()
+            }
+          }
+        });
+        if (rootCommentId != null) {
+          additionalVariables['pick_comment']!['create']!.addAll({
+            "root": {
+              "connect": {"id": rootCommentId}
+            }
+          });
+        }
+      } else {
+        return null;
+      }
+    }
+
+    variables['data']!.addAll(additionalVariables);
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      return jsonResponse['data']['createPick']['id'];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> deletePick(String pickId) async {
+    String mutation = """
+      mutation(
+        \$pickId: ID
+      ){
+        deletePick(
+          where:{
+            id: \$pickId
+          }
+        ){
+          id
+        }
+      }
+      """;
+
+    Map<String, String> variables = {"pickId": pickId};
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
