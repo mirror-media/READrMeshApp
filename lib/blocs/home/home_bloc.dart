@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
       try {
+        print(event.toString());
         if (event is InitialHomeScreen) {
           emit(HomeLoading());
           Map<String, dynamic> data =
