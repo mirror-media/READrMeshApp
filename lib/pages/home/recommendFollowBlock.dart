@@ -4,8 +4,8 @@ import 'package:readr/pages/home/recommendFollowItem.dart';
 
 class RecommendFollowBlock extends StatelessWidget {
   final List<Member> recommendedMembers;
-  final String myId;
-  const RecommendFollowBlock(this.recommendedMembers, this.myId);
+  final Member? member;
+  const RecommendFollowBlock(this.recommendedMembers, this.member);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class RecommendFollowBlock extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) =>
-                RecommendFollowItem(recommendedMembers[index], myId),
+                RecommendFollowItem(recommendedMembers[index], member),
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemCount: recommendedMembers.length,
           ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/pages/home/latestCommentItem.dart';
 
 class LatestCommentsBlock extends StatelessWidget {
   final NewsListItemList latestCommentsNewsList;
-  final String myId;
-  const LatestCommentsBlock(this.latestCommentsNewsList, this.myId);
+  final Member? member;
+  const LatestCommentsBlock(this.latestCommentsNewsList, this.member);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class LatestCommentsBlock extends StatelessWidget {
               onTap: () {},
               child: LatestCommentItem(
                 latestCommentsNewsList[index - 1],
-                myId,
+                member,
               ),
             );
           },

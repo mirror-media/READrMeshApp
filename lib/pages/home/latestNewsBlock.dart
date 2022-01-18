@@ -63,8 +63,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             ),
             const SizedBox(height: 22.5),
             _latestNewsList(context, filteredList.sublist(0, 5)),
-            RecommendFollowBlock(
-                widget.recommendedMembers, widget.member?.memberId ?? ""),
+            RecommendFollowBlock(widget.recommendedMembers, widget.member),
             _latestNewsList(context, filteredList.sublist(5))
           ],
         ),

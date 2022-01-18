@@ -3,26 +3,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/newsInfo.dart';
 import 'package:readr/pages/shared/headShotWidget.dart';
-import 'package:readr/services/memberService.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LatestCommentItem extends StatefulWidget {
   final NewsListItem news;
-  final String myId;
-  const LatestCommentItem(this.news, this.myId);
+  final Member? member;
+  const LatestCommentItem(this.news, this.member);
 
   @override
   _LatestCommentItemState createState() => _LatestCommentItemState();
 }
 
 class _LatestCommentItemState extends State<LatestCommentItem> {
-  bool _isFollowed = false;
-  final MemberService _memberService = MemberService();
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -157,40 +156,22 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
   }
 
   Widget _followButton(Comment comment) {
+    bool isFollowed = false;
+    if (widget.member != null && widget.member!.following != null) {
+      int index = widget.member!.following!
+          .indexWhere((member) => member.memberId == comment.member.memberId);
+      if (index != -1) {
+        isFollowed = true;
+      }
+    }
+
     return OutlinedButton(
-      onPressed: () async {
+      onPressed: () {
         // check whether is login
-        if (FirebaseAuth.instance.currentUser != null) {
-          bool isSuccess = false;
-          if (!_isFollowed) {
-            isSuccess = await _memberService.addFollowingMember(
-                widget.myId, comment.member.memberId);
-            Fluttertoast.showToast(
-              msg: isSuccess ? "新增追蹤成功" : "新增追蹤失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey[600],
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          } else {
-            isSuccess = await _memberService.removeFollowingMember(
-                widget.myId, comment.member.memberId);
-            Fluttertoast.showToast(
-              msg: isSuccess ? "取消追蹤成功" : "取消追蹤失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          }
-          if (isSuccess) {
-            _isFollowed = !_isFollowed;
-            setState(() {});
-          }
+        if (FirebaseAuth.instance.currentUser != null &&
+            widget.member != null) {
+          context.read<HomeBloc>().add(UpdateFollowingMember(
+              comment.member.memberId, widget.member!.memberId, isFollowed));
         } else {
           // if user is not login
           Fluttertoast.showToast(
@@ -207,13 +188,13 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: _isFollowed ? Colors.black87 : Colors.white,
+        backgroundColor: isFollowed ? Colors.black87 : Colors.white,
       ),
       child: Text(
-        _isFollowed ? '追蹤中' : '追蹤',
+        isFollowed ? '追蹤中' : '追蹤',
         style: TextStyle(
           fontSize: 14,
-          color: _isFollowed ? Colors.white : Colors.black87,
+          color: isFollowed ? Colors.white : Colors.black87,
         ),
       ),
     );

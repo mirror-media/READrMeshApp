@@ -2,23 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/headShotWidget.dart';
-import 'package:readr/services/memberService.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowItem extends StatefulWidget {
   final Member recommendMember;
-  final String myId;
-  const RecommendFollowItem(this.recommendMember, this.myId);
+  final Member? member;
+  const RecommendFollowItem(this.recommendMember, this.member);
 
   @override
   _RecommendFollowItemState createState() => _RecommendFollowItemState();
 }
 
 class _RecommendFollowItemState extends State<RecommendFollowItem> {
-  bool _isFollowed = false;
-  final MemberService _memberService = MemberService();
   int _followerCount = 0;
   String _followerNickName = "";
 
@@ -82,7 +81,10 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
                 ),
               ),
               const SizedBox(height: 12),
-              _followButton(widget.recommendMember.memberId),
+              SizedBox(
+                width: double.infinity,
+                child: _followButton(widget.recommendMember.memberId),
+              ),
             ],
           ),
         ),
@@ -91,40 +93,20 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
   }
 
   Widget _followButton(String targetId) {
+    bool isFollowed = false;
+    if (widget.member != null && widget.member!.following != null) {
+      int index = widget.member!.following!
+          .indexWhere((member) => member.memberId == targetId);
+      if (index != -1) {
+        isFollowed = true;
+      }
+    }
     return OutlinedButton(
       onPressed: () async {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
-          bool isSuccess = false;
-          if (!_isFollowed) {
-            isSuccess =
-                await _memberService.addFollowingMember(widget.myId, targetId);
-            Fluttertoast.showToast(
-              msg: isSuccess ? "新增追蹤成功" : "新增追蹤失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey[600],
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          } else {
-            isSuccess = await _memberService.removeFollowingMember(
-                widget.myId, targetId);
-            Fluttertoast.showToast(
-              msg: isSuccess ? "取消追蹤成功" : "取消追蹤失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          }
-          if (isSuccess) {
-            _isFollowed = !_isFollowed;
-            setState(() {});
-          }
+          context.read<HomeBloc>().add(UpdateFollowingMember(
+              targetId, widget.member!.memberId, isFollowed));
         } else {
           // if user is not login
           Fluttertoast.showToast(
@@ -141,14 +123,15 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: _isFollowed ? Colors.black87 : Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 47),
+        backgroundColor: isFollowed ? Colors.black87 : Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 8),
       ),
       child: Text(
-        _isFollowed ? '追蹤中' : '追蹤',
+        isFollowed ? '追蹤中' : '追蹤',
+        maxLines: 1,
         style: TextStyle(
           fontSize: 16,
-          color: _isFollowed ? Colors.white : Colors.black87,
+          color: isFollowed ? Colors.white : Colors.black87,
         ),
       ),
     );

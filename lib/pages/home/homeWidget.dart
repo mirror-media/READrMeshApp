@@ -47,9 +47,41 @@ class _HomeWidgetState extends State<HomeWidget> {
           Fluttertoast.showToast(
             msg: "加載失敗",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        } else if (state is UpdateFollowingFailed) {
+          String text = '';
+          if (state.isFollowed) {
+            text = "取消追蹤失敗，請稍後再試一次";
+          } else {
+            text = "新增追蹤失敗，請稍後再試一次";
+          }
+          Fluttertoast.showToast(
+            msg: text,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        } else if (state is UpdateFollowingSuccess) {
+          String text = '';
+          if (state.isFollowed) {
+            text = "取消追蹤成功";
+          } else {
+            text = "新增追蹤成功";
+          }
+          Fluttertoast.showToast(
+            msg: text,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
             textColor: Colors.white,
             fontSize: 16.0,
           );
@@ -68,6 +100,23 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is HomeReloadFailed) {
+          final error = state.error;
+          print('HomeReloadFailed: ${error.message}');
+          return _buildHomeList();
+        }
+
+        if (state is UpdatingFollowing) {
+          return _buildHomeList();
+        }
+
+        if (state is UpdateFollowingFailed) {
+          final error = state.error;
+          print('UpdateFollowingFailed: ${error.message}');
+          return _buildHomeList();
+        }
+
+        if (state is UpdateFollowingSuccess) {
+          _currentMember!.following = state.newFollowingMembers;
           return _buildHomeList();
         }
 
@@ -91,8 +140,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         children: [
           FollowingBlock(_data['followingNewsList']),
           const SizedBox(height: 8.5),
-          LatestCommentsBlock(
-              _data['latestCommentsNewsList'], _currentMember?.memberId ?? ""),
+          LatestCommentsBlock(_data['latestCommentsNewsList'], _currentMember),
           const SizedBox(height: 8.5),
           LatestNewsBlock(
             _data['otherNewsList'],
