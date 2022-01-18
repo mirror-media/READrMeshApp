@@ -57,7 +57,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              HeadShotWidget(widget.recommendMember.nickname, 32),
+              HeadShotWidget(widget.recommendMember, 32),
               const SizedBox(height: 12),
               Text(
                 widget.recommendMember.nickname,

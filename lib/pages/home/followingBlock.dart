@@ -181,7 +181,7 @@ class FollowingBlock extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeadShotWidget(
-              comments[index].member.nickname,
+              comments[index].member,
               22,
             ),
             const SizedBox(width: 8),

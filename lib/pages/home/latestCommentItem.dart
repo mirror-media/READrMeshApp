@@ -105,7 +105,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             Row(
               children: [
                 HeadShotWidget(
-                  comments[index].member.nickname,
+                  comments[index].member,
                   22,
                 ),
                 const SizedBox(width: 8),

@@ -8,6 +8,7 @@ class Member {
   final String memberId;
   final String nickname;
   final String? name;
+  final String? headshotUrl;
   final int? followerCount;
   final int? pickCount;
   final int? commentCount;
@@ -22,6 +23,7 @@ class Member {
     required this.nickname,
     this.email,
     this.name,
+    this.headshotUrl,
     this.followerCount,
     this.pickCount,
     this.commentCount,

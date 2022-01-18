@@ -16,11 +16,11 @@ class HeadShotStack extends StatelessWidget {
     List<Widget> headShots = [];
     for (int i = 0; i < members.length && i < 4; i++) {
       if (i == 0) {
-        headShots.add(HeadShotWidget(members[i].nickname, radius));
+        headShots.add(HeadShotWidget(members[i], radius));
       } else {
         headShots.add(Padding(
           padding: EdgeInsets.only(left: padding),
-          child: HeadShotWidget(members[i].nickname, radius),
+          child: HeadShotWidget(members[i], radius),
         ));
         padding = padding + radius;
       }
