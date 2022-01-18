@@ -15,7 +15,7 @@ class Member {
   final List<Member>? follower;
   final List<Category>? followingCategory;
   final List<Publisher>? followingPublisher;
-  final List<Member>? following;
+  List<Member>? following;
 
   Member({
     this.firebaseId,
