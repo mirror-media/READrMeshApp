@@ -143,7 +143,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           LatestCommentsBlock(_data['latestCommentsNewsList'], _currentMember),
           const SizedBox(height: 8.5),
           LatestNewsBlock(
-            _data['otherNewsList'],
+            _data['allNewsList'],
             _data['recommendedMembers'],
             _currentMember,
           ),

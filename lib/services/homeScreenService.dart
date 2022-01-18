@@ -433,9 +433,6 @@ class HomeScreenService {
     /// other members' comments. Now only choose 3 news
     NewsListItemList latestCommentsNewsList = NewsListItemList();
 
-    // News that is not put into above list
-    NewsListItemList otherNewsList = NewsListItemList();
-
     if (jsonResponse['data']['stories'].isNotEmpty) {
       allNewsList = NewsListItemList.fromJson(jsonResponse['data']['stories']);
       for (var news in allNewsList) {
@@ -445,8 +442,6 @@ class HomeScreenService {
         } else if (news.otherComments.isNotEmpty &&
             latestCommentsNewsList.length < 3) {
           latestCommentsNewsList.add(news);
-        } else {
-          otherNewsList.add(news);
         }
       }
     }
@@ -493,17 +488,10 @@ class HomeScreenService {
       recommendedMembers.addAll(otherRecommendMembers);
     }
 
-    // remove member already in latestCommentsNewsList
-    // for (var news in latestCommentsNewsList) {
-    //   String commentMemberId = news.otherComments[0].member.memberId;
-    //   recommendedMembers
-    //       .removeWhere((element) => element.memberId == commentMemberId);
-    // }
-
     Map<String, dynamic> result = {
       'followingNewsList': followingNewsList,
       'latestCommentsNewsList': latestCommentsNewsList,
-      'otherNewsList': otherNewsList,
+      'allNewsList': allNewsList,
       'recommendedMembers': recommendedMembers,
       'member': member,
     };
