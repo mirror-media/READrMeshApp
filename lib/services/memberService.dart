@@ -68,28 +68,48 @@ class MemberService {
     return token;
   }
 
-  Future<Member?> fetchMemberData(User firebaseUser) async {
-    String query = """
-    query fetchMemberData(
-	    \$firebaseId: String
+  Future<Member> fetchMemberData() async {
+    const String query = """
+    query(
+      \$firebaseId: String
     ){
-	    members(
-        where: {
+      members(
+        where:{
           firebaseId: {
             equals: \$firebaseId
           }
         }
       ){
         id
-		    nickname
-		    firebaseId
-		    email
-        name
-	    }
+        nickname
+        firebaseId
+        email
+        following(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
+          nickname
+        }
+        following_category{
+          id
+          slug
+          title
+        }
+        follow_publisher{
+          id
+          title
+        }
+      }
     }
     """;
 
-    Map<String, String> variables = {"firebaseId": firebaseUser.uid};
+    Map<String, dynamic> variables = {
+      "firebaseId": FirebaseAuth.instance.currentUser!.uid,
+    };
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
@@ -97,7 +117,8 @@ class MemberService {
       variables: variables,
     );
 
-    final jsonResponse = await _helper.postByUrl(
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
       headers: await getHeaders(),
@@ -105,14 +126,14 @@ class MemberService {
 
     // create new member when firebase is signed in but member is not created
     if (jsonResponse['data']['members'].isEmpty) {
-      Member? newMember = await createMember(firebaseUser);
+      Member? newMember = await createMember();
       return newMember;
     } else {
       return Member.fromJson(jsonResponse['data']['members'][0]);
     }
   }
 
-  Future<Member?> createMember(User firebaseUser) async {
+  Future<Member> createMember() async {
     String mutation = """
     mutation (
 	    \$email: String
@@ -129,13 +150,33 @@ class MemberService {
           is_active: true
 		    }) {
         id
-		    nickname
-        name
-		    firebaseId
-		    email
+        nickname
+        firebaseId
+        email
+        following(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
+          nickname
+        }
+        following_category{
+          id
+          slug
+          title
+        }
+        follow_publisher{
+          id
+          title
+        }
       }
     }
     """;
+
+    User firebaseUser = FirebaseAuth.instance.currentUser!;
 
     // if facebook authUser has no email,then feed email field with prompt
     String feededEmail =
@@ -168,21 +209,13 @@ class MemberService {
       variables: variables,
     );
 
-    try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
-      );
+    final jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await getHeaders(),
+    );
 
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
-
-      return Member.fromJson(jsonResponse['data']['createMember']);
-    } catch (e) {
-      return null;
-    }
+    return Member.fromJson(jsonResponse['data']['createMember']);
   }
 
   Future<bool> deleteMember(String memberId, String token) async {
@@ -223,7 +256,7 @@ class MemberService {
     }
   }
 
-  Future<bool> addFollowingMember(
+  Future<List<Member>?> addFollowingMember(
       String memberId, String targetMemberId) async {
     String mutation = """
     mutation(
@@ -244,6 +277,7 @@ class MemberService {
       ){
         following{
           id
+          nickname
         }
       }
     }
@@ -266,13 +300,21 @@ class MemberService {
         headers: await getHeaders(),
       );
 
-      return !jsonResponse.containsKey('errors');
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Member> followingMembers = [];
+      for (var member in jsonResponse['data']['updateMember']['following']) {
+        followingMembers.add(Member.fromJson(member));
+      }
+
+      return followingMembers;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 
-  Future<bool> removeFollowingMember(
+  Future<List<Member>?> removeFollowingMember(
       String memberId, String targetMemberId) async {
     String mutation = """
     mutation(
@@ -293,6 +335,7 @@ class MemberService {
       ){
         following{
           id
+          nickname
         }
       }
     }
@@ -315,9 +358,17 @@ class MemberService {
         headers: await getHeaders(),
       );
 
-      return !jsonResponse.containsKey('errors');
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Member> followingMembers = [];
+      for (var member in jsonResponse['data']['updateMember']['following']) {
+        followingMembers.add(Member.fromJson(member));
+      }
+
+      return followingMembers;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 

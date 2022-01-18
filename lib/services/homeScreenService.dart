@@ -7,11 +7,13 @@ import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItemList.dart';
+import 'package:readr/services/memberService.dart';
 
 class HomeScreenService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
+  final MemberService _memberService = MemberService();
 
   static Map<String, String> getHeaders({String? token}) {
     Map<String, String> headers = {
@@ -65,65 +67,6 @@ class HomeScreenService {
         jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
 
     return token;
-  }
-
-  Future<Member> fetchMember() async {
-    const String query = """
-    query(
-      \$firebaseId: String
-    ){
-      members(
-        where:{
-          firebaseId: {
-            equals: \$firebaseId
-          }
-        }
-      ){
-        id
-        nickname
-        firebaseId
-        email
-        following(
-          where: {
-            is_active: {
-              equals: true
-            }
-          }
-        ){
-          id
-          nickname
-        }
-        following_category{
-          id
-          slug
-          title
-        }
-        follow_publisher{
-          id
-          title
-        }
-      }
-    }
-    """;
-
-    Map<String, dynamic> variables = {
-      "firebaseId": FirebaseAuth.instance.currentUser!.uid,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: getHeaders(),
-    );
-
-    return Member.fromJson(jsonResponse['data']['members'][0]);
   }
 
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
@@ -437,7 +380,7 @@ class HomeScreenService {
 
     if (FirebaseAuth.instance.currentUser != null) {
       // fetch user following members, categories, publishers, and member id
-      member = await fetchMember();
+      member = await _memberService.fetchMemberData();
 
       for (var memberId in member.following!) {
         followingMemberIds.add(memberId.memberId);
@@ -551,11 +494,11 @@ class HomeScreenService {
     }
 
     // remove member already in latestCommentsNewsList
-    for (var news in latestCommentsNewsList) {
-      String commentMemberId = news.otherComments[0].member.memberId;
-      recommendedMembers
-          .removeWhere((element) => element.memberId == commentMemberId);
-    }
+    // for (var news in latestCommentsNewsList) {
+    //   String commentMemberId = news.otherComments[0].member.memberId;
+    //   recommendedMembers
+    //       .removeWhere((element) => element.memberId == commentMemberId);
+    // }
 
     Map<String, dynamic> result = {
       'followingNewsList': followingNewsList,
