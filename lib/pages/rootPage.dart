@@ -93,7 +93,13 @@ class _RootPageState extends State<RootPage> {
       }
 
       // state is Init, loading, or other
-      return ReadrSkeletonScreen();
+      return Container(
+        color: Colors.white,
+        child: Image.asset(
+          logoPng,
+          scale: 4,
+        ),
+      );
     });
   }
 }
