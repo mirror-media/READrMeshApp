@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -108,42 +109,74 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                   22,
                 ),
                 const SizedBox(width: 8),
-                Column(
-                  children: [
-                    Text(
-                      comments[index].member.nickname,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    if (hasEmail)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        '@${comments[index].member.email!.split('@')[0]}',
+                        comments[index].member.nickname,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                  ],
+                      if (hasEmail)
+                        Text(
+                          '@${comments[index].member.email!.split('@')[0]}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                Expanded(child: Container()),
                 _followButton(comments[index]),
               ],
             ),
             const SizedBox(height: 8.5),
             Padding(
               padding: const EdgeInsets.only(left: 52),
-              child: Text(
-                comments[index].content,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.black54,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              child: InkWell(
+                onTap: () {},
+                child: ExtendedText(
+                  comments[index].content,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    color: Color.fromRGBO(0, 9, 40, 0.66),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  joinZeroWidthSpace: true,
+                  overflowWidget: TextOverflowWidget(
+                    position: TextOverflowPosition.end,
+                    child: RichText(
+                      text: const TextSpan(
+                        text: '... ',
+                        style: TextStyle(
+                          color: Color.fromRGBO(0, 9, 40, 0.66),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '看完整留言',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
