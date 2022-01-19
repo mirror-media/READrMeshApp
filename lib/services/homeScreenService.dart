@@ -433,16 +433,31 @@ class HomeScreenService {
     /// other members' comments. Now only choose 3 news
     NewsListItemList latestCommentsNewsList = NewsListItemList();
 
+    // temp list put the news have other comments
+    NewsListItemList tempNewsList = NewsListItemList();
+
     if (jsonResponse['data']['stories'].isNotEmpty) {
       allNewsList = NewsListItemList.fromJson(jsonResponse['data']['stories']);
       for (var news in allNewsList) {
         if (news.followingPickMembers.isNotEmpty ||
             news.followingComments.isNotEmpty) {
           followingNewsList.add(news);
-        } else if (news.otherComments.isNotEmpty &&
-            latestCommentsNewsList.length < 3) {
-          latestCommentsNewsList.add(news);
         }
+
+        // if news have other comments, add to temp news list
+        if (news.otherComments.isNotEmpty) {
+          tempNewsList.add(news);
+        }
+      }
+
+      /// sort the list by comment publish date, because GQL already sort
+      /// comments in each news so only compare first comment
+      tempNewsList.sort((a, b) => b.otherComments[0].publishDate
+          .compareTo(a.otherComments[0].publishDate));
+
+      // take first three news put into latestCommentsNewsList
+      for (int i = 0; i < 3 && i < tempNewsList.length; i++) {
+        latestCommentsNewsList.add(tempNewsList[i]);
       }
     }
 
