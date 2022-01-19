@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
@@ -123,11 +124,13 @@ class FollowingBlock extends StatelessWidget {
       const SizedBox(width: 8),
     ];
     if (firstTwoMember.length == 1) {
-      children.add(Text(
-        firstTwoMember[0].nickname,
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      children.add(Flexible(
+        child: Text(
+          firstTwoMember[0].nickname,
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ));
       children.add(const Text(
         '精選了這篇',
@@ -136,29 +139,31 @@ class FollowingBlock extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ));
     } else {
-      children.add(Text(
-        firstTwoMember[0].nickname,
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      children.add(Flexible(
+        child: Text(
+          firstTwoMember[0].nickname,
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ));
       children.add(const Text(
         '及',
         style: TextStyle(fontSize: 14, color: Colors.black54),
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ));
-      children.add(Text(
-        firstTwoMember[1].nickname,
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      children.add(Flexible(
+        child: Text(
+          firstTwoMember[1].nickname,
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ));
       children.add(const Text(
         '都精選了這篇',
         style: TextStyle(fontSize: 14, color: Colors.black54),
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ));
     }
 
@@ -189,24 +194,69 @@ class FollowingBlock extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    comments[index].member.nickname,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          comments[index].member.nickname,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 2,
+                        height: 2,
+                        margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black26,
+                        ),
+                      ),
+                      Timestamp(comments[index].publishDate),
+                    ],
                   ),
-                  Timestamp(comments[index].publishDate),
                   const SizedBox(height: 8.5),
-                  Text(
-                    comments[index].content,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  InkWell(
+                    onTap: () {},
+                    child: ExtendedText(
+                      comments[index].content,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        color: Color.fromRGBO(0, 9, 40, 0.66),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      joinZeroWidthSpace: true,
+                      overflowWidget: TextOverflowWidget(
+                        position: TextOverflowPosition.end,
+                        child: RichText(
+                          text: const TextSpan(
+                            text: '... ',
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 9, 40, 0.66),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '看完整留言',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
