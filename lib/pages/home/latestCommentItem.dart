@@ -82,7 +82,10 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             height: 1,
             thickness: 1,
           ),
-          _commentsWidget(widget.news.otherComments),
+          InkWell(
+            onTap: () {},
+            child: _commentsWidget(widget.news.otherComments),
+          ),
         ],
       ),
     );
@@ -140,51 +143,46 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                 _followButton(comments[index]),
               ],
             ),
-            const SizedBox(height: 8.5),
             Padding(
-              padding: const EdgeInsets.only(left: 52),
-              child: InkWell(
-                onTap: () {},
-                child: ExtendedText(
-                  comments[index].content,
-                  maxLines: 2,
-                  style: const TextStyle(
-                    color: Color.fromRGBO(0, 9, 40, 0.66),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  joinZeroWidthSpace: true,
-                  overflowWidget: TextOverflowWidget(
-                    position: TextOverflowPosition.end,
-                    child: RichText(
-                      text: const TextSpan(
-                        text: '... ',
-                        style: TextStyle(
-                          color: Color.fromRGBO(0, 9, 40, 0.66),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: '看完整留言',
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
+              padding: const EdgeInsets.only(left: 52, top: 8.5, bottom: 20),
+              child: ExtendedText(
+                comments[index].content,
+                maxLines: 2,
+                style: const TextStyle(
+                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                joinZeroWidthSpace: true,
+                overflowWidget: TextOverflowWidget(
+                  position: TextOverflowPosition.end,
+                  child: RichText(
+                    text: const TextSpan(
+                      text: '... ',
+                      style: TextStyle(
+                        color: Color.fromRGBO(0, 9, 40, 0.66),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
+                      children: [
+                        TextSpan(
+                          text: '看完整留言',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         );
       },
-      itemCount: comments.length,
+      itemCount: 1,
     );
   }
 

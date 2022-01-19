@@ -101,7 +101,10 @@ class FollowingBlock extends StatelessWidget {
                 height: 1,
                 thickness: 1,
               ),
-              _commentsWidget(item.followingComments),
+              InkWell(
+                onTap: () {},
+                child: _commentsWidget(item.followingComments),
+              ),
             ]
           ],
         ),
@@ -223,38 +226,35 @@ class FollowingBlock extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8.5),
-                  InkWell(
-                    onTap: () {},
-                    child: ExtendedText(
-                      comments[index].content,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        color: Color.fromRGBO(0, 9, 40, 0.66),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      joinZeroWidthSpace: true,
-                      overflowWidget: TextOverflowWidget(
-                        position: TextOverflowPosition.end,
-                        child: RichText(
-                          text: const TextSpan(
-                            text: '... ',
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 9, 40, 0.66),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: '看完整留言',
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              )
-                            ],
+                  ExtendedText(
+                    comments[index].content,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      color: Color.fromRGBO(0, 9, 40, 0.66),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    joinZeroWidthSpace: true,
+                    overflowWidget: TextOverflowWidget(
+                      position: TextOverflowPosition.end,
+                      child: RichText(
+                        text: const TextSpan(
+                          text: '... ',
+                          style: TextStyle(
+                            color: Color.fromRGBO(0, 9, 40, 0.66),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
                           ),
+                          children: [
+                            TextSpan(
+                              text: '看完整留言',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
