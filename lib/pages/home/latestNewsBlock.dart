@@ -8,7 +8,7 @@ import 'package:readr/pages/home/recommendFollowBlock.dart';
 class LatestNewsBlock extends StatefulWidget {
   final NewsListItemList otherNewsList;
   final List<Member> recommendedMembers;
-  final Member? member;
+  final Member member;
   const LatestNewsBlock(
       this.otherNewsList, this.recommendedMembers, this.member);
 

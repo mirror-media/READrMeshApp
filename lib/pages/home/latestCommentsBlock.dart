@@ -5,7 +5,7 @@ import 'package:readr/pages/home/latestCommentItem.dart';
 
 class LatestCommentsBlock extends StatelessWidget {
   final NewsListItemList latestCommentsNewsList;
-  final Member? member;
+  final Member member;
   const LatestCommentsBlock(this.latestCommentsNewsList, this.member);
 
   @override

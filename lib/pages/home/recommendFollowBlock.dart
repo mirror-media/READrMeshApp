@@ -4,7 +4,7 @@ import 'package:readr/pages/home/recommendFollowItem.dart';
 
 class RecommendFollowBlock extends StatelessWidget {
   final List<Member> recommendedMembers;
-  final Member? member;
+  final Member member;
   const RecommendFollowBlock(this.recommendedMembers, this.member);
 
   @override

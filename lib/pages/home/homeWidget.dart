@@ -16,7 +16,7 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   Map<String, dynamic> _data = {};
-  Member? _currentMember;
+  late Member _currentMember;
 
   @override
   void initState() {
@@ -116,7 +116,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is UpdateFollowingSuccess) {
-          _currentMember!.following = state.newFollowingMembers;
+          _currentMember.following = state.newFollowingMembers;
           return _buildHomeList();
         }
 
@@ -138,7 +138,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       onRefresh: () => _reloadHomeScreen(),
       child: ListView(
         children: [
-          FollowingBlock(_data['followingNewsList']),
+          FollowingBlock(_data['followingNewsList'], _currentMember),
           const SizedBox(height: 8.5),
           LatestCommentsBlock(_data['latestCommentsNewsList'], _currentMember),
           const SizedBox(height: 8.5),

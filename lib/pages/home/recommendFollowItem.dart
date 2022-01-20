@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowItem extends StatefulWidget {
   final Member recommendMember;
-  final Member? member;
+  final Member member;
   const RecommendFollowItem(this.recommendMember, this.member);
 
   @override
@@ -94,8 +94,8 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
 
   Widget _followButton(String targetId) {
     bool isFollowed = false;
-    if (widget.member != null && widget.member!.following != null) {
-      int index = widget.member!.following!
+    if (widget.member.following != null) {
+      int index = widget.member.following!
           .indexWhere((member) => member.memberId == targetId);
       if (index != -1) {
         isFollowed = true;
@@ -106,7 +106,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
           context.read<HomeBloc>().add(UpdateFollowingMember(
-              targetId, widget.member!.memberId, isFollowed));
+              targetId, widget.member.memberId, isFollowed));
         } else {
           // if user is not login
           Fluttertoast.showToast(
