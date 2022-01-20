@@ -150,7 +150,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
         if (FirebaseAuth.instance.currentUser != null) {
           bool isSuccess = false;
           if (!_isPicked) {
-            String? pickId = await _memberService.addPick(
+            String? pickId = await _memberService.createPick(
               memberId: widget.member!.memberId,
               targetId: news.id,
               objective: PickObjective.story,
