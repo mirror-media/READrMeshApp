@@ -22,7 +22,7 @@ class NewsListItem {
   final List<Member> otherPickMembers;
   final List<Comment> followingComments;
   final List<Comment> otherComments;
-  final List<Comment> myComments;
+  List<Comment> myComments;
   String? myPickId;
 
   NewsListItem({
