@@ -22,6 +22,7 @@ class NewsListItem {
   final List<Member> otherPickMembers;
   final List<Comment> followingComments;
   final List<Comment> otherComments;
+  final List<Comment> myComments;
   String? myPickId;
 
   NewsListItem({
@@ -42,6 +43,7 @@ class NewsListItem {
     required this.otherPickMembers,
     required this.followingComments,
     required this.otherComments,
+    required this.myComments,
     this.myPickId,
   });
 
@@ -56,6 +58,7 @@ class NewsListItem {
     List<Member> otherPickMembers = [];
     List<Comment> followingComments = [];
     List<Comment> otherComments = [];
+    List<Comment> myComments = [];
     String? myPickId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
@@ -106,9 +109,23 @@ class NewsListItem {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['myComments']) &&
+        json['myComments'].isNotEmpty) {
+      for (var comment in json['myComments']) {
+        myComments.add(Comment.fromJson(comment));
+      }
+    }
+
     if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
         json['myPickId'].isNotEmpty) {
       myPickId = json['myPickId'][0]['id'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['full_screen_ad'])) {
+      if (json['full_screen_ad'] == 'all' ||
+          json['full_screen_ad'] == 'mobile') {
+        overlayAds = true;
+      }
     }
 
     return NewsListItem(
@@ -128,6 +145,7 @@ class NewsListItem {
       otherPickMembers: otherPickMembers,
       followingComments: followingComments,
       otherComments: otherComments,
+      myComments: myComments,
       myPickId: myPickId,
     );
   }

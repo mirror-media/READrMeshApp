@@ -83,16 +83,25 @@ class HomeScreenService {
           published_date:{
             gte: \$yesterday
           }
-          source:{
-            id:{
-              in: \$followingPublisherIds
-            }
+          is_active:{
+            equals: true
           }
-          category:{
-            slug:{
-              in: \$followingCategorySlugs
+          OR:[
+            {
+              source:{
+                id:{
+                  in: \$followingPublisherIds
+              }
+              }
             }
-          }
+            {
+              category:{
+                slug:{
+                  in: \$followingCategorySlugs
+                }
+              }
+            }
+          ]
         }
         orderBy:{
           published_date: desc
@@ -115,6 +124,7 @@ class HomeScreenService {
         published_date
         og_image
         paywall
+        full_screen_ad
         followingPicks: pick(
           where:{
             member:{
@@ -130,6 +140,9 @@ class HomeScreenService {
             }
             kind:{
               equals: "read"
+            }
+            is_active:{
+              equals: true
             }
           }
           orderBy:{
@@ -151,7 +164,7 @@ class HomeScreenService {
               id:{
                 notIn: \$followingMembers
                 not:{
-                  equals:\$myId
+                  equals: \$myId
                 }
               }
             }
@@ -160,6 +173,9 @@ class HomeScreenService {
             }
             kind:{
               equals: "read"
+            }
+            is_active:{
+              equals: true
             }
           }
           orderBy:{
@@ -171,6 +187,37 @@ class HomeScreenService {
             id
             nickname
           }
+        }
+        myComments: comment(
+          where:{
+            member:{
+              is_active: {
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            published_date: desc
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            email
+          }
+          content
+          state
+          published_date
         }
         followingComments: comment(
           where:{
@@ -185,8 +232,10 @@ class HomeScreenService {
             state:{
               notIn: "private"
             }
+            is_active:{
+              equals: true
+            }
           }
-          take:1
           orderBy:{
             published_date: desc
           }
@@ -207,18 +256,20 @@ class HomeScreenService {
               is_active: {
                 equals: true
               }
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
-                }
-              }
             }
             state:{
               in: "public"
             }
+            id:{
+              notIn: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+            is_active:{
+              equals: true
+            }
           }
-          take:1
           orderBy:{
             published_date: desc
           }
@@ -243,6 +294,9 @@ class HomeScreenService {
             state:{
               in: "public"
             }
+            is_active:{
+              equals: true
+            }
           }
         )
         commentCount(
@@ -254,6 +308,9 @@ class HomeScreenService {
             }
             state:{
               in: "public"
+            }
+            is_active:{
+              equals: true
             }
           }
         )
@@ -269,6 +326,9 @@ class HomeScreenService {
             }
             kind:{
               equals: "read"
+            }
+            is_active:{
+              equals: true
             }
           }
         ){
