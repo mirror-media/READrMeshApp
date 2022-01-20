@@ -11,6 +11,7 @@ class Comment {
   final String state;
   final DateTime publishDate;
   final NewsListItem? story;
+  int likedCount;
 
   Comment({
     required this.id,
@@ -21,6 +22,7 @@ class Comment {
     required this.state,
     required this.publishDate,
     this.story,
+    this.likedCount = 0,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
