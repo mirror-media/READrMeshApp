@@ -270,18 +270,18 @@ class HomeScreenService {
         otherComments: comment(
           where:{
             member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
               is_active: {
                 equals: true
               }
             }
             state:{
               in: "public"
-            }
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
-              }
             }
             is_active:{
               equals: true
@@ -461,9 +461,7 @@ class HomeScreenService {
     List<String> followingMemberIds = [];
     List<String> followingCategorySlugs = [];
     List<String> followingPublisherIds = [];
-    Member? member;
-    // myId must has value, so set it to 0
-    String myId = "0";
+    late Member member;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
         .subtract(const Duration(hours: 24))
@@ -487,13 +485,15 @@ class HomeScreenService {
       for (var publisher in member.followingPublisher!) {
         followingPublisherIds.add(publisher.id);
       }
-
-      myId = member.memberId;
     } else {
       // fetch local publisher id and category slug
       // TODO: Change to use local data after choose UI is available
+      member = Member(
+        nickname: "Anonymous user",
+        memberId: "-1",
+      );
       followingCategorySlugs = ['unclassified'];
-      followingPublisherIds = ['1', '2'];
+      followingPublisherIds = ['1', '2', '3'];
     }
 
     Map<String, dynamic> variables = {
@@ -501,7 +501,7 @@ class HomeScreenService {
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
       "followingCategorySlugs": followingCategorySlugs,
-      "myId": myId,
+      "myId": member.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
