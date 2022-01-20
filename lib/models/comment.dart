@@ -43,7 +43,9 @@ class Comment {
     /// because where set only count member id equals current user member id
     /// so if isLiked not 0, current user member id is in the list
     if (BaseModel.checkJsonKeys(json, ['isLiked'])) {
-      isLiked = true;
+      if (json['isLiked'] != 0) {
+        isLiked = true;
+      }
     }
 
     return Comment(
