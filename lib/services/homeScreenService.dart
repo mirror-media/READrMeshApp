@@ -249,6 +249,23 @@ class HomeScreenService {
           content
           state
           published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
         }
         otherComments: comment(
           where:{
@@ -283,6 +300,23 @@ class HomeScreenService {
           content
           state
           published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
         }
         pickCount(
           where:{
