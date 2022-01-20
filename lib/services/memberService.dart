@@ -5,6 +5,7 @@ import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/environment.dart';
+import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 
@@ -378,8 +379,6 @@ class MemberService {
     required PickObjective objective,
     required PickState state,
     required PickKind kind,
-    bool hasComment = false,
-    String? commentContent,
     bool paywall = false,
     String? rootCommentId,
   }) async {
@@ -404,7 +403,8 @@ class MemberService {
         "kind": kind.toString().split('.').last,
         "state": state.toString().split('.').last,
         "picked_date": DateTime.now().toUtc().toIso8601String(),
-        "paywall": paywall
+        "paywall": paywall,
+        "is_active": true
       }
     };
 
@@ -427,51 +427,6 @@ class MemberService {
           "connect": {"id": targetId}
         }
       };
-    }
-
-    if (hasComment && commentContent != null) {
-      if (objective == PickObjective.story) {
-        additionalVariables.addAll({
-          "pick_comment": {
-            "create": {
-              "member": {
-                "connect": {"id": memberId}
-              },
-              "story": {
-                "connect": {"id": targetId}
-              },
-              "content": commentContent,
-              "state": state.toString().split('.').last,
-              "published_date": DateTime.now().toUtc().toIso8601String()
-            }
-          }
-        });
-      } else if (objective == PickObjective.comment) {
-        additionalVariables.addAll({
-          "pick_comment": {
-            "create": {
-              "member": {
-                "connect": {"id": memberId}
-              },
-              "parent": {
-                "connect": {"id": targetId}
-              },
-              "content": commentContent,
-              "state": state.toString().split('.').last,
-              "published_date": DateTime.now().toUtc().toIso8601String()
-            }
-          }
-        });
-        if (rootCommentId != null) {
-          additionalVariables['pick_comment']!['create']!.addAll({
-            "root": {
-              "connect": {"id": rootCommentId}
-            }
-          });
-        }
-      } else {
-        return null;
-      }
     }
 
     variables['data']!.addAll(additionalVariables);
@@ -499,14 +454,157 @@ class MemberService {
     }
   }
 
+  Future<Map<String, dynamic>?> addPickAndComment({
+    required String memberId,
+    required String targetId,
+    required PickObjective objective,
+    required PickState state,
+    required PickKind kind,
+    required String commentContent,
+    bool paywall = false,
+    String? rootCommentId,
+  }) async {
+    String mutation = """
+    mutation(
+      \$data: PickCreateInput!
+    ){
+      createPick(
+        data: \$data
+      ){
+        id
+        pick_comment{
+          id
+          member{
+            id
+            nickname
+            email
+          }
+          content
+          state
+          published_date
+        }
+      }
+    }
+    """;
+
+    Map<String, Map> variables = {
+      "data": {
+        "member": {
+          "connect": {"id": memberId}
+        },
+        "objective": objective.toString().split('.').last,
+        "kind": kind.toString().split('.').last,
+        "state": state.toString().split('.').last,
+        "picked_date": DateTime.now().toUtc().toIso8601String(),
+        "paywall": paywall,
+        "is_active": true
+      }
+    };
+
+    Map<String, Map> additionalVariables;
+    if (objective == PickObjective.story) {
+      additionalVariables = {
+        "story": {
+          "connect": {"id": targetId}
+        }
+      };
+    } else if (objective == PickObjective.collection) {
+      additionalVariables = {
+        "collection": {
+          "connect": {"id": targetId}
+        }
+      };
+    } else {
+      additionalVariables = {
+        "comment": {
+          "connect": {"id": targetId}
+        }
+      };
+    }
+
+    if (objective == PickObjective.story) {
+      additionalVariables.addAll({
+        "pick_comment": {
+          "create": {
+            "member": {
+              "connect": {"id": memberId}
+            },
+            "story": {
+              "connect": {"id": targetId}
+            },
+            "content": commentContent,
+            "state": state.toString().split('.').last,
+            "published_date": DateTime.now().toUtc().toIso8601String()
+          }
+        }
+      });
+    } else if (objective == PickObjective.comment) {
+      additionalVariables.addAll({
+        "pick_comment": {
+          "create": {
+            "member": {
+              "connect": {"id": memberId}
+            },
+            "parent": {
+              "connect": {"id": targetId}
+            },
+            "content": commentContent,
+            "state": state.toString().split('.').last,
+            "published_date": DateTime.now().toUtc().toIso8601String()
+          }
+        }
+      });
+      if (rootCommentId != null) {
+        additionalVariables['pick_comment']!['create']!.addAll({
+          "root": {
+            "connect": {"id": rootCommentId}
+          }
+        });
+      }
+    } else {
+      return null;
+    }
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      Map<String, dynamic> result = {
+        'pickId': jsonResponse['data']['createPick']['id'],
+        'pickComment': Comment.fromJson(
+            jsonResponse['data']['createPick']['pick_comment'][0])
+      };
+
+      return result;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool> deletePick(String pickId) async {
     String mutation = """
       mutation(
         \$pickId: ID
       ){
-        deletePick(
+        updatePick(
           where:{
             id: \$pickId
+          }
+          data:{
+            is_active: false
           }
         ){
           id
