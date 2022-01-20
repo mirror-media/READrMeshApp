@@ -51,7 +51,7 @@ class _TimestampState extends State<Timestamp> {
   Widget build(BuildContext context) {
     String text = '';
     if (_duration.inSeconds < 60) {
-      text = '${_duration.inSeconds}秒前';
+      text = '剛剛';
     } else if (_duration.inMinutes < 60) {
       text = '${_duration.inMinutes}分鐘前';
     } else if (_duration.inHours < 24) {
