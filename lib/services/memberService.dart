@@ -373,7 +373,7 @@ class MemberService {
     }
   }
 
-  Future<String?> addPick({
+  Future<String?> createPick({
     required String memberId,
     required String targetId,
     required PickObjective objective,
@@ -454,7 +454,7 @@ class MemberService {
     }
   }
 
-  Future<Map<String, dynamic>?> addPickAndComment({
+  Future<Map<String, dynamic>?> createPickAndComment({
     required String memberId,
     required String targetId,
     required PickObjective objective,
@@ -613,6 +613,133 @@ class MemberService {
       """;
 
     Map<String, String> variables = {"pickId": pickId};
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<Comment?> createComment({
+    required String memberId,
+    required String storyId,
+    required String content,
+  }) async {
+    String mutation = """
+    mutation(
+      \$myId: ID
+      \$storyId: ID
+      \$content: String
+      \$published_date: DateTime
+    ){
+      createComment(
+        data:{
+          member:{
+            connect:{
+              id: \$myId
+            }
+          }
+          story:{
+            connect:{
+              id: \$storyId
+            }
+          }
+          content: \$content
+          published_date: \$published_date
+          is_active: true
+        }
+      ){
+        id
+        member{
+          id
+          nickname
+          email
+        }
+        content
+        state
+        published_date
+        likeCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        isLiked:likeCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              equals: \$myId
+            }
+          }
+        )
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "myId": memberId,
+      "storyId": storyId,
+      "content": content,
+      "published_date": DateTime.now().toUtc().toIso8601String()
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      return Comment.fromJson(jsonResponse['data']['createComment']);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> deleteComment(String commentId) async {
+    String mutation = """
+      mutation(
+        \$commentId: ID
+      ){
+        updateComment(
+          where:{
+            id: \$commentId
+          }
+          data:{
+            is_active: false
+          }
+        ){
+          id
+        }
+      }
+      """;
+
+    Map<String, String> variables = {"commentId": commentId};
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
