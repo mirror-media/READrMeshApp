@@ -8,7 +8,7 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/newsInfo.dart';
-import 'package:readr/pages/shared/headShotStack.dart';
+import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/services/memberService.dart';
 
 class LatestNewsItem extends StatefulWidget {
@@ -56,7 +56,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
       ];
     } else {
       bottom = [
-        HeadShotStack(_pickedMembers, 14),
+        ProfilePhotoStack(_pickedMembers, 14),
         const SizedBox(width: 8),
         RichText(
           maxLines: 1,

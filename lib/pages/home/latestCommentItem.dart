@@ -10,7 +10,7 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/newsInfo.dart';
-import 'package:readr/pages/shared/headShotWidget.dart';
+import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LatestCommentItem extends StatefulWidget {
@@ -107,7 +107,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
           children: [
             Row(
               children: [
-                HeadShotWidget(
+                ProfilePhotoWidget(
                   comments[index].member,
                   22,
                 ),

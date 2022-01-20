@@ -7,8 +7,8 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/pages/home/newsInfo.dart';
-import 'package:readr/pages/shared/headShotStack.dart';
-import 'package:readr/pages/shared/headShotWidget.dart';
+import 'package:readr/pages/shared/profilePhotoStack.dart';
+import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 
 class FollowingBlock extends StatelessWidget {
@@ -123,7 +123,7 @@ class FollowingBlock extends StatelessWidget {
     }
 
     List<Widget> children = [
-      HeadShotStack(firstTwoMember, 14),
+      ProfilePhotoStack(firstTwoMember, 14),
       const SizedBox(width: 8),
     ];
     if (firstTwoMember.length == 1) {
@@ -188,7 +188,7 @@ class FollowingBlock extends StatelessWidget {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeadShotWidget(
+            ProfilePhotoWidget(
               comments[index].member,
               22,
             ),

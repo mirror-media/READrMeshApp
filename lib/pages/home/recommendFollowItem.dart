@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/pages/shared/headShotWidget.dart';
+import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowItem extends StatefulWidget {
@@ -56,7 +56,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              HeadShotWidget(widget.recommendMember, 32),
+              ProfilePhotoWidget(widget.recommendMember, 32),
               const SizedBox(height: 12),
               Text(
                 widget.recommendMember.nickname,

@@ -2,10 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
 
-class HeadShotWidget extends StatelessWidget {
+class ProfilePhotoWidget extends StatelessWidget {
   final Member member;
   final double radius;
-  const HeadShotWidget(this.member, this.radius);
+  const ProfilePhotoWidget(this.member, this.radius);
 
   @override
   Widget build(BuildContext context) {
