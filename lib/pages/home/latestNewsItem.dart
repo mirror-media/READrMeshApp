@@ -13,7 +13,7 @@ import 'package:readr/services/memberService.dart';
 
 class LatestNewsItem extends StatefulWidget {
   final NewsListItem news;
-  final Member? member;
+  final Member member;
   const LatestNewsItem(this.news, this.member);
   @override
   _LatestNewsItemState createState() => _LatestNewsItemState();
@@ -37,8 +37,8 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
   @override
   Widget build(BuildContext context) {
     _pickedMembers = [];
-    if (_isPicked && widget.member != null) {
-      _pickedMembers.add(widget.member!);
+    if (_isPicked) {
+      _pickedMembers.add(widget.member);
     }
     _pickedMembers.addAll(widget.news.followingPickMembers);
     _pickedMembers.addAll(widget.news.otherPickMembers);
@@ -118,7 +118,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
               borderRadius: BorderRadius.circular(4.0),
               child: CachedNetworkImage(
                 width: 96,
-                height: 96 / (16 / 9),
+                height: 96 / 2,
                 imageUrl: widget.news.heroImageUrl,
                 placeholder: (context, url) => Container(
                   color: Colors.grey,
@@ -151,7 +151,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
           bool isSuccess = false;
           if (!_isPicked) {
             String? pickId = await _memberService.createPick(
-              memberId: widget.member!.memberId,
+              memberId: widget.member.memberId,
               targetId: news.id,
               objective: PickObjective.story,
               state: PickState.public,
@@ -185,7 +185,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
             if (isSuccess) {
               news.myPickId = null;
               _pickCount--;
-              _pickedMembers.remove(widget.member!);
+              _pickedMembers.remove(widget.member);
             }
           }
           if (isSuccess) {
