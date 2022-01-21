@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsListItemList.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/memberService.dart';
 
 class HomeScreenService {
@@ -78,11 +77,382 @@ class HomeScreenService {
       \$followingPublisherIds: [ID!]
       \$myId: ID
     ){
-      stories(
+      followingStories:stories(
+        orderBy:{
+          published_date: desc
+        }
+        take: 5
         where:{
-          published_date:{
-            gte: \$yesterday
+          is_active:{
+            equals: true
           }
+          pick:{
+            some:{
+              member:{
+                id:{
+                  in: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
+                  is_active:{
+                    equals: true
+                  }
+                }
+                state:{
+                  equals: "public"
+                }
+                kind:{
+                  equals: "read"
+                }
+                is_active:{
+                  equals: true
+                }
+                picked_date:{
+                  gte: \$yesterday
+                }
+              }
+            }
+        }
+      ){
+        id
+        title
+        url
+        source{
+          id
+          title
+          full_content
+          full_screen_ad
+        }
+        category{
+          id
+          title
+          slug
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        )
+        followingComment:comment(
+          orderBy:{
+            published_date: desc
+          }
+          take: 1
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                in: \$followingMembers
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+          }
+          content
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+        allComments: comment(
+          orderBy:{
+            published_date: desc
+          }
+          take: 10
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+          }
+          content
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+        followingPicks: pick(
+          where:{
+            member:{
+              is_active: {
+                equals: true
+              }
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 2
+        ){
+          member{
+            id
+            nickname
+            avatar
+          }
+        }
+      }
+      latestComments: stories(
+        take: 3
+        orderBy:{
+          published_date: desc
+        }
+        where:{
+          is_active:{
+            equals: true
+          }
+          comment:{
+            some:{
+              member:{
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+                is_active:{
+                  equals: true
+                }
+              }
+            }
+          }
+          OR:[
+            {
+              source:{
+                id:{
+                  in: \$followingPublisherIds
+              }
+              }
+            }
+            {
+              category:{
+                slug:{
+                  in: \$followingCategorySlugs
+                }
+              }
+            }
+          ]
+        }
+      ){
+        id
+        title
+        url
+        source{
+          id
+          title
+          full_content
+          full_screen_ad
+        }
+        category{
+          id
+          title
+          slug
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        )
+        notFollowingComment:comment(
+          orderBy:{
+            published_date: desc
+          }
+          
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+          }
+          content
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+        allComments: comment(
+          orderBy:{
+            published_date: desc
+          }
+          take: 10
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+          }
+          content
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+      }
+      allLatestNews: stories(
+        take: 10
+        orderBy:{
+          published_date: desc
+        }
+        where:{
           is_active:{
             equals: true
           }
@@ -103,28 +473,26 @@ class HomeScreenService {
             }
           ]
         }
-        orderBy:{
-          published_date: desc
-        }
       ){
         id
         title
         url
-        summary
-        content
         source{
           id
           title
+          full_content
+          full_screen_ad
         }
         category{
           id
           title
           slug
         }
+        full_content
+        full_screen_ad
+        paywall
         published_date
         og_image
-        paywall
-        full_screen_ad
         followingPicks: pick(
           where:{
             member:{
@@ -136,7 +504,7 @@ class HomeScreenService {
               }
             }
             state:{
-              notIn: "private"
+              equals: "public"
             }
             kind:{
               equals: "read"
@@ -153,6 +521,7 @@ class HomeScreenService {
           member{
             id
             nickname
+            avatar
           }
         }
         otherPicks:pick(
@@ -186,137 +555,8 @@ class HomeScreenService {
           member{
             id
             nickname
+            avatar
           }
-        }
-        myComments: comment(
-          where:{
-            member:{
-              is_active: {
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
-            }
-            state:{
-              notIn: "private"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-          orderBy:{
-            published_date: desc
-          }
-        ){
-          id
-          member{
-            id
-            nickname
-            email
-          }
-          content
-          state
-          published_date
-        }
-        followingComments: comment(
-          where:{
-            member:{
-              is_active: {
-                equals: true
-              }
-              id:{
-                in: \$followingMembers
-              }
-            }
-            state:{
-              notIn: "private"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-          orderBy:{
-            published_date: desc
-          }
-        ){
-          id
-          member{
-            id
-            nickname
-            email
-          }
-          content
-          state
-          published_date
-          likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
-            }
-          )
-        }
-        otherComments: comment(
-          where:{
-            member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
-                }
-              }
-              is_active: {
-                equals: true
-              }
-            }
-            state:{
-              in: "public"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-          orderBy:{
-            published_date: desc
-          }
-        ){
-          id
-          member{
-            id
-            nickname
-            email
-          }
-          content
-          state
-          published_date
-          likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
-            }
-          )
         }
         pickCount(
           where:{
@@ -372,7 +612,17 @@ class HomeScreenService {
       followedFollowing:members(
         where:{
           id:{
-            in: \$followingMembers
+            notIn: \$followingMembers
+          }
+          follower:{
+            some:{
+              id:{
+                in: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
           }
           is_active: {
             equals: true
@@ -381,22 +631,27 @@ class HomeScreenService {
       ){
         id
         nickname
-        following(
+        avatar
+        followerCount(
           where:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
-              }
-            }
-            is_active: {
+            is_active:{
               equals: true
             }
           }
+        )
+        follower(
+          where:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              in: \$followingMembers
+            }
+          }
+          take: 1
         ){
           id
           nickname
-          followerCount
         }
       }
       otherRecommendMembers:members(
@@ -435,6 +690,7 @@ class HomeScreenService {
       ){
         id
         nickname
+        avatar
         followerCount
         follower(take:1){
           id
@@ -489,7 +745,7 @@ class HomeScreenService {
       // fetch local publisher id and category slug
       // TODO: Change to use local data after choose UI is available
       member = Member(
-        nickname: "Anonymous user",
+        nickname: "匿名使用者",
         memberId: "-1",
       );
       followingCategorySlugs = ['unclassified'];
@@ -517,54 +773,36 @@ class HomeScreenService {
       headers: {"Content-Type": "application/json"},
     );
 
-    // News list is returned that published in 24 hours
-    NewsListItemList allNewsList = NewsListItemList();
+    // News list is returned that published in 24 hours, now take 10 first
+    List<NewsListItem> allLatestNews = [];
+    if (jsonResponse['data']['allLatestNews'].isNotEmpty) {
+      for (var item in jsonResponse['data']['allLatestNews']) {
+        allLatestNews.add(NewsListItem.fromJson(item));
+      }
+    }
 
     // News list that have following members' picks or comments
-    NewsListItemList followingNewsList = NewsListItemList();
+    List<NewsListItem> followingStories = [];
+    if (jsonResponse['data']['followingStories'].isNotEmpty) {
+      for (var item in jsonResponse['data']['followingStories']) {
+        followingStories.add(NewsListItem.fromJson(item));
+      }
+    }
 
     /// News list that don't have following members' picks or comments and have
     /// other members' comments. Now only choose 3 news
-    NewsListItemList latestCommentsNewsList = NewsListItemList();
-
-    // temp list put the news have other comments
-    NewsListItemList tempNewsList = NewsListItemList();
-
-    if (jsonResponse['data']['stories'].isNotEmpty) {
-      allNewsList = NewsListItemList.fromJson(jsonResponse['data']['stories']);
-      for (var news in allNewsList) {
-        if (news.followingPickMembers.isNotEmpty ||
-            news.followingComments.isNotEmpty) {
-          followingNewsList.add(news);
-        }
-
-        // if news have other comments, add to temp news list
-        if (news.otherComments.isNotEmpty) {
-          tempNewsList.add(news);
-        }
-      }
-
-      /// sort the list by comment publish date, because GQL already sort
-      /// comments in each news so only compare first comment
-      tempNewsList.sort((a, b) => b.otherComments[0].publishDate
-          .compareTo(a.otherComments[0].publishDate));
-
-      // take first three news put into latestCommentsNewsList
-      for (int i = 0; i < 3 && i < tempNewsList.length; i++) {
-        latestCommentsNewsList.add(tempNewsList[i]);
+    List<NewsListItem> latestComments = [];
+    if (jsonResponse['data']['latestComments'].isNotEmpty) {
+      for (var item in jsonResponse['data']['latestComments']) {
+        latestComments.add(NewsListItem.fromJson(item));
       }
     }
 
     // List of members that followed members' following members
     List<Member> followedFollowing = [];
     if (jsonResponse['data']['followedFollowing'].isNotEmpty) {
-      for (var followedMember in jsonResponse['data']['followedFollowing']) {
-        if (followedMember['following'].isNotEmpty) {
-          for (var followingMember in followedMember['following']) {
-            followedFollowing.add(Member.followedFollowing(followingMember,
-                followedMember['id'], followedMember['nickname']));
-          }
-        }
+      for (var member in jsonResponse['data']['followedFollowing']) {
+        followedFollowing.add(Member.followedFollowing(member));
       }
     }
 
@@ -578,9 +816,9 @@ class HomeScreenService {
       }
       // sort by amount of comments and picks in last 24 hours
       otherRecommendMembers.sort((a, b) {
-        int num = b.commentCount!.compareTo(a.commentCount!);
+        int num = b.pickCount!.compareTo(a.pickCount!);
         if (num != 0) return num;
-        return b.pickCount!.compareTo(a.pickCount!);
+        return b.commentCount!.compareTo(a.commentCount!);
       });
     }
 
@@ -598,9 +836,9 @@ class HomeScreenService {
     }
 
     Map<String, dynamic> result = {
-      'followingNewsList': followingNewsList,
-      'latestCommentsNewsList': latestCommentsNewsList,
-      'allNewsList': allNewsList,
+      'allLatestNews': allLatestNews,
+      'followingStories': followingStories,
+      'latestComments': latestComments,
       'recommendedMembers': recommendedMembers,
       'member': member,
     };
