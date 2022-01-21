@@ -269,6 +269,7 @@ class HomeScreenService {
           }
           take: 2
         ){
+          picked_date
           member{
             id
             nickname
@@ -791,6 +792,8 @@ class HomeScreenService {
       for (var item in jsonResponse['data']['followingStories']) {
         followingStories.add(NewsListItem.fromJson(item));
       }
+      followingStories
+          .sort((a, b) => b.latestPickTime!.compareTo(a.latestPickTime!));
     }
 
     /// News list that don't have following members' picks or comments and have
@@ -800,6 +803,8 @@ class HomeScreenService {
       for (var item in jsonResponse['data']['latestComments']) {
         latestComments.add(NewsListItem.fromJson(item));
       }
+      latestComments.sort((a, b) =>
+          b.showComment!.publishDate.compareTo(a.showComment!.publishDate));
     }
 
     // List of members that followed members' following members

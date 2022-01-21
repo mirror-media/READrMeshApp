@@ -24,6 +24,7 @@ class NewsListItem {
   final Comment? showComment;
   final List<Comment> allComments;
   String? myPickId;
+  final DateTime? latestPickTime;
 
   NewsListItem({
     required this.id,
@@ -45,6 +46,7 @@ class NewsListItem {
     this.showComment,
     required this.allComments,
     this.myPickId,
+    this.latestPickTime,
   });
 
   factory NewsListItem.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class NewsListItem {
     Comment? showComment;
     List<Comment> allComments = [];
     String? myPickId;
+    DateTime? latestPickTime;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -89,6 +92,10 @@ class NewsListItem {
         json['followingPicks'].isNotEmpty) {
       for (var pick in json['followingPicks']) {
         followingPickMembers.add(Member.fromJson(pick['member']));
+      }
+      if (json["followingPicks"][0]['picked_date'] != null) {
+        latestPickTime =
+            DateTime.parse(json["followingPicks"][0]['picked_date']).toLocal();
       }
     }
 
