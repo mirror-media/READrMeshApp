@@ -85,6 +85,8 @@ class MemberService {
         nickname
         firebaseId
         email
+        avatar
+        verified
         following(
           where: {
             is_active: {
@@ -141,6 +143,8 @@ class MemberService {
 	    \$firebaseId: String
   		\$name: String
   		\$nickname: String
+  		\$verify: Boolean
+  		\$avatar: String
     ){
 	    createMember(
 		    data: { 
@@ -148,12 +152,16 @@ class MemberService {
 			    firebaseId: \$firebaseId,
           name: \$name,
           nickname: \$nickname,
-          is_active: true
+          is_active: true,
+          verified: \$verify,
+          avatar: \$avatar
 		    }) {
         id
         nickname
         firebaseId
         email
+        avatar
+        verified
         following(
           where: {
             is_active: {
@@ -201,7 +209,9 @@ class MemberService {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
       "name": nickname,
-      "nickname": nickname
+      "nickname": nickname,
+      "verify": firebaseUser.emailVerified.toString(),
+      "avatar": firebaseUser.photoURL ?? ""
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

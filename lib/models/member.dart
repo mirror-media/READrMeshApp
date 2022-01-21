@@ -16,6 +16,7 @@ class Member {
   final List<Category>? followingCategory;
   final List<Publisher>? followingPublisher;
   List<Member>? following;
+  final bool verified;
 
   Member({
     this.firebaseId,
@@ -31,6 +32,7 @@ class Member {
     this.followingCategory,
     this.followingPublisher,
     this.following,
+    this.verified = false,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,7 @@ class Member {
     List<Publisher> followingPublisher = [];
     List<Member> following = [];
     String? avatar;
+    bool verified = false;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -56,6 +59,10 @@ class Member {
 
     if (BaseModel.hasKey(json, 'email')) {
       email = json['email'];
+    }
+
+    if (BaseModel.hasKey(json, 'verified')) {
+      verified = json['verified'];
     }
 
     if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
@@ -114,6 +121,7 @@ class Member {
       followingPublisher: followingPublisher,
       follower: follower,
       avatar: avatar,
+      verified: verified,
     );
   }
 
