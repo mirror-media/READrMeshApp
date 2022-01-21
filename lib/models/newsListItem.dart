@@ -145,6 +145,7 @@ class NewsListItem {
       showComment: showComment,
       allComments: allComments,
       myPickId: myPickId,
+      fullContent: fullContent,
     );
   }
 }
