@@ -178,6 +178,7 @@ class HomeScreenService {
             avatar
           }
           content
+          state
           published_date
           likeCount(
             where:{
@@ -223,6 +224,7 @@ class HomeScreenService {
             avatar
           }
           content
+          state
           published_date
           likeCount(
             where:{
@@ -382,6 +384,7 @@ class HomeScreenService {
             avatar
           }
           content
+          state
           published_date
           likeCount(
             where:{
@@ -427,6 +430,7 @@ class HomeScreenService {
             avatar
           }
           content
+          state
           published_date
           likeCount(
             where:{

@@ -52,7 +52,7 @@ class Comment {
       id: json['id'],
       member: Member.fromJson(json['member']),
       content: json['content'],
-      state: json['state'],
+      state: json['state'] ?? "public",
       publishDate: DateTime.parse(json["published_date"]).toLocal(),
       story: story,
       likedCount: likedCount,
