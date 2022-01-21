@@ -8,7 +8,7 @@ class Member {
   final String memberId;
   final String nickname;
   final String? name;
-  final String? headshotUrl;
+  final String? avatar;
   final int? followerCount;
   final int? pickCount;
   final int? commentCount;
@@ -23,7 +23,7 @@ class Member {
     required this.nickname,
     this.email,
     this.name,
-    this.headshotUrl,
+    this.avatar,
     this.followerCount,
     this.pickCount,
     this.commentCount,
@@ -44,6 +44,7 @@ class Member {
     List<Category> followingCategory = [];
     List<Publisher> followingPublisher = [];
     List<Member> following = [];
+    String? avatar;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -55,6 +56,10 @@ class Member {
 
     if (BaseModel.hasKey(json, 'email')) {
       email = json['email'];
+    }
+
+    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+      avatar = json['avatar'];
     }
 
     if (BaseModel.hasKey(json, 'followerCount')) {
@@ -108,16 +113,25 @@ class Member {
       followingCategory: followingCategory,
       followingPublisher: followingPublisher,
       follower: follower,
+      avatar: avatar,
     );
   }
 
-  factory Member.followedFollowing(
-      Map<String, dynamic> json, String followerId, String followerNickname) {
+  factory Member.followedFollowing(Map<String, dynamic> json) {
+    String? avatar;
+    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+      avatar = json['avatar'];
+    }
     return Member(
       memberId: json['id'],
       nickname: json['nickname'],
       followerCount: json['followerCount'] ?? 0,
-      follower: [Member(memberId: followerId, nickname: followerNickname)],
+      avatar: avatar,
+      follower: [
+        Member(
+            memberId: json['follower'][0]['id'],
+            nickname: json['follower'][0]['nickname'])
+      ],
     );
   }
 

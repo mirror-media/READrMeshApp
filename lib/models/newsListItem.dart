@@ -17,12 +17,12 @@ class NewsListItem {
   int pickCount;
   final int commentCount;
   final bool payWall;
-  final bool overlayAds;
+  final bool fullScreenAd;
+  final bool fullContent;
   final List<Member> followingPickMembers;
   final List<Member> otherPickMembers;
-  final List<Comment> followingComments;
-  final List<Comment> otherComments;
-  List<Comment> myComments;
+  final Comment? showComment;
+  final List<Comment> allComments;
   String? myPickId;
 
   NewsListItem({
@@ -36,14 +36,14 @@ class NewsListItem {
     required this.publishedDate,
     required this.heroImageUrl,
     this.payWall = false,
-    this.overlayAds = false,
+    this.fullScreenAd = false,
     this.pickCount = 0,
     this.commentCount = 0,
+    this.fullContent = false,
     required this.followingPickMembers,
     required this.otherPickMembers,
-    required this.followingComments,
-    required this.otherComments,
-    required this.myComments,
+    this.showComment,
+    required this.allComments,
     this.myPickId,
   });
 
@@ -51,14 +51,14 @@ class NewsListItem {
     Publisher? source;
     Category? category;
     bool payWall = false;
-    bool overlayAds = false;
+    bool fullContent = false;
+    bool fullScreenAd = false;
     int pickCount = 0;
     int commentCount = 0;
     List<Member> followingPickMembers = [];
     List<Member> otherPickMembers = [];
-    List<Comment> followingComments = [];
-    List<Comment> otherComments = [];
-    List<Comment> myComments = [];
+    Comment? showComment;
+    List<Comment> allComments = [];
     String? myPickId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
@@ -71,6 +71,10 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['paywall'])) {
       payWall = json['paywall'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['full_content'])) {
+      fullContent = json['full_content'];
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -95,24 +99,20 @@ class NewsListItem {
       }
     }
 
-    if (BaseModel.checkJsonKeys(json, ['followingComments']) &&
-        json['followingComments'].isNotEmpty) {
-      for (var comment in json['followingComments']) {
-        followingComments.add(Comment.fromJson(comment));
-      }
+    if (BaseModel.checkJsonKeys(json, ['followingComment']) &&
+        json['followingComment'].isNotEmpty) {
+      showComment = Comment.fromJson(json['followingComment'][0]);
     }
 
-    if (BaseModel.checkJsonKeys(json, ['otherComments']) &&
-        json['otherComments'].isNotEmpty) {
-      for (var comment in json['otherComments']) {
-        otherComments.add(Comment.fromJson(comment));
-      }
+    if (BaseModel.checkJsonKeys(json, ['notFollowingComment']) &&
+        json['notFollowingComment'].isNotEmpty) {
+      showComment = Comment.fromJson(json['notFollowingComment'][0]);
     }
 
-    if (BaseModel.checkJsonKeys(json, ['myComments']) &&
-        json['myComments'].isNotEmpty) {
-      for (var comment in json['myComments']) {
-        myComments.add(Comment.fromJson(comment));
+    if (BaseModel.checkJsonKeys(json, ['allComments']) &&
+        json['allComments'].isNotEmpty) {
+      for (var comment in json['allComments']) {
+        allComments.add(Comment.fromJson(comment));
       }
     }
 
@@ -124,7 +124,7 @@ class NewsListItem {
     if (BaseModel.checkJsonKeys(json, ['full_screen_ad'])) {
       if (json['full_screen_ad'] == 'all' ||
           json['full_screen_ad'] == 'mobile') {
-        overlayAds = true;
+        fullScreenAd = true;
       }
     }
 
@@ -132,20 +132,18 @@ class NewsListItem {
       id: json["id"],
       title: json["title"],
       url: json["url"],
-      summary: json["summary"],
       source: source,
       category: category,
       publishedDate: DateTime.parse(json["published_date"]).toLocal(),
       heroImageUrl: json["og_image"],
       payWall: payWall,
-      overlayAds: overlayAds,
+      fullScreenAd: fullScreenAd,
       pickCount: pickCount,
       commentCount: commentCount,
       followingPickMembers: followingPickMembers,
       otherPickMembers: otherPickMembers,
-      followingComments: followingComments,
-      otherComments: otherComments,
-      myComments: myComments,
+      showComment: showComment,
+      allComments: allComments,
       myPickId: myPickId,
     );
   }

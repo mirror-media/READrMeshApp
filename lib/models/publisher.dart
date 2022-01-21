@@ -8,6 +8,8 @@ class Publisher {
   final String? logoUrl;
   final String? description;
   final String? lang;
+  final bool fullContent;
+  final bool fullScreenAd;
 
   Publisher({
     required this.id,
@@ -17,6 +19,8 @@ class Publisher {
     this.logoUrl,
     this.description,
     this.lang,
+    this.fullContent = false,
+    this.fullScreenAd = false,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,8 @@ class Publisher {
     String? logoUrl;
     String? description;
     String? lang;
+    bool fullContent = false;
+    bool fullScreenAd = false;
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {
       officialSite = json['officialSite'];
@@ -46,6 +52,17 @@ class Publisher {
       lang = json['lang'];
     }
 
+    if (BaseModel.checkJsonKeys(json, ['full_content'])) {
+      fullContent = json['full_content'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['full_screen_ad'])) {
+      if (json['full_screen_ad'] == 'all' ||
+          json['full_screen_ad'] == 'mobile') {
+        fullScreenAd = true;
+      }
+    }
+
     return Publisher(
       id: json['id'],
       title: json['title'],
@@ -54,6 +71,8 @@ class Publisher {
       logoUrl: logoUrl,
       description: description,
       lang: lang,
+      fullContent: fullContent,
+      fullScreenAd: fullScreenAd,
     );
   }
 }
