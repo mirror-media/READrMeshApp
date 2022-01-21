@@ -138,12 +138,12 @@ class _HomeWidgetState extends State<HomeWidget> {
       onRefresh: () => _reloadHomeScreen(),
       child: ListView(
         children: [
-          FollowingBlock(_data['followingNewsList'], _currentMember),
+          FollowingBlock(_data['followingStories'], _currentMember),
           const SizedBox(height: 8.5),
-          LatestCommentsBlock(_data['latestCommentsNewsList'], _currentMember),
+          LatestCommentsBlock(_data['latestComments'], _currentMember),
           const SizedBox(height: 8.5),
           LatestNewsBlock(
-            _data['allNewsList'],
+            _data['allLatestNews'],
             _data['recommendedMembers'],
             _currentMember,
           ),

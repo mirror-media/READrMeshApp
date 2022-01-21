@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsListItemList.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestCommentItem.dart';
 
 class LatestCommentsBlock extends StatelessWidget {
-  final NewsListItemList latestCommentsNewsList;
+  final List<NewsListItem> latestCommentsNewsList;
   final Member member;
   const LatestCommentsBlock(this.latestCommentsNewsList, this.member);
 

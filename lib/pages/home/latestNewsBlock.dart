@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/newsListItemList.dart';
 import 'package:readr/pages/home/latestNewsItem.dart';
 import 'package:readr/pages/home/recommendFollowBlock.dart';
 
 class LatestNewsBlock extends StatefulWidget {
-  final NewsListItemList otherNewsList;
+  final List<NewsListItem> allLatestNews;
   final List<Member> recommendedMembers;
   final Member member;
   const LatestNewsBlock(
-      this.otherNewsList, this.recommendedMembers, this.member);
+      this.allLatestNews, this.recommendedMembers, this.member);
 
   @override
   _LatestNewsBlockState createState() => _LatestNewsBlockState();
@@ -19,13 +18,13 @@ class LatestNewsBlock extends StatefulWidget {
 class _LatestNewsBlockState extends State<LatestNewsBlock> {
   @override
   Widget build(BuildContext context) {
-    if (widget.otherNewsList.isEmpty) {
+    if (widget.allLatestNews.isEmpty) {
       return Container();
     }
-    NewsListItemList filteredList = NewsListItemList();
+    List<NewsListItem> filteredList = [];
 
     // remove when filter is finished
-    filteredList = widget.otherNewsList;
+    filteredList = widget.allLatestNews;
 
     return SafeArea(
       top: false,
