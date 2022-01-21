@@ -67,7 +67,7 @@ class NewsInfo extends StatelessWidget {
       ));
     }
 
-    if (newsListItem.overlayAds) {
+    if (newsListItem.fullScreenAd) {
       children.add(Container(
         width: 2,
         height: 2,

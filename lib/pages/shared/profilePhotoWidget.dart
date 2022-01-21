@@ -22,9 +22,9 @@ class ProfilePhotoWidget extends StatelessWidget {
       }
     }
 
-    if (member.headshotUrl != null) {
+    if (member.avatar != null) {
       return CircleAvatar(
-        foregroundImage: NetworkImage(member.headshotUrl!),
+        foregroundImage: NetworkImage(member.avatar!),
         backgroundColor: randomColor,
         child: AutoSizeText(
           firstLetter,
