@@ -93,7 +93,11 @@ class _HomeWidgetState extends State<HomeWidget> {
 
         if (state is UpdatingFollowing) {
           _tempFollowingData = _currentMember.following;
-          _currentMember.following = state.tempNewFollowingMembers;
+          _currentMember.following = state.newFollowingMembers;
+          return _buildHomeList();
+        }
+
+        if (state is UpdateFollowingSuccess) {
           return _buildHomeList();
         }
 
@@ -101,11 +105,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           final error = state.error;
           print('UpdateFollowingFailed: ${error.message}');
           _currentMember.following = _tempFollowingData;
-          return _buildHomeList();
-        }
-
-        if (state is UpdateFollowingSuccess) {
-          _currentMember.following = state.newFollowingMembers;
           return _buildHomeList();
         }
 

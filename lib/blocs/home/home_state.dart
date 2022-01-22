@@ -14,16 +14,12 @@ class HomeLoading extends HomeState {}
 class HomeReloading extends HomeState {}
 
 class UpdatingFollowing extends HomeState {
-  final List<Member> tempNewFollowingMembers;
-  final bool isFollowed;
-  const UpdatingFollowing(this.tempNewFollowingMembers, this.isFollowed);
-}
-
-class UpdateFollowingSuccess extends HomeState {
   final List<Member> newFollowingMembers;
   final bool isFollowed;
-  const UpdateFollowingSuccess(this.newFollowingMembers, this.isFollowed);
+  const UpdatingFollowing(this.newFollowingMembers, this.isFollowed);
 }
+
+class UpdateFollowingSuccess extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final Map<String, dynamic> data;

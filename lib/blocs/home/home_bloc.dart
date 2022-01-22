@@ -53,7 +53,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           if (newFollowingMembers == null) {
             emit(UpdateFollowingFailed('Unknown error', event.isFollowed));
           } else {
-            emit(UpdateFollowingSuccess(newFollowingMembers, event.isFollowed));
+            emit(UpdateFollowingSuccess());
           }
         }
       } catch (e) {
