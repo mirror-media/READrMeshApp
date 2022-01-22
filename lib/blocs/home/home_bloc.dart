@@ -32,7 +32,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else if (event is UpdateFollowingMember) {
           List<Member>? newFollowingMembers = event.currentMember.following;
           if (newFollowingMembers != null) {
-            newFollowingMembers.add(event.targetMember);
+            if (event.isFollowed) {
+              newFollowingMembers.remove(event.targetMember);
+            } else {
+              newFollowingMembers.add(event.targetMember);
+            }
           } else {
             newFollowingMembers = [event.targetMember];
           }
