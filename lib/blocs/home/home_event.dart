@@ -18,10 +18,11 @@ class ReloadHomeScreen extends HomeEvent {
 }
 
 class UpdateFollowingMember extends HomeEvent {
-  final String targetId;
-  final String userId;
+  final Member targetMember;
+  final Member currentMember;
   final bool isFollowed;
-  const UpdateFollowingMember(this.targetId, this.userId, this.isFollowed);
+  const UpdateFollowingMember(
+      this.targetMember, this.currentMember, this.isFollowed);
   @override
   String toString() => 'UpdateFollowingMember';
 }

@@ -83,7 +83,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                child: _followButton(widget.recommendMember.memberId),
+                child: _followButton(widget.recommendMember),
               ),
             ],
           ),
@@ -92,11 +92,11 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
     );
   }
 
-  Widget _followButton(String targetId) {
+  Widget _followButton(Member targetMember) {
     bool isFollowed = false;
     if (widget.member.following != null) {
       int index = widget.member.following!
-          .indexWhere((member) => member.memberId == targetId);
+          .indexWhere((member) => member.memberId == targetMember.memberId);
       if (index != -1) {
         isFollowed = true;
       }
@@ -105,8 +105,8 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
       onPressed: () async {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
-          context.read<HomeBloc>().add(UpdateFollowingMember(
-              targetId, widget.member.memberId, isFollowed));
+          context.read<HomeBloc>().add(
+              UpdateFollowingMember(targetMember, widget.member, isFollowed));
         } else {
           // if user is not login
           Fluttertoast.showToast(

@@ -30,14 +30,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               await _homeScreenService.fetchHomeScreenData();
           emit(HomeLoaded(data));
         } else if (event is UpdateFollowingMember) {
-          emit(UpdatingFollowing());
-          List<Member>? newFollowingMembers;
+          List<Member>? newFollowingMembers = event.currentMember.following;
+          if (newFollowingMembers != null) {
+            newFollowingMembers.add(event.targetMember);
+          } else {
+            newFollowingMembers = [event.targetMember];
+          }
+
+          emit(UpdatingFollowing(newFollowingMembers, event.isFollowed));
+
           if (event.isFollowed) {
             newFollowingMembers = await _memberService.removeFollowingMember(
-                event.userId, event.targetId);
+                event.currentMember.memberId, event.targetMember.memberId);
           } else {
             newFollowingMembers = await _memberService.addFollowingMember(
-                event.userId, event.targetId);
+                event.currentMember.memberId, event.targetMember.memberId);
           }
           if (newFollowingMembers == null) {
             emit(UpdateFollowingFailed('Unknown error', event.isFollowed));

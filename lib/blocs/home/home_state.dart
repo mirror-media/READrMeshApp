@@ -13,7 +13,11 @@ class HomeLoading extends HomeState {}
 
 class HomeReloading extends HomeState {}
 
-class UpdatingFollowing extends HomeState {}
+class UpdatingFollowing extends HomeState {
+  final List<Member> tempNewFollowingMembers;
+  final bool isFollowed;
+  const UpdatingFollowing(this.tempNewFollowingMembers, this.isFollowed);
+}
 
 class UpdateFollowingSuccess extends HomeState {
   final List<Member> newFollowingMembers;
