@@ -14,14 +14,16 @@ class MemberService {
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
 
-  Future<Map<String, String>> getHeaders() async {
+  Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
-    // TODO: Change back to firebase token when verify firebase token is finished
-    String token = await _fetchCMSUserToken();
-    //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-    headers.addAll({"Authorization": "Bearer $token"});
+    if (needAuth) {
+      // TODO: Change back to firebase token when verify firebase token is finished
+      String token = await _fetchCMSUserToken();
+      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
+      headers.addAll({"Authorization": "Bearer $token"});
+    }
 
     return headers;
   }
@@ -124,7 +126,7 @@ class MemberService {
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(),
+      headers: await getHeaders(needAuth: false),
     );
 
     // create new member when firebase is signed in but member is not created
