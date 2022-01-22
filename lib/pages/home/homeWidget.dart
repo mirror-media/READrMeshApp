@@ -17,6 +17,8 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   Map<String, dynamic> _data = {};
   late Member _currentMember;
+  List<Member>? _tempFollowingData;
+  bool _isUpdating = false;
 
   @override
   void initState() {
@@ -45,7 +47,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       listener: (context, state) {
         if (state is HomeReloadFailed) {
           Fluttertoast.showToast(
-            msg: "加載失敗",
+            msg: "載入失敗",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -59,22 +61,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             text = "取消追蹤失敗，請稍後再試一次";
           } else {
             text = "新增追蹤失敗，請稍後再試一次";
-          }
-          Fluttertoast.showToast(
-            msg: text,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        } else if (state is UpdateFollowingSuccess) {
-          String text = '';
-          if (state.isFollowed) {
-            text = "取消追蹤成功";
-          } else {
-            text = "新增追蹤成功";
           }
           Fluttertoast.showToast(
             msg: text,
@@ -106,12 +92,15 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is UpdatingFollowing) {
+          _tempFollowingData = _currentMember.following;
+          _currentMember.following = state.tempNewFollowingMembers;
           return _buildHomeList();
         }
 
         if (state is UpdateFollowingFailed) {
           final error = state.error;
           print('UpdateFollowingFailed: ${error.message}');
+          _currentMember.following = _tempFollowingData;
           return _buildHomeList();
         }
 
