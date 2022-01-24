@@ -115,6 +115,8 @@ dependencies:
       version: ^0.0.3
   # more powerful text widget
   extended_text: ^8.0.2
+  # bottom sheet
+  modal_bottom_sheet: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
