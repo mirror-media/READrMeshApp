@@ -196,29 +196,28 @@ class PickService {
       }
     };
 
-    Map<String, Map> additionalVariables;
     if (objective == PickObjective.story) {
-      additionalVariables = {
+      variables['data']!.addAll({
         "story": {
           "connect": {"id": targetId}
         }
-      };
+      });
     } else if (objective == PickObjective.collection) {
-      additionalVariables = {
+      variables['data']!.addAll({
         "collection": {
           "connect": {"id": targetId}
         }
-      };
+      });
     } else {
-      additionalVariables = {
+      variables['data']!.addAll({
         "comment": {
           "connect": {"id": targetId}
         }
-      };
+      });
     }
 
     if (objective == PickObjective.story) {
-      additionalVariables.addAll({
+      variables['data']!.addAll({
         "pick_comment": {
           "create": {
             "member": {
@@ -234,7 +233,7 @@ class PickService {
         }
       });
     } else if (objective == PickObjective.comment) {
-      additionalVariables.addAll({
+      variables['data']!.addAll({
         "pick_comment": {
           "create": {
             "member": {
@@ -250,7 +249,7 @@ class PickService {
         }
       });
       if (rootCommentId != null) {
-        additionalVariables['pick_comment']!['create']!.addAll({
+        variables['data']!['pick_comment']!['create']!.addAll({
           "root": {
             "connect": {"id": rootCommentId}
           }
