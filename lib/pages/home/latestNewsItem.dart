@@ -8,8 +8,10 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/newsInfo.dart';
+import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
+import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
-import 'package:readr/services/memberService.dart';
+import 'package:readr/services/pickService.dart';
 
 class LatestNewsItem extends StatefulWidget {
   final NewsListItem news;
@@ -21,9 +23,10 @@ class LatestNewsItem extends StatefulWidget {
 
 class _LatestNewsItemState extends State<LatestNewsItem> {
   bool _isPicked = false;
-  final MemberService _memberService = MemberService();
+  final PickService _pickService = PickService();
   List<Member> _pickedMembers = [];
   int _pickCount = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -52,7 +55,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
         Expanded(
           child: Container(),
         ),
-        _pickButton(widget.news),
+        _pickButton(context, widget.news),
       ];
     } else {
       bottom = [
@@ -83,7 +86,7 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
         Expanded(
           child: Container(),
         ),
-        _pickButton(widget.news),
+        _pickButton(context, widget.news),
       ];
     }
 
@@ -143,69 +146,125 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
     );
   }
 
-  Widget _pickButton(NewsListItem news) {
+  Widget _pickButton(BuildContext context, NewsListItem news) {
     return OutlinedButton(
-      onPressed: () async {
-        // check whether is login
-        if (FirebaseAuth.instance.currentUser != null) {
-          bool isSuccess = false;
-          if (!_isPicked) {
-            String? pickId = await _memberService.createPick(
-              memberId: widget.member.memberId,
-              targetId: news.id,
-              objective: PickObjective.story,
-              state: PickState.public,
-              kind: PickKind.read,
-            );
-            if (pickId != null) {
-              isSuccess = true;
-              news.myPickId = pickId;
-              _pickCount++;
-            }
-            Fluttertoast.showToast(
-              msg: isSuccess ? "精選成功" : "精選失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey[600],
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          } else {
-            isSuccess = await _memberService.deletePick(news.myPickId!);
-            Fluttertoast.showToast(
-              msg: isSuccess ? "取消精選成功" : "取消精選失敗，請稍後再試一次",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey[600],
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-            if (isSuccess) {
-              news.myPickId = null;
-              _pickCount--;
-              _pickedMembers.remove(widget.member);
-            }
-          }
-          if (isSuccess) {
-            _isPicked = !_isPicked;
-            setState(() {});
-          }
-        } else {
-          // if user is not login
-          Fluttertoast.showToast(
-            msg: "請先登入",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey[600],
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          AutoRouter.of(context).push(const LoginRoute());
-        }
-      },
+      onPressed: _isLoading
+          ? null
+          : () async {
+              // check whether is login
+              if (FirebaseAuth.instance.currentUser != null) {
+                if (!_isPicked) {
+                  var result = await PickBottomSheet.showPickBottomSheet(
+                    context: context,
+                    member: widget.member,
+                  );
+
+                  String? pickId;
+
+                  if (result is bool && result) {
+                    // refresh UI first
+                    setState(() {
+                      news.myPickId = 'loading';
+                      _pickCount++;
+                      _isPicked = !_isPicked;
+                      // freeze onPressed when waiting for response
+                      _isLoading = true;
+                    });
+                    //send request to api. If content is null, only pick
+                    pickId = await _pickService.createPick(
+                      memberId: widget.member.memberId,
+                      targetId: news.id,
+                      objective: PickObjective.story,
+                      state: PickState.public,
+                      kind: PickKind.read,
+                    );
+                  } else if (result is String) {
+                    // refresh UI first
+                    setState(() {
+                      news.myPickId = 'loading';
+                      _pickCount++;
+                      _isPicked = !_isPicked;
+                      // freeze onPressed when waiting for response
+                      _isLoading = true;
+                    });
+                    //send request to api. If content is null, only pick
+                    var pickAndComment =
+                        await _pickService.createPickAndComment(
+                      memberId: widget.member.memberId,
+                      targetId: news.id,
+                      objective: PickObjective.story,
+                      state: PickState.public,
+                      kind: PickKind.read,
+                      commentContent: result,
+                    );
+                    pickId = pickAndComment?['pickId'];
+                  }
+
+                  if ((result is bool && result) || (result is String)) {
+                    // If pickId is null, mean failed
+                    PickToast.showPickToast(context, pickId != null, true);
+                    if (pickId != null) {
+                      // update new myPickId to real id
+                      news.myPickId = pickId;
+                    } else {
+                      // recovery UI when is failed
+                      news.myPickId = null;
+                      setState(() {
+                        _pickCount--;
+                        _isPicked = !_isPicked;
+                      });
+                    }
+                    // Let onPressed function can be called
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                } else {
+                  // save myPickId to recovery when is failed
+                  String myPickId = news.myPickId!;
+
+                  // refresh UI first
+                  setState(() {
+                    news.myPickId = null;
+                    _pickCount--;
+                    _isPicked = !_isPicked;
+                    // freeze onPressed when waiting for response
+                    _isLoading = true;
+                  });
+
+                  // send request to api
+                  bool isSuccess = await _pickService.deletePick(myPickId);
+
+                  // show toast by result
+                  PickToast.showPickToast(context, isSuccess, false);
+
+                  // when failed, recovery UI and news' myPickId
+                  if (!isSuccess) {
+                    setState(() {
+                      news.myPickId = myPickId;
+                      _pickCount++;
+                      _isPicked = !_isPicked;
+                    });
+                  }
+                  // Let onPressed function can be called
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              } else {
+                // if user is not login
+                Fluttertoast.showToast(
+                  msg: "請先登入",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.grey[600],
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+                AutoRouter.of(context).push(const LoginRoute());
+              }
+            },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
         backgroundColor: _isPicked ? Colors.black87 : Colors.white,
