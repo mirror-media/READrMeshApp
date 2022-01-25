@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -67,70 +68,91 @@ class CommentService {
     return token;
   }
 
-  Future<Comment?> createComment({
+  Future<List<Comment>?> createComment({
     required String memberId,
     required String storyId,
     required String content,
+    required CommentTransparency state,
   }) async {
     String mutation = """
-    mutation(
-      \$myId: ID
-      \$storyId: ID
-      \$content: String
-      \$published_date: DateTime
-    ){
-      createComment(
-        data:{
-          member:{
-            connect:{
-              id: \$myId
-            }
-          }
-          story:{
-            connect:{
-              id: \$storyId
-            }
-          }
-          content: \$content
-          published_date: \$published_date
-          is_active: true
-        }
+      mutation(
+        \$myId: ID
+        \$storyId: ID
+        \$content: String
+        \$published_date: DateTime
+        \$state: String
       ){
-        id
-        member{
-          id
-          nickname
-          email
+        createComment(
+          data:{
+            member:{
+              connect:{
+                id: \$myId
+              }
+            }
+            story:{
+              connect:{
+                id: \$storyId
+              }
+            }
+            content: \$content
+            published_date: \$published_date
+            is_active: true
+            state: \$state
+          }
+        ){
+          story{
+            comment(
+              where:{
+                is_active:{
+                  equals: true
+                }
+                state:{
+                  equals: "public"
+                }
+              }
+              orderBy:{
+                published_date: desc
+              }
+            ){
+              id
+              member{
+                id
+                nickname
+                email
+                avatar
+              }
+              content
+              state
+              published_date
+              likeCount(
+                where:{
+                  is_active:{
+                    equals: true
+                  }
+                }
+              )
+              isLiked:likeCount(
+                where:{
+                  is_active:{
+                    equals: true
+                  }
+                  id:{
+                    equals: \$myId
+                  }
+                }
+              )
+            }
+          }
         }
-        content
-        state
-        published_date
-        likeCount(
-          where:{
-            is_active:{
-              equals: true
-            }
-          }
-        )
-        isLiked:likeCount(
-          where:{
-            is_active:{
-              equals: true
-            }
-            id:{
-              equals: \$myId
-            }
-          }
-        )
       }
-    }
     """;
 
     Map<String, dynamic> variables = {
       "myId": memberId,
       "storyId": storyId,
       "content": content,
-      "published_date": DateTime.now().toUtc().toIso8601String()
+      "published_date": DateTime.now().toUtc().toIso8601String(),
+      "state": state.toString().split('.').last,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -149,7 +171,13 @@ class CommentService {
         return null;
       }
 
-      return Comment.fromJson(jsonResponse['data']['createComment']);
+      List<Comment> allComments = [];
+      for (var item in jsonResponse['data']['createComment']['story']
+          ['comment']) {
+        allComments.add(Comment.fromJson(item));
+      }
+
+      return allComments;
     } catch (e) {
       return null;
     }
@@ -191,6 +219,95 @@ class CommentService {
       return !jsonResponse.containsKey('errors');
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<List<Comment>?> fetchCommentsByStoryId(
+      String storyId, String memberId) async {
+    String query = """
+      query(
+        \$storyId: ID
+        \$myId: ID
+      ){
+        comments(
+          orderBy:{
+            published_date: desc
+          }
+          where:{
+            story:{
+              id:{
+                equals: \$storyId
+              }
+            }
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            email
+            avatar
+          }
+          content
+          state
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+      }
+      """;
+
+    Map<String, String> variables = {
+      "storyId": storyId,
+      "myId": memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(needAuth: false),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      List<Comment> allComments = [];
+      for (var item in jsonResponse['data']['comments']) {
+        allComments.add(Comment.fromJson(item));
+      }
+
+      return allComments;
+    } catch (e) {
+      return null;
     }
   }
 }
