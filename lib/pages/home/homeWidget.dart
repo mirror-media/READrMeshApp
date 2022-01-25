@@ -18,7 +18,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   Map<String, dynamic> _data = {};
   late Member _currentMember;
   List<Member>? _tempFollowingData;
-  bool _isUpdating = false;
 
   @override
   void initState() {
