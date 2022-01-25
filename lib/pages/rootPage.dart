@@ -11,7 +11,6 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/readr/readrSkeletonScreen.dart';
 import 'package:upgrader/upgrader.dart';
 
 class RootPage extends StatefulWidget {
