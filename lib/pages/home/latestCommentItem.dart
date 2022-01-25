@@ -9,13 +9,14 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/home/newsInfo.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LatestCommentItem extends StatefulWidget {
   final NewsListItem news;
-  final Member? member;
+  final Member member;
   const LatestCommentItem(this.news, this.member);
 
   @override
@@ -38,7 +39,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
         children: [
           CachedNetworkImage(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width / (16 / 9),
+            height: MediaQuery.of(context).size.width / 2,
             imageUrl: widget.news.heroImageUrl,
             placeholder: (context, url) => Container(
               color: Colors.grey,
@@ -83,113 +84,115 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             thickness: 1,
           ),
           InkWell(
-            onTap: () {},
-            child: _commentsWidget(widget.news.otherComments),
+            onTap: () async {
+              await CommentBottomSheet.showCommentBottomSheet(
+                context: context,
+                member: widget.member,
+                clickComment: widget.news.showComment!,
+                storyId: widget.news.id,
+              );
+            },
+            child: _commentsWidget(widget.news.showComment!),
           ),
         ],
       ),
     );
   }
 
-  Widget _commentsWidget(List<Comment> comments) {
-    return ListView.builder(
+  Widget _commentsWidget(Comment comment) {
+    bool hasEmail = false;
+    if (comment.member.email != null && comment.member.email!.contains('@')) {
+      hasEmail = true;
+    }
+    return Container(
+      color: Colors.white,
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20, bottom: 16),
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        bool hasEmail = false;
-        if (comments[index].member.email != null &&
-            comments[index].member.email!.contains('@')) {
-          hasEmail = true;
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ProfilePhotoWidget(
-                  comments[index].member,
-                  22,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              ProfilePhotoWidget(
+                comment.member,
+                22,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      comment.member.nickname,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (hasEmail)
                       Text(
-                        comments[index].member.nickname,
+                        '@${comment.member.email!.split('@')[0]}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.black87,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      if (hasEmail)
-                        Text(
-                          '@${comments[index].member.email!.split('@')[0]}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-                _followButton(comments[index]),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 52, top: 8.5, bottom: 20),
-              child: ExtendedText(
-                comments[index].content,
-                maxLines: 2,
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                joinZeroWidthSpace: true,
-                overflowWidget: TextOverflowWidget(
-                  position: TextOverflowPosition.end,
-                  child: RichText(
-                    text: const TextSpan(
-                      text: '... ',
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 9, 40, 0.66),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: '看完整留言',
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ],
+              ),
+              _followButton(comment),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 52, top: 8.5, bottom: 20),
+            child: ExtendedText(
+              comment.content,
+              maxLines: 2,
+              style: const TextStyle(
+                color: Color.fromRGBO(0, 9, 40, 0.66),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              joinZeroWidthSpace: true,
+              overflowWidget: TextOverflowWidget(
+                position: TextOverflowPosition.end,
+                child: RichText(
+                  text: const TextSpan(
+                    text: '... ',
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 9, 40, 0.66),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
+                    children: [
+                      TextSpan(
+                        text: '看完整留言',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        );
-      },
-      itemCount: 1,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _followButton(Comment comment) {
     bool isFollowed = false;
-    if (widget.member != null && widget.member!.following != null) {
-      int index = widget.member!.following!
+    if (widget.member.following != null) {
+      int index = widget.member.following!
           .indexWhere((member) => member.memberId == comment.member.memberId);
       if (index != -1) {
         isFollowed = true;
@@ -199,10 +202,9 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
     return OutlinedButton(
       onPressed: () {
         // check whether is login
-        if (FirebaseAuth.instance.currentUser != null &&
-            widget.member != null) {
-          context.read<HomeBloc>().add(UpdateFollowingMember(
-              comment.member.memberId, widget.member!.memberId, isFollowed));
+        if (FirebaseAuth.instance.currentUser != null) {
+          context.read<HomeBloc>().add(
+              UpdateFollowingMember(comment.member, widget.member, isFollowed));
         } else {
           // if user is not login
           Fluttertoast.showToast(
