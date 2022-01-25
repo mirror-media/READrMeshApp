@@ -54,3 +54,9 @@ enum PickKind {
   collect,
   read,
 }
+
+enum CommentTransparency {
+  public,
+  friend,
+  private,
+}
