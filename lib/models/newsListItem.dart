@@ -22,7 +22,6 @@ class NewsListItem {
   final List<Member> followingPickMembers;
   final List<Member> otherPickMembers;
   final Comment? showComment;
-  final List<Comment> allComments;
   String? myPickId;
   final DateTime? latestPickTime;
 
@@ -44,7 +43,6 @@ class NewsListItem {
     required this.followingPickMembers,
     required this.otherPickMembers,
     this.showComment,
-    required this.allComments,
     this.myPickId,
     this.latestPickTime,
   });
@@ -150,9 +148,9 @@ class NewsListItem {
       followingPickMembers: followingPickMembers,
       otherPickMembers: otherPickMembers,
       showComment: showComment,
-      allComments: allComments,
       myPickId: myPickId,
       fullContent: fullContent,
+      latestPickTime: latestPickTime,
     );
   }
 }

@@ -25,49 +25,6 @@ class HomeScreenService {
     return headers;
   }
 
-  // Get News selet CMS User token for authorization
-  // TODO: Delete when verify firebase token is finished
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": DevConfig().appHelperEmail,
-      "password": DevConfig().appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
     const String query = """
     query(
@@ -94,9 +51,6 @@ class HomeScreenService {
                     not:{
                       equals: \$myId
                     }
-                  }
-                  is_active:{
-                    equals: true
                   }
                 }
                 state:{
@@ -162,57 +116,8 @@ class HomeScreenService {
               equals: "public"
             }
             member:{
-              is_active:{
-                equals: true
-              }
               id:{
                 in: \$followingMembers
-              }
-            }
-          }
-        ){
-          id
-          member{
-            id
-            nickname
-            avatar
-          }
-          content
-          state
-          published_date
-          likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
-            }
-          )
-        }
-        allComments: comment(
-          orderBy:{
-            published_date: desc
-          }
-          take: 10
-          where:{
-            is_active:{
-              equals: true
-            }
-            state:{
-              equals: "public"
-            }
-            member:{
-              is_active:{
-                equals: true
               }
             }
           }
@@ -247,9 +152,6 @@ class HomeScreenService {
         followingPicks: pick(
           where:{
             member:{
-              is_active: {
-                equals: true
-              }
               id:{
                 in: \$followingMembers
               }
@@ -288,6 +190,12 @@ class HomeScreenService {
           }
           comment:{
             some:{
+              is_active:{
+                equals: true
+              }
+              state:{
+                equals: "public"
+              }
               member:{
                 id:{
                   notIn: \$followingMembers
@@ -346,18 +254,13 @@ class HomeScreenService {
             state:{
               equals: "public"
             }
-            member:{
-              is_active:{
-                equals: true
-              }
-            }
           }
         )
         notFollowingComment:comment(
+          take: 1
           orderBy:{
             published_date: desc
           }
-          
           where:{
             is_active:{
               equals: true
@@ -366,60 +269,11 @@ class HomeScreenService {
               equals: "public"
             }
             member:{
-              is_active:{
-                equals: true
-              }
               id:{
                 notIn: \$followingMembers
                 not:{
                   equals: \$myId
                 }
-              }
-            }
-          }
-        ){
-          id
-          member{
-            id
-            nickname
-            avatar
-          }
-          content
-          state
-          published_date
-          likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
-            }
-          )
-        }
-        allComments: comment(
-          orderBy:{
-            published_date: desc
-          }
-          take: 10
-          where:{
-            is_active:{
-              equals: true
-            }
-            state:{
-              equals: "public"
-            }
-            member:{
-              is_active:{
-                equals: true
               }
             }
           }
@@ -501,9 +355,6 @@ class HomeScreenService {
         followingPicks: pick(
           where:{
             member:{
-              is_active: {
-                equals: true
-              }
               id:{
                 in: \$followingMembers
               }
@@ -532,9 +383,6 @@ class HomeScreenService {
         otherPicks:pick(
           where:{
             member:{
-              is_active: {
-                equals: true
-              }
               id:{
                 notIn: \$followingMembers
                 not:{
@@ -565,11 +413,6 @@ class HomeScreenService {
         }
         pickCount(
           where:{
-            member:{
-              is_active: {
-                equals: true
-              }
-            }
             state:{
               in: "public"
             }
@@ -580,11 +423,6 @@ class HomeScreenService {
         )
         commentCount(
           where:{
-            member:{
-              is_active: {
-                equals: true
-              }
-            }
             state:{
               in: "public"
             }
