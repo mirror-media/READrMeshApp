@@ -1,0 +1,117 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/models/comment.dart';
+import 'package:readr/models/member.dart';
+import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
+
+class CommentBottomSheet {
+  static Future<void> showCommentBottomSheet({
+    required BuildContext context,
+    required Member member,
+    required Comment clickComment,
+    required String storyId,
+    String? oldContent,
+  }) async {
+    String? inputContent;
+    await showMaterialModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      builder: (context) => BlocProvider(
+        create: (context) => CommentBloc(),
+        child: SafeArea(
+          bottom: false,
+          child: CommentBottomSheetWidget(
+            context: context,
+            member: member,
+            clickComment: clickComment,
+            storyId: storyId,
+            controller: ModalScrollController.of(context),
+            onTextChanged: (text) => inputContent = text,
+            oldContent: oldContent,
+          ),
+        ),
+      ),
+    ).whenComplete(() {
+      // when there has text, show hint
+      if (inputContent != null && inputContent!.trim().isNotEmpty) {
+        Widget dialogTitle = const Text(
+          '確定要刪除留言？',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        );
+        Widget dialogContent = const Text(
+          '系統將不會儲存您剛剛輸入的內容',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+          ),
+        );
+        List<Widget> dialogActions = [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              '刪除留言',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await showCommentBottomSheet(
+                context: context,
+                member: member,
+                clickComment: clickComment,
+                storyId: storyId,
+                oldContent: inputContent,
+              );
+            },
+            child: const Text(
+              '繼續輸入',
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          )
+        ];
+        if (!Platform.isIOS) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: dialogTitle,
+              content: dialogContent,
+              buttonPadding: const EdgeInsets.only(left: 32, right: 8),
+              actions: dialogActions,
+            ),
+          );
+        } else {
+          showCupertinoDialog(
+            context: context,
+            builder: (context) => CupertinoAlertDialog(
+              title: dialogTitle,
+              content: dialogContent,
+              actions: dialogActions,
+            ),
+          );
+        }
+      }
+    });
+  }
+}
