@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -11,10 +10,10 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CommentBottomSheetWidget extends StatefulWidget {
   final BuildContext context;
-  final ScrollController? controller;
   final Member member;
   final Comment clickComment;
   final String storyId;
@@ -26,7 +25,6 @@ class CommentBottomSheetWidget extends StatefulWidget {
     required this.member,
     required this.clickComment,
     required this.storyId,
-    this.controller,
     required this.onTextChanged,
     this.oldContent,
   });
@@ -42,6 +40,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
   bool _isSending = false;
   bool _hasMyNewComment = false;
   late final TextEditingController _textController;
+  final ItemScrollController _controller = ItemScrollController();
 
   @override
   void initState() {
@@ -134,16 +133,15 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
 
         if (state is CommentLoaded) {
           _allComments = state.comments;
-          if (widget.controller != null) {
-            int index = _allComments
-                .indexWhere((comment) => comment.id == widget.clickComment.id);
-            double offset = 105 * index.toDouble();
-            Timer(
-                const Duration(microseconds: 1),
-                () => widget.controller!.jumpTo(
-                      offset,
-                    ));
-          }
+          int index = _allComments
+              .indexWhere((comment) => comment.id == widget.clickComment.id);
+          Timer.periodic(const Duration(microseconds: 1), (timer) {
+            if (_controller.isAttached) {
+              _controller.jumpTo(index: index);
+              timer.cancel();
+            }
+          });
+
           return _buildContent();
         }
 
@@ -263,10 +261,10 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               ),
             ),
             Flexible(
-              child: ListView.builder(
+              child: ScrollablePositionedList.builder(
                 key: UniqueKey(),
                 itemCount: _allComments.length,
-                controller: widget.controller,
+                itemScrollController: _controller,
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

@@ -96,7 +96,6 @@ class _CommentItemState extends State<CommentItem> {
       color: _backgroundColor,
       padding: const EdgeInsets.all(20),
       width: double.infinity,
-      height: _isExpanded ? null : 105,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

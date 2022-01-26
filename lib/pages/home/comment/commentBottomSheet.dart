@@ -32,7 +32,6 @@ class CommentBottomSheet {
               member: member,
               clickComment: clickComment,
               storyId: storyId,
-              controller: ModalScrollController.of(context),
               onTextChanged: (text) => inputContent = text,
               oldContent: oldContent,
             ),
