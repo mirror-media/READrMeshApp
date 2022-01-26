@@ -35,6 +35,7 @@ class _CommentItemState extends State<CommentItem> {
   bool _isLiked = false;
   final FadeInController _fadeController = FadeInController();
   bool _isMyNewComment = false;
+  bool _isDisposed = false;
 
   @override
   void initState() {
@@ -50,14 +51,21 @@ class _CommentItemState extends State<CommentItem> {
       _backgroundColor = Colors.transparent;
       _isExpanded = true;
       Timer(const Duration(seconds: 5), () async {
-        _fadeController.fadeIn();
-        await Future.delayed(const Duration(milliseconds: 255));
-        setState(() {
-          _isMyNewComment = false;
-        });
+        if (!_isDisposed) {
+          _fadeController.fadeIn();
+          await Future.delayed(const Duration(milliseconds: 255));
+        }
+        _isMyNewComment = false;
+        _isExpanded = false;
       });
     }
     _isLiked = widget.isLiked;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _isDisposed = true;
   }
 
   @override
@@ -176,44 +184,45 @@ class _CommentItemState extends State<CommentItem> {
             ],
           ),
         ),
-        Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                widget.comment.likedCount.toString(),
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
-                  fontSize: 12,
+        if (!widget.isSending)
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  widget.comment.likedCount.toString(),
+                  style: const TextStyle(
+                    color: Color.fromRGBO(0, 9, 40, 0.66),
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 5),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (_isLiked) {
-                      widget.comment.likedCount--;
-                    } else {
-                      widget.comment.likedCount++;
-                    }
-                    _isLiked = !_isLiked;
-                  });
-                },
-                iconSize: 18,
-                padding: const EdgeInsets.all(0),
-                constraints: const BoxConstraints(),
-                icon: Icon(
-                  _isLiked
-                      ? Icons.favorite_outlined
-                      : Icons.favorite_border_outlined,
-                  color: _isLiked
-                      ? Colors.red
-                      : const Color.fromRGBO(0, 9, 40, 0.66),
+                const SizedBox(width: 5),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_isLiked) {
+                        widget.comment.likedCount--;
+                      } else {
+                        widget.comment.likedCount++;
+                      }
+                      _isLiked = !_isLiked;
+                    });
+                  },
+                  iconSize: 18,
+                  padding: const EdgeInsets.all(0),
+                  constraints: const BoxConstraints(),
+                  icon: Icon(
+                    _isLiked
+                        ? Icons.favorite_outlined
+                        : Icons.favorite_border_outlined,
+                    color: _isLiked
+                        ? Colors.red
+                        : const Color.fromRGBO(0, 9, 40, 0.66),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
+              ],
+            ),
+          )
       ],
     );
   }

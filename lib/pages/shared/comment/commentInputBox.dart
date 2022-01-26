@@ -8,12 +8,14 @@ class CommentInputBox extends StatefulWidget {
   final bool isSending;
   final String? oldContent;
   final ValueChanged<String> onTextChanged;
+  final TextEditingController? textController;
   const CommentInputBox({
     required this.member,
     required this.onPressed,
     this.isSending = false,
     this.oldContent,
     required this.onTextChanged,
+    this.textController,
   });
 
   @override
@@ -27,10 +29,15 @@ class _CommentInputBoxState extends State<CommentInputBox> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.oldContent);
-    if (widget.oldContent?.isNotEmpty ?? false) {
+    if (widget.textController != null) {
+      _controller = widget.textController!;
+    } else {
+      _controller = TextEditingController(text: widget.oldContent);
+    }
+
+    if (_controller.text.trim().isNotEmpty) {
       _hasInput = true;
-      widget.onTextChanged(widget.oldContent!);
+      widget.onTextChanged(_controller.text);
     }
     _controller.addListener(() {
       // pass value back to showPickBottomSheet
@@ -51,6 +58,17 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
   @override
   Widget build(BuildContext context) {
+    Color sendTextColor;
+    Color textFieldTextColor = Colors.black;
+    if (!_hasInput) {
+      sendTextColor = Colors.white;
+    } else if (widget.isSending) {
+      sendTextColor = Colors.black26;
+      textFieldTextColor = Colors.black26;
+    } else {
+      sendTextColor = Colors.blue;
+    }
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
@@ -68,6 +86,8 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                   child: TextField(
                     minLines: 1,
                     maxLines: 4,
+                    readOnly: widget.isSending,
+                    style: TextStyle(color: textFieldTextColor),
                     controller: _controller,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -79,7 +99,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                   child: Text(
                     '發佈',
                     style: TextStyle(
-                      color: _hasInput ? Colors.blue : Colors.white,
+                      color: sendTextColor,
                     ),
                   ),
                   onPressed:
@@ -95,6 +115,5 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
   void _sendComment() {
     widget.onPressed(_controller.text);
-    _controller.clear();
   }
 }

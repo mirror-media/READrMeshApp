@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -41,12 +40,13 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
   late Comment _myNewComment;
   bool _isSending = false;
   bool _hasMyNewComment = false;
-  final _fadeController = FadeInController();
+  late final TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
     _fetchComment();
+    _textController = TextEditingController(text: widget.oldContent);
   }
 
   _fetchComment() {
@@ -92,35 +92,48 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
       },
       builder: (context, state) {
         if (state is CommentError) {
-          return ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(0),
-            children: [
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+          return Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
+              color: Colors.white,
+            ),
+            child: SafeArea(
+              top: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      height: 48,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: const Icon(
+                        Icons.expand_more_outlined,
+                        color: Colors.black38,
+                        size: 32,
+                      ),
                     ),
-                    color: Colors.white,
                   ),
-                  child: const Icon(
-                    Icons.expand_more_outlined,
-                    color: Colors.black38,
-                    size: 32,
+                  SizedBox(
+                    height: 500,
+                    child: ErrorPage(
+                      error: state.error,
+                      onPressed: () => _fetchComment(),
+                      hideAppbar: true,
+                    ),
                   ),
-                ),
+                ],
               ),
-              ErrorPage(
-                error: state.error,
-                onPressed: () => _fetchComment(),
-                hideAppbar: true,
-              ),
-            ],
+            ),
           );
         }
 
@@ -129,9 +142,17 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
           return _buildContent();
         }
 
+        if (state is AddCommentFailed) {
+          if (_allComments[0].id == 'sending') {
+            _allComments.removeAt(0);
+          }
+          _isSending = false;
+          return _buildContent();
+        }
+
         if (state is AddCommentSuccess) {
           _allComments = state.comments;
-          _isSending = false;
+
           // find new comment position
           int index = _allComments.indexWhere((element) {
             if (element.content == _myNewComment.content &&
@@ -153,7 +174,13 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
             _allComments.insert(0, _myNewComment);
           }
           _hasMyNewComment = true;
-          Timer(const Duration(seconds: 5), () => _hasMyNewComment = false);
+          if (_isSending) {
+            Timer(const Duration(seconds: 5, milliseconds: 5),
+                () => _hasMyNewComment = false);
+          }
+
+          _isSending = false;
+          _textController.clear();
 
           return _buildContent();
         }
@@ -173,10 +200,8 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
           ),
           child: SafeArea(
             top: false,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
@@ -281,7 +306,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                   _createComment(text);
                 },
                 onTextChanged: widget.onTextChanged,
-                oldContent: widget.oldContent,
+                textController: _textController,
               ),
             ],
           ],
