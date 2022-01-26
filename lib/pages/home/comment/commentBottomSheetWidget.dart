@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -133,6 +134,16 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
 
         if (state is CommentLoaded) {
           _allComments = state.comments;
+          if (widget.controller != null) {
+            int index = _allComments
+                .indexWhere((comment) => comment.id == widget.clickComment.id);
+            double offset = 105 * index.toDouble();
+            Timer(
+                const Duration(microseconds: 1),
+                () => widget.controller!.jumpTo(
+                      offset,
+                    ));
+          }
           return _buildContent();
         }
 
