@@ -18,24 +18,24 @@ class CommentBottomSheet {
     String? oldContent,
   }) async {
     String? inputContent;
-    await showMaterialModalBottomSheet(
+    await showCupertinoModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
+      topRadius: const Radius.circular(24),
       builder: (context) => BlocProvider(
         create: (context) => CommentBloc(),
         child: SafeArea(
           bottom: false,
-          child: CommentBottomSheetWidget(
-            context: context,
-            member: member,
-            clickComment: clickComment,
-            storyId: storyId,
-            controller: ModalScrollController.of(context),
-            onTextChanged: (text) => inputContent = text,
-            oldContent: oldContent,
+          child: Material(
+            child: CommentBottomSheetWidget(
+              context: context,
+              member: member,
+              clickComment: clickComment,
+              storyId: storyId,
+              controller: ModalScrollController.of(context),
+              onTextChanged: (text) => inputContent = text,
+              oldContent: oldContent,
+            ),
           ),
         ),
       ),
