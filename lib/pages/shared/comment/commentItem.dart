@@ -4,11 +4,14 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
+import 'package:readr/services/commentService.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
+  final Member member;
   final bool isLiked;
   final bool isExpanded;
   final bool isMyComment;
@@ -17,6 +20,7 @@ class CommentItem extends StatefulWidget {
   final bool isSending;
   const CommentItem({
     required this.comment,
+    required this.member,
     this.isLiked = false,
     this.isExpanded = false,
     this.isMyComment = false,
@@ -198,7 +202,11 @@ class _CommentItemState extends State<CommentItem> {
                 ),
                 const SizedBox(width: 5),
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    // save origin state
+                    bool originIsLiked = _isLiked;
+                    int originLikeCount = widget.comment.likedCount;
+                    // refresh UI first
                     setState(() {
                       if (_isLiked) {
                         widget.comment.likedCount--;
@@ -207,6 +215,27 @@ class _CommentItemState extends State<CommentItem> {
                       }
                       _isLiked = !_isLiked;
                     });
+                    CommentService commentService = CommentService();
+                    int? newLikeCount;
+                    if (originIsLiked) {
+                      newLikeCount = await commentService.removeLike(
+                        memberId: widget.member.memberId,
+                        commentId: widget.comment.id,
+                      );
+                    } else {
+                      newLikeCount = await commentService.addLike(
+                        memberId: widget.member.memberId,
+                        commentId: widget.comment.id,
+                      );
+                    }
+
+                    // if return null mean failed
+                    if (newLikeCount == null) {
+                      widget.comment.likedCount = originLikeCount;
+                      _isLiked = originIsLiked;
+                    } else {
+                      widget.comment.likedCount = newLikeCount;
+                    }
                   },
                   iconSize: 18,
                   padding: const EdgeInsets.all(0),

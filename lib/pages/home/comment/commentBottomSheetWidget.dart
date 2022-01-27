@@ -280,6 +280,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                         widget.member.memberId,
                     isSending: (_isSending && index == 0),
                     isMyNewComment: _hasMyNewComment && index == 0,
+                    member: widget.member,
                   );
                 },
               ),
