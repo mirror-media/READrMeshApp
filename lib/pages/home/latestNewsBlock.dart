@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestNewsItem.dart';
@@ -36,34 +37,43 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 6, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    '最新文章',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.filter_list_outlined,
-                      color: Colors.black54,
-                      size: 22,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 22.5),
+            const SizedBox(height: 12),
             _latestNewsList(context, filteredList.sublist(0, 5)),
             RecommendFollowBlock(widget.recommendedMembers, widget.member),
-            _latestNewsList(context, filteredList.sublist(5))
+            _latestNewsList(context, filteredList.sublist(5)),
+            Container(
+              height: 16,
+              color: Colors.white,
+            ),
+            Container(
+              color: homeScreenBackgroundColor,
+              height: 20,
+            ),
+            Container(
+              alignment: Alignment.center,
+              color: homeScreenBackgroundColor,
+              child: RichText(
+                text: const TextSpan(
+                  text: '🎉 ',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: '你已看完所有新聞囉',
+                      style: TextStyle(
+                        color: Colors.black38,
+                        fontSize: 14,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: homeScreenBackgroundColor,
+              height: 145,
+            ),
           ],
         ),
       ),
@@ -84,14 +94,16 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           ),
         );
       },
-      separatorBuilder: (context, index) => const Padding(
-        padding: EdgeInsets.only(top: 16, bottom: 20),
-        child: Divider(
-          color: Colors.black12,
-          thickness: 1,
-          height: 1,
-        ),
-      ),
+      separatorBuilder: (context, index) {
+        return const Padding(
+          padding: EdgeInsets.only(top: 16, bottom: 20),
+          child: Divider(
+            color: Colors.black12,
+            thickness: 1,
+            height: 1,
+          ),
+        );
+      },
       itemCount: newsList.length,
     );
   }

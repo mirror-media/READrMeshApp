@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
@@ -87,30 +89,30 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is HomeReloadFailed) {
           final error = state.error;
           print('HomeReloadFailed: ${error.message}');
-          return _buildHomeList();
+          return _buildHomeContent();
         }
 
         if (state is UpdatingFollowing) {
           _tempFollowingData = _currentMember.following;
           _currentMember.following = state.newFollowingMembers;
-          return _buildHomeList();
+          return _buildHomeContent();
         }
 
         if (state is UpdateFollowingSuccess) {
-          return _buildHomeList();
+          return _buildHomeContent();
         }
 
         if (state is UpdateFollowingFailed) {
           final error = state.error;
           print('UpdateFollowingFailed: ${error.message}');
           _currentMember.following = _tempFollowingData;
-          return _buildHomeList();
+          return _buildHomeContent();
         }
 
         if (state is HomeLoaded) {
           _data = state.data;
           _currentMember = _data['member'];
-          return _buildHomeList();
+          return _buildHomeContent();
         }
 
         return const Center(
@@ -120,45 +122,97 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
-  Widget _buildHomeList() {
+  Widget _buildHomeContent() {
     return RefreshIndicator(
       onRefresh: () => _reloadHomeScreen(),
-      child: ListView(
-        children: [
-          FollowingBlock(_data['followingStories'], _currentMember),
-          const SizedBox(height: 8.5),
-          LatestCommentsBlock(_data['latestComments'], _currentMember),
-          const SizedBox(height: 8.5),
-          LatestNewsBlock(
-            _data['allLatestNews'],
-            _data['recommendedMembers'],
-            _currentMember,
+      child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          _buildAppBar(),
+          SliverToBoxAdapter(
+            child: FollowingBlock(_data['followingStories'], _currentMember),
           ),
-          Container(
-            height: 16,
-            color: Colors.white,
-          ),
-          const SizedBox(height: 20),
-          Center(
-              child: RichText(
-            text: const TextSpan(
-              text: '🎉 ',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-              children: [
-                TextSpan(
-                  text: '你已看完所有新聞囉',
-                  style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 14,
-                  ),
-                )
-              ],
+          SliverToBoxAdapter(
+            child: Container(
+              height: 8.5,
+              color: homeScreenBackgroundColor,
             ),
-          )),
-          const SizedBox(height: 145),
+          ),
+          SliverToBoxAdapter(
+            child: LatestCommentsBlock(_data['latestComments'], _currentMember),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 8.5,
+              color: homeScreenBackgroundColor,
+            ),
+          ),
+          _latestNewsBar(),
+          SliverToBoxAdapter(
+            child: LatestNewsBlock(
+              _data['allLatestNews'],
+              _data['recommendedMembers'],
+              _currentMember,
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return SliverAppBar(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      backgroundColor: Colors.white,
+      centerTitle: false,
+      elevation: 0,
+      title: const Text(
+        'Logo',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.notifications_none_outlined,
+            color: Colors.black,
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _latestNewsBar() {
+    String barText = '所有最新文章';
+    return SliverAppBar(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      backgroundColor: Colors.white,
+      centerTitle: false,
+      elevation: 1,
+      pinned: true,
+      titleSpacing: 20,
+      title: GestureDetector(
+        onTap: () {},
+        child: Row(
+          children: [
+            Text(
+              barText,
+              style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(width: 6),
+            const Icon(
+              Icons.expand_more_outlined,
+              color: Colors.black38,
+              size: 30,
+            ),
+          ],
+        ),
       ),
     );
   }
