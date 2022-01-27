@@ -310,4 +310,110 @@ class CommentService {
       return null;
     }
   }
+
+  Future<int?> addLike({
+    required String memberId,
+    required String commentId,
+  }) async {
+    String mutation = """
+    mutation(
+      \$commentId: ID
+      \$memberId: ID
+    ){
+      updateComment(
+        where:{
+          id: \$commentId
+        }
+        data:{
+          like:{
+            connect:{
+              id: \$memberId
+            }
+          }
+        }
+      ){
+        likeCount
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "commentId": commentId,
+      "memberId": memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      return jsonResponse['data']['updateComment']['likeCount'];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<int?> removeLike({
+    required String memberId,
+    required String commentId,
+  }) async {
+    String mutation = """
+    mutation(
+      \$commentId: ID
+      \$memberId: ID
+    ){
+      updateComment(
+        where:{
+          id: \$commentId
+        }
+        data:{
+          like:{
+            disconnect:{
+              id: \$memberId
+            }
+          }
+        }
+      ){
+        likeCount
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "commentId": commentId,
+      "memberId": memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+
+      return jsonResponse['data']['updateComment']['likeCount'];
+    } catch (e) {
+      return null;
+    }
+  }
 }
