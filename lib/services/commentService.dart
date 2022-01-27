@@ -124,13 +124,7 @@ class CommentService {
               content
               state
               published_date
-              likeCount(
-                where:{
-                  is_active:{
-                    equals: true
-                  }
-                }
-              )
+              likeCount
               isLiked:likeCount(
                 where:{
                   is_active:{
@@ -257,13 +251,7 @@ class CommentService {
           content
           state
           published_date
-          likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-          )
+          likeCount
           isLiked:likeCount(
             where:{
               is_active:{
