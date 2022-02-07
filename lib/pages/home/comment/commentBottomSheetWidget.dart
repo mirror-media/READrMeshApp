@@ -267,6 +267,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                 itemScrollController: _controller,
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return CommentItem(
                     comment: _allComments[index],
