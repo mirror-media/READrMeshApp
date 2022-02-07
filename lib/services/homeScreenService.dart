@@ -14,17 +14,6 @@ class HomeScreenService {
   final String api = DevConfig().keystoneApi;
   final MemberService _memberService = MemberService();
 
-  static Map<String, String> getHeaders({String? token}) {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (token != null) {
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
     const String query = """
     query(
