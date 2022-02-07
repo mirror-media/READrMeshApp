@@ -22,11 +22,15 @@ class BottomCardWidget extends StatefulWidget {
   final NewsStoryItem news;
   final Member member;
   final ValueChanged<String> onTextChanged;
+  final ValueChanged<bool> isPickedButton;
+  final bool isPicked;
 
   const BottomCardWidget({
     required this.news,
     required this.member,
     required this.onTextChanged,
+    required this.isPickedButton,
+    this.isPicked = false,
   });
 
   @override
@@ -50,9 +54,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   @override
   void initState() {
     super.initState();
-    if (widget.news.myPickId != null) {
-      _isPicked = true;
-    }
+    _isPicked = widget.isPicked;
     _pickCount = widget.news.pickCount;
     _allComments = widget.news.allComments;
     _pickAvatarMembers = widget.news.followingPickMembers;
@@ -478,6 +480,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = 'loading';
                       _pickCount++;
                       _isPicked = !_isPicked;
+                      widget.isPickedButton(_isPicked);
                       // freeze onPressed when waiting for response
                       _isLoading = true;
                     });
@@ -495,6 +498,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = 'loading';
                       _pickCount++;
                       _isPicked = !_isPicked;
+                      widget.isPickedButton(_isPicked);
                       // freeze onPressed when waiting for response
                       _isLoading = true;
                     });
@@ -524,6 +528,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       setState(() {
                         _pickCount--;
                         _isPicked = !_isPicked;
+                        widget.isPickedButton(_isPicked);
                       });
                     }
                     // Let onPressed function can be called
@@ -541,6 +546,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     news.pickCount--;
                     _pickCount--;
                     _isPicked = !_isPicked;
+                    widget.isPickedButton(_isPicked);
                     // freeze onPressed when waiting for response
                     _isLoading = true;
                   });
@@ -557,6 +563,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = myPickId;
                       _pickCount++;
                       _isPicked = !_isPicked;
+                      widget.isPickedButton(_isPicked);
                     });
                   }
                   // Let onPressed function can be called
