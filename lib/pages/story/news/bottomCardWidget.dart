@@ -177,57 +177,54 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Row(
             children: [
-              if (widget.news.allComments.isNotEmpty) ...[
-                AutoSizeText.rich(
-                  TextSpan(
-                    text: widget.news.allComments.length.toString(),
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: ' 則留言',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
+              AutoSizeText.rich(
+                TextSpan(
+                  text: widget.news.allComments.length.toString(),
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
                   ),
-                  style: const TextStyle(fontSize: 13),
+                  children: const [
+                    TextSpan(
+                      text: ' 則留言',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ],
                 ),
-                Container(
-                  width: 2,
-                  height: 2,
-                  margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black26,
+                style: const TextStyle(fontSize: 13),
+              ),
+              Container(
+                width: 2,
+                height: 2,
+                margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black26,
+                ),
+              ),
+              AutoSizeText.rich(
+                TextSpan(
+                  text: _pickCount.toString(),
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
                   ),
+                  children: const [
+                    TextSpan(
+                      text: ' 人精選',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ],
                 ),
-              ],
-              if (_pickCount != 0)
-                AutoSizeText.rich(
-                  TextSpan(
-                    text: _pickCount.toString(),
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: ' 人精選',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
-                  style: const TextStyle(fontSize: 13),
-                ),
+                style: const TextStyle(fontSize: 13),
+              ),
               Expanded(
                 child: Container(),
               ),
@@ -278,9 +275,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           const SizedBox(height: 18),
           Row(
             children: [
-              ProfilePhotoStack(_pickAvatarMembers, 14),
-              const SizedBox(width: 8),
-              if (widget.news.pickCount != 0)
+              if (widget.news.pickCount != 0) ...[
+                ProfilePhotoStack(_pickAvatarMembers, 14),
+                const SizedBox(width: 8),
                 RichText(
                   text: TextSpan(
                     text: widget.news.pickCount.toString(),
@@ -301,6 +298,16 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     ],
                   ),
                   maxLines: 1,
+                ),
+              ],
+              if (widget.news.pickCount == 0)
+                const Text(
+                  '尚無人精選',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               Expanded(
                 child: Container(),
