@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestNewsItem.dart';
@@ -87,7 +89,13 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            AutoRouter.of(context).push(NewsStoryRoute(
+              news: newsList[index],
+              member: widget.member,
+              isBookmarked: false,
+            ));
+          },
           child: LatestNewsItem(
             newsList[index],
             widget.member,

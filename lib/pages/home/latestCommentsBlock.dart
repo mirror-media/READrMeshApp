@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestCommentItem.dart';
@@ -34,7 +36,13 @@ class LatestCommentsBlock extends StatelessWidget {
               );
             }
             return InkWell(
-              onTap: () {},
+              onTap: () {
+                AutoRouter.of(context).push(NewsStoryRoute(
+                  news: latestCommentsNewsList[index - 1],
+                  member: member,
+                  isBookmarked: false,
+                ));
+              },
               child: LatestCommentItem(
                 latestCommentsNewsList[index - 1],
                 member,

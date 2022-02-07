@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -117,7 +119,13 @@ class FollowingBlock extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        AutoRouter.of(context).push(NewsStoryRoute(
+          news: item,
+          member: member,
+          isBookmarked: false,
+        ));
+      },
     );
   }
 
