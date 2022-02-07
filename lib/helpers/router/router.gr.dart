@@ -61,6 +61,17 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: AuthorPage(people: args.people));
     },
+    NewsStoryRoute.name: (routeData) {
+      final args = routeData.argsAs<NewsStoryRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: NewsStoryPage(
+              news: args.news,
+              member: args.member,
+              isBookmarked: args.isBookmarked,
+              isNative: args.isNative),
+          fullscreenDialog: true);
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -89,7 +100,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
         RouteConfig(LoginRoute.name, path: '/login-page'),
         RouteConfig(SendEmailRoute.name, path: '/send-email-page'),
-        RouteConfig(AuthorRoute.name, path: '/author-page')
+        RouteConfig(AuthorRoute.name, path: '/author-page'),
+        RouteConfig(NewsStoryRoute.name, path: '/news-story-page')
       ];
 }
 
@@ -263,6 +275,46 @@ class AuthorRouteArgs {
   @override
   String toString() {
     return 'AuthorRouteArgs{people: $people}';
+  }
+}
+
+/// generated route for
+/// [NewsStoryPage]
+class NewsStoryRoute extends PageRouteInfo<NewsStoryRouteArgs> {
+  NewsStoryRoute(
+      {required NewsListItem news,
+      required Member member,
+      required bool isBookmarked,
+      bool isNative = false})
+      : super(NewsStoryRoute.name,
+            path: '/news-story-page',
+            args: NewsStoryRouteArgs(
+                news: news,
+                member: member,
+                isBookmarked: isBookmarked,
+                isNative: isNative));
+
+  static const String name = 'NewsStoryRoute';
+}
+
+class NewsStoryRouteArgs {
+  const NewsStoryRouteArgs(
+      {required this.news,
+      required this.member,
+      required this.isBookmarked,
+      this.isNative = false});
+
+  final NewsListItem news;
+
+  final Member member;
+
+  final bool isBookmarked;
+
+  final bool isNative;
+
+  @override
+  String toString() {
+    return 'NewsStoryRouteArgs{news: $news, member: $member, isBookmarked: $isBookmarked, isNative: $isNative}';
   }
 }
 
