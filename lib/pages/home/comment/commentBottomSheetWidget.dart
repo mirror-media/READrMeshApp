@@ -137,7 +137,11 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               .indexWhere((comment) => comment.id == widget.clickComment.id);
           Timer.periodic(const Duration(microseconds: 1), (timer) {
             if (_controller.isAttached) {
-              _controller.jumpTo(index: index);
+              _controller.scrollTo(
+                  index: index,
+                  duration: const Duration(
+                    microseconds: 1,
+                  ));
               timer.cancel();
             }
           });
