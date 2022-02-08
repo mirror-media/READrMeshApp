@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
@@ -12,11 +13,13 @@ import 'package:readr/pages/home/newsInfo.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
   final Member member;
-  const FollowingBlock(this.followingStories, this.member);
+  final bool isLoadingMore;
+  const FollowingBlock(this.followingStories, this.member, this.isLoadingMore);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +43,123 @@ class FollowingBlock extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(0),
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              _followingItem(context, followingStories[index]),
+          itemBuilder: (context, index) {
+            if (index == 5 && followingStories.length == 6) {
+              return _loadMoreWidget(context, followingStories[index]);
+            }
+            return _followingItem(context, followingStories[index]);
+          },
           separatorBuilder: (context, index) => const SizedBox(height: 8.5),
           itemCount: followingStories.length,
         ),
       ),
+    );
+  }
+
+  Widget _loadMoreWidget(BuildContext context, NewsListItem item) {
+    List<String> alreadyFetchIds = [];
+    for (var item in followingStories) {
+      alreadyFetchIds.add(item.id);
+    }
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _pickBar(item.followingPickMembers),
+              CachedNetworkImage(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width / 2,
+                imageUrl: item.heroImageUrl,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey,
+                  child: const Icon(Icons.error),
+                ),
+                fit: BoxFit.cover,
+              ),
+              if (item.source != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                  child: Text(
+                    item.source!.title,
+                    style: const TextStyle(color: Colors.black54, fontSize: 14),
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 4, left: 20, right: 20, bottom: 8),
+                child: Text(
+                  item.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
+                child: NewsInfo(item),
+              ),
+            ],
+          ),
+        ),
+        Positioned.fill(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.white24,
+                  Colors.white54,
+                  Colors.white70,
+                ],
+                stops: [0.14, 0.14, 0.8, 0.9],
+              ),
+            ),
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.only(bottom: 24),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<HomeBloc>().add(LoadMoreFollowingPicked(
+                      member,
+                      item.latestPickTime!,
+                      alreadyFetchIds,
+                    ));
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+              ),
+              child: isLoadingMore
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      '展開所有',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
