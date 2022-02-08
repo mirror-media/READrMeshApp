@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestCommentsBlock.dart';
@@ -20,6 +21,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   Map<String, dynamic> _data = {};
   late Member _currentMember;
   List<Member>? _tempFollowingData;
+  List<NewsListItem> _followingStories = [];
+  bool _isLoadingMoreFollowingPicked = false;
 
   @override
   void initState() {
@@ -72,6 +75,16 @@ class _HomeWidgetState extends State<HomeWidget> {
             textColor: Colors.white,
             fontSize: 16.0,
           );
+        } else if (state is LoadMoreFollowingPickedFailed) {
+          Fluttertoast.showToast(
+            msg: "載入失敗",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
         }
       },
       builder: (context, state) {
@@ -102,6 +115,24 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
+        if (state is LoadingMoreFollowingPicked) {
+          _isLoadingMoreFollowingPicked = true;
+          return _buildHomeContent();
+        }
+
+        if (state is LoadMoreFollowingPickedFailed) {
+          final error = state.error;
+          print('LoadMoreFollowingPickedFailed: ${error.message()}');
+          _isLoadingMoreFollowingPicked = false;
+          return _buildHomeContent();
+        }
+
+        if (state is LoadMoreFollowingPickedSuccess) {
+          _followingStories.addAll(state.newFollowingStories);
+          _isLoadingMoreFollowingPicked = false;
+          return _buildHomeContent();
+        }
+
         if (state is UpdateFollowingFailed) {
           final error = state.error;
           print('UpdateFollowingFailed: ${error.message}');
@@ -112,6 +143,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is HomeLoaded) {
           _data = state.data;
           _currentMember = _data['member'];
+          _followingStories = _data['followingStories'];
           return _buildHomeContent();
         }
 
@@ -130,7 +162,11 @@ class _HomeWidgetState extends State<HomeWidget> {
         slivers: [
           _buildAppBar(),
           SliverToBoxAdapter(
-            child: FollowingBlock(_data['followingStories'], _currentMember),
+            child: FollowingBlock(
+              _followingStories,
+              _currentMember,
+              _isLoadingMoreFollowingPicked,
+            ),
           ),
           SliverToBoxAdapter(
             child: Container(
