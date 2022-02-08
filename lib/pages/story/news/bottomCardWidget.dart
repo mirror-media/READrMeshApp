@@ -206,7 +206,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             constraints: const BoxConstraints(maxHeight: 1),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Colors.black38,
+              color: Colors.black26,
             ),
           ),
         ),
