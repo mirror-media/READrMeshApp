@@ -124,12 +124,44 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                             ),
                           ),
                         Flexible(
-                          child: SingleChildScrollView(
+                          child: CustomScrollView(
                             controller: scrollController,
                             physics: const ClampingScrollPhysics(),
-                            child: _isCollapsed
-                                ? _collapseWidget(context)
-                                : _expandWidget(context),
+                            shrinkWrap: true,
+                            slivers: [
+                              if (_isCollapsed)
+                                SliverToBoxAdapter(
+                                  child: _collapseWidget(context),
+                                ),
+                              if (!_isCollapsed) ...[
+                                SliverToBoxAdapter(
+                                  child: _titleAndPickBar(),
+                                ),
+                                if (widget.news.popularComments.isNotEmpty)
+                                  _popularCommentList(context),
+                                SliverAppBar(
+                                  backgroundColor: Colors.white,
+                                  title: Container(
+                                    color: Colors.white,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 16, 20, 12),
+                                    child: Text(
+                                      '所有留言 (${widget.news.allComments.length})',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  centerTitle: false,
+                                  pinned: true,
+                                  automaticallyImplyLeading: false,
+                                  titleSpacing: 0,
+                                ),
+                                _allCommentList(context),
+                              ]
+                            ],
                           ),
                         ),
                       ],
@@ -323,87 +355,61 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     );
   }
 
-  Widget _expandWidget(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(0),
-      shrinkWrap: true,
-      primary: true,
-      physics: const ClampingScrollPhysics(),
-      children: [
-        _titleAndPickBar(),
-        if (widget.news.popularComments.isNotEmpty)
-          ListView.builder(
-            padding: const EdgeInsets.all(0),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.news.popularComments.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                  child: const Text(
-                    '熱門留言',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
-              }
-              return CommentItem(
-                comment: widget.news.popularComments[index],
-                member: widget.member,
-                isLiked: _allComments[index].isLiked,
-                isFollowingComment: widget.member.following?.any((element) =>
-                        element.memberId ==
-                        _allComments[index].member.memberId) ??
-                    false,
-                isMyComment: _allComments[index].member.memberId ==
-                    widget.member.memberId,
-                isSending: (_isSending && index == 0),
-                isMyNewComment: _hasMyNewComment && index == 0,
-              );
-            },
-          ),
-        if (widget.news.allComments.isNotEmpty)
-          ListView.builder(
-            padding: const EdgeInsets.all(0),
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            itemCount: widget.news.allComments.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                  child: Text(
-                    '所有留言 (${widget.news.allComments.length})',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
-              }
-              return CommentItem(
-                comment: _allComments[index - 1],
-                member: widget.member,
-                isLiked: _allComments[index - 1].isLiked,
-                isFollowingComment: widget.member.following?.any((element) =>
-                        element.memberId ==
-                        _allComments[index - 1].member.memberId) ??
-                    false,
-                isMyComment: _allComments[index - 1].member.memberId ==
-                    widget.member.memberId,
-                isSending: (_isSending && index == 1),
-                isMyNewComment: _hasMyNewComment && index == 1,
-              );
-            },
-          ),
-      ],
+  Widget _popularCommentList(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index == 0) {
+            return Container(
+              color: Colors.white,
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+              child: const Text(
+                '熱門留言',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+          return CommentItem(
+            comment: widget.news.popularComments[index],
+            member: widget.member,
+            isLiked: _allComments[index].isLiked,
+            isFollowingComment: widget.member.following?.any((element) =>
+                    element.memberId == _allComments[index].member.memberId) ??
+                false,
+            isMyComment:
+                _allComments[index].member.memberId == widget.member.memberId,
+            isSending: (_isSending && index == 0),
+            isMyNewComment: _hasMyNewComment && index == 0,
+          );
+        },
+        childCount: widget.news.popularComments.length + 1,
+      ),
+    );
+  }
+
+  Widget _allCommentList(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return CommentItem(
+            comment: _allComments[index],
+            member: widget.member,
+            isLiked: _allComments[index].isLiked,
+            isFollowingComment: widget.member.following?.any((element) =>
+                    element.memberId == _allComments[index].member.memberId) ??
+                false,
+            isMyComment:
+                _allComments[index].member.memberId == widget.member.memberId,
+            isSending: (_isSending && index == 0),
+            isMyNewComment: _hasMyNewComment && index == 0,
+          );
+        },
+        childCount: widget.news.allComments.length,
+      ),
     );
   }
 
