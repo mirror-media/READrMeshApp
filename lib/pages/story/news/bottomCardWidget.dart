@@ -393,6 +393,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
 
   Widget _allCommentList(BuildContext context) {
     return SliverList(
+      key: UniqueKey(),
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return CommentItem(
@@ -414,16 +415,14 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   }
 
   void sendComment(String text) async {
-    if (!_isSending) {
-      _myNewComment = Comment(
-        id: 'sending',
-        member: widget.member,
-        content: text,
-        state: "public",
-        publishDate: DateTime.now(),
-      );
-      _allComments.insert(0, _myNewComment);
-    }
+    _myNewComment = Comment(
+      id: 'sending',
+      member: widget.member,
+      content: text,
+      state: "public",
+      publishDate: DateTime.now(),
+    );
+    _allComments.insert(0, _myNewComment);
     setState(() {
       _isSending = true;
     });
