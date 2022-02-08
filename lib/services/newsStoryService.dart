@@ -100,6 +100,23 @@ class NewsStoryService {
         ){
           id
         }
+        bookmarkId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            kind:{
+              equals: "bookmark"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
         comment(
           where:{
             is_active:{
