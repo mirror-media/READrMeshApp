@@ -86,8 +86,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             child: DraggableScrollableActuator(
               child: DraggableScrollableSheet(
                 snap: true,
-                initialChildSize: 0.11,
-                minChildSize: 0.11,
+                initialChildSize: 0.12,
+                minChildSize: 0.12,
                 builder: (context, scrollController) {
                   return Container(
                     decoration: const BoxDecoration(
@@ -170,6 +170,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                 },
               ),
             ),
+          ),
+          const Divider(
+            color: Colors.black12,
+            thickness: 0.5,
+            height: 0.5,
           ),
           CommentInputBox(
             member: widget.member,
