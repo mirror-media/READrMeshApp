@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Timestamp extends StatefulWidget {
   final DateTime dateTime;
@@ -50,20 +51,24 @@ class _TimestampState extends State<Timestamp> {
   @override
   Widget build(BuildContext context) {
     String text = '';
+    double fontSize = widget.textSize;
     if (_duration.inSeconds < 60) {
       text = '剛剛';
     } else if (_duration.inMinutes < 60) {
       text = '${_duration.inMinutes}分鐘前';
     } else if (_duration.inHours < 24) {
       text = '${_duration.inHours}小時前';
-    } else {
+    } else if (_duration.inDays < 31) {
       text = '${_duration.inDays}天前';
+    } else {
+      text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
+      fontSize = 12.1;
     }
     return Text(
       text,
       softWrap: true,
       style: TextStyle(
-        fontSize: widget.textSize,
+        fontSize: fontSize,
         color: widget.textColor,
       ),
     );
