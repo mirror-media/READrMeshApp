@@ -37,19 +37,20 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width / 2,
-            imageUrl: widget.news.heroImageUrl,
-            placeholder: (context, url) => Container(
-              color: Colors.grey,
+          if (widget.news.heroImageUrl != null)
+            CachedNetworkImage(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width / 2,
+              imageUrl: widget.news.heroImageUrl!,
+              placeholder: (context, url) => Container(
+                color: Colors.grey,
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey,
+                child: const Icon(Icons.error),
+              ),
+              fit: BoxFit.cover,
             ),
-            errorWidget: (context, url, error) => Container(
-              color: Colors.grey,
-              child: const Icon(Icons.error),
-            ),
-            fit: BoxFit.cover,
-          ),
           if (widget.news.source != null)
             Padding(
               padding: const EdgeInsets.only(top: 12, left: 12, right: 12),

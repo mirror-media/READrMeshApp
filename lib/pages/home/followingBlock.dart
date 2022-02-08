@@ -134,19 +134,20 @@ class FollowingBlock extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _pickBar(item.followingPickMembers),
-              CachedNetworkImage(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width / 2,
-                imageUrl: item.heroImageUrl,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey,
+              if (item.heroImageUrl != null)
+                CachedNetworkImage(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width / 2,
+                  imageUrl: item.heroImageUrl!,
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey,
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey,
+                    child: const Icon(Icons.error),
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey,
-                  child: const Icon(Icons.error),
-                ),
-                fit: BoxFit.cover,
-              ),
               if (item.source != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
@@ -236,19 +237,20 @@ class FollowingBlock extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _pickBar(item.followingPickMembers),
-            CachedNetworkImage(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width / 2,
-              imageUrl: item.heroImageUrl,
-              placeholder: (context, url) => Container(
-                color: Colors.grey,
+            if (item.heroImageUrl != null)
+              CachedNetworkImage(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width / 2,
+                imageUrl: item.heroImageUrl!,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey,
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey,
+                  child: const Icon(Icons.error),
+                ),
+                fit: BoxFit.cover,
               ),
-              errorWidget: (context, url, error) => Container(
-                color: Colors.grey,
-                child: const Icon(Icons.error),
-              ),
-              fit: BoxFit.cover,
-            ),
             if (item.source != null)
               Padding(
                 padding: const EdgeInsets.only(top: 12, left: 20, right: 20),

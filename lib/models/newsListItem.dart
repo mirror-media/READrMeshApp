@@ -13,7 +13,7 @@ class NewsListItem {
   final Publisher? source;
   final Category? category;
   final DateTime publishedDate;
-  final String heroImageUrl;
+  final String? heroImageUrl;
   int pickCount;
   final int commentCount;
   final bool payWall;

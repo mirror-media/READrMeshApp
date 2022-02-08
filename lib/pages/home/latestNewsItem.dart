@@ -116,23 +116,25 @@ class _LatestNewsItemState extends State<LatestNewsItem> {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.0),
-              child: CachedNetworkImage(
-                width: 96,
-                height: 96 / 2,
-                imageUrl: widget.news.heroImageUrl,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey,
+            if (widget.news.heroImageUrl != null) ...[
+              const SizedBox(width: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: CachedNetworkImage(
+                  width: 96,
+                  height: 96 / 2,
+                  imageUrl: widget.news.heroImageUrl!,
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey,
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey,
+                    child: const Icon(Icons.error),
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey,
-                  child: const Icon(Icons.error),
-                ),
-                fit: BoxFit.cover,
               ),
-            ),
+            ],
           ],
         ),
         const SizedBox(height: 8),
