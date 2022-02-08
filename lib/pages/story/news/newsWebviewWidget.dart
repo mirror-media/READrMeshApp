@@ -77,7 +77,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           if (_newsStoryItem.myPickId != null) {
             _isPicked = true;
           }
-          return _webViewWidget();
+          return _webViewWidget(context);
         }
 
         return const Center(
@@ -87,7 +87,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
     );
   }
 
-  Widget _webViewWidget() {
+  Widget _webViewWidget(BuildContext context) {
     String url = widget.news.url;
     InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
@@ -108,7 +108,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
         children: [
           Column(
             children: [
-              _appBar(),
+              _appBar(context),
               Expanded(
                 child: InAppWebView(
                   initialOptions: options,
@@ -157,7 +157,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
     );
   }
 
-  Widget _appBar() {
+  Widget _appBar(BuildContext context) {
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: Colors.white,
@@ -198,7 +198,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
             color: Colors.black,
           ),
           tooltip: '回前頁',
-          onPressed: () {
+          onPressed: () async {
             if (_inputText.trim().isNotEmpty) {
               Widget dialogTitle = const Text(
                 '確定要刪除留言？',
@@ -218,7 +218,10 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
               );
               List<Widget> dialogActions = [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
                   child: const Text(
                     '刪除留言',
                     style: TextStyle(
@@ -229,9 +232,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => Navigator.pop(context),
                   child: const Text(
                     '繼續輸入',
                     style: TextStyle(
@@ -243,7 +244,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
                 )
               ];
               if (!Platform.isIOS) {
-                showDialog(
+                await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: dialogTitle,
@@ -253,7 +254,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
                   ),
                 );
               } else {
-                showCupertinoDialog(
+                await showCupertinoDialog(
                   context: context,
                   builder: (context) => CupertinoAlertDialog(
                     title: dialogTitle,
