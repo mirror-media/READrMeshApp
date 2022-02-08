@@ -23,7 +23,13 @@ class UpdateFollowingSuccess extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final Map<String, dynamic> data;
-  const HomeLoaded(this.data);
+  final bool showPaywall;
+  final bool showFullScreenAd;
+  const HomeLoaded({
+    required this.data,
+    required this.showFullScreenAd,
+    required this.showPaywall,
+  });
 }
 
 class HomeError extends HomeState {

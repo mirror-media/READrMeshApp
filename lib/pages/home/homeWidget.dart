@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
@@ -11,6 +12,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestCommentsBlock.dart';
 import 'package:readr/pages/home/latestNewsBlock.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -23,6 +25,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<Member>? _tempFollowingData;
   List<NewsListItem> _followingStories = [];
   bool _isLoadingMoreFollowingPicked = false;
+  bool _showPaywall = true;
+  bool _showFullScreenAd = true;
 
   @override
   void initState() {
@@ -187,9 +191,11 @@ class _HomeWidgetState extends State<HomeWidget> {
           _latestNewsBar(),
           SliverToBoxAdapter(
             child: LatestNewsBlock(
-              _data['allLatestNews'],
-              _data['recommendedMembers'],
-              _currentMember,
+              allLatestNews: _data['allLatestNews'],
+              recommendedMembers: _data['recommendedMembers'],
+              member: _currentMember,
+              showFullScreenAd: _showFullScreenAd,
+              showPaywall: _showPaywall,
             ),
           ),
         ],
@@ -223,7 +229,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Widget _latestNewsBar() {
-    String barText = '所有最新文章';
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: Colors.white,
@@ -232,18 +237,20 @@ class _HomeWidgetState extends State<HomeWidget> {
       pinned: true,
       titleSpacing: 20,
       title: GestureDetector(
-        onTap: () {},
+        onTap: () async {
+          await _showFilterBottomSheet(context);
+        },
         child: Row(
-          children: [
+          children: const [
             Text(
-              barText,
-              style: const TextStyle(
+              '所有最新文章',
+              style: TextStyle(
                   color: Colors.black87,
                   fontSize: 18,
                   fontWeight: FontWeight.w500),
             ),
-            const SizedBox(width: 6),
-            const Icon(
+            SizedBox(width: 6),
+            Icon(
               Icons.expand_more_outlined,
               color: Colors.black38,
               size: 30,
@@ -251,6 +258,157 @@ class _HomeWidgetState extends State<HomeWidget> {
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          child: const Text(
+            '管理分類',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black54,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          onPressed: () {},
+          style:
+              TextButton.styleFrom(padding: const EdgeInsets.only(right: 16)),
+        ),
+      ],
     );
+  }
+
+  Future<void> _showFilterBottomSheet(BuildContext context) async {
+    bool showPaywall = _showPaywall;
+    bool showFullScreenAd = _showFullScreenAd;
+    await showCupertinoModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      topRadius: const Radius.circular(20),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Material(
+            color: Colors.white,
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 4,
+                    width: 48,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Colors.white,
+                    ),
+                    margin: const EdgeInsets.only(top: 16),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Colors.black26,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      '自訂您想看到的新聞',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  CheckboxListTile(
+                    value: showPaywall,
+                    dense: true,
+                    onChanged: (value) {
+                      setState(() {
+                        showPaywall = value!;
+                      });
+                    },
+                    activeColor: Colors.black87,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: const EdgeInsets.only(left: 12),
+                    title: const Text(
+                      '付費文章',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  CheckboxListTile(
+                    value: showFullScreenAd,
+                    dense: true,
+                    onChanged: (value) {
+                      setState(() {
+                        showFullScreenAd = value!;
+                      });
+                    },
+                    activeColor: Colors.black87,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: const EdgeInsets.only(left: 12),
+                    title: const Text(
+                      '蓋板廣告',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Divider(
+                    color: Colors.black12,
+                    height: 0.5,
+                    thickness: 0.5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        _showPaywall = showPaywall;
+                        _showFullScreenAd = showFullScreenAd;
+                        await prefs.setBool('showPaywall', _showPaywall);
+                        await prefs.setBool(
+                            'showFullScreenAd', _showFullScreenAd);
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        '篩選',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black87,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 24,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        minimumSize: const Size.fromHeight(48),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    ).whenComplete(() {
+      setState(() {});
+    });
   }
 }

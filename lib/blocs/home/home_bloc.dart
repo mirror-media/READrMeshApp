@@ -8,6 +8,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/homeScreenService.dart';
 import 'package:readr/services/memberService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -24,12 +25,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(HomeLoading());
           Map<String, dynamic> data =
               await _homeScreenService.fetchHomeScreenData();
-          emit(HomeLoaded(data));
+          final prefs = await SharedPreferences.getInstance();
+          bool showPaywall = prefs.getBool('showPaywall') ?? true;
+          bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
+          emit(HomeLoaded(
+            data: data,
+            showFullScreenAd: showFullScreenAd,
+            showPaywall: showPaywall,
+          ));
         } else if (event is ReloadHomeScreen) {
           emit(HomeReloading());
           Map<String, dynamic> data =
               await _homeScreenService.fetchHomeScreenData();
-          emit(HomeLoaded(data));
+          final prefs = await SharedPreferences.getInstance();
+          bool showPaywall = prefs.getBool('showPaywall') ?? true;
+          bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
+          emit(HomeLoaded(
+            data: data,
+            showFullScreenAd: showFullScreenAd,
+            showPaywall: showPaywall,
+          ));
         } else if (event is UpdateFollowingMember) {
           List<Member>? newFollowingMembers = event.currentMember.following;
           if (newFollowingMembers != null) {

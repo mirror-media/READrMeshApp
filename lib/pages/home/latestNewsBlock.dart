@@ -11,8 +11,15 @@ class LatestNewsBlock extends StatefulWidget {
   final List<NewsListItem> allLatestNews;
   final List<Member> recommendedMembers;
   final Member member;
-  const LatestNewsBlock(
-      this.allLatestNews, this.recommendedMembers, this.member);
+  final bool showPaywall;
+  final bool showFullScreenAd;
+  const LatestNewsBlock({
+    required this.allLatestNews,
+    required this.recommendedMembers,
+    required this.member,
+    this.showFullScreenAd = true,
+    this.showPaywall = true,
+  });
 
   @override
   _LatestNewsBlockState createState() => _LatestNewsBlockState();
@@ -26,8 +33,37 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
     }
     List<NewsListItem> filteredList = [];
 
-    // remove when filter is finished
-    filteredList = widget.allLatestNews;
+    if (widget.showFullScreenAd && widget.showPaywall) {
+      filteredList = widget.allLatestNews;
+    } else {
+      for (int i = 0; i < widget.allLatestNews.length; i++) {
+        // add item that equal filter
+        bool hasFullScreenAd = widget.allLatestNews[i].fullScreenAd;
+        bool hasPaywall = widget.allLatestNews[i].payWall;
+        bool check1 = false;
+        bool check2 = false;
+
+        if (widget.showFullScreenAd) {
+          check1 = true;
+        } else if (!hasFullScreenAd) {
+          check1 = true;
+        }
+
+        if (widget.showPaywall) {
+          check2 = true;
+        } else if (!hasPaywall) {
+          check2 = true;
+        }
+
+        if (check1 && check2) {
+          filteredList.add(widget.allLatestNews[i]);
+        }
+      }
+    }
+
+    if (filteredList.isEmpty) {
+      return Container();
+    }
 
     return SafeArea(
       top: false,
