@@ -56,9 +56,11 @@ class _RootPageState extends State<RootPage> {
                 selectedItemColor: bottomNavigationBarSelectedColor,
                 unselectedItemColor: bottomNavigationBarUnselectedColor,
                 items: [
-                  const BottomNavigationBarItem(
+                  BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.home_outlined,
+                      tabsRouter.activeIndex == 0
+                          ? Icons.home_sharp
+                          : Icons.home_outlined,
                       size: 21,
                     ),
                     label: '首頁',
