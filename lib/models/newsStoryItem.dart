@@ -13,6 +13,7 @@ class NewsStoryItem {
   final List<Comment> allComments;
   int pickCount;
   String? myPickId;
+  String? bookmarkId;
 
   NewsStoryItem({
     required this.id,
@@ -24,6 +25,7 @@ class NewsStoryItem {
     required this.allComments,
     this.pickCount = 0,
     this.myPickId,
+    this.bookmarkId,
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class NewsStoryItem {
     List<Comment> popularComments = [];
     String? myPickId;
     int pickCount = 0;
+    String? bookmarkId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -71,6 +74,11 @@ class NewsStoryItem {
       myPickId = json['myPickId'][0]['id'];
     }
 
+    if (BaseModel.checkJsonKeys(json, ['bookmarkId']) &&
+        json['bookmarkId'].isNotEmpty) {
+      bookmarkId = json['bookmarkId'][0]['id'];
+    }
+
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
       pickCount = json['pickCount'];
     }
@@ -85,6 +93,7 @@ class NewsStoryItem {
       allComments: allComments,
       myPickId: myPickId,
       pickCount: pickCount,
+      bookmarkId: bookmarkId,
     );
   }
 }
