@@ -166,6 +166,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               _followingStories,
               _currentMember,
               _isLoadingMoreFollowingPicked,
+              _data['recommendedMembers'],
             ),
           ),
           SliverToBoxAdapter(

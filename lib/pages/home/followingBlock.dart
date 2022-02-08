@@ -10,6 +10,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/home/newsInfo.dart';
+import 'package:readr/pages/home/recommendFollowItem.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -19,18 +20,82 @@ class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
   final Member member;
   final bool isLoadingMore;
-  const FollowingBlock(this.followingStories, this.member, this.isLoadingMore);
+  final List<Member> recommendedMembers;
+  const FollowingBlock(
+    this.followingStories,
+    this.member,
+    this.isLoadingMore,
+    this.recommendedMembers,
+  );
 
   @override
   Widget build(BuildContext context) {
     if (followingStories.isEmpty) {
       return Container(
         color: Colors.white,
-        child: const Center(
-          child: Text(
-            '快去追蹤些人吧!',
-            style: TextStyle(fontSize: 20),
-          ),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 204,
+              width: 204,
+              child: Icon(
+                Icons.group_sharp,
+                size: 204,
+              ),
+            ),
+            const SizedBox(
+              height: 26,
+            ),
+            const Text(
+              '咦？這裡好像還缺點什麼...',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            RichText(
+              text: const TextSpan(
+                  text: '追蹤您喜愛的人\n看看他們都精選了什麼新聞',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: ' 👀',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ]),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            SizedBox(
+              height: 230,
+              child: ListView.separated(
+                padding: const EdgeInsets.only(left: 20),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (context, index) =>
+                    RecommendFollowItem(recommendedMembers[index], member),
+                separatorBuilder: (context, index) => const SizedBox(width: 12),
+                itemCount: recommendedMembers.length,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+          ],
         ),
       );
     }
