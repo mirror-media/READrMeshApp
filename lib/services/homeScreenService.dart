@@ -27,7 +27,7 @@ class HomeScreenService {
         orderBy:{
           published_date: desc
         }
-        take: 5
+        take: 6
         where:{
           is_active:{
             equals: true
@@ -613,7 +613,7 @@ class HomeScreenService {
       }
     }
 
-    // News list that have following members' picks or comments
+    // News list that have following members' picks
     List<NewsListItem> followingStories = [];
     if (jsonResponse['data']['followingStories'].isNotEmpty) {
       for (var item in jsonResponse['data']['followingStories']) {
@@ -680,5 +680,217 @@ class HomeScreenService {
     };
 
     return result;
+  }
+
+  Future<List<NewsListItem>> fetchMoreFollowingStories(
+    DateTime lastPickTime,
+    List<String> alreadyFetchIds,
+    Member member,
+  ) async {
+    const String query = """
+    query(
+      \$followingMembers: [ID!]
+      \$myId: ID
+      \$yesterday: DateTime
+      \$lastPickTime: DateTime
+      \$alreadyFetchIds: [ID!]
+    ){
+      stories(
+        orderBy:{
+          published_date: desc
+        }
+        where:{
+          is_active:{
+            equals: true
+          }
+          id:{
+            notIn: \$alreadyFetchIds
+          }
+          pick:{
+            some:{
+              member:{
+                id:{
+                  in: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
+                }
+                state:{
+                  equals: "public"
+                }
+                kind:{
+                  equals: "read"
+                }
+                is_active:{
+                  equals: true
+                }
+                picked_date:{
+                  gte: \$yesterday
+                  lt: \$lastPickTime
+                }
+              }
+            }
+        }
+      ){
+        id
+        title
+        url
+        source{
+          id
+          title
+          full_content
+          full_screen_ad
+        }
+        category{
+          id
+          title
+          slug
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        )
+        followingComment:comment(
+          orderBy:{
+            published_date: desc
+          }
+          take: 1
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+          }
+          content
+          state
+          published_date
+          likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+        followingPicks: pick(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 2
+        ){
+          picked_date
+          member{
+            id
+            nickname
+            avatar
+          }
+        }
+      }
+    }
+    """;
+
+    //GQL DateTime must be Iso8601 format
+    String yesterday = DateTime.now()
+        .subtract(const Duration(hours: 24))
+        .toUtc()
+        .toIso8601String();
+    // TODO: Remove test data time
+    yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
+
+    List<String> followingMemberIds = [];
+    if (member.following != null) {
+      for (var memberId in member.following!) {
+        followingMemberIds.add(memberId.memberId);
+      }
+    }
+
+    Map<String, dynamic> variables = {
+      "yesterday": yesterday,
+      "followingMembers": followingMemberIds,
+      "lastPickTime": lastPickTime.toUtc().toIso8601String(),
+      "myId": member.memberId,
+      "alreadyFetchIds": alreadyFetchIds
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    List<NewsListItem> moreFollowingStories = [];
+    if (jsonResponse['data']['stories'].isNotEmpty) {
+      for (var item in jsonResponse['data']['stories']) {
+        moreFollowingStories.add(NewsListItem.fromJson(item));
+      }
+      moreFollowingStories
+          .sort((a, b) => b.latestPickTime!.compareTo(a.latestPickTime!));
+    }
+
+    return moreFollowingStories;
   }
 }
