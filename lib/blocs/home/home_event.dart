@@ -14,7 +14,7 @@ class InitialHomeScreen extends HomeEvent {
 
 class ReloadHomeScreen extends HomeEvent {
   @override
-  String toString() => 'InitialHomeScreen';
+  String toString() => 'ReloadHomeScreen';
 }
 
 class UpdateFollowingMember extends HomeEvent {
@@ -25,4 +25,16 @@ class UpdateFollowingMember extends HomeEvent {
       this.targetMember, this.currentMember, this.isFollowed);
   @override
   String toString() => 'UpdateFollowingMember';
+}
+
+class LoadMoreFollowingPicked extends HomeEvent {
+  final Member currentMember;
+  final DateTime lastPickTime;
+  final List<String> alreadyFetchIds;
+
+  const LoadMoreFollowingPicked(
+      this.currentMember, this.lastPickTime, this.alreadyFetchIds);
+
+  @override
+  String toString() => 'LoadMoreFollowingPicked';
 }

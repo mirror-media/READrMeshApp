@@ -41,3 +41,15 @@ class UpdateFollowingFailed extends HomeState {
   final bool isFollowed;
   const UpdateFollowingFailed(this.error, this.isFollowed);
 }
+
+class LoadingMoreFollowingPicked extends HomeState {}
+
+class LoadMoreFollowingPickedSuccess extends HomeState {
+  final List<NewsListItem> newFollowingStories;
+  const LoadMoreFollowingPickedSuccess(this.newFollowingStories);
+}
+
+class LoadMoreFollowingPickedFailed extends HomeState {
+  final dynamic error;
+  const LoadMoreFollowingPickedFailed(this.error);
+}

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/homeScreenService.dart';
 import 'package:readr/services/memberService.dart';
 
@@ -55,10 +56,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           } else {
             emit(UpdateFollowingSuccess());
           }
+        } else if (event is LoadMoreFollowingPicked) {
+          emit(LoadingMoreFollowingPicked());
+
+          List<NewsListItem> newFollowingStories =
+              await _homeScreenService.fetchMoreFollowingStories(
+            event.lastPickTime,
+            event.alreadyFetchIds,
+            event.currentMember,
+          );
+
+          emit(LoadMoreFollowingPickedSuccess(newFollowingStories));
         }
       } catch (e) {
         if (event is ReloadHomeScreen) {
           emit(HomeReloadFailed(e));
+        } else if (event is LoadMoreFollowingPicked) {
+          emit(LoadMoreFollowingPickedFailed(e));
         } else if (event is UpdateFollowingMember) {
           emit(UpdateFollowingFailed(e, event.isFollowed));
         } else if (e is SocketException) {
