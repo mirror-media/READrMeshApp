@@ -93,7 +93,6 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             AutoRouter.of(context).push(NewsStoryRoute(
               news: newsList[index],
               member: widget.member,
-              isBookmarked: false,
             ));
           },
           child: LatestNewsItem(

@@ -8,13 +8,11 @@ import 'package:readr/pages/story/news/newsWebviewWidget.dart';
 class NewsStoryPage extends StatefulWidget {
   final NewsListItem news;
   final Member member;
-  final bool isBookmarked;
   final bool isNative;
 
   const NewsStoryPage({
     required this.news,
     required this.member,
-    required this.isBookmarked,
     this.isNative = false,
   });
 
@@ -32,7 +30,6 @@ class _NewsStoryPageState extends State<NewsStoryPage> {
           child: NewsWebviewWidget(
             news: widget.news,
             member: widget.member,
-            isBookmarked: widget.isBookmarked,
           ),
         ));
   }

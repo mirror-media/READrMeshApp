@@ -66,10 +66,7 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: NewsStoryPage(
-              news: args.news,
-              member: args.member,
-              isBookmarked: args.isBookmarked,
-              isNative: args.isNative),
+              news: args.news, member: args.member, isNative: args.isNative),
           fullscreenDialog: true);
     },
     HomeRouter.name: (routeData) {
@@ -284,37 +281,28 @@ class NewsStoryRoute extends PageRouteInfo<NewsStoryRouteArgs> {
   NewsStoryRoute(
       {required NewsListItem news,
       required Member member,
-      required bool isBookmarked,
       bool isNative = false})
       : super(NewsStoryRoute.name,
             path: '/news-story-page',
             args: NewsStoryRouteArgs(
-                news: news,
-                member: member,
-                isBookmarked: isBookmarked,
-                isNative: isNative));
+                news: news, member: member, isNative: isNative));
 
   static const String name = 'NewsStoryRoute';
 }
 
 class NewsStoryRouteArgs {
   const NewsStoryRouteArgs(
-      {required this.news,
-      required this.member,
-      required this.isBookmarked,
-      this.isNative = false});
+      {required this.news, required this.member, this.isNative = false});
 
   final NewsListItem news;
 
   final Member member;
 
-  final bool isBookmarked;
-
   final bool isNative;
 
   @override
   String toString() {
-    return 'NewsStoryRouteArgs{news: $news, member: $member, isBookmarked: $isBookmarked, isNative: $isNative}';
+    return 'NewsStoryRouteArgs{news: $news, member: $member, isNative: $isNative}';
   }
 }
 

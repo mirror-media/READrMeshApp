@@ -123,7 +123,6 @@ class FollowingBlock extends StatelessWidget {
         AutoRouter.of(context).push(NewsStoryRoute(
           news: item,
           member: member,
-          isBookmarked: false,
         ));
       },
     );

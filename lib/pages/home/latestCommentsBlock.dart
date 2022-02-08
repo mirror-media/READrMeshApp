@@ -40,7 +40,6 @@ class LatestCommentsBlock extends StatelessWidget {
                 AutoRouter.of(context).push(NewsStoryRoute(
                   news: latestCommentsNewsList[index - 1],
                   member: member,
-                  isBookmarked: false,
                 ));
               },
               child: LatestCommentItem(
