@@ -24,11 +24,9 @@ import 'package:share_plus/share_plus.dart';
 class NewsWebviewWidget extends StatefulWidget {
   final NewsListItem news;
   final Member member;
-  final bool isBookmarked;
   const NewsWebviewWidget({
     required this.news,
     required this.member,
-    required this.isBookmarked,
   });
 
   @override
@@ -44,6 +42,8 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
   bool _isPicked = false;
   bool _isSlideDown = false;
   int _originY = 0;
+  bool _isBookmarked = false;
+  bool _isSending = false;
 
   @override
   void initState() {
@@ -76,6 +76,10 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           _member = state.member;
           if (_newsStoryItem.myPickId != null) {
             _isPicked = true;
+          }
+
+          if (_newsStoryItem.bookmarkId != null && !_isSending) {
+            _isBookmarked = true;
           }
           return _webViewWidget(context);
         }
@@ -174,18 +178,57 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
       actions: <Widget>[
         IconButton(
           icon: Icon(
-            widget.isBookmarked
+            _isBookmarked
                 ? Icons.bookmark_outlined
                 : Icons.bookmark_border_outlined,
             color: Colors.black,
+            size: 26,
           ),
-          tooltip: widget.isBookmarked ? '移出書籤' : '加入書籤',
-          onPressed: () {},
+          tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
+          onPressed: _isSending
+              ? null
+              : () async {
+                  bool originState = _isBookmarked;
+                  setState(() {
+                    _isBookmarked = !_isBookmarked;
+                    _isSending = true;
+                  });
+                  if (originState) {
+                    bool isDelete = await _pickService
+                        .deletePick(_newsStoryItem.bookmarkId!);
+                    PickToast.showBookmarkToast(context, isDelete, false);
+                    if (!isDelete) {
+                      _isBookmarked = originState;
+                    } else {
+                      _newsStoryItem.bookmarkId = null;
+                    }
+                  } else {
+                    String? pickId = await _pickService.createPick(
+                      memberId: widget.member.memberId,
+                      targetId: _newsStoryItem.id,
+                      objective: PickObjective.story,
+                      state: PickState.private,
+                      kind: PickKind.bookmark,
+                    );
+                    PickToast.showBookmarkToast(context, pickId != null, true);
+                    if (pickId != null) {
+                      _newsStoryItem.bookmarkId = pickId;
+                    } else {
+                      _isBookmarked = originState;
+                    }
+                  }
+                  setState(() {
+                    _isSending = false;
+                  });
+                },
         ),
         IconButton(
           icon: Icon(
-            Platform.isAndroid ? Icons.share : Icons.ios_share,
+            Platform.isAndroid
+                ? Icons.share_outlined
+                : Icons.ios_share_outlined,
             color: Colors.black,
+            size: 26,
           ),
           tooltip: '分享',
           onPressed: () {
@@ -196,6 +239,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           icon: const Icon(
             Icons.close_outlined,
             color: Colors.black,
+            size: 26,
           ),
           tooltip: '回前頁',
           onPressed: () async {
