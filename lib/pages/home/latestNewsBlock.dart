@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestNewsItem.dart';
 import 'package:readr/pages/home/recommendFollowBlock.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class LatestNewsBlock extends StatefulWidget {
   final List<NewsListItem> allLatestNews;
@@ -13,12 +16,14 @@ class LatestNewsBlock extends StatefulWidget {
   final Member member;
   final bool showPaywall;
   final bool showFullScreenAd;
+  final bool noMore;
   const LatestNewsBlock({
     required this.allLatestNews,
     required this.recommendedMembers,
     required this.member,
     this.showFullScreenAd = true,
     this.showPaywall = true,
+    this.noMore = false,
   });
 
   @override
@@ -26,6 +31,7 @@ class LatestNewsBlock extends StatefulWidget {
 }
 
 class _LatestNewsBlockState extends State<LatestNewsBlock> {
+  bool _isLoadingMore = false;
   @override
   Widget build(BuildContext context) {
     if (widget.allLatestNews.isEmpty) {
@@ -65,6 +71,8 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
       return Container();
     }
 
+    _isLoadingMore = false;
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -79,39 +87,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             _latestNewsList(context, filteredList.sublist(0, 5)),
             RecommendFollowBlock(widget.recommendedMembers, widget.member),
             _latestNewsList(context, filteredList.sublist(5)),
-            Container(
-              height: 16,
-              color: Colors.white,
-            ),
-            Container(
-              color: homeScreenBackgroundColor,
-              height: 20,
-            ),
-            Container(
-              alignment: Alignment.center,
-              color: homeScreenBackgroundColor,
-              child: RichText(
-                text: const TextSpan(
-                  text: '🎉 ',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: '你已看完所有新聞囉',
-                      style: TextStyle(
-                        color: Colors.black38,
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              color: homeScreenBackgroundColor,
-              height: 145,
-            ),
+            _bottomWidget(),
           ],
         ),
       ),
@@ -149,5 +125,66 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
       },
       itemCount: newsList.length,
     );
+  }
+
+  Widget _bottomWidget() {
+    if (widget.noMore) {
+      return Column(
+        children: [
+          Container(
+            height: 16,
+            color: Colors.white,
+          ),
+          Container(
+            color: homeScreenBackgroundColor,
+            height: 20,
+          ),
+          Container(
+            alignment: Alignment.center,
+            color: homeScreenBackgroundColor,
+            child: RichText(
+              text: const TextSpan(
+                text: '🎉 ',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+                children: [
+                  TextSpan(
+                    text: '你已看完所有新聞囉',
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            color: homeScreenBackgroundColor,
+            height: 145,
+          ),
+        ],
+      );
+    } else {
+      return VisibilityDetector(
+        key: const Key('latestNewsBottomWidget'),
+        onVisibilityChanged: (visibilityInfo) {
+          var visiblePercentage = visibilityInfo.visibleFraction * 100;
+          if (visiblePercentage > 70 && !_isLoadingMore) {
+            context.read<HomeBloc>().add(LoadMoreLatestNews(
+                widget.member, widget.allLatestNews.last.publishedDate));
+            _isLoadingMore = true;
+          }
+        },
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
   }
 }

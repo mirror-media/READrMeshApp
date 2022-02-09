@@ -893,4 +893,231 @@ class HomeScreenService {
 
     return moreFollowingStories;
   }
+
+  Future<List<NewsListItem>> fetchMoreLatestNews(
+    DateTime lastPublishTime,
+    Member member,
+  ) async {
+    const String query = """
+    query(
+      \$followingCategorySlugs: [String!]
+      \$followingPublisherIds: [ID!]
+      \$myId: ID
+      \$yesterday: DateTime
+      \$followingMembers: [ID!]
+      \$lastPublishTime: DateTime
+    ){
+      stories(
+        take: 10
+        orderBy:{
+          published_date: desc
+        }
+        where:{
+          is_active:{
+            equals: true
+          }
+          published_date:{
+            gte: \$yesterday
+            lt: \$lastPublishTime
+          }
+          OR:[
+            {
+              source:{
+                id:{
+                  in: \$followingPublisherIds
+              }
+              }
+            }
+            {
+              category:{
+                slug:{
+                  in: \$followingCategorySlugs
+                }
+              }
+            }
+          ]
+        }
+      ){
+        id
+        title
+        url
+        source{
+          id
+          title
+          full_content
+          full_screen_ad
+        }
+        category{
+          id
+          title
+          slug
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        followingPicks: pick(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+          }
+        }
+        otherPicks:pick(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+          }
+        }
+        pickCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        commentCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+    }
+    """;
+
+    //GQL DateTime must be Iso8601 format
+    String yesterday = DateTime.now()
+        .subtract(const Duration(hours: 24))
+        .toUtc()
+        .toIso8601String();
+    // TODO: Remove test data time
+    yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
+
+    List<String> followingMemberIds = [];
+    if (member.following != null) {
+      for (var memberId in member.following!) {
+        followingMemberIds.add(memberId.memberId);
+      }
+    }
+
+    List<String> followingCategorySlugs = [];
+    if (member.followingCategory != null) {
+      for (var category in member.followingCategory!) {
+        followingCategorySlugs.add(category.slug);
+      }
+    }
+
+    List<String> followingPublisherIds = [];
+    if (member.followingPublisher != null) {
+      for (var publisher in member.followingPublisher!) {
+        followingPublisherIds.add(publisher.id);
+      }
+    }
+
+    Map<String, dynamic> variables = {
+      "yesterday": yesterday,
+      "followingMembers": followingMemberIds,
+      "followingPublisherIds": followingPublisherIds,
+      "myId": member.memberId,
+      "followingCategorySlugs": followingCategorySlugs,
+      "lastPublishTime": lastPublishTime.toUtc().toIso8601String(),
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    List<NewsListItem> moreLatestNews = [];
+    if (jsonResponse['data']['stories'].isNotEmpty) {
+      for (var item in jsonResponse['data']['stories']) {
+        moreLatestNews.add(NewsListItem.fromJson(item));
+      }
+    }
+
+    return moreLatestNews;
+  }
 }

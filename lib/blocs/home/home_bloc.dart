@@ -82,6 +82,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
 
           emit(LoadMoreFollowingPickedSuccess(newFollowingStories));
+        } else if (event is LoadMoreLatestNews) {
+          emit(LoadingMoreNews());
+
+          List<NewsListItem> newLatestNews =
+              await _homeScreenService.fetchMoreLatestNews(
+            event.lastPublishTime,
+            event.currentMember,
+          );
+
+          emit(LoadMoreNewsSuccess(newLatestNews));
         }
       } catch (e) {
         if (event is ReloadHomeScreen) {
@@ -90,6 +100,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(LoadMoreFollowingPickedFailed(e));
         } else if (event is UpdateFollowingMember) {
           emit(UpdateFollowingFailed(e, event.isFollowed));
+        } else if (event is LoadMoreLatestNews) {
+          emit(LoadMoreNewsFailed(e));
         } else if (e is SocketException) {
           emit(HomeError(NoInternetException('No Internet')));
         } else if (e is HttpException) {

@@ -27,6 +27,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool _isLoadingMoreFollowingPicked = false;
   bool _showPaywall = true;
   bool _showFullScreenAd = true;
+  List<NewsListItem> _allLatestNews = [];
+  bool _noMoreLatestNews = false;
 
   @override
   void initState() {
@@ -53,7 +55,9 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state is HomeReloadFailed) {
+        if (state is HomeReloadFailed ||
+            state is LoadMoreFollowingPickedFailed ||
+            state is LoadMoreNewsFailed) {
           Fluttertoast.showToast(
             msg: "載入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -72,16 +76,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           }
           Fluttertoast.showToast(
             msg: text,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        } else if (state is LoadMoreFollowingPickedFailed) {
-          Fluttertoast.showToast(
-            msg: "載入失敗",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -144,10 +138,23 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
+        if (state is LoadingMoreNews || state is LoadMoreNewsFailed) {
+          return _buildHomeContent();
+        }
+
+        if (state is LoadMoreNewsSuccess) {
+          if (state.newLatestNews.length < 10) {
+            _noMoreLatestNews = true;
+          }
+          _allLatestNews.addAll(state.newLatestNews);
+          return _buildHomeContent();
+        }
+
         if (state is HomeLoaded) {
           _data = state.data;
           _currentMember = _data['member'];
           _followingStories = _data['followingStories'];
+          _allLatestNews = _data['allLatestNews'];
           return _buildHomeContent();
         }
 
@@ -191,11 +198,12 @@ class _HomeWidgetState extends State<HomeWidget> {
           _latestNewsBar(),
           SliverToBoxAdapter(
             child: LatestNewsBlock(
-              allLatestNews: _data['allLatestNews'],
+              allLatestNews: _allLatestNews,
               recommendedMembers: _data['recommendedMembers'],
               member: _currentMember,
               showFullScreenAd: _showFullScreenAd,
               showPaywall: _showPaywall,
+              noMore: _noMoreLatestNews,
             ),
           ),
         ],

@@ -59,3 +59,15 @@ class LoadMoreFollowingPickedFailed extends HomeState {
   final dynamic error;
   const LoadMoreFollowingPickedFailed(this.error);
 }
+
+class LoadingMoreNews extends HomeState {}
+
+class LoadMoreNewsSuccess extends HomeState {
+  final List<NewsListItem> newLatestNews;
+  const LoadMoreNewsSuccess(this.newLatestNews);
+}
+
+class LoadMoreNewsFailed extends HomeState {
+  final dynamic error;
+  const LoadMoreNewsFailed(this.error);
+}

@@ -38,3 +38,13 @@ class LoadMoreFollowingPicked extends HomeEvent {
   @override
   String toString() => 'LoadMoreFollowingPicked';
 }
+
+class LoadMoreLatestNews extends HomeEvent {
+  final Member currentMember;
+  final DateTime lastPublishTime;
+
+  const LoadMoreLatestNews(this.currentMember, this.lastPublishTime);
+
+  @override
+  String toString() => 'LoadMoreLatestNews';
+}
