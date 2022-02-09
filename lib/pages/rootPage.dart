@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
@@ -68,10 +67,10 @@ class _RootPageState extends State<RootPage> {
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: SvgPicture.asset(
-                        logoSimplifySvg,
-                        width: 18,
-                        height: 18,
+                      child: Image.asset(
+                        logoSimplifyPng,
+                        width: 19,
+                        height: 19,
                         color: tabsRouter.activeIndex == 1
                             ? bottomNavigationBarSelectedColor
                             : bottomNavigationBarUnselectedColor,
