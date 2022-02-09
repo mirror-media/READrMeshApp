@@ -1,0 +1,17 @@
+<svg width="92" height="62" viewBox="0 0 92 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0H91V52C91 57.5228 86.5229 62 81 62H8C3.58172 62 0 58.4183 0 54V0Z" fill="white"/>
+<rect x="9" y="36" width="58" height="1" fill="#007AFF"/>
+<rect x="9" y="45" width="58" height="1" fill="#007AFF"/>
+<rect x="9" y="53" width="58" height="1" fill="#007AFF"/>
+<rect x="-0.5" y="0.5" width="29" height="19" transform="matrix(-1 0 0 1 38 8)" stroke="#007AFF"/>
+<line x1="38.2808" y1="8.41374" x2="10.2808" y2="27.4137" stroke="#007AFF"/>
+<line x1="9.27401" y1="8.58177" x2="38.274" y2="27.5818" stroke="#007AFF"/>
+<rect x="43" y="8" width="24" height="1" fill="#007AFF"/>
+<rect x="43" y="26" width="24" height="1" fill="#007AFF"/>
+<rect x="43" y="17" width="24" height="1" fill="#007AFF"/>
+<path d="M75 53.5C75 57.9183 78.5817 61.5 83 61.5C87.4183 61.5 91 57.9183 91 53.5V30.5V8" stroke="#007AFF"/>
+<path d="M75 54L75 0" stroke="#007AFF"/>
+<line x1="83.5" y1="4" x2="83.5" y2="54" stroke="#007AFF"/>
+<path d="M83.5 61.5H6.5C3.18629 61.5 0.5 58.8137 0.5 55.5V0" stroke="#007AFF"/>
+<line y1="0.5" x2="75" y2="0.5" stroke="#007AFF"/>
+</svg>

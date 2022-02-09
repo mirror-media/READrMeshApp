@@ -1,0 +1,15 @@
+<svg width="205" height="104" viewBox="0 0 205 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="3" y="2.5" width="199" height="99" fill="white" stroke="#007AFF"/>
+<rect x="1" y="0.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="1" y="99.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="200" y="0.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="1" y="50.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="200" y="50.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="200" y="25.5" width="4" height="4" fill="#FFE600" stroke="#007AFF"/>
+<rect x="200" y="99.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="100" y="0.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<rect x="150" y="0.5" width="4" height="4" fill="#007AFF" stroke="#007AFF"/>
+<rect x="100" y="99.5" width="4" height="4" fill="white" stroke="#007AFF"/>
+<line x1="11.7094" y1="9.54595" x2="193.331" y2="93.2936" stroke="#007AFF"/>
+<line y1="-0.5" x2="200" y2="-0.5" transform="matrix(-0.908107 0.418738 0.418738 0.908107 193.121 10)" stroke="#007AFF"/>
+</svg>
