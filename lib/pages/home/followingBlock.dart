@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -30,21 +31,14 @@ class FollowingBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (followingStories.isEmpty) {
+    if (member.following == null || member.following!.isEmpty) {
       return Container(
         color: Colors.white,
         child: Column(
           children: [
-            const SizedBox(
-              height: 204,
-              width: 204,
-              child: Icon(
-                Icons.group_sharp,
-                size: 204,
-              ),
-            ),
-            const SizedBox(
-              height: 26,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(87.5, 22, 87.5, 26),
+              child: SvgPicture.asset(noFollowingSvg),
             ),
             const Text(
               '咦？這裡好像還缺點什麼...',
@@ -77,27 +71,32 @@ class FollowingBlock extends StatelessWidget {
                   ]),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 32,
-            ),
-            SizedBox(
-              height: 230,
-              child: ListView.separated(
-                padding: const EdgeInsets.only(left: 20),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    RecommendFollowItem(recommendedMembers[index], member),
-                separatorBuilder: (context, index) => const SizedBox(width: 12),
-                itemCount: recommendedMembers.length,
+            if (recommendedMembers.isNotEmpty) ...[
+              const SizedBox(
+                height: 32,
               ),
-            ),
+              SizedBox(
+                height: 230,
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(left: 20),
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) =>
+                      RecommendFollowItem(recommendedMembers[index], member),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 12),
+                  itemCount: recommendedMembers.length,
+                ),
+              ),
+            ],
             const SizedBox(
               height: 16,
             ),
           ],
         ),
       );
+    } else if (followingStories.isEmpty) {
+      return Container();
     }
     return SafeArea(
       top: false,

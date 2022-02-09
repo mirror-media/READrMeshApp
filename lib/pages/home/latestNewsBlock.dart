@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -34,8 +35,158 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
   bool _isLoadingMore = false;
   @override
   Widget build(BuildContext context) {
-    if (widget.allLatestNews.isEmpty) {
-      return Container();
+    if ((widget.member.followingCategory == null ||
+            widget.member.followingCategory!.isEmpty) &&
+        (widget.member.followingPublisher == null ||
+            widget.member.followingPublisher!.isEmpty)) {
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            SvgPicture.asset(latestNewsEmptySvg, height: 91, width: 62),
+            const SizedBox(
+              height: 24,
+            ),
+            const Text(
+              '喔不...這裡空空的',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            RichText(
+              text: const TextSpan(
+                  text: '追蹤您感興趣的新聞類別\n並和大家一起討論',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: ' 🗣',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ]),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () async {},
+              child: const Text(
+                '選擇新聞類別',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black87,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 24,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+          ],
+        ),
+      );
+    } else if (widget.allLatestNews.isEmpty) {
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            SvgPicture.asset(latestNewsEmptySvg, height: 91, width: 62),
+            const SizedBox(
+              height: 24,
+            ),
+            const Text(
+              '哇，今天沒有新文章！',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            RichText(
+              text: const TextSpan(
+                  text: '您可以放下手機休息一下\n或者追蹤其他感興趣的主題',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: ' 👇',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ]),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            OutlinedButton(
+              onPressed: () async {},
+              child: const Text(
+                '看更多新聞類別',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                primary: Colors.black,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 24,
+                ),
+                side: const BorderSide(color: Colors.black),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+          ],
+        ),
+      );
     }
     List<NewsListItem> filteredList = [];
 
