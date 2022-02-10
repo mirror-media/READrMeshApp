@@ -13,6 +13,8 @@ class HomeLoading extends HomeState {}
 
 class HomeReloading extends HomeState {}
 
+class HomeRefresh extends HomeState {}
+
 class UpdatingFollowing extends HomeState {
   final List<Member> newFollowingMembers;
   final bool isFollowed;

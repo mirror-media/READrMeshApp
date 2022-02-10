@@ -109,7 +109,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
-        if (state is UpdateFollowingSuccess) {
+        if (state is UpdateFollowingSuccess || state is HomeRefresh) {
           return _buildHomeContent();
         }
 

@@ -17,6 +17,11 @@ class ReloadHomeScreen extends HomeEvent {
   String toString() => 'ReloadHomeScreen';
 }
 
+class RefreshHomeScreen extends HomeEvent {
+  @override
+  String toString() => 'RefreshHomeScreen';
+}
+
 class UpdateFollowingMember extends HomeEvent {
   final Member targetMember;
   final Member currentMember;

@@ -92,6 +92,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
 
           emit(LoadMoreNewsSuccess(newLatestNews));
+        } else if (event is RefreshHomeScreen) {
+          emit(HomeRefresh());
         }
       } catch (e) {
         if (event is ReloadHomeScreen) {
