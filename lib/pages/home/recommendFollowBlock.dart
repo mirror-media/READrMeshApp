@@ -1,6 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/home/recommendFollowItem.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowBlock extends StatelessWidget {
   final List<Member> recommendedMembers;
@@ -29,7 +33,15 @@ class RecommendFollowBlock extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  AutoRouter.of(context)
+                      .push(RecommendFollowRoute(
+                        recommendedMembers: recommendedMembers,
+                        member: member,
+                      ))
+                      .whenComplete(() =>
+                          context.read<HomeBloc>().add(RefreshHomeScreen()));
+                },
                 child: const Text(
                   '查看全部',
                   style: TextStyle(
