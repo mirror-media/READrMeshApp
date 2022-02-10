@@ -20,6 +20,7 @@ class RecommendFollowItem extends StatefulWidget {
 class _RecommendFollowItemState extends State<RecommendFollowItem> {
   int _followerCount = 0;
   String _followerNickName = "";
+  bool _isFollowed = false;
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
 
   @override
   Widget build(BuildContext context) {
-    String contentText = '無人追蹤';
+    String contentText = '為你推薦';
     if (_followerCount == 1) {
       contentText = '$_followerNickName的追蹤對象';
     } else if (_followerCount > 1) {
@@ -93,12 +94,11 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
   }
 
   Widget _followButton(Member targetMember) {
-    bool isFollowed = false;
     if (widget.member.following != null) {
       int index = widget.member.following!
           .indexWhere((member) => member.memberId == targetMember.memberId);
       if (index != -1) {
-        isFollowed = true;
+        _isFollowed = true;
       }
     }
     return OutlinedButton(
@@ -106,7 +106,10 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
           context.read<HomeBloc>().add(
-              UpdateFollowingMember(targetMember, widget.member, isFollowed));
+              UpdateFollowingMember(targetMember, widget.member, _isFollowed));
+          setState(() {
+            _isFollowed = !_isFollowed;
+          });
         } else {
           // if user is not login
           Fluttertoast.showToast(
@@ -123,15 +126,15 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: isFollowed ? Colors.black87 : Colors.white,
+        backgroundColor: _isFollowed ? Colors.black87 : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 8),
       ),
       child: Text(
-        isFollowed ? '追蹤中' : '追蹤',
+        _isFollowed ? '追蹤中' : '追蹤',
         maxLines: 1,
         style: TextStyle(
           fontSize: 16,
-          color: isFollowed ? Colors.white : Colors.black87,
+          color: _isFollowed ? Colors.white : Colors.black87,
         ),
       ),
     );
