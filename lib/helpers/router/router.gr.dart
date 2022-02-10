@@ -69,6 +69,12 @@ class _$AppRouter extends RootStackRouter {
               news: args.news, member: args.member, isNative: args.isNative),
           fullscreenDialog: true);
     },
+    RecommendFollowRoute.name: (routeData) {
+      final args = routeData.argsAs<RecommendFollowRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: RecommendFollowPage(args.recommendedMembers, args.member));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -98,7 +104,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(LoginRoute.name, path: '/login-page'),
         RouteConfig(SendEmailRoute.name, path: '/send-email-page'),
         RouteConfig(AuthorRoute.name, path: '/author-page'),
-        RouteConfig(NewsStoryRoute.name, path: '/news-story-page')
+        RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
+        RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page')
       ];
 }
 
@@ -303,6 +310,33 @@ class NewsStoryRouteArgs {
   @override
   String toString() {
     return 'NewsStoryRouteArgs{news: $news, member: $member, isNative: $isNative}';
+  }
+}
+
+/// generated route for
+/// [RecommendFollowPage]
+class RecommendFollowRoute extends PageRouteInfo<RecommendFollowRouteArgs> {
+  RecommendFollowRoute(
+      {required List<Member> recommendedMembers, required Member member})
+      : super(RecommendFollowRoute.name,
+            path: '/recommend-follow-page',
+            args: RecommendFollowRouteArgs(
+                recommendedMembers: recommendedMembers, member: member));
+
+  static const String name = 'RecommendFollowRoute';
+}
+
+class RecommendFollowRouteArgs {
+  const RecommendFollowRouteArgs(
+      {required this.recommendedMembers, required this.member});
+
+  final List<Member> recommendedMembers;
+
+  final Member member;
+
+  @override
+  String toString() {
+    return 'RecommendFollowRouteArgs{recommendedMembers: $recommendedMembers, member: $member}';
   }
 }
 

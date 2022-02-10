@@ -5,6 +5,7 @@ import 'package:readr/models/people.dart';
 import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
+import 'package:readr/pages/home/recommendFollowPage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
@@ -51,6 +52,7 @@ part 'router.gr.dart';
     AutoRoute(page: SendEmailPage),
     AutoRoute(page: AuthorPage),
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),
+    AutoRoute(page: RecommendFollowPage),
   ],
 )
 // extend the generated private router
