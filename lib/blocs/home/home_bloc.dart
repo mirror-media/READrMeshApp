@@ -23,8 +23,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print(event.toString());
         if (event is InitialHomeScreen) {
           emit(HomeLoading());
-          Map<String, dynamic> data =
-              await _homeScreenService.fetchHomeScreenData();
+          Map<String, dynamic> data = await _homeScreenService
+              .fetchHomeScreenData(currentMember: event.currentMember);
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;

@@ -8,6 +8,8 @@ abstract class HomeEvent extends Equatable {
 }
 
 class InitialHomeScreen extends HomeEvent {
+  final Member currentMember;
+  const InitialHomeScreen(this.currentMember);
   @override
   String toString() => 'InitialHomeScreen';
 }
