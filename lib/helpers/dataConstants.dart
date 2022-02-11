@@ -21,6 +21,7 @@ const String commentIconPng = 'assets/image/commentIcon.png';
 const String logoSimplifyPng = 'assets/image/logoSimplify.png';
 const String noFollowingSvg = 'assets/image/noFollowing.svg';
 const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
+const String visitorAvatarPng = 'assets/image/visitorAvatar.png';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
