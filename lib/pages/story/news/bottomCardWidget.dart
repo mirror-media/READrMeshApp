@@ -171,7 +171,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           ),
           CommentInputBox(
             member: widget.member,
-            onPressed: sendComment,
+            onPressed: _sendComment,
             isSending: _isSending,
             onTextChanged: (text) => widget.onTextChanged(text),
             textController: _textController,
@@ -412,7 +412,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     );
   }
 
-  void sendComment(String text) async {
+  void _sendComment(String text) async {
     _myNewComment = Comment(
       id: 'sending',
       member: widget.member,
