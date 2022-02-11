@@ -93,17 +93,25 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       ),
                       color: Colors.white,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (!_isCollapsed)
-                          GestureDetector(
-                            onTap: () {
-                              DraggableScrollableActuator.reset(context);
-                              _isCollapsed = true;
-                            },
-                            child: Container(
-                              height: 48,
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      slivers: [
+                        if (_isCollapsed)
+                          SliverToBoxAdapter(
+                            child: _collapseWidget(context),
+                          ),
+                        if (!_isCollapsed) ...[
+                          SliverAppBar(
+                            centerTitle: true,
+                            automaticallyImplyLeading: false,
+                            pinned: true,
+                            elevation: 0,
+                            titleSpacing: 0,
+                            backgroundColor: Colors.transparent,
+                            title: Container(
+                              height: kToolbarHeight,
                               width: double.infinity,
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
@@ -119,47 +127,33 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                               ),
                             ),
                           ),
-                        Flexible(
-                          child: CustomScrollView(
-                            controller: scrollController,
-                            physics: const ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            slivers: [
-                              if (_isCollapsed)
-                                SliverToBoxAdapter(
-                                  child: _collapseWidget(context),
-                                ),
-                              if (!_isCollapsed) ...[
-                                SliverToBoxAdapter(
-                                  child: _titleAndPickBar(),
-                                ),
-                                if (widget.news.popularComments.isNotEmpty)
-                                  _popularCommentList(context),
-                                SliverAppBar(
-                                  backgroundColor: Colors.white,
-                                  title: Container(
-                                    color: Colors.white,
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 16, 20, 12),
-                                    child: Text(
-                                      '所有留言 (${_allComments.length})',
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  centerTitle: false,
-                                  pinned: true,
-                                  automaticallyImplyLeading: false,
-                                  titleSpacing: 0,
-                                ),
-                                _allCommentList(context),
-                              ]
-                            ],
+                          SliverToBoxAdapter(
+                            child: _titleAndPickBar(),
                           ),
-                        ),
+                          if (widget.news.popularComments.isNotEmpty)
+                            _popularCommentList(context),
+                          SliverAppBar(
+                            backgroundColor: Colors.white,
+                            title: Container(
+                              color: Colors.white,
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                              child: Text(
+                                '所有留言 (${_allComments.length})',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            centerTitle: false,
+                            pinned: true,
+                            automaticallyImplyLeading: false,
+                            titleSpacing: 0,
+                          ),
+                          _allCommentList(context),
+                        ]
                       ],
                     ),
                   );
