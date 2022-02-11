@@ -114,6 +114,7 @@ class VisitorService {
     return Member(
       memberId: "-1",
       nickname: "訪客",
+      personalId: "個人檔案", //show in personalFile page
       following: followingMembers,
       followingCategory: followingCategories,
       followingPublisher: followingPublishers,

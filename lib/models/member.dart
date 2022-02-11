@@ -17,6 +17,8 @@ class Member {
   final List<Publisher>? followingPublisher;
   List<Member>? following;
   final bool verified;
+  String personalId;
+  String? intro;
 
   Member({
     this.firebaseId,
@@ -33,6 +35,8 @@ class Member {
     this.followingPublisher,
     this.following,
     this.verified = false,
+    required this.personalId,
+    this.intro,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -48,6 +52,7 @@ class Member {
     List<Member> following = [];
     String? avatar;
     bool verified = false;
+    String personalId = "";
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -59,6 +64,7 @@ class Member {
 
     if (BaseModel.hasKey(json, 'email')) {
       email = json['email'];
+      personalId = email!.split('@')[0];
     }
 
     if (BaseModel.hasKey(json, 'verified')) {
@@ -122,6 +128,7 @@ class Member {
       follower: follower,
       avatar: avatar,
       verified: verified,
+      personalId: personalId,
     );
   }
 
@@ -135,10 +142,13 @@ class Member {
       nickname: json['nickname'],
       followerCount: json['followerCount'] ?? 0,
       avatar: avatar,
+      personalId: "",
       follower: [
         Member(
-            memberId: json['follower'][0]['id'],
-            nickname: json['follower'][0]['nickname'])
+          memberId: json['follower'][0]['id'],
+          nickname: json['follower'][0]['nickname'],
+          personalId: "",
+        )
       ],
     );
   }
@@ -150,6 +160,7 @@ class Member {
         Member(
           memberId: json['follower'][0]['id'],
           nickname: json['follower'][0]['nickname'],
+          personalId: "",
         )
       ];
     }
@@ -160,6 +171,7 @@ class Member {
       pickCount: json['pickCount'] ?? 0,
       commentCount: json['commentCount'] ?? 0,
       follower: follower,
+      personalId: "",
     );
   }
 }

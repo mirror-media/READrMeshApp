@@ -101,10 +101,6 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
   }
 
   Widget _commentsWidget(Comment comment) {
-    bool hasEmail = false;
-    if (comment.member.email != null && comment.member.email!.contains('@')) {
-      hasEmail = true;
-    }
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20, bottom: 16),
@@ -132,17 +128,16 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (hasEmail)
-                      Text(
-                        '@${comment.member.email!.split('@')[0]}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
+                    Text(
+                      '@${comment.member.personalId}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
                       ),
+                    ),
                   ],
                 ),
               ),
