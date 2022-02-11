@@ -58,13 +58,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     _pickCount = widget.news.pickCount;
     _allComments = widget.news.allComments;
     _pickAvatarMembers = widget.news.followingPickMembers;
-    if (_pickAvatarMembers.length < 4) {
-      for (int i = 0; i < widget.news.otherPickMembers.length; i++) {
-        _pickAvatarMembers.add(widget.news.otherPickMembers[i]);
-        if (_pickAvatarMembers.length == 4) {
-          break;
-        }
-      }
+    _pickAvatarMembers.addAll(widget.news.otherPickMembers);
+    if (_isPicked && _pickAvatarMembers.length < 4) {
+      _pickAvatarMembers.insert(0, widget.member);
     }
   }
 
@@ -171,10 +167,13 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               ),
             ),
           ),
-          const Divider(
-            color: Colors.black12,
-            thickness: 0.5,
-            height: 0.5,
+          Container(
+            color: Colors.white,
+            child: const Divider(
+              color: Colors.black12,
+              thickness: 0.5,
+              height: 0.5,
+            ),
           ),
           CommentInputBox(
             member: widget.member,
@@ -313,7 +312,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           Row(
             children: [
               if (widget.news.pickCount != 0) ...[
-                ProfilePhotoStack(_pickAvatarMembers, 14),
+                ProfilePhotoStack(_pickAvatarMembers.take(4).toList(), 14),
                 const SizedBox(width: 8),
                 RichText(
                   text: TextSpan(
@@ -498,6 +497,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       _pickCount++;
                       _isPicked = !_isPicked;
                       widget.isPickedButton(_isPicked);
+                      if (_pickAvatarMembers.length < 4) {
+                        _pickAvatarMembers.insert(0, widget.member);
+                      }
                       // freeze onPressed when waiting for response
                       _isLoading = true;
                     });
@@ -516,6 +518,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       _pickCount++;
                       _isPicked = !_isPicked;
                       widget.isPickedButton(_isPicked);
+                      if (_pickAvatarMembers.length < 4) {
+                        _pickAvatarMembers.insert(0, widget.member);
+                      }
                       // freeze onPressed when waiting for response
                       _isLoading = true;
                     });
@@ -544,6 +549,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = null;
                       setState(() {
                         _pickCount--;
+                        _pickAvatarMembers.removeWhere((element) =>
+                            element.memberId == widget.member.memberId);
                         _isPicked = !_isPicked;
                         widget.isPickedButton(_isPicked);
                       });
@@ -562,6 +569,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     news.myPickId = null;
                     news.pickCount--;
                     _pickCount--;
+                    _pickAvatarMembers.removeWhere((element) =>
+                        element.memberId == widget.member.memberId);
                     _isPicked = !_isPicked;
                     widget.isPickedButton(_isPicked);
                     // freeze onPressed when waiting for response
@@ -579,6 +588,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     setState(() {
                       news.myPickId = myPickId;
                       _pickCount++;
+                      _pickAvatarMembers.insert(0, widget.member);
                       _isPicked = !_isPicked;
                       widget.isPickedButton(_isPicked);
                     });
