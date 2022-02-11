@@ -10,6 +10,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:upgrader/upgrader.dart';
 
 class RootPage extends StatefulWidget {
@@ -38,6 +39,16 @@ class _RootPageState extends State<RootPage> {
         return ErrorPage(error: error, onPressed: () => _loadingConfig());
       }
       if (state is ConfigLoaded) {
+        Widget personalPageIcon;
+        if (state.currentUser.memberId == '-1') {
+          personalPageIcon = Image.asset(
+            visitorAvatarPng,
+            width: 22,
+            height: 22,
+          );
+        } else {
+          personalPageIcon = ProfilePhotoWidget(state.currentUser, 11);
+        }
         return UpgradeAlert(
           minAppVersion: state.minAppVersion,
           messages: UpdateMessages(),
@@ -45,7 +56,11 @@ class _RootPageState extends State<RootPage> {
               ? UpgradeDialogStyle.material
               : UpgradeDialogStyle.cupertino,
           child: AutoTabsScaffold(
-            routes: const [HomeRouter(), ReadrRouter(), MemberCenterRouter()],
+            routes: [
+              HomeRouter(currentMember: state.currentUser),
+              const ReadrRouter(),
+              const MemberCenterRouter()
+            ],
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
                 elevation: 10,
@@ -65,25 +80,19 @@ class _RootPageState extends State<RootPage> {
                     label: '首頁',
                   ),
                   BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Image.asset(
-                        logoSimplifyPng,
-                        width: 19,
-                        height: 19,
-                        color: tabsRouter.activeIndex == 1
-                            ? bottomNavigationBarSelectedColor
-                            : bottomNavigationBarUnselectedColor,
-                      ),
+                    icon: Image.asset(
+                      logoSimplifyPng,
+                      width: 19,
+                      height: 19,
+                      color: tabsRouter.activeIndex == 1
+                          ? bottomNavigationBarSelectedColor
+                          : bottomNavigationBarUnselectedColor,
                     ),
                     label: 'READr',
                   ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.person_outline_outlined,
-                      size: 21,
-                    ),
-                    label: '會員中心',
+                  BottomNavigationBarItem(
+                    icon: personalPageIcon,
+                    label: '個人檔案',
                   ),
                 ],
               );

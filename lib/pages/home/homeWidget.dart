@@ -15,6 +15,8 @@ import 'package:readr/pages/home/latestNewsBlock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
+  final Member currentMember;
+  const HomeWidget(this.currentMember);
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
@@ -44,7 +46,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   _fetchHomeScreen() async {
-    context.read<HomeBloc>().add(InitialHomeScreen());
+    context.read<HomeBloc>().add(InitialHomeScreen(widget.currentMember));
   }
 
   _reloadHomeScreen() async {

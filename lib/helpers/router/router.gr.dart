@@ -76,7 +76,9 @@ class _$AppRouter extends RootStackRouter {
           child: RecommendFollowPage(args.recommendedMembers, args.member));
     },
     HomeRouter.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
+      final args = routeData.argsAs<HomeRouterArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: HomePage(args.currentMember));
     },
     ReadrRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
@@ -342,10 +344,24 @@ class RecommendFollowRouteArgs {
 
 /// generated route for
 /// [HomePage]
-class HomeRouter extends PageRouteInfo<void> {
-  const HomeRouter() : super(HomeRouter.name, path: 'homePage');
+class HomeRouter extends PageRouteInfo<HomeRouterArgs> {
+  HomeRouter({required Member currentMember})
+      : super(HomeRouter.name,
+            path: 'homePage',
+            args: HomeRouterArgs(currentMember: currentMember));
 
   static const String name = 'HomeRouter';
+}
+
+class HomeRouterArgs {
+  const HomeRouterArgs({required this.currentMember});
+
+  final Member currentMember;
+
+  @override
+  String toString() {
+    return 'HomeRouterArgs{currentMember: $currentMember}';
+  }
 }
 
 /// generated route for
