@@ -160,8 +160,17 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
-        return const Center(
-          child: CircularProgressIndicator(),
+        return CustomScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          slivers: [
+            _buildAppBar(),
+            const SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ],
         );
       },
     );
