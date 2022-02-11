@@ -7,7 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/home/latestNewsItem.dart';
+import 'package:readr/pages/shared/latestNewsItem.dart';
 import 'package:readr/pages/home/recommendFollowBlock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
