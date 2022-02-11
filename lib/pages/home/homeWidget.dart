@@ -268,21 +268,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          child: const Text(
-            '管理分類',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black54,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          onPressed: () {},
-          style:
-              TextButton.styleFrom(padding: const EdgeInsets.only(right: 16)),
-        ),
-      ],
     );
   }
 
