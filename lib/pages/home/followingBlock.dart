@@ -188,7 +188,7 @@ class FollowingBlock extends StatelessWidget {
                   Colors.white54,
                   Colors.white70,
                 ],
-                stops: [0.14, 0.14, 0.8, 0.9],
+                stops: [0.12, 0.12, 0.8, 0.9],
               ),
             ),
             alignment: Alignment.bottomCenter,
