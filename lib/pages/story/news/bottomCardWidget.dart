@@ -142,7 +142,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                                     padding: const EdgeInsets.fromLTRB(
                                         20, 16, 20, 12),
                                     child: Text(
-                                      '所有留言 (${widget.news.allComments.length})',
+                                      '所有留言 (${_allComments.length})',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         color: Colors.black87,
@@ -413,7 +413,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             isMyNewComment: _hasMyNewComment && index == 0,
           );
         },
-        childCount: widget.news.allComments.length,
+        childCount: _allComments.length,
       ),
     );
   }
