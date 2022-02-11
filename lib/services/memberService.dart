@@ -96,6 +96,7 @@ class MemberService {
         ){
           id
           nickname
+          avatar
         }
         following_category{
           id
@@ -143,7 +144,6 @@ class MemberService {
 	    \$firebaseId: String
   		\$name: String
   		\$nickname: String
-  		\$verify: Boolean
   		\$avatar: String
     ){
 	    createMember(
@@ -153,7 +153,6 @@ class MemberService {
           name: \$name,
           nickname: \$nickname,
           is_active: true,
-          verified: \$verify,
           avatar: \$avatar
 		    }) {
         id
@@ -210,7 +209,6 @@ class MemberService {
       "firebaseId": firebaseUser.uid,
       "name": nickname,
       "nickname": nickname,
-      "verify": firebaseUser.emailVerified.toString(),
       "avatar": firebaseUser.photoURL ?? ""
     };
 
