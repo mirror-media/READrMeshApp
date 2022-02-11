@@ -7,14 +7,17 @@ import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/memberService.dart';
+import 'package:readr/services/visitorService.dart';
 
 class HomeScreenService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
   final MemberService _memberService = MemberService();
+  final VisitorService _visitorService = VisitorService();
 
-  Future<Map<String, dynamic>> fetchHomeScreenData() async {
+  Future<Map<String, dynamic>> fetchHomeScreenData(
+      {Member? currentMember}) async {
     const String query = """
     query(
       \$followingMembers: [ID!]
@@ -558,30 +561,31 @@ class HomeScreenService {
     // TODO: Remove test data time
     yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
-    if (FirebaseAuth.instance.currentUser != null) {
+    if (currentMember != null) {
+      member = currentMember;
+    } else if (FirebaseAuth.instance.currentUser != null) {
       // fetch user following members, categories, publishers, and member id
       member = await _memberService.fetchMemberData();
+    } else {
+      member = await _visitorService.fetchMemberData();
+    }
 
+    if (member.following != null) {
       for (var memberId in member.following!) {
         followingMemberIds.add(memberId.memberId);
       }
+    }
 
+    if (member.followingCategory != null) {
       for (var category in member.followingCategory!) {
         followingCategorySlugs.add(category.slug);
       }
+    }
 
+    if (member.followingPublisher != null) {
       for (var publisher in member.followingPublisher!) {
         followingPublisherIds.add(publisher.id);
       }
-    } else {
-      // fetch local publisher id and category slug
-      // TODO: Change to use local data after choose UI is available
-      member = Member(
-        nickname: "匿名使用者",
-        memberId: "-1",
-      );
-      followingCategorySlugs = ['unclassified'];
-      followingPublisherIds = ['1', '2', '3'];
     }
 
     Map<String, dynamic> variables = {
