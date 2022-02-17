@@ -17,8 +17,11 @@ class Member {
   final List<Publisher>? followingPublisher;
   List<Member>? following;
   final bool verified;
-  String personalId;
   String? intro;
+  String customId;
+  final int? followingCount;
+  final int? followingPublisherCount;
+  final int? bookmarkCount;
 
   Member({
     this.firebaseId,
@@ -26,7 +29,7 @@ class Member {
     required this.nickname,
     this.email,
     this.name,
-    this.avatar,
+    required this.avatar,
     this.followerCount,
     this.pickCount,
     this.commentCount,
@@ -35,8 +38,11 @@ class Member {
     this.followingPublisher,
     this.following,
     this.verified = false,
-    required this.personalId,
     this.intro,
+    this.followingCount,
+    this.followingPublisherCount,
+    this.bookmarkCount,
+    required this.customId,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -52,7 +58,11 @@ class Member {
     List<Member> following = [];
     String? avatar;
     bool verified = false;
-    String personalId = "";
+    int? followingCount;
+    int? followingPublisherCount;
+    int? bookmarkCount;
+    String? intro;
+    String customId = '';
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -64,7 +74,6 @@ class Member {
 
     if (BaseModel.hasKey(json, 'email')) {
       email = json['email'];
-      personalId = email!.split('@')[0];
     }
 
     if (BaseModel.hasKey(json, 'verified')) {
@@ -113,6 +122,26 @@ class Member {
       }
     }
 
+    if (BaseModel.hasKey(json, 'followingCount')) {
+      followingCount = json['followingCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'follow_publisherCount')) {
+      followingPublisherCount = json['follow_publisherCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'bookmarkCount')) {
+      bookmarkCount = json['bookmarkCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
+    }
+
+    if (BaseModel.hasKey(json, 'intro')) {
+      intro = json['intro'];
+    }
+
     return Member(
       memberId: json['id'],
       firebaseId: firebaseId,
@@ -128,26 +157,35 @@ class Member {
       follower: follower,
       avatar: avatar,
       verified: verified,
-      personalId: personalId,
+      followingCount: followingCount,
+      followingPublisherCount: followingPublisherCount,
+      bookmarkCount: bookmarkCount,
+      customId: customId,
+      intro: intro,
     );
   }
 
   factory Member.followedFollowing(Map<String, dynamic> json) {
     String? avatar;
+    String customId = '';
     if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
       avatar = json['avatar'];
+    }
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
     }
     return Member(
       memberId: json['id'],
       nickname: json['nickname'],
       followerCount: json['followerCount'] ?? 0,
       avatar: avatar,
-      personalId: "",
+      customId: customId,
       follower: [
         Member(
           memberId: json['follower'][0]['id'],
           nickname: json['follower'][0]['nickname'],
-          personalId: "",
+          customId: '',
+          avatar: null,
         )
       ],
     );
@@ -160,9 +198,18 @@ class Member {
         Member(
           memberId: json['follower'][0]['id'],
           nickname: json['follower'][0]['nickname'],
-          personalId: "",
+          customId: json['follower'][0]['customId'],
+          avatar: null,
         )
       ];
+    }
+    String? avatar;
+    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+      avatar = json['avatar'];
+    }
+    String customId = '';
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
     }
     return Member(
       memberId: json['id'],
@@ -171,7 +218,8 @@ class Member {
       pickCount: json['pickCount'] ?? 0,
       commentCount: json['commentCount'] ?? 0,
       follower: follower,
-      personalId: "",
+      customId: customId,
+      avatar: avatar,
     );
   }
 }
