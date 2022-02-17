@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
@@ -87,15 +89,15 @@ class _CommentItemState extends State<CommentItem> {
                 ),
               ),
             ),
-            _commentItemContent(),
+            _commentItemContent(context),
           ],
         ),
       );
     }
-    return _commentItemContent();
+    return _commentItemContent(context);
   }
 
-  Widget _commentItemContent() {
+  Widget _commentItemContent(BuildContext context) {
     return Container(
       color: _backgroundColor,
       padding: const EdgeInsets.all(20),
@@ -103,16 +105,23 @@ class _CommentItemState extends State<CommentItem> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProfilePhotoWidget(
-            widget.comment.member,
-            22,
+          GestureDetector(
+            onTap: () {
+              AutoRouter.of(context).push(PersonalFileRoute(
+                  viewMember: widget.comment.member,
+                  currentMember: widget.member));
+            },
+            child: ProfilePhotoWidget(
+              widget.comment.member,
+              22,
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _nameAndTime(),
+                _nameAndTime(context),
                 const SizedBox(height: 5),
                 _content(),
               ],
@@ -123,7 +132,7 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
-  Widget _nameAndTime() {
+  Widget _nameAndTime(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,14 +141,21 @@ class _CommentItemState extends State<CommentItem> {
           child: Row(
             children: [
               Flexible(
-                child: Text(
-                  widget.comment.member.nickname,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                child: GestureDetector(
+                  onTap: () {
+                    AutoRouter.of(context).push(PersonalFileRoute(
+                        viewMember: widget.comment.member,
+                        currentMember: widget.member));
+                  },
+                  child: Text(
+                    widget.comment.member.nickname,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),

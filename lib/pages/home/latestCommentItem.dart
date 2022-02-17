@@ -37,45 +37,61 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.news.heroImageUrl != null)
-            CachedNetworkImage(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width / 2,
-              imageUrl: widget.news.heroImageUrl!,
-              placeholder: (context, url) => Container(
-                color: Colors.grey,
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: Colors.grey,
-                child: const Icon(Icons.error),
-              ),
-              fit: BoxFit.cover,
+          InkWell(
+            onTap: () {
+              AutoRouter.of(context).push(NewsStoryRoute(
+                news: widget.news,
+                member: widget.member,
+              ));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.news.heroImageUrl != null)
+                  CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width / 2,
+                    imageUrl: widget.news.heroImageUrl!,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey,
+                      child: const Icon(Icons.error),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                if (widget.news.source != null)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 12, left: 12, right: 12),
+                    child: Text(
+                      widget.news.source!.title,
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 14),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 4, left: 12, right: 12, bottom: 8),
+                  child: Text(
+                    widget.news.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 12, right: 12, bottom: 16),
+                  child: NewsInfo(widget.news),
+                ),
+              ],
             ),
-          if (widget.news.source != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-              child: Text(
-                widget.news.source!.title,
-                style: const TextStyle(color: Colors.black54, fontSize: 14),
-              ),
-            ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 4, left: 12, right: 12, bottom: 8),
-            child: Text(
-              widget.news.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 16),
-            child: NewsInfo(widget.news),
           ),
           const Divider(
             indent: 12,
@@ -84,7 +100,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             height: 1,
             thickness: 1,
           ),
-          InkWell(
+          GestureDetector(
             onTap: () async {
               await CommentBottomSheet.showCommentBottomSheet(
                 context: context,
@@ -93,56 +109,62 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                 storyId: widget.news.id,
               );
             },
-            child: _commentsWidget(widget.news.showComment!),
+            child: _commentsWidget(context, widget.news.showComment!),
           ),
         ],
       ),
     );
   }
 
-  Widget _commentsWidget(Comment comment) {
+  Widget _commentsWidget(BuildContext context, Comment comment) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              ProfilePhotoWidget(
-                comment.member,
-                22,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      comment.member.nickname,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '@${comment.member.personalId}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+          GestureDetector(
+            onTap: () {
+              AutoRouter.of(context).push(PersonalFileRoute(
+                  viewMember: comment.member, currentMember: widget.member));
+            },
+            child: Row(
+              children: [
+                ProfilePhotoWidget(
+                  comment.member,
+                  22,
                 ),
-              ),
-              _followButton(comment),
-            ],
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        comment.member.nickname,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '@${comment.member.customId}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                _followButton(comment),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 52, top: 8.5, bottom: 20),
