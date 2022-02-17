@@ -43,8 +43,6 @@ class _RootPageState extends State<RootPage> {
         if (state.currentUser.memberId == '-1') {
           personalPageIcon = Image.asset(
             visitorAvatarPng,
-            width: 22,
-            height: 22,
           );
         } else {
           personalPageIcon = ProfilePhotoWidget(state.currentUser, 11);
@@ -75,27 +73,33 @@ class _RootPageState extends State<RootPage> {
                 unselectedItemColor: bottomNavigationBarUnselectedColor,
                 items: [
                   BottomNavigationBarItem(
-                    icon: Icon(
-                      tabsRouter.activeIndex == 0
-                          ? Icons.home_sharp
-                          : Icons.home_outlined,
-                      size: 21,
+                    icon: SizedBox(
+                      height: 20,
+                      child: Icon(
+                        tabsRouter.activeIndex == 0
+                            ? Icons.home_sharp
+                            : Icons.home_outlined,
+                      ),
                     ),
                     label: '首頁',
                   ),
                   BottomNavigationBarItem(
-                    icon: Image.asset(
-                      logoSimplifyPng,
-                      width: 19,
-                      height: 19,
-                      color: tabsRouter.activeIndex == 1
-                          ? bottomNavigationBarSelectedColor
-                          : bottomNavigationBarUnselectedColor,
+                    icon: SizedBox(
+                      height: 20,
+                      child: Image.asset(
+                        logoSimplifyPng,
+                        color: tabsRouter.activeIndex == 1
+                            ? bottomNavigationBarSelectedColor
+                            : bottomNavigationBarUnselectedColor,
+                      ),
                     ),
                     label: 'READr',
                   ),
                   BottomNavigationBarItem(
-                    icon: personalPageIcon,
+                    icon: SizedBox(
+                      height: 20,
+                      child: personalPageIcon,
+                    ),
                     label: '個人檔案',
                   ),
                 ],
