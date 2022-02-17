@@ -188,6 +188,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           children: [
             AppBar(
               elevation: 0,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
               title: Text(
                 widget.viewMember.customId,
                 style: const TextStyle(
