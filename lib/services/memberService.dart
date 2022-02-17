@@ -79,6 +79,9 @@ class MemberService {
           firebaseId: {
             equals: \$firebaseId
           }
+          is_active:{
+            equals: true
+          }
         }
       ){
         id
@@ -87,6 +90,8 @@ class MemberService {
         email
         avatar
         verified
+        customId
+        intro
         following(
           where: {
             is_active: {
@@ -145,6 +150,7 @@ class MemberService {
   		\$name: String
   		\$nickname: String
   		\$avatar: String
+      \$customId: String
     ){
 	    createMember(
 		    data: { 
@@ -153,7 +159,8 @@ class MemberService {
           name: \$name,
           nickname: \$nickname,
           is_active: true,
-          avatar: \$avatar
+          avatar: \$avatar,
+          customId: \$customId
 		    }) {
         id
         nickname
@@ -161,6 +168,8 @@ class MemberService {
         email
         avatar
         verified
+        customId
+        intro
         following(
           where: {
             is_active: {
@@ -204,12 +213,23 @@ class MemberService {
       nickname = 'User $randomName';
     }
 
+    String customId = '';
+    if (firebaseUser.email != null) {
+      customId = firebaseUser.email!.split('@')[0];
+    } else {
+      var splitUid = firebaseUser.uid.split('');
+      for (int i = 0; i < 5; i++) {
+        customId = customId + splitUid[i];
+      }
+    }
+
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
       "name": nickname,
       "nickname": nickname,
-      "avatar": firebaseUser.photoURL ?? ""
+      "avatar": firebaseUser.photoURL ?? "",
+      "customId": customId
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
