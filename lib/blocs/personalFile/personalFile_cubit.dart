@@ -18,8 +18,17 @@ class PersonalFileCubit extends Cubit<PersonalFileState> {
   final MemberService _memberService = MemberService();
   final VisitorService _visitorService = VisitorService();
 
-  fetchMemberData(Member viewMember, Member currentMember) async {
-    emit(PersonalFileLoading());
+  fetchMemberData(
+    Member viewMember,
+    Member currentMember, {
+    bool isReload = false,
+  }) async {
+    if (isReload) {
+      emit(PersonalFileReloading());
+    } else {
+      emit(PersonalFileLoading());
+    }
+
     late Member viewMemberData;
     late Member currentMemberData;
     Future fetchCurrentMember;

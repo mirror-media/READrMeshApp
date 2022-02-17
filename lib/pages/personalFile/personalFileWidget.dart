@@ -66,6 +66,12 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         .fetchMemberData(widget.viewMember, widget.currentMember);
   }
 
+  _refetchMemberData() async {
+    context.read<PersonalFileCubit>().fetchMemberData(
+        widget.viewMember, widget.currentMember,
+        isReload: true);
+  }
+
   _initializeTabController() {
     _tabs.clear();
     _tabWidgets.clear();
@@ -174,7 +180,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           _initializeTabController();
           return RefreshIndicator(
             child: _buildContent(context),
-            onRefresh: () => _fetchMemberData(),
+            onRefresh: () => _refetchMemberData(),
             notificationPredicate: (scrollNotification) {
               if (scrollNotification.depth == 2) {
                 return true;
@@ -182,6 +188,10 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               return false;
             },
           );
+        }
+
+        if (state is PersonalFileReloading) {
+          return _buildContent(context);
         }
 
         return Column(

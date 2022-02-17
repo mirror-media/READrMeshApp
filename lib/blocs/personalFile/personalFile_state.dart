@@ -11,6 +11,8 @@ class PersonalFileInitial extends PersonalFileState {}
 
 class PersonalFileLoading extends PersonalFileState {}
 
+class PersonalFileReloading extends PersonalFileState {}
+
 class PersonalFileLoaded extends PersonalFileState {
   final Member viewMember;
   final Member currentMember;
