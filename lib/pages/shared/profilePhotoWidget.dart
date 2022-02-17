@@ -5,7 +5,8 @@ import 'package:readr/models/member.dart';
 class ProfilePhotoWidget extends StatelessWidget {
   final Member member;
   final double radius;
-  const ProfilePhotoWidget(this.member, this.radius);
+  final double? textSize;
+  const ProfilePhotoWidget(this.member, this.radius, {this.textSize});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class ProfilePhotoWidget extends StatelessWidget {
         backgroundColor: randomColor,
         child: AutoSizeText(
           firstLetter,
-          style: TextStyle(color: textColor),
+          style: TextStyle(color: textColor, fontSize: textSize),
           minFontSize: 5,
         ),
         radius: radius,
@@ -39,7 +40,7 @@ class ProfilePhotoWidget extends StatelessWidget {
       radius: radius,
       child: AutoSizeText(
         firstLetter,
-        style: TextStyle(color: textColor),
+        style: TextStyle(color: textColor, fontSize: textSize),
         minFontSize: 5,
       ),
     );
