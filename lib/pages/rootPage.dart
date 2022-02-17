@@ -59,7 +59,11 @@ class _RootPageState extends State<RootPage> {
             routes: [
               HomeRouter(currentMember: state.currentUser),
               const ReadrRouter(),
-              const MemberCenterRouter()
+              PersonalFileRouter(
+                viewMember: state.currentUser,
+                currentMember: state.currentUser,
+                isFromBottomTab: true,
+              ),
             ],
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
