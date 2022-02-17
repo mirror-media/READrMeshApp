@@ -75,6 +75,19 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: RecommendFollowPage(args.recommendedMembers, args.member));
     },
+    PersonalFileRoute.name: (routeData) {
+      final args = routeData.argsAs<PersonalFileRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: PersonalFilePage(
+              viewMember: args.viewMember,
+              currentMember: args.currentMember,
+              isFromBottomTab: args.isFromBottomTab));
+    },
+    MemberCenterRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: MemberCenterPage());
+    },
     HomeRouter.name: (routeData) {
       final args = routeData.argsAs<HomeRouterArgs>();
       return MaterialPageX<dynamic>(
@@ -83,9 +96,14 @@ class _$AppRouter extends RootStackRouter {
     ReadrRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
     },
-    MemberCenterRouter.name: (routeData) {
+    PersonalFileRouter.name: (routeData) {
+      final args = routeData.argsAs<PersonalFileRouterArgs>();
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: MemberCenterPage());
+          routeData: routeData,
+          child: PersonalFilePage(
+              viewMember: args.viewMember,
+              currentMember: args.currentMember,
+              isFromBottomTab: args.isFromBottomTab));
     }
   };
 
@@ -95,8 +113,8 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(HomeRouter.name, path: 'homePage', parent: Initial.name),
           RouteConfig(ReadrRouter.name,
               path: 'readrPage', parent: Initial.name),
-          RouteConfig(MemberCenterRouter.name,
-              path: 'memberCenter', parent: Initial.name)
+          RouteConfig(PersonalFileRouter.name,
+              path: 'personalFile', parent: Initial.name)
         ]),
         RouteConfig(StoryRoute.name, path: '/story-page'),
         RouteConfig(ErrorRoute.name, path: '/error-page'),
@@ -107,7 +125,9 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(SendEmailRoute.name, path: '/send-email-page'),
         RouteConfig(AuthorRoute.name, path: '/author-page'),
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
-        RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page')
+        RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
+        RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
+        RouteConfig(MemberCenterRoute.name, path: '/member-center-page')
       ];
 }
 
@@ -343,6 +363,50 @@ class RecommendFollowRouteArgs {
 }
 
 /// generated route for
+/// [PersonalFilePage]
+class PersonalFileRoute extends PageRouteInfo<PersonalFileRouteArgs> {
+  PersonalFileRoute(
+      {required Member viewMember,
+      required Member currentMember,
+      bool isFromBottomTab = false})
+      : super(PersonalFileRoute.name,
+            path: '/personal-file-page',
+            args: PersonalFileRouteArgs(
+                viewMember: viewMember,
+                currentMember: currentMember,
+                isFromBottomTab: isFromBottomTab));
+
+  static const String name = 'PersonalFileRoute';
+}
+
+class PersonalFileRouteArgs {
+  const PersonalFileRouteArgs(
+      {required this.viewMember,
+      required this.currentMember,
+      this.isFromBottomTab = false});
+
+  final Member viewMember;
+
+  final Member currentMember;
+
+  final bool isFromBottomTab;
+
+  @override
+  String toString() {
+    return 'PersonalFileRouteArgs{viewMember: $viewMember, currentMember: $currentMember, isFromBottomTab: $isFromBottomTab}';
+  }
+}
+
+/// generated route for
+/// [MemberCenterPage]
+class MemberCenterRoute extends PageRouteInfo<void> {
+  const MemberCenterRoute()
+      : super(MemberCenterRoute.name, path: '/member-center-page');
+
+  static const String name = 'MemberCenterRoute';
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRouter extends PageRouteInfo<HomeRouterArgs> {
   HomeRouter({required Member currentMember})
@@ -373,10 +437,36 @@ class ReadrRouter extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MemberCenterPage]
-class MemberCenterRouter extends PageRouteInfo<void> {
-  const MemberCenterRouter()
-      : super(MemberCenterRouter.name, path: 'memberCenter');
+/// [PersonalFilePage]
+class PersonalFileRouter extends PageRouteInfo<PersonalFileRouterArgs> {
+  PersonalFileRouter(
+      {required Member viewMember,
+      required Member currentMember,
+      bool isFromBottomTab = false})
+      : super(PersonalFileRouter.name,
+            path: 'personalFile',
+            args: PersonalFileRouterArgs(
+                viewMember: viewMember,
+                currentMember: currentMember,
+                isFromBottomTab: isFromBottomTab));
 
-  static const String name = 'MemberCenterRouter';
+  static const String name = 'PersonalFileRouter';
+}
+
+class PersonalFileRouterArgs {
+  const PersonalFileRouterArgs(
+      {required this.viewMember,
+      required this.currentMember,
+      this.isFromBottomTab = false});
+
+  final Member viewMember;
+
+  final Member currentMember;
+
+  final bool isFromBottomTab;
+
+  @override
+  String toString() {
+    return 'PersonalFileRouterArgs{viewMember: $viewMember, currentMember: $currentMember, isFromBottomTab: $isFromBottomTab}';
+  }
 }

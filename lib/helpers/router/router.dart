@@ -6,6 +6,7 @@ import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/home/recommendFollowPage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
@@ -38,9 +39,9 @@ part 'router.gr.dart';
         page: ReadrPage,
       ),
       AutoRoute(
-        path: "memberCenter",
-        name: "MemberCenterRouter",
-        page: MemberCenterPage,
+        path: "personalFile",
+        name: "PersonalFileRouter",
+        page: PersonalFilePage,
       ),
     ]),
     AutoRoute(page: StoryPage),
@@ -53,6 +54,8 @@ part 'router.gr.dart';
     AutoRoute(page: AuthorPage),
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),
     AutoRoute(page: RecommendFollowPage),
+    AutoRoute(page: PersonalFilePage),
+    AutoRoute(page: MemberCenterPage),
   ],
 )
 // extend the generated private router
