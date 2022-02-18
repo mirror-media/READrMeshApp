@@ -6,6 +6,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
+import 'package:readr/models/publisher.dart';
 
 class PersonalFileService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -649,5 +650,121 @@ class PersonalFileService {
     }
 
     return followerList;
+  }
+
+  Future<List<Member>> fetchFollowingList(
+      Member viewMember, Member currentMember,
+      {int skip = 0}) async {
+    const String query = """
+    query(
+      \$viewMemberId: ID
+      \$currentMemberId: ID
+      \$skip: Int!
+    ){
+      members(
+        where:{
+          follower:{
+            some:{
+              id:{
+                equals: \$viewMemberId
+              }
+            }
+          }
+        }
+        orderBy:{
+          customId: asc
+        }
+        take: 10
+        skip: \$skip
+      ){
+        id
+        nickname
+        customId
+        avatar
+        isFollowing: follower(
+          where:{
+            id:{
+              equals: \$currentMemberId
+            }
+          }
+        ){
+          id
+        }
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "viewMemberId": viewMember.memberId,
+      "currentMemberId": currentMember.memberId,
+      "skip": skip,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<Member> followingList = [];
+    for (var member in jsonResponse['data']['members']) {
+      Member followingMember = Member.fromJson(member);
+      if (currentMember.memberId == '-1' && currentMember.following != null) {
+        followingMember.isFollowing = currentMember.following!
+            .any((element) => element.memberId == followingMember.memberId);
+      }
+      followingList.add(followingMember);
+    }
+
+    return followingList;
+  }
+
+  Future<List<Publisher>> fetchFollowPublisher(Member viewMember) async {
+    const String query = """
+    query(
+      \$viewMemberId: ID
+    ){
+      member(
+        where:{
+          id: \$viewMemberId
+        }
+      ){
+        follow_publisher{
+          id
+          title
+          logo
+        }
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {"viewMemberId": viewMember.memberId};
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<Publisher> followPublisherList = [];
+    for (var publisher in jsonResponse['data']['member']['follow_publisher']) {
+      followPublisherList.add(Publisher.fromJson(publisher));
+    }
+
+    return followPublisherList;
   }
 }
