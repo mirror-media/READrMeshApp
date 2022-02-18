@@ -178,6 +178,11 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
             _followingCount = _viewMember.followingCount!;
           }
 
+          if (_viewMember.followingPublisherCount != null) {
+            _followingCount =
+                _followingCount + _viewMember.followingPublisherCount!;
+          }
+
           _initializeTabController();
           return RefreshIndicator(
             child: _buildContent(context),
@@ -495,7 +500,11 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      AutoRouter.of(context).push(FollowingListRoute(
+                          viewMember: widget.viewMember,
+                          currentMember: widget.currentMember));
+                    },
                     child: RichText(
                       text: TextSpan(
                         text: _convertNumberToString(_followingCount),
