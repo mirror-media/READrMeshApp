@@ -353,8 +353,8 @@ class PersonalFileService {
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
       "myId": currentMember.memberId,
-      "pickFilterTime":
-          pickFilterTime ?? DateTime.now().toUtc().toIso8601String(),
+      "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
+          DateTime.now().toUtc().toIso8601String(),
       "viewMemberId": targetMember.memberId
     };
 
@@ -550,8 +550,8 @@ class PersonalFileService {
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
       "myId": currentMember.memberId,
-      "pickFilterTime":
-          pickFilterTime ?? DateTime.now().toUtc().toIso8601String(),
+      "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
+          DateTime.now().toUtc().toIso8601String(),
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -575,5 +575,74 @@ class PersonalFileService {
     }
 
     return bookmarkList;
+  }
+
+  Future<List<Member>> fetchFollowerList(
+      Member viewMember, Member currentMember,
+      {int skip = 0}) async {
+    const String query = """
+    query(
+      \$viewMemberId: ID
+      \$currentMemberId: ID
+      \$skip: Int!
+    ){
+      members(
+        where:{
+          following:{
+            some:{
+              id:{
+                equals: \$viewMemberId
+              }
+            }
+          }
+        }
+        orderBy:{
+          customId: asc
+        }
+        take: 10
+        skip: \$skip
+      ){
+        id
+        nickname
+        customId
+        avatar
+        isFollowing: follower(
+          where:{
+            id:{
+              equals: \$currentMemberId
+            }
+          }
+        ){
+          id
+        }
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "viewMemberId": viewMember.memberId,
+      "currentMemberId": currentMember.memberId,
+      "skip": skip,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<Member> followerList = [];
+    for (var member in jsonResponse['data']['members']) {
+      followerList.add(Member.fromJson(member));
+    }
+
+    return followerList;
   }
 }
