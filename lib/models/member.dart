@@ -22,6 +22,7 @@ class Member {
   final int? followingCount;
   final int? followingPublisherCount;
   final int? bookmarkCount;
+  bool isFollowing;
 
   Member({
     this.firebaseId,
@@ -43,6 +44,7 @@ class Member {
     this.followingPublisherCount,
     this.bookmarkCount,
     required this.customId,
+    this.isFollowing = false,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -63,6 +65,7 @@ class Member {
     int? bookmarkCount;
     String? intro;
     String customId = '';
+    bool isFollowing = false;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -142,6 +145,11 @@ class Member {
       intro = json['intro'];
     }
 
+    if (BaseModel.hasKey(json, 'isFollowing') &&
+        json['isFollowing'].isNotEmpty) {
+      isFollowing = true;
+    }
+
     return Member(
       memberId: json['id'],
       firebaseId: firebaseId,
@@ -162,6 +170,7 @@ class Member {
       bookmarkCount: bookmarkCount,
       customId: customId,
       intro: intro,
+      isFollowing: isFollowing,
     );
   }
 
