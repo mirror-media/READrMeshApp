@@ -9,6 +9,7 @@ import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/latestNewsItem.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class BookmarkTabContent extends StatefulWidget {
   final Member currentMember;
@@ -20,6 +21,7 @@ class BookmarkTabContent extends StatefulWidget {
 class _BookmarkTabContentState extends State<BookmarkTabContent> {
   List<Pick> _bookmarkList = [];
   bool _isNoMore = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,12 +37,20 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
         ));
   }
 
+  _loadMore() {
+    _isLoading = true;
+    context
+        .read<PersonalFileTabBloc>()
+        .add(LoadMore(lastPickTime: _bookmarkList.last.pickedDate));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonalFileTabBloc, PersonalFileTabState>(
       listener: (context, state) {
-        if (state is PersonalFileTabLoadingMoreFailed ||
+        if (state is PersonalFileTabLoadMoreFailed ||
             state is PersonalFileTabReloadFailed) {
+          _isLoading = false;
           Fluttertoast.showToast(
             msg: "載入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -64,6 +74,21 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
           );
         }
 
+        if (state is PersonalFileTabLoadingMore) {
+          return _buildContent();
+        }
+
+        if (state is PersonalFileTabLoadMoreSuccess) {
+          if (state.data != null && state.data!.isNotEmpty) {
+            _bookmarkList.addAll(state.data!);
+            if (state.data!.length < 10) {
+              _isNoMore = true;
+            }
+          }
+          _isLoading = false;
+          return _buildContent();
+        }
+
         if (state is PersonalFileTabLoaded) {
           if (state.data != null && state.data!.isNotEmpty) {
             _bookmarkList = state.data!;
@@ -77,7 +102,7 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
         }
 
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         );
       },
     );
@@ -110,8 +135,16 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
           if (_isNoMore) {
             return Container();
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+
+          return VisibilityDetector(
+            key: const Key('bookmarkTab'),
+            onVisibilityChanged: (visibilityInfo) {
+              var visiblePercentage = visibilityInfo.visibleFraction * 100;
+              if (visiblePercentage > 50 && !_isLoading) _loadMore();
+            },
+            child: const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
           );
         }
         return InkWell(

@@ -23,14 +23,14 @@ class PersonalFileTabError extends PersonalFileTabState {
 
 class PersonalFileTabLoadingMore extends PersonalFileTabState {}
 
-class PersonalFileTabLoadingMoreSuccess extends PersonalFileTabState {
+class PersonalFileTabLoadMoreSuccess extends PersonalFileTabState {
   final dynamic data;
-  const PersonalFileTabLoadingMoreSuccess(this.data);
+  const PersonalFileTabLoadMoreSuccess(this.data);
 }
 
-class PersonalFileTabLoadingMoreFailed extends PersonalFileTabState {
+class PersonalFileTabLoadMoreFailed extends PersonalFileTabState {
   final dynamic error;
-  const PersonalFileTabLoadingMoreFailed(this.error);
+  const PersonalFileTabLoadMoreFailed(this.error);
 }
 
 class PersonalFileTabReloading extends PersonalFileTabState {}

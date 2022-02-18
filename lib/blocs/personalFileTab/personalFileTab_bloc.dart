@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/apiException.dart';
+import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -34,32 +35,18 @@ class PersonalFileTabBloc
         } else if (event is ReloadTab) {
           emit(PersonalFileTabReloading());
           emit(PersonalFileTabLoaded(await _fetchTabContent()));
+        } else if (event is LoadMore) {
+          emit(PersonalFileTabLoadingMore());
+          emit(PersonalFileTabLoadMoreSuccess(
+              await _fetchMoreTabContent(event.lastPickTime)));
         }
       } catch (e) {
-        if (event is LoadingMore) {
-          emit(PersonalFileTabLoadingMoreFailed(e));
+        if (event is LoadMore) {
+          emit(PersonalFileTabLoadMoreFailed(e));
         } else if (event is ReloadTab) {
           emit(PersonalFileTabReloadFailed(e));
-        } else if (e is SocketException) {
-          emit(PersonalFileTabError(NoInternetException('No Internet')));
-        } else if (e is HttpException) {
-          emit(PersonalFileTabError(
-              NoServiceFoundException('No Service Found')));
-        } else if (e is FormatException) {
-          emit(PersonalFileTabError(
-              InvalidFormatException('Invalid Response format')));
-        } else if (e is FetchDataException) {
-          emit(PersonalFileTabError(
-              NoInternetException('Error During Communication')));
-        } else if (e is BadRequestException ||
-            e is UnauthorisedException ||
-            e is InvalidInputException) {
-          emit(PersonalFileTabError(Error400Exception('Unauthorised')));
-        } else if (e is InternalServerErrorException) {
-          emit(
-              PersonalFileTabError(Error500Exception('Internal Server Error')));
         } else {
-          emit(PersonalFileTabError(UnknownException(e.toString())));
+          emit(PersonalFileTabError(determineException(e)));
         }
       }
     });
@@ -71,6 +58,19 @@ class PersonalFileTabBloc
           _viewMember, _currentMember);
     } else if (_tabContentType == TabContentType.bookmark) {
       return await _personalFileService.fetchBookmark(_currentMember);
+    }
+  }
+
+  dynamic _fetchMoreTabContent(DateTime lastItemPublishTime) async {
+    if (_tabContentType == TabContentType.pick) {
+      return await _personalFileService.fetchPickData(
+          _viewMember, _currentMember,
+          pickFilterTime: lastItemPublishTime);
+    } else if (_tabContentType == TabContentType.bookmark) {
+      return await _personalFileService.fetchBookmark(
+        _currentMember,
+        pickFilterTime: lastItemPublishTime,
+      );
     }
   }
 }

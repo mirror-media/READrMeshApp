@@ -10,6 +10,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
 import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class PickTabContent extends StatefulWidget {
   final Member viewMember;
@@ -37,12 +38,20 @@ class _PickTabContentState extends State<PickTabContent> {
         ));
   }
 
+  _loadMore() {
+    _isLoading = true;
+    context
+        .read<PersonalFileTabBloc>()
+        .add(LoadMore(lastPickTime: _storyPickList.last.pickedDate));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonalFileTabBloc, PersonalFileTabState>(
       listener: (context, state) {
-        if (state is PersonalFileTabLoadingMoreFailed ||
+        if (state is PersonalFileTabLoadMoreFailed ||
             state is PersonalFileTabReloadFailed) {
+          _isLoading = false;
           Fluttertoast.showToast(
             msg: "載入失敗",
             toastLength: Toast.LENGTH_SHORT,
@@ -64,6 +73,21 @@ class _PickTabContentState extends State<PickTabContent> {
             onPressed: () => _fetchPickData(),
             hideAppbar: true,
           );
+        }
+
+        if (state is PersonalFileTabLoadingMore) {
+          return _buildContent();
+        }
+
+        if (state is PersonalFileTabLoadMoreSuccess) {
+          if (state.data != null && state.data!['storyPickList'].isNotEmpty) {
+            _storyPickList.addAll(state.data!['storyPickList']);
+            if (state.data!['storyPickList'].length < 10) {
+              _isNoMore = true;
+            }
+          }
+          _isLoading = false;
+          return _buildContent();
         }
 
         if (state is PersonalFileTabLoaded) {
@@ -135,8 +159,16 @@ class _PickTabContentState extends State<PickTabContent> {
           if (_isNoMore) {
             return Container();
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+
+          return VisibilityDetector(
+            key: const Key('pickTab'),
+            onVisibilityChanged: (visibilityInfo) {
+              var visiblePercentage = visibilityInfo.visibleFraction * 100;
+              if (visiblePercentage > 50 && !_isLoading) _loadMore();
+            },
+            child: const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
           );
         }
 

@@ -21,8 +21,9 @@ class FetchTabContent extends PersonalFileTabEvent {
   String toString() => 'Fetch tab content';
 }
 
-class LoadingMore extends PersonalFileTabEvent {
-  const LoadingMore();
+class LoadMore extends PersonalFileTabEvent {
+  final DateTime lastPickTime;
+  const LoadMore({required this.lastPickTime});
 
   @override
   String toString() => 'Loading more tab contnet';
