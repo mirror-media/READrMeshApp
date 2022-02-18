@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -213,6 +215,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   color: Colors.black,
                 ),
               ),
+              centerTitle: Platform.isIOS,
               backgroundColor: Colors.white,
             ),
             const Expanded(
@@ -292,6 +295,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       primary: true,
       elevation: 0,
       backgroundColor: Colors.white,
+      centerTitle: Platform.isIOS,
       leading: leading,
       title: Text(
         widget.viewMember.customId,
