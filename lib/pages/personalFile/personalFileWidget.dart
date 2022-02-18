@@ -386,10 +386,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 ),
               ),
               if (_viewMember.verified)
-                const Icon(
-                  Icons.verified,
-                  size: 12,
-                  color: Colors.black87,
+                const Padding(
+                  padding: EdgeInsets.only(left: 6),
+                  child: Icon(
+                    Icons.verified,
+                    size: 16,
+                    color: Colors.black87,
+                  ),
                 ),
             ],
           ),
