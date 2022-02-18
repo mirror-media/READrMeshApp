@@ -110,12 +110,13 @@ class _PickTabContentState extends State<PickTabContent> {
   }
 
   Widget _emptyWidget() {
+    bool isMine = widget.currentMember.memberId == widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
-      child: const Center(
+      child: Center(
         child: Text(
-          '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
-          style: TextStyle(
+          isMine ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧' : '這個人還沒有精選新聞',
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Colors.black26,
