@@ -6,6 +6,7 @@ import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/home/recommendFollowPage.dart';
+import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ part 'router.gr.dart';
     AutoRoute(page: RecommendFollowPage),
     AutoRoute(page: PersonalFilePage),
     AutoRoute(page: MemberCenterPage),
+    AutoRoute(page: FollowerListPage),
   ],
 )
 // extend the generated private router

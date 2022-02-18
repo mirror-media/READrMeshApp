@@ -7,6 +7,8 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
+//
+// ignore_for_file: type=lint
 
 part of 'router.dart';
 
@@ -88,6 +90,13 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: MemberCenterPage());
     },
+    FollowerListRoute.name: (routeData) {
+      final args = routeData.argsAs<FollowerListRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: FollowerListPage(
+              viewMember: args.viewMember, currentMember: args.currentMember));
+    },
     HomeRouter.name: (routeData) {
       final args = routeData.argsAs<HomeRouterArgs>();
       return MaterialPageX<dynamic>(
@@ -127,7 +136,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
         RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
         RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
-        RouteConfig(MemberCenterRoute.name, path: '/member-center-page')
+        RouteConfig(MemberCenterRoute.name, path: '/member-center-page'),
+        RouteConfig(FollowerListRoute.name, path: '/follower-list-page')
       ];
 }
 
@@ -404,6 +414,32 @@ class MemberCenterRoute extends PageRouteInfo<void> {
       : super(MemberCenterRoute.name, path: '/member-center-page');
 
   static const String name = 'MemberCenterRoute';
+}
+
+/// generated route for
+/// [FollowerListPage]
+class FollowerListRoute extends PageRouteInfo<FollowerListRouteArgs> {
+  FollowerListRoute({required Member viewMember, required Member currentMember})
+      : super(FollowerListRoute.name,
+            path: '/follower-list-page',
+            args: FollowerListRouteArgs(
+                viewMember: viewMember, currentMember: currentMember));
+
+  static const String name = 'FollowerListRoute';
+}
+
+class FollowerListRouteArgs {
+  const FollowerListRouteArgs(
+      {required this.viewMember, required this.currentMember});
+
+  final Member viewMember;
+
+  final Member currentMember;
+
+  @override
+  String toString() {
+    return 'FollowerListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
+  }
 }
 
 /// generated route for
