@@ -40,7 +40,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     with TickerProviderStateMixin {
   late Member _viewMember;
   late Member _currentMember;
-  bool _isFollowed = false;
   int _pickCount = 0;
   int _followerCount = 0;
   int _followingCount = 0;
@@ -412,26 +411,31 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              RichText(
-                text: TextSpan(
-                  text: _convertNumberToString(_pickCount),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                  children: const [
-                    TextSpan(
-                      text: '\n精選',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black54,
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: RichText(
+                    text: TextSpan(
+                      text: _convertNumberToString(_pickCount),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
                       ),
-                    )
-                  ],
+                      children: const [
+                        TextSpan(
+                          text: '\n精選',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black54,
+                          ),
+                        )
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -442,7 +446,11 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  AutoRouter.of(context).push(FollowerListRoute(
+                      viewMember: widget.viewMember,
+                      currentMember: widget.currentMember));
+                },
                 child: RichText(
                   text: TextSpan(
                     text: _convertNumberToString(_followerCount),
@@ -480,37 +488,42 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   thickness: 0.5,
                 ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: RichText(
-                  text: TextSpan(
-                    text: _convertNumberToString(_followingCount),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: RichText(
+                      text: TextSpan(
+                        text: _convertNumberToString(_followingCount),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                        children: const [
+                          TextSpan(
+                            text: '\n追蹤中',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.navigate_next_outlined,
+                              size: 18,
+                              color: Colors.black26,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    children: const [
-                      TextSpan(
-                        text: '\n追蹤中',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.navigate_next_outlined,
-                          size: 18,
-                          color: Colors.black26,
-                        ),
-                      ),
-                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
+              )
             ],
           ),
         ],
@@ -530,22 +543,18 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   }
 
   Widget _followButton() {
-    if (_currentMember.following != null) {
-      _isFollowed = _currentMember.following!
-          .any((member) => member.memberId == _viewMember.memberId);
-    }
     return OutlinedButton(
       onPressed: () async {
-        bool originFollowState = _isFollowed;
+        bool originFollowState = _viewMember.isFollowing;
         setState(() {
-          _isFollowed = !_isFollowed;
+          _viewMember.isFollowing = !_viewMember.isFollowing;
         });
         List<Member>? newFollowingList;
         // check whether is login
         if (FirebaseAuth.instance.currentUser != null) {
           final MemberService _memberService = MemberService();
 
-          if (originFollowState) {
+          if (!originFollowState) {
             newFollowingList = await _memberService.addFollowingMember(
                 _currentMember.memberId, _viewMember.memberId);
           } else {
@@ -555,7 +564,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         } else {
           final VisitorService _visitorService = VisitorService();
 
-          if (originFollowState) {
+          if (!originFollowState) {
             newFollowingList =
                 await _visitorService.addFollowingMember(_viewMember.memberId);
           } else {
@@ -565,7 +574,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         }
         if (newFollowingList == null) {
           setState(() {
-            _isFollowed = !_isFollowed;
+            _viewMember.isFollowing = !_viewMember.isFollowing;
           });
         } else {
           _currentMember.following = newFollowingList;
@@ -573,16 +582,17 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: _isFollowed ? Colors.black87 : Colors.white,
+        backgroundColor:
+            _viewMember.isFollowing ? Colors.black87 : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 8),
         minimumSize: const Size.fromHeight(48),
       ),
       child: Text(
-        _isFollowed ? '追蹤中' : '追蹤',
+        _viewMember.isFollowing ? '追蹤中' : '追蹤',
         maxLines: 1,
         style: TextStyle(
           fontSize: 16,
-          color: _isFollowed ? Colors.white : Colors.black87,
+          color: _viewMember.isFollowing ? Colors.white : Colors.black87,
         ),
       ),
     );
