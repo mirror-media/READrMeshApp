@@ -640,7 +640,12 @@ class PersonalFileService {
 
     List<Member> followerList = [];
     for (var member in jsonResponse['data']['members']) {
-      followerList.add(Member.fromJson(member));
+      Member follower = Member.fromJson(member);
+      if (currentMember.memberId == '-1' && currentMember.following != null) {
+        follower.isFollowing = currentMember.following!
+            .any((element) => element.memberId == follower.memberId);
+      }
+      followerList.add(follower);
     }
 
     return followerList;
