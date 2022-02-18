@@ -531,11 +531,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
   Widget _followButton() {
     if (_currentMember.following != null) {
-      int index = _currentMember.following!
-          .indexWhere((member) => member.memberId == _viewMember.memberId);
-      if (index != -1) {
-        _isFollowed = true;
-      }
+      _isFollowed = _currentMember.following!
+          .any((member) => member.memberId == _viewMember.memberId);
     }
     return OutlinedButton(
       onPressed: () async {
