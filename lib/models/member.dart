@@ -14,7 +14,7 @@ class Member {
   final int? commentCount;
   final List<Member>? follower;
   final List<Category>? followingCategory;
-  final List<Publisher>? followingPublisher;
+  List<Publisher>? followingPublisher;
   List<Member>? following;
   final bool verified;
   String? intro;
