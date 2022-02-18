@@ -6,6 +6,7 @@ import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/publisher.dart';
 
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -307,6 +308,8 @@ class MemberService {
         following{
           id
           nickname
+          avatar
+          customId
         }
       }
     }
@@ -365,6 +368,8 @@ class MemberService {
         following{
           id
           nickname
+          avatar
+          customId
         }
       }
     }
@@ -396,6 +401,126 @@ class MemberService {
       }
 
       return followingMembers;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<Publisher>?> addFollowPublisher(
+      String memberId, String publisherId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$publisherId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          follow_publisher:{
+            connect:{
+              id: \$publisherId
+            }
+          }
+        }
+      ){
+        follow_publisher{
+          id
+          title
+          logo
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "publisherId": publisherId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Publisher> followPublisher = [];
+      for (var publisher in jsonResponse['data']['updateMember']
+          ['follow_publisher']) {
+        followPublisher.add(Publisher.fromJson(publisher));
+      }
+
+      return followPublisher;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<Publisher>?> removeFollowPublisher(
+      String memberId, String publisherId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$publisherId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          follow_publisher:{
+            disconnect:{
+              id: \$publisherId
+            }
+          }
+        }
+      ){
+        follow_publisher{
+          id
+          title
+          logo
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "publisherId": publisherId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Publisher> followPublisher = [];
+      for (var publisher in jsonResponse['data']['updateMember']
+          ['follow_publisher']) {
+        followPublisher.add(Publisher.fromJson(publisher));
+      }
+
+      return followPublisher;
     } catch (e) {
       return null;
     }
