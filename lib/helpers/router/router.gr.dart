@@ -97,6 +97,13 @@ class _$AppRouter extends RootStackRouter {
           child: FollowerListPage(
               viewMember: args.viewMember, currentMember: args.currentMember));
     },
+    FollowingListRoute.name: (routeData) {
+      final args = routeData.argsAs<FollowingListRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: FollowingListPage(
+              viewMember: args.viewMember, currentMember: args.currentMember));
+    },
     HomeRouter.name: (routeData) {
       final args = routeData.argsAs<HomeRouterArgs>();
       return MaterialPageX<dynamic>(
@@ -137,7 +144,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
         RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
         RouteConfig(MemberCenterRoute.name, path: '/member-center-page'),
-        RouteConfig(FollowerListRoute.name, path: '/follower-list-page')
+        RouteConfig(FollowerListRoute.name, path: '/follower-list-page'),
+        RouteConfig(FollowingListRoute.name, path: '/following-list-page')
       ];
 }
 
@@ -439,6 +447,33 @@ class FollowerListRouteArgs {
   @override
   String toString() {
     return 'FollowerListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
+  }
+}
+
+/// generated route for
+/// [FollowingListPage]
+class FollowingListRoute extends PageRouteInfo<FollowingListRouteArgs> {
+  FollowingListRoute(
+      {required Member viewMember, required Member currentMember})
+      : super(FollowingListRoute.name,
+            path: '/following-list-page',
+            args: FollowingListRouteArgs(
+                viewMember: viewMember, currentMember: currentMember));
+
+  static const String name = 'FollowingListRoute';
+}
+
+class FollowingListRouteArgs {
+  const FollowingListRouteArgs(
+      {required this.viewMember, required this.currentMember});
+
+  final Member viewMember;
+
+  final Member currentMember;
+
+  @override
+  String toString() {
+    return 'FollowingListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
   }
 }
 
