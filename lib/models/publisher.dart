@@ -10,6 +10,7 @@ class Publisher {
   final String? lang;
   final bool fullContent;
   final bool fullScreenAd;
+  final String? customId;
 
   Publisher({
     required this.id,
@@ -21,6 +22,7 @@ class Publisher {
     this.lang,
     this.fullContent = false,
     this.fullScreenAd = false,
+    this.customId,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> json) {
