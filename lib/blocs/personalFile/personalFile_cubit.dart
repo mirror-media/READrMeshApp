@@ -45,6 +45,12 @@ class PersonalFileCubit extends Cubit<PersonalFileState> {
       fetchCurrentMember,
     ]);
 
+    for (var following in currentMemberData.following!) {
+      if (following.memberId == viewMemberData.memberId) {
+        viewMemberData.isFollowing = true;
+      }
+    }
+
     emit(PersonalFileLoaded(viewMemberData, currentMemberData));
   }
 
