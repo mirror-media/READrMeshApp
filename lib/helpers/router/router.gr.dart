@@ -104,6 +104,12 @@ class _$AppRouter extends RootStackRouter {
           child: FollowingListPage(
               viewMember: args.viewMember, currentMember: args.currentMember));
     },
+    EditPersonalFileRoute.name: (routeData) {
+      return MaterialPageX<bool>(
+          routeData: routeData,
+          child: EditPersonalFilePage(),
+          fullscreenDialog: true);
+    },
     HomeRouter.name: (routeData) {
       final args = routeData.argsAs<HomeRouterArgs>();
       return MaterialPageX<dynamic>(
@@ -145,7 +151,9 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
         RouteConfig(MemberCenterRoute.name, path: '/member-center-page'),
         RouteConfig(FollowerListRoute.name, path: '/follower-list-page'),
-        RouteConfig(FollowingListRoute.name, path: '/following-list-page')
+        RouteConfig(FollowingListRoute.name, path: '/following-list-page'),
+        RouteConfig(EditPersonalFileRoute.name,
+            path: '/edit-personal-file-page')
       ];
 }
 
@@ -475,6 +483,15 @@ class FollowingListRouteArgs {
   String toString() {
     return 'FollowingListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
   }
+}
+
+/// generated route for
+/// [EditPersonalFilePage]
+class EditPersonalFileRoute extends PageRouteInfo<void> {
+  const EditPersonalFileRoute()
+      : super(EditPersonalFileRoute.name, path: '/edit-personal-file-page');
+
+  static const String name = 'EditPersonalFileRoute';
 }
 
 /// generated route for
