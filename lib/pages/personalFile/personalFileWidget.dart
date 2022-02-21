@@ -302,7 +302,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       centerTitle: Platform.isIOS,
       leading: leading,
       title: Text(
-        widget.viewMember.customId,
+        _viewMember.customId,
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
@@ -612,7 +612,14 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
   Widget _editProfileButton() {
     return OutlinedButton(
-      onPressed: () async {},
+      onPressed: () async {
+        final needReload =
+            await context.pushRoute(const EditPersonalFileRoute());
+
+        if (needReload is bool && needReload) {
+          _refetchMemberData();
+        }
+      },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
         backgroundColor: Colors.white,
