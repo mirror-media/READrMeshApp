@@ -740,6 +740,7 @@ class PersonalFileService {
           id
           title
           logo
+          customId
         }
       }
     }
