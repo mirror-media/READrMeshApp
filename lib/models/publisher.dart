@@ -33,6 +33,7 @@ class Publisher {
     String? lang;
     bool fullContent = false;
     bool fullScreenAd = false;
+    String? customId;
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {
       officialSite = json['officialSite'];
@@ -65,6 +66,10 @@ class Publisher {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['customId'])) {
+      customId = json['customId'];
+    }
+
     return Publisher(
       id: json['id'],
       title: json['title'],
@@ -75,6 +80,7 @@ class Publisher {
       lang: lang,
       fullContent: fullContent,
       fullScreenAd: fullScreenAd,
+      customId: customId,
     );
   }
 }
