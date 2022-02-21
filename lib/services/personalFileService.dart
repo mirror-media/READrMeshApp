@@ -768,4 +768,38 @@ class PersonalFileService {
 
     return followPublisherList;
   }
+
+  Future<List<Publisher>> fetchAllPublishers() async {
+    const String query = """
+    query{
+      publishers{
+        id
+        title
+        customId
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {};
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<Publisher> allPublisherList = [];
+    for (var publisher in jsonResponse['data']['publishers']) {
+      allPublisherList.add(Publisher.fromJson(publisher));
+    }
+
+    return allPublisherList;
+  }
 }
