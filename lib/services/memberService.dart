@@ -525,4 +525,52 @@ class MemberService {
       return null;
     }
   }
+
+  Future<bool> updateMember(Member member) async {
+    String mutation = """
+    mutation(
+      \$id: ID
+      \$nickname: String
+      \$customId: String
+      \$intro: String
+    ){
+      updateMember(
+        where:{
+          id: \$id
+        }
+        data:{
+          nickname: \$nickname
+          customId: \$customId
+          intro: \$intro
+        }
+      ){
+        id
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "id": member.memberId,
+      "nickname": member.nickname,
+      "customId": member.customId,
+      "intro": member.intro ?? '',
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
 }
