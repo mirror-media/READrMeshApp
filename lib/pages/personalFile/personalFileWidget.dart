@@ -154,7 +154,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       builder: (context, state) {
         if (state is PersonalFileError) {
           final error = state.error;
-          print('HomePageError: ${error.message}');
+          print('PersonalFileError: ${error.message}');
 
           return ErrorPage(
             error: error,
