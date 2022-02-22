@@ -311,7 +311,8 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               keyboardType: TextInputType.name,
               autocorrect: false,
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r'[\u4E00-\u9FFF]'))
+                FilteringTextInputFormatter.deny(RegExp(r'[\u4E00-\u9FFF]')),
+                FilteringTextInputFormatter.allow(RegExp(r'[_.\w]'))
               ],
               onChanged: (value) {
                 _customIdError = false;
