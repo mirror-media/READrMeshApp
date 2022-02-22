@@ -37,7 +37,7 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
         if (result) {
           emit(PersonalFileSaved());
         } else {
-          emit(SavePersonalFileFailed());
+          emit(PersonalFileIdError());
         }
       }
     } catch (e) {
