@@ -380,16 +380,18 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             );
           }
           return CommentItem(
-            comment: widget.news.popularComments[index],
+            comment: widget.news.popularComments[index - 1],
             member: widget.member,
             isLiked: _allComments[index].isLiked,
             isFollowingComment: widget.member.following?.any((element) =>
-                    element.memberId == _allComments[index].member.memberId) ??
+                    element.memberId ==
+                    widget.news.popularComments[index - 1].member.memberId) ??
                 false,
             isMyComment:
-                _allComments[index].member.memberId == widget.member.memberId,
-            isSending: (_isSending && index == 0),
-            isMyNewComment: _hasMyNewComment && index == 0,
+                widget.news.popularComments[index - 1].member.memberId ==
+                    widget.member.memberId,
+            isSending: false,
+            isMyNewComment: false,
           );
         },
         childCount: widget.news.popularComments.length + 1,
