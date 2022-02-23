@@ -1,6 +1,8 @@
+import 'package:readr/models/annotation.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/publisher.dart';
 
 class NewsStoryItem {
@@ -14,6 +16,8 @@ class NewsStoryItem {
   int pickCount;
   String? myPickId;
   String? bookmarkId;
+  String? contentApiData;
+  List<String>? contentAnnotationData;
 
   NewsStoryItem({
     required this.id,
@@ -26,6 +30,8 @@ class NewsStoryItem {
     this.pickCount = 0,
     this.myPickId,
     this.bookmarkId,
+    this.contentApiData,
+    this.contentAnnotationData,
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
@@ -37,6 +43,7 @@ class NewsStoryItem {
     String? myPickId;
     int pickCount = 0;
     String? bookmarkId;
+    bool fullContent = false;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -83,6 +90,28 @@ class NewsStoryItem {
       pickCount = json['pickCount'];
     }
 
+    if (BaseModel.checkJsonKeys(json, ['full_content'])) {
+      fullContent = json['full_content'];
+    }
+
+    String? contentApiData;
+    // ParagraphList contentApiData = ParagraphList();
+    List<String>? contentAnnotationData = [];
+    if (BaseModel.hasKey(json, 'content') && fullContent) {
+      contentApiData = json["content"];
+      // contentApiData = ParagraphList.parseResponseBody(json["content"]);
+      // for (var paragraph in contentApiData) {
+      //   if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
+      //     List<String> sourceData =
+      //         Annotation.parseSourceData(paragraph.contents![0].data);
+      //     String? annotationData = Annotation.getAnnotation(sourceData);
+      //     if (annotationData != null) {
+      //       contentAnnotationData.add(annotationData);
+      //     }
+      //   }
+      // }
+    }
+
     return NewsStoryItem(
       id: json['id'],
       title: json['title'],
@@ -94,6 +123,8 @@ class NewsStoryItem {
       myPickId: myPickId,
       pickCount: pickCount,
       bookmarkId: bookmarkId,
+      contentApiData: contentApiData,
+      contentAnnotationData: contentAnnotationData,
     );
   }
 }
