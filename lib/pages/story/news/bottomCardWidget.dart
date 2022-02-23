@@ -92,6 +92,14 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                         topRight: Radius.circular(20),
                       ),
                       color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(0, -8),
+                          blurRadius: 10,
+                          spreadRadius: 5,
+                        ),
+                      ],
                     ),
                     child: CustomScrollView(
                       controller: scrollController,
