@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/news/news_bloc.dart';
+import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/pages/story/news/newsStoryWidget.dart';
 import 'package:readr/pages/story/news/newsWebviewWidget.dart';
 
-class NewsStoryPage extends StatefulWidget {
+class NewsStoryPage extends StatelessWidget {
   final NewsListItem news;
   final Member member;
-  final bool isNative;
 
   const NewsStoryPage({
     required this.news,
     required this.member,
-    this.isNative = false,
   });
 
-  @override
-  _NewsStoryPageState createState() => _NewsStoryPageState();
-}
-
-class _NewsStoryPageState extends State<NewsStoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         body: BlocProvider(
-          create: (context) => NewsBloc(),
-          child: NewsWebviewWidget(
-            news: widget.news,
-            member: widget.member,
-          ),
+          create: (context) => NewsCubit(),
+          child: news.fullContent
+              ? NewsStoryWidget(
+                  news: news,
+                  member: member,
+                )
+              : NewsWebviewWidget(
+                  news: news,
+                  member: member,
+                ),
         ));
   }
 }
