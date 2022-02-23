@@ -148,7 +148,14 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   @override
   Widget build(BuildContext context) {
     if (widget.isVisitor && widget.isFromBottomTab) {
-      return _visitorContent();
+      return Column(
+        children: [
+          _appBar(),
+          Expanded(
+            child: _visitorContent(),
+          ),
+        ],
+      );
     }
     return BlocBuilder<PersonalFileCubit, PersonalFileState>(
       builder: (context, state) {
@@ -202,29 +209,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
         return Column(
           children: [
-            AppBar(
-              elevation: 0,
-              leading: widget.isFromBottomTab
-                  ? _settingButton()
-                  : IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        color: Colors.black,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-              title: Text(
-                widget.viewMember.customId,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              centerTitle: Platform.isIOS,
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-            ),
+            _appBar(),
             const Expanded(
               child: Center(
                 child: CircularProgressIndicator.adaptive(),
@@ -233,6 +218,32 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           ],
         );
       },
+    );
+  }
+
+  Widget _appBar() {
+    return AppBar(
+      elevation: 0,
+      leading: widget.isFromBottomTab
+          ? _settingButton()
+          : IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: Colors.black,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+      title: Text(
+        widget.viewMember.customId,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+        ),
+      ),
+      centerTitle: Platform.isIOS,
+      backgroundColor: Colors.white,
+      automaticallyImplyLeading: false,
     );
   }
 
