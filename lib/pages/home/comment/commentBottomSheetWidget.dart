@@ -275,7 +275,6 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                 itemBuilder: (context, index) {
                   return CommentItem(
                     comment: _allComments[index],
-                    isLiked: _allComments[index].isLiked,
                     isFollowingComment: widget.member.following?.any(
                             (element) =>
                                 element.memberId ==

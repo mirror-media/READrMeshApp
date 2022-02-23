@@ -384,7 +384,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           return CommentItem(
             comment: widget.news.popularComments[index - 1],
             member: widget.member,
-            isLiked: _allComments[index].isLiked,
             isFollowingComment: widget.member.following?.any((element) =>
                     element.memberId ==
                     widget.news.popularComments[index - 1].member.memberId) ??
@@ -409,7 +408,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           return CommentItem(
             comment: _allComments[index],
             member: widget.member,
-            isLiked: _allComments[index].isLiked,
             isFollowingComment: widget.member.following?.any((element) =>
                     element.memberId == _allComments[index].member.memberId) ??
                 false,
