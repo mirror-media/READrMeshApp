@@ -394,10 +394,13 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildAuthor() {
+    if (_newsStoryItem.writer == null || _newsStoryItem.writer!.isEmpty) {
+      return Container();
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '記者：',
+        '記者：' + _newsStoryItem.writer!,
         style: const TextStyle(
           color: Colors.black54,
           fontSize: 13,

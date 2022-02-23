@@ -27,6 +27,7 @@ class NewsStoryService {
         title
         content
         full_content
+        writer
         source{
           id
           title

@@ -1,8 +1,6 @@
-import 'package:readr/models/annotation.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/publisher.dart';
 
 class NewsStoryItem {
@@ -16,8 +14,9 @@ class NewsStoryItem {
   int pickCount;
   String? myPickId;
   String? bookmarkId;
-  String? contentApiData;
-  List<String>? contentAnnotationData;
+  final String? contentApiData;
+  final List<String>? contentAnnotationData;
+  final String? writer;
 
   NewsStoryItem({
     required this.id,
@@ -32,6 +31,7 @@ class NewsStoryItem {
     this.bookmarkId,
     this.contentApiData,
     this.contentAnnotationData,
+    this.writer,
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
@@ -44,6 +44,7 @@ class NewsStoryItem {
     int pickCount = 0;
     String? bookmarkId;
     bool fullContent = false;
+    String? writer;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -112,6 +113,10 @@ class NewsStoryItem {
       // }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['writer'])) {
+      writer = json['writer'];
+    }
+
     return NewsStoryItem(
       id: json['id'],
       title: json['title'],
@@ -125,6 +130,7 @@ class NewsStoryItem {
       bookmarkId: bookmarkId,
       contentApiData: contentApiData,
       contentAnnotationData: contentAnnotationData,
+      writer: writer,
     );
   }
 }
