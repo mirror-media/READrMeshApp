@@ -42,7 +42,10 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
     }
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        AutoRouter.of(context).push(PersonalFileRoute(
+            viewMember: widget.recommendMember, currentMember: widget.member));
+      },
       child: Card(
         color: Colors.white,
         elevation: 0,
