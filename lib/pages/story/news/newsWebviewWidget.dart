@@ -291,7 +291,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
                   ),
                 );
               } else {
-                await showCupertinoDialog(
+                await showDialog(
                   context: context,
                   builder: (context) => CupertinoAlertDialog(
                     title: dialogTitle,
