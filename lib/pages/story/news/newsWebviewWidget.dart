@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:readr/blocs/news/news_bloc.dart';
+import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -48,12 +48,14 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
   }
 
   _fetchNewsData() async {
-    context.read<NewsBloc>().add(FetchNews(widget.news.id, widget.member));
+    context
+        .read<NewsCubit>()
+        .fetchNewsData(newsId: widget.news.id, member: widget.member);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewsBloc, NewsState>(
+    return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
         if (state is NewsError) {
           final error = state.error;
@@ -144,10 +146,16 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           _isLoading
               ? Container(
                   color: Colors.white,
-                  child: const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ),
-                )
+                  child: Column(
+                    children: [
+                      _appBar(context),
+                      const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                      )
+                    ],
+                  ))
               : Container(),
         ],
       ),
@@ -169,65 +177,68 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
         ),
       ),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            _isBookmarked
-                ? Icons.bookmark_outlined
-                : Icons.bookmark_border_outlined,
-            color: Colors.black,
-            size: 26,
-          ),
-          tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
-          onPressed: _isSending
-              ? null
-              : () async {
-                  bool originState = _isBookmarked;
-                  setState(() {
-                    _isBookmarked = !_isBookmarked;
-                    _isSending = true;
-                  });
-                  if (originState) {
-                    bool isDelete = await _pickService
-                        .deletePick(_newsStoryItem.bookmarkId!);
-                    PickToast.showBookmarkToast(context, isDelete, false);
-                    if (!isDelete) {
-                      _isBookmarked = originState;
+        if (!_isLoading) ...[
+          IconButton(
+            icon: Icon(
+              _isBookmarked
+                  ? Icons.bookmark_outlined
+                  : Icons.bookmark_border_outlined,
+              color: Colors.black,
+              size: 26,
+            ),
+            tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
+            onPressed: _isSending
+                ? null
+                : () async {
+                    bool originState = _isBookmarked;
+                    setState(() {
+                      _isBookmarked = !_isBookmarked;
+                      _isSending = true;
+                    });
+                    if (originState) {
+                      bool isDelete = await _pickService
+                          .deletePick(_newsStoryItem.bookmarkId!);
+                      PickToast.showBookmarkToast(context, isDelete, false);
+                      if (!isDelete) {
+                        _isBookmarked = originState;
+                      } else {
+                        _newsStoryItem.bookmarkId = null;
+                      }
                     } else {
-                      _newsStoryItem.bookmarkId = null;
+                      String? pickId = await _pickService.createPick(
+                        memberId: widget.member.memberId,
+                        targetId: _newsStoryItem.id,
+                        objective: PickObjective.story,
+                        state: PickState.private,
+                        kind: PickKind.bookmark,
+                      );
+                      PickToast.showBookmarkToast(
+                          context, pickId != null, true);
+                      if (pickId != null) {
+                        _newsStoryItem.bookmarkId = pickId;
+                      } else {
+                        _isBookmarked = originState;
+                      }
                     }
-                  } else {
-                    String? pickId = await _pickService.createPick(
-                      memberId: widget.member.memberId,
-                      targetId: _newsStoryItem.id,
-                      objective: PickObjective.story,
-                      state: PickState.private,
-                      kind: PickKind.bookmark,
-                    );
-                    PickToast.showBookmarkToast(context, pickId != null, true);
-                    if (pickId != null) {
-                      _newsStoryItem.bookmarkId = pickId;
-                    } else {
-                      _isBookmarked = originState;
-                    }
-                  }
-                  setState(() {
-                    _isSending = false;
-                  });
-                },
-        ),
-        IconButton(
-          icon: Icon(
-            Platform.isAndroid
-                ? Icons.share_outlined
-                : Icons.ios_share_outlined,
-            color: Colors.black,
-            size: 26,
+                    setState(() {
+                      _isSending = false;
+                    });
+                  },
           ),
-          tooltip: '分享',
-          onPressed: () {
-            Share.share(widget.news.url);
-          },
-        ),
+          IconButton(
+            icon: Icon(
+              Platform.isAndroid
+                  ? Icons.share_outlined
+                  : Icons.ios_share_outlined,
+              color: Colors.black,
+              size: 26,
+            ),
+            tooltip: '分享',
+            onPressed: () {
+              Share.share(widget.news.url);
+            },
+          ),
+        ],
         IconButton(
           icon: const Icon(
             Icons.close_outlined,
