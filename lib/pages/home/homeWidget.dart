@@ -12,6 +12,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestCommentsBlock.dart';
 import 'package:readr/pages/home/latestNewsBlock.dart';
+import 'package:readr/pages/home/recommendFollowBlock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -192,6 +193,15 @@ class _HomeWidgetState extends State<HomeWidget> {
               _isLoadingMoreFollowingPicked,
               _recommendedMembers,
             ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 8.5,
+              color: homeScreenBackgroundColor,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: RecommendFollowBlock(_recommendedMembers, _currentMember),
           ),
           SliverToBoxAdapter(
             child: Container(
