@@ -33,8 +33,10 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
       } else if (checkResult == 2) {
         emit(PersonalFileIdError());
       } else {
-        bool result = await _memberService.updateMember(member);
-        if (result) {
+        bool? result = await _memberService.updateMember(member);
+        if (result == null) {
+          emit(SavePersonalFileFailed());
+        } else if (result) {
           emit(PersonalFileSaved());
         } else {
           emit(PersonalFileIdError());

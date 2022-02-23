@@ -526,7 +526,7 @@ class MemberService {
     }
   }
 
-  Future<bool> updateMember(Member member) async {
+  Future<bool?> updateMember(Member member) async {
     String mutation = """
     mutation(
       \$id: ID
@@ -568,9 +568,16 @@ class MemberService {
         headers: await getHeaders(),
       );
 
-      return !jsonResponse.containsKey('errors');
+      // true mean success, false mean customId error, null mean other error.
+      if (!jsonResponse.containsKey('errors')) {
+        return true;
+      } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
+        return false;
+      } else {
+        return null;
+      }
     } catch (e) {
-      return false;
+      return null;
     }
   }
 }
