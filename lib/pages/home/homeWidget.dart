@@ -180,7 +180,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return RefreshIndicator(
       onRefresh: () => _reloadHomeScreen(),
       child: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           _buildAppBar(),
           SliverToBoxAdapter(
