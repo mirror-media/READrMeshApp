@@ -210,11 +210,8 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
   Widget _followButton(Comment comment) {
     bool isFollowed = false;
     if (widget.member.following != null) {
-      int index = widget.member.following!
-          .indexWhere((member) => member.memberId == comment.member.memberId);
-      if (index != -1) {
-        isFollowed = true;
-      }
+      isFollowed = widget.member.following!
+          .any((member) => member.memberId == comment.member.memberId);
     }
 
     return OutlinedButton(
