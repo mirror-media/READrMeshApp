@@ -132,7 +132,7 @@ class FollowingBlock extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _pickBar(item.followingPickMembers),
+              _pickBar(context, item.followingPickMembers),
               if (item.heroImageUrl != null)
                 CachedNetworkImage(
                   width: MediaQuery.of(context).size.width,
@@ -235,7 +235,7 @@ class FollowingBlock extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _pickBar(item.followingPickMembers),
+            _pickBar(context, item.followingPickMembers),
             if (item.heroImageUrl != null)
               CachedNetworkImage(
                 width: MediaQuery.of(context).size.width,
@@ -293,7 +293,7 @@ class FollowingBlock extends StatelessWidget {
                     storyId: item.id,
                   );
                 },
-                child: _commentsWidget(item.showComment!),
+                child: _commentsWidget(context, item.showComment!),
               ),
             ]
           ],
@@ -308,7 +308,7 @@ class FollowingBlock extends StatelessWidget {
     );
   }
 
-  Widget _pickBar(List<Member> members) {
+  Widget _pickBar(BuildContext context, List<Member> members) {
     if (members.isEmpty) {
       return Container();
     }
@@ -323,11 +323,17 @@ class FollowingBlock extends StatelessWidget {
     ];
     if (firstTwoMember.length == 1) {
       children.add(Flexible(
-        child: Text(
-          firstTwoMember[0].nickname,
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        child: GestureDetector(
+          onTap: () {
+            AutoRouter.of(context).push(PersonalFileRoute(
+                viewMember: firstTwoMember[0], currentMember: member));
+          },
+          child: Text(
+            firstTwoMember[0].nickname,
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ));
       children.add(const Text(
@@ -338,11 +344,17 @@ class FollowingBlock extends StatelessWidget {
       ));
     } else {
       children.add(Flexible(
-        child: Text(
-          firstTwoMember[0].nickname,
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        child: GestureDetector(
+          onTap: () {
+            AutoRouter.of(context).push(PersonalFileRoute(
+                viewMember: firstTwoMember[0], currentMember: member));
+          },
+          child: Text(
+            firstTwoMember[0].nickname,
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ));
       children.add(const Text(
@@ -351,11 +363,17 @@ class FollowingBlock extends StatelessWidget {
         maxLines: 1,
       ));
       children.add(Flexible(
-        child: Text(
-          firstTwoMember[1].nickname,
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        child: GestureDetector(
+          onTap: () {
+            AutoRouter.of(context).push(PersonalFileRoute(
+                viewMember: firstTwoMember[1], currentMember: member));
+          },
+          child: Text(
+            firstTwoMember[1].nickname,
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ));
       children.add(const Text(
@@ -374,16 +392,22 @@ class FollowingBlock extends StatelessWidget {
     );
   }
 
-  Widget _commentsWidget(Comment comment) {
+  Widget _commentsWidget(BuildContext context, Comment comment) {
     return Container(
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20),
       color: Colors.white,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProfilePhotoWidget(
-            comment.member,
-            22,
+          GestureDetector(
+            onTap: () {
+              AutoRouter.of(context).push(PersonalFileRoute(
+                  viewMember: comment.member, currentMember: member));
+            },
+            child: ProfilePhotoWidget(
+              comment.member,
+              22,
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -394,14 +418,21 @@ class FollowingBlock extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Flexible(
-                      child: Text(
-                        comment.member.nickname,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black87,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                      child: GestureDetector(
+                        onTap: () {
+                          AutoRouter.of(context).push(PersonalFileRoute(
+                              viewMember: comment.member,
+                              currentMember: member));
+                        },
+                        child: Text(
+                          comment.member.nickname,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),

@@ -6,6 +6,7 @@ import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/publisher.dart';
 
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -79,6 +80,9 @@ class MemberService {
           firebaseId: {
             equals: \$firebaseId
           }
+          is_active:{
+            equals: true
+          }
         }
       ){
         id
@@ -87,6 +91,8 @@ class MemberService {
         email
         avatar
         verified
+        customId
+        intro
         following(
           where: {
             is_active: {
@@ -145,6 +151,7 @@ class MemberService {
   		\$name: String
   		\$nickname: String
   		\$avatar: String
+      \$customId: String
     ){
 	    createMember(
 		    data: { 
@@ -153,7 +160,8 @@ class MemberService {
           name: \$name,
           nickname: \$nickname,
           is_active: true,
-          avatar: \$avatar
+          avatar: \$avatar,
+          customId: \$customId
 		    }) {
         id
         nickname
@@ -161,6 +169,8 @@ class MemberService {
         email
         avatar
         verified
+        customId
+        intro
         following(
           where: {
             is_active: {
@@ -204,12 +214,23 @@ class MemberService {
       nickname = 'User $randomName';
     }
 
+    String customId = '';
+    if (firebaseUser.email != null) {
+      customId = firebaseUser.email!.split('@')[0];
+    } else {
+      var splitUid = firebaseUser.uid.split('');
+      for (int i = 0; i < 5; i++) {
+        customId = customId + splitUid[i];
+      }
+    }
+
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
       "name": nickname,
       "nickname": nickname,
-      "avatar": firebaseUser.photoURL ?? ""
+      "avatar": firebaseUser.photoURL ?? "",
+      "customId": customId
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -287,6 +308,8 @@ class MemberService {
         following{
           id
           nickname
+          avatar
+          customId
         }
       }
     }
@@ -345,6 +368,8 @@ class MemberService {
         following{
           id
           nickname
+          avatar
+          customId
         }
       }
     }
@@ -376,6 +401,181 @@ class MemberService {
       }
 
       return followingMembers;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<Publisher>?> addFollowPublisher(
+      String memberId, String publisherId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$publisherId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          follow_publisher:{
+            connect:{
+              id: \$publisherId
+            }
+          }
+        }
+      ){
+        follow_publisher{
+          id
+          title
+          logo
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "publisherId": publisherId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Publisher> followPublisher = [];
+      for (var publisher in jsonResponse['data']['updateMember']
+          ['follow_publisher']) {
+        followPublisher.add(Publisher.fromJson(publisher));
+      }
+
+      return followPublisher;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<Publisher>?> removeFollowPublisher(
+      String memberId, String publisherId) async {
+    String mutation = """
+    mutation(
+      \$memberId: ID
+      \$publisherId: ID
+    ){
+      updateMember(
+        where:{
+          id: \$memberId
+        }
+        data:{
+          follow_publisher:{
+            disconnect:{
+              id: \$publisherId
+            }
+          }
+        }
+      ){
+        follow_publisher{
+          id
+          title
+          logo
+        }
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "memberId": memberId,
+      "publisherId": publisherId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      if (jsonResponse.containsKey('errors')) {
+        return null;
+      }
+      List<Publisher> followPublisher = [];
+      for (var publisher in jsonResponse['data']['updateMember']
+          ['follow_publisher']) {
+        followPublisher.add(Publisher.fromJson(publisher));
+      }
+
+      return followPublisher;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool?> updateMember(Member member) async {
+    String mutation = """
+    mutation(
+      \$id: ID
+      \$nickname: String
+      \$customId: String
+      \$intro: String
+    ){
+      updateMember(
+        where:{
+          id: \$id
+        }
+        data:{
+          nickname: \$nickname
+          customId: \$customId
+          intro: \$intro
+        }
+      ){
+        id
+      }
+    }
+    """;
+    Map<String, String> variables = {
+      "id": member.memberId,
+      "nickname": member.nickname,
+      "customId": member.customId,
+      "intro": member.intro ?? '',
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      // true mean success, false mean customId error, null mean other error.
+      if (!jsonResponse.containsKey('errors')) {
+        return true;
+      } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
+        return false;
+      } else {
+        return null;
+      }
     } catch (e) {
       return null;
     }

@@ -1,3 +1,4 @@
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -5,8 +6,8 @@ import 'package:readr/models/newsListItem.dart';
 class Pick {
   final String id;
   final Member member;
-  final NewsListItem story;
-  final String objective;
+  final NewsListItem? story;
+  final PickObjective objective;
   final Comment? comment;
   final Comment? pickComment;
   final DateTime pickedDate;
@@ -14,7 +15,7 @@ class Pick {
   Pick({
     required this.id,
     required this.member,
-    required this.story,
+    this.story,
     required this.objective,
     this.comment,
     this.pickComment,
@@ -22,12 +23,34 @@ class Pick {
   });
 
   factory Pick.fromJson(Map<String, dynamic> json) {
+    NewsListItem? story;
+    Comment? comment;
+    Comment? pickComment;
+    PickObjective pickObjective = PickObjective.story;
+    if (json['objective'] == 'comment') {
+      pickObjective = PickObjective.comment;
+    } else if (json['objective'] == 'collection') {
+      pickObjective = PickObjective.collection;
+    }
+
+    if (pickObjective == PickObjective.story) {
+      story = NewsListItem.fromJson(json["story"]);
+    } else if (pickObjective == PickObjective.comment) {
+      comment = Comment.fromJson(json["comment"]);
+    }
+
+    if (json["pick_comment"] != null && json["pick_comment"].isNotEmpty) {
+      pickComment = Comment.fromJson(json["pick_comment"][0]);
+    }
+
     return Pick(
       id: json["id"],
       member: Member.fromJson(json["member"]),
-      story: NewsListItem.fromJson(json["story"]),
+      story: story,
+      comment: comment,
       pickedDate: DateTime.parse(json["picked_date"]).toLocal(),
-      objective: json["objective"],
+      objective: pickObjective,
+      pickComment: pickComment,
     );
   }
 }

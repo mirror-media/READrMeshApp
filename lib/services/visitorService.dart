@@ -114,9 +114,167 @@ class VisitorService {
     return Member(
       memberId: "-1",
       nickname: "訪客",
+      customId: "個人檔案", //show in personalFile page
       following: followingMembers,
       followingCategory: followingCategories,
       followingPublisher: followingPublishers,
+      avatar: null,
     );
+  }
+
+  Future<List<Member>?> addFollowingMember(String newMemberId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> followingMemberIds =
+        prefs.getStringList('followingMemberIds') ?? [];
+    followingMemberIds.add(newMemberId);
+    List<Member>? followingMembers =
+        await fetchFollowingMemberData(followingMemberIds);
+    if (followingMembers != null) {
+      await prefs.setStringList('followingMemberIds', followingMemberIds);
+    }
+
+    return followingMembers;
+  }
+
+  Future<List<Member>?> removeFollowingMember(String newMemberId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> followingMemberIds =
+        prefs.getStringList('followingMemberIds') ?? [];
+    followingMemberIds.remove(newMemberId);
+    List<Member>? followingMembers =
+        await fetchFollowingMemberData(followingMemberIds);
+    if (followingMembers != null) {
+      await prefs.setStringList('followingMemberIds', followingMemberIds);
+    }
+
+    return followingMembers;
+  }
+
+  Future<List<Member>?> fetchFollowingMemberData(
+      List<String> followingMemberIdList) async {
+    const String query = """
+    query(
+      \$followingMembers: [ID!]
+    ){
+      members(
+        where:{
+          is_active:{
+            equals: true
+          }
+          id:{
+            in: \$followingMembers
+          }
+        }
+      ){
+        id
+        nickname
+        email
+        avatar
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "followingMembers": followingMemberIdList,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await getHeaders(),
+    );
+
+    if (jsonResponse.containsKey('errors')) {
+      return null;
+    }
+
+    List<Member> followingMembers = [];
+    for (var member in jsonResponse['data']['members']) {
+      followingMembers.add(Member.fromJson(member));
+    }
+    return followingMembers;
+  }
+
+  Future<List<Publisher>?> addFollowPublisher(String publisherId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> followingPublisherIds =
+        prefs.getStringList('followingPublisherIds') ?? [];
+    followingPublisherIds.add(publisherId);
+    List<Publisher>? followPublisher =
+        await fetchFollowPublisherData(followingPublisherIds);
+    if (followPublisher != null) {
+      await prefs.setStringList('followingPublisherIds', followingPublisherIds);
+    }
+
+    return followPublisher;
+  }
+
+  Future<List<Publisher>?> removeFollowPublisher(String publisherId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> followingPublisherIds =
+        prefs.getStringList('followingPublisherIds') ?? [];
+    followingPublisherIds.remove(publisherId);
+    List<Publisher>? followPublisher =
+        await fetchFollowPublisherData(followingPublisherIds);
+    if (followPublisher != null) {
+      await prefs.setStringList('followingPublisherIds', followingPublisherIds);
+    }
+
+    return followPublisher;
+  }
+
+  Future<List<Publisher>?> fetchFollowPublisherData(
+      List<String> followingPublisherIdList) async {
+    const String query = """
+    query(
+      \$followPublisherId: [ID!]
+    ){
+      publishers(
+        where:{
+          id:{
+            in: \$followPublisherId
+          }
+        }
+      ){
+        id
+        title
+        logo
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "followPublisherId": followingPublisherIdList,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await getHeaders(),
+    );
+
+    if (jsonResponse.containsKey('errors')) {
+      return null;
+    }
+
+    List<Publisher> followPublisher = [];
+    for (var publisher in jsonResponse['data']['publishers']) {
+      followPublisher.add(Publisher.fromJson(publisher));
+    }
+    return followPublisher;
   }
 }

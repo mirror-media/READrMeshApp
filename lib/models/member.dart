@@ -14,9 +14,15 @@ class Member {
   final int? commentCount;
   final List<Member>? follower;
   final List<Category>? followingCategory;
-  final List<Publisher>? followingPublisher;
+  List<Publisher>? followingPublisher;
   List<Member>? following;
   final bool verified;
+  String? intro;
+  String customId;
+  final int? followingCount;
+  final int? followingPublisherCount;
+  final int? bookmarkCount;
+  bool isFollowing;
 
   Member({
     this.firebaseId,
@@ -24,7 +30,7 @@ class Member {
     required this.nickname,
     this.email,
     this.name,
-    this.avatar,
+    required this.avatar,
     this.followerCount,
     this.pickCount,
     this.commentCount,
@@ -33,6 +39,12 @@ class Member {
     this.followingPublisher,
     this.following,
     this.verified = false,
+    this.intro,
+    this.followingCount,
+    this.followingPublisherCount,
+    this.bookmarkCount,
+    required this.customId,
+    this.isFollowing = false,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -48,6 +60,12 @@ class Member {
     List<Member> following = [];
     String? avatar;
     bool verified = false;
+    int? followingCount;
+    int? followingPublisherCount;
+    int? bookmarkCount;
+    String? intro;
+    String customId = '';
+    bool isFollowing = false;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -107,6 +125,31 @@ class Member {
       }
     }
 
+    if (BaseModel.hasKey(json, 'followingCount')) {
+      followingCount = json['followingCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'follow_publisherCount')) {
+      followingPublisherCount = json['follow_publisherCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'bookmarkCount')) {
+      bookmarkCount = json['bookmarkCount'];
+    }
+
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
+    }
+
+    if (BaseModel.hasKey(json, 'intro')) {
+      intro = json['intro'];
+    }
+
+    if (BaseModel.hasKey(json, 'isFollowing') &&
+        json['isFollowing'].isNotEmpty) {
+      isFollowing = true;
+    }
+
     return Member(
       memberId: json['id'],
       firebaseId: firebaseId,
@@ -122,23 +165,37 @@ class Member {
       follower: follower,
       avatar: avatar,
       verified: verified,
+      followingCount: followingCount,
+      followingPublisherCount: followingPublisherCount,
+      bookmarkCount: bookmarkCount,
+      customId: customId,
+      intro: intro,
+      isFollowing: isFollowing,
     );
   }
 
   factory Member.followedFollowing(Map<String, dynamic> json) {
     String? avatar;
+    String customId = '';
     if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
       avatar = json['avatar'];
+    }
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
     }
     return Member(
       memberId: json['id'],
       nickname: json['nickname'],
       followerCount: json['followerCount'] ?? 0,
       avatar: avatar,
+      customId: customId,
       follower: [
         Member(
-            memberId: json['follower'][0]['id'],
-            nickname: json['follower'][0]['nickname'])
+          memberId: json['follower'][0]['id'],
+          nickname: json['follower'][0]['nickname'],
+          customId: '',
+          avatar: null,
+        )
       ],
     );
   }
@@ -150,8 +207,18 @@ class Member {
         Member(
           memberId: json['follower'][0]['id'],
           nickname: json['follower'][0]['nickname'],
+          customId: json['follower'][0]['customId'],
+          avatar: null,
         )
       ];
+    }
+    String? avatar;
+    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+      avatar = json['avatar'];
+    }
+    String customId = '';
+    if (BaseModel.hasKey(json, 'customId')) {
+      customId = json['customId'];
     }
     return Member(
       memberId: json['id'],
@@ -160,6 +227,8 @@ class Member {
       pickCount: json['pickCount'] ?? 0,
       commentCount: json['commentCount'] ?? 0,
       follower: follower,
+      customId: customId,
+      avatar: avatar,
     );
   }
 }

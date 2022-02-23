@@ -35,17 +35,9 @@ class LatestCommentsBlock extends StatelessWidget {
                 ),
               );
             }
-            return InkWell(
-              onTap: () {
-                AutoRouter.of(context).push(NewsStoryRoute(
-                  news: latestCommentsNewsList[index - 1],
-                  member: member,
-                ));
-              },
-              child: LatestCommentItem(
-                latestCommentsNewsList[index - 1],
-                member,
-              ),
+            return LatestCommentItem(
+              latestCommentsNewsList[index - 1],
+              member,
             );
           },
           separatorBuilder: (context, index) => const SizedBox(

@@ -119,6 +119,7 @@ class HomeScreenService {
             id
             nickname
             avatar
+            customId
           }
           content
           state
@@ -168,6 +169,7 @@ class HomeScreenService {
             id
             nickname
             avatar
+            customId
           }
         }
       }
@@ -275,6 +277,7 @@ class HomeScreenService {
             id
             nickname
             avatar
+            customId
           }
           content
           state
@@ -370,6 +373,7 @@ class HomeScreenService {
             id
             nickname
             avatar
+            customId
           }
         }
         otherPicks:pick(
@@ -401,6 +405,7 @@ class HomeScreenService {
             id
             nickname
             avatar
+            customId
           }
         }
         pickCount(
@@ -467,6 +472,7 @@ class HomeScreenService {
         id
         nickname
         avatar
+        customId
         followerCount(
           where:{
             is_active:{
@@ -487,6 +493,7 @@ class HomeScreenService {
         ){
           id
           nickname
+          customId
         }
       }
       otherRecommendMembers:members(
@@ -526,10 +533,12 @@ class HomeScreenService {
         id
         nickname
         avatar
+        customId
         followerCount
         follower(take:1){
           id
           nickname
+          customId
         }
         pickCount(
           where:{

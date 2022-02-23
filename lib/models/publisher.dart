@@ -10,6 +10,7 @@ class Publisher {
   final String? lang;
   final bool fullContent;
   final bool fullScreenAd;
+  final String? customId;
 
   Publisher({
     required this.id,
@@ -21,6 +22,7 @@ class Publisher {
     this.lang,
     this.fullContent = false,
     this.fullScreenAd = false,
+    this.customId,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Publisher {
     String? lang;
     bool fullContent = false;
     bool fullScreenAd = false;
+    String? customId;
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {
       officialSite = json['officialSite'];
@@ -63,6 +66,10 @@ class Publisher {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['customId'])) {
+      customId = json['customId'];
+    }
+
     return Publisher(
       id: json['id'],
       title: json['title'],
@@ -73,6 +80,7 @@ class Publisher {
       lang: lang,
       fullContent: fullContent,
       fullScreenAd: fullScreenAd,
+      customId: customId,
     );
   }
 }
