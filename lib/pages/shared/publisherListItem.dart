@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:readr/pages/shared/publisherLogoWidget.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
 
@@ -33,7 +34,7 @@ class _PublisherListItemState extends State<PublisherListItem> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _logoImage(),
+        PublisherLogoWidget(widget.publisher),
         const SizedBox(
           width: 12,
         ),
@@ -117,64 +118,6 @@ class _PublisherListItemState extends State<PublisherListItem> {
           color: _isFollowing ? Colors.white : Colors.black87,
         ),
       ),
-    );
-  }
-
-  Widget _logoImage() {
-    Color randomColor = Colors
-        .primaries[int.parse(widget.publisher.id) % Colors.primaries.length];
-    Color textColor =
-        randomColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-    List<String> splitTitle = widget.publisher.title.split('');
-    String firstLetter = '';
-    for (int i = 0; i < splitTitle.length; i++) {
-      if (splitTitle[i] != " ") {
-        firstLetter = splitTitle[i];
-        break;
-      }
-    }
-    Widget child;
-    Widget background;
-    if (widget.publisher.logoUrl == null || widget.publisher.logoUrl! == '') {
-      child = Container(
-        alignment: Alignment.center,
-        color: randomColor,
-        child: AutoSizeText(
-          firstLetter,
-          style: TextStyle(color: textColor),
-          minFontSize: 5,
-        ),
-      );
-    } else {
-      background = Container(
-        color: randomColor,
-        child: AutoSizeText(
-          firstLetter,
-          style: TextStyle(color: textColor),
-          minFontSize: 5,
-        ),
-      );
-      child = CachedNetworkImage(
-        imageUrl: widget.publisher.logoUrl!,
-        placeholder: (context, url) => Container(
-          color: Colors.grey,
-        ),
-        errorWidget: (context, url, error) => background,
-        fit: BoxFit.cover,
-      );
-    }
-    return Container(
-      width: 40,
-      height: 40,
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(
-          color: Colors.black12,
-          width: 0.5,
-        ),
-      ),
-      child: child,
     );
   }
 }
