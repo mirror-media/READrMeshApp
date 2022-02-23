@@ -22,15 +22,15 @@ class BottomCardWidget extends StatefulWidget {
   final NewsStoryItem news;
   final Member member;
   final ValueChanged<String> onTextChanged;
-  final ValueChanged<bool> isPickedButton;
   final bool isPicked;
+  final bool isSlideDown;
 
   const BottomCardWidget({
     required this.news,
     required this.member,
     required this.onTextChanged,
-    required this.isPickedButton,
     this.isPicked = false,
+    this.isSlideDown = false,
   });
 
   @override
@@ -169,21 +169,23 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               ),
             ),
           ),
-          Container(
-            color: Colors.white,
-            child: const Divider(
-              color: Colors.black12,
-              thickness: 0.5,
-              height: 0.5,
+          if (!widget.isSlideDown) ...[
+            Container(
+              color: Colors.white,
+              child: const Divider(
+                color: Colors.black12,
+                thickness: 0.5,
+                height: 0.5,
+              ),
             ),
-          ),
-          CommentInputBox(
-            member: widget.member,
-            onPressed: _sendComment,
-            isSending: _isSending,
-            onTextChanged: (text) => widget.onTextChanged(text),
-            textController: _textController,
-          ),
+            CommentInputBox(
+              member: widget.member,
+              onPressed: _sendComment,
+              isSending: _isSending,
+              onTextChanged: (text) => widget.onTextChanged(text),
+              textController: _textController,
+            ),
+          ],
         ],
       ),
     );
@@ -500,7 +502,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = 'loading';
                       _pickCount++;
                       _isPicked = !_isPicked;
-                      widget.isPickedButton(_isPicked);
+
                       if (_pickAvatarMembers.length < 4) {
                         _pickAvatarMembers.insert(0, widget.member);
                       }
@@ -521,7 +523,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       news.myPickId = 'loading';
                       _pickCount++;
                       _isPicked = !_isPicked;
-                      widget.isPickedButton(_isPicked);
+
                       if (_pickAvatarMembers.length < 4) {
                         _pickAvatarMembers.insert(0, widget.member);
                       }
@@ -556,7 +558,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                         _pickAvatarMembers.removeWhere((element) =>
                             element.memberId == widget.member.memberId);
                         _isPicked = !_isPicked;
-                        widget.isPickedButton(_isPicked);
                       });
                     }
                     // Let onPressed function can be called
@@ -576,7 +577,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     _pickAvatarMembers.removeWhere((element) =>
                         element.memberId == widget.member.memberId);
                     _isPicked = !_isPicked;
-                    widget.isPickedButton(_isPicked);
+
                     // freeze onPressed when waiting for response
                     _isLoading = true;
                   });
@@ -594,7 +595,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       _pickCount++;
                       _pickAvatarMembers.insert(0, widget.member);
                       _isPicked = !_isPicked;
-                      widget.isPickedButton(_isPicked);
                     });
                   }
                   // Let onPressed function can be called

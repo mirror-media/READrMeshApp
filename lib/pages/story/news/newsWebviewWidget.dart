@@ -1,21 +1,16 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/news/news_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/pages/story/news/bottomCardWidget.dart';
 import 'package:readr/services/pickService.dart';
@@ -139,15 +134,13 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
               ),
             ],
           ),
-          if (!_isPicked && _isSlideDown) _floatPickButton(),
-          if (!_isSlideDown)
-            BottomCardWidget(
-              news: _newsStoryItem,
-              member: _member,
-              onTextChanged: (value) => _inputText = value,
-              isPickedButton: (value) => _isPicked = value,
-              isPicked: _isPicked,
-            ),
+          BottomCardWidget(
+            news: _newsStoryItem,
+            member: _member,
+            onTextChanged: (value) => _inputText = value,
+            isPicked: _isPicked,
+            isSlideDown: _isSlideDown,
+          ),
           _isLoading
               ? Container(
                   color: Colors.white,
@@ -313,97 +306,6 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           },
         ),
       ],
-    );
-  }
-
-  Widget _floatPickButton() {
-    return Container(
-      width: 56,
-      height: 56,
-      padding: const EdgeInsets.only(right: 20),
-      alignment: Alignment.bottomRight,
-      child: FloatingActionButton(
-        onPressed: () async {
-          // check whether is login
-          if (FirebaseAuth.instance.currentUser != null) {
-            var result = await PickBottomSheet.showPickBottomSheet(
-              context: context,
-              member: widget.member,
-            );
-
-            String? pickId;
-
-            if (result is bool && result) {
-              // refresh UI first
-              setState(() {
-                _newsStoryItem.myPickId = 'loading';
-                _newsStoryItem.pickCount++;
-                _isPicked = !_isPicked;
-              });
-              //send request to api. If content is null, only pick
-              pickId = await _pickService.createPick(
-                memberId: widget.member.memberId,
-                targetId: _newsStoryItem.id,
-                objective: PickObjective.story,
-                state: PickState.public,
-                kind: PickKind.read,
-              );
-            } else if (result is String) {
-              // refresh UI first
-              setState(() {
-                _newsStoryItem.myPickId = 'loading';
-                _newsStoryItem.pickCount++;
-                _isPicked = !_isPicked;
-              });
-              //send request to api. If content is null, only pick
-              var pickAndComment = await _pickService.createPickAndComment(
-                memberId: widget.member.memberId,
-                targetId: _newsStoryItem.id,
-                objective: PickObjective.story,
-                state: PickState.public,
-                kind: PickKind.read,
-                commentContent: result,
-              );
-              pickId = pickAndComment?['pickId'];
-            }
-
-            if ((result is bool && result) || (result is String)) {
-              // If pickId is null, mean failed
-              PickToast.showPickToast(context, pickId != null, true);
-              if (pickId != null) {
-                // update new myPickId to real id
-                _newsStoryItem.myPickId = pickId;
-                _newsStoryItem.pickCount++;
-              } else {
-                // recovery UI when is failed
-                _newsStoryItem.myPickId = null;
-                setState(() {
-                  _newsStoryItem.pickCount--;
-                  _isPicked = !_isPicked;
-                });
-              }
-            }
-          } else {
-            // if user is not login
-            Fluttertoast.showToast(
-              msg: "請先登入",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey[600],
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-            AutoRouter.of(context).push(const LoginRoute());
-          }
-        },
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 26,
-        ),
-      ),
     );
   }
 }
