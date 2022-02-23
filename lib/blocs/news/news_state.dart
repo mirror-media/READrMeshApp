@@ -1,4 +1,4 @@
-part of 'news_bloc.dart';
+part of 'news_cubit.dart';
 
 abstract class NewsState extends Equatable {
   const NewsState();
