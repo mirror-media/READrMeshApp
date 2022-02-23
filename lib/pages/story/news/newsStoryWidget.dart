@@ -9,18 +9,13 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
-import 'package:readr/models/paragraph.dart';
-import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/pages/story/news/bottomCardWidget.dart';
-import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
 import 'package:readr/services/pickService.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
 
 class NewsStoryWidget extends StatefulWidget {
@@ -45,13 +40,26 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   bool _isSlideDown = false;
   bool _isBookmarked = false;
   bool _isSending = false;
-  final ItemScrollController _itemScrollController = ItemScrollController();
+  final ScrollController _scrollController = ScrollController();
+  double _oldOffset = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchNewsData();
     _member = widget.member;
+    _scrollController.addListener(() {
+      if (_scrollController.offset > _oldOffset) {
+        setState(() {
+          _isSlideDown = true;
+        });
+      } else {
+        setState(() {
+          _isSlideDown = false;
+        });
+      }
+      _oldOffset = _scrollController.offset;
+    });
   }
 
   _fetchNewsData() async {
@@ -60,10 +68,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
           member: widget.member,
           isNative: true,
         );
-  }
-
-  bool _isNullOrEmpty(String? input) {
-    return input == null || input == '' || input == ' ';
   }
 
   @override
@@ -293,28 +297,24 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildContent(BuildContext context) {
-    List<Widget> contentWidgets = [
-      _buildHeroWidget(),
-      const SizedBox(height: 24),
-      _buildPublisher(),
-      const SizedBox(height: 4),
-      _buildTitle(),
-      const SizedBox(height: 12),
-      _buildPublishDate(),
-      const SizedBox(height: 4),
-      _buildAuthor(),
-      const SizedBox(height: 24),
-      _buildStoryContent(),
-      const SizedBox(height: 32),
-      _buildAnnotationBlock(),
-      const SizedBox(height: 160),
-    ];
-    return ScrollablePositionedList.builder(
-      itemCount: contentWidgets.length,
-      itemBuilder: (context, index) {
-        return contentWidgets[index];
-      },
-      itemScrollController: _itemScrollController,
+    return ListView(
+      children: [
+        _buildHeroWidget(),
+        const SizedBox(height: 24),
+        _buildPublisher(),
+        const SizedBox(height: 4),
+        _buildTitle(),
+        const SizedBox(height: 12),
+        _buildPublishDate(),
+        const SizedBox(height: 4),
+        _buildAuthor(),
+        const SizedBox(height: 24),
+        _buildStoryContent(),
+        const SizedBox(height: 32),
+        _buildAnnotationBlock(),
+        const SizedBox(height: 160),
+      ],
+      controller: _scrollController,
     );
   }
 
