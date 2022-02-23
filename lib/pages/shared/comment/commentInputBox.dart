@@ -43,17 +43,25 @@ class _CommentInputBoxState extends State<CommentInputBox> {
       // pass value back to showPickBottomSheet
       widget.onTextChanged(_controller.text);
 
-      // check value whether is only space
-      if (_controller.text.trim().isNotEmpty) {
-        setState(() {
-          _hasInput = true;
-        });
-      } else {
-        setState(() {
-          _hasInput = false;
-        });
+      if (mounted) {
+        // check value whether is only space
+        if (_controller.text.trim().isNotEmpty) {
+          setState(() {
+            _hasInput = true;
+          });
+        } else {
+          setState(() {
+            _hasInput = false;
+          });
+        }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(() {});
   }
 
   @override
