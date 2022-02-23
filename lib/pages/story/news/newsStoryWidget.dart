@@ -413,7 +413,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
-            'text-decoration-color': '#ebf02c',
+            'text-decoration-color': 'black',
             'color': 'black',
             'text-decoration-thickness': '100%',
           };
@@ -422,12 +422,14 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
             'line-height': '140%',
             'font-weight': '600',
             'font-size': '20px',
+            'padding': '32px 20px 16px 20px',
           };
         } else if (element.localName == 'h2') {
           return {
             'line-height': '140%',
             'font-weight': '600',
             'font-size': '20px',
+            'padding': '32px 20px 16px 20px',
           };
         } else if (element.localName == 'div') {
           return {
