@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/homeScreenService.dart';
 import 'package:readr/services/memberService.dart';
+import 'package:readr/services/visitorService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'home_event.dart';
@@ -16,6 +18,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeScreenService _homeScreenService = HomeScreenService();
   final MemberService _memberService = MemberService();
+  final VisitorService _visitorService = VisitorService();
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
@@ -60,11 +63,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(UpdatingFollowing(newFollowingMembers, event.isFollowed));
 
           if (event.isFollowed) {
-            newFollowingMembers = await _memberService.removeFollowingMember(
-                event.currentMember.memberId, event.targetMember.memberId);
+            if (FirebaseAuth.instance.currentUser == null) {
+              newFollowingMembers = await _visitorService
+                  .removeFollowingMember(event.targetMember.memberId);
+            } else {
+              newFollowingMembers = await _memberService.removeFollowingMember(
+                  event.currentMember.memberId, event.targetMember.memberId);
+            }
           } else {
-            newFollowingMembers = await _memberService.addFollowingMember(
-                event.currentMember.memberId, event.targetMember.memberId);
+            if (FirebaseAuth.instance.currentUser == null) {
+              newFollowingMembers = await _visitorService
+                  .addFollowingMember(event.targetMember.memberId);
+            } else {
+              newFollowingMembers = await _memberService.addFollowingMember(
+                  event.currentMember.memberId, event.targetMember.memberId);
+            }
           }
           if (newFollowingMembers == null) {
             emit(UpdateFollowingFailed('Unknown error', event.isFollowed));
