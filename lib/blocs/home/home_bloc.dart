@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/helpers/apiException.dart';
+import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -32,7 +33,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
           emit(HomeLoaded(
-            data: data,
+            allLatestNews: data['allLatestNews'],
+            followingStories: data['followingStories'],
+            latestComments: data['latestComments'],
+            recommendedMembers: data['recommendedMembers'],
+            member: data['member'],
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
           ));
@@ -44,7 +49,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
           emit(HomeLoaded(
-            data: data,
+            allLatestNews: data['allLatestNews'],
+            followingStories: data['followingStories'],
+            latestComments: data['latestComments'],
+            recommendedMembers: data['recommendedMembers'],
+            member: data['member'],
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
           ));
@@ -117,22 +126,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(UpdateFollowingFailed(e, event.isFollowed));
         } else if (event is LoadMoreLatestNews) {
           emit(LoadMoreNewsFailed(e));
-        } else if (e is SocketException) {
-          emit(HomeError(NoInternetException('No Internet')));
-        } else if (e is HttpException) {
-          emit(HomeError(NoServiceFoundException('No Service Found')));
-        } else if (e is FormatException) {
-          emit(HomeError(InvalidFormatException('Invalid Response format')));
-        } else if (e is FetchDataException) {
-          emit(HomeError(NoInternetException('Error During Communication')));
-        } else if (e is BadRequestException ||
-            e is UnauthorisedException ||
-            e is InvalidInputException) {
-          emit(HomeError(Error400Exception('Unauthorised')));
-        } else if (e is InternalServerErrorException) {
-          emit(HomeError(Error500Exception('Internal Server Error')));
         } else {
-          emit(HomeError(UnknownException(e.toString())));
+          emit(HomeError(determineException(e)));
         }
       }
     });

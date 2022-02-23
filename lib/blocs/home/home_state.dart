@@ -24,11 +24,19 @@ class UpdatingFollowing extends HomeState {
 class UpdateFollowingSuccess extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final Map<String, dynamic> data;
+  final List<NewsListItem> allLatestNews;
+  final List<NewsListItem> followingStories;
+  final List<NewsListItem> latestComments;
+  final List<Member> recommendedMembers;
+  final Member member;
   final bool showPaywall;
   final bool showFullScreenAd;
   const HomeLoaded({
-    required this.data,
+    required this.allLatestNews,
+    required this.followingStories,
+    required this.latestComments,
+    required this.recommendedMembers,
+    required this.member,
     required this.showFullScreenAd,
     required this.showPaywall,
   });

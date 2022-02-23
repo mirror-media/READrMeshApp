@@ -22,7 +22,6 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  Map<String, dynamic> _data = {};
   late Member _currentMember;
   List<Member>? _tempFollowingData;
   List<NewsListItem> _followingStories = [];
@@ -31,6 +30,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool _showFullScreenAd = true;
   List<NewsListItem> _allLatestNews = [];
   bool _noMoreLatestNews = false;
+  List<NewsListItem> _latestComments = [];
+  List<Member> _recommendedMembers = [];
 
   @override
   void initState() {
@@ -153,10 +154,11 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is HomeLoaded) {
-          _data = state.data;
-          _currentMember = _data['member'];
-          _followingStories = _data['followingStories'];
-          _allLatestNews = _data['allLatestNews'];
+          _currentMember = state.member;
+          _followingStories = state.followingStories;
+          _allLatestNews = state.allLatestNews;
+          _latestComments = state.latestComments;
+          _recommendedMembers = state.recommendedMembers;
           return _buildHomeContent();
         }
 
@@ -188,7 +190,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               _followingStories,
               _currentMember,
               _isLoadingMoreFollowingPicked,
-              _data['recommendedMembers'],
+              _recommendedMembers,
             ),
           ),
           SliverToBoxAdapter(
@@ -198,7 +200,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ),
           SliverToBoxAdapter(
-            child: LatestCommentsBlock(_data['latestComments'], _currentMember),
+            child: LatestCommentsBlock(_latestComments, _currentMember),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -210,7 +212,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           SliverToBoxAdapter(
             child: LatestNewsBlock(
               allLatestNews: _allLatestNews,
-              recommendedMembers: _data['recommendedMembers'],
+              recommendedMembers: _recommendedMembers,
               member: _currentMember,
               showFullScreenAd: _showFullScreenAd,
               showPaywall: _showPaywall,
