@@ -25,6 +25,8 @@ class NewsStoryService {
       ){
         id
         title
+        content
+        full_content
         source{
           id
           title
