@@ -472,6 +472,7 @@ class HomeScreenService {
         id
         nickname
         avatar
+        customId
         followerCount(
           where:{
             is_active:{
@@ -492,6 +493,7 @@ class HomeScreenService {
         ){
           id
           nickname
+          customId
         }
       }
       otherRecommendMembers:members(
@@ -536,6 +538,7 @@ class HomeScreenService {
         follower(take:1){
           id
           nickname
+          customId
         }
         pickCount(
           where:{
