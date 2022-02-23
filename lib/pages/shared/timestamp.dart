@@ -58,11 +58,11 @@ class _TimestampState extends State<Timestamp> {
       text = '${_duration.inMinutes}分鐘前';
     } else if (_duration.inHours < 24) {
       text = '${_duration.inHours}小時前';
-    } else if (_duration.inDays < 31) {
+    } else if (_duration.inDays < 8) {
       text = '${_duration.inDays}天前';
     } else {
       text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
-      fontSize = 12.1;
+      fontSize = widget.textSize + 0.1;
     }
     return Text(
       text,
