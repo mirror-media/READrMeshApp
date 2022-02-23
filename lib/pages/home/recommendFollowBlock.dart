@@ -59,7 +59,7 @@ class RecommendFollowBlock extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 12),
         SizedBox(
           height: 230,
           child: ListView.separated(
@@ -79,7 +79,7 @@ class RecommendFollowBlock extends StatelessWidget {
             itemCount: itemLength,
           ),
         ),
-        const SizedBox(height: 44),
+        const SizedBox(height: 16),
       ],
     );
   }
