@@ -22,7 +22,7 @@ class ConfigBloc extends Bloc<ConfigEvents, ConfigState> {
     try {
       yield ConfigLoading();
       bool isSuccess = await configRepos.loadTheConfig(event.context);
-      RemoteConfig remoteConfig = RemoteConfig.instance;
+      FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
       remoteConfig
           .setDefaults(<String, dynamic>{'min_version_number': '0.0.1'});
       await remoteConfig.setConfigSettings(RemoteConfigSettings(
