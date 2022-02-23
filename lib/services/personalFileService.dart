@@ -199,6 +199,7 @@ class PersonalFileService {
             url
             published_date
             og_image
+            full_content
             source{
               id
               title
@@ -429,6 +430,7 @@ class PersonalFileService {
             url
             published_date
             og_image
+            full_content
             source{
               id
               title
