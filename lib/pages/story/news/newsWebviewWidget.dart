@@ -85,7 +85,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
         }
 
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         );
       },
     );
@@ -152,7 +152,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
               ? Container(
                   color: Colors.white,
                   child: const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator.adaptive(),
                   ),
                 )
               : Container(),
