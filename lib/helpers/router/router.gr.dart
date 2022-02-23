@@ -67,8 +67,7 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<NewsStoryRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: NewsStoryPage(
-              news: args.news, member: args.member, isNative: args.isNative),
+          child: NewsStoryPage(news: args.news, member: args.member),
           fullscreenDialog: true);
     },
     RecommendFollowRoute.name: (routeData) {
@@ -333,31 +332,24 @@ class AuthorRouteArgs {
 /// generated route for
 /// [NewsStoryPage]
 class NewsStoryRoute extends PageRouteInfo<NewsStoryRouteArgs> {
-  NewsStoryRoute(
-      {required NewsListItem news,
-      required Member member,
-      bool isNative = false})
+  NewsStoryRoute({required NewsListItem news, required Member member})
       : super(NewsStoryRoute.name,
             path: '/news-story-page',
-            args: NewsStoryRouteArgs(
-                news: news, member: member, isNative: isNative));
+            args: NewsStoryRouteArgs(news: news, member: member));
 
   static const String name = 'NewsStoryRoute';
 }
 
 class NewsStoryRouteArgs {
-  const NewsStoryRouteArgs(
-      {required this.news, required this.member, this.isNative = false});
+  const NewsStoryRouteArgs({required this.news, required this.member});
 
   final NewsListItem news;
 
   final Member member;
 
-  final bool isNative;
-
   @override
   String toString() {
-    return 'NewsStoryRouteArgs{news: $news, member: $member, isNative: $isNative}';
+    return 'NewsStoryRouteArgs{news: $news, member: $member}';
   }
 }
 
