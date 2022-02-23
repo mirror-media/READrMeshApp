@@ -204,13 +204,15 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           children: [
             AppBar(
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
+              leading: widget.isFromBottomTab
+                  ? _settingButton()
+                  : IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
               title: Text(
                 widget.viewMember.customId,
                 style: const TextStyle(
@@ -221,6 +223,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               ),
               centerTitle: Platform.isIOS,
               backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
             ),
             const Expanded(
               child: Center(
@@ -273,18 +276,22 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     );
   }
 
+  Widget _settingButton() {
+    return IconButton(
+      icon: const Icon(
+        Icons.settings,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        AutoRouter.of(context).push(const MemberCenterRoute());
+      },
+    );
+  }
+
   Widget _buildBar() {
     Widget leading;
     if (widget.isFromBottomTab) {
-      leading = IconButton(
-        icon: const Icon(
-          Icons.settings,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          AutoRouter.of(context).push(const MemberCenterRoute());
-        },
-      );
+      leading = _settingButton();
     } else {
       leading = IconButton(
         icon: const Icon(
