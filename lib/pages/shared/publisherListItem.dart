@@ -1,5 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/models/member.dart';
@@ -42,17 +40,16 @@ class _PublisherListItemState extends State<PublisherListItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (widget.publisher.customId != null)
-                Text(
-                  widget.publisher.customId!,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                ),
               Text(
                 widget.publisher.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                ),
+              ),
+              Text(
+                widget.publisher.followerCount?.toString() ?? '無' '人追蹤',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
