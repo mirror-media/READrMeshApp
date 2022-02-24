@@ -11,6 +11,7 @@ class Publisher {
   final bool fullContent;
   final bool fullScreenAd;
   final String? customId;
+  int? followerCount;
 
   Publisher({
     required this.id,
@@ -23,6 +24,7 @@ class Publisher {
     this.fullContent = false,
     this.fullScreenAd = false,
     this.customId,
+    this.followerCount,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class Publisher {
     bool fullContent = false;
     bool fullScreenAd = false;
     String? customId;
+    int? followerCount;
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {
       officialSite = json['officialSite'];
@@ -81,6 +84,7 @@ class Publisher {
       fullContent: fullContent,
       fullScreenAd: fullScreenAd,
       customId: customId,
+      followerCount: followerCount,
     );
   }
 }
