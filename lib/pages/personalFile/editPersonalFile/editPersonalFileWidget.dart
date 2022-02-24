@@ -298,7 +298,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                       ),
               ),
               validator: (value) {
-                if (_nicknameError) return '這個姓名無法使用，請使用其他姓名。';
+                if (_nicknameError) return '這個名稱目前無法使用，請使用其他名稱。';
                 return value!.trim().isNotEmpty ? null : "姓名不能空白";
               },
             ),
