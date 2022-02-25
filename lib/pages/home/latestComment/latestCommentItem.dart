@@ -1,23 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/member.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/home/newsInfo.dart';
+import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LatestCommentItem extends StatefulWidget {
   final NewsListItem news;
-  final Member member;
-  const LatestCommentItem(this.news, this.member);
+  const LatestCommentItem(this.news);
 
   @override
   _LatestCommentItemState createState() => _LatestCommentItemState();
@@ -41,7 +39,6 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             onTap: () {
               AutoRouter.of(context).push(NewsStoryRoute(
                 news: widget.news,
-                member: widget.member,
               ));
             },
             child: Column(
@@ -104,7 +101,6 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             onTap: () async {
               await CommentBottomSheet.showCommentBottomSheet(
                 context: context,
-                member: widget.member,
                 clickComment: widget.news.showComment!,
                 storyId: widget.news.id,
               );
@@ -125,8 +121,8 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
         children: [
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(PersonalFileRoute(
-                  viewMember: comment.member, currentMember: widget.member));
+              AutoRouter.of(context)
+                  .push(PersonalFileRoute(viewMember: comment.member));
             },
             child: Row(
               children: [
@@ -162,7 +158,13 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                     ],
                   ),
                 ),
-                _followButton(comment),
+                FollowButton(
+                  MemberFollowableItem(comment.member),
+                  onTap: () =>
+                      context.read<HomeBloc>().add(RefreshHomeScreen()),
+                  whenFailed: () =>
+                      context.read<HomeBloc>().add(RefreshHomeScreen()),
+                ),
               ],
             ),
           ),
@@ -203,47 +205,6 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _followButton(Comment comment) {
-    bool isFollowed = false;
-    if (widget.member.following != null) {
-      isFollowed = widget.member.following!
-          .any((member) => member.memberId == comment.member.memberId);
-    }
-
-    return OutlinedButton(
-      onPressed: () {
-        // check whether is login
-        if (FirebaseAuth.instance.currentUser != null) {
-          context.read<HomeBloc>().add(
-              UpdateFollowingMember(comment.member, widget.member, isFollowed));
-        } else {
-          // if user is not login
-          Fluttertoast.showToast(
-            msg: "請先登入",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey[600],
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          AutoRouter.of(context).push(const LoginRoute());
-        }
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: isFollowed ? Colors.black87 : Colors.white,
-      ),
-      child: Text(
-        isFollowed ? '追蹤中' : '追蹤',
-        style: TextStyle(
-          fontSize: 14,
-          color: isFollowed ? Colors.white : Colors.black87,
-        ),
       ),
     );
   }

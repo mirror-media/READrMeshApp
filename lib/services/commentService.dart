@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -69,7 +70,6 @@ class CommentService {
   }
 
   Future<List<Comment>?> createComment({
-    required String memberId,
     required String storyId,
     required String content,
     required CommentTransparency state,
@@ -142,7 +142,7 @@ class CommentService {
     """;
 
     Map<String, dynamic> variables = {
-      "myId": memberId,
+      "myId": UserHelper.instance.currentUser.memberId,
       "storyId": storyId,
       "content": content,
       "published_date": DateTime.now().toUtc().toIso8601String(),
@@ -216,8 +216,7 @@ class CommentService {
     }
   }
 
-  Future<List<Comment>?> fetchCommentsByStoryId(
-      String storyId, String memberId) async {
+  Future<List<Comment>?> fetchCommentsByStoryId(String storyId) async {
     String query = """
       query(
         \$storyId: ID
@@ -268,7 +267,7 @@ class CommentService {
 
     Map<String, String> variables = {
       "storyId": storyId,
-      "myId": memberId,
+      "myId": UserHelper.instance.currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -300,7 +299,6 @@ class CommentService {
   }
 
   Future<int?> addLike({
-    required String memberId,
     required String commentId,
   }) async {
     String mutation = """
@@ -327,7 +325,7 @@ class CommentService {
 
     Map<String, dynamic> variables = {
       "commentId": commentId,
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -353,7 +351,6 @@ class CommentService {
   }
 
   Future<int?> removeLike({
-    required String memberId,
     required String commentId,
   }) async {
     String mutation = """
@@ -380,7 +377,7 @@ class CommentService {
 
     Map<String, dynamic> variables = {
       "commentId": commentId,
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

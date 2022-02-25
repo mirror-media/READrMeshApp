@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
@@ -150,8 +151,7 @@ class PersonalFileService {
     return Member.fromJson(jsonResponse['data']['member']);
   }
 
-  Future<Map<String, dynamic>> fetchPickData(
-      Member targetMember, Member currentMember,
+  Future<Map<String, dynamic>> fetchPickData(Member targetMember,
       {DateTime? pickFilterTime}) async {
     const String query = """
     query(
@@ -345,15 +345,13 @@ class PersonalFileService {
     """;
 
     List<String> followingMemberIds = [];
-    if (currentMember.following != null) {
-      for (var memberId in currentMember.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
+    for (var memberId in UserHelper.instance.currentUser.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
-      "myId": currentMember.memberId,
+      "myId": UserHelper.instance.currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
       "viewMemberId": targetMember.memberId
@@ -386,8 +384,7 @@ class PersonalFileService {
     return returnData;
   }
 
-  Future<List<Pick>> fetchBookmark(Member currentMember,
-      {DateTime? pickFilterTime}) async {
+  Future<List<Pick>> fetchBookmark({DateTime? pickFilterTime}) async {
     const String query = """
     query(
       \$myId: ID
@@ -543,15 +540,13 @@ class PersonalFileService {
     """;
 
     List<String> followingMemberIds = [];
-    if (currentMember.following != null) {
-      for (var memberId in currentMember.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
+    for (var memberId in UserHelper.instance.currentUser.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
-      "myId": currentMember.memberId,
+      "myId": UserHelper.instance.currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
     };
@@ -579,8 +574,7 @@ class PersonalFileService {
     return bookmarkList;
   }
 
-  Future<List<Member>> fetchFollowerList(
-      Member viewMember, Member currentMember,
+  Future<List<Member>> fetchFollowerList(Member viewMember,
       {int skip = 0}) async {
     const String query = """
     query(
@@ -623,7 +617,7 @@ class PersonalFileService {
 
     Map<String, dynamic> variables = {
       "viewMemberId": viewMember.memberId,
-      "currentMemberId": currentMember.memberId,
+      "currentMemberId": UserHelper.instance.currentUser.memberId,
       "skip": skip,
     };
 
@@ -643,9 +637,8 @@ class PersonalFileService {
     List<Member> followerList = [];
     for (var member in jsonResponse['data']['members']) {
       Member follower = Member.fromJson(member);
-      if (currentMember.memberId == '-1' && currentMember.following != null) {
-        follower.isFollowing = currentMember.following!
-            .any((element) => element.memberId == follower.memberId);
+      if (UserHelper.instance.isVisitor) {
+        UserHelper.instance.isFollowingMember(follower);
       }
       followerList.add(follower);
     }
@@ -653,8 +646,7 @@ class PersonalFileService {
     return followerList;
   }
 
-  Future<List<Member>> fetchFollowingList(
-      Member viewMember, Member currentMember,
+  Future<List<Member>> fetchFollowingList(Member viewMember,
       {int skip = 0}) async {
     const String query = """
     query(
@@ -697,7 +689,7 @@ class PersonalFileService {
 
     Map<String, dynamic> variables = {
       "viewMemberId": viewMember.memberId,
-      "currentMemberId": currentMember.memberId,
+      "currentMemberId": UserHelper.instance.currentUser.memberId,
       "skip": skip,
     };
 
@@ -717,9 +709,8 @@ class PersonalFileService {
     List<Member> followingList = [];
     for (var member in jsonResponse['data']['members']) {
       Member followingMember = Member.fromJson(member);
-      if (currentMember.memberId == '-1' && currentMember.following != null) {
-        followingMember.isFollowing = currentMember.following!
-            .any((element) => element.memberId == followingMember.memberId);
+      if (UserHelper.instance.isVisitor) {
+        UserHelper.instance.isFollowingMember(followingMember);
       }
       followingList.add(followingMember);
     }

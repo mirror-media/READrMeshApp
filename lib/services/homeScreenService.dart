@@ -1,28 +1,23 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/services/memberService.dart';
-import 'package:readr/services/visitorService.dart';
+import 'package:readr/models/publisher.dart';
 
 class HomeScreenService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
-  final MemberService _memberService = MemberService();
-  final VisitorService _visitorService = VisitorService();
 
-  Future<Map<String, dynamic>> fetchHomeScreenData(
-      {Member? currentMember}) async {
+  Future<Map<String, dynamic>> fetchHomeScreenData() async {
     const String query = """
     query(
       \$followingMembers: [ID!]
       \$yesterday: DateTime
-      \$followingCategorySlugs: [String!]
       \$followingPublisherIds: [ID!]
       \$myId: ID
     ){
@@ -211,13 +206,6 @@ class HomeScreenService {
               }
               }
             }
-            {
-              category:{
-                slug:{
-                  in: \$followingCategorySlugs
-                }
-              }
-            }
           ]
         }
       ){
@@ -316,13 +304,6 @@ class HomeScreenService {
                 id:{
                   in: \$followingPublisherIds
               }
-              }
-            }
-            {
-              category:{
-                slug:{
-                  in: \$followingCategorySlugs
-                }
               }
             }
           ]
@@ -516,15 +497,6 @@ class HomeScreenService {
                   }
                 }
               }
-            },
-            {
-              following_category:{
-                some:{
-                  slug:{
-                    in: \$followingCategorySlugs
-                  }
-                }
-              }
             }
           ]
         }
@@ -555,13 +527,45 @@ class HomeScreenService {
           }
         )
       }
+      RecommendPublisher: publishers(
+        where:{
+          id:{
+            notIn: \$followingPublisherIds
+          }
+        }
+        take: 20
+      ){
+        id
+        title
+        logo
+        follower(
+          where:{
+            id:{
+              in: \$followingMembers
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          take: 1
+        ){
+          id
+          nickname
+          customId
+        }
+        followerCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+      }
     }
     """;
 
     List<String> followingMemberIds = [];
-    List<String> followingCategorySlugs = [];
     List<String> followingPublisherIds = [];
-    late Member member;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
         .subtract(const Duration(hours: 24))
@@ -570,38 +574,20 @@ class HomeScreenService {
     // TODO: Remove test data time
     yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
-    if (currentMember != null) {
-      member = currentMember;
-    } else if (FirebaseAuth.instance.currentUser != null) {
-      // fetch user following members, categories, publishers, and member id
-      member = await _memberService.fetchMemberData();
-    } else {
-      member = await _visitorService.fetchMemberData();
+    Member member = UserHelper.instance.currentUser;
+
+    for (var memberId in member.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
-    if (member.following != null) {
-      for (var memberId in member.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
-    }
-
-    if (member.followingCategory != null) {
-      for (var category in member.followingCategory!) {
-        followingCategorySlugs.add(category.slug);
-      }
-    }
-
-    if (member.followingPublisher != null) {
-      for (var publisher in member.followingPublisher!) {
-        followingPublisherIds.add(publisher.id);
-      }
+    for (var publisher in member.followingPublisher) {
+      followingPublisherIds.add(publisher.id);
     }
 
     Map<String, dynamic> variables = {
       "yesterday": yesterday,
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
-      "followingCategorySlugs": followingCategorySlugs,
       "myId": member.memberId,
     };
 
@@ -684,12 +670,19 @@ class HomeScreenService {
       recommendedMembers.addAll(otherRecommendMembers);
     }
 
+    List<Publisher> recommendedPublishers = [];
+    if (jsonResponse['data']['RecommendPublisher'].isNotEmpty) {
+      for (var publisher in jsonResponse['data']['RecommendPublisher']) {
+        recommendedPublishers.add(Publisher.fromJson(publisher));
+      }
+    }
+
     Map<String, dynamic> result = {
       'allLatestNews': allLatestNews,
       'followingStories': followingStories,
       'latestComments': latestComments,
       'recommendedMembers': recommendedMembers,
-      'member': member,
+      'recommendedPublishers': recommendedPublishers,
     };
 
     return result;
@@ -698,7 +691,6 @@ class HomeScreenService {
   Future<List<NewsListItem>> fetchMoreFollowingStories(
     DateTime lastPickTime,
     List<String> alreadyFetchIds,
-    Member member,
   ) async {
     const String query = """
     query(
@@ -867,11 +859,10 @@ class HomeScreenService {
     // TODO: Remove test data time
     yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
+    Member member = UserHelper.instance.currentUser;
     List<String> followingMemberIds = [];
-    if (member.following != null) {
-      for (var memberId in member.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
+    for (var memberId in member.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
@@ -909,11 +900,9 @@ class HomeScreenService {
 
   Future<List<NewsListItem>> fetchMoreLatestNews(
     DateTime lastPublishTime,
-    Member member,
   ) async {
     const String query = """
     query(
-      \$followingCategorySlugs: [String!]
       \$followingPublisherIds: [ID!]
       \$myId: ID
       \$yesterday: DateTime
@@ -939,13 +928,6 @@ class HomeScreenService {
                 id:{
                   in: \$followingPublisherIds
               }
-              }
-            }
-            {
-              category:{
-                slug:{
-                  in: \$followingCategorySlugs
-                }
               }
             }
           ]
@@ -1081,25 +1063,16 @@ class HomeScreenService {
     // TODO: Remove test data time
     yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
-    List<String> followingMemberIds = [];
-    if (member.following != null) {
-      for (var memberId in member.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
-    }
+    Member member = UserHelper.instance.currentUser;
 
-    List<String> followingCategorySlugs = [];
-    if (member.followingCategory != null) {
-      for (var category in member.followingCategory!) {
-        followingCategorySlugs.add(category.slug);
-      }
+    List<String> followingMemberIds = [];
+    for (var memberId in member.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
     List<String> followingPublisherIds = [];
-    if (member.followingPublisher != null) {
-      for (var publisher in member.followingPublisher!) {
-        followingPublisherIds.add(publisher.id);
-      }
+    for (var publisher in member.followingPublisher) {
+      followingPublisherIds.add(publisher.id);
     }
 
     Map<String, dynamic> variables = {
@@ -1107,7 +1080,6 @@ class HomeScreenService {
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
       "myId": member.memberId,
-      "followingCategorySlugs": followingCategorySlugs,
       "lastPublishTime": lastPublishTime.toUtc().toIso8601String(),
     };
 

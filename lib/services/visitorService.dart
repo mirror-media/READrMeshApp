@@ -116,7 +116,6 @@ class VisitorService {
       nickname: "訪客",
       customId: "個人檔案", //show in personalFile page
       following: followingMembers,
-      followingCategory: followingCategories,
       followingPublisher: followingPublishers,
       avatar: null,
     );

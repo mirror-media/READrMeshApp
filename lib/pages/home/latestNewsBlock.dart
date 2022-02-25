@@ -5,23 +5,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
-import 'package:readr/models/member.dart';
+import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/latestNewsItem.dart';
-import 'package:readr/pages/home/recommendFollowBlock.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowBlock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class LatestNewsBlock extends StatefulWidget {
   final List<NewsListItem> allLatestNews;
-  final List<Member> recommendedMembers;
-  final Member member;
+  final List<FollowableItem> recommendedPublishers;
   final bool showPaywall;
   final bool showFullScreenAd;
   final bool noMore;
   const LatestNewsBlock({
     required this.allLatestNews,
-    required this.recommendedMembers,
-    required this.member,
+    required this.recommendedPublishers,
     this.showFullScreenAd = true,
     this.showPaywall = true,
     this.noMore = false,
@@ -35,10 +34,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
   bool _isLoadingMore = false;
   @override
   Widget build(BuildContext context) {
-    if ((widget.member.followingCategory == null ||
-            widget.member.followingCategory!.isEmpty) &&
-        (widget.member.followingPublisher == null ||
-            widget.member.followingPublisher!.isEmpty)) {
+    if (UserHelper.instance.currentUser.followingPublisher.isEmpty) {
       return Container(
         color: Colors.white,
         child: Column(
@@ -236,7 +232,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           children: [
             const SizedBox(height: 12),
             _latestNewsList(context, filteredList.sublist(0, 5)),
-            RecommendFollowBlock(widget.recommendedMembers, widget.member),
+            RecommendFollowBlock(widget.recommendedPublishers),
             _latestNewsList(context, filteredList.sublist(5)),
             _bottomWidget(),
           ],
@@ -255,12 +251,10 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           onTap: () {
             AutoRouter.of(context).push(NewsStoryRoute(
               news: newsList[index],
-              member: widget.member,
             ));
           },
           child: LatestNewsItem(
             newsList[index],
-            widget.member,
           ),
         );
       },
@@ -323,8 +317,8 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
         onVisibilityChanged: (visibilityInfo) {
           var visiblePercentage = visibilityInfo.visibleFraction * 100;
           if (visiblePercentage > 70 && !_isLoadingMore) {
-            context.read<HomeBloc>().add(LoadMoreLatestNews(
-                widget.member, widget.allLatestNews.last.publishedDate));
+            context.read<HomeBloc>().add(
+                LoadMoreLatestNews(widget.allLatestNews.last.publishedDate));
             _isLoadingMore = true;
           }
         },

@@ -15,8 +15,7 @@ class PersonalFileReloading extends PersonalFileState {}
 
 class PersonalFileLoaded extends PersonalFileState {
   final Member viewMember;
-  final Member currentMember;
-  const PersonalFileLoaded(this.viewMember, this.currentMember);
+  const PersonalFileLoaded(this.viewMember);
 }
 
 class PersonalFileError extends PersonalFileState {

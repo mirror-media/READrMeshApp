@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/models/pick.dart';
@@ -14,8 +15,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class PickTabContent extends StatefulWidget {
   final Member viewMember;
-  final Member currentMember;
-  const PickTabContent({required this.viewMember, required this.currentMember});
+  const PickTabContent({required this.viewMember});
   @override
   _PickTabContentState createState() => _PickTabContentState();
 }
@@ -33,7 +33,6 @@ class _PickTabContentState extends State<PickTabContent> {
   _fetchPickData() async {
     context.read<PersonalFileTabBloc>().add(FetchTabContent(
           viewMember: widget.viewMember,
-          currentMember: widget.currentMember,
           tabContentType: TabContentType.pick,
         ));
   }
@@ -110,7 +109,8 @@ class _PickTabContentState extends State<PickTabContent> {
   }
 
   Widget _emptyWidget() {
-    bool isMine = widget.currentMember.memberId == widget.viewMember.memberId;
+    bool isMine =
+        UserHelper.instance.currentUser.memberId == widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -180,12 +180,10 @@ class _PickTabContentState extends State<PickTabContent> {
                 onTap: () {
                   AutoRouter.of(context).push(NewsStoryRoute(
                     news: _storyPickList[index].story!,
-                    member: widget.currentMember,
                   ));
                 },
                 child: LatestNewsItem(
                   _storyPickList[index].story!,
-                  widget.currentMember,
                 ),
               ),
               const SizedBox(
@@ -193,9 +191,8 @@ class _PickTabContentState extends State<PickTabContent> {
               ),
               PickCommentItem(
                 comment: _storyPickList[index].pickComment!,
-                member: widget.currentMember,
-                isMyComment:
-                    widget.currentMember.memberId == widget.viewMember.memberId,
+                isMyComment: UserHelper.instance.currentUser.memberId ==
+                    widget.viewMember.memberId,
               ),
             ],
           );
@@ -204,12 +201,10 @@ class _PickTabContentState extends State<PickTabContent> {
           onTap: () {
             AutoRouter.of(context).push(NewsStoryRoute(
               news: _storyPickList[index].story!,
-              member: widget.currentMember,
             ));
           },
           child: LatestNewsItem(
             _storyPickList[index].story!,
-            widget.currentMember,
           ),
         );
       },

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
-import 'package:readr/models/member.dart';
-import 'package:readr/pages/home/recommendFollowItem.dart';
+import 'package:readr/models/followableItem.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
 
 class RecommendFollowPage extends StatelessWidget {
-  final List<Member> recommendedMembers;
-  final Member member;
-  const RecommendFollowPage(this.recommendedMembers, this.member);
+  final List<FollowableItem> recommendedItems;
+  const RecommendFollowPage(this.recommendedItems);
 
   @override
   Widget build(BuildContext context) {
-    int itemLength = recommendedMembers.length;
+    int itemLength = recommendedItems.length;
     if (itemLength > 20) itemLength = 20;
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +45,7 @@ class RecommendFollowPage extends StatelessWidget {
               childAspectRatio: 0.8,
             ),
             itemBuilder: (context, index) =>
-                RecommendFollowItem(recommendedMembers[index], member),
+                RecommendFollowItem(recommendedItems[index]),
             itemCount: itemLength,
           ),
         ),

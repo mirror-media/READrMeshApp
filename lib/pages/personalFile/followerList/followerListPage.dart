@@ -8,9 +8,7 @@ import 'package:readr/pages/personalFile/followerList/followerListWidget.dart';
 
 class FollowerListPage extends StatelessWidget {
   final Member viewMember;
-  final Member currentMember;
-  const FollowerListPage(
-      {required this.viewMember, required this.currentMember});
+  const FollowerListPage({required this.viewMember});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,6 @@ class FollowerListPage extends StatelessWidget {
         ),
         body: FollowerListWidget(
           viewMember: viewMember,
-          currentMember: currentMember,
         ),
       ),
     );

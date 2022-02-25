@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/environment.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -286,8 +287,7 @@ class MemberService {
     }
   }
 
-  Future<List<Member>?> addFollowingMember(
-      String memberId, String targetMemberId) async {
+  Future<List<Member>?> addFollowingMember(String targetMemberId) async {
     String mutation = """
     mutation(
       \$memberId: ID
@@ -315,7 +315,7 @@ class MemberService {
     }
     """;
     Map<String, String> variables = {
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
       "targetMemberId": targetMemberId
     };
 
@@ -346,8 +346,7 @@ class MemberService {
     }
   }
 
-  Future<List<Member>?> removeFollowingMember(
-      String memberId, String targetMemberId) async {
+  Future<List<Member>?> removeFollowingMember(String targetMemberId) async {
     String mutation = """
     mutation(
       \$memberId: ID
@@ -375,7 +374,7 @@ class MemberService {
     }
     """;
     Map<String, String> variables = {
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
       "targetMemberId": targetMemberId
     };
 
@@ -406,8 +405,7 @@ class MemberService {
     }
   }
 
-  Future<List<Publisher>?> addFollowPublisher(
-      String memberId, String publisherId) async {
+  Future<List<Publisher>?> addFollowPublisher(String publisherId) async {
     String mutation = """
     mutation(
       \$memberId: ID
@@ -434,7 +432,7 @@ class MemberService {
     }
     """;
     Map<String, String> variables = {
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
       "publisherId": publisherId
     };
 
@@ -466,8 +464,7 @@ class MemberService {
     }
   }
 
-  Future<List<Publisher>?> removeFollowPublisher(
-      String memberId, String publisherId) async {
+  Future<List<Publisher>?> removeFollowPublisher(String publisherId) async {
     String mutation = """
     mutation(
       \$memberId: ID
@@ -494,7 +491,7 @@ class MemberService {
     }
     """;
     Map<String, String> variables = {
-      "memberId": memberId,
+      "memberId": UserHelper.instance.currentUser.memberId,
       "publisherId": publisherId
     };
 

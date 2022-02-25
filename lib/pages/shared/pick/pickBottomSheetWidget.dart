@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:readr/models/member.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 
 class PickBottomSheetWidget extends StatefulWidget {
   final ValueChanged<String> onTextChanged;
-  final Member member;
   final String? oldContent;
 
   const PickBottomSheetWidget({
     required this.onTextChanged,
-    required this.member,
     this.oldContent,
   });
 
@@ -65,11 +63,11 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
           children: [
             Row(
               children: [
-                ProfilePhotoWidget(widget.member, 22),
+                ProfilePhotoWidget(UserHelper.instance.currentUser, 22),
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    widget.member.nickname,
+                    UserHelper.instance.currentUser.nickname,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(

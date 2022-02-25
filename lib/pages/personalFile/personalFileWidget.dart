@@ -1,34 +1,31 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
 import 'package:readr/pages/personalFile/collectionTabContent.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
+import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
-import 'package:readr/services/memberService.dart';
-import 'package:readr/services/visitorService.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class PersonalFileWidget extends StatefulWidget {
   final Member viewMember;
   final bool isMine;
   final bool isVisitor;
-  final Member currentMember;
   final bool isFromBottomTab;
   const PersonalFileWidget({
     required this.viewMember,
     required this.isMine,
     required this.isVisitor,
-    required this.currentMember,
     required this.isFromBottomTab,
   });
 
@@ -39,7 +36,6 @@ class PersonalFileWidget extends StatefulWidget {
 class _PersonalFileWidgetState extends State<PersonalFileWidget>
     with TickerProviderStateMixin {
   late Member _viewMember;
-  late Member _currentMember;
   int _pickCount = 0;
   int _followerCount = 0;
   int _followingCount = 0;
@@ -62,15 +58,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   }
 
   _fetchMemberData() async {
-    context
-        .read<PersonalFileCubit>()
-        .fetchMemberData(widget.viewMember, widget.currentMember);
+    context.read<PersonalFileCubit>().fetchMemberData(widget.viewMember);
   }
 
   _refetchMemberData() async {
-    context.read<PersonalFileCubit>().fetchMemberData(
-        widget.viewMember, widget.currentMember,
-        isReload: true);
+    context
+        .read<PersonalFileCubit>()
+        .fetchMemberData(widget.viewMember, isReload: true);
   }
 
   _initializeTabController() {
@@ -92,7 +86,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       create: (context) => PersonalFileTabBloc(),
       child: PickTabContent(
         viewMember: widget.viewMember,
-        currentMember: widget.currentMember,
       ),
     ));
 
@@ -112,7 +105,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         create: (context) => PersonalFileTabBloc(),
         child: CollectionTabContent(
           viewMember: widget.viewMember,
-          currentMember: widget.currentMember,
           isMine: widget.isMine,
         ),
       ));
@@ -132,9 +124,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
       _tabWidgets.add(BlocProvider(
         create: (context) => PersonalFileTabBloc(),
-        child: BookmarkTabContent(
-          widget.currentMember,
-        ),
+        child: const BookmarkTabContent(),
       ));
     }
 
@@ -172,7 +162,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
         if (state is PersonalFileLoaded) {
           _viewMember = state.viewMember;
-          _currentMember = state.currentMember;
           if (_viewMember.pickCount != null) {
             _pickCount = _viewMember.pickCount!;
           }
@@ -431,7 +420,12 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               textAlign: TextAlign.center,
             ),
           const SizedBox(height: 12),
-          if (!widget.isMine) _followButton(),
+          if (!widget.isMine)
+            FollowButton(
+              MemberFollowableItem(_viewMember),
+              expanded: true,
+              textSize: 16,
+            ),
           if (widget.isMine) _editProfileButton(),
           const SizedBox(height: 24),
           Row(
@@ -474,8 +468,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               GestureDetector(
                 onTap: () {
                   AutoRouter.of(context).push(FollowerListRoute(
-                      viewMember: widget.viewMember,
-                      currentMember: widget.currentMember));
+                    viewMember: widget.viewMember,
+                  ));
                 },
                 child: RichText(
                   text: TextSpan(
@@ -520,8 +514,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   child: GestureDetector(
                     onTap: () {
                       AutoRouter.of(context).push(FollowingListRoute(
-                          viewMember: widget.viewMember,
-                          currentMember: widget.currentMember));
+                        viewMember: widget.viewMember,
+                      ));
                     },
                     child: RichText(
                       text: TextSpan(
@@ -570,62 +564,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     } else {
       return number.toString();
     }
-  }
-
-  Widget _followButton() {
-    return OutlinedButton(
-      onPressed: () async {
-        bool originFollowState = _viewMember.isFollowing;
-        setState(() {
-          _viewMember.isFollowing = !_viewMember.isFollowing;
-        });
-        List<Member>? newFollowingList;
-        // check whether is login
-        if (FirebaseAuth.instance.currentUser != null) {
-          final MemberService _memberService = MemberService();
-
-          if (!originFollowState) {
-            newFollowingList = await _memberService.addFollowingMember(
-                _currentMember.memberId, _viewMember.memberId);
-          } else {
-            newFollowingList = await _memberService.removeFollowingMember(
-                _currentMember.memberId, _viewMember.memberId);
-          }
-        } else {
-          final VisitorService _visitorService = VisitorService();
-
-          if (!originFollowState) {
-            newFollowingList =
-                await _visitorService.addFollowingMember(_viewMember.memberId);
-          } else {
-            newFollowingList = await _visitorService
-                .removeFollowingMember(_viewMember.memberId);
-          }
-        }
-        if (newFollowingList == null) {
-          setState(() {
-            _viewMember.isFollowing = !_viewMember.isFollowing;
-          });
-        } else {
-          _currentMember.following = newFollowingList;
-        }
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor:
-            _viewMember.isFollowing ? Colors.black87 : Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        minimumSize: const Size.fromHeight(48),
-      ),
-      child: Text(
-        _viewMember.isFollowing ? '追蹤中' : '追蹤',
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: 16,
-          color: _viewMember.isFollowing ? Colors.white : Colors.black87,
-        ),
-      ),
-    );
   }
 
   Widget _editProfileButton() {

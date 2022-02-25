@@ -11,10 +11,7 @@ class EditPersonalFileInitial extends EditPersonalFileState {}
 
 class EditPersonalFileLoading extends EditPersonalFileState {}
 
-class EditPersonalFileLoaded extends EditPersonalFileState {
-  final Member member;
-  const EditPersonalFileLoaded(this.member);
-}
+class EditPersonalFileLoaded extends EditPersonalFileState {}
 
 class EditPersonalFileError extends EditPersonalFileState {
   final dynamic error;

@@ -8,12 +8,10 @@ abstract class PersonalFileTabEvent extends Equatable {
 }
 
 class FetchTabContent extends PersonalFileTabEvent {
-  final Member viewMember;
-  final Member currentMember;
+  final Member? viewMember;
   final TabContentType tabContentType;
   const FetchTabContent({
     required this.viewMember,
-    required this.currentMember,
     required this.tabContentType,
   });
 

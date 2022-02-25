@@ -10,11 +10,10 @@ class FollowerListCubit extends Cubit<FollowerListState> {
   FollowerListCubit() : super(FollowerListInitial());
   final PersonalFileService _personalFileService = PersonalFileService();
 
-  fetchFollowerList(
-      {required Member viewMember, required Member currentMember}) async {
+  fetchFollowerList({required Member viewMember}) async {
     try {
-      emit(FollowerListLoaded(await _personalFileService.fetchFollowerList(
-          viewMember, currentMember)));
+      emit(FollowerListLoaded(
+          await _personalFileService.fetchFollowerList(viewMember)));
     } catch (e) {
       emit(FollowerListError(determineException(e)));
     }
@@ -22,12 +21,11 @@ class FollowerListCubit extends Cubit<FollowerListState> {
 
   loadMore({
     required Member viewMember,
-    required Member currentMember,
     required int skip,
   }) async {
     try {
       emit(FollowerListLoadMoreSuccess(await _personalFileService
-          .fetchFollowerList(viewMember, currentMember, skip: skip)));
+          .fetchFollowerList(viewMember, skip: skip)));
     } catch (e) {
       emit(FollowerListLoadMoreFailed(determineException(e)));
     }

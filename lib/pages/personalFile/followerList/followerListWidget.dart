@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/followerList/followerList_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/memberListItem.dart';
@@ -12,9 +13,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowerListWidget extends StatefulWidget {
   final Member viewMember;
-  final Member currentMember;
-  const FollowerListWidget(
-      {required this.viewMember, required this.currentMember});
+  const FollowerListWidget({required this.viewMember});
   @override
   _FollowerListWidgetState createState() => _FollowerListWidgetState();
 }
@@ -31,15 +30,15 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
   }
 
   _fetchFollowerList() {
-    context.read<FollowerListCubit>().fetchFollowerList(
-        viewMember: widget.viewMember, currentMember: widget.currentMember);
+    context
+        .read<FollowerListCubit>()
+        .fetchFollowerList(viewMember: widget.viewMember);
   }
 
   _loadMore() {
     _isLoading = true;
     context.read<FollowerListCubit>().loadMore(
           viewMember: widget.viewMember,
-          currentMember: widget.currentMember,
           skip: _followerList.length,
         );
   }
@@ -107,7 +106,8 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
   }
 
   Widget _emptyWidget() {
-    bool isMine = widget.currentMember.memberId == widget.viewMember.memberId;
+    bool isMine =
+        UserHelper.instance.currentUser.memberId == widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -147,12 +147,11 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
         return InkWell(
           onTap: () {
             AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: _followerList[index],
-                currentMember: widget.currentMember));
+              viewMember: _followerList[index],
+            ));
           },
           child: MemberListItem(
             viewMember: _followerList[index],
-            currentMember: widget.currentMember,
           ),
         );
       },

@@ -67,14 +67,14 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<NewsStoryRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: NewsStoryPage(news: args.news, member: args.member),
+          child: NewsStoryPage(news: args.news),
           fullscreenDialog: true);
     },
     RecommendFollowRoute.name: (routeData) {
       final args = routeData.argsAs<RecommendFollowRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: RecommendFollowPage(args.recommendedMembers, args.member));
+          child: RecommendFollowPage(args.recommendedItems));
     },
     PersonalFileRoute.name: (routeData) {
       final args = routeData.argsAs<PersonalFileRouteArgs>();
@@ -82,7 +82,6 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: PersonalFilePage(
               viewMember: args.viewMember,
-              currentMember: args.currentMember,
               isFromBottomTab: args.isFromBottomTab));
     },
     MemberCenterRoute.name: (routeData) {
@@ -93,15 +92,13 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<FollowerListRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: FollowerListPage(
-              viewMember: args.viewMember, currentMember: args.currentMember));
+          child: FollowerListPage(viewMember: args.viewMember));
     },
     FollowingListRoute.name: (routeData) {
       final args = routeData.argsAs<FollowingListRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: FollowingListPage(
-              viewMember: args.viewMember, currentMember: args.currentMember));
+          child: FollowingListPage(viewMember: args.viewMember));
     },
     EditPersonalFileRoute.name: (routeData) {
       return MaterialPageX<bool>(
@@ -110,9 +107,7 @@ class _$AppRouter extends RootStackRouter {
           fullscreenDialog: true);
     },
     HomeRouter.name: (routeData) {
-      final args = routeData.argsAs<HomeRouterArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: HomePage(args.currentMember));
+      return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
     ReadrRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
@@ -123,7 +118,6 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: PersonalFilePage(
               viewMember: args.viewMember,
-              currentMember: args.currentMember,
               isFromBottomTab: args.isFromBottomTab));
     }
   };
@@ -332,86 +326,69 @@ class AuthorRouteArgs {
 /// generated route for
 /// [NewsStoryPage]
 class NewsStoryRoute extends PageRouteInfo<NewsStoryRouteArgs> {
-  NewsStoryRoute({required NewsListItem news, required Member member})
+  NewsStoryRoute({required NewsListItem news})
       : super(NewsStoryRoute.name,
-            path: '/news-story-page',
-            args: NewsStoryRouteArgs(news: news, member: member));
+            path: '/news-story-page', args: NewsStoryRouteArgs(news: news));
 
   static const String name = 'NewsStoryRoute';
 }
 
 class NewsStoryRouteArgs {
-  const NewsStoryRouteArgs({required this.news, required this.member});
+  const NewsStoryRouteArgs({required this.news});
 
   final NewsListItem news;
 
-  final Member member;
-
   @override
   String toString() {
-    return 'NewsStoryRouteArgs{news: $news, member: $member}';
+    return 'NewsStoryRouteArgs{news: $news}';
   }
 }
 
 /// generated route for
 /// [RecommendFollowPage]
 class RecommendFollowRoute extends PageRouteInfo<RecommendFollowRouteArgs> {
-  RecommendFollowRoute(
-      {required List<Member> recommendedMembers, required Member member})
+  RecommendFollowRoute({required List<FollowableItem> recommendedItems})
       : super(RecommendFollowRoute.name,
             path: '/recommend-follow-page',
-            args: RecommendFollowRouteArgs(
-                recommendedMembers: recommendedMembers, member: member));
+            args: RecommendFollowRouteArgs(recommendedItems: recommendedItems));
 
   static const String name = 'RecommendFollowRoute';
 }
 
 class RecommendFollowRouteArgs {
-  const RecommendFollowRouteArgs(
-      {required this.recommendedMembers, required this.member});
+  const RecommendFollowRouteArgs({required this.recommendedItems});
 
-  final List<Member> recommendedMembers;
-
-  final Member member;
+  final List<FollowableItem> recommendedItems;
 
   @override
   String toString() {
-    return 'RecommendFollowRouteArgs{recommendedMembers: $recommendedMembers, member: $member}';
+    return 'RecommendFollowRouteArgs{recommendedItems: $recommendedItems}';
   }
 }
 
 /// generated route for
 /// [PersonalFilePage]
 class PersonalFileRoute extends PageRouteInfo<PersonalFileRouteArgs> {
-  PersonalFileRoute(
-      {required Member viewMember,
-      required Member currentMember,
-      bool isFromBottomTab = false})
+  PersonalFileRoute({required Member viewMember, bool isFromBottomTab = false})
       : super(PersonalFileRoute.name,
             path: '/personal-file-page',
             args: PersonalFileRouteArgs(
-                viewMember: viewMember,
-                currentMember: currentMember,
-                isFromBottomTab: isFromBottomTab));
+                viewMember: viewMember, isFromBottomTab: isFromBottomTab));
 
   static const String name = 'PersonalFileRoute';
 }
 
 class PersonalFileRouteArgs {
   const PersonalFileRouteArgs(
-      {required this.viewMember,
-      required this.currentMember,
-      this.isFromBottomTab = false});
+      {required this.viewMember, this.isFromBottomTab = false});
 
   final Member viewMember;
-
-  final Member currentMember;
 
   final bool isFromBottomTab;
 
   @override
   String toString() {
-    return 'PersonalFileRouteArgs{viewMember: $viewMember, currentMember: $currentMember, isFromBottomTab: $isFromBottomTab}';
+    return 'PersonalFileRouteArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
   }
 }
 
@@ -427,53 +404,44 @@ class MemberCenterRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [FollowerListPage]
 class FollowerListRoute extends PageRouteInfo<FollowerListRouteArgs> {
-  FollowerListRoute({required Member viewMember, required Member currentMember})
+  FollowerListRoute({required Member viewMember})
       : super(FollowerListRoute.name,
             path: '/follower-list-page',
-            args: FollowerListRouteArgs(
-                viewMember: viewMember, currentMember: currentMember));
+            args: FollowerListRouteArgs(viewMember: viewMember));
 
   static const String name = 'FollowerListRoute';
 }
 
 class FollowerListRouteArgs {
-  const FollowerListRouteArgs(
-      {required this.viewMember, required this.currentMember});
+  const FollowerListRouteArgs({required this.viewMember});
 
   final Member viewMember;
 
-  final Member currentMember;
-
   @override
   String toString() {
-    return 'FollowerListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
+    return 'FollowerListRouteArgs{viewMember: $viewMember}';
   }
 }
 
 /// generated route for
 /// [FollowingListPage]
 class FollowingListRoute extends PageRouteInfo<FollowingListRouteArgs> {
-  FollowingListRoute(
-      {required Member viewMember, required Member currentMember})
+  FollowingListRoute({required Member viewMember})
       : super(FollowingListRoute.name,
             path: '/following-list-page',
-            args: FollowingListRouteArgs(
-                viewMember: viewMember, currentMember: currentMember));
+            args: FollowingListRouteArgs(viewMember: viewMember));
 
   static const String name = 'FollowingListRoute';
 }
 
 class FollowingListRouteArgs {
-  const FollowingListRouteArgs(
-      {required this.viewMember, required this.currentMember});
+  const FollowingListRouteArgs({required this.viewMember});
 
   final Member viewMember;
 
-  final Member currentMember;
-
   @override
   String toString() {
-    return 'FollowingListRouteArgs{viewMember: $viewMember, currentMember: $currentMember}';
+    return 'FollowingListRouteArgs{viewMember: $viewMember}';
   }
 }
 
@@ -488,24 +456,10 @@ class EditPersonalFileRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [HomePage]
-class HomeRouter extends PageRouteInfo<HomeRouterArgs> {
-  HomeRouter({required Member currentMember})
-      : super(HomeRouter.name,
-            path: 'homePage',
-            args: HomeRouterArgs(currentMember: currentMember));
+class HomeRouter extends PageRouteInfo<void> {
+  const HomeRouter() : super(HomeRouter.name, path: 'homePage');
 
   static const String name = 'HomeRouter';
-}
-
-class HomeRouterArgs {
-  const HomeRouterArgs({required this.currentMember});
-
-  final Member currentMember;
-
-  @override
-  String toString() {
-    return 'HomeRouterArgs{currentMember: $currentMember}';
-  }
 }
 
 /// generated route for
@@ -519,34 +473,25 @@ class ReadrRouter extends PageRouteInfo<void> {
 /// generated route for
 /// [PersonalFilePage]
 class PersonalFileRouter extends PageRouteInfo<PersonalFileRouterArgs> {
-  PersonalFileRouter(
-      {required Member viewMember,
-      required Member currentMember,
-      bool isFromBottomTab = false})
+  PersonalFileRouter({required Member viewMember, bool isFromBottomTab = false})
       : super(PersonalFileRouter.name,
             path: 'personalFile',
             args: PersonalFileRouterArgs(
-                viewMember: viewMember,
-                currentMember: currentMember,
-                isFromBottomTab: isFromBottomTab));
+                viewMember: viewMember, isFromBottomTab: isFromBottomTab));
 
   static const String name = 'PersonalFileRouter';
 }
 
 class PersonalFileRouterArgs {
   const PersonalFileRouterArgs(
-      {required this.viewMember,
-      required this.currentMember,
-      this.isFromBottomTab = false});
+      {required this.viewMember, this.isFromBottomTab = false});
 
   final Member viewMember;
-
-  final Member currentMember;
 
   final bool isFromBottomTab;
 
   @override
   String toString() {
-    return 'PersonalFileRouterArgs{viewMember: $viewMember, currentMember: $currentMember, isFromBottomTab: $isFromBottomTab}';
+    return 'PersonalFileRouterArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
   }
 }

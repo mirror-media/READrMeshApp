@@ -1,29 +1,19 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
-import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/pages/story/news/bottomCardWidget.dart';
-import 'package:readr/services/pickService.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:readr/pages/story/news/storyAppBar.dart';
 
 class NewsStoryWidget extends StatefulWidget {
   final NewsListItem news;
-  final Member member;
   const NewsStoryWidget({
     required this.news,
-    required this.member,
   });
 
   @override
@@ -31,15 +21,10 @@ class NewsStoryWidget extends StatefulWidget {
 }
 
 class _NewsStoryWidgetState extends State<NewsStoryWidget> {
-  bool _isLoading = true;
   late NewsStoryItem _newsStoryItem;
-  late Member _member;
   String _inputText = '';
-  final PickService _pickService = PickService();
   bool _isPicked = false;
   bool _isSlideDown = false;
-  bool _isBookmarked = false;
-  bool _isSending = false;
   final ScrollController _scrollController = ScrollController();
   double _oldOffset = 0;
 
@@ -47,7 +32,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   void initState() {
     super.initState();
     _fetchNewsData();
-    _member = widget.member;
     _scrollController.addListener(() {
       if (_scrollController.offset > _oldOffset) {
         setState(() {
@@ -65,7 +49,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   _fetchNewsData() async {
     context.read<NewsCubit>().fetchNewsData(
           newsId: widget.news.id,
-          member: widget.member,
           isNative: true,
         );
   }
@@ -87,15 +70,9 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
 
         if (state is NewsLoaded) {
           _newsStoryItem = state.newsStoryItem;
-          _member = state.member;
           if (_newsStoryItem.myPickId != null) {
             _isPicked = true;
           }
-
-          if (_newsStoryItem.bookmarkId != null && !_isSending) {
-            _isBookmarked = true;
-          }
-          _isLoading = false;
 
           return SafeArea(
             child: Stack(
@@ -103,19 +80,22 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
               children: [
                 Column(
                   children: [
-                    _appBar(context),
+                    StoryAppBar(
+                      newsStoryItem: _newsStoryItem,
+                      inputText: _inputText,
+                      url: widget.news.url,
+                    ),
                     Expanded(
                       child: _buildContent(context),
                     ),
                   ],
                 ),
-                BottomCardWidget(
-                  news: _newsStoryItem,
-                  member: _member,
-                  onTextChanged: (value) => _inputText = value,
-                  isPicked: _isPicked,
-                  isSlideDown: _isSlideDown,
-                ),
+                if (!_isSlideDown)
+                  BottomCardWidget(
+                    news: _newsStoryItem,
+                    onTextChanged: (value) => _inputText = value,
+                    isPicked: _isPicked,
+                  ),
               ],
             ),
           );
@@ -125,7 +105,11 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
           color: Colors.white,
           child: Column(
             children: [
-              _appBar(context),
+              StoryAppBar(
+                newsStoryItem: null,
+                inputText: _inputText,
+                url: widget.news.url,
+              ),
               const Expanded(
                 child: Center(
                   child: CircularProgressIndicator.adaptive(),
@@ -135,164 +119,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
           ),
         );
       },
-    );
-  }
-
-  Widget _appBar(BuildContext context) {
-    return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
-      centerTitle: false,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      title: Text(
-        widget.news.url,
-        style: const TextStyle(
-          color: Colors.black54,
-          fontSize: 13,
-        ),
-      ),
-      actions: <Widget>[
-        if (!_isLoading) ...[
-          IconButton(
-            icon: Icon(
-              _isBookmarked
-                  ? Icons.bookmark_outlined
-                  : Icons.bookmark_border_outlined,
-              color: Colors.black,
-              size: 26,
-            ),
-            tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
-            onPressed: _isSending
-                ? null
-                : () async {
-                    bool originState = _isBookmarked;
-                    setState(() {
-                      _isBookmarked = !_isBookmarked;
-                      _isSending = true;
-                    });
-                    if (originState) {
-                      bool isDelete = await _pickService
-                          .deletePick(_newsStoryItem.bookmarkId!);
-                      PickToast.showBookmarkToast(context, isDelete, false);
-                      if (!isDelete) {
-                        _isBookmarked = originState;
-                      } else {
-                        _newsStoryItem.bookmarkId = null;
-                      }
-                    } else {
-                      String? pickId = await _pickService.createPick(
-                        memberId: widget.member.memberId,
-                        targetId: _newsStoryItem.id,
-                        objective: PickObjective.story,
-                        state: PickState.private,
-                        kind: PickKind.bookmark,
-                      );
-                      PickToast.showBookmarkToast(
-                          context, pickId != null, true);
-                      if (pickId != null) {
-                        _newsStoryItem.bookmarkId = pickId;
-                      } else {
-                        _isBookmarked = originState;
-                      }
-                    }
-                    setState(() {
-                      _isSending = false;
-                    });
-                  },
-          ),
-          IconButton(
-            icon: Icon(
-              Platform.isAndroid
-                  ? Icons.share_outlined
-                  : Icons.ios_share_outlined,
-              color: Colors.black,
-              size: 26,
-            ),
-            tooltip: '分享',
-            onPressed: () {
-              Share.share(widget.news.url);
-            },
-          ),
-        ],
-        IconButton(
-          icon: const Icon(
-            Icons.close_outlined,
-            color: Colors.black,
-            size: 26,
-          ),
-          tooltip: '回前頁',
-          onPressed: () async {
-            if (_inputText.trim().isNotEmpty) {
-              Widget dialogTitle = const Text(
-                '確定要刪除留言？',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                ),
-              );
-              Widget dialogContent = const Text(
-                '系統將不會儲存您剛剛輸入的內容',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-              );
-              List<Widget> dialogActions = [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    '刪除留言',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text(
-                    '繼續輸入',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-              ];
-              if (!Platform.isIOS) {
-                await showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: dialogTitle,
-                    content: dialogContent,
-                    buttonPadding: const EdgeInsets.only(left: 32, right: 8),
-                    actions: dialogActions,
-                  ),
-                );
-              } else {
-                await showDialog(
-                  context: context,
-                  builder: (context) => CupertinoAlertDialog(
-                    title: dialogTitle,
-                    content: dialogContent,
-                    actions: dialogActions,
-                  ),
-                );
-              }
-            } else {
-              Navigator.pop(context);
-            }
-          },
-        ),
-      ],
     );
   }
 

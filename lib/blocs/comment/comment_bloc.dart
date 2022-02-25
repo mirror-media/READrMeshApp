@@ -20,8 +20,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       try {
         if (event is FetchComments) {
           emit(CommentLoading());
-          List<Comment>? allComments = await _commentService
-              .fetchCommentsByStoryId(event.storyId, event.memberId);
+          List<Comment>? allComments =
+              await _commentService.fetchCommentsByStoryId(event.storyId);
           if (allComments == null) {
             emit(CommentError(UnknownException('FetchCommentsFailed')));
           } else {
@@ -30,7 +30,6 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         } else if (event is AddComment) {
           emit(CommentAdding());
           List<Comment>? allComments = await _commentService.createComment(
-            memberId: event.memberId,
             storyId: event.storyId,
             content: event.content,
             state: event.commentTransparency,

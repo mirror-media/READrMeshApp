@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/latestNewsItem.dart';
@@ -12,8 +12,7 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class BookmarkTabContent extends StatefulWidget {
-  final Member currentMember;
-  const BookmarkTabContent(this.currentMember);
+  const BookmarkTabContent();
   @override
   _BookmarkTabContentState createState() => _BookmarkTabContentState();
 }
@@ -31,9 +30,8 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
 
   _fetchBookmark() {
     context.read<PersonalFileTabBloc>().add(FetchTabContent(
-          viewMember: widget.currentMember,
-          currentMember: widget.currentMember,
           tabContentType: TabContentType.bookmark,
+          viewMember: UserHelper.instance.currentUser,
         ));
   }
 
@@ -151,12 +149,10 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
           onTap: () {
             AutoRouter.of(context).push(NewsStoryRoute(
               news: _bookmarkList[index].story!,
-              member: widget.currentMember,
             ));
           },
           child: LatestNewsItem(
             _bookmarkList[index].story!,
-            widget.currentMember,
           ),
         );
       },

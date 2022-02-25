@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/followingList/followingList_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -14,9 +15,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowingListWidget extends StatefulWidget {
   final Member viewMember;
-  final Member currentMember;
-  const FollowingListWidget(
-      {required this.viewMember, required this.currentMember});
+  const FollowingListWidget({required this.viewMember});
   @override
   _FollowingListWidgetState createState() => _FollowingListWidgetState();
 }
@@ -35,15 +34,15 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
   }
 
   _fetchFollowerList() {
-    context.read<FollowingListCubit>().fetchFollowingList(
-        viewMember: widget.viewMember, currentMember: widget.currentMember);
+    context
+        .read<FollowingListCubit>()
+        .fetchFollowingList(viewMember: widget.viewMember);
   }
 
   _loadMore() {
     _isLoading = true;
     context.read<FollowingListCubit>().loadMore(
           viewMember: widget.viewMember,
-          currentMember: widget.currentMember,
           skip: _followingMemberList.length,
         );
   }
@@ -113,7 +112,8 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
   }
 
   Widget _emptyWidget() {
-    bool isMine = widget.currentMember.memberId == widget.viewMember.memberId;
+    bool isMine =
+        UserHelper.instance.currentUser.memberId == widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -215,7 +215,6 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
           onTap: () {},
           child: PublisherListItem(
             publisher: _followPublisherList[index],
-            currentMember: widget.currentMember,
           ),
         );
       },
@@ -261,12 +260,11 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
         return InkWell(
           onTap: () {
             AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: _followingMemberList[index],
-                currentMember: widget.currentMember));
+              viewMember: _followingMemberList[index],
+            ));
           },
           child: MemberListItem(
             viewMember: _followingMemberList[index],
-            currentMember: widget.currentMember,
           ),
         );
       },

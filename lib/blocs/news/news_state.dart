@@ -13,8 +13,7 @@ class NewsLoading extends NewsState {}
 
 class NewsLoaded extends NewsState {
   final NewsStoryItem newsStoryItem;
-  final Member member;
-  const NewsLoaded(this.newsStoryItem, this.member);
+  const NewsLoaded(this.newsStoryItem);
 }
 
 class NewsError extends NewsState {

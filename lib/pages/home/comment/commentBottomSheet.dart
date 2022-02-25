@@ -6,13 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
 
 class CommentBottomSheet {
   static Future<void> showCommentBottomSheet({
     required BuildContext context,
-    required Member member,
     required Comment clickComment,
     required String storyId,
     String? oldContent,
@@ -29,7 +27,6 @@ class CommentBottomSheet {
           child: Material(
             child: CommentBottomSheetWidget(
               context: context,
-              member: member,
               clickComment: clickComment,
               storyId: storyId,
               onTextChanged: (text) => inputContent = text,
@@ -74,7 +71,6 @@ class CommentBottomSheet {
               Navigator.pop(context);
               await showCommentBottomSheet(
                 context: context,
-                member: member,
                 clickComment: clickComment,
                 storyId: storyId,
                 oldContent: inputContent,

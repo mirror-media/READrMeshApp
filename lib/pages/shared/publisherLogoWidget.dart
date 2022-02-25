@@ -28,18 +28,20 @@ class PublisherLogoWidget extends StatelessWidget {
       child = Container(
         alignment: Alignment.center,
         color: randomColor,
+        padding: const EdgeInsets.all(5),
         child: AutoSizeText(
           firstLetter,
-          style: TextStyle(color: textColor),
+          style: TextStyle(color: textColor, fontSize: 30),
           minFontSize: 5,
         ),
       );
     } else {
       background = Container(
         color: randomColor,
+        padding: const EdgeInsets.all(5),
         child: AutoSizeText(
           firstLetter,
-          style: TextStyle(color: textColor),
+          style: TextStyle(color: textColor, fontSize: 30),
           minFontSize: 5,
         ),
       );

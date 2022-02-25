@@ -6,22 +6,21 @@ class Member {
   final String? email;
   final String? firebaseId;
   final String memberId;
-  final String nickname;
+  String nickname;
   final String? name;
-  final String? avatar;
-  final int? followerCount;
-  final int? pickCount;
-  final int? commentCount;
-  final List<Member>? follower;
-  final List<Category>? followingCategory;
-  List<Publisher>? followingPublisher;
-  List<Member>? following;
+  String? avatar;
+  int? followerCount;
+  int? pickCount;
+  int? commentCount;
+  List<Member>? follower;
+  List<Publisher> followingPublisher;
+  List<Member> following;
   final bool verified;
   String? intro;
   String customId;
-  final int? followingCount;
-  final int? followingPublisherCount;
-  final int? bookmarkCount;
+  int? followingCount;
+  int? followingPublisherCount;
+  int? bookmarkCount;
   bool isFollowing;
 
   Member({
@@ -35,9 +34,8 @@ class Member {
     this.pickCount,
     this.commentCount,
     this.follower,
-    this.followingCategory,
-    this.followingPublisher,
-    this.following,
+    required this.followingPublisher,
+    required this.following,
     this.verified = false,
     this.intro,
     this.followingCount,
@@ -160,7 +158,6 @@ class Member {
       pickCount: pickCount,
       commentCount: commentCount,
       following: following,
-      followingCategory: followingCategory,
       followingPublisher: followingPublisher,
       follower: follower,
       avatar: avatar,
@@ -189,12 +186,16 @@ class Member {
       followerCount: json['followerCount'] ?? 0,
       avatar: avatar,
       customId: customId,
+      following: [],
+      followingPublisher: [],
       follower: [
         Member(
           memberId: json['follower'][0]['id'],
           nickname: json['follower'][0]['nickname'],
           customId: '',
           avatar: null,
+          following: [],
+          followingPublisher: [],
         )
       ],
     );
@@ -209,6 +210,8 @@ class Member {
           nickname: json['follower'][0]['nickname'],
           customId: json['follower'][0]['customId'],
           avatar: null,
+          following: [],
+          followingPublisher: [],
         )
       ];
     }
@@ -229,6 +232,8 @@ class Member {
       follower: follower,
       customId: customId,
       avatar: avatar,
+      following: [],
+      followingPublisher: [],
     );
   }
 }

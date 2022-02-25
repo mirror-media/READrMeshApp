@@ -1,20 +1,19 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
-  final Member member;
   final bool isExpanded;
   final bool isMyComment;
   final bool isFollowingComment;
@@ -22,7 +21,6 @@ class CommentItem extends StatefulWidget {
   final bool isSending;
   const CommentItem({
     required this.comment,
-    required this.member,
     this.isExpanded = false,
     this.isMyComment = false,
     this.isFollowingComment = false,
@@ -107,8 +105,8 @@ class _CommentItemState extends State<CommentItem> {
           GestureDetector(
             onTap: () {
               AutoRouter.of(context).push(PersonalFileRoute(
-                  viewMember: widget.comment.member,
-                  currentMember: widget.member));
+                viewMember: widget.comment.member,
+              ));
             },
             child: ProfilePhotoWidget(
               widget.comment.member,
@@ -138,8 +136,8 @@ class _CommentItemState extends State<CommentItem> {
         GestureDetector(
           onTap: () {
             AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: widget.comment.member,
-                currentMember: widget.member));
+              viewMember: widget.comment.member,
+            ));
           },
           child: Text(
             widget.comment.member.nickname,
@@ -206,10 +204,7 @@ class _CommentItemState extends State<CommentItem> {
           const SizedBox(width: 5),
           IconButton(
             onPressed: () async {
-              if (FirebaseAuth.instance.currentUser != null) {
-                // save origin state
-                bool originIsLiked = _isLiked;
-                int originLikeCount = widget.comment.likedCount;
+              if (UserHelper.instance.isMember) {
                 // refresh UI first
                 setState(() {
                   if (_isLiked) {
@@ -219,27 +214,8 @@ class _CommentItemState extends State<CommentItem> {
                   }
                   _isLiked = !_isLiked;
                 });
-                CommentService commentService = CommentService();
-                int? newLikeCount;
-                if (originIsLiked) {
-                  newLikeCount = await commentService.removeLike(
-                    memberId: widget.member.memberId,
-                    commentId: widget.comment.id,
-                  );
-                } else {
-                  newLikeCount = await commentService.addLike(
-                    memberId: widget.member.memberId,
-                    commentId: widget.comment.id,
-                  );
-                }
-
-                // if return null mean failed
-                if (newLikeCount == null) {
-                  widget.comment.likedCount = originLikeCount;
-                  _isLiked = originIsLiked;
-                } else {
-                  widget.comment.likedCount = newLikeCount;
-                }
+                EasyDebounce.debounce(widget.comment.id,
+                    const Duration(seconds: 2), () => _updateLike());
               }
             },
             iconSize: 18,
@@ -256,6 +232,35 @@ class _CommentItemState extends State<CommentItem> {
         ],
       ],
     );
+  }
+
+  Future<void> _updateLike() async {
+    // save origin state
+    bool originIsLiked = _isLiked;
+    int originLikeCount = widget.comment.likedCount;
+
+    CommentService commentService = CommentService();
+    int? newLikeCount;
+    if (originIsLiked) {
+      newLikeCount = await commentService.removeLike(
+        commentId: widget.comment.id,
+      );
+    } else {
+      newLikeCount = await commentService.addLike(
+        commentId: widget.comment.id,
+      );
+    }
+
+    // if return null mean failed
+    if (newLikeCount != null) {
+      widget.comment.likedCount = newLikeCount;
+    } else {
+      widget.comment.likedCount = originLikeCount;
+      _isLiked = originIsLiked;
+      if (mounted) {
+        setState(() {});
+      }
+    }
   }
 
   Widget _content() {

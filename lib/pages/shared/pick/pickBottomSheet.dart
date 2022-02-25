@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheetWidget.dart';
 
 class PickBottomSheet {
   static Future<dynamic> showPickBottomSheet({
     required BuildContext context,
-    required Member member,
     String? oldContent,
   }) async {
     String? content;
@@ -16,7 +14,6 @@ class PickBottomSheet {
       context: context,
       builder: (context) {
         return PickBottomSheetWidget(
-          member: member,
           oldContent: oldContent,
           onTextChanged: (inputContent) => content = inputContent,
         );
@@ -57,7 +54,6 @@ class PickBottomSheet {
             Navigator.pop(context);
             content = await showPickBottomSheet(
               context: context,
-              member: member,
               oldContent: content,
             );
           },

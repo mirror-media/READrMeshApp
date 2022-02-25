@@ -4,11 +4,9 @@ import 'package:readr/models/member.dart';
 
 class CollectionTabContent extends StatefulWidget {
   final Member viewMember;
-  final Member currentMember;
   final bool isMine;
   const CollectionTabContent({
     required this.viewMember,
-    required this.currentMember,
     required this.isMine,
   });
   @override

@@ -6,12 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/home/newsInfo.dart';
-import 'package:readr/pages/home/recommendFollowItem.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -19,19 +21,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
-  final Member member;
   final bool isLoadingMore;
   final List<Member> recommendedMembers;
   const FollowingBlock(
     this.followingStories,
-    this.member,
     this.isLoadingMore,
     this.recommendedMembers,
   );
 
   @override
   Widget build(BuildContext context) {
-    if (member.following == null || member.following!.isEmpty) {
+    if (UserHelper.instance.currentUser.following.isEmpty) {
       return Container(
         color: Colors.white,
         child: Column(
@@ -81,8 +81,8 @@ class FollowingBlock extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemBuilder: (context, index) =>
-                      RecommendFollowItem(recommendedMembers[index], member),
+                  itemBuilder: (context, index) => RecommendFollowItem(
+                      MemberFollowableItem(recommendedMembers[index])),
                   separatorBuilder: (context, index) =>
                       const SizedBox(width: 12),
                   itemCount: recommendedMembers.length,
@@ -196,7 +196,6 @@ class FollowingBlock extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 context.read<HomeBloc>().add(LoadMoreFollowingPicked(
-                      member,
                       item.latestPickTime!,
                       alreadyFetchIds,
                     ));
@@ -288,7 +287,6 @@ class FollowingBlock extends StatelessWidget {
                 onTap: () async {
                   await CommentBottomSheet.showCommentBottomSheet(
                     context: context,
-                    member: member,
                     clickComment: item.showComment!,
                     storyId: item.id,
                   );
@@ -302,7 +300,6 @@ class FollowingBlock extends StatelessWidget {
       onTap: () {
         AutoRouter.of(context).push(NewsStoryRoute(
           news: item,
-          member: member,
         ));
       },
     );
@@ -325,8 +322,8 @@ class FollowingBlock extends StatelessWidget {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: firstTwoMember[0], currentMember: member));
+            AutoRouter.of(context)
+                .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
           },
           child: Text(
             firstTwoMember[0].nickname,
@@ -346,8 +343,8 @@ class FollowingBlock extends StatelessWidget {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: firstTwoMember[0], currentMember: member));
+            AutoRouter.of(context)
+                .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
           },
           child: Text(
             firstTwoMember[0].nickname,
@@ -365,8 +362,8 @@ class FollowingBlock extends StatelessWidget {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: firstTwoMember[1], currentMember: member));
+            AutoRouter.of(context)
+                .push(PersonalFileRoute(viewMember: firstTwoMember[1]));
           },
           child: Text(
             firstTwoMember[1].nickname,
@@ -401,8 +398,8 @@ class FollowingBlock extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(PersonalFileRoute(
-                  viewMember: comment.member, currentMember: member));
+              AutoRouter.of(context)
+                  .push(PersonalFileRoute(viewMember: comment.member));
             },
             child: ProfilePhotoWidget(
               comment.member,
@@ -421,8 +418,8 @@ class FollowingBlock extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           AutoRouter.of(context).push(PersonalFileRoute(
-                              viewMember: comment.member,
-                              currentMember: member));
+                            viewMember: comment.member,
+                          ));
                         },
                         child: Text(
                           comment.member.nickname,

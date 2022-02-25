@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/home/latestCommentItem.dart';
+import 'package:readr/pages/home/latestComment/latestCommentItem.dart';
 
 class LatestCommentsBlock extends StatelessWidget {
   final List<NewsListItem> latestCommentsNewsList;
-  final Member member;
-  const LatestCommentsBlock(this.latestCommentsNewsList, this.member);
+  const LatestCommentsBlock(this.latestCommentsNewsList);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,6 @@ class LatestCommentsBlock extends StatelessWidget {
             }
             return LatestCommentItem(
               latestCommentsNewsList[index - 1],
-              member,
             );
           },
           separatorBuilder: (context, index) => const SizedBox(

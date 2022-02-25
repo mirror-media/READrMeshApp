@@ -9,6 +9,7 @@ import 'package:readr/blocs/config/states.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:upgrader/upgrader.dart';
@@ -40,12 +41,13 @@ class _RootPageState extends State<RootPage> {
       }
       if (state is ConfigLoaded) {
         Widget personalPageIcon;
-        if (state.currentUser.memberId == '-1') {
+        if (UserHelper.instance.isVisitor) {
           personalPageIcon = Image.asset(
             visitorAvatarPng,
           );
         } else {
-          personalPageIcon = ProfilePhotoWidget(state.currentUser, 11);
+          personalPageIcon =
+              ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
         }
         return UpgradeAlert(
           minAppVersion: state.minAppVersion,
@@ -55,11 +57,10 @@ class _RootPageState extends State<RootPage> {
               : UpgradeDialogStyle.cupertino,
           child: AutoTabsScaffold(
             routes: [
-              HomeRouter(currentMember: state.currentUser),
+              const HomeRouter(),
               const ReadrRouter(),
               PersonalFileRouter(
-                viewMember: state.currentUser,
-                currentMember: state.currentUser,
+                viewMember: UserHelper.instance.currentUser,
                 isFromBottomTab: true,
               ),
             ],

@@ -13,6 +13,8 @@ class HomeLoading extends HomeState {}
 
 class HomeReloading extends HomeState {}
 
+class HomeRefreshing extends HomeState {}
+
 class HomeRefresh extends HomeState {}
 
 class UpdatingFollowing extends HomeState {
@@ -28,7 +30,7 @@ class HomeLoaded extends HomeState {
   final List<NewsListItem> followingStories;
   final List<NewsListItem> latestComments;
   final List<Member> recommendedMembers;
-  final Member member;
+  final List<Publisher> recommendedPublishers;
   final bool showPaywall;
   final bool showFullScreenAd;
   const HomeLoaded({
@@ -36,9 +38,9 @@ class HomeLoaded extends HomeState {
     required this.followingStories,
     required this.latestComments,
     required this.recommendedMembers,
-    required this.member,
     required this.showFullScreenAd,
     required this.showPaywall,
+    required this.recommendedPublishers,
   });
 }
 

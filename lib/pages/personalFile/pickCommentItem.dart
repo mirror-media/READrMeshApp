@@ -2,19 +2,16 @@ import 'package:extended_text/extended_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 
 class PickCommentItem extends StatefulWidget {
   final Comment comment;
-  final Member member;
   final bool isExpanded;
   final bool isMyComment;
   const PickCommentItem({
     required this.comment,
-    required this.member,
     this.isExpanded = false,
     this.isMyComment = false,
   });
@@ -136,12 +133,10 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     int? newLikeCount;
                     if (originIsLiked) {
                       newLikeCount = await commentService.removeLike(
-                        memberId: widget.member.memberId,
                         commentId: widget.comment.id,
                       );
                     } else {
                       newLikeCount = await commentService.addLike(
-                        memberId: widget.member.memberId,
                         commentId: widget.comment.id,
                       );
                     }

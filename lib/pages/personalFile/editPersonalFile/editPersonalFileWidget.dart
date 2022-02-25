@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/editPersonalFile/editPersonalFile_cubit.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 
@@ -17,7 +18,6 @@ class EditPersonalFileWidget extends StatefulWidget {
 class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
   bool _isEdited = false;
   bool _isAttached = false;
-  late Member _member;
   late final TextEditingController _nicknameController;
   late final TextEditingController _customIdController;
   late final TextEditingController _introController;
@@ -68,11 +68,13 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
 
   _saveMemberData() {
     context.read<EditPersonalFileCubit>().savePersonalFile(Member(
-          memberId: _member.memberId,
+          memberId: UserHelper.instance.currentUser.memberId,
           nickname: _nicknameController.text,
           customId: _customIdController.text,
-          avatar: _member.avatar,
+          avatar: UserHelper.instance.currentUser.avatar,
           intro: _introController.text,
+          followingPublisher: [],
+          following: [],
         ));
   }
 
@@ -151,14 +153,13 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
         }
 
         if (state is EditPersonalFileLoaded) {
-          _member = state.member;
           if (!_isAttached) {
-            _nicknameController = TextEditingController(text: _member.nickname);
-            _customIdController = TextEditingController(text: _member.customId);
-            if (_member.intro != null && _member.intro!.isEmpty) {
-              _member.intro = null;
-            }
-            _introController = TextEditingController(text: _member.intro);
+            _nicknameController = TextEditingController(
+                text: UserHelper.instance.currentUser.nickname);
+            _customIdController = TextEditingController(
+                text: UserHelper.instance.currentUser.customId);
+            _introController = TextEditingController(
+                text: UserHelper.instance.currentUser.intro);
             _isAttached = true;
           }
 
@@ -435,15 +436,17 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
       setState(() {
         _isEdited = false;
       });
-    } else if (_nicknameController.text != _member.nickname) {
+    } else if (_nicknameController.text !=
+        UserHelper.instance.currentUser.nickname) {
       setState(() {
         _isEdited = true;
       });
-    } else if (_customIdController.text != _member.customId) {
+    } else if (_customIdController.text !=
+        UserHelper.instance.currentUser.customId) {
       setState(() {
         _isEdited = true;
       });
-    } else if (_introController.text != _member.intro) {
+    } else if (_introController.text != UserHelper.instance.currentUser.intro) {
       setState(() {
         _isEdited = true;
       });

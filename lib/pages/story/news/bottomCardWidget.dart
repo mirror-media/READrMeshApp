@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsStoryItem.dart';
@@ -20,17 +20,13 @@ import 'package:readr/services/pickService.dart';
 
 class BottomCardWidget extends StatefulWidget {
   final NewsStoryItem news;
-  final Member member;
   final ValueChanged<String> onTextChanged;
   final bool isPicked;
-  final bool isSlideDown;
 
   const BottomCardWidget({
     required this.news,
-    required this.member,
     required this.onTextChanged,
     this.isPicked = false,
-    this.isSlideDown = false,
   });
 
   @override
@@ -60,7 +56,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     _pickAvatarMembers = widget.news.followingPickMembers;
     _pickAvatarMembers.addAll(widget.news.otherPickMembers);
     if (_isPicked && _pickAvatarMembers.length < 4) {
-      _pickAvatarMembers.insert(0, widget.member);
+      _pickAvatarMembers.insert(0, UserHelper.instance.currentUser);
     }
   }
 
@@ -169,23 +165,20 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               ),
             ),
           ),
-          if (!widget.isSlideDown) ...[
-            Container(
-              color: Colors.white,
-              child: const Divider(
-                color: Colors.black12,
-                thickness: 0.5,
-                height: 0.5,
-              ),
+          Container(
+            color: Colors.white,
+            child: const Divider(
+              color: Colors.black12,
+              thickness: 0.5,
+              height: 0.5,
             ),
-            CommentInputBox(
-              member: widget.member,
-              onPressed: _sendComment,
-              isSending: _isSending,
-              onTextChanged: (text) => widget.onTextChanged(text),
-              textController: _textController,
-            ),
-          ],
+          ),
+          CommentInputBox(
+            onPressed: _sendComment,
+            isSending: _isSending,
+            onTextChanged: (text) => widget.onTextChanged(text),
+            textController: _textController,
+          ),
         ],
       ),
     );
@@ -383,14 +376,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           }
           return CommentItem(
             comment: widget.news.popularComments[index - 1],
-            member: widget.member,
-            isFollowingComment: widget.member.following?.any((element) =>
-                    element.memberId ==
-                    widget.news.popularComments[index - 1].member.memberId) ??
-                false,
+            isFollowingComment: UserHelper.instance.isFollowingMember(
+                widget.news.popularComments[index - 1].member),
             isMyComment:
                 widget.news.popularComments[index - 1].member.memberId ==
-                    widget.member.memberId,
+                    UserHelper.instance.currentUser.memberId,
             isSending: false,
             isMyNewComment: false,
           );
@@ -407,12 +397,10 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         (context, index) {
           return CommentItem(
             comment: _allComments[index],
-            member: widget.member,
-            isFollowingComment: widget.member.following?.any((element) =>
-                    element.memberId == _allComments[index].member.memberId) ??
-                false,
-            isMyComment:
-                _allComments[index].member.memberId == widget.member.memberId,
+            isFollowingComment: UserHelper.instance
+                .isFollowingMember(_allComments[index].member),
+            isMyComment: _allComments[index].member.memberId ==
+                UserHelper.instance.currentUser.memberId,
             isSending: (_isSending && index == 0),
             isMyNewComment: _hasMyNewComment && index == 0,
           );
@@ -425,7 +413,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   void _sendComment(String text) async {
     _myNewComment = Comment(
       id: 'sending',
-      member: widget.member,
+      member: UserHelper.instance.currentUser,
       content: text,
       state: "public",
       publishDate: DateTime.now(),
@@ -435,7 +423,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
       _isSending = true;
     });
     List<Comment>? newAllComments = await _commentService.createComment(
-      memberId: widget.member.memberId,
       storyId: widget.news.id,
       content: text,
       state: CommentTransparency.public,
@@ -485,11 +472,10 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           ? null
           : () async {
               // check whether is login
-              if (FirebaseAuth.instance.currentUser != null) {
+              if (UserHelper.instance.isMember) {
                 if (!_isPicked) {
                   var result = await PickBottomSheet.showPickBottomSheet(
                     context: context,
-                    member: widget.member,
                   );
 
                   String? pickId;
@@ -502,14 +488,14 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       _isPicked = !_isPicked;
 
                       if (_pickAvatarMembers.length < 4) {
-                        _pickAvatarMembers.insert(0, widget.member);
+                        _pickAvatarMembers.insert(
+                            0, UserHelper.instance.currentUser);
                       }
                       // freeze onPressed when waiting for response
                       _isLoading = true;
                     });
                     //send request to api. If content is null, only pick
                     pickId = await _pickService.createPick(
-                      memberId: widget.member.memberId,
                       targetId: news.id,
                       objective: PickObjective.story,
                       state: PickState.public,
@@ -523,7 +509,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       _isPicked = !_isPicked;
 
                       if (_pickAvatarMembers.length < 4) {
-                        _pickAvatarMembers.insert(0, widget.member);
+                        _pickAvatarMembers.insert(
+                            0, UserHelper.instance.currentUser);
                       }
                       // freeze onPressed when waiting for response
                       _isLoading = true;
@@ -531,7 +518,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     //send request to api. If content is null, only pick
                     var pickAndComment =
                         await _pickService.createPickAndComment(
-                      memberId: widget.member.memberId,
                       targetId: news.id,
                       objective: PickObjective.story,
                       state: PickState.public,
@@ -554,7 +540,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       setState(() {
                         _pickCount--;
                         _pickAvatarMembers.removeWhere((element) =>
-                            element.memberId == widget.member.memberId);
+                            element.memberId ==
+                            UserHelper.instance.currentUser.memberId);
                         _isPicked = !_isPicked;
                       });
                     }
@@ -573,7 +560,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     news.pickCount--;
                     _pickCount--;
                     _pickAvatarMembers.removeWhere((element) =>
-                        element.memberId == widget.member.memberId);
+                        element.memberId ==
+                        UserHelper.instance.currentUser.memberId);
                     _isPicked = !_isPicked;
 
                     // freeze onPressed when waiting for response
@@ -591,7 +579,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     setState(() {
                       news.myPickId = myPickId;
                       _pickCount++;
-                      _pickAvatarMembers.insert(0, widget.member);
+                      _pickAvatarMembers.insert(
+                          0, UserHelper.instance.currentUser);
                       _isPicked = !_isPicked;
                     });
                   }

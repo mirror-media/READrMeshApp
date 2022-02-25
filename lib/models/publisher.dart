@@ -1,4 +1,5 @@
 import 'package:readr/models/baseModel.dart';
+import 'package:readr/models/member.dart';
 
 class Publisher {
   final String id;
@@ -12,6 +13,7 @@ class Publisher {
   final bool fullScreenAd;
   final String? customId;
   int? followerCount;
+  List<Member>? follower;
 
   Publisher({
     required this.id,
@@ -25,6 +27,7 @@ class Publisher {
     this.fullScreenAd = false,
     this.customId,
     this.followerCount,
+    this.follower,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> json) {
@@ -37,6 +40,7 @@ class Publisher {
     bool fullScreenAd = false;
     String? customId;
     int? followerCount;
+    List<Member> follower = [];
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {
       officialSite = json['officialSite'];
@@ -73,6 +77,16 @@ class Publisher {
       customId = json['customId'];
     }
 
+    if (BaseModel.checkJsonKeys(json, ['followerCount'])) {
+      followerCount = json['followerCount'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['follower'])) {
+      for (var member in json['follower']) {
+        follower.add(Member.fromJson(member));
+      }
+    }
+
     return Publisher(
       id: json['id'],
       title: json['title'],
@@ -85,6 +99,7 @@ class Publisher {
       fullScreenAd: fullScreenAd,
       customId: customId,
       followerCount: followerCount,
+      follower: follower,
     );
   }
 }

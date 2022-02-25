@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
-import 'package:readr/pages/home/recommendFollowPage.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
 import 'package:readr/pages/personalFile/editPersonalFile/editPersonalFilePage.dart';
 import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
 import 'package:readr/pages/personalFile/followingList/followingListPage.dart';

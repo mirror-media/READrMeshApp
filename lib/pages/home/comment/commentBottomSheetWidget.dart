@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
@@ -14,7 +14,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CommentBottomSheetWidget extends StatefulWidget {
   final BuildContext context;
-  final Member member;
   final Comment clickComment;
   final String storyId;
   final ValueChanged<String> onTextChanged;
@@ -22,7 +21,6 @@ class CommentBottomSheetWidget extends StatefulWidget {
 
   const CommentBottomSheetWidget({
     required this.context,
-    required this.member,
     required this.clickComment,
     required this.storyId,
     required this.onTextChanged,
@@ -50,22 +48,19 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
   }
 
   _fetchComment() {
-    context
-        .read<CommentBloc>()
-        .add(FetchComments(widget.storyId, widget.member.memberId));
+    context.read<CommentBloc>().add(FetchComments(widget.storyId));
   }
 
   _createComment(String content) {
     if (!_isSending) {
       context.read<CommentBloc>().add(AddComment(
             storyId: widget.storyId,
-            memberId: widget.member.memberId,
             content: content,
             commentTransparency: CommentTransparency.public,
           ));
       _myNewComment = Comment(
         id: 'sending',
-        member: widget.member,
+        member: UserHelper.instance.currentUser,
         content: content,
         state: "public",
         publishDate: DateTime.now(),
@@ -275,36 +270,29 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                 itemBuilder: (context, index) {
                   return CommentItem(
                     comment: _allComments[index],
-                    isFollowingComment: widget.member.following?.any(
-                            (element) =>
-                                element.memberId ==
-                                _allComments[index].member.memberId) ??
-                        false,
+                    isFollowingComment: UserHelper.instance
+                        .isFollowingMember(_allComments[index].member),
                     isMyComment: _allComments[index].member.memberId ==
-                        widget.member.memberId,
+                        UserHelper.instance.currentUser.memberId,
                     isSending: (_isSending && index == 0),
                     isMyNewComment: _hasMyNewComment && index == 0,
-                    member: widget.member,
                   );
                 },
               ),
             ),
-            if (widget.member.memberId != '-1') ...[
-              const Divider(
-                color: Colors.black12,
-                thickness: 0.5,
-                height: 0.5,
-              ),
-              CommentInputBox(
-                member: widget.member,
-                isSending: _isSending,
-                onPressed: (text) {
-                  _createComment(text);
-                },
-                onTextChanged: widget.onTextChanged,
-                textController: _textController,
-              ),
-            ],
+            const Divider(
+              color: Colors.black12,
+              thickness: 0.5,
+              height: 0.5,
+            ),
+            CommentInputBox(
+              isSending: _isSending,
+              onPressed: (text) {
+                _createComment(text);
+              },
+              onTextChanged: widget.onTextChanged,
+              textController: _textController,
+            ),
           ],
         ),
       ),

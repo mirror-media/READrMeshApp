@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -69,7 +70,6 @@ class PickService {
   }
 
   Future<String?> createPick({
-    required String memberId,
     required String targetId,
     required PickObjective objective,
     required PickState state,
@@ -92,7 +92,7 @@ class PickService {
     Map<String, Map> variables = {
       "data": {
         "member": {
-          "connect": {"id": memberId}
+          "connect": {"id": UserHelper.instance.currentUser.memberId}
         },
         "objective": objective.toString().split('.').last,
         "kind": kind.toString().split('.').last,
@@ -150,7 +150,6 @@ class PickService {
   }
 
   Future<Map<String, dynamic>?> createPickAndComment({
-    required String memberId,
     required String targetId,
     required PickObjective objective,
     required PickState state,
@@ -185,7 +184,7 @@ class PickService {
     Map<String, Map> variables = {
       "data": {
         "member": {
-          "connect": {"id": memberId}
+          "connect": {"id": UserHelper.instance.currentUser.memberId}
         },
         "objective": objective.toString().split('.').last,
         "kind": kind.toString().split('.').last,
@@ -221,7 +220,7 @@ class PickService {
         "pick_comment": {
           "create": {
             "member": {
-              "connect": {"id": memberId}
+              "connect": {"id": UserHelper.instance.currentUser.memberId}
             },
             "story": {
               "connect": {"id": targetId}
@@ -237,7 +236,7 @@ class PickService {
         "pick_comment": {
           "create": {
             "member": {
-              "connect": {"id": memberId}
+              "connect": {"id": UserHelper.instance.currentUser.memberId}
             },
             "parent": {
               "connect": {"id": targetId}

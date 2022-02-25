@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:readr/models/member.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
 class CommentInputBox extends StatefulWidget {
-  final Member member;
   final void Function(String text) onPressed;
   final bool isSending;
   final String? oldContent;
   final ValueChanged<String> onTextChanged;
   final TextEditingController? textController;
   const CommentInputBox({
-    required this.member,
     required this.onPressed,
     this.isSending = false,
     this.oldContent,
@@ -85,7 +83,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
         top: false,
         child: Stack(
           children: [
-            ProfilePhotoWidget(widget.member, 22),
+            ProfilePhotoWidget(UserHelper.instance.currentUser, 22),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

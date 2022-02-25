@@ -6,24 +6,22 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
-import 'package:readr/pages/home/latestCommentsBlock.dart';
+import 'package:readr/pages/home/latestComment/latestCommentsBlock.dart';
 import 'package:readr/pages/home/latestNewsBlock.dart';
-import 'package:readr/pages/home/recommendFollowBlock.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowBlock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
-  final Member currentMember;
-  const HomeWidget(this.currentMember);
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  late Member _currentMember;
   List<Member>? _tempFollowingData;
   List<NewsListItem> _followingStories = [];
   bool _isLoadingMoreFollowingPicked = false;
@@ -32,7 +30,9 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<NewsListItem> _allLatestNews = [];
   bool _noMoreLatestNews = false;
   List<NewsListItem> _latestComments = [];
-  List<Member> _recommendedMembers = [];
+  List<Member> _recommendedMemberList = [];
+  final List<MemberFollowableItem> _recommendedMembers = [];
+  final List<PublisherFollowableItem> _recommendedPublishers = [];
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   _fetchHomeScreen() async {
-    context.read<HomeBloc>().add(InitialHomeScreen(widget.currentMember));
+    context.read<HomeBloc>().add(InitialHomeScreen());
   }
 
   _reloadHomeScreen() async {
@@ -108,8 +108,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is UpdatingFollowing) {
-          _tempFollowingData = _currentMember.following;
-          _currentMember.following = state.newFollowingMembers;
           return _buildHomeContent();
         }
 
@@ -117,7 +115,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             state is HomeRefresh ||
             state is LoadingMoreNews ||
             state is LoadMoreNewsFailed ||
-            state is HomeReloading) {
+            state is HomeReloading ||
+            state is HomeRefreshing) {
           return _buildHomeContent();
         }
 
@@ -142,7 +141,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is UpdateFollowingFailed) {
           final error = state.error;
           print('UpdateFollowingFailed: ${error.message}');
-          _currentMember.following = _tempFollowingData;
           return _buildHomeContent();
         }
 
@@ -155,11 +153,16 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is HomeLoaded) {
-          _currentMember = state.member;
           _followingStories = state.followingStories;
           _allLatestNews = state.allLatestNews;
           _latestComments = state.latestComments;
-          _recommendedMembers = state.recommendedMembers;
+          _recommendedMemberList = state.recommendedMembers;
+          for (var rm in state.recommendedMembers) {
+            _recommendedMembers.add(MemberFollowableItem(rm));
+          }
+          for (var publisher in state.recommendedPublishers) {
+            _recommendedPublishers.add(PublisherFollowableItem(publisher));
+          }
           return _buildHomeContent();
         }
 
@@ -189,9 +192,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           SliverToBoxAdapter(
             child: FollowingBlock(
               _followingStories,
-              _currentMember,
               _isLoadingMoreFollowingPicked,
-              _recommendedMembers,
+              _recommendedMemberList,
             ),
           ),
           SliverToBoxAdapter(
@@ -201,7 +203,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ),
           SliverToBoxAdapter(
-            child: RecommendFollowBlock(_recommendedMembers, _currentMember),
+            child: RecommendFollowBlock(_recommendedMembers),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -210,7 +212,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ),
           SliverToBoxAdapter(
-            child: LatestCommentsBlock(_latestComments, _currentMember),
+            child: LatestCommentsBlock(_latestComments),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -222,8 +224,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           SliverToBoxAdapter(
             child: LatestNewsBlock(
               allLatestNews: _allLatestNews,
-              recommendedMembers: _recommendedMembers,
-              member: _currentMember,
+              recommendedPublishers: _recommendedPublishers,
               showFullScreenAd: _showFullScreenAd,
               showPaywall: _showPaywall,
               noMore: _noMoreLatestNews,

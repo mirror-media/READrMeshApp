@@ -9,9 +9,8 @@ abstract class CommentEvent extends Equatable {
 
 class FetchComments extends CommentEvent {
   final String storyId;
-  final String memberId;
 
-  const FetchComments(this.storyId, this.memberId);
+  const FetchComments(this.storyId);
 
   @override
   String toString() => "Fetch comments";
@@ -19,13 +18,11 @@ class FetchComments extends CommentEvent {
 
 class AddComment extends CommentEvent {
   final String storyId;
-  final String memberId;
   final String content;
   final CommentTransparency commentTransparency;
 
   const AddComment({
     required this.storyId,
-    required this.memberId,
     required this.content,
     required this.commentTransparency,
   });

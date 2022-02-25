@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/newsStoryItem.dart';
 
 class NewsStoryService {
@@ -11,7 +11,7 @@ class NewsStoryService {
   // TODO: Change to Environment config when all environment built
   final String api = DevConfig().keystoneApi;
 
-  Future<NewsStoryItem> fetchNewsData(String storyId, Member member) async {
+  Future<NewsStoryItem> fetchNewsData(String storyId) async {
     const String query = '''
     query(
       \$followingMembers: [ID!]
@@ -160,16 +160,14 @@ class NewsStoryService {
     ''';
 
     List<String> followingMemberIds = [];
-    if (member.following != null) {
-      for (var memberId in member.following!) {
-        followingMemberIds.add(memberId.memberId);
-      }
+    for (var memberId in UserHelper.instance.currentUser.following) {
+      followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "storyId": storyId,
       "followingMembers": followingMemberIds,
-      "myId": member.memberId,
+      "myId": UserHelper.instance.currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

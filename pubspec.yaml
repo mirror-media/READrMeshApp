@@ -121,6 +121,8 @@ dependencies:
   flutter_styled_toast: ^2.0.0
   # improve nested scroll view
   extended_nested_scroll_view: ^5.0.0
+  # debouncer
+  easy_debounce: ^2.0.2+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
