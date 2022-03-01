@@ -129,7 +129,11 @@ class PublisherFollowableItem implements FollowableItem {
   String get lookmoreText => '探索更多為你推薦的媒體';
 
   @override
-  Future<void> onTap(BuildContext context) async {}
+  Future<void> onTap(BuildContext context) async {
+    AutoRouter.of(context).push(PublisherRoute(
+      publisher: publisher,
+    ));
+  }
 
   @override
   Widget profilePhotoWidget(BuildContext context, double size) {

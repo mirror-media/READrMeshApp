@@ -212,7 +212,11 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
           );
         }
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            AutoRouter.of(context).push(PublisherRoute(
+              publisher: _followPublisherList[index],
+            ));
+          },
           child: PublisherListItem(
             publisher: _followPublisherList[index],
           ),
