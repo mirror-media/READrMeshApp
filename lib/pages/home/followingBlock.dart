@@ -228,80 +228,88 @@ class FollowingBlock extends StatelessWidget {
   }
 
   Widget _followingItem(BuildContext context, NewsListItem item) {
-    return InkWell(
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _pickBar(context, item.followingPickMembers),
-            if (item.heroImageUrl != null)
-              CachedNetworkImage(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width / 2,
-                imageUrl: item.heroImageUrl!,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey,
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _pickBar(context, item.followingPickMembers),
+          InkWell(
+            onTap: () {
+              AutoRouter.of(context).push(NewsStoryRoute(
+                news: item,
+              ));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (item.heroImageUrl != null)
+                  CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width / 2,
+                    imageUrl: item.heroImageUrl!,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey,
+                      child: const Icon(Icons.error),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                if (item.source != null)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 12, left: 20, right: 20),
+                    child: Text(
+                      item.source!.title,
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 14),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 4, left: 20, right: 20, bottom: 8),
+                  child: Text(
+                    item.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey,
-                  child: const Icon(Icons.error),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 16),
+                  child: NewsInfo(item),
                 ),
-                fit: BoxFit.cover,
-              ),
-            if (item.source != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                child: Text(
-                  item.source!.title,
-                  style: const TextStyle(color: Colors.black54, fontSize: 14),
-                ),
-              ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 4, left: 20, right: 20, bottom: 8),
-              child: Text(
-                item.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
-              child: NewsInfo(item),
+          ),
+          if (item.showComment != null) ...[
+            const Divider(
+              indent: 20,
+              endIndent: 20,
+              color: Colors.black12,
+              height: 1,
+              thickness: 1,
             ),
-            if (item.showComment != null) ...[
-              const Divider(
-                indent: 20,
-                endIndent: 20,
-                color: Colors.black12,
-                height: 1,
-                thickness: 1,
-              ),
-              InkWell(
-                onTap: () async {
-                  await CommentBottomSheet.showCommentBottomSheet(
-                    context: context,
-                    clickComment: item.showComment!,
-                    storyId: item.id,
-                  );
-                },
-                child: _commentsWidget(context, item.showComment!),
-              ),
-            ]
-          ],
-        ),
+            InkWell(
+              onTap: () async {
+                await CommentBottomSheet.showCommentBottomSheet(
+                  context: context,
+                  clickComment: item.showComment!,
+                  storyId: item.id,
+                );
+              },
+              child: _commentsWidget(context, item.showComment!),
+            ),
+          ]
+        ],
       ),
-      onTap: () {
-        AutoRouter.of(context).push(NewsStoryRoute(
-          news: item,
-        ));
-      },
     );
   }
 
