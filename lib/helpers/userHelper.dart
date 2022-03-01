@@ -25,6 +25,9 @@ class UserHelper {
 
   bool get isInitialized => _isInitialized;
 
+  List<Member> _localFollowingMemberList = [];
+  List<Publisher> _localFollowingPublisherList = [];
+
   // if want to use member, must call fetchUserData() once
   Member get currentUser => _member;
 
@@ -36,6 +39,8 @@ class UserHelper {
       _member = await _visitorService.fetchMemberData();
     }
     _isInitialized = true;
+    _localFollowingMemberList = _member.following;
+    _localFollowingPublisherList = _member.followingPublisher;
   }
 
   // check whether member is currentUser's following member
@@ -62,12 +67,7 @@ class UserHelper {
       newFollowingList = await _visitorService.addFollowingMember(memberId);
     }
 
-    if (newFollowingList == null) {
-      return false;
-    } else {
-      _member.following = newFollowingList;
-      return true;
-    }
+    return _checkUpdateFollowingResult(_member.following, newFollowingList);
   }
 
   // remove following member
@@ -79,12 +79,7 @@ class UserHelper {
       newFollowingList = await _visitorService.removeFollowingMember(memberId);
     }
 
-    if (newFollowingList == null) {
-      return false;
-    } else {
-      _member.following = newFollowingList;
-      return true;
-    }
+    return _checkUpdateFollowingResult(_member.following, newFollowingList);
   }
 
   // check whether publisher is currentUser's following publisher
@@ -110,12 +105,8 @@ class UserHelper {
       newFollowingList = await _visitorService.addFollowPublisher(publisherId);
     }
 
-    if (newFollowingList == null) {
-      return false;
-    } else {
-      _member.followingPublisher = newFollowingList;
-      return true;
-    }
+    return _checkUpdateFollowingResult(
+        _member.followingPublisher, newFollowingList);
   }
 
   // remove publisher
@@ -129,11 +120,55 @@ class UserHelper {
           await _visitorService.removeFollowPublisher(publisherId);
     }
 
-    if (newFollowingList == null) {
+    return _checkUpdateFollowingResult(
+        _member.followingPublisher, newFollowingList);
+  }
+
+  bool _checkUpdateFollowingResult(dynamic oldObject, dynamic newObject) {
+    if (newObject == null) {
+      syncFollowing();
       return false;
     } else {
-      _member.followingPublisher = newFollowingList;
+      oldObject = newObject;
+      syncFollowing();
       return true;
     }
+  }
+
+  // local following list
+
+  bool isLocalFollowingMember(Member member) {
+    return _localFollowingMemberList
+        .any((element) => element.memberId == member.memberId);
+  }
+
+  bool isLocalFollowingPublisher(Publisher publisher) {
+    return _localFollowingPublisherList
+        .any((element) => element.id == publisher.id);
+  }
+
+  void updateLocalFollowingMember(Member member) {
+    int index = _localFollowingMemberList
+        .indexWhere((element) => element.memberId == member.memberId);
+    if (index == -1) {
+      _localFollowingMemberList.add(member);
+    } else {
+      _localFollowingMemberList.removeAt(index);
+    }
+  }
+
+  void updateLocalFollowingPublisher(Publisher publisher) {
+    int index = _localFollowingPublisherList
+        .indexWhere((element) => element.id == publisher.id);
+    if (index == -1) {
+      _localFollowingPublisherList.add(publisher);
+    } else {
+      _localFollowingPublisherList.removeAt(index);
+    }
+  }
+
+  void syncFollowing() {
+    _localFollowingMemberList = _member.following;
+    _localFollowingPublisherList = _member.followingPublisher;
   }
 }

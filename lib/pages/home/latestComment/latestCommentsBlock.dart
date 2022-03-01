@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestComment/latestCommentItem.dart';
 
 class LatestCommentsBlock extends StatelessWidget {
   final List<NewsListItem> latestCommentsNewsList;
-  final List<MemberFollowableItem> recommendedMembers;
   const LatestCommentsBlock(
     this.latestCommentsNewsList,
-    this.recommendedMembers,
   );
 
   @override
@@ -36,15 +33,9 @@ class LatestCommentsBlock extends StatelessWidget {
                 ),
               );
             }
-            int recommendedIndex = recommendedMembers.indexWhere((element) =>
-                element.member.memberId ==
-                latestCommentsNewsList[index - 1].showComment!.member.memberId);
 
             return LatestCommentItem(
               latestCommentsNewsList[index - 1],
-              recommendedIndex != -1
-                  ? recommendedMembers[recommendedIndex].isFollowed
-                  : false,
             );
           },
           separatorBuilder: (context, index) => const SizedBox(

@@ -46,6 +46,7 @@ class _FollowButtonState extends State<FollowButton> {
       onPressed: () async {
         setState(() {
           _isFollowing = !_isFollowing;
+          widget.item.updateLocalList();
         });
         if (widget.onTap != null) {
           widget.onTap!(_isFollowing);

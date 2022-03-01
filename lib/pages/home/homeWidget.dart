@@ -88,18 +88,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
-        if (state is UpdateRecommendedMembers) {
-          _recommendedMembers = state.recommendedMembers;
-          return _buildHomeContent();
-        }
-
-        if (state is UpdateRecommendedPublishers) {
-          _recommendedPublishers = state.recommendedPublishers;
-          return _buildHomeContent();
-        }
-
-        if (state is UpdatingFollowing ||
-            state is HomeRefresh ||
+        if (state is HomeRefresh ||
             state is LoadingMoreNews ||
             state is LoadMoreNewsFailed ||
             state is HomeReloading ||
@@ -122,12 +111,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is LoadMoreFollowingPickedSuccess) {
           _followingStories.addAll(state.newFollowingStories);
           _isLoadingMoreFollowingPicked = false;
-          return _buildHomeContent();
-        }
-
-        if (state is UpdateFollowingFailed) {
-          final error = state.error;
-          print('UpdateFollowingFailed: ${error.message}');
           return _buildHomeContent();
         }
 
@@ -194,7 +177,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ),
           SliverToBoxAdapter(
-            child: LatestCommentsBlock(_latestComments, _recommendedMembers),
+            child: LatestCommentsBlock(_latestComments),
           ),
           SliverToBoxAdapter(
             child: Container(

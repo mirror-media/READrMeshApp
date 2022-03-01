@@ -4,20 +4,15 @@ import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RecommendFollowItem extends StatefulWidget {
+class RecommendFollowItem extends StatelessWidget {
   final FollowableItem recommendItem;
   const RecommendFollowItem(this.recommendItem);
 
   @override
-  _RecommendFollowItemState createState() => _RecommendFollowItemState();
-}
-
-class _RecommendFollowItemState extends State<RecommendFollowItem> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.recommendItem.onTap(context);
+        recommendItem.onTap(context);
       },
       child: Card(
         color: Colors.white,
@@ -33,10 +28,10 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              widget.recommendItem.defaultProfilePhotoWidget(context),
+              recommendItem.defaultProfilePhotoWidget(context),
               const SizedBox(height: 12),
               Text(
-                widget.recommendItem.name,
+                recommendItem.name,
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black87,
@@ -48,7 +43,7 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
               SizedBox(
                 height: 34,
                 child: Text(
-                  widget.recommendItem.descriptionText,
+                  recommendItem.descriptionText,
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.black54,
@@ -59,23 +54,13 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
               ),
               const SizedBox(height: 12),
               FollowButton(
-                widget.recommendItem,
+                recommendItem,
                 expanded: true,
                 textSize: 16,
-                onTap: (bool isFollowing) {
-                  widget.recommendItem.updateHomeScreen(context, isFollowing);
-                  setState(() {
-                    widget.recommendItem.isFollowed =
-                        !widget.recommendItem.isFollowed;
-                  });
-                },
-                whenFailed: (bool isFollowing) {
-                  widget.recommendItem.updateHomeScreen(context, isFollowing);
-                  setState(() {
-                    widget.recommendItem.isFollowed =
-                        !widget.recommendItem.isFollowed;
-                  });
-                },
+                onTap: (bool isFollowing) =>
+                    context.read<HomeBloc>().add(RefreshHomeScreen()),
+                whenFailed: (bool isFollowing) =>
+                    context.read<HomeBloc>().add(RefreshHomeScreen()),
               ),
             ],
           ),

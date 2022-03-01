@@ -3,9 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/publisher.dart';
 import 'package:readr/services/homeScreenService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +12,6 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeScreenService _homeScreenService = HomeScreenService();
-  List<MemberFollowableItem> _recommendedMembers = [];
-  List<PublisherFollowableItem> _recommendedPublishers = [];
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
@@ -28,20 +24,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
+          List<MemberFollowableItem> recommendedMembers = [];
+          List<PublisherFollowableItem> recommendedPublishers = [];
           for (var member in data['recommendedMembers']) {
-            _recommendedMembers.add(MemberFollowableItem(member));
+            recommendedMembers.add(MemberFollowableItem(member));
           }
           for (var publisher in data['recommendedPublishers']) {
-            _recommendedPublishers.add(PublisherFollowableItem(publisher));
+            recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
             latestComments: data['latestComments'],
-            recommendedMembers: _recommendedMembers,
+            recommendedMembers: recommendedMembers,
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
-            recommendedPublishers: _recommendedPublishers,
+            recommendedPublishers: recommendedPublishers,
           ));
         } else if (event is ReloadHomeScreen) {
           emit(HomeReloading());
@@ -51,39 +49,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
           await UserHelper.instance.fetchUserData();
-          _recommendedMembers = [];
-          _recommendedPublishers = [];
+          List<MemberFollowableItem> recommendedMembers = [];
+          List<PublisherFollowableItem> recommendedPublishers = [];
           for (var member in data['recommendedMembers']) {
-            _recommendedMembers.add(MemberFollowableItem(member));
+            recommendedMembers.add(MemberFollowableItem(member));
           }
           for (var publisher in data['recommendedPublishers']) {
-            _recommendedPublishers.add(PublisherFollowableItem(publisher));
+            recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
             latestComments: data['latestComments'],
-            recommendedMembers: _recommendedMembers,
+            recommendedMembers: recommendedMembers,
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
-            recommendedPublishers: _recommendedPublishers,
+            recommendedPublishers: recommendedPublishers,
           ));
-        } else if (event is UpdateFollowingMember) {
-          emit(UpdatingFollowing());
-          int itemIndex = _recommendedMembers
-              .indexWhere((element) => element.id == event.memberId);
-          if (itemIndex != -1) {
-            _recommendedMembers[itemIndex].isFollowing = event.isFollowing;
-          }
-          emit(UpdateRecommendedMembers(_recommendedMembers));
-        } else if (event is UpdateFollowingPublisher) {
-          emit(UpdatingFollowing());
-          int itemIndex = _recommendedPublishers
-              .indexWhere((element) => element.id == event.memberId);
-          if (itemIndex != -1) {
-            _recommendedPublishers[itemIndex].isFollowing = event.isFollowing;
-          }
-          emit(UpdateRecommendedPublishers(_recommendedPublishers));
         } else if (event is LoadMoreFollowingPicked) {
           emit(LoadingMoreFollowingPicked());
 
@@ -112,9 +94,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(HomeReloadFailed(e));
         } else if (event is LoadMoreFollowingPicked) {
           emit(LoadMoreFollowingPickedFailed(e));
-        } else if (event is UpdateFollowingMember ||
-            event is UpdateFollowingPublisher) {
-          emit(UpdateFollowingFailed(e));
         } else if (event is LoadMoreLatestNews) {
           emit(LoadMoreNewsFailed(e));
         } else {

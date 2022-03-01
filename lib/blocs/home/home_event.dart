@@ -22,22 +22,6 @@ class RefreshHomeScreen extends HomeEvent {
   String toString() => 'RefreshHomeScreen';
 }
 
-class UpdateFollowingMember extends HomeEvent {
-  final String memberId;
-  final bool isFollowing;
-  const UpdateFollowingMember(this.memberId, this.isFollowing);
-  @override
-  String toString() => 'UpdateFollowingMember';
-}
-
-class UpdateFollowingPublisher extends HomeEvent {
-  final String memberId;
-  final bool isFollowing;
-  const UpdateFollowingPublisher(this.memberId, this.isFollowing);
-  @override
-  String toString() => 'UpdateFollowingPublisher';
-}
-
 class LoadMoreFollowingPicked extends HomeEvent {
   final DateTime lastPickTime;
   final List<String> alreadyFetchIds;

@@ -17,18 +17,6 @@ class HomeRefreshing extends HomeState {}
 
 class HomeRefresh extends HomeState {}
 
-class UpdatingFollowing extends HomeState {}
-
-class UpdateRecommendedMembers extends HomeState {
-  final List<MemberFollowableItem> recommendedMembers;
-  const UpdateRecommendedMembers(this.recommendedMembers);
-}
-
-class UpdateRecommendedPublishers extends HomeState {
-  final List<PublisherFollowableItem> recommendedPublishers;
-  const UpdateRecommendedPublishers(this.recommendedPublishers);
-}
-
 class HomeLoaded extends HomeState {
   final List<NewsListItem> allLatestNews;
   final List<NewsListItem> followingStories;
@@ -56,11 +44,6 @@ class HomeError extends HomeState {
 class HomeReloadFailed extends HomeState {
   final dynamic error;
   const HomeReloadFailed(this.error);
-}
-
-class UpdateFollowingFailed extends HomeState {
-  final dynamic error;
-  const UpdateFollowingFailed(this.error);
 }
 
 class LoadingMoreFollowingPicked extends HomeState {}
