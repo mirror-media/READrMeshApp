@@ -106,6 +106,11 @@ class _$AppRouter extends RootStackRouter {
           child: EditPersonalFilePage(),
           fullscreenDialog: true);
     },
+    PublisherRoute.name: (routeData) {
+      final args = routeData.argsAs<PublisherRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: PublisherPage(args.publisher));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -146,7 +151,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(FollowerListRoute.name, path: '/follower-list-page'),
         RouteConfig(FollowingListRoute.name, path: '/following-list-page'),
         RouteConfig(EditPersonalFileRoute.name,
-            path: '/edit-personal-file-page')
+            path: '/edit-personal-file-page'),
+        RouteConfig(PublisherRoute.name, path: '/publisher-page')
       ];
 }
 
@@ -452,6 +458,28 @@ class EditPersonalFileRoute extends PageRouteInfo<void> {
       : super(EditPersonalFileRoute.name, path: '/edit-personal-file-page');
 
   static const String name = 'EditPersonalFileRoute';
+}
+
+/// generated route for
+/// [PublisherPage]
+class PublisherRoute extends PageRouteInfo<PublisherRouteArgs> {
+  PublisherRoute({required Publisher publisher})
+      : super(PublisherRoute.name,
+            path: '/publisher-page',
+            args: PublisherRouteArgs(publisher: publisher));
+
+  static const String name = 'PublisherRoute';
+}
+
+class PublisherRouteArgs {
+  const PublisherRouteArgs({required this.publisher});
+
+  final Publisher publisher;
+
+  @override
+  String toString() {
+    return 'PublisherRouteArgs{publisher: $publisher}';
+  }
 }
 
 /// generated route for

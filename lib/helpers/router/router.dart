@@ -3,6 +3,7 @@ import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/people.dart';
+import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
@@ -11,6 +12,7 @@ import 'package:readr/pages/personalFile/editPersonalFile/editPersonalFilePage.d
 import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
 import 'package:readr/pages/personalFile/followingList/followingListPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
@@ -63,6 +65,7 @@ part 'router.gr.dart';
     AutoRoute(page: FollowerListPage),
     AutoRoute(page: FollowingListPage),
     AutoRoute<bool>(page: EditPersonalFilePage, fullscreenDialog: true),
+    AutoRoute(page: PublisherPage),
   ],
 )
 // extend the generated private router
