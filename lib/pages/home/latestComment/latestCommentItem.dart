@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
@@ -11,19 +10,25 @@ import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/home/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LatestCommentItem extends StatefulWidget {
   final NewsListItem news;
-  const LatestCommentItem(this.news);
+  final bool isFollowed;
+  const LatestCommentItem(this.news, this.isFollowed);
 
   @override
   _LatestCommentItemState createState() => _LatestCommentItemState();
 }
 
 class _LatestCommentItemState extends State<LatestCommentItem> {
+  late MemberFollowableItem memberFollowableItem;
+
   @override
   Widget build(BuildContext context) {
+    memberFollowableItem = MemberFollowableItem(
+      widget.news.showComment!.member,
+      isFollowing: widget.isFollowed,
+    );
     return Card(
       color: Colors.white,
       elevation: 0,
@@ -159,11 +164,11 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                   ),
                 ),
                 FollowButton(
-                  MemberFollowableItem(comment.member),
-                  onTap: () =>
-                      context.read<HomeBloc>().add(RefreshHomeScreen()),
-                  whenFailed: () =>
-                      context.read<HomeBloc>().add(RefreshHomeScreen()),
+                  memberFollowableItem,
+                  onTap: (bool isFollowing) => memberFollowableItem
+                      .updateHomeScreen(context, isFollowing),
+                  whenFailed: (bool isFollowing) => memberFollowableItem
+                      .updateHomeScreen(context, isFollowing),
                 ),
               ],
             ),

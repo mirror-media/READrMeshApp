@@ -22,7 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
   final bool isLoadingMore;
-  final List<Member> recommendedMembers;
+  final List<MemberFollowableItem> recommendedMembers;
   const FollowingBlock(
     this.followingStories,
     this.isLoadingMore,
@@ -81,8 +81,8 @@ class FollowingBlock extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemBuilder: (context, index) => RecommendFollowItem(
-                      MemberFollowableItem(recommendedMembers[index])),
+                  itemBuilder: (context, index) =>
+                      RecommendFollowItem(recommendedMembers[index]),
                   separatorBuilder: (context, index) =>
                       const SizedBox(width: 12),
                   itemCount: recommendedMembers.length,

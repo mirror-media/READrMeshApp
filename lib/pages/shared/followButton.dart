@@ -6,8 +6,8 @@ class FollowButton extends StatefulWidget {
   final FollowableItem item;
   final bool expanded;
   final double textSize;
-  final void Function()? onTap;
-  final void Function()? whenFailed;
+  final ValueSetter<bool>? onTap;
+  final ValueSetter<bool>? whenFailed;
   const FollowButton(
     this.item, {
     this.expanded = false,
@@ -26,11 +26,11 @@ class _FollowButtonState extends State<FollowButton> {
   @override
   void initState() {
     super.initState();
-    _isFollowing = widget.item.isFollowed;
   }
 
   @override
   Widget build(BuildContext context) {
+    _isFollowing = widget.item.isFollowed;
     if (widget.expanded) {
       return SizedBox(
         width: double.maxFinite,
@@ -48,7 +48,7 @@ class _FollowButtonState extends State<FollowButton> {
           _isFollowing = !_isFollowing;
         });
         if (widget.onTap != null) {
-          widget.onTap!();
+          widget.onTap!(_isFollowing);
         }
         EasyDebounce.debounce(
             widget.item.id, const Duration(seconds: 2), () => _updateFollow());
@@ -79,7 +79,7 @@ class _FollowButtonState extends State<FollowButton> {
         _isFollowing = !_isFollowing;
       });
       if (widget.whenFailed != null) {
-        widget.whenFailed!();
+        widget.whenFailed!(_isFollowing);
       }
     }
   }

@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
@@ -11,7 +13,7 @@ abstract class FollowableItem {
   final String id;
   final String name;
   final String descriptionText;
-  final bool isFollowed;
+  bool isFollowed;
   final String lookmoreText;
   FollowableItem(
     this.id,
@@ -26,11 +28,13 @@ abstract class FollowableItem {
   Future<void> onTap(BuildContext context);
   Widget defaultProfilePhotoWidget(BuildContext context);
   Widget profilePhotoWidget(BuildContext context, double size);
+  void updateHomeScreen(BuildContext context, bool isFollowing);
 }
 
 class MemberFollowableItem implements FollowableItem {
   final Member member;
-  MemberFollowableItem(this.member);
+  bool? isFollowing;
+  MemberFollowableItem(this.member, {this.isFollowing});
 
   @override
   String get descriptionText {
@@ -53,7 +57,8 @@ class MemberFollowableItem implements FollowableItem {
   String get name => member.nickname;
 
   @override
-  bool get isFollowed => UserHelper.instance.isFollowingMember(member);
+  bool get isFollowed =>
+      isFollowing ?? UserHelper.instance.isFollowingMember(member);
 
   @override
   String get lookmoreText => '探索更多為你推薦的使用者';
@@ -80,11 +85,22 @@ class MemberFollowableItem implements FollowableItem {
   Widget defaultProfilePhotoWidget(BuildContext context) {
     return ProfilePhotoWidget(member, 32);
   }
+
+  @override
+  void updateHomeScreen(BuildContext context, bool isFollowing) {
+    context.read<HomeBloc>().add(UpdateFollowingMember(id, isFollowing));
+  }
+
+  @override
+  set isFollowed(bool _isFollowed) {
+    isFollowing = _isFollowed;
+  }
 }
 
 class PublisherFollowableItem implements FollowableItem {
   final Publisher publisher;
-  PublisherFollowableItem(this.publisher);
+  bool? isFollowing;
+  PublisherFollowableItem(this.publisher, {this.isFollowing});
 
   @override
   String get descriptionText {
@@ -108,7 +124,8 @@ class PublisherFollowableItem implements FollowableItem {
   String get name => publisher.title;
 
   @override
-  bool get isFollowed => UserHelper.instance.isFollowingPublisher(publisher);
+  bool get isFollowed =>
+      isFollowing ?? UserHelper.instance.isFollowingPublisher(publisher);
 
   @override
   Future<bool> addFollow() async =>
@@ -132,5 +149,15 @@ class PublisherFollowableItem implements FollowableItem {
   @override
   Widget defaultProfilePhotoWidget(BuildContext context) {
     return PublisherLogoWidget(publisher, size: 60);
+  }
+
+  @override
+  void updateHomeScreen(BuildContext context, bool isFollowing) {
+    context.read<HomeBloc>().add(UpdateFollowingPublisher(id, isFollowing));
+  }
+
+  @override
+  set isFollowed(bool _isFollowed) {
+    isFollowing = _isFollowed;
   }
 }

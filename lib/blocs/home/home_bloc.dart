@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -13,6 +14,8 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeScreenService _homeScreenService = HomeScreenService();
+  List<MemberFollowableItem> _recommendedMembers = [];
+  List<PublisherFollowableItem> _recommendedPublishers = [];
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
@@ -25,14 +28,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
+          for (var member in data['recommendedMembers']) {
+            _recommendedMembers.add(MemberFollowableItem(member));
+          }
+          for (var publisher in data['recommendedPublishers']) {
+            _recommendedPublishers.add(PublisherFollowableItem(publisher));
+          }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
             latestComments: data['latestComments'],
-            recommendedMembers: data['recommendedMembers'],
+            recommendedMembers: _recommendedMembers,
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
-            recommendedPublishers: data['recommendedPublishers'],
+            recommendedPublishers: _recommendedPublishers,
           ));
         } else if (event is ReloadHomeScreen) {
           emit(HomeReloading());
@@ -42,51 +51,39 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
           await UserHelper.instance.fetchUserData();
+          _recommendedMembers = [];
+          _recommendedPublishers = [];
+          for (var member in data['recommendedMembers']) {
+            _recommendedMembers.add(MemberFollowableItem(member));
+          }
+          for (var publisher in data['recommendedPublishers']) {
+            _recommendedPublishers.add(PublisherFollowableItem(publisher));
+          }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
             latestComments: data['latestComments'],
-            recommendedMembers: data['recommendedMembers'],
+            recommendedMembers: _recommendedMembers,
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
-            recommendedPublishers: data['recommendedPublishers'],
+            recommendedPublishers: _recommendedPublishers,
           ));
         } else if (event is UpdateFollowingMember) {
-          // List<Member>? newFollowingMembers = event.currentMember.following;
-          // if (newFollowingMembers != null) {
-          //   if (event.isFollowed) {
-          //     newFollowingMembers.remove(event.targetMember);
-          //   } else {
-          //     newFollowingMembers.add(event.targetMember);
-          //   }
-          // } else {
-          //   newFollowingMembers = [event.targetMember];
-          // }
-
-          // emit(UpdatingFollowing(newFollowingMembers, event.isFollowed));
-
-          // if (event.isFollowed) {
-          //   if (FirebaseAuth.instance.currentUser == null) {
-          //     newFollowingMembers = await _visitorService
-          //         .removeFollowingMember(event.targetMember.memberId);
-          //   } else {
-          //     newFollowingMembers = await _memberService.removeFollowingMember(
-          //         event.currentMember.memberId, event.targetMember.memberId);
-          //   }
-          // } else {
-          //   if (FirebaseAuth.instance.currentUser == null) {
-          //     newFollowingMembers = await _visitorService
-          //         .addFollowingMember(event.targetMember.memberId);
-          //   } else {
-          //     newFollowingMembers = await _memberService.addFollowingMember(
-          //         event.currentMember.memberId, event.targetMember.memberId);
-          //   }
-          // }
-          // if (newFollowingMembers == null) {
-          //   emit(UpdateFollowingFailed('Unknown error', event.isFollowed));
-          // } else {
-          //   emit(UpdateFollowingSuccess());
-          // }
+          emit(UpdatingFollowing());
+          int itemIndex = _recommendedMembers
+              .indexWhere((element) => element.id == event.memberId);
+          if (itemIndex != -1) {
+            _recommendedMembers[itemIndex].isFollowing = event.isFollowing;
+          }
+          emit(UpdateRecommendedMembers(_recommendedMembers));
+        } else if (event is UpdateFollowingPublisher) {
+          emit(UpdatingFollowing());
+          int itemIndex = _recommendedPublishers
+              .indexWhere((element) => element.id == event.memberId);
+          if (itemIndex != -1) {
+            _recommendedPublishers[itemIndex].isFollowing = event.isFollowing;
+          }
+          emit(UpdateRecommendedPublishers(_recommendedPublishers));
         } else if (event is LoadMoreFollowingPicked) {
           emit(LoadingMoreFollowingPicked());
 
@@ -115,8 +112,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(HomeReloadFailed(e));
         } else if (event is LoadMoreFollowingPicked) {
           emit(LoadMoreFollowingPickedFailed(e));
-        } else if (event is UpdateFollowingMember) {
-          emit(UpdateFollowingFailed(e, event.isFollowed));
+        } else if (event is UpdateFollowingMember ||
+            event is UpdateFollowingPublisher) {
+          emit(UpdateFollowingFailed(e));
         } else if (event is LoadMoreLatestNews) {
           emit(LoadMoreNewsFailed(e));
         } else {

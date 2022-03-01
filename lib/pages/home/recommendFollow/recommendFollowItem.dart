@@ -62,9 +62,20 @@ class _RecommendFollowItemState extends State<RecommendFollowItem> {
                 widget.recommendItem,
                 expanded: true,
                 textSize: 16,
-                onTap: () => context.read<HomeBloc>().add(RefreshHomeScreen()),
-                whenFailed: () =>
-                    context.read<HomeBloc>().add(RefreshHomeScreen()),
+                onTap: (bool isFollowing) {
+                  widget.recommendItem.updateHomeScreen(context, isFollowing);
+                  setState(() {
+                    widget.recommendItem.isFollowed =
+                        !widget.recommendItem.isFollowed;
+                  });
+                },
+                whenFailed: (bool isFollowing) {
+                  widget.recommendItem.updateHomeScreen(context, isFollowing);
+                  setState(() {
+                    widget.recommendItem.isFollowed =
+                        !widget.recommendItem.isFollowed;
+                  });
+                },
               ),
             ],
           ),

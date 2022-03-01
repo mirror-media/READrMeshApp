@@ -7,7 +7,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/followingBlock.dart';
@@ -22,7 +21,6 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  List<Member>? _tempFollowingData;
   List<NewsListItem> _followingStories = [];
   bool _isLoadingMoreFollowingPicked = false;
   bool _showPaywall = true;
@@ -30,9 +28,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<NewsListItem> _allLatestNews = [];
   bool _noMoreLatestNews = false;
   List<NewsListItem> _latestComments = [];
-  List<Member> _recommendedMemberList = [];
-  final List<MemberFollowableItem> _recommendedMembers = [];
-  final List<PublisherFollowableItem> _recommendedPublishers = [];
+  List<MemberFollowableItem> _recommendedMembers = [];
+  List<PublisherFollowableItem> _recommendedPublishers = [];
 
   @override
   void initState() {
@@ -71,22 +68,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             textColor: Colors.white,
             fontSize: 16.0,
           );
-        } else if (state is UpdateFollowingFailed) {
-          String text = '';
-          if (state.isFollowed) {
-            text = "取消追蹤失敗，請稍後再試一次";
-          } else {
-            text = "新增追蹤失敗，請稍後再試一次";
-          }
-          Fluttertoast.showToast(
-            msg: text,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
         }
       },
       builder: (context, state) {
@@ -107,11 +88,17 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
-        if (state is UpdatingFollowing) {
+        if (state is UpdateRecommendedMembers) {
+          _recommendedMembers = state.recommendedMembers;
           return _buildHomeContent();
         }
 
-        if (state is UpdateFollowingSuccess ||
+        if (state is UpdateRecommendedPublishers) {
+          _recommendedPublishers = state.recommendedPublishers;
+          return _buildHomeContent();
+        }
+
+        if (state is UpdatingFollowing ||
             state is HomeRefresh ||
             state is LoadingMoreNews ||
             state is LoadMoreNewsFailed ||
@@ -156,13 +143,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           _followingStories = state.followingStories;
           _allLatestNews = state.allLatestNews;
           _latestComments = state.latestComments;
-          _recommendedMemberList = state.recommendedMembers;
-          for (var rm in state.recommendedMembers) {
-            _recommendedMembers.add(MemberFollowableItem(rm));
-          }
-          for (var publisher in state.recommendedPublishers) {
-            _recommendedPublishers.add(PublisherFollowableItem(publisher));
-          }
+          _recommendedMembers = state.recommendedMembers;
+          _recommendedPublishers = state.recommendedPublishers;
           return _buildHomeContent();
         }
 
@@ -193,7 +175,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: FollowingBlock(
               _followingStories,
               _isLoadingMoreFollowingPicked,
-              _recommendedMemberList,
+              _recommendedMembers,
             ),
           ),
           SliverToBoxAdapter(
@@ -212,7 +194,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ),
           SliverToBoxAdapter(
-            child: LatestCommentsBlock(_latestComments),
+            child: LatestCommentsBlock(_latestComments, _recommendedMembers),
           ),
           SliverToBoxAdapter(
             child: Container(
