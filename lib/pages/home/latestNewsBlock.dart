@@ -59,7 +59,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             ),
             RichText(
               text: const TextSpan(
-                  text: '追蹤您感興趣的新聞類別\n並和大家一起討論',
+                  text: '追蹤您感興趣的媒體\n並和大家一起討論',
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
@@ -80,31 +80,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              onPressed: () async {},
-              child: const Text(
-                '選擇新聞類別',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black87,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 24,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
+            RecommendFollowBlock(widget.recommendedPublishers),
           ],
         ),
       );
@@ -133,7 +109,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             ),
             RichText(
               text: const TextSpan(
-                  text: '您可以放下手機休息一下\n或者追蹤其他感興趣的主題',
+                  text: '您可以放下手機休息一下\n或者追蹤其他感興趣的媒體',
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
@@ -154,32 +130,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             const SizedBox(
               height: 20,
             ),
-            OutlinedButton(
-              onPressed: () async {},
-              child: const Text(
-                '看更多新聞類別',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                primary: Colors.black,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 24,
-                ),
-                side: const BorderSide(color: Colors.black),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
+            RecommendFollowBlock(widget.recommendedPublishers),
           ],
         ),
       );
