@@ -733,6 +733,13 @@ class PersonalFileService {
           title
           logo
           customId
+          followerCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          )
         }
       }
     }

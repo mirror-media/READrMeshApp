@@ -39,7 +39,7 @@ class _PublisherListItemState extends State<PublisherListItem> {
                 ),
               ),
               Text(
-                widget.publisher.followerCount?.toString() ?? '無' '人追蹤',
+                '${widget.publisher.followerCount?.toString() ?? '0'} 人追蹤',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
