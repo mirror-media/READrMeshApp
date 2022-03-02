@@ -224,6 +224,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
             ),
       title: Text(
         widget.viewMember.customId,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
@@ -310,6 +312,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       leading: leading,
       title: Text(
         _viewMember.customId,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
@@ -389,12 +393,16 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                _viewMember.nickname,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+              Flexible(
+                child: Text(
+                  _viewMember.nickname,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
               if (_viewMember.verified)
