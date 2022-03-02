@@ -275,13 +275,11 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   Future<void> _updateLike() async {
-    // save origin state
-    bool originIsLiked = _isLiked;
     int originLikeCount = widget.comment.likedCount;
 
     CommentService commentService = CommentService();
     int? newLikeCount;
-    if (originIsLiked) {
+    if (!_isLiked) {
       newLikeCount = await commentService.removeLike(
         commentId: widget.comment.id,
       );
@@ -296,7 +294,7 @@ class _CommentItemState extends State<CommentItem> {
       widget.comment.likedCount = newLikeCount;
     } else {
       widget.comment.likedCount = originLikeCount;
-      _isLiked = originIsLiked;
+      _isLiked = !_isLiked;
       if (mounted) {
         setState(() {});
       }
