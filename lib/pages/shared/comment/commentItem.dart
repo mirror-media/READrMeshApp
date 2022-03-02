@@ -234,7 +234,7 @@ class _CommentItemState extends State<CommentItem> {
         if (!widget.isSending) ...[
           const SizedBox(width: 12),
           Text(
-            widget.comment.likedCount.toString(),
+            _convertNumberToString(widget.comment.likedCount),
             style: const TextStyle(
               color: Color.fromRGBO(0, 9, 40, 0.66),
               fontSize: 12,
@@ -271,6 +271,14 @@ class _CommentItemState extends State<CommentItem> {
         ],
       ],
     );
+  }
+
+  String _convertNumberToString(int number) {
+    if (number < 10000) {
+      return number.toString();
+    }
+    double temp = number / 1000;
+    return '${temp.floor().toString()}K';
   }
 
   Future<void> _updateLike() async {
