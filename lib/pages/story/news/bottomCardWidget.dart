@@ -357,9 +357,12 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   }
 
   Widget _popularCommentList(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
+    return SliverToBoxAdapter(
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(0),
+        itemBuilder: (context, index) {
           if (index == 0) {
             return Container(
               color: Colors.white,
@@ -380,23 +383,41 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             isMyNewComment: false,
           );
         },
-        childCount: widget.news.popularComments.length + 1,
+        separatorBuilder: (context, index) {
+          if (index == 0) return Container();
+          return const Divider(
+            color: Colors.black12,
+            thickness: 0.5,
+            height: 0.5,
+            indent: 20,
+            endIndent: 20,
+          );
+        },
+        itemCount: widget.news.popularComments.length + 1,
       ),
     );
   }
 
   Widget _allCommentList(BuildContext context) {
-    return SliverList(
+    return SliverToBoxAdapter(
       key: UniqueKey(),
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return CommentItem(
-            comment: _allComments[index],
-            isSending: (_isSending && index == 0),
-            isMyNewComment: _hasMyNewComment && index == 0,
-          );
-        },
-        childCount: _allComments.length,
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(0),
+        itemBuilder: (context, index) => CommentItem(
+          comment: _allComments[index],
+          isSending: (_isSending && index == 0),
+          isMyNewComment: _hasMyNewComment && index == 0,
+        ),
+        separatorBuilder: (context, index) => const Divider(
+          color: Colors.black12,
+          thickness: 0.5,
+          height: 0.5,
+          indent: 20,
+          endIndent: 20,
+        ),
+        itemCount: _allComments.length,
       ),
     );
   }

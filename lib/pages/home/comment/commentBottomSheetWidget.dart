@@ -260,7 +260,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               ),
             ),
             Flexible(
-              child: ScrollablePositionedList.builder(
+              child: ScrollablePositionedList.separated(
                 key: UniqueKey(),
                 itemCount: _allComments.length,
                 itemScrollController: _controller,
@@ -274,6 +274,13 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     isMyNewComment: _hasMyNewComment && index == 0,
                   );
                 },
+                separatorBuilder: (context, index) => const Divider(
+                  color: Colors.black12,
+                  indent: 20,
+                  endIndent: 20,
+                  thickness: 0.5,
+                  height: 0.5,
+                ),
               ),
             ),
             const Divider(
