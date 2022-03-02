@@ -376,11 +376,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           }
           return CommentItem(
             comment: widget.news.popularComments[index - 1],
-            isFollowingComment: UserHelper.instance.isFollowingMember(
-                widget.news.popularComments[index - 1].member),
-            isMyComment:
-                widget.news.popularComments[index - 1].member.memberId ==
-                    UserHelper.instance.currentUser.memberId,
             isSending: false,
             isMyNewComment: false,
           );
@@ -397,10 +392,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         (context, index) {
           return CommentItem(
             comment: _allComments[index],
-            isFollowingComment: UserHelper.instance
-                .isFollowingMember(_allComments[index].member),
-            isMyComment: _allComments[index].member.memberId ==
-                UserHelper.instance.currentUser.memberId,
             isSending: (_isSending && index == 0),
             isMyNewComment: _hasMyNewComment && index == 0,
           );

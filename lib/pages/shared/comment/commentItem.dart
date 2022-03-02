@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,11 @@ import 'package:readr/services/commentService.dart';
 class CommentItem extends StatefulWidget {
   final Comment comment;
   final bool isExpanded;
-  final bool isMyComment;
-  final bool isFollowingComment;
   final bool isMyNewComment;
   final bool isSending;
   const CommentItem({
     required this.comment,
     this.isExpanded = false,
-    this.isMyComment = false,
-    this.isFollowingComment = false,
     this.isMyNewComment = false,
     this.isSending = false,
   });
@@ -39,15 +36,16 @@ class _CommentItemState extends State<CommentItem> {
   final FadeInController _fadeController = FadeInController();
   bool _isMyNewComment = false;
   bool _isDisposed = false;
+  bool _isFollowingMember = false;
 
   @override
   void initState() {
     super.initState();
     _isExpanded = widget.isExpanded;
     _isMyNewComment = widget.isMyNewComment;
-    if (widget.isFollowingComment) {
-      _backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
-    } else if (widget.isSending) {
+    _isFollowingMember =
+        UserHelper.instance.isLocalFollowingMember(widget.comment.member);
+    if (widget.isSending) {
       _isExpanded = true;
       _backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
     } else if (_isMyNewComment) {
@@ -96,8 +94,19 @@ class _CommentItemState extends State<CommentItem> {
 
   Widget _commentItemContent(BuildContext context) {
     return Container(
-      color: _backgroundColor,
-      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _backgroundColor,
+        border: _isFollowingMember
+            ? const Border(
+                left: BorderSide(
+                color: Colors.black87,
+                width: 4,
+              ))
+            : null,
+      ),
+      padding: _isFollowingMember
+          ? const EdgeInsets.fromLTRB(16, 20, 20, 20)
+          : const EdgeInsets.all(20),
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,67 +142,98 @@ class _CommentItemState extends State<CommentItem> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () {
-            AutoRouter.of(context).push(PersonalFileRoute(
-              viewMember: widget.comment.member,
-            ));
-          },
-          child: Text(
-            widget.comment.member.nickname,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (ctx, constraints) {
+              var span = TextSpan(
+                text: widget.comment.member.nickname,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              );
+              final innerTextSpan = joinChar(
+                span,
+                Accumulator(),
+                zeroWidthSpace,
+              );
+
+              final painter = TextPainter(
+                text: innerTextSpan,
+                maxLines: 1,
+                textDirection: TextDirection.ltr,
+              );
+
+              painter.layout();
+              bool isOverflow = painter.size.width > constraints.maxWidth;
+              return Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      AutoRouter.of(context).push(PersonalFileRoute(
+                        viewMember: widget.comment.member,
+                      ));
+                    },
+                    child: Text.rich(
+                      innerTextSpan,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  if (!isOverflow)
+                    Container(
+                      width: 2,
+                      height: 2,
+                      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black26,
+                      ),
+                    ),
+                  if (widget.isSending)
+                    const Text(
+                      '傳送中',
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  if (!widget.isSending) Timestamp(widget.comment.publishDate),
+                  if (widget.comment.member.memberId ==
+                      UserHelper.instance.currentUser.memberId) ...[
+                    Container(
+                      width: 2,
+                      height: 2,
+                      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black26,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: const Text(
+                        '編輯留言',
+                        softWrap: true,
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ]
+                ],
+              );
+            },
           ),
         ),
-        Container(
-          width: 2,
-          height: 2,
-          margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.black26,
-          ),
-        ),
-        if (widget.isSending)
-          const Text(
-            '傳送中',
-            softWrap: true,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.black54,
-            ),
-          ),
-        if (!widget.isSending) Timestamp(widget.comment.publishDate),
-        if (widget.isMyComment) ...[
-          Container(
-            width: 2,
-            height: 2,
-            margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.black26,
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: const Text(
-              '編輯留言',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        ],
         if (!widget.isSending) ...[
-          const Spacer(),
+          const SizedBox(width: 12),
           Text(
             widget.comment.likedCount.toString(),
             style: const TextStyle(
