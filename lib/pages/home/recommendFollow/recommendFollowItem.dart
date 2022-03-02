@@ -1,3 +1,4 @@
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/models/followableItem.dart';
@@ -30,20 +31,24 @@ class RecommendFollowItem extends StatelessWidget {
             children: [
               recommendItem.defaultProfilePhotoWidget(context),
               const SizedBox(height: 12),
-              Text(
+              ExtendedText(
                 recommendItem.name,
+                maxLines: 1,
+                joinZeroWidthSpace: true,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black87,
                   fontWeight: FontWeight.w500,
                 ),
-                maxLines: 1,
               ),
               const SizedBox(height: 4),
               SizedBox(
                 height: 34,
-                child: Text(
+                child: ExtendedText(
                   recommendItem.descriptionText,
+                  joinZeroWidthSpace: true,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.black54,

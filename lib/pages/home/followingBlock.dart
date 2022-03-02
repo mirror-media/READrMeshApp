@@ -333,8 +333,9 @@ class FollowingBlock extends StatelessWidget {
             AutoRouter.of(context)
                 .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
           },
-          child: Text(
+          child: ExtendedText(
             firstTwoMember[0].nickname,
+            joinZeroWidthSpace: true,
             style: const TextStyle(fontSize: 14, color: Colors.black),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -354,8 +355,9 @@ class FollowingBlock extends StatelessWidget {
             AutoRouter.of(context)
                 .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
           },
-          child: Text(
+          child: ExtendedText(
             firstTwoMember[0].nickname,
+            joinZeroWidthSpace: true,
             style: const TextStyle(fontSize: 14, color: Colors.black),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -373,8 +375,9 @@ class FollowingBlock extends StatelessWidget {
             AutoRouter.of(context)
                 .push(PersonalFileRoute(viewMember: firstTwoMember[1]));
           },
-          child: Text(
+          child: ExtendedText(
             firstTwoMember[1].nickname,
+            joinZeroWidthSpace: true,
             style: const TextStyle(fontSize: 14, color: Colors.black),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -429,9 +432,10 @@ class FollowingBlock extends StatelessWidget {
                             viewMember: comment.member,
                           ));
                         },
-                        child: Text(
+                        child: ExtendedText(
                           comment.member.nickname,
                           maxLines: 1,
+                          joinZeroWidthSpace: true,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.black87,

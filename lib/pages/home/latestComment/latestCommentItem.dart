@@ -145,10 +145,11 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      ExtendedText(
                         comment.member.nickname,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        joinZeroWidthSpace: true,
                         style: const TextStyle(
                           color: Colors.black87,
                           fontSize: 14,

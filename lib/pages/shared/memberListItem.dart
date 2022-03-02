@@ -1,3 +1,4 @@
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -39,8 +40,11 @@ class _MemberListItemState extends State<MemberListItem> {
                   color: Colors.black87,
                 ),
               ),
-              Text(
+              ExtendedText(
                 widget.viewMember.nickname,
+                maxLines: 1,
+                joinZeroWidthSpace: true,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -49,6 +53,9 @@ class _MemberListItemState extends State<MemberListItem> {
               )
             ],
           ),
+        ),
+        const SizedBox(
+          width: 8,
         ),
         if (!(widget.viewMember.memberId ==
             UserHelper.instance.currentUser.memberId))
