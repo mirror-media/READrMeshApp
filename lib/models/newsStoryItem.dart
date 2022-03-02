@@ -69,12 +69,10 @@ class NewsStoryItem {
       for (var comment in json['comment']) {
         allComments.add(Comment.fromJson(comment));
       }
-      popularComments = allComments;
+      popularComments.addAll(allComments);
       popularComments.sort((a, b) => b.likedCount.compareTo(a.likedCount));
       popularComments.take(3);
-      if (popularComments[0].likedCount == 0) {
-        popularComments = [];
-      }
+      popularComments.removeWhere((element) => element.likedCount == 0);
     }
 
     if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
