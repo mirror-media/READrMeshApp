@@ -12,7 +12,7 @@ class Publisher {
   final bool fullContent;
   final bool fullScreenAd;
   final String? customId;
-  int? followerCount;
+  int followerCount;
   List<Member>? follower;
 
   Publisher({
@@ -26,7 +26,7 @@ class Publisher {
     this.fullContent = false,
     this.fullScreenAd = false,
     this.customId,
-    this.followerCount,
+    this.followerCount = 0,
     this.follower,
   });
 
@@ -39,7 +39,7 @@ class Publisher {
     bool fullContent = false;
     bool fullScreenAd = false;
     String? customId;
-    int? followerCount;
+    int followerCount = 0;
     List<Member> follower = [];
 
     if (BaseModel.checkJsonKeys(json, ['officialSite'])) {

@@ -97,11 +97,10 @@ class PublisherFollowableItem implements FollowableItem {
     String description = '為你推薦';
     if (publisher.follower != null && publisher.follower!.isNotEmpty) {
       String followerName = publisher.follower![0].nickname;
-      if (publisher.followerCount! == 1) {
+      if (publisher.followerCount == 1) {
         description = '$followerName的追蹤對象';
       } else {
-        description =
-            '$followerName 及其他 ${publisher.followerCount! - 1} 人的追蹤對象';
+        description = '$followerName 及其他 ${publisher.followerCount - 1} 人的追蹤對象';
       }
     }
     return description;

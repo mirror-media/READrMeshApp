@@ -259,6 +259,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               controller: _nicknameController,
               autocorrect: false,
               keyboardType: TextInputType.name,
+              maxLength: 20,
               onChanged: (value) {
                 _nicknameError = false;
                 checkIsEdited();
@@ -283,6 +284,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                     color: Colors.white10,
                   ),
                 ),
+                counterText: '',
                 contentPadding: const EdgeInsets.symmetric(vertical: 8),
                 suffix: (_nicknameController.text.isEmpty || !_isFocusNickname)
                     ? null

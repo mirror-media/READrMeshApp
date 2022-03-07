@@ -5,6 +5,7 @@ import 'package:readr/blocs/config/states.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/services/configService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigBloc extends Bloc<ConfigEvents, ConfigState> {
   final ConfigRepos configRepos;
@@ -26,11 +27,17 @@ class ConfigBloc extends Bloc<ConfigEvents, ConfigState> {
       ));
       await remoteConfig.fetchAndActivate();
       String minAppVersion = remoteConfig.getString('min_version_number');
-      await UserHelper.instance.fetchUserData();
-      yield ConfigLoaded(
-        isSuccess: isSuccess,
-        minAppVersion: minAppVersion,
-      );
+      final prefs = await SharedPreferences.getInstance();
+      bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+      if (isFirstTime) {
+        yield Onboarding();
+      } else {
+        await UserHelper.instance.fetchUserData();
+        yield ConfigLoaded(
+          isSuccess: isSuccess,
+          minAppVersion: minAppVersion,
+        );
+      }
     } catch (e) {
       yield ConfigError(
         error: UnknownException(e.toString()),

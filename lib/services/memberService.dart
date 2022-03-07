@@ -8,6 +8,7 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -71,7 +72,7 @@ class MemberService {
     return token;
   }
 
-  Future<Member> fetchMemberData() async {
+  Future<Member?> fetchMemberData() async {
     const String query = """
     query(
       \$firebaseId: String
@@ -137,14 +138,13 @@ class MemberService {
 
     // create new member when firebase is signed in but member is not created
     if (jsonResponse['data']['members'].isEmpty) {
-      Member? newMember = await createMember();
-      return newMember;
+      return null;
     } else {
       return Member.fromJson(jsonResponse['data']['members'][0]);
     }
   }
 
-  Future<Member> createMember() async {
+  Future<Member?> createMember({int? tryTimes}) async {
     String mutation = """
     mutation (
 	    \$email: String
@@ -225,6 +225,10 @@ class MemberService {
       }
     }
 
+    if (tryTimes != null) {
+      customId = customId + tryTimes.toString();
+    }
+
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
@@ -246,7 +250,28 @@ class MemberService {
       headers: await getHeaders(),
     );
 
-    return Member.fromJson(jsonResponse['data']['createMember']);
+    if (!jsonResponse.containsKey('errors')) {
+      final prefs = await SharedPreferences.getInstance();
+      final List<String> followingPublisherIds =
+          prefs.getStringList('followingPublisherIds') ?? [];
+      if (followingPublisherIds.isNotEmpty) {
+        List<Future> futureList = [];
+        for (var publisherId in followingPublisherIds) {
+          futureList.add(addFollowPublisher(publisherId));
+        }
+        await Future.wait(futureList);
+      }
+      await UserHelper.instance.fetchUserData();
+      return UserHelper.instance.currentUser;
+    } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
+      int times = 2;
+      if (tryTimes != null) {
+        times = tryTimes++;
+      }
+      return await createMember(tryTimes: times);
+    } else {
+      return null;
+    }
   }
 
   Future<bool> deleteMember(String memberId, String token) async {

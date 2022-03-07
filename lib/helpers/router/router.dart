@@ -8,6 +8,12 @@ import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
+import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
+import 'package:readr/pages/loginMember/choosePublisher/choosePublisherPage.dart';
+import 'package:readr/pages/loginMember/email/inputEmailPage.dart';
+import 'package:readr/pages/loginMember/inputNamePage.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
+import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
 import 'package:readr/pages/personalFile/editPersonalFile/editPersonalFilePage.dart';
 import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
 import 'package:readr/pages/personalFile/followingList/followingListPage.dart';
@@ -17,14 +23,13 @@ import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/memberCenter/aboutPage.dart';
 import 'package:readr/pages/memberCenter/deleteMember/deleteMemberPage.dart';
-import 'package:readr/pages/memberCenter/loginMember/loginPage.dart';
-import 'package:readr/pages/memberCenter/loginMember/sendEmailPage.dart';
 import 'package:readr/pages/memberCenter/memberCenterPage.dart';
 import 'package:readr/pages/story/news/newsStoryPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
 import 'package:readr/pages/tag/tagPage.dart';
 import 'package:readr/models/tag.dart';
+import 'package:readr/pages/welcomePage.dart';
 
 part 'router.gr.dart';
 
@@ -55,8 +60,6 @@ part 'router.gr.dart';
     AutoRoute(page: TagPage),
     AutoRoute(page: AboutPage),
     AutoRoute(page: DeleteMemberPage),
-    AutoRoute(page: LoginPage),
-    AutoRoute(page: SendEmailPage),
     AutoRoute(page: AuthorPage),
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),
     AutoRoute(page: RecommendFollowPage),
@@ -66,6 +69,13 @@ part 'router.gr.dart';
     AutoRoute(page: FollowingListPage),
     AutoRoute<bool>(page: EditPersonalFilePage, fullscreenDialog: true),
     AutoRoute(page: PublisherPage),
+    AutoRoute(page: LoginPage, fullscreenDialog: true),
+    AutoRoute(page: SentEmailPage),
+    AutoRoute(page: InputEmailPage),
+    AutoRoute(page: InputNamePage),
+    AutoRoute(page: ChoosePublisherPage),
+    AutoRoute(page: ChooseMemberPage),
+    AutoRoute(page: WelcomePage),
   ],
 )
 // extend the generated private router

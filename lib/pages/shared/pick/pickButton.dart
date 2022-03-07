@@ -128,7 +128,7 @@ class _PickButtonState extends State<PickButton> {
                   });
                 }
               } else {
-                AutoRouter.of(context).push(const LoginRoute());
+                AutoRouter.of(context).push(LoginRoute());
               }
             },
       style: OutlinedButton.styleFrom(

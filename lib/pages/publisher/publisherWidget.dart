@@ -122,7 +122,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
                   RichText(
                       text: TextSpan(
                     text: _convertNumberToString(
-                      widget.publisher.followerCount ?? 0,
+                      widget.publisher.followerCount,
                     ),
                     style: const TextStyle(
                       fontSize: 16,

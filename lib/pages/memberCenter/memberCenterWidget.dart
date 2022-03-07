@@ -149,9 +149,7 @@ class _MemberCenterWidgetState extends State<MemberCenterWidget> {
     } else {
       height = 75;
       memberTileContent = InkWell(
-        onTap: () {
-          context.pushRoute(const LoginRoute());
-        },
+        onTap: () {},
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [

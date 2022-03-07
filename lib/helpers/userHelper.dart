@@ -28,19 +28,29 @@ class UserHelper {
   List<Member> _localFollowingMemberList = [];
   List<Publisher> _localFollowingPublisherList = [];
 
+  List<Publisher> get localPublisherList => _localFollowingPublisherList;
+
   // if want to use member, must call fetchUserData() once
   Member get currentUser => _member;
 
   // fetch the member or visitor data
   Future<void> fetchUserData() async {
     if (isMember) {
-      _member = await _memberService.fetchMemberData();
+      var memberData = await _memberService.fetchMemberData();
+      if (memberData != null) {
+        _member = memberData;
+        _isInitialized = true;
+      }
     } else {
       _member = await _visitorService.fetchMemberData();
+      _isInitialized = true;
     }
-    _isInitialized = true;
-    _localFollowingMemberList = _member.following;
-    _localFollowingPublisherList = _member.followingPublisher;
+    if (_isInitialized) {
+      _localFollowingMemberList = [];
+      _localFollowingPublisherList = [];
+      _localFollowingMemberList.addAll(_member.following);
+      _localFollowingPublisherList.addAll(_member.followingPublisher);
+    }
   }
 
   // check whether member is currentUser's following member
@@ -61,25 +71,33 @@ class UserHelper {
   // add following member
   Future<bool> addFollowingMember(String memberId) async {
     List<Member>? newFollowingList;
-    if (isMember) {
-      newFollowingList = await _memberService.addFollowingMember(memberId);
-    } else {
-      newFollowingList = await _visitorService.addFollowingMember(memberId);
-    }
 
-    return _checkUpdateFollowingResult(_member.following, newFollowingList);
+    newFollowingList = await _memberService.addFollowingMember(memberId);
+
+    if (newFollowingList != null) {
+      _member.following = newFollowingList;
+      syncFollowing();
+      return true;
+    } else {
+      syncFollowing();
+      return false;
+    }
   }
 
   // remove following member
   Future<bool> removeFollowingMember(String memberId) async {
     List<Member>? newFollowingList;
-    if (isMember) {
-      newFollowingList = await _memberService.removeFollowingMember(memberId);
-    } else {
-      newFollowingList = await _visitorService.removeFollowingMember(memberId);
-    }
 
-    return _checkUpdateFollowingResult(_member.following, newFollowingList);
+    newFollowingList = await _memberService.removeFollowingMember(memberId);
+
+    if (newFollowingList != null) {
+      _member.following = newFollowingList;
+      syncFollowing();
+      return true;
+    } else {
+      syncFollowing();
+      return false;
+    }
   }
 
   // check whether publisher is currentUser's following publisher
@@ -105,8 +123,14 @@ class UserHelper {
       newFollowingList = await _visitorService.addFollowPublisher(publisherId);
     }
 
-    return _checkUpdateFollowingResult(
-        _member.followingPublisher, newFollowingList);
+    if (newFollowingList != null) {
+      _member.followingPublisher = newFollowingList;
+      syncFollowing();
+      return true;
+    } else {
+      syncFollowing();
+      return false;
+    }
   }
 
   // remove publisher
@@ -120,18 +144,13 @@ class UserHelper {
           await _visitorService.removeFollowPublisher(publisherId);
     }
 
-    return _checkUpdateFollowingResult(
-        _member.followingPublisher, newFollowingList);
-  }
-
-  bool _checkUpdateFollowingResult(dynamic oldObject, dynamic newObject) {
-    if (newObject == null) {
-      syncFollowing();
-      return false;
-    } else {
-      oldObject = newObject;
+    if (newFollowingList != null) {
+      _member.followingPublisher = newFollowingList;
       syncFollowing();
       return true;
+    } else {
+      syncFollowing();
+      return false;
     }
   }
 
@@ -168,7 +187,9 @@ class UserHelper {
   }
 
   void syncFollowing() {
-    _localFollowingMemberList = _member.following;
-    _localFollowingPublisherList = _member.followingPublisher;
+    _localFollowingMemberList = [];
+    _localFollowingPublisherList = [];
+    _localFollowingMemberList.addAll(_member.following);
+    _localFollowingPublisherList.addAll(_member.followingPublisher);
   }
 }

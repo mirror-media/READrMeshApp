@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 
-class SendEmailPage extends StatelessWidget {
+class SentEmailPage extends StatelessWidget {
   final String email;
-  const SendEmailPage(this.email);
+  const SentEmailPage(this.email);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +13,9 @@ class SendEmailPage extends StatelessWidget {
         centerTitle: true,
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
+        elevation: 0,
         title: const Text(
-          '註冊 / 登入會員',
+          '確認收件匣',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
@@ -25,8 +23,8 @@ class SendEmailPage extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
+          icon: const Icon(
+            Icons.arrow_back_ios,
             color: Colors.black,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -45,27 +43,12 @@ class SendEmailPage extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.only(top: 48, left: 40, right: 40),
-      physics: MediaQuery.of(context).orientation == Orientation.portrait
-          ? const NeverScrollableScrollPhysics()
-          : null,
+      padding: const EdgeInsets.only(top: 20, left: 40, right: 40),
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        const Center(
-          child: Text(
-            '請確認收件匣',
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 24,
-        ),
         Center(
           child: Text(
-            '我們已將登入連結寄到 $email，請點擊信件中的連結登入。',
+            '我們已將登入連結寄到\n $email，請點擊信件中的連結登入。',
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Color.fromRGBO(0, 9, 40, 0.66),
@@ -79,19 +62,39 @@ class SendEmailPage extends StatelessWidget {
         ),
         Container(
           height: 48,
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          width: double.infinity,
           alignment: Alignment.center,
           child: OutlinedButton(
-            onPressed: () {
-              context.navigateTo(const Initial(children: [ReadrRouter()]));
+            onPressed: () async {
+              // Android: Will open mail app or show native picker.
+              // iOS: Will open mail app if single mail app found.
+              var result = await OpenMailApp.openMailApp();
+
+              // If no mail apps found, show error
+              if (!result.didOpen && !result.canOpen) {
+                showNoMailAppsDialog(context);
+
+                // iOS: if multiple mail apps found, show dialog to select.
+                // There is no native intent/default app system in iOS so
+                // you have to do it yourself.
+              } else if (!result.didOpen && result.canOpen) {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return MailAppPickerDialog(
+                      mailApps: result.options,
+                    );
+                  },
+                );
+              }
             },
-            child: const Text('好的'),
+            child: const Text('打開信件 APP'),
             style: OutlinedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 16),
-              fixedSize: const Size(113, 48),
               primary: Colors.black,
-              backgroundColor: hightLightColor,
+              backgroundColor: Colors.white,
               onSurface: Colors.black26,
+              minimumSize: const Size(double.infinity, 48),
               side: const BorderSide(
                 color: Colors.black,
               ),
@@ -134,13 +137,34 @@ class SendEmailPage extends StatelessWidget {
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   decoration: TextDecoration.underline,
-                  decorationColor: hightLightColor,
+                  decorationColor: Colors.black,
                 ),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+
+  void showNoMailAppsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("打開信件 APP"),
+          content: const Text("找不到信件 APP"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("確定"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

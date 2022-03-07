@@ -65,106 +65,90 @@ class _PickCommentItemState extends State<PickCommentItem> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Flexible(
-          child: Row(
-            children: [
-              ProfilePhotoWidget(
-                widget.comment.member,
-                14,
+        ProfilePhotoWidget(
+          widget.comment.member,
+          14,
+        ),
+        const SizedBox(width: 8),
+        Timestamp(
+          widget.comment.publishDate,
+          textSize: 13,
+        ),
+        if (widget.isMyComment) ...[
+          Container(
+            width: 4,
+            height: 4,
+            margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black26,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: const Text(
+              '編輯留言',
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 13,
               ),
-              const SizedBox(width: 8),
-              Timestamp(
-                widget.comment.publishDate,
-                textSize: 13,
-              ),
-              if (widget.isMyComment) ...[
-                Container(
-                  width: 4,
-                  height: 4,
-                  margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black26,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: const Text(
-                    '編輯留言',
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 13,
-                    ),
-                  ),
-                )
-              ],
-            ],
+            ),
+          ),
+        ],
+        const Spacer(),
+        Text(
+          widget.comment.likedCount.toString(),
+          style: const TextStyle(
+            color: Color.fromRGBO(0, 9, 40, 0.66),
+            fontSize: 12,
           ),
         ),
-        Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                widget.comment.likedCount.toString(),
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(width: 5),
-              IconButton(
-                onPressed: () async {
-                  if (FirebaseAuth.instance.currentUser != null) {
-                    // save origin state
-                    bool originIsLiked = _isLiked;
-                    int originLikeCount = widget.comment.likedCount;
-                    // refresh UI first
-                    setState(() {
-                      if (_isLiked) {
-                        widget.comment.likedCount--;
-                      } else {
-                        widget.comment.likedCount++;
-                      }
-                      _isLiked = !_isLiked;
-                    });
-                    CommentService commentService = CommentService();
-                    int? newLikeCount;
-                    if (originIsLiked) {
-                      newLikeCount = await commentService.removeLike(
-                        commentId: widget.comment.id,
-                      );
-                    } else {
-                      newLikeCount = await commentService.addLike(
-                        commentId: widget.comment.id,
-                      );
-                    }
+        const SizedBox(width: 5),
+        IconButton(
+          onPressed: () async {
+            if (FirebaseAuth.instance.currentUser != null) {
+              // save origin state
+              bool originIsLiked = _isLiked;
+              int originLikeCount = widget.comment.likedCount;
+              // refresh UI first
+              setState(() {
+                if (_isLiked) {
+                  widget.comment.likedCount--;
+                } else {
+                  widget.comment.likedCount++;
+                }
+                _isLiked = !_isLiked;
+              });
+              CommentService commentService = CommentService();
+              int? newLikeCount;
+              if (originIsLiked) {
+                newLikeCount = await commentService.removeLike(
+                  commentId: widget.comment.id,
+                );
+              } else {
+                newLikeCount = await commentService.addLike(
+                  commentId: widget.comment.id,
+                );
+              }
 
-                    // if return null mean failed
-                    if (newLikeCount == null) {
-                      widget.comment.likedCount = originLikeCount;
-                      _isLiked = originIsLiked;
-                    } else {
-                      widget.comment.likedCount = newLikeCount;
-                    }
-                  }
-                },
-                iconSize: 18,
-                padding: const EdgeInsets.all(0),
-                constraints: const BoxConstraints(),
-                icon: Icon(
-                  _isLiked
-                      ? Icons.favorite_outlined
-                      : Icons.favorite_border_outlined,
-                  color: _isLiked
-                      ? Colors.red
-                      : const Color.fromRGBO(0, 9, 40, 0.66),
-                ),
-              ),
-            ],
+              // if return null mean failed
+              if (newLikeCount == null) {
+                widget.comment.likedCount = originLikeCount;
+                _isLiked = originIsLiked;
+              } else {
+                widget.comment.likedCount = newLikeCount;
+              }
+            }
+          },
+          iconSize: 18,
+          padding: const EdgeInsets.all(0),
+          constraints: const BoxConstraints(),
+          icon: Icon(
+            _isLiked ? Icons.favorite_outlined : Icons.favorite_border_outlined,
+            color: _isLiked ? Colors.red : const Color.fromRGBO(0, 9, 40, 0.66),
           ),
-        )
+        ),
       ],
     );
   }

@@ -32,92 +32,98 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ConfigBloc, ConfigState>(
-        builder: (BuildContext context, ConfigState state) {
-      if (state is ConfigError) {
-        final error = state.error;
-        print('ConfigError: ${error.message}');
-        return ErrorPage(error: error, onPressed: () => _loadingConfig());
-      }
-      if (state is ConfigLoaded) {
-        Widget personalPageIcon;
-        if (UserHelper.instance.isVisitor) {
-          personalPageIcon = Image.asset(
-            visitorAvatarPng,
-          );
-        } else {
-          personalPageIcon =
-              ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
+    return BlocConsumer<ConfigBloc, ConfigState>(
+      listener: (context, state) {
+        if (state is Onboarding) {
+          AutoRouter.of(context).push(const WelcomeRoute());
         }
-        return UpgradeAlert(
-          minAppVersion: state.minAppVersion,
-          messages: UpdateMessages(),
-          dialogStyle: Platform.isAndroid
-              ? UpgradeDialogStyle.material
-              : UpgradeDialogStyle.cupertino,
-          child: AutoTabsScaffold(
-            routes: [
-              const HomeRouter(),
-              const ReadrRouter(),
-              PersonalFileRouter(
-                viewMember: UserHelper.instance.currentUser,
-                isFromBottomTab: true,
-              ),
-            ],
-            bottomNavigationBuilder: (_, tabsRouter) {
-              return BottomNavigationBar(
-                elevation: 10,
-                backgroundColor: Colors.white,
-                currentIndex: tabsRouter.activeIndex,
-                onTap: tabsRouter.setActiveIndex,
-                selectedItemColor: bottomNavigationBarSelectedColor,
-                unselectedItemColor: bottomNavigationBarUnselectedColor,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: SizedBox(
-                      height: 20,
-                      child: Icon(
-                        tabsRouter.activeIndex == 0
-                            ? Icons.home_sharp
-                            : Icons.home_outlined,
+      },
+      builder: (BuildContext context, ConfigState state) {
+        if (state is ConfigError) {
+          final error = state.error;
+          print('ConfigError: ${error.message}');
+          return ErrorPage(error: error, onPressed: () => _loadingConfig());
+        }
+        if (state is ConfigLoaded) {
+          Widget personalPageIcon;
+          if (UserHelper.instance.isVisitor) {
+            personalPageIcon = Image.asset(
+              visitorAvatarPng,
+            );
+          } else {
+            personalPageIcon =
+                ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
+          }
+          return UpgradeAlert(
+            minAppVersion: state.minAppVersion,
+            messages: UpdateMessages(),
+            dialogStyle: Platform.isAndroid
+                ? UpgradeDialogStyle.material
+                : UpgradeDialogStyle.cupertino,
+            child: AutoTabsScaffold(
+              routes: [
+                const HomeRouter(),
+                const ReadrRouter(),
+                PersonalFileRouter(
+                  viewMember: UserHelper.instance.currentUser,
+                  isFromBottomTab: true,
+                ),
+              ],
+              bottomNavigationBuilder: (_, tabsRouter) {
+                return BottomNavigationBar(
+                  elevation: 10,
+                  backgroundColor: Colors.white,
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: tabsRouter.setActiveIndex,
+                  selectedItemColor: bottomNavigationBarSelectedColor,
+                  unselectedItemColor: bottomNavigationBarUnselectedColor,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 20,
+                        child: Icon(
+                          tabsRouter.activeIndex == 0
+                              ? Icons.home_sharp
+                              : Icons.home_outlined,
+                        ),
                       ),
+                      label: '首頁',
                     ),
-                    label: '首頁',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SizedBox(
-                      height: 20,
-                      child: Image.asset(
-                        logoSimplifyPng,
-                        color: tabsRouter.activeIndex == 1
-                            ? bottomNavigationBarSelectedColor
-                            : bottomNavigationBarUnselectedColor,
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 20,
+                        child: Image.asset(
+                          logoSimplifyPng,
+                          color: tabsRouter.activeIndex == 1
+                              ? bottomNavigationBarSelectedColor
+                              : bottomNavigationBarUnselectedColor,
+                        ),
                       ),
+                      label: 'READr',
                     ),
-                    label: 'READr',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SizedBox(
-                      height: 20,
-                      child: personalPageIcon,
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 20,
+                        child: personalPageIcon,
+                      ),
+                      label: '個人檔案',
                     ),
-                    label: '個人檔案',
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
+          );
+        }
+
+        // state is Init, loading, or other
+        return Container(
+          color: Colors.white,
+          child: Image.asset(
+            logoPng,
+            scale: 4,
           ),
         );
-      }
-
-      // state is Init, loading, or other
-      return Container(
-        color: Colors.white,
-        child: Image.asset(
-          logoPng,
-          scale: 4,
-        ),
-      );
-    });
+      },
+    );
   }
 }

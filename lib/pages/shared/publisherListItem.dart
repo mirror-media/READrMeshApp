@@ -13,9 +13,11 @@ class PublisherListItem extends StatefulWidget {
 }
 
 class _PublisherListItemState extends State<PublisherListItem> {
+  int _followCount = 0;
   @override
   void initState() {
     super.initState();
+    _followCount = widget.publisher.followerCount;
   }
 
   @override
@@ -39,7 +41,7 @@ class _PublisherListItemState extends State<PublisherListItem> {
                 ),
               ),
               Text(
-                '${widget.publisher.followerCount?.toString() ?? '0'} 人追蹤',
+                '${_followCount.toString()} 人追蹤',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -49,7 +51,27 @@ class _PublisherListItemState extends State<PublisherListItem> {
             ],
           ),
         ),
-        FollowButton(PublisherFollowableItem(widget.publisher)),
+        FollowButton(
+          PublisherFollowableItem(widget.publisher),
+          onTap: (isFollow) {
+            setState(() {
+              if (isFollow) {
+                _followCount++;
+              } else {
+                _followCount--;
+              }
+            });
+          },
+          whenFailed: (isFollow) {
+            setState(() {
+              if (isFollow) {
+                _followCount++;
+              } else {
+                _followCount--;
+              }
+            });
+          },
+        ),
       ],
     );
   }

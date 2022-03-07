@@ -17,3 +17,5 @@ class ConfigError extends ConfigState {
   final dynamic error;
   ConfigError({this.error});
 }
+
+class Onboarding extends ConfigState {}

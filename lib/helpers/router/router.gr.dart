@@ -50,14 +50,6 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: DeleteMemberPage(member: args.member));
     },
-    LoginRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: LoginPage());
-    },
-    SendEmailRoute.name: (routeData) {
-      final args = routeData.argsAs<SendEmailRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: SendEmailPage(args.email));
-    },
     AuthorRoute.name: (routeData) {
       final args = routeData.argsAs<AuthorRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -111,6 +103,41 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: PublisherPage(args.publisher));
     },
+    LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>(
+          orElse: () => const LoginRouteArgs());
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: LoginPage(
+              fromComment: args.fromComment, fromOnboard: args.fromOnboard),
+          fullscreenDialog: true);
+    },
+    SentEmailRoute.name: (routeData) {
+      final args = routeData.argsAs<SentEmailRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: SentEmailPage(args.email));
+    },
+    InputEmailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: InputEmailPage());
+    },
+    InputNameRoute.name: (routeData) {
+      final args = routeData.argsAs<InputNameRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: InputNamePage(args.publisherTitleList));
+    },
+    ChoosePublisherRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: ChoosePublisherPage());
+    },
+    ChooseMemberRoute.name: (routeData) {
+      final args = routeData.argsAs<ChooseMemberRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: ChooseMemberPage(args.isFromPublisher));
+    },
+    WelcomeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(routeData: routeData, child: WelcomePage());
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -141,8 +168,6 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(TagRoute.name, path: '/tag-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
-        RouteConfig(LoginRoute.name, path: '/login-page'),
-        RouteConfig(SendEmailRoute.name, path: '/send-email-page'),
         RouteConfig(AuthorRoute.name, path: '/author-page'),
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
         RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
@@ -152,7 +177,14 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(FollowingListRoute.name, path: '/following-list-page'),
         RouteConfig(EditPersonalFileRoute.name,
             path: '/edit-personal-file-page'),
-        RouteConfig(PublisherRoute.name, path: '/publisher-page')
+        RouteConfig(PublisherRoute.name, path: '/publisher-page'),
+        RouteConfig(LoginRoute.name, path: '/login-page'),
+        RouteConfig(SentEmailRoute.name, path: '/sent-email-page'),
+        RouteConfig(InputEmailRoute.name, path: '/input-email-page'),
+        RouteConfig(InputNameRoute.name, path: '/input-name-page'),
+        RouteConfig(ChoosePublisherRoute.name, path: '/choose-publisher-page'),
+        RouteConfig(ChooseMemberRoute.name, path: '/choose-member-page'),
+        RouteConfig(WelcomeRoute.name, path: '/welcome-page')
       ];
 }
 
@@ -276,35 +308,6 @@ class DeleteMemberRouteArgs {
   @override
   String toString() {
     return 'DeleteMemberRouteArgs{member: $member}';
-  }
-}
-
-/// generated route for
-/// [LoginPage]
-class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute() : super(LoginRoute.name, path: '/login-page');
-
-  static const String name = 'LoginRoute';
-}
-
-/// generated route for
-/// [SendEmailPage]
-class SendEmailRoute extends PageRouteInfo<SendEmailRouteArgs> {
-  SendEmailRoute({required String email})
-      : super(SendEmailRoute.name,
-            path: '/send-email-page', args: SendEmailRouteArgs(email: email));
-
-  static const String name = 'SendEmailRoute';
-}
-
-class SendEmailRouteArgs {
-  const SendEmailRouteArgs({required this.email});
-
-  final String email;
-
-  @override
-  String toString() {
-    return 'SendEmailRouteArgs{email: $email}';
   }
 }
 
@@ -480,6 +483,122 @@ class PublisherRouteArgs {
   String toString() {
     return 'PublisherRouteArgs{publisher: $publisher}';
   }
+}
+
+/// generated route for
+/// [LoginPage]
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({bool fromComment = false, bool fromOnboard = false})
+      : super(LoginRoute.name,
+            path: '/login-page',
+            args: LoginRouteArgs(
+                fromComment: fromComment, fromOnboard: fromOnboard));
+
+  static const String name = 'LoginRoute';
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.fromComment = false, this.fromOnboard = false});
+
+  final bool fromComment;
+
+  final bool fromOnboard;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{fromComment: $fromComment, fromOnboard: $fromOnboard}';
+  }
+}
+
+/// generated route for
+/// [SentEmailPage]
+class SentEmailRoute extends PageRouteInfo<SentEmailRouteArgs> {
+  SentEmailRoute({required String email})
+      : super(SentEmailRoute.name,
+            path: '/sent-email-page', args: SentEmailRouteArgs(email: email));
+
+  static const String name = 'SentEmailRoute';
+}
+
+class SentEmailRouteArgs {
+  const SentEmailRouteArgs({required this.email});
+
+  final String email;
+
+  @override
+  String toString() {
+    return 'SentEmailRouteArgs{email: $email}';
+  }
+}
+
+/// generated route for
+/// [InputEmailPage]
+class InputEmailRoute extends PageRouteInfo<void> {
+  const InputEmailRoute()
+      : super(InputEmailRoute.name, path: '/input-email-page');
+
+  static const String name = 'InputEmailRoute';
+}
+
+/// generated route for
+/// [InputNamePage]
+class InputNameRoute extends PageRouteInfo<InputNameRouteArgs> {
+  InputNameRoute({required List<String> publisherTitleList})
+      : super(InputNameRoute.name,
+            path: '/input-name-page',
+            args: InputNameRouteArgs(publisherTitleList: publisherTitleList));
+
+  static const String name = 'InputNameRoute';
+}
+
+class InputNameRouteArgs {
+  const InputNameRouteArgs({required this.publisherTitleList});
+
+  final List<String> publisherTitleList;
+
+  @override
+  String toString() {
+    return 'InputNameRouteArgs{publisherTitleList: $publisherTitleList}';
+  }
+}
+
+/// generated route for
+/// [ChoosePublisherPage]
+class ChoosePublisherRoute extends PageRouteInfo<void> {
+  const ChoosePublisherRoute()
+      : super(ChoosePublisherRoute.name, path: '/choose-publisher-page');
+
+  static const String name = 'ChoosePublisherRoute';
+}
+
+/// generated route for
+/// [ChooseMemberPage]
+class ChooseMemberRoute extends PageRouteInfo<ChooseMemberRouteArgs> {
+  ChooseMemberRoute({required bool isFromPublisher})
+      : super(ChooseMemberRoute.name,
+            path: '/choose-member-page',
+            args: ChooseMemberRouteArgs(isFromPublisher: isFromPublisher));
+
+  static const String name = 'ChooseMemberRoute';
+}
+
+class ChooseMemberRouteArgs {
+  const ChooseMemberRouteArgs({required this.isFromPublisher});
+
+  final bool isFromPublisher;
+
+  @override
+  String toString() {
+    return 'ChooseMemberRouteArgs{isFromPublisher: $isFromPublisher}';
+  }
+}
+
+/// generated route for
+/// [WelcomePage]
+class WelcomeRoute extends PageRouteInfo<void> {
+  const WelcomeRoute() : super(WelcomeRoute.name, path: '/welcome-page');
+
+  static const String name = 'WelcomeRoute';
 }
 
 /// generated route for
