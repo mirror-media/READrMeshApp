@@ -2,19 +2,17 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/models/member.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/services/memberService.dart';
 
-class DeleteMemberWidget extends StatefulWidget {
-  final Member member;
-  const DeleteMemberWidget({required this.member});
+class DeleteMemberPage extends StatefulWidget {
   @override
-  _DeleteMemberWidgetState createState() => _DeleteMemberWidgetState();
+  _DeleteMemberPageState createState() => _DeleteMemberPageState();
 }
 
-class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
+class _DeleteMemberPageState extends State<DeleteMemberPage> {
   bool _isInitialized = true;
   bool _isSuccess = false;
   @override
@@ -25,6 +23,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
         centerTitle: true,
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
+        elevation: 0.5,
         title: const Text(
           '刪除帳號',
           style: TextStyle(
@@ -49,20 +48,20 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
 
   Widget _buildContent() {
     String email;
-    if (widget.member.email!.contains('[0x0001]')) {
+    if (UserHelper.instance.currentUser.email!.contains('[0x0001]')) {
       email = '您';
     } else {
-      email = '${widget.member.email} ';
+      email = '${UserHelper.instance.currentUser.email} ';
     }
-    String title = '確定要刪除帳號嗎？';
-    String discription = '提醒您，$email的帳號資訊將永久刪除並無法復原。';
+    String title = '真的要刪除帳號嗎？';
+    String discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
     String buttonText = '那我再想想';
     if (!_isInitialized && _isSuccess) {
       title = '刪除帳號成功';
-      discription = '謝謝您使用 READr 的會員服務。如果您有需要，歡迎隨時回來 :)';
+      discription = '謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)';
       buttonText = '回首頁';
     } else if (!_isInitialized && !_isSuccess) {
-      title = '啊，出錯了...';
+      title = '喔不，出錯了...';
       discription = '刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@gmail.com 由專人為您服務。';
       buttonText = '回首頁';
     }
@@ -91,7 +90,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
           child: Text(
             discription,
             softWrap: true,
-            maxLines: 5,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w400,
@@ -111,8 +110,7 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
               if (_isInitialized) {
                 Navigator.of(context).pop();
               } else {
-                context.popRoute(true);
-                context.navigateTo(const Initial(children: [ReadrRouter()]));
+                context.navigateTo(const Initial(children: [HomeRouter()]));
               }
             },
             style: OutlinedButton.styleFrom(
@@ -158,13 +156,9 @@ class _DeleteMemberWidgetState extends State<DeleteMemberWidget> {
 
   Future<bool> _deleteMember() async {
     try {
-      String firebaseToken =
-          await FirebaseAuth.instance.currentUser!.getIdToken();
+      await MemberService().deleteMember();
       await FirebaseAuth.instance.currentUser!.delete();
-      return await MemberService().deleteMember(
-        widget.member.memberId,
-        firebaseToken,
-      );
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         print(

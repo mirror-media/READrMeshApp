@@ -60,6 +60,7 @@ class DynamicLinkHelper {
           await UserHelper.instance.fetchUserData();
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isFirstTime', false);
+          await prefs.setString('loginType', 'email');
           AutoRouter.of(context)
               .pushAndPopUntil(const Initial(), predicate: (route) => false);
         } else {

@@ -46,9 +46,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(routeData: routeData, child: AboutPage());
     },
     DeleteMemberRoute.name: (routeData) {
-      final args = routeData.argsAs<DeleteMemberRouteArgs>();
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: DeleteMemberPage(member: args.member));
+          routeData: routeData, child: DeleteMemberPage());
     },
     AuthorRoute.name: (routeData) {
       final args = routeData.argsAs<AuthorRouteArgs>();
@@ -75,10 +74,6 @@ class _$AppRouter extends RootStackRouter {
           child: PersonalFilePage(
               viewMember: args.viewMember,
               isFromBottomTab: args.isFromBottomTab));
-    },
-    MemberCenterRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: MemberCenterPage());
     },
     FollowerListRoute.name: (routeData) {
       final args = routeData.argsAs<FollowerListRouteArgs>();
@@ -138,6 +133,12 @@ class _$AppRouter extends RootStackRouter {
     WelcomeRoute.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: WelcomePage());
     },
+    SettingRoute.name: (routeData) {
+      final args = routeData.argsAs<SettingRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: SettingPage(args.version, args.loginType, key: args.key));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -172,7 +173,6 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
         RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
         RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
-        RouteConfig(MemberCenterRoute.name, path: '/member-center-page'),
         RouteConfig(FollowerListRoute.name, path: '/follower-list-page'),
         RouteConfig(FollowingListRoute.name, path: '/following-list-page'),
         RouteConfig(EditPersonalFileRoute.name,
@@ -184,7 +184,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(InputNameRoute.name, path: '/input-name-page'),
         RouteConfig(ChoosePublisherRoute.name, path: '/choose-publisher-page'),
         RouteConfig(ChooseMemberRoute.name, path: '/choose-member-page'),
-        RouteConfig(WelcomeRoute.name, path: '/welcome-page')
+        RouteConfig(WelcomeRoute.name, path: '/welcome-page'),
+        RouteConfig(SettingRoute.name, path: '/setting-page')
       ];
 }
 
@@ -291,24 +292,11 @@ class AboutRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DeleteMemberPage]
-class DeleteMemberRoute extends PageRouteInfo<DeleteMemberRouteArgs> {
-  DeleteMemberRoute({required Member member})
-      : super(DeleteMemberRoute.name,
-            path: '/delete-member-page',
-            args: DeleteMemberRouteArgs(member: member));
+class DeleteMemberRoute extends PageRouteInfo<void> {
+  const DeleteMemberRoute()
+      : super(DeleteMemberRoute.name, path: '/delete-member-page');
 
   static const String name = 'DeleteMemberRoute';
-}
-
-class DeleteMemberRouteArgs {
-  const DeleteMemberRouteArgs({required this.member});
-
-  final Member member;
-
-  @override
-  String toString() {
-    return 'DeleteMemberRouteArgs{member: $member}';
-  }
 }
 
 /// generated route for
@@ -399,15 +387,6 @@ class PersonalFileRouteArgs {
   String toString() {
     return 'PersonalFileRouteArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
   }
-}
-
-/// generated route for
-/// [MemberCenterPage]
-class MemberCenterRoute extends PageRouteInfo<void> {
-  const MemberCenterRoute()
-      : super(MemberCenterRoute.name, path: '/member-center-page');
-
-  static const String name = 'MemberCenterRoute';
 }
 
 /// generated route for
@@ -599,6 +578,34 @@ class WelcomeRoute extends PageRouteInfo<void> {
   const WelcomeRoute() : super(WelcomeRoute.name, path: '/welcome-page');
 
   static const String name = 'WelcomeRoute';
+}
+
+/// generated route for
+/// [SettingPage]
+class SettingRoute extends PageRouteInfo<SettingRouteArgs> {
+  SettingRoute({required String version, required String loginType, Key? key})
+      : super(SettingRoute.name,
+            path: '/setting-page',
+            args: SettingRouteArgs(
+                version: version, loginType: loginType, key: key));
+
+  static const String name = 'SettingRoute';
+}
+
+class SettingRouteArgs {
+  const SettingRouteArgs(
+      {required this.version, required this.loginType, this.key});
+
+  final String version;
+
+  final String loginType;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SettingRouteArgs{version: $version, loginType: $loginType, key: $key}';
+  }
 }
 
 /// generated route for

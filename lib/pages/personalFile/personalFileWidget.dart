@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -17,6 +18,7 @@ import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalFileWidget extends StatefulWidget {
   final Member viewMember;
@@ -289,8 +291,16 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         Icons.settings,
         color: Colors.black,
       ),
-      onPressed: () {
-        AutoRouter.of(context).push(const MemberCenterRoute());
+      onPressed: () async {
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        String version = packageInfo.version;
+        String buildNumber = packageInfo.buildNumber;
+        final prefs = await SharedPreferences.getInstance();
+        String loginType = prefs.getString('loginType') ?? '';
+        AutoRouter.of(context).push(SettingRoute(
+          version: 'v$version ($buildNumber)',
+          loginType: loginType,
+        ));
       },
     );
   }

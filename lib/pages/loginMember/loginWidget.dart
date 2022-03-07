@@ -9,6 +9,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
   final bool fromComment;
@@ -88,7 +89,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         if (Platform.isIOS) ...[
           LoginButton(
             type: LoginType.apple,
-            onSuccess: (bool isNewUser) {
+            onSuccess: (bool isNewUser) async {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('loginType', 'apple');
               firebaseLoginSuccess(isNewUser);
             },
             onFailed: (error) {
@@ -101,7 +104,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         ],
         LoginButton(
           type: LoginType.facebook,
-          onSuccess: (bool isNewUser) {
+          onSuccess: (bool isNewUser) async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('loginType', 'facebook');
             firebaseLoginSuccess(isNewUser);
           },
           onFailed: (error) {
@@ -113,7 +118,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         LoginButton(
           type: LoginType.google,
-          onSuccess: (bool isNewUser) {
+          onSuccess: (bool isNewUser) async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('loginType', 'google');
             firebaseLoginSuccess(isNewUser);
           },
           onFailed: (error) {

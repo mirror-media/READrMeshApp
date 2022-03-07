@@ -274,7 +274,7 @@ class MemberService {
     }
   }
 
-  Future<bool> deleteMember(String memberId, String token) async {
+  Future<bool> deleteMember() async {
     String mutation = """
     mutation(
       \$id: ID
@@ -291,7 +291,9 @@ class MemberService {
       }
     }
     """;
-    Map<String, String> variables = {"id": memberId};
+    Map<String, String> variables = {
+      "id": UserHelper.instance.currentUser.memberId
+    };
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,

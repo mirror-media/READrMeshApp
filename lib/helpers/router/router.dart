@@ -21,9 +21,9 @@ import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/pages/memberCenter/aboutPage.dart';
-import 'package:readr/pages/memberCenter/deleteMember/deleteMemberPage.dart';
-import 'package:readr/pages/memberCenter/memberCenterPage.dart';
+import 'package:readr/pages/setting/aboutPage.dart';
+import 'package:readr/pages/setting/deleteMemberPage.dart';
+import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/story/news/newsStoryPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
@@ -64,7 +64,6 @@ part 'router.gr.dart';
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),
     AutoRoute(page: RecommendFollowPage),
     AutoRoute(page: PersonalFilePage),
-    AutoRoute(page: MemberCenterPage),
     AutoRoute(page: FollowerListPage),
     AutoRoute(page: FollowingListPage),
     AutoRoute<bool>(page: EditPersonalFilePage, fullscreenDialog: true),
@@ -76,6 +75,7 @@ part 'router.gr.dart';
     AutoRoute(page: ChoosePublisherPage),
     AutoRoute(page: ChooseMemberPage),
     AutoRoute(page: WelcomePage),
+    AutoRoute(page: SettingPage),
   ],
 )
 // extend the generated private router
