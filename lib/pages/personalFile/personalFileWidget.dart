@@ -43,6 +43,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   late TabController _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
   final List<Widget> _tabWidgets = List.empty(growable: true);
+  bool _tabIsInitialized = false;
 
   @override
   void initState() {
@@ -54,7 +55,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    if (_tabIsInitialized) {
+      _tabController.dispose();
+    }
     super.dispose();
   }
 
@@ -134,6 +137,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       vsync: this,
       length: _tabs.length,
     );
+    _tabIsInitialized = true;
   }
 
   @override
