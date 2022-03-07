@@ -3,6 +3,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserHelper {
   UserHelper._internal();
@@ -34,27 +35,25 @@ class UserHelper {
   Member get currentUser => _member;
 
   // fetch the member or visitor data
-  Future<void> fetchUserData() async {
-    if (isMember) {
+  Future<void> fetchUserData({Member? member}) async {
+    if (member != null) {
+      _member = member;
+    } else if (isMember) {
       var memberData = await _memberService.fetchMemberData();
       if (memberData != null) {
         _member = memberData;
-        _isInitialized = true;
       } else {
         await FirebaseAuth.instance.signOut();
         _member = await _visitorService.fetchMemberData();
-        _isInitialized = true;
       }
     } else {
       _member = await _visitorService.fetchMemberData();
-      _isInitialized = true;
     }
-    if (_isInitialized) {
-      _localFollowingMemberList = [];
-      _localFollowingPublisherList = [];
-      _localFollowingMemberList.addAll(_member.following);
-      _localFollowingPublisherList.addAll(_member.followingPublisher);
-    }
+    _isInitialized = true;
+    _localFollowingMemberList = [];
+    _localFollowingPublisherList = [];
+    _localFollowingMemberList.addAll(_member.following);
+    _localFollowingPublisherList.addAll(_member.followingPublisher);
   }
 
   // check whether member is currentUser's following member
@@ -156,6 +155,20 @@ class UserHelper {
       syncFollowing();
       return false;
     }
+  }
+
+  Future<void> addVisitorFollowing() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> followingPublisherIds =
+        prefs.getStringList('followingPublisherIds') ?? [];
+    if (followingPublisherIds.isNotEmpty) {
+      List<Future> futureList = [];
+      for (var publisherId in followingPublisherIds) {
+        futureList.add(_memberService.addFollowPublisher(publisherId));
+      }
+      await Future.wait(futureList);
+    }
+    await UserHelper.instance.fetchUserData();
   }
 
   // local following list

@@ -17,7 +17,8 @@ class LoginCubit extends Cubit<LoginState> {
       if (!isNewUser) {
         var result = await _memberService.fetchMemberData();
         if (result != null) {
-          await UserHelper.instance.fetchUserData();
+          await UserHelper.instance.fetchUserData(member: result);
+          await UserHelper.instance.addVisitorFollowing();
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isFirstTime', false);
           emit(ExistingMemberLogin());
