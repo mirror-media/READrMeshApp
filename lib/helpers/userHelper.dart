@@ -40,6 +40,10 @@ class UserHelper {
       if (memberData != null) {
         _member = memberData;
         _isInitialized = true;
+      } else {
+        await FirebaseAuth.instance.signOut();
+        _member = await _visitorService.fetchMemberData();
+        _isInitialized = true;
       }
     } else {
       _member = await _visitorService.fetchMemberData();
