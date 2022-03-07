@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -34,14 +35,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        // print('User is currently signed out!');
-      } else {
-        // print('User is signed in!');
-      }
-      _fetchHomeScreen();
-    });
+    _fetchHomeScreen();
   }
 
   _fetchHomeScreen() async {
@@ -55,7 +49,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is HomeReloadFailed ||
             state is LoadMoreFollowingPickedFailed ||
             state is LoadMoreNewsFailed) {
@@ -68,6 +62,52 @@ class _HomeWidgetState extends State<HomeWidget> {
             textColor: Colors.white,
             fontSize: 16.0,
           );
+        }
+        if (state is HomeLoaded) {
+          if (state.showSyncToast) {
+            Widget toast = Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.0),
+                color: const Color.fromRGBO(0, 9, 40, 0.66),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 6.0,
+                  ),
+                  Text(
+                    '已同步追蹤名單',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            );
+            showToastWidget(
+              toast,
+              context: context,
+              animation: StyledToastAnimation.slideFromTop,
+              reverseAnimation: StyledToastAnimation.slideToTop,
+              position: StyledToastPosition.top,
+              startOffset: const Offset(0.0, -3.0),
+              reverseEndOffset: const Offset(0.0, -3.0),
+              duration: const Duration(seconds: 3),
+              //Animation duration   animDuration * 2 <= duration
+              animDuration: const Duration(milliseconds: 250),
+              curve: Curves.linear,
+              reverseCurve: Curves.linear,
+            );
+          }
         }
       },
       builder: (context, state) {

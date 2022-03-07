@@ -32,6 +32,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           for (var publisher in data['recommendedPublishers']) {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
+          bool showSyncToast = false;
+          if (UserHelper.instance.isMember) {
+            final List<String> followingPublisherIds =
+                prefs.getStringList('followingPublisherIds') ?? [];
+            if (followingPublisherIds.isNotEmpty) {
+              showSyncToast = true;
+              await prefs.setStringList('followingPublisherIds', []);
+            }
+          }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
@@ -40,6 +49,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             showFullScreenAd: showFullScreenAd,
             showPaywall: showPaywall,
             recommendedPublishers: recommendedPublishers,
+            showSyncToast: showSyncToast,
           ));
         } else if (event is ReloadHomeScreen) {
           emit(HomeReloading());

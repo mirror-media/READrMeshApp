@@ -25,6 +25,7 @@ class HomeLoaded extends HomeState {
   final List<PublisherFollowableItem> recommendedPublishers;
   final bool showPaywall;
   final bool showFullScreenAd;
+  final bool showSyncToast;
   const HomeLoaded({
     required this.allLatestNews,
     required this.followingStories,
@@ -33,6 +34,7 @@ class HomeLoaded extends HomeState {
     required this.showFullScreenAd,
     required this.showPaywall,
     required this.recommendedPublishers,
+    this.showSyncToast = false,
   });
 }
 
