@@ -65,9 +65,26 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   Widget _buildContent() {
     return ListView(
-      padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
+      padding: const EdgeInsets.only(top: 20, left: 40, right: 40),
       physics: const NeverScrollableScrollPhysics(),
       children: [
+        if (widget.fromOnboard)
+          const SizedBox(
+            height: 20,
+          ),
+        if (!widget.fromOnboard)
+          Container(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text(
+              widget.fromComment ? '立即登入以參與大家的討論' : '立即登入，享受更多個人化新聞選讀服務',
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         if (Platform.isIOS) ...[
           LoginButton(
             type: LoginType.apple,
