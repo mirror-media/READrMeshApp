@@ -13,12 +13,14 @@ abstract class FollowableItem {
   final String descriptionText;
   final bool isFollowed;
   final String lookmoreText;
+  final String type;
   FollowableItem(
     this.id,
     this.name,
     this.descriptionText,
     this.isFollowed,
     this.lookmoreText,
+    this.type,
   );
 
   Future<bool> addFollow();
@@ -46,6 +48,9 @@ class MemberFollowableItem implements FollowableItem {
     }
     return description;
   }
+
+  @override
+  String get type => 'member';
 
   @override
   String get id => member.memberId;
@@ -105,6 +110,9 @@ class PublisherFollowableItem implements FollowableItem {
     }
     return description;
   }
+
+  @override
+  String get type => 'publisher';
 
   @override
   String get id => publisher.id;
