@@ -63,17 +63,17 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         }
         return false;
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: DraggableScrollableActuator(
-              child: DraggableScrollableSheet(
-                snap: true,
-                initialChildSize: 0.12,
-                minChildSize: 0.12,
-                builder: (context, scrollController) {
-                  return Container(
+      child: DraggableScrollableActuator(
+        child: DraggableScrollableSheet(
+          snap: true,
+          initialChildSize: 0.22,
+          minChildSize: 0.22,
+          builder: (context, scrollController) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -152,26 +152,27 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                         ]
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.white,
-            child: const Divider(
-              color: Colors.black12,
-              thickness: 0.5,
-              height: 0.5,
-            ),
-          ),
-          CommentInputBox(
-            onPressed: _sendComment,
-            isSending: _isSending,
-            onTextChanged: (text) => widget.onTextChanged(text),
-            textController: _textController,
-          ),
-        ],
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Divider(
+                    color: Colors.black12,
+                    thickness: 0.5,
+                    height: 0.5,
+                  ),
+                ),
+                CommentInputBox(
+                  onPressed: _sendComment,
+                  isSending: _isSending,
+                  onTextChanged: (text) => widget.onTextChanged(text),
+                  textController: _textController,
+                  isCollapsed: _isCollapsed,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
@@ -8,12 +10,14 @@ class CommentInputBox extends StatefulWidget {
   final String? oldContent;
   final ValueChanged<String> onTextChanged;
   final TextEditingController? textController;
+  final bool isCollapsed;
   const CommentInputBox({
     required this.onPressed,
     this.isSending = false,
     this.oldContent,
     required this.onTextChanged,
     this.textController,
+    this.isCollapsed = true,
   });
 
   @override
@@ -64,6 +68,37 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
   @override
   Widget build(BuildContext context) {
+    if (UserHelper.instance.isVisitor) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        color: Colors.white,
+        child: ElevatedButton(
+          onPressed: () {
+            AutoRouter.of(context).push(LoginRoute(fromComment: true));
+          },
+          child: Text(
+            widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black87,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 24,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            minimumSize: const Size.fromHeight(48),
+          ),
+        ),
+      );
+    }
     Color sendTextColor;
     Color textFieldTextColor = Colors.black;
     if (!_hasInput) {
