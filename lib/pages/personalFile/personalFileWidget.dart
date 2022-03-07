@@ -352,7 +352,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: ElevatedButton(
-            onPressed: () async {},
+            onPressed: () {
+              AutoRouter.of(context).push(LoginRoute());
+            },
             child: const Text(
               '立即建立',
               style: TextStyle(

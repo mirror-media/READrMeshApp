@@ -1,4 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
@@ -44,15 +47,19 @@ class _FollowButtonState extends State<FollowButton> {
   Widget _buildButton(BuildContext context) {
     return OutlinedButton(
       onPressed: () async {
-        setState(() {
-          _isFollowing = !_isFollowing;
-          widget.item.updateLocalList();
-        });
-        if (widget.onTap != null) {
-          widget.onTap!(_isFollowing);
+        if (widget.item.type == 'member' && UserHelper.instance.isVisitor) {
+          AutoRouter.of(context).push(LoginRoute());
+        } else {
+          setState(() {
+            _isFollowing = !_isFollowing;
+            widget.item.updateLocalList();
+          });
+          if (widget.onTap != null) {
+            widget.onTap!(_isFollowing);
+          }
+          EasyDebounce.debounce(widget.item.id, const Duration(seconds: 2),
+              () => _updateFollow());
         }
-        EasyDebounce.debounce(
-            widget.item.id, const Duration(seconds: 2), () => _updateFollow());
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
