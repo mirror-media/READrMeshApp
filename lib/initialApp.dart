@@ -7,20 +7,10 @@ import 'package:readr/pages/rootPage.dart';
 import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/configService.dart';
 
-class InitialApp extends StatefulWidget {
-  @override
-  _InitialAppState createState() => _InitialAppState();
-}
-
-class _InitialAppState extends State<InitialApp> {
-  @override
-  void initState() {
-    super.initState();
-    DynamicLinkHelper().initDynamicLinks();
-  }
-
+class InitialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    DynamicLinkHelper().initDynamicLinks(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
