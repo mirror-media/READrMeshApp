@@ -84,13 +84,6 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
   		<string>fbapi</string>
-  		<string>fb-messenger-share-api</string>
-  		<string>fbauth2</string>
-  		<string>fbshareextension</string>
-	</array>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-  		<string>fbapi</string>
   		<string>fbapi20130214</string>
   		<string>fbapi20130410</string>
   		<string>fbapi20130702</string>
@@ -105,6 +98,15 @@
   		<string>fb-messenger-share-api</string>
   		<string>fbauth2</string>
   		<string>fbshareextension</string>
+		<string>googlegmail</string>
+		<string>x-dispatch</string>
+		<string>readdle-spark</string>
+		<string>airmail</string>
+		<string>ms-outlook</string>
+		<string>ymail</string>
+		<string>fastmail</string>
+		<string>superhuman</string>
+		<string>protonmail</string>
 	</array>
 </dict>
 </plist>
