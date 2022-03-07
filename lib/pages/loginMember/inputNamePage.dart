@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,7 @@ class _InputNamePageState extends State<InputNamePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: Platform.isIOS,
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
         elevation: 0,
