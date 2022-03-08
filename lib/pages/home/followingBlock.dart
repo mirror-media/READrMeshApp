@@ -12,7 +12,7 @@ import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
-import 'package:readr/pages/home/newsInfo.dart';
+import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';

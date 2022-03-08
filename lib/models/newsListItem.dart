@@ -61,6 +61,7 @@ class NewsListItem {
     List<Comment> allComments = [];
     String? myPickId;
     DateTime? latestPickTime;
+    String? content;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -133,6 +134,10 @@ class NewsListItem {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['content'])) {
+      content = json['content'];
+    }
+
     return NewsListItem(
       id: json["id"],
       title: json["title"],
@@ -151,6 +156,7 @@ class NewsListItem {
       myPickId: myPickId,
       fullContent: fullContent,
       latestPickTime: latestPickTime,
+      content: content,
     );
   }
 }

@@ -90,6 +90,8 @@ class _PickButtonState extends State<PickButton> {
                         }
                         _isPicked = false;
                       });
+                    } else {
+                      widget.item.pickId = pickId;
                     }
                     // Let onPressed function can be called
                     setState(() {
@@ -121,6 +123,8 @@ class _PickButtonState extends State<PickButton> {
                       }
                       _isPicked = !_isPicked;
                     });
+                  } else {
+                    widget.item.pickId = null;
                   }
                   // Let onPressed function can be called
                   setState(() {

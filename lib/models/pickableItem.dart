@@ -2,8 +2,8 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/services/pickService.dart';
 
 abstract class PickableItem {
-  final String? pickId;
-  const PickableItem(this.pickId);
+  String? pickId;
+  PickableItem(this.pickId);
 
   Future<String?> createPick();
   Future<Map<String, dynamic>?> createPickAndComment(String comment);
@@ -55,5 +55,10 @@ class StoryPick implements PickableItem {
       return true;
     }
     return false;
+  }
+
+  @override
+  set pickId(String? _pickId) {
+    myPickId = _pickId;
   }
 }

@@ -4,16 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/readr/categories/bloc.dart';
 import 'package:readr/blocs/readr/categories/events.dart';
 import 'package:readr/blocs/readr/categories/states.dart';
-import 'package:readr/blocs/readr/editorChoice/bloc.dart';
+import 'package:readr/blocs/readr/editorChoice/editorChoice_cubit.dart';
 import 'package:readr/blocs/readr/tabStoryList/bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/pages/readr/readrSkeletonScreen.dart';
 import 'package:readr/pages/readr/readrTabContent.dart';
-import 'package:readr/pages/shared/editorChoice/editorChoiceCarousel.dart';
-import 'package:readr/services/editorChoiceService.dart';
+
 import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrPage extends StatefulWidget {
@@ -49,7 +49,8 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
           child: Text(
             category.name,
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
@@ -96,11 +97,10 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
 
         return Scaffold(
           appBar: AppBar(
-            primary: false,
-            elevation: 0,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.white,
             toolbarHeight: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
-            backgroundColor: Colors.black,
+            elevation: 0,
           ),
           body: Container(
             color: Colors.white,
@@ -110,11 +110,10 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return [
+                    _buildAppBar(),
                     SliverToBoxAdapter(
                       child: BlocProvider(
-                        create: (context) => EditorChoiceBloc(
-                          editorChoiceRepos: EditorChoiceServices(),
-                        ),
+                        create: (context) => EditorChoiceCubit(),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 4),
                           child: BuildEditorChoiceCarousel(),
@@ -124,21 +123,35 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                     SliverToBoxAdapter(
                       child: Container(
                         color: const Color.fromRGBO(246, 246, 251, 1),
-                        height: 4,
+                        height: 8,
                       ),
                     ),
                     SliverAppBar(
                       pinned: true,
                       primary: false,
                       elevation: 0,
-                      toolbarHeight: 8,
                       backgroundColor: Colors.white,
-                      bottom: TabBar(
-                        isScrollable: true,
-                        indicatorColor: tabBarSelectedColor,
-                        unselectedLabelColor: Colors.black38,
-                        tabs: _tabs.toList(),
-                        controller: _tabController,
+                      flexibleSpace: Stack(
+                        fit: StackFit.passthrough,
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.black12, width: 1.0),
+                              ),
+                            ),
+                          ),
+                          TabBar(
+                            isScrollable: true,
+                            indicatorColor: tabBarSelectedColor,
+                            unselectedLabelColor: Colors.black26,
+                            tabs: _tabs.toList(),
+                            controller: _tabController,
+                            indicatorWeight: 1,
+                          ),
+                        ],
                       ),
                     ),
                   ];
@@ -154,5 +167,30 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
       }
       return ReadrSkeletonScreen();
     });
+  }
+
+  Widget _buildAppBar() {
+    return SliverAppBar(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      backgroundColor: Colors.white,
+      centerTitle: false,
+      elevation: 0.5,
+      title: const Text(
+        'Logo',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.notifications_none_outlined,
+            color: Colors.black,
+          ),
+        )
+      ],
+    );
   }
 }
