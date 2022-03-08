@@ -162,34 +162,31 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     }
     return Column(
       children: [
-        SizedBox(
-          height: 300,
-          child: GestureDetector(
-            onTap: () async {},
-            child: Container(
-              color: Colors.black,
-              child: Stack(
-                children: [
-                  FadeIn(
-                    key: UniqueKey(),
-                    duration: const Duration(milliseconds: 500),
-                    child: Container(
-                      color: Colors.black,
-                      child: _displayImage(
-                          width, widget.editorChoiceList.elementAt(_current)),
-                    ),
+        GestureDetector(
+          onTap: () async {},
+          child: Container(
+            color: Colors.black,
+            child: Stack(
+              children: [
+                FadeIn(
+                  key: UniqueKey(),
+                  duration: const Duration(milliseconds: 500),
+                  child: Container(
+                    color: Colors.black,
+                    child: _displayImage(
+                        width, widget.editorChoiceList.elementAt(_current)),
                   ),
-                  if (widget.editorChoiceList.elementAt(_current).isProject)
-                    Container(
-                      alignment: Alignment.topRight,
-                      margin: const EdgeInsets.only(
-                        top: 16,
-                        right: 12,
-                      ),
-                      child: _displayTag(),
+                ),
+                if (widget.editorChoiceList.elementAt(_current).isProject)
+                  Container(
+                    alignment: Alignment.topRight,
+                    margin: const EdgeInsets.only(
+                      top: 16,
+                      right: 12,
                     ),
-                ],
-              ),
+                    child: _displayTag(),
+                  ),
+              ],
             ),
           ),
         ),
@@ -245,7 +242,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     return editorChoiceItem.newsListItem!.heroImageUrl == null
         ? SvgPicture.asset(defaultImageSvg)
         : CachedNetworkImage(
-            height: 300,
+            height: 188,
             width: width,
             imageUrl: editorChoiceItem.newsListItem!.heroImageUrl!,
             placeholder: (context, url) => Container(
