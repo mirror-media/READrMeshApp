@@ -49,7 +49,7 @@ class _SettingPageState extends State<SettingPage> {
           children: [
             if (UserHelper.instance.isMember) _userInfo(),
             _settingTile(context),
-            if (UserHelper.instance.isMember) _accountTile(),
+            if (UserHelper.instance.isMember) _accountTile(context),
           ],
         ),
       ),
@@ -194,7 +194,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget _accountTile() {
+  Widget _accountTile(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -216,7 +216,8 @@ class _SettingPageState extends State<SettingPage> {
             ),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
-              setState(() {});
+              AutoRouter.of(context).pushAndPopUntil(const Initial(),
+                  predicate: (route) => false);
             },
           ),
           const Divider(
