@@ -242,7 +242,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     return editorChoiceItem.newsListItem!.heroImageUrl == null
         ? SvgPicture.asset(defaultImageSvg)
         : CachedNetworkImage(
-            height: 188,
+            height: width / 2,
             width: width,
             imageUrl: editorChoiceItem.newsListItem!.heroImageUrl!,
             placeholder: (context, url) => Container(
