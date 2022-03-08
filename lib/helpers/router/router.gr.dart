@@ -139,6 +139,12 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: SettingPage(args.version, args.loginType, key: args.key));
     },
+    SetNewsCoverageRoute.name: (routeData) {
+      final args = routeData.argsAs<SetNewsCoverageRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: SetNewsCoveragePage(args.duration, key: args.key));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -185,7 +191,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(ChoosePublisherRoute.name, path: '/choose-publisher-page'),
         RouteConfig(ChooseMemberRoute.name, path: '/choose-member-page'),
         RouteConfig(WelcomeRoute.name, path: '/welcome-page'),
-        RouteConfig(SettingRoute.name, path: '/setting-page')
+        RouteConfig(SettingRoute.name, path: '/setting-page'),
+        RouteConfig(SetNewsCoverageRoute.name, path: '/set-news-coverage-page')
       ];
 }
 
@@ -605,6 +612,30 @@ class SettingRouteArgs {
   @override
   String toString() {
     return 'SettingRouteArgs{version: $version, loginType: $loginType, key: $key}';
+  }
+}
+
+/// generated route for
+/// [SetNewsCoveragePage]
+class SetNewsCoverageRoute extends PageRouteInfo<SetNewsCoverageRouteArgs> {
+  SetNewsCoverageRoute({required int duration, Key? key})
+      : super(SetNewsCoverageRoute.name,
+            path: '/set-news-coverage-page',
+            args: SetNewsCoverageRouteArgs(duration: duration, key: key));
+
+  static const String name = 'SetNewsCoverageRoute';
+}
+
+class SetNewsCoverageRouteArgs {
+  const SetNewsCoverageRouteArgs({required this.duration, this.key});
+
+  final int duration;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SetNewsCoverageRouteArgs{duration: $duration, key: $key}';
   }
 }
 

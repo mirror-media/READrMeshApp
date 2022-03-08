@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
   final String version;
@@ -47,7 +48,7 @@ class _SettingPageState extends State<SettingPage> {
           physics: const ClampingScrollPhysics(),
           children: [
             if (UserHelper.instance.isMember) _userInfo(),
-            _settingTile(),
+            _settingTile(context),
             if (UserHelper.instance.isMember) _accountTile(),
           ],
         ),
@@ -104,14 +105,21 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget _settingTile() {
+  Widget _settingTile(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       margin: const EdgeInsets.only(bottom: 12),
       child: Column(
         children: [
-          _settingButton(text: '顯示新聞範圍', onPressed: () {}),
+          _settingButton(
+            text: '顯示新聞範圍',
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              int duration = prefs.getInt('newsCoverage') ?? 24;
+              context.pushRoute(SetNewsCoverageRoute(duration: duration));
+            },
+          ),
           const Divider(
             color: Colors.black12,
             height: 1,

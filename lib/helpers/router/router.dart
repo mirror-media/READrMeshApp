@@ -23,6 +23,7 @@ import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
+import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/story/news/newsStoryPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
@@ -76,6 +77,7 @@ part 'router.gr.dart';
     AutoRoute(page: ChooseMemberPage),
     AutoRoute(page: WelcomePage),
     AutoRoute(page: SettingPage),
+    AutoRoute(page: SetNewsCoveragePage),
   ],
 )
 // extend the generated private router
