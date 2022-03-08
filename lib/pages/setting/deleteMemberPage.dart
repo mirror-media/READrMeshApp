@@ -17,32 +17,38 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
   bool _isSuccess = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        shadowColor: Colors.white,
+    return WillPopScope(
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0.5,
-        title: const Text(
-          '刪除帳號',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
+        appBar: AppBar(
+          centerTitle: true,
+          shadowColor: Colors.white,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          elevation: 0.5,
+          title: const Text(
+            '刪除帳號',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
           ),
+          leading: _isInitialized
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Colors.black,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : null,
         ),
-        leading: IconButton(
-          icon: Icon(
-            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
+        body: SafeArea(
+          child: _buildContent(),
         ),
       ),
-      body: SafeArea(
-        child: _buildContent(),
-      ),
+      onWillPop: () async => _isInitialized,
     );
   }
 
@@ -110,7 +116,8 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               if (_isInitialized) {
                 Navigator.of(context).pop();
               } else {
-                context.navigateTo(const Initial(children: [HomeRouter()]));
+                AutoRouter.of(context).pushAndPopUntil(const Initial(),
+                    predicate: (route) => false);
               }
             },
             style: OutlinedButton.styleFrom(
