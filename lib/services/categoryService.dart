@@ -56,7 +56,7 @@ class CategoryServices implements CategoryRepos {
     CategoryList fixedCategoryList = CategoryList();
     fixedCategoryList.add(Category(
       id: '0',
-      name: '最新報導',
+      name: '最新文章',
       slug: 'latest',
     ));
     fixedCategoryList.addAll(categoryList);
