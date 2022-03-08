@@ -63,7 +63,7 @@ class EditorChoiceServices implements EditorChoiceRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
         maxAge: editorChoiceCacheDuration,
         headers: {"Content-Type": "application/json"});
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
@@ -10,8 +11,7 @@ import 'package:readr/models/publisher.dart';
 
 class PersonalFileService {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  // TODO: Change to Environment config when all environment built
-  final String api = DevConfig().keystoneApi;
+  final String api = Environment().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = false}) async {
     Map<String, String> headers = {

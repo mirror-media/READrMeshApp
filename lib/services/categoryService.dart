@@ -45,7 +45,7 @@ class CategoryServices implements CategoryRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
         maxAge: categoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 

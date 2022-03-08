@@ -151,7 +151,7 @@ class StoryServices implements StoryRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
         maxAge: newsStoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 
@@ -236,7 +236,7 @@ class StoryServices implements StoryRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
         maxAge: newsStoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 
@@ -363,7 +363,7 @@ class StoryServices implements StoryRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
         maxAge: newsStoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 

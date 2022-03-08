@@ -84,11 +84,11 @@ class TagStoryListServices implements TagStoryListRepos {
     late final dynamic jsonResponse;
     if (skip > 20) {
       jsonResponse = await _helper.postByUrl(
-          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+          Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
           headers: {"Content-Type": "application/json"});
     } else {
-      jsonResponse = await _helper.postByCacheAndAutoCache(key,
-          Environment().config.graphqlApi, jsonEncode(graphqlBody.toJson()),
+      jsonResponse = await _helper.postByCacheAndAutoCache(
+          key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
           maxAge: newsTabStoryList,
           headers: {"Content-Type": "application/json"});
     }

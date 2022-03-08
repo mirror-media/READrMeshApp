@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   // TODO: Change to Environment config when all environment built
-  final String api = DevConfig().keystoneApi;
+  final String api = Environment().config.readrMeshApi;
 
   Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {

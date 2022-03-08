@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
 class PickService {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  // TODO: Change to Environment config when all environment built
-  final String api = DevConfig().keystoneApi;
+
+  final String api = Environment().config.readrMeshApi;
 
   Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
