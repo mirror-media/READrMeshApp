@@ -4,7 +4,7 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
-import 'package:readr/pages/home/newsInfo.dart';
+import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 
