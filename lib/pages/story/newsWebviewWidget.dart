@@ -5,8 +5,8 @@ import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/story/news/bottomCardWidget.dart';
-import 'package:readr/pages/story/news/storyAppBar.dart';
+import 'package:readr/pages/story/bottomCardWidget.dart';
+import 'package:readr/pages/story/storyAppBar.dart';
 
 class NewsWebviewWidget extends StatefulWidget {
   final NewsListItem news;
