@@ -94,21 +94,9 @@ class NewsStoryItem {
     }
 
     String? contentApiData;
-    // ParagraphList contentApiData = ParagraphList();
     List<String>? contentAnnotationData = [];
     if (BaseModel.hasKey(json, 'content') && fullContent) {
       contentApiData = json["content"];
-      // contentApiData = ParagraphList.parseResponseBody(json["content"]);
-      // for (var paragraph in contentApiData) {
-      //   if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
-      //     List<String> sourceData =
-      //         Annotation.parseSourceData(paragraph.contents![0].data);
-      //     String? annotationData = Annotation.getAnnotation(sourceData);
-      //     if (annotationData != null) {
-      //       contentAnnotationData.add(annotationData);
-      //     }
-      //   }
-      // }
     }
 
     if (BaseModel.checkJsonKeys(json, ['writer'])) {

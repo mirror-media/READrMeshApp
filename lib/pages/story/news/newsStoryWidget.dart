@@ -275,36 +275,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         color: Colors.black87,
       ),
     );
-    // ParagraphList storyContents = _newsStoryItem.contentApiData!;
-    // ParagraphFormat paragraphFormat = ParagraphFormat();
-    // return Padding(
-    //   padding: const EdgeInsets.all(0),
-    //   child: ListView.builder(
-    //     shrinkWrap: true,
-    //     physics: const NeverScrollableScrollPhysics(),
-    //     itemCount: storyContents.length,
-    //     itemBuilder: (context, index) {
-    //       Paragraph paragraph = storyContents[index];
-    //       if (paragraph.contents != null &&
-    //           paragraph.contents!.isNotEmpty &&
-    //           !_isNullOrEmpty(paragraph.contents![0].data)) {
-    //         return Padding(
-    //           padding: const EdgeInsets.only(bottom: 16.0),
-    //           child: paragraphFormat.parseTheParagraph(
-    //             paragraph,
-    //             context,
-    //             18,
-    //             showAnnotations: true,
-    //             itemScrollController: _itemScrollController,
-    //             annotationLength: _newsStoryItem.contentAnnotationData!.length,
-    //           ),
-    //         );
-    //       }
-
-    //       return Container();
-    //     },
-    //   ),
-    // );
   }
 
   Widget _buildAnnotationBlock() {
