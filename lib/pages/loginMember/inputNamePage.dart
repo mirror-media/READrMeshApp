@@ -29,72 +29,81 @@ class _InputNamePageState extends State<InputNamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: Platform.isIOS,
-        shadowColor: Colors.white,
+    return WillPopScope(
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          '姓名',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate() && !_isSending) {
-                try {
-                  _isSending = true;
-                  await MemberService().createMember();
-                  final prefs = await SharedPreferences.getInstance();
-                  final List<String> followingPublisherIds =
-                      prefs.getStringList('followingPublisherIds') ?? [];
-                  if (followingPublisherIds.isNotEmpty) {
-                    AutoRouter.of(context)
-                        .replace(ChooseMemberRoute(isFromPublisher: false));
-                  } else {
-                    AutoRouter.of(context)
-                        .replace(const ChoosePublisherRoute());
-                  }
-                } catch (e) {
-                  Fluttertoast.showToast(
-                    msg: "發生錯誤，請稍後再試",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    fontSize: 16.0,
-                  );
-                }
-                _isSending = false;
-              }
-            },
-            child: const Text(
-              '完成註冊',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
+        appBar: AppBar(
+          centerTitle: Platform.isIOS,
+          shadowColor: Colors.white,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            '姓名',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ],
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () async {
+              await FirebaseAuth.instance.currentUser!.delete();
+              Navigator.of(context).pop();
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate() && !_isSending) {
+                  try {
+                    _isSending = true;
+                    await MemberService().createMember();
+                    final prefs = await SharedPreferences.getInstance();
+                    final List<String> followingPublisherIds =
+                        prefs.getStringList('followingPublisherIds') ?? [];
+                    if (followingPublisherIds.isNotEmpty) {
+                      AutoRouter.of(context)
+                          .replace(ChooseMemberRoute(isFromPublisher: false));
+                    } else {
+                      AutoRouter.of(context)
+                          .replace(const ChoosePublisherRoute());
+                    }
+                  } catch (e) {
+                    Fluttertoast.showToast(
+                      msg: "發生錯誤，請稍後再試",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      fontSize: 16.0,
+                    );
+                  }
+                  _isSending = false;
+                }
+              },
+              child: const Text(
+                '完成註冊',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+          child: _buildBody(context),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-        child: _buildBody(context),
-      ),
+      onWillPop: () async {
+        await FirebaseAuth.instance.currentUser!.delete();
+        return true;
+      },
     );
   }
 
