@@ -11,7 +11,6 @@ import 'package:readr/models/newsListItem.dart';
 class EditorChoiceServices {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
-  @override
   Future<List<EditorChoiceItem>> fetchEditorChoiceList() async {
     const key = 'fetchEditorChoiceList';
 
