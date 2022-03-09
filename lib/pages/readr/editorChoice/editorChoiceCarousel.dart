@@ -84,7 +84,7 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
                 baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
                 highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
                 child: Container(
-                  height: 187.5,
+                  height: MediaQuery.of(context).size.width / 2,
                   width: double.infinity,
                   color: Colors.white,
                 ),
