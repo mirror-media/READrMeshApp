@@ -4,7 +4,6 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/models/publisher.dart';
-import 'package:readr/pages/author/authorPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
@@ -61,7 +60,6 @@ part 'router.gr.dart';
     AutoRoute(page: TagPage),
     AutoRoute(page: AboutPage),
     AutoRoute(page: DeleteMemberPage),
-    AutoRoute(page: AuthorPage),
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),
     AutoRoute(page: RecommendFollowPage),
     AutoRoute(page: PersonalFilePage),

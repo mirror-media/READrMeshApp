@@ -49,11 +49,6 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: DeleteMemberPage());
     },
-    AuthorRoute.name: (routeData) {
-      final args = routeData.argsAs<AuthorRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: AuthorPage(people: args.people));
-    },
     NewsStoryRoute.name: (routeData) {
       final args = routeData.argsAs<NewsStoryRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -175,7 +170,6 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(TagRoute.name, path: '/tag-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
-        RouteConfig(AuthorRoute.name, path: '/author-page'),
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
         RouteConfig(RecommendFollowRoute.name, path: '/recommend-follow-page'),
         RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
@@ -304,27 +298,6 @@ class DeleteMemberRoute extends PageRouteInfo<void> {
       : super(DeleteMemberRoute.name, path: '/delete-member-page');
 
   static const String name = 'DeleteMemberRoute';
-}
-
-/// generated route for
-/// [AuthorPage]
-class AuthorRoute extends PageRouteInfo<AuthorRouteArgs> {
-  AuthorRoute({required People people})
-      : super(AuthorRoute.name,
-            path: '/author-page', args: AuthorRouteArgs(people: people));
-
-  static const String name = 'AuthorRoute';
-}
-
-class AuthorRouteArgs {
-  const AuthorRouteArgs({required this.people});
-
-  final People people;
-
-  @override
-  String toString() {
-    return 'AuthorRouteArgs{people: $people}';
-  }
 }
 
 /// generated route for
