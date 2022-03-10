@@ -4,15 +4,16 @@ import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
-class PublisherListItem extends StatefulWidget {
+class PublisherListItemWidget extends StatefulWidget {
   final Publisher publisher;
-  const PublisherListItem({required this.publisher});
+  const PublisherListItemWidget({required this.publisher});
 
   @override
-  _PublisherListItemState createState() => _PublisherListItemState();
+  _PublisherListItemWidgetState createState() =>
+      _PublisherListItemWidgetState();
 }
 
-class _PublisherListItemState extends State<PublisherListItem> {
+class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
   int _followCount = 0;
   @override
   void initState() {

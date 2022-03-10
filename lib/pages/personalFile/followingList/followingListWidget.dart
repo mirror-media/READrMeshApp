@@ -10,7 +10,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/memberListItem.dart';
-import 'package:readr/pages/shared/publisherListItem.dart';
+import 'package:readr/pages/shared/publisherListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowingListWidget extends StatefulWidget {
@@ -217,7 +217,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
               publisher: _followPublisherList[index],
             ));
           },
-          child: PublisherListItem(
+          child: PublisherListItemWidget(
             publisher: _followPublisherList[index],
           ),
         );
