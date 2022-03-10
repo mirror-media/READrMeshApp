@@ -8,7 +8,7 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/memberListItem.dart';
+import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowerListWidget extends StatefulWidget {
@@ -150,7 +150,7 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
               viewMember: _followerList[index],
             ));
           },
-          child: MemberListItem(
+          child: MemberListItemWidget(
             viewMember: _followerList[index],
           ),
         );

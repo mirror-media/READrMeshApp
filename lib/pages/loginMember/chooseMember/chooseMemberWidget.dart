@@ -5,7 +5,7 @@ import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/memberListItem.dart';
+import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseMemberWidget extends StatefulWidget {
@@ -79,7 +79,7 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-            itemBuilder: (context, index) => MemberListItem(
+            itemBuilder: (context, index) => MemberListItemWidget(
               viewMember: _recommendedMembers[index],
             ),
             separatorBuilder: (context, index) => const Padding(

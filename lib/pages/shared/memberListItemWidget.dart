@@ -6,15 +6,15 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/followButton.dart';
 
-class MemberListItem extends StatefulWidget {
+class MemberListItemWidget extends StatefulWidget {
   final Member viewMember;
-  const MemberListItem({required this.viewMember});
+  const MemberListItemWidget({required this.viewMember});
 
   @override
-  _MemberListItemState createState() => _MemberListItemState();
+  _MemberListItemWidgetState createState() => _MemberListItemWidgetState();
 }
 
-class _MemberListItemState extends State<MemberListItem> {
+class _MemberListItemWidgetState extends State<MemberListItemWidget> {
   @override
   void initState() {
     super.initState();
