@@ -48,15 +48,15 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
             return Container();
           }
 
-          List<StoryPick> storyPickList = [];
+          List<NewsListItemPick> storyPickList = [];
           for (int i = 0; i < editorChoiceList.length; i++) {
-            storyPickList.add(StoryPick(editorChoiceList[i].newsListItem!.id,
-                editorChoiceList[i].newsListItem!.myPickId));
+            storyPickList
+                .add(NewsListItemPick(editorChoiceList[i].newsListItem!));
           }
           return EditorChoiceCarousel(
             editorChoiceList: editorChoiceList,
             storyPickList: storyPickList,
-            aspectRatio: 4 / 3.2,
+            width: MediaQuery.of(context).size.width,
           );
         }
 
@@ -118,12 +118,12 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
 
 class EditorChoiceCarousel extends StatefulWidget {
   final List<EditorChoiceItem> editorChoiceList;
-  final List<StoryPick> storyPickList;
-  final double aspectRatio;
+  final List<NewsListItemPick> storyPickList;
+  final double width;
   const EditorChoiceCarousel({
     required this.editorChoiceList,
     required this.storyPickList,
-    this.aspectRatio = 16 / 9,
+    required this.width,
   });
 
   @override
@@ -135,10 +135,19 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   int _current = 0;
   final double aspectRatio = 16 / 9;
   final ChromeSafariBrowser browser = ChromeSafariBrowser();
+  late double width;
+  final List<Widget> items = [];
 
   @override
   void initState() {
     super.initState();
+    width = widget.width;
+    for (int i = 0; i < widget.editorChoiceList.length; i++) {
+      items.add(CarouselDisplayWidget(
+        editorChoiceItem: widget.editorChoiceList[i],
+        newsListItemPick: widget.storyPickList[i],
+      ));
+    }
   }
 
   @override
@@ -148,17 +157,8 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
     if (widget.editorChoiceList.isEmpty) {
       return Container();
-    }
-    List<Widget> items = [];
-    for (int i = 0; i < widget.editorChoiceList.length; i++) {
-      items.add(CarouselDisplayWidget(
-        editorChoiceItem: widget.editorChoiceList[i],
-        width: width,
-        storyPick: widget.storyPickList[i],
-      ));
     }
     return Column(
       children: [
@@ -246,12 +246,12 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
             width: width,
             imageUrl: editorChoiceItem.newsListItem!.heroImageUrl!,
             placeholder: (context, url) => Container(
-              height: width / aspectRatio,
+              height: width / 2,
               width: width,
               color: Colors.grey,
             ),
             errorWidget: (context, url, error) => Container(
-              height: width / aspectRatio,
+              height: width / 2,
               width: width,
               color: Colors.grey,
               child: const Icon(Icons.error),
