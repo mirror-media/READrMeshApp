@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -9,10 +8,10 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/pickableItem.dart';
+import 'package:readr/pages/shared/bottomCard/collapsePickBar.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
-import 'package:readr/pages/shared/pick/pickButton.dart';
-import 'package:readr/pages/shared/profilePhotoStack.dart';
+import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/services/commentService.dart';
 
 class BottomCardWidget extends StatefulWidget {
@@ -31,25 +30,22 @@ class BottomCardWidget extends StatefulWidget {
 }
 
 class _BottomCardWidgetState extends State<BottomCardWidget> {
-  bool _isPicked = false;
-  int _pickCount = 0;
   final CommentService _commentService = CommentService();
   bool _isSending = false;
   final TextEditingController _textController = TextEditingController();
   List<Comment> _allComments = [];
-  List<Member> _pickAvatarMembers = [];
   bool _hasMyNewComment = false;
   late Comment _myNewComment;
   bool _isCollapsed = true;
+  late final NewsStoryItemPick _pick;
 
   @override
   void initState() {
     super.initState();
-    _isPicked = widget.isPicked;
-    _pickCount = widget.news.pickCount;
-    _allComments = widget.news.allComments;
-    _pickAvatarMembers = widget.news.followingPickMembers;
-    _pickAvatarMembers.addAll(widget.news.otherPickMembers);
+    List<Member> _pickedMembers = [];
+    _pickedMembers.addAll(widget.news.followingPickMembers);
+    _pickedMembers.addAll(widget.news.otherPickMembers);
+    _pick = NewsStoryItemPick(widget.news);
   }
 
   @override
@@ -201,61 +197,10 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(
-            children: [
-              AutoSizeText.rich(
-                TextSpan(
-                  text: widget.news.allComments.length.toString(),
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: const [
-                    TextSpan(
-                      text: ' 則留言',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-                style: const TextStyle(fontSize: 13),
-              ),
-              Container(
-                width: 2,
-                height: 2,
-                margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black26,
-                ),
-              ),
-              AutoSizeText.rich(
-                TextSpan(
-                  text: _pickCount.toString(),
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: const [
-                    TextSpan(
-                      text: ' 人精選',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-                style: const TextStyle(fontSize: 13),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              _pickButton(),
-            ],
+          child: CollapsePickBar(
+            _pick,
+            widget.news.pickCount,
+            _allComments.length,
           ),
         ),
       ],
@@ -263,17 +208,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   }
 
   Widget _titleAndPickBar() {
-    List<Member> memberList = [];
-    if (_pickAvatarMembers.length < 4 && _isPicked) {
-      memberList.add(UserHelper.instance.currentUser);
-    }
-    for (int i = 0; i < _pickAvatarMembers.length; i++) {
-      memberList.add(_pickAvatarMembers[i]);
-      if (memberList.length == 4) {
-        break;
-      }
-    }
-
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
       decoration: const BoxDecoration(
@@ -307,48 +241,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             ),
           ],
           const SizedBox(height: 18),
-          Row(
-            children: [
-              if (widget.news.pickCount != 0) ...[
-                ProfilePhotoStack(memberList, 14),
-                const SizedBox(width: 8),
-                RichText(
-                  text: TextSpan(
-                    text: widget.news.pickCount.toString(),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: ' 人精選',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
-                  maxLines: 1,
-                ),
-              ],
-              if (widget.news.pickCount == 0)
-                const Text(
-                  '尚無人精選',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              Expanded(
-                child: Container(),
-              ),
-              _pickButton(),
-            ],
-          ),
+          PickBar(_pick, widget.news.pickCount),
         ],
       ),
     );
@@ -474,35 +367,5 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         fontSize: 16.0,
       );
     }
-  }
-
-  Widget _pickButton() {
-    return PickButton(
-      StoryPick(widget.news.id, widget.news.myPickId),
-      afterPicked: () {
-        setState(() {
-          _isPicked = true;
-          _pickCount++;
-        });
-      },
-      afterRemovePick: () {
-        setState(() {
-          _isPicked = false;
-          _pickCount--;
-        });
-      },
-      whenPickFailed: () {
-        setState(() {
-          _isPicked = false;
-          _pickCount--;
-        });
-      },
-      whenRemoveFailed: () {
-        setState(() {
-          _isPicked = true;
-          _pickCount++;
-        });
-      },
-    );
   }
 }
