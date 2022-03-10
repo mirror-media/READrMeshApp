@@ -427,6 +427,15 @@ class HomeScreenService {
           }
         ){
           id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
         }
       }
       followedFollowing:members(
@@ -1049,6 +1058,15 @@ class HomeScreenService {
           }
         ){
           id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
         }
       }
     }

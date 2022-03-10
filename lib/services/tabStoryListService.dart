@@ -2,29 +2,14 @@ import 'dart:convert';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
-import 'package:readr/models/storyListItemList.dart';
+import 'package:readr/models/newsListItem.dart';
 
-abstract class TabStoryListRepos {
-  Future<List<StoryListItemList>> fetchStoryList({
-    int storySkip = 0,
-    int storyFirst = 18,
-    int projectSkip = 0,
-    int projectFirst = 2,
-    bool withCount = true,
-  });
-  Future<List<StoryListItemList>> fetchStoryListByCategorySlug(
-    String slug, {
-    int storySkip = 0,
-    int storyFirst = 18,
-    int projectSkip = 0,
-    int projectFirst = 2,
-    bool withCount = true,
-  });
-}
-
-class TabStoryListServices implements TabStoryListRepos {
+class TabStoryListServices {
   final ApiBaseHelper _helper = ApiBaseHelper();
+  final List<String> _fetchedStoryIdList = [];
+  final List<String> _fetchedProjectIdList = [];
 
   final String query = """
   query (
@@ -34,7 +19,6 @@ class TabStoryListServices implements TabStoryListRepos {
     \$storyFirst: Int,
     \$projectSkip: Int,
     \$projectFirst: Int,
-    \$withCount: Boolean!,
   ) {
     story: allPosts(
       where: \$storyWhere, 
@@ -43,21 +27,6 @@ class TabStoryListServices implements TabStoryListRepos {
       sortBy: [ publishTime_DESC ]
     ) {
       id
-      slug
-      name
-      publishTime
-      style
-      readingTime
-      categories(where: {
-        state: active
-      }){
-        id
-        name
-        slug
-      }
-      heroImage {
-        urlMobileSized
-      }
     }
     project:allPosts(
       where: \$projectWhere, 
@@ -66,42 +35,15 @@ class TabStoryListServices implements TabStoryListRepos {
       sortBy: [ publishTime_DESC ]
     ) {
       id
-      slug
-      name
-      publishTime
-      style
-      readingTime
-      categories(where: {
-        state: active
-      }){
-        id
-        name
-        slug
-      }
-      heroImage {
-        urlMobileSized
-      }
-    }
-    storyCount:_allPostsMeta(
-      where: \$storyWhere,
-    ) @include(if: \$withCount) {
-      count
-    }
-    projectCount:_allPostsMeta(
-      where: \$projectWhere,
-    ) @include(if: \$withCount) {
-      count
     }
   }
   """;
 
-  @override
-  Future<List<StoryListItemList>> fetchStoryList({
+  Future<Map<String, List<NewsListItem>>> fetchStoryList({
     int storySkip = 0,
     int storyFirst = 18,
     int projectSkip = 0,
     int projectFirst = 2,
-    bool withCount = true,
   }) async {
     String key =
         'fetchStoryList?storySkip=$storySkip&storyFirst=$storyFirst&projectSkip=$projectSkip&projectFirst=$projectFirst';
@@ -109,17 +51,18 @@ class TabStoryListServices implements TabStoryListRepos {
     Map<String, dynamic> variables = {
       "storyWhere": {
         "state": "published",
-        "style_in": ["news", "scrollablevideo"]
+        "style_in": ["news", "scrollablevideo"],
+        "id_not_in": _fetchedStoryIdList,
       },
       "projectWhere": {
         "state": "published",
-        "style_in": ["project3", "embedded", "report"]
+        "style_in": ["project3", "embedded", "report"],
+        "id_not_in": _fetchedProjectIdList,
       },
       "storySkip": storySkip,
       "storyFirst": storyFirst,
       "projectSkip": projectSkip,
-      "projectFirst": projectFirst,
-      "withCount": withCount
+      "projectFirst": projectFirst
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -140,28 +83,37 @@ class TabStoryListServices implements TabStoryListRepos {
           headers: {"Content-Type": "application/json"});
     }
 
-    StoryListItemList newsList =
-        StoryListItemList.fromJson(jsonResponse['data']['story']);
-    StoryListItemList projectList =
-        StoryListItemList.fromJson(jsonResponse['data']['project']);
-    if (withCount) {
-      newsList.allStoryCount = jsonResponse['data']['storyCount']['count'];
-      projectList.allStoryCount = jsonResponse['data']['projectCount']['count'];
+    List<String> storyList = [];
+    List<String> projectList = [];
+    for (var item in jsonResponse['data']['story']) {
+      _fetchedStoryIdList.add(item['id']);
+      storyList.add(item['id']);
     }
 
-    List<StoryListItemList> mixedStoryList = [newsList, projectList];
+    for (var item in jsonResponse['data']['project']) {
+      _fetchedProjectIdList.add(item['id']);
+      projectList.add(item['id']);
+    }
+
+    var futureList = await Future.wait([
+      fetchMeshStoryList(storyList),
+      fetchMeshStoryList(projectList),
+    ]);
+
+    Map<String, List<NewsListItem>> mixedStoryList = {
+      'story': futureList[0],
+      'project': futureList[1],
+    };
 
     return mixedStoryList;
   }
 
-  @override
-  Future<List<StoryListItemList>> fetchStoryListByCategorySlug(
+  Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
     int storyFirst = 18,
     int projectSkip = 0,
     int projectFirst = 2,
-    bool withCount = true,
   }) async {
     String key =
         'fetchStoryListByCategorySlug?slug=$slug&storySkip=$storySkip&storyFirst=$storyFirst&projectSkip=$projectSkip&projectFirst=$projectFirst';
@@ -170,18 +122,19 @@ class TabStoryListServices implements TabStoryListRepos {
       "storyWhere": {
         "state": "published",
         "style_in": ["news"],
-        "categories_some": {"slug": slug}
+        "categories_some": {"slug": slug},
+        "id_not_in": _fetchedStoryIdList,
       },
       "projectWhere": {
         "state": "published",
         "style_in": ["project3", "embedded", "report"],
-        "categories_some": {"slug": slug}
+        "categories_some": {"slug": slug},
+        "id_not_in": _fetchedProjectIdList,
       },
       "storySkip": storySkip,
       "storyFirst": storyFirst,
       "projectSkip": projectSkip,
       "projectFirst": projectFirst,
-      "withCount": withCount
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -202,17 +155,217 @@ class TabStoryListServices implements TabStoryListRepos {
           headers: {"Content-Type": "application/json"});
     }
 
-    StoryListItemList newsList =
-        StoryListItemList.fromJson(jsonResponse['data']['story']);
-    StoryListItemList projectList =
-        StoryListItemList.fromJson(jsonResponse['data']['project']);
-    if (withCount) {
-      newsList.allStoryCount = jsonResponse['data']['storyCount']['count'];
-      projectList.allStoryCount = jsonResponse['data']['projectCount']['count'];
+    List<String> storyList = [];
+    List<String> projectList = [];
+    for (var item in jsonResponse['data']['story']) {
+      _fetchedStoryIdList.add(item['id']);
+      storyList.add(item['id']);
     }
 
-    List<StoryListItemList> mixedStoryList = [newsList, projectList];
+    for (var item in jsonResponse['data']['project']) {
+      _fetchedProjectIdList.add(item['id']);
+      projectList.add(item['id']);
+    }
+
+    var futureList = await Future.wait([
+      fetchMeshStoryList(storyList),
+      fetchMeshStoryList(projectList),
+    ]);
+
+    Map<String, List<NewsListItem>> mixedStoryList = {
+      'story': futureList[0],
+      'project': futureList[1],
+    };
 
     return mixedStoryList;
+  }
+
+  Future<List<NewsListItem>> fetchMeshStoryList(
+      List<String> storyIdList) async {
+    const String query = '''
+    query(
+      \$storyIdList: [String!]
+      \$followingMembers: [ID!]
+      \$myId: ID
+      \$urlFilter: String!
+    ){
+      stories(
+        where:{
+          source:{
+            title:{
+              equals: "readr"
+            }
+          }
+          content:{
+            in: \$storyIdList
+          }
+          url:{
+            contains: \$urlFilter
+          }
+        }
+        orderBy:{
+          published_date: desc
+        }
+      ){
+        id
+        title
+        url
+        content
+        source{
+          id
+          title
+          full_content
+          full_screen_ad
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        followingPicks: pick(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        otherPicks:pick(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        pickCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        commentCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
+        }
+      }
+    }
+    ''';
+
+    List<String> followingMemberIds = [];
+    for (var memberId in UserHelper.instance.currentUser.following) {
+      followingMemberIds.add(memberId.memberId);
+    }
+
+    Map<String, dynamic> variables = {
+      "storyIdList": storyIdList,
+      "followingMembers": followingMemberIds,
+      "myId": UserHelper.instance.currentUser.memberId,
+      "urlFilter": Environment().config.readrWebsiteLink,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      Environment().config.readrMeshApi,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    List<NewsListItem> newsList = [];
+    for (var item in jsonResponse['data']['stories']) {
+      newsList.add(NewsListItem.fromJson(item));
+    }
+
+    return newsList;
   }
 }

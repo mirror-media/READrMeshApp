@@ -158,6 +158,15 @@ class PublisherService {
           }
         ){
           id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
         }
       }
     }

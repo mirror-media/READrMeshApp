@@ -304,6 +304,15 @@ class PersonalFileService {
               }
             ){
               id
+              pick_comment(
+                where:{
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ){
+                id
+              }
             }
           }
           pick_comment(
@@ -532,6 +541,15 @@ class PersonalFileService {
               }
             ){
               id
+              pick_comment(
+                where:{
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ){
+                id
+              }
             }
           }
         }
