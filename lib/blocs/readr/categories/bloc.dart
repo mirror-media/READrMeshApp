@@ -9,11 +9,9 @@ import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/services/categoryService.dart';
-import 'package:readr/services/tabStoryListService.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvents, CategoriesState> {
   final CategoryRepos categoryRepos;
-  TabStoryListRepos tabStoryListRepos = TabStoryListServices();
   CategoryList categoryList = CategoryList();
 
   CategoriesBloc({required this.categoryRepos})
