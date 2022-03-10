@@ -406,8 +406,7 @@ class _StoryWidgetState extends State<StoryWidget> {
 
     for (int i = 0; i < peopleList.length; i++) {
       authorNameList.add(GestureDetector(
-        onTap: () =>
-            AutoRouter.of(context).push(AuthorRoute(people: peopleList[i])),
+        onTap: () {},
         child: Text(
           peopleList[i].name,
           style: const TextStyle(
