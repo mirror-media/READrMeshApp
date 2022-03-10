@@ -5,7 +5,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/models/readrListItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/readr/readrProjectItem.dart';
+import 'package:readr/pages/readr/readrProjectItemWidget.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/latestNewsItem.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
@@ -155,7 +155,7 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
           if (_mixedList[index].isProject) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ReadrProjectItem(
+              child: ReadrProjectItemWidget(
                 _mixedList[index].newsListItem,
               ),
             );

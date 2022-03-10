@@ -7,9 +7,9 @@ import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 
-class ReadrProjectItem extends StatelessWidget {
+class ReadrProjectItemWidget extends StatelessWidget {
   final NewsListItem projectItem;
-  const ReadrProjectItem(this.projectItem);
+  const ReadrProjectItemWidget(this.projectItem);
 
   @override
   Widget build(BuildContext context) {
