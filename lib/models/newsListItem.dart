@@ -23,6 +23,7 @@ class NewsListItem {
   final List<Member> otherPickMembers;
   final Comment? showComment;
   String? myPickId;
+  String? myPickCommentId;
   final DateTime? latestPickTime;
 
   NewsListItem({
@@ -44,6 +45,7 @@ class NewsListItem {
     required this.otherPickMembers,
     this.showComment,
     this.myPickId,
+    this.myPickCommentId,
     this.latestPickTime,
   });
 
@@ -62,6 +64,7 @@ class NewsListItem {
     String? myPickId;
     DateTime? latestPickTime;
     String? content;
+    String? myPickCommentId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -125,6 +128,10 @@ class NewsListItem {
     if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
         json['myPickId'].isNotEmpty) {
       myPickId = json['myPickId'][0]['id'];
+      if (BaseModel.checkJsonKeys(json['myPickId'][0], ['pick_comment']) &&
+          json['myPickId'][0]['pick_comment'].isNotEmpty) {
+        myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['full_screen_ad'])) {
@@ -157,6 +164,7 @@ class NewsListItem {
       fullContent: fullContent,
       latestPickTime: latestPickTime,
       content: content,
+      myPickCommentId: myPickCommentId,
     );
   }
 }

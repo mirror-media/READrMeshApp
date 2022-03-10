@@ -13,6 +13,7 @@ class NewsStoryItem {
   final List<Comment> allComments;
   int pickCount;
   String? myPickId;
+  String? myPickCommentId;
   String? bookmarkId;
   final String? contentApiData;
   final List<String>? contentAnnotationData;
@@ -32,6 +33,7 @@ class NewsStoryItem {
     this.contentApiData,
     this.contentAnnotationData,
     this.writer,
+    this.myPickCommentId,
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,7 @@ class NewsStoryItem {
     String? bookmarkId;
     bool fullContent = false;
     String? writer;
+    String? myPickCommentId;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -78,6 +81,9 @@ class NewsStoryItem {
     if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
         json['myPickId'].isNotEmpty) {
       myPickId = json['myPickId'][0]['id'];
+      if (json['myPickId'][0]['pick_comment'].isNotEmpty) {
+        myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['bookmarkId']) &&
@@ -117,6 +123,7 @@ class NewsStoryItem {
       contentApiData: contentApiData,
       contentAnnotationData: contentAnnotationData,
       writer: writer,
+      myPickCommentId: myPickCommentId,
     );
   }
 }
