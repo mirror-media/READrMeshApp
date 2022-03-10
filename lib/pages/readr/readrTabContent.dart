@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/readr/tabStoryList/bloc.dart';
-import 'package:readr/blocs/readr/tabStoryList/events.dart';
-import 'package:readr/blocs/readr/tabStoryList/states.dart';
-import 'package:readr/models/storyListItemList.dart';
+import 'package:readr/blocs/readr/tabStoryList/tabStoryList_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/pickableItem.dart';
+import 'package:readr/models/readrListItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/readr/readrStoryListItem.dart';
-import 'package:readr/pages/readr/readrStoryProjectItem.dart';
-import 'package:readr/pages/shared/storyListSkeletonScreen.dart';
+import 'package:readr/pages/readr/readrProjectItem.dart';
+import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/latestNewsItem.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 
 class ReadrTabContent extends StatefulWidget {
@@ -22,8 +21,10 @@ class ReadrTabContent extends StatefulWidget {
 }
 
 class _ReadrTabContentState extends State<ReadrTabContent> {
-  bool loadingMore = false;
-  late StoryListItemList mixedStoryListTemp;
+  bool _isLoading = false;
+  bool _noMore = false;
+  final List<ReadrListItem> _mixedList = [];
+
   @override
   void initState() {
     if (widget.categorySlug == 'latest') {
@@ -58,20 +59,9 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
   Widget build(BuildContext context) {
     return BlocBuilder<TabStoryListBloc, TabStoryListState>(
       builder: (BuildContext context, TabStoryListState state) {
-        if (state.status == TabStoryListStatus.error) {
+        if (state is TabStoryListError) {
           final error = state.error;
           print('TabStoryListError: ${error.message}');
-          if (loadingMore) {
-            if (widget.categorySlug == 'latest') {
-              _fetchNextPage();
-            } else {
-              _fetchNextPageByCategorySlug();
-            }
-            return _tabStoryList(
-              mixedStoryList: mixedStoryListTemp,
-              isLoading: true,
-            );
-          }
 
           if (widget.categorySlug == 'latest') {
             return ErrorPage(
@@ -87,96 +77,156 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
             );
           }
         }
-        if (state.status == TabStoryListStatus.loaded) {
-          StoryListItemList mixedStoryList = state.mixedStoryList!;
-          loadingMore = false;
-          mixedStoryListTemp = state.mixedStoryList!;
-          if (mixedStoryList.isEmpty) {
+
+        if (state is TabStoryListLoaded) {
+          _mixedList.addAll(state.mixedList);
+          _isLoading = false;
+          _noMore = state.noMore;
+
+          if (_mixedList.isEmpty) {
             return TabContentNoResultWidget();
           }
 
-          return _tabStoryList(
-            mixedStoryList: mixedStoryList,
-          );
+          return _tabStoryList(context);
         }
 
-        if (state.status == TabStoryListStatus.loadingMore) {
-          StoryListItemList mixedStoryList = state.mixedStoryList!;
-          loadingMore = true;
-          return _tabStoryList(
-            mixedStoryList: mixedStoryList,
-            isLoading: true,
-          );
+        if (state is TabStoryListLoadingMore) {
+          return _tabStoryList(context);
         }
 
-        if (state.status == TabStoryListStatus.loadingMoreFail) {
-          StoryListItemList mixedStoryList = state.mixedStoryList!;
-
+        if (state is TabStoryListLoadingMoreFailed) {
           if (widget.categorySlug == 'latest') {
             _fetchNextPage();
           } else {
             _fetchNextPageByCategorySlug();
           }
-          return _tabStoryList(
-            mixedStoryList: mixedStoryList,
-            isLoading: true,
-          );
+          _isLoading = false;
+          return _tabStoryList(context);
         }
 
         // state is Init, loading, or other
-        return StoryListSkeletonScreen();
+        return HomeSkeletonScreen();
       },
     );
   }
 
-  Widget _tabStoryList({
-    required StoryListItemList mixedStoryList,
-    bool isLoading = false,
-  }) {
+  Widget _tabStoryList(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: ListView.builder(
+      child: ListView.separated(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: 24.0),
-        itemBuilder: (BuildContext context, int index) {
-          if (!isLoading &&
-              index == mixedStoryList.length - 5 &&
-              mixedStoryList.length < mixedStoryList.allStoryCount) {
-            if (widget.categorySlug == 'latest') {
-              _fetchNextPage();
-            } else {
-              _fetchNextPageByCategorySlug();
-            }
-          }
-          Widget listItem;
-          if (mixedStoryList[index].isProject) {
-            listItem = ReadrStoryPjojectItem(
-              projectListItem: mixedStoryList[index],
-            );
-          } else {
-            listItem = ReadrStoryListItem(
-              storyListItem: mixedStoryList[index],
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.only(top: 20),
+        separatorBuilder: (context, index) {
+          if (_mixedList[index].isProject) {
+            return const SizedBox(
+              height: 36,
             );
           }
 
-          return Column(
-            children: [
-              listItem,
-              if (index == mixedStoryList.length - 1 && isLoading)
-                _loadMoreWidget(),
-            ],
+          if (index + 1 < _mixedList.length) {
+            if (_mixedList[index + 1].isProject) {
+              return const SizedBox(
+                height: 36,
+              );
+            }
+          }
+
+          if (index == _mixedList.length - 1) {
+            return Container();
+          }
+
+          return const Padding(
+            padding: EdgeInsets.only(top: 16, bottom: 20),
+            child: Divider(
+              color: Colors.black12,
+              thickness: 0.5,
+              height: 0.5,
+              indent: 20,
+              endIndent: 20,
+            ),
           );
         },
-        itemCount: mixedStoryList.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == _mixedList.length) {
+            return _loadMoreWidget();
+          }
+
+          if (_mixedList[index].isProject) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ReadrProjectItem(
+                _mixedList[index].newsListItem,
+              ),
+            );
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: LatestNewsItem(
+              _mixedList[index].newsListItem,
+              hidePublisher: true,
+            ),
+          );
+        },
+        itemCount: _mixedList.length + 1,
       ),
     );
   }
 
   Widget _loadMoreWidget() {
+    if (_noMore) {
+      return Column(
+        children: [
+          Container(
+            height: 16,
+            color: Colors.white,
+          ),
+          Container(
+            color: homeScreenBackgroundColor,
+            height: 20,
+          ),
+          Container(
+            alignment: Alignment.center,
+            color: homeScreenBackgroundColor,
+            child: RichText(
+              text: const TextSpan(
+                text: '🎉 ',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+                children: [
+                  TextSpan(
+                    text: '你已看完所有新聞囉',
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            color: homeScreenBackgroundColor,
+            height: 145,
+          ),
+        ],
+      );
+    }
+
+    if (!_isLoading) {
+      if (widget.categorySlug == 'latest') {
+        _fetchNextPage();
+      } else {
+        _fetchNextPageByCategorySlug();
+      }
+      _isLoading = true;
+    }
+
     return const Padding(
       padding: EdgeInsets.all(16.0),
-      child: Center(child: CupertinoActivityIndicator()),
+      child: Center(child: CircularProgressIndicator.adaptive()),
     );
   }
 }
