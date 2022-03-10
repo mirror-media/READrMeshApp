@@ -10,7 +10,7 @@ import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
-import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class PickTabContent extends StatefulWidget {
@@ -182,7 +182,7 @@ class _PickTabContentState extends State<PickTabContent> {
                     news: _storyPickList[index].story!,
                   ));
                 },
-                child: LatestNewsItem(
+                child: NewsListItemWidget(
                   _storyPickList[index].story!,
                 ),
               ),
@@ -203,7 +203,7 @@ class _PickTabContentState extends State<PickTabContent> {
               news: _storyPickList[index].story!,
             ));
           },
-          child: LatestNewsItem(
+          child: NewsListItemWidget(
             _storyPickList[index].story!,
           ),
         );

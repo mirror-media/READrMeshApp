@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -151,7 +151,7 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
               news: _bookmarkList[index].story!,
             ));
           },
-          child: LatestNewsItem(
+          child: NewsListItemWidget(
             _bookmarkList[index].story!,
           ),
         );

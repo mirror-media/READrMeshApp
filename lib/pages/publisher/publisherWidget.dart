@@ -9,7 +9,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/followButton.dart';
-import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
 class PublisherWidget extends StatefulWidget {
@@ -193,7 +193,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
               news: newsList[index],
             ));
           },
-          child: LatestNewsItem(
+          child: NewsListItemWidget(
             newsList[index],
           ),
         );

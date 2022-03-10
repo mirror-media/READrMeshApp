@@ -7,7 +7,7 @@ import 'package:readr/models/readrListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
-import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 
 class ReadrTabContent extends StatefulWidget {
@@ -163,7 +163,7 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: LatestNewsItem(
+            child: NewsListItemWidget(
               _mixedList[index].newsListItem,
               hidePublisher: true,
             ),

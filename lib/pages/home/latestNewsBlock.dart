@@ -8,7 +8,7 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/shared/latestNewsItem.dart';
+import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowBlock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -204,7 +204,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
               news: newsList[index],
             ));
           },
-          child: LatestNewsItem(
+          child: NewsListItemWidget(
             newsList[index],
           ),
         );

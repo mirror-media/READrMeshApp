@@ -5,10 +5,10 @@ import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 
-class LatestNewsItem extends StatelessWidget {
+class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
   final bool hidePublisher;
-  const LatestNewsItem(this.news, {this.hidePublisher = false});
+  const NewsListItemWidget(this.news, {this.hidePublisher = false});
 
   @override
   Widget build(BuildContext context) {
