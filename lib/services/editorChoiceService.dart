@@ -63,6 +63,7 @@ class EditorChoiceServices {
       \$followingMembers: [ID!]
       \$myId: ID
       \$urlList: [String!]
+      \$urlFilter: String
     ){
       stories(
         where:{
@@ -70,6 +71,9 @@ class EditorChoiceServices {
             title:{
               equals: "readr"
             }
+          }
+          url:{
+            contains: \$urlFilter
           }
           OR:[
             {
@@ -241,6 +245,7 @@ class EditorChoiceServices {
       "followingMembers": followingMemberIds,
       "urlList": urlList,
       "myId": UserHelper.instance.currentUser.memberId,
+      "urlFilter": Environment().config.readrWebsiteLink,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
