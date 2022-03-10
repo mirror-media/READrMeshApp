@@ -163,6 +163,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
 
         if (state is HomeLoaded) {
+          _noMoreLatestNews = false;
           _followingStories = state.followingStories;
           _allLatestNews = state.allLatestNews;
           _latestComments = state.latestComments;
