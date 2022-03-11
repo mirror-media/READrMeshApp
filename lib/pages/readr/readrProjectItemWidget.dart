@@ -68,7 +68,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
             const SizedBox(height: 8),
             NewsInfo(projectItem),
             const SizedBox(height: 18),
-            PickBar(NewsListItemPick(projectItem), projectItem.pickCount),
+            PickBar(NewsListItemPick(projectItem)),
           ],
         ),
         onTap: () async {});

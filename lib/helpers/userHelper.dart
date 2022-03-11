@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
+import 'package:readr/services/pickService.dart';
 import 'package:readr/services/visitorService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +35,6 @@ class UserHelper {
   // if want to use member, must call fetchUserData() once
   Member get currentUser => _member;
 
-  // fetch the member or visitor data
   Future<void> fetchUserData({Member? member}) async {
     if (member != null) {
       _member = member;
@@ -56,7 +56,6 @@ class UserHelper {
     _localFollowingPublisherList.addAll(_member.followingPublisher);
   }
 
-  // check whether member is currentUser's following member
   bool isFollowingMember(Member member) {
     if (!_isInitialized) {
       return false;
@@ -71,7 +70,6 @@ class UserHelper {
     }
   }
 
-  // add following member
   Future<bool> addFollowingMember(String memberId) async {
     List<Member>? newFollowingList;
 
@@ -87,7 +85,6 @@ class UserHelper {
     }
   }
 
-  // remove following member
   Future<bool> removeFollowingMember(String memberId) async {
     List<Member>? newFollowingList;
 
@@ -103,7 +100,6 @@ class UserHelper {
     }
   }
 
-  // check whether publisher is currentUser's following publisher
   bool isFollowingPublisher(Publisher publisher) {
     if (!_isInitialized) {
       return false;
@@ -117,7 +113,6 @@ class UserHelper {
     }
   }
 
-  // add publisher
   Future<bool> addFollowPublisher(String publisherId) async {
     List<Publisher>? newFollowingList;
     if (isMember) {
@@ -136,7 +131,6 @@ class UserHelper {
     }
   }
 
-  // remove publisher
   Future<bool> removeFollowPublisher(String publisherId) async {
     List<Publisher>? newFollowingList;
     if (isMember) {
@@ -209,4 +203,41 @@ class UserHelper {
     _localFollowingMemberList.addAll(_member.following);
     _localFollowingPublisherList.addAll(_member.followingPublisher);
   }
+
+  // pick data
+  final Map<String, PickedItem> _newsPickedMap = {};
+
+  void updateNewsPickedMap(String newsId, PickedItem? item) {
+    if (item != null) {
+      _newsPickedMap.update(
+        newsId,
+        (value) => item,
+        ifAbsent: () => item,
+      );
+    } else {
+      _newsPickedMap.remove(newsId);
+    }
+  }
+
+  bool isNewsPicked(String newsId) {
+    if (isVisitor) return false;
+    return _newsPickedMap.containsKey(newsId);
+  }
+
+  PickedItem? getNewsPickedItem(String newsId) {
+    return _newsPickedMap[newsId];
+  }
+}
+
+class PickedItem {
+  String pickId;
+  int pickCount;
+  int commentCount;
+  String? pickCommentId;
+  PickedItem({
+    required this.pickId,
+    required this.pickCount,
+    required this.commentCount,
+    this.pickCommentId,
+  });
 }

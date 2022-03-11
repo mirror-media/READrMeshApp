@@ -7,10 +7,8 @@ import 'package:readr/pages/shared/pick/pickBar.dart';
 
 class CarouselDisplayWidget extends StatelessWidget {
   final EditorChoiceItem editorChoiceItem;
-  final NewsListItemPick newsListItemPick;
   const CarouselDisplayWidget({
     required this.editorChoiceItem,
-    required this.newsListItemPick,
   });
 
   @override
@@ -27,7 +25,7 @@ class CarouselDisplayWidget extends StatelessWidget {
             const SizedBox(height: 8),
             NewsInfo(editorChoiceItem.newsListItem!),
             const SizedBox(height: 18),
-            PickBar(newsListItemPick, editorChoiceItem.newsListItem!.pickCount),
+            PickBar(NewsListItemPick(editorChoiceItem.newsListItem!)),
           ],
         ),
       ),

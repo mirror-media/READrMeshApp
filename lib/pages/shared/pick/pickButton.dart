@@ -19,34 +19,10 @@ class PickButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPicked = item.pickId != null;
     bool isLoading = false;
-    return BlocConsumer<PickButtonCubit, PickButtonState>(
-      listener: (context, state) {
-        if (state is PickButtonUpdateSuccess) {
-          if (state.type == item.type && state.targetId == item.targetId) {
-            item.updateId(state.pickId, state.commentId);
-
-            isLoading = false;
-          }
-        }
-      },
+    return BlocBuilder<PickButtonCubit, PickButtonState>(
       builder: (context, state) {
-        if (state is PickButtonUpdating) {
-          if (state.type == item.type && state.targetId == item.targetId) {
-            isPicked = state.isPicked;
-            isLoading = true;
-          }
-        }
-
-        if (state is PickButtonUpdateFailed) {
-          print('Update pick failed: ${state.error.toString()}');
-          if (state.type == item.type && state.targetId == item.targetId) {
-            isPicked = state.originIsPicked;
-            item.updateId(state.pickId, state.commentId);
-            isLoading = false;
-          }
-        }
+        bool isPicked = item.isPicked;
 
         if (expanded) {
           return SizedBox(

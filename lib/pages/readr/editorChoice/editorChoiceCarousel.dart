@@ -11,7 +11,6 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/openProjectHelper.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -48,14 +47,8 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
             return Container();
           }
 
-          List<NewsListItemPick> storyPickList = [];
-          for (int i = 0; i < editorChoiceList.length; i++) {
-            storyPickList
-                .add(NewsListItemPick(editorChoiceList[i].newsListItem!));
-          }
           return EditorChoiceCarousel(
             editorChoiceList: editorChoiceList,
-            storyPickList: storyPickList,
             width: MediaQuery.of(context).size.width,
           );
         }
@@ -118,11 +111,9 @@ class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
 
 class EditorChoiceCarousel extends StatefulWidget {
   final List<EditorChoiceItem> editorChoiceList;
-  final List<NewsListItemPick> storyPickList;
   final double width;
   const EditorChoiceCarousel({
     required this.editorChoiceList,
-    required this.storyPickList,
     required this.width,
   });
 
@@ -145,7 +136,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     for (int i = 0; i < widget.editorChoiceList.length; i++) {
       items.add(CarouselDisplayWidget(
         editorChoiceItem: widget.editorChoiceList[i],
-        newsListItemPick: widget.storyPickList[i],
       ));
     }
   }

@@ -9,38 +9,14 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 
 class PickBar extends StatelessWidget {
   final PickableItem item;
-  final int pickCount;
-  const PickBar(this.item, this.pickCount, {Key? key}) : super(key: key);
+  const PickBar(this.item, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isPicked = item.pickId != null;
-    int pickCountData = pickCount;
-
-    return BlocConsumer<PickButtonCubit, PickButtonState>(
-      listener: (context, state) {
-        if (state is PickButtonUpdateSuccess) {
-          if (state.type == item.type && state.targetId == item.targetId) {
-            item.updateId(state.pickId, state.commentId);
-            pickCountData = state.pickCount;
-          }
-        }
-      },
+    return BlocBuilder<PickButtonCubit, PickButtonState>(
       builder: (context, state) {
-        if (state is PickButtonUpdating) {
-          if (state.type == item.type && state.targetId == item.targetId) {
-            isPicked = state.isPicked;
-            pickCountData = state.pickCount;
-          }
-        }
-
-        if (state is PickButtonUpdateFailed) {
-          if (state.type == item.type && state.targetId == item.targetId) {
-            isPicked = state.originIsPicked;
-            item.updateId(state.pickId, state.commentId);
-            pickCountData = state.pickCount;
-          }
-        }
+        bool isPicked = item.isPicked;
+        int pickCountData = item.pickCount;
 
         List<Member> pickedMemberList = [];
         pickedMemberList.addAll(item.pickedMemberList);
@@ -59,9 +35,7 @@ class PickBar extends StatelessWidget {
             Expanded(
               child: Container(),
             ),
-            PickButton(
-              item,
-            ),
+            PickButton(item),
           ];
         } else {
           bottom = [
@@ -92,9 +66,7 @@ class PickBar extends StatelessWidget {
             Expanded(
               child: Container(),
             ),
-            PickButton(
-              item,
-            ),
+            PickButton(item),
           ];
         }
 

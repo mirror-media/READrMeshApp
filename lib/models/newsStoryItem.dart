@@ -1,3 +1,4 @@
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
@@ -78,21 +79,33 @@ class NewsStoryItem {
       popularComments.removeWhere((element) => element.likedCount == 0);
     }
 
-    if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
-        json['myPickId'].isNotEmpty) {
-      myPickId = json['myPickId'][0]['id'];
-      if (json['myPickId'][0]['pick_comment'].isNotEmpty) {
-        myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+    if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
+      pickCount = json['pickCount'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['myPickId'])) {
+      if (json['myPickId'].isNotEmpty) {
+        myPickId = json['myPickId'][0]['id'];
+        if (json['myPickId'][0]['pick_comment'].isNotEmpty) {
+          myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+        }
+        UserHelper.instance.updateNewsPickedMap(
+          json['id'],
+          PickedItem(
+            pickId: myPickId!,
+            pickCommentId: myPickCommentId,
+            commentCount: allComments.length,
+            pickCount: pickCount,
+          ),
+        );
+      } else if (UserHelper.instance.isNewsPicked(json['id'])) {
+        UserHelper.instance.updateNewsPickedMap(json['id'], null);
       }
     }
 
     if (BaseModel.checkJsonKeys(json, ['bookmarkId']) &&
         json['bookmarkId'].isNotEmpty) {
       bookmarkId = json['bookmarkId'][0]['id'];
-    }
-
-    if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
-      pickCount = json['pickCount'];
     }
 
     if (BaseModel.checkJsonKeys(json, ['full_content'])) {

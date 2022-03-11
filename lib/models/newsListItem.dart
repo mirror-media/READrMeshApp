@@ -1,3 +1,4 @@
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/comment.dart';
@@ -125,12 +126,24 @@ class NewsListItem {
       }
     }
 
-    if (BaseModel.checkJsonKeys(json, ['myPickId']) &&
-        json['myPickId'].isNotEmpty) {
-      myPickId = json['myPickId'][0]['id'];
-      if (BaseModel.checkJsonKeys(json['myPickId'][0], ['pick_comment']) &&
-          json['myPickId'][0]['pick_comment'].isNotEmpty) {
-        myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+    if (BaseModel.checkJsonKeys(json, ['myPickId'])) {
+      if (json['myPickId'].isNotEmpty) {
+        myPickId = json['myPickId'][0]['id'];
+        if (BaseModel.checkJsonKeys(json['myPickId'][0], ['pick_comment']) &&
+            json['myPickId'][0]['pick_comment'].isNotEmpty) {
+          myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+        }
+        UserHelper.instance.updateNewsPickedMap(
+          json['id'],
+          PickedItem(
+            pickId: myPickId!,
+            pickCommentId: myPickCommentId,
+            commentCount: allComments.length,
+            pickCount: pickCount,
+          ),
+        );
+      } else if (UserHelper.instance.isNewsPicked(json['id'])) {
+        UserHelper.instance.updateNewsPickedMap(json['id'], null);
       }
     }
 

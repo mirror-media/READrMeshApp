@@ -197,11 +197,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: CollapsePickBar(
-            _pick,
-            widget.news.pickCount,
-            _allComments.length,
-          ),
+          child: CollapsePickBar(_pick),
         ),
       ],
     );
@@ -241,7 +237,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             ),
           ],
           const SizedBox(height: 18),
-          PickBar(_pick, widget.news.pickCount),
+          PickBar(_pick),
         ],
       ),
     );

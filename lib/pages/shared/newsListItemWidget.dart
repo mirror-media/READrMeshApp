@@ -59,7 +59,7 @@ class NewsListItemWidget extends StatelessWidget {
         const SizedBox(height: 8),
         NewsInfo(news),
         const SizedBox(height: 16),
-        PickBar(NewsListItemPick(news), news.pickCount),
+        PickBar(NewsListItemPick(news)),
       ],
     );
   }
