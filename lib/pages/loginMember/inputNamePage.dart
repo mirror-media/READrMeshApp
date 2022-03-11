@@ -51,7 +51,7 @@ class _InputNamePageState extends State<InputNamePage> {
               color: Colors.black,
             ),
             onPressed: () async {
-              await FirebaseAuth.instance.currentUser!.delete();
+              await FirebaseAuth.instance.currentUser?.delete();
               Navigator.of(context).pop();
             },
           ),
@@ -101,7 +101,7 @@ class _InputNamePageState extends State<InputNamePage> {
         ),
       ),
       onWillPop: () async {
-        await FirebaseAuth.instance.currentUser!.delete();
+        await FirebaseAuth.instance.currentUser?.delete();
         return true;
       },
     );
