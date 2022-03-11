@@ -62,8 +62,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
       child: DraggableScrollableActuator(
         child: DraggableScrollableSheet(
           snap: true,
-          initialChildSize: 0.22,
-          minChildSize: 0.22,
+          initialChildSize: 0.2,
+          minChildSize: 0.2,
           builder: (context, scrollController) {
             return Column(
               mainAxisSize: MainAxisSize.min,
