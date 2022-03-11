@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/pickableItem.dart';
@@ -23,7 +25,13 @@ class CarouselDisplayWidget extends StatelessWidget {
           children: [
             _displayTitle(),
             const SizedBox(height: 8),
-            NewsInfo(editorChoiceItem.newsListItem!),
+            BlocBuilder<PickButtonCubit, PickButtonState>(
+              builder: (context, state) => NewsInfo(
+                editorChoiceItem.newsListItem!,
+                commentCount: NewsListItemPick(editorChoiceItem.newsListItem!)
+                    .commentCount,
+              ),
+            ),
             const SizedBox(height: 18),
             PickBar(NewsListItemPick(editorChoiceItem.newsListItem!)),
           ],

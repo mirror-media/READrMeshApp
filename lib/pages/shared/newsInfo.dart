@@ -5,12 +5,14 @@ import 'package:readr/pages/shared/timestamp.dart';
 
 class NewsInfo extends StatelessWidget {
   final NewsListItem newsListItem;
-  const NewsInfo(this.newsListItem);
+  final int? commentCount;
+  const NewsInfo(this.newsListItem, {this.commentCount});
 
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    if (newsListItem.commentCount != 0) {
+    int displayCommentCount = commentCount ?? newsListItem.commentCount;
+    if (displayCommentCount != 0) {
       children.add(SizedBox(
         height: 22,
         child: Row(
@@ -23,7 +25,7 @@ class NewsInfo extends StatelessWidget {
             ),
             const SizedBox(width: 3),
             Text(
-              newsListItem.commentCount.toString(),
+              displayCommentCount.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: Colors.black54,

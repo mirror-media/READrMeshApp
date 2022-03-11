@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
@@ -57,9 +59,16 @@ class NewsListItemWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        NewsInfo(news),
+        BlocBuilder<PickButtonCubit, PickButtonState>(
+          builder: (context, state) => NewsInfo(
+            news,
+            commentCount: NewsListItemPick(news).commentCount,
+          ),
+        ),
         const SizedBox(height: 16),
-        PickBar(NewsListItemPick(news)),
+        PickBar(
+          NewsListItemPick(news),
+        ),
       ],
     );
   }
