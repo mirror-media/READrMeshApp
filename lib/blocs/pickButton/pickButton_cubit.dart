@@ -44,7 +44,13 @@ class PickButtonCubit extends Cubit<PickButtonState> {
 
     try {
       if (originIsPicked) {
-        bool isSuccess = await _pickService.deletePick(tempData.pickId);
+        bool isSuccess;
+        if (tempData.pickCommentId != null) {
+          isSuccess = await _pickService.deletePickAndComment(
+              tempData.pickId, tempData.pickCommentId!);
+        } else {
+          isSuccess = await _pickService.deletePick(tempData.pickId);
+        }
         PickToast.showPickToast(context, isSuccess, false);
         if (!isSuccess) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);

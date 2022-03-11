@@ -326,4 +326,57 @@ class PickService {
       return false;
     }
   }
+
+  Future<bool> deletePickAndComment(String pickId, String commentId) async {
+    String mutation = """
+      mutation(
+        \$pickId: ID
+        \$pickCommentId: ID
+      ){
+        updatePick(
+          where:{
+            id: \$pickId
+          }
+          data:{
+            is_active: false
+          }
+        ){
+          id
+        }
+        updateComment(
+          where:{
+            id: \$pickCommentId
+          }
+          data:{
+            is_active: false
+          }
+        ){
+          id
+        }
+      }
+      """;
+
+    Map<String, String> variables = {
+      "pickId": pickId,
+      "pickCommentId": commentId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
+    }
+  }
 }
