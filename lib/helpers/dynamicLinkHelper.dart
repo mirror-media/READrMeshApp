@@ -71,7 +71,7 @@ class DynamicLinkHelper {
     }).catchError((onError) async {
       print('Error signing in with email link $onError');
       Fluttertoast.showToast(
-        msg: "$email登入失敗，請重新登入",
+        msg: "登入失敗，請重新登入",
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 5,
         fontSize: 16.0,
