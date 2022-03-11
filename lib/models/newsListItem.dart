@@ -128,17 +128,18 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['myPickId'])) {
       if (json['myPickId'].isNotEmpty) {
-        myPickId = json['myPickId'][0]['id'];
-        if (BaseModel.checkJsonKeys(json['myPickId'][0], ['pick_comment']) &&
-            json['myPickId'][0]['pick_comment'].isNotEmpty) {
-          myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
+        var myPickItem = json['myPickId'][0];
+        myPickId = myPickItem['id'];
+        if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
+            myPickItem['pick_comment'].isNotEmpty) {
+          myPickCommentId = myPickItem['pick_comment'][0]['id'];
         }
         UserHelper.instance.updateNewsPickedMap(
           json['id'],
           PickedItem(
             pickId: myPickId!,
             pickCommentId: myPickCommentId,
-            commentCount: allComments.length,
+            commentCount: commentCount,
             pickCount: pickCount,
           ),
         );
