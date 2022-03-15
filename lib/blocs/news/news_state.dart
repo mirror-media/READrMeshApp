@@ -16,6 +16,12 @@ class NewsLoaded extends NewsState {
   const NewsLoaded(this.newsStoryItem);
 }
 
+class ReadrStoryLoaded extends NewsState {
+  final NewsStoryItem newsStoryItem;
+  final Story story;
+  const ReadrStoryLoaded(this.newsStoryItem, this.story);
+}
+
 class NewsError extends NewsState {
   final dynamic error;
   const NewsError(this.error);

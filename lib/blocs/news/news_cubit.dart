@@ -3,17 +3,19 @@ import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/newsStoryItem.dart';
+import 'package:readr/models/story.dart';
 import 'package:readr/services/newsStoryService.dart';
+import 'package:readr/services/storyService.dart';
 
 part 'news_state.dart';
 
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
   final NewsStoryService _newsStoryService = NewsStoryService();
+  final StoryServices _storyService = StoryServices();
 
   fetchNewsData({
     required String newsId,
-    bool isNative = false,
   }) async {
     print('Fetch news data id=$newsId');
     emit(NewsLoading());
@@ -22,6 +24,25 @@ class NewsCubit extends Cubit<NewsState> {
       NewsStoryItem newsStoryItem =
           await _newsStoryService.fetchNewsData(newsId);
       emit(NewsLoaded(newsStoryItem));
+    } catch (e) {
+      emit(NewsError(determineException(e)));
+    }
+  }
+
+  fetchNewsAndReadrData({required String newsId}) async {
+    print('Fetch news data id=$newsId');
+    emit(NewsLoading());
+    try {
+      await UserHelper.instance.fetchUserData();
+      NewsStoryItem newsStoryItem =
+          await _newsStoryService.fetchNewsData(newsId);
+      if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
+        emit(NewsError(determineException('No content error')));
+      } else {
+        Story story =
+            await _storyService.fetchPublishedStoryById(newsStoryItem.content!);
+        emit(ReadrStoryLoaded(newsStoryItem, story));
+      }
     } catch (e) {
       emit(NewsError(determineException(e)));
     }
