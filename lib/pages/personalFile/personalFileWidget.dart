@@ -5,10 +5,12 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -41,11 +43,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   late Member _viewMember;
   int _pickCount = 0;
   int _followerCount = 0;
+  int _originFollowerCount = 0;
   int _followingCount = 0;
   late TabController _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
   final List<Widget> _tabWidgets = List.empty(growable: true);
   bool _tabIsInitialized = false;
+  late bool _isFollowed;
 
   @override
   void initState() {
@@ -169,12 +173,14 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
         if (state is PersonalFileLoaded) {
           _viewMember = state.viewMember;
+          _isFollowed = UserHelper.instance.isLocalFollowingMember(_viewMember);
           if (_viewMember.pickCount != null) {
             _pickCount = _viewMember.pickCount!;
           }
 
           if (_viewMember.followerCount != null) {
             _followerCount = _viewMember.followerCount!;
+            _originFollowerCount = _followerCount;
           }
 
           if (_viewMember.followingCount != null) {
@@ -497,33 +503,38 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                     viewMember: widget.viewMember,
                   ));
                 },
-                child: RichText(
-                  text: TextSpan(
-                    text: _convertNumberToString(_followerCount),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: '\n粉絲',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black54,
+                child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
+                  builder: (context, state) {
+                    _updateFollowCount();
+                    return RichText(
+                      text: TextSpan(
+                        text: _convertNumberToString(_followerCount),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
                         ),
+                        children: const [
+                          TextSpan(
+                            text: '\n粉絲',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.navigate_next_outlined,
+                              size: 18,
+                              color: Colors.black26,
+                            ),
+                          ),
+                        ],
                       ),
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.navigate_next_outlined,
-                          size: 18,
-                          color: Colors.black26,
-                        ),
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
+                    );
+                  },
                 ),
               ),
               Container(
@@ -589,6 +600,18 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           '萬';
     } else {
       return number.toString();
+    }
+  }
+
+  void _updateFollowCount() {
+    if (_isFollowed &&
+        !UserHelper.instance.isLocalFollowingMember(_viewMember)) {
+      _followerCount = _originFollowerCount - 1;
+    } else if (!_isFollowed &&
+        UserHelper.instance.isLocalFollowingMember(_viewMember)) {
+      _followerCount = _originFollowerCount + 1;
+    } else {
+      _followerCount = _originFollowerCount;
     }
   }
 
