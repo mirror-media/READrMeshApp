@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/publisher/publisher_cubit.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -21,11 +23,16 @@ class _PublisherWidgetState extends State<PublisherWidget> {
   final List<NewsListItem> _publisherNewsList = [];
   bool _isLoading = false;
   bool _isNoMore = false;
+  int _originFollowerCount = 0;
+  int _publisherCount = 0;
+  bool _isFollowed = false;
 
   @override
   void initState() {
     super.initState();
     _fetchPublisherNews();
+    _isFollowed =
+        UserHelper.instance.isLocalFollowingPublisher(widget.publisher);
   }
 
   _fetchPublisherNews() {
@@ -79,6 +86,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
         if (state is PublisherLoaded) {
           _isLoading = false;
           _publisherNewsList.addAll(state.publisherNewsList);
+          _originFollowerCount = state.publisherFollowerCount;
           if (state.publisherNewsList.length < 20) {
             _isNoMore = true;
           }
@@ -117,27 +125,32 @@ class _PublisherWidgetState extends State<PublisherWidget> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  RichText(
-                      text: TextSpan(
-                    text: _convertNumberToString(
-                      widget.publisher.followerCount,
-                    ),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: ' 人追蹤',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black54,
+                  BlocBuilder<FollowButtonCubit, FollowButtonState>(
+                    builder: (context, state) {
+                      _updateFollowCount();
+                      return RichText(
+                          text: TextSpan(
+                        text: _convertNumberToString(
+                          _publisherCount,
                         ),
-                      )
-                    ],
-                  )),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                        children: const [
+                          TextSpan(
+                            text: ' 人追蹤',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                            ),
+                          )
+                        ],
+                      ));
+                    },
+                  ),
                   const SizedBox(height: 8),
                   FollowButton(
                     PublisherFollowableItem(widget.publisher),
@@ -163,6 +176,18 @@ class _PublisherWidgetState extends State<PublisherWidget> {
           '萬';
     } else {
       return number.toString();
+    }
+  }
+
+  void _updateFollowCount() {
+    if (_isFollowed &&
+        !UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
+      _publisherCount = _originFollowerCount - 1;
+    } else if (!_isFollowed &&
+        UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
+      _publisherCount = _originFollowerCount + 1;
+    } else {
+      _publisherCount = _originFollowerCount;
     }
   }
 

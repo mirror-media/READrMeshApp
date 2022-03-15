@@ -206,4 +206,47 @@ class PublisherService {
 
     return allNews;
   }
+
+  Future<int> fetchPublisherFollowerCount(String publisherId) async {
+    const String query = '''
+    query(
+      \$publisherId: ID
+    ){
+      publisher(
+        where:{
+          id: \$publisherId
+        }
+      ){
+        followerCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+      }
+    }
+    ''';
+
+    Map<String, dynamic> variables = {"publisherId": publisherId};
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (jsonResponse.containsKey('errors')) {
+      return 0;
+    } else {
+      return jsonResponse['data']['publisher']['followerCount'];
+    }
+  }
 }

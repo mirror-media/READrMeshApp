@@ -9,12 +9,18 @@ part 'publisher_state.dart';
 class PublisherCubit extends Cubit<PublisherState> {
   PublisherCubit() : super(PublisherInitial());
   final PublisherService _publisherService = PublisherService();
+  int _followerCount = 0;
 
   fetchPublisherNews(String publisherId) async {
     try {
       emit(PublisherLoading());
-      emit(PublisherLoaded(await _publisherService.fetchPublisherNews(
-          publisherId, DateTime.now())));
+      var futureList = await Future.wait([
+        _publisherService.fetchPublisherNews(publisherId, DateTime.now()),
+        _publisherService.fetchPublisherFollowerCount(publisherId),
+      ]);
+      _followerCount = futureList[1] as int;
+      emit(
+          PublisherLoaded(futureList[0] as List<NewsListItem>, _followerCount));
     } catch (e) {
       emit(PublisherError(determineException(e)));
     }
@@ -24,7 +30,9 @@ class PublisherCubit extends Cubit<PublisherState> {
     try {
       emit(PublisherLoadingMore());
       emit(PublisherLoaded(
-          await _publisherService.fetchPublisherNews(publisherId, filter)));
+        await _publisherService.fetchPublisherNews(publisherId, filter),
+        _followerCount,
+      ));
     } catch (e) {
       emit(PublisherLoadMoreFailed(determineException(e)));
     }

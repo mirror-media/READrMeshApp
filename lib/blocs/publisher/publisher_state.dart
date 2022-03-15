@@ -15,7 +15,8 @@ class PublisherLoadingMore extends PublisherState {}
 
 class PublisherLoaded extends PublisherState {
   final List<NewsListItem> publisherNewsList;
-  const PublisherLoaded(this.publisherNewsList);
+  final int publisherFollowerCount;
+  const PublisherLoaded(this.publisherNewsList, this.publisherFollowerCount);
 }
 
 class PublisherError extends PublisherState {
