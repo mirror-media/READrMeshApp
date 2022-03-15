@@ -4,6 +4,7 @@ import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
+import 'package:readr/pages/story/readrStoryWidget.dart';
 
 class NewsStoryPage extends StatelessWidget {
   final NewsListItem news;
@@ -14,17 +15,25 @@ class NewsStoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget child;
+    if (!news.fullContent) {
+      child = NewsWebviewWidget(
+        news: news,
+      );
+    } else if (news.source?.title == 'readr') {
+      child = ReadrStoryWidget(
+        news: news,
+      );
+    } else {
+      child = NewsStoryWidget(
+        news: news,
+      );
+    }
     return Scaffold(
         backgroundColor: Colors.white,
         body: BlocProvider(
           create: (context) => NewsCubit(),
-          child: news.fullContent
-              ? NewsStoryWidget(
-                  news: news,
-                )
-              : NewsWebviewWidget(
-                  news: news,
-                ),
+          child: child,
         ));
   }
 }
