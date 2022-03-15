@@ -53,6 +53,12 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
@@ -60,10 +66,21 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
           final error = state.error;
           print('NewsPageError: ${error.message}');
 
-          return ErrorPage(
-            error: error,
-            onPressed: () => _fetchNewsData(),
-            hideAppbar: true,
+          return Column(
+            children: [
+              StoryAppBar(
+                newsStoryItem: null,
+                inputText: _inputText,
+                url: widget.news.url,
+              ),
+              Expanded(
+                child: ErrorPage(
+                  error: error,
+                  onPressed: () => _fetchNewsData(),
+                  hideAppbar: true,
+                ),
+              ),
+            ],
           );
         }
 

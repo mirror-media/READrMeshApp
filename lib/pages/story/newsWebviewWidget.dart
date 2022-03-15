@@ -44,10 +44,21 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           final error = state.error;
           print('NewsPageError: ${error.message}');
 
-          return ErrorPage(
-            error: error,
-            onPressed: () => _fetchNewsData(),
-            hideAppbar: true,
+          return Column(
+            children: [
+              StoryAppBar(
+                newsStoryItem: null,
+                inputText: _inputText,
+                url: widget.news.url,
+              ),
+              Expanded(
+                child: ErrorPage(
+                  error: error,
+                  onPressed: () => _fetchNewsData(),
+                  hideAppbar: true,
+                ),
+              ),
+            ],
           );
         }
 
