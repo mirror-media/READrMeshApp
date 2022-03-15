@@ -27,7 +27,7 @@ abstract class FollowableItem {
   Future<bool> removeFollow();
   Future<void> onTap(BuildContext context);
   Widget defaultProfilePhotoWidget(BuildContext context);
-  Widget profilePhotoWidget(BuildContext context, double size);
+  Widget profilePhotoWidget(BuildContext context);
   void updateLocalList();
 }
 
@@ -78,8 +78,8 @@ class MemberFollowableItem implements FollowableItem {
   }
 
   @override
-  Widget profilePhotoWidget(BuildContext context, double radius) {
-    return ProfilePhotoWidget(member, radius);
+  Widget profilePhotoWidget(BuildContext context) {
+    return ProfilePhotoWidget(member, 26);
   }
 
   @override
@@ -143,8 +143,8 @@ class PublisherFollowableItem implements FollowableItem {
   }
 
   @override
-  Widget profilePhotoWidget(BuildContext context, double size) {
-    return PublisherLogoWidget(publisher, size: size);
+  Widget profilePhotoWidget(BuildContext context) {
+    return PublisherLogoWidget(publisher, size: 48);
   }
 
   @override

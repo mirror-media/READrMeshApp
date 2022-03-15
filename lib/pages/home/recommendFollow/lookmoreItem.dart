@@ -81,19 +81,19 @@ class LookmoreItem extends StatelessWidget {
       items.add(recommendedItems[i]);
     }
     if (items.length == 1) {
-      return items[0].profilePhotoWidget(context, 32);
+      return items[0].defaultProfilePhotoWidget(context);
     } else if (items.length == 2) {
       return Stack(
         children: [
           Container(
             padding: const EdgeInsets.only(right: 24),
             alignment: Alignment.topRight,
-            child: items[0].profilePhotoWidget(context, 26),
+            child: items[0].profilePhotoWidget(context),
           ),
           Container(
             padding: const EdgeInsets.only(left: 24),
             alignment: Alignment.bottomLeft,
-            child: items[1].profilePhotoWidget(context, 26),
+            child: items[1].profilePhotoWidget(context),
           ),
         ],
       );
@@ -103,17 +103,17 @@ class LookmoreItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(left: 29),
             alignment: Alignment.topLeft,
-            child: items[0].profilePhotoWidget(context, 26),
+            child: items[0].profilePhotoWidget(context),
           ),
           Container(
-            padding: const EdgeInsets.only(bottom: 8, right: 14),
+            padding: const EdgeInsets.only(bottom: 8, right: 18),
             alignment: Alignment.bottomRight,
-            child: items[1].profilePhotoWidget(context, 26),
+            child: items[1].profilePhotoWidget(context),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 14),
+            padding: const EdgeInsets.only(left: 16),
             alignment: Alignment.bottomLeft,
-            child: items[2].profilePhotoWidget(context, 26),
+            child: items[2].profilePhotoWidget(context),
           ),
         ],
       );
