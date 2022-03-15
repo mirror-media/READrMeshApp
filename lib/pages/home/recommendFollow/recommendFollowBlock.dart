@@ -14,8 +14,12 @@ class RecommendFollowBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (recommendedItems.isEmpty ||
-        UserHelper.instance.currentUser.following.isEmpty) {
+    if (recommendedItems.isEmpty) {
+      return Container();
+    }
+
+    if (UserHelper.instance.currentUser.following.isEmpty &&
+        recommendedItems.first.type == 'member') {
       return Container();
     }
     int itemLength = 5;
