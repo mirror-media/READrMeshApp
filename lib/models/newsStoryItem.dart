@@ -16,8 +16,7 @@ class NewsStoryItem {
   String? myPickId;
   String? myPickCommentId;
   String? bookmarkId;
-  final String? contentApiData;
-  final List<String>? contentAnnotationData;
+  final String? content;
   final String? writer;
 
   NewsStoryItem({
@@ -31,8 +30,7 @@ class NewsStoryItem {
     this.pickCount = 0,
     this.myPickId,
     this.bookmarkId,
-    this.contentApiData,
-    this.contentAnnotationData,
+    this.content,
     this.writer,
     this.myPickCommentId,
   });
@@ -112,10 +110,9 @@ class NewsStoryItem {
       fullContent = json['full_content'];
     }
 
-    String? contentApiData;
-    List<String>? contentAnnotationData = [];
+    String? content;
     if (BaseModel.hasKey(json, 'content') && fullContent) {
-      contentApiData = json["content"];
+      content = json["content"];
     }
 
     if (BaseModel.checkJsonKeys(json, ['writer'])) {
@@ -133,8 +130,7 @@ class NewsStoryItem {
       myPickId: myPickId,
       pickCount: pickCount,
       bookmarkId: bookmarkId,
-      contentApiData: contentApiData,
-      contentAnnotationData: contentAnnotationData,
+      content: content,
       writer: writer,
       myPickCommentId: myPickCommentId,
     );

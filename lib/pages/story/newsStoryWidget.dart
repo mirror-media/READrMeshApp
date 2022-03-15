@@ -49,7 +49,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   _fetchNewsData() async {
     context.read<NewsCubit>().fetchNewsData(
           newsId: widget.news.id,
-          isNative: true,
         );
   }
 
@@ -137,7 +136,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         const SizedBox(height: 24),
         _buildStoryContent(),
         const SizedBox(height: 32),
-        _buildAnnotationBlock(),
         const SizedBox(height: 160),
       ],
       controller: _scrollController,
@@ -238,7 +236,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
 
   Widget _buildStoryContent() {
     return HtmlWidget(
-      _newsStoryItem.contentApiData!,
+      _newsStoryItem.content!,
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
@@ -275,77 +273,5 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         color: Colors.black87,
       ),
     );
-  }
-
-  Widget _buildAnnotationBlock() {
-    double width = MediaQuery.of(context).size.width;
-    if (_newsStoryItem.contentAnnotationData != null) {
-      List<String> annotationDataList = _newsStoryItem.contentAnnotationData!;
-
-      if (annotationDataList.isEmpty) {
-        return Container();
-      }
-      return ListView.separated(
-          itemCount: annotationDataList.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    (index + 1).toString(),
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      height: 0.9,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  SizedBox(
-                    width: width - 44 - 20,
-                    child: HtmlWidget(
-                      annotationDataList[index],
-                      customStylesBuilder: (element) {
-                        if (element.localName == 'a') {
-                          return {
-                            'text-decoration-color': '#ebf02c',
-                            'color': 'black',
-                            'text-decoration-thickness': '100%',
-                          };
-                        } else if (element.localName == 'h1') {
-                          return {
-                            'line-height': '130%',
-                            'font-weight': '600',
-                            'font-size': '22px',
-                          };
-                        } else if (element.localName == 'h2') {
-                          return {
-                            'line-height': '150%',
-                            'font-weight': '500',
-                            'font-size': '18px',
-                          };
-                        }
-                        return null;
-                      },
-                      textStyle: const TextStyle(
-                        fontSize: 14,
-                        height: 1,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-    }
-    return Container();
   }
 }
