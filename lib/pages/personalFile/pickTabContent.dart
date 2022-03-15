@@ -176,15 +176,8 @@ class _PickTabContentState extends State<PickTabContent> {
         if (_storyPickList[index].pickComment != null) {
           return Column(
             children: [
-              InkWell(
-                onTap: () {
-                  AutoRouter.of(context).push(NewsStoryRoute(
-                    news: _storyPickList[index].story!,
-                  ));
-                },
-                child: NewsListItemWidget(
-                  _storyPickList[index].story!,
-                ),
+              NewsListItemWidget(
+                _storyPickList[index].story!,
               ),
               const SizedBox(
                 height: 12,
@@ -197,15 +190,8 @@ class _PickTabContentState extends State<PickTabContent> {
             ],
           );
         }
-        return InkWell(
-          onTap: () {
-            AutoRouter.of(context).push(NewsStoryRoute(
-              news: _storyPickList[index].story!,
-            ));
-          },
-          child: NewsListItemWidget(
-            _storyPickList[index].story!,
-          ),
+        return NewsListItemWidget(
+          _storyPickList[index].story!,
         );
       },
       separatorBuilder: (context, index) {

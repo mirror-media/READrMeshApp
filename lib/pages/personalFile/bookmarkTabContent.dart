@@ -145,15 +145,8 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
             ),
           );
         }
-        return InkWell(
-          onTap: () {
-            AutoRouter.of(context).push(NewsStoryRoute(
-              news: _bookmarkList[index].story!,
-            ));
-          },
-          child: NewsListItemWidget(
-            _bookmarkList[index].story!,
-          ),
+        return NewsListItemWidget(
+          _bookmarkList[index].story!,
         );
       },
       separatorBuilder: (context, index) {

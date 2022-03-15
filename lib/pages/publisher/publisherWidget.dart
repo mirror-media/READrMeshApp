@@ -187,15 +187,8 @@ class _PublisherWidgetState extends State<PublisherWidget> {
             ),
           );
         }
-        return InkWell(
-          onTap: () {
-            AutoRouter.of(context).push(NewsStoryRoute(
-              news: newsList[index],
-            ));
-          },
-          child: NewsListItemWidget(
-            newsList[index],
-          ),
+        return NewsListItemWidget(
+          newsList[index],
         );
       },
       separatorBuilder: (context, index) {
