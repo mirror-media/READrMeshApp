@@ -14,10 +14,13 @@ class QuoteByWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 32),
       child: Column(
         children: [
-          const Icon(
-            Icons.format_quote,
-            size: 60,
-            color: Colors.black12,
+          const RotatedBox(
+            quarterTurns: 2,
+            child: Icon(
+              Icons.format_quote,
+              size: 60,
+              color: Colors.black12,
+            ),
           ),
           const SizedBox(
             height: 16,
@@ -29,7 +32,8 @@ class QuoteByWidget extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 20,
                 height: 1.5,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
               ),
             ),
           ),
@@ -45,6 +49,7 @@ class QuoteByWidget extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   color: Colors.black54,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),

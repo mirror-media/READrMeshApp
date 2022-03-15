@@ -64,7 +64,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                     ],
                   ),
                   const Icon(
-                    Icons.play_circle_filled,
+                    Icons.play_circle_outline_outlined,
                     color: Colors.white,
                     size: 55.0,
                   ),

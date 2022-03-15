@@ -77,8 +77,8 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
         if (element.localName == 'a') {
           if (element.id == 'annotation') {
             return {
-              'text-decoration-color': '#ebf02c',
-              'color': '#04295E',
+              'text-decoration-color': 'black',
+              'color': 'black',
               'text-decoration-thickness': '100%',
               'font-weight': '500',
             };

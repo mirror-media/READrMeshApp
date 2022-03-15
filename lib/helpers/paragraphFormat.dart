@@ -74,7 +74,8 @@ class ParagraphFormat {
                   children: [
                     ParseTheTextToHtmlWidget(
                       html: paragraph.contents![0].data,
-                      fontSize: textSize,
+                      fontSize: 14,
+                      color: Colors.black54,
                     )
                   ],
                 ),
@@ -156,7 +157,7 @@ class ParagraphFormat {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ParseTheTextToHtmlWidget(
                   html: paragraph.contents![0].data,
-                  fontSize: 13,
+                  fontSize: 14,
                   color: Colors.black54,
                 ),
               );
@@ -228,13 +229,10 @@ class ParagraphFormat {
       case 'youtube':
         {
           if (paragraph.contents!.isNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: YoutubeWidget(
-                youtubeId: paragraph.contents![0].data,
-                description: paragraph.contents![0].description,
-                textSize: textSize,
-              ),
+            return YoutubeWidget(
+              youtubeId: paragraph.contents![0].data,
+              description: paragraph.contents![0].description,
+              textSize: textSize,
             );
           }
           return Container();
@@ -297,14 +295,18 @@ class ParagraphFormat {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              (index + 1).toString() + '.',
-              style: TextStyle(
-                fontSize: textSize,
-                height: 1.8,
+            SizedBox(
+              width: 16,
+              child: Text(
+                (index + 1).toString() + '.',
+                style: TextStyle(
+                  fontSize: textSize,
+                  height: 1.7,
+                  color: Colors.black54,
+                ),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             Expanded(
                 child: ParseTheTextToHtmlWidget(
                     html: dataList[index], fontSize: textSize)),
@@ -329,7 +331,9 @@ class ParagraphFormat {
               children: [
                 ParseTheTextToHtmlWidget(
                   html: dataList[index],
-                  fontSize: textSize,
+                  fontSize: 16,
+                  color: Colors.black87,
+                  isCitation: true,
                 ),
                 const Divider(
                   color: Color.fromRGBO(0, 9, 40, 0.1),
@@ -340,7 +344,9 @@ class ParagraphFormat {
           }
           return ParseTheTextToHtmlWidget(
             html: dataList[index],
-            fontSize: textSize,
+            fontSize: 16,
+            color: Colors.black87,
+            isCitation: true,
           );
         }
         return Row(
@@ -352,7 +358,7 @@ class ParagraphFormat {
                 width: 6,
                 height: 6,
                 decoration: const BoxDecoration(
-                  color: storyWidgetColor,
+                  color: Colors.black54,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -362,6 +368,7 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
               html: dataList[index],
               fontSize: textSize,
+              color: Colors.black87,
             )),
           ],
         );

@@ -98,7 +98,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
       color: Colors.white,
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.black12, width: 1.0),
-        borderRadius: BorderRadius.circular(2.0),
+        borderRadius: BorderRadius.circular(6.0),
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
@@ -110,30 +110,32 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
               builder: (context, snapshot) {
                 return InkWell(
                   child: _checkIsPlaying
-                      ? const ClipOval(
-                          child: Material(
+                      ? Container(
+                          padding: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 3,
+                                color: Colors.black87,
+                              )),
+                          child: const Icon(
+                            Icons.pause,
                             color: Colors.black87,
-                            child: Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: Icon(
-                                Icons.pause,
-                                color: Colors.white,
-                                size: 64,
-                              ),
-                            ),
+                            size: 40,
                           ),
                         )
-                      : const ClipOval(
-                          child: Material(
-                            color: Color.fromRGBO(246, 246, 251, 1),
-                            child: Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: Icon(
-                                Icons.play_arrow,
+                      : Container(
+                          padding: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 3,
                                 color: Colors.black87,
-                                size: 64,
-                              ),
-                            ),
+                              )),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.black87,
+                            size: 40,
                           ),
                         ),
                   onTap: () {
@@ -156,7 +158,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: _textSize - 4,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         color: Colors.black87,
                       ),
                     ),
@@ -180,7 +182,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                           SliderTheme(
                             data: SliderThemeData(
                               overlayShape: SliderComponentShape.noThumb,
-                              trackHeight: 4,
+                              trackHeight: 6,
                               thumbShape: const RoundSliderThumbShape(
                                   enabledThumbRadius: 0.0),
                             ),
