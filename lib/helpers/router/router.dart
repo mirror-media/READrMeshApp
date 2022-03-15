@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/people.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
@@ -25,9 +24,7 @@ import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
-import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/initialApp.dart';
-import 'package:readr/pages/tag/tagPage.dart';
 import 'package:readr/models/tag.dart';
 import 'package:readr/pages/welcomePage.dart';
 
@@ -55,9 +52,7 @@ part 'router.gr.dart';
         page: PersonalFilePage,
       ),
     ]),
-    AutoRoute(page: StoryPage),
     AutoRoute(page: ErrorPage, fullscreenDialog: true),
-    AutoRoute(page: TagPage),
     AutoRoute(page: AboutPage),
     AutoRoute(page: DeleteMemberPage),
     AutoRoute(page: NewsStoryPage, fullscreenDialog: true),

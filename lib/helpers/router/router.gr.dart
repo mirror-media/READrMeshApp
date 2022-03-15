@@ -20,12 +20,6 @@ class _$AppRouter extends RootStackRouter {
     Initial.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: InitialApp());
     },
-    StoryRoute.name: (routeData) {
-      final args = routeData.argsAs<StoryRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: StoryPage(id: args.id, useWebview: args.useWebview));
-    },
     ErrorRoute.name: (routeData) {
       final args = routeData.argsAs<ErrorRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -36,11 +30,6 @@ class _$AppRouter extends RootStackRouter {
               needPop: args.needPop,
               hideAppbar: args.hideAppbar),
           fullscreenDialog: true);
-    },
-    TagRoute.name: (routeData) {
-      final args = routeData.argsAs<TagRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: TagPage(tag: args.tag));
     },
     AboutRoute.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: AboutPage());
@@ -165,9 +154,7 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(PersonalFileRouter.name,
               path: 'personalFile', parent: Initial.name)
         ]),
-        RouteConfig(StoryRoute.name, path: '/story-page'),
         RouteConfig(ErrorRoute.name, path: '/error-page'),
-        RouteConfig(TagRoute.name, path: '/tag-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
         RouteConfig(NewsStoryRoute.name, path: '/news-story-page'),
@@ -197,30 +184,6 @@ class Initial extends PageRouteInfo<void> {
       : super(Initial.name, path: '/', initialChildren: children);
 
   static const String name = 'Initial';
-}
-
-/// generated route for
-/// [StoryPage]
-class StoryRoute extends PageRouteInfo<StoryRouteArgs> {
-  StoryRoute({required String id, bool useWebview = false})
-      : super(StoryRoute.name,
-            path: '/story-page',
-            args: StoryRouteArgs(id: id, useWebview: useWebview));
-
-  static const String name = 'StoryRoute';
-}
-
-class StoryRouteArgs {
-  const StoryRouteArgs({required this.id, this.useWebview = false});
-
-  final String id;
-
-  final bool useWebview;
-
-  @override
-  String toString() {
-    return 'StoryRouteArgs{id: $id, useWebview: $useWebview}';
-  }
 }
 
 /// generated route for
@@ -260,26 +223,6 @@ class ErrorRouteArgs {
   @override
   String toString() {
     return 'ErrorRouteArgs{error: $error, onPressed: $onPressed, needPop: $needPop, hideAppbar: $hideAppbar}';
-  }
-}
-
-/// generated route for
-/// [TagPage]
-class TagRoute extends PageRouteInfo<TagRouteArgs> {
-  TagRoute({required Tag tag})
-      : super(TagRoute.name, path: '/tag-page', args: TagRouteArgs(tag: tag));
-
-  static const String name = 'TagRoute';
-}
-
-class TagRouteArgs {
-  const TagRouteArgs({required this.tag});
-
-  final Tag tag;
-
-  @override
-  String toString() {
-    return 'TagRouteArgs{tag: $tag}';
   }
 }
 

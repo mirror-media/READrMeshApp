@@ -24,22 +24,10 @@ class FirebaseMessagingHelper {
 
     RemoteMessage? initialMessage =
         await _firebaseMessaging.getInitialMessage();
-    if (initialMessage != null && initialMessage.data.containsKey('story_id')) {
-      context.router.push(StoryRoute(id: initialMessage.data['story_id']));
-    } else if (initialMessage != null &&
-        initialMessage.data.containsKey('project_url')) {
-      OpenProjectHelper().openByUrl(initialMessage.data['project_url']);
-    }
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (message.data.containsKey('story_id')) {
-        context.router.push(StoryRoute(id: message.data['story_id']));
-      } else if (message.data.containsKey('project_url')) {
-        OpenProjectHelper().openByUrl(message.data['project_url']);
-      }
-    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
   }
 
   subscribeToTopic(String topic) {
