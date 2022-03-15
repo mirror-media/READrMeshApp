@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/shared/followButton.dart';
@@ -15,10 +18,12 @@ class PublisherListItemWidget extends StatefulWidget {
 
 class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
   int _followCount = 0;
+  late final bool _isFollowed;
   @override
   void initState() {
     super.initState();
     _followCount = widget.publisher.followerCount;
+    _isFollowed = UserHelper.instance.isFollowingPublisher(widget.publisher);
   }
 
   @override
@@ -41,39 +46,38 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
                   color: Colors.black87,
                 ),
               ),
-              Text(
-                '${_followCount.toString()} 人追蹤',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
-                ),
-              )
+              BlocBuilder<FollowButtonCubit, FollowButtonState>(
+                builder: (context, state) {
+                  _updateFollowCount();
+                  return Text(
+                    '${_followCount.toString()} 人追蹤',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
         FollowButton(
           PublisherFollowableItem(widget.publisher),
-          onTap: (isFollow) {
-            setState(() {
-              if (isFollow) {
-                _followCount++;
-              } else {
-                _followCount--;
-              }
-            });
-          },
-          whenFailed: (isFollow) {
-            setState(() {
-              if (isFollow) {
-                _followCount++;
-              } else {
-                _followCount--;
-              }
-            });
-          },
         ),
       ],
     );
+  }
+
+  void _updateFollowCount() {
+    if (_isFollowed &&
+        !UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
+      _followCount = widget.publisher.followerCount - 1;
+    } else if (UserHelper.instance
+        .isLocalFollowingPublisher(widget.publisher)) {
+      _followCount = widget.publisher.followerCount + 1;
+    } else {
+      _followCount = widget.publisher.followerCount;
+    }
   }
 }

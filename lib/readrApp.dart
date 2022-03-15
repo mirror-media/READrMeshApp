@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'helpers/router/router.dart';
 
@@ -13,6 +14,9 @@ class ReadrApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => PickButtonCubit(),
+        ),
+        BlocProvider(
+          create: (context) => FollowButtonCubit(),
         ),
       ],
       child: MaterialApp.router(

@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/home/recommendFollow/lookmoreItem.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowBlock extends StatelessWidget {
   final List<FollowableItem> recommendedItems;
@@ -44,12 +42,9 @@ class RecommendFollowBlock extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  AutoRouter.of(context)
-                      .push(RecommendFollowRoute(
-                        recommendedItems: recommendedItems,
-                      ))
-                      .whenComplete(() =>
-                          context.read<HomeBloc>().add(RefreshHomeScreen()));
+                  AutoRouter.of(context).push(RecommendFollowRoute(
+                    recommendedItems: recommendedItems,
+                  ));
                 },
                 child: const Text(
                   '查看全部',

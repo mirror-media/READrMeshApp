@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -36,10 +37,10 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String buttonText = '請至少選擇 1 個';
-    if (_followingCount != 0 && UserHelper.instance.isVisitor) {
+    String buttonText;
+    if (UserHelper.instance.isVisitor) {
       buttonText = '完成';
-    } else if (_followingCount != 0 && UserHelper.instance.isMember) {
+    } else {
       buttonText = '下一步';
     }
     return Column(
@@ -58,50 +59,56 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
         Expanded(
           child: _buildContent(context),
         ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(
-                color: Colors.black12,
-                width: 0.5,
+        BlocBuilder<FollowButtonCubit, FollowButtonState>(
+          builder: (context, state) {
+            _followingCount = UserHelper.instance.localPublisherList.length;
+            return Container(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.black12,
+                    width: 0.5,
+                  ),
+                ),
               ),
-            ),
-          ),
-          child: OutlinedButton(
-            onPressed: _followingCount == 0
-                ? null
-                : () async {
-                    if (UserHelper.instance.isMember) {
-                      AutoRouter.of(context)
-                          .push(ChooseMemberRoute(isFromPublisher: true));
-                    } else {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool('isFirstTime', false);
-                      AutoRouter.of(context).pushAndPopUntil(const Initial(),
-                          predicate: (route) => false);
-                    }
-                  },
-            child: Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 16,
-                color: _followingCount == 0 ? Colors.black26 : Colors.white,
+              child: OutlinedButton(
+                onPressed: _followingCount == 0
+                    ? null
+                    : () async {
+                        if (UserHelper.instance.isMember) {
+                          AutoRouter.of(context)
+                              .push(ChooseMemberRoute(isFromPublisher: true));
+                        } else {
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool('isFirstTime', false);
+                          AutoRouter.of(context).pushAndPopUntil(
+                              const Initial(),
+                              predicate: (route) => false);
+                        }
+                      },
+                child: Text(
+                  _followingCount == 0 ? '請至少選擇 1 個' : buttonText,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: _followingCount == 0 ? Colors.black26 : Colors.white,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: _followingCount == 0
+                      ? const Color.fromRGBO(224, 224, 224, 1)
+                      : Colors.black87,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 24,
+                  ),
+                ),
               ),
-            ),
-            style: OutlinedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: _followingCount == 0
-                  ? const Color.fromRGBO(224, 224, 224, 1)
-                  : Colors.black87,
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 24,
-              ),
-            ),
-          ),
+            );
+          },
         ),
       ],
     );
@@ -156,6 +163,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
   }
 
   Widget _buildItem(BuildContext context, Publisher publisher) {
+    bool _isFollowed = UserHelper.instance.isFollowingPublisher(publisher);
     return Row(
       children: [
         PublisherLogoWidget(publisher),
@@ -174,43 +182,37 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                   color: Colors.black87,
                 ),
               ),
-              Text(
-                '${publisher.followerCount} 人追蹤',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
-                ),
-              )
+              BlocBuilder<FollowButtonCubit, FollowButtonState>(
+                builder: (context, state) {
+                  int followCount = _updateFollowCount(_isFollowed, publisher);
+                  return Text(
+                    '${followCount.toString()} 人追蹤',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
         FollowButton(
           PublisherFollowableItem(publisher),
-          onTap: (isFollow) {
-            setState(() {
-              if (isFollow) {
-                _followingCount++;
-                publisher.followerCount++;
-              } else {
-                _followingCount--;
-                publisher.followerCount--;
-              }
-            });
-          },
-          whenFailed: (isFollow) {
-            setState(() {
-              if (isFollow) {
-                _followingCount++;
-                publisher.followerCount++;
-              } else {
-                _followingCount--;
-                publisher.followerCount--;
-              }
-            });
-          },
         ),
       ],
     );
+  }
+
+  int _updateFollowCount(bool isFollowed, Publisher publisher) {
+    if (isFollowed &&
+        !UserHelper.instance.isLocalFollowingPublisher(publisher)) {
+      return publisher.followerCount - 1;
+    } else if (UserHelper.instance.isLocalFollowingPublisher(publisher)) {
+      return publisher.followerCount + 1;
+    } else {
+      return publisher.followerCount;
+    }
   }
 }

@@ -1,9 +1,7 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/shared/followButton.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecommendFollowItem extends StatelessWidget {
   final FollowableItem recommendItem;
@@ -62,10 +60,6 @@ class RecommendFollowItem extends StatelessWidget {
                 recommendItem,
                 expanded: true,
                 textSize: 16,
-                onTap: (bool isFollowing) =>
-                    context.read<HomeBloc>().add(RefreshHomeScreen()),
-                whenFailed: (bool isFollowing) =>
-                    context.read<HomeBloc>().add(RefreshHomeScreen()),
               ),
             ],
           ),

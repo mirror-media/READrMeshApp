@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
@@ -171,10 +169,6 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                 ),
                 FollowButton(
                   memberFollowableItem,
-                  onTap: (bool isFollowing) =>
-                      context.read<HomeBloc>().add(RefreshHomeScreen()),
-                  whenFailed: (bool isFollowing) =>
-                      context.read<HomeBloc>().add(RefreshHomeScreen()),
                 ),
               ],
             ),

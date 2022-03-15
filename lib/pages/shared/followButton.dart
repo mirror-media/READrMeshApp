@@ -1,94 +1,63 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
-class FollowButton extends StatefulWidget {
+class FollowButton extends StatelessWidget {
   final FollowableItem item;
   final bool expanded;
   final double textSize;
-  final ValueSetter<bool>? onTap;
-  final ValueSetter<bool>? whenFailed;
   const FollowButton(
     this.item, {
     this.expanded = false,
     this.textSize = 14,
-    this.onTap,
-    this.whenFailed,
   });
 
   @override
-  _FollowButtonState createState() => _FollowButtonState();
-}
-
-class _FollowButtonState extends State<FollowButton> {
-  bool _isFollowing = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _isFollowing = widget.item.isFollowed;
-    if (widget.expanded) {
-      return SizedBox(
-        width: double.maxFinite,
-        child: _buildButton(context),
-      );
-    }
+    return BlocBuilder<FollowButtonCubit, FollowButtonState>(
+      builder: (context, state) {
+        bool _isFollowing = item.isFollowed;
 
-    return _buildButton(context);
+        if (expanded) {
+          return SizedBox(
+            width: double.maxFinite,
+            child: _buildButton(context, _isFollowing),
+          );
+        }
+        return _buildButton(context, _isFollowing);
+      },
+    );
   }
 
-  Widget _buildButton(BuildContext context) {
+  Widget _buildButton(BuildContext context, bool isFollowing) {
     return OutlinedButton(
       onPressed: () async {
-        if (widget.item.type == 'member' && UserHelper.instance.isVisitor) {
+        if (item.type == 'member' && UserHelper.instance.isVisitor) {
           AutoRouter.of(context).push(LoginRoute());
         } else {
-          setState(() {
-            _isFollowing = !_isFollowing;
-            widget.item.updateLocalList();
-          });
-          if (widget.onTap != null) {
-            widget.onTap!(_isFollowing);
-          }
-          EasyDebounce.debounce(widget.item.id, const Duration(seconds: 2),
-              () => _updateFollow());
+          context.read<FollowButtonCubit>().updateLocalFollowing(item);
+          EasyDebounce.debounce(item.id, const Duration(seconds: 2),
+              () => context.read<FollowButtonCubit>().updateFollowing(item));
         }
       },
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: _isFollowing ? Colors.black87 : Colors.white,
+        backgroundColor: isFollowing ? Colors.black87 : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       ),
       child: Text(
-        _isFollowing ? '追蹤中' : '追蹤',
+        isFollowing ? '追蹤中' : '追蹤',
         maxLines: 1,
         style: TextStyle(
-          fontSize: widget.textSize,
-          color: _isFollowing ? Colors.white : Colors.black87,
+          fontSize: textSize,
+          color: isFollowing ? Colors.white : Colors.black87,
         ),
       ),
     );
-  }
-
-  Future<void> _updateFollow() async {
-    bool isSuccess = _isFollowing
-        ? await widget.item.addFollow()
-        : await widget.item.removeFollow();
-
-    if (!isSuccess && mounted) {
-      setState(() {
-        _isFollowing = !_isFollowing;
-      });
-      if (widget.whenFailed != null) {
-        widget.whenFailed!(_isFollowing);
-      }
-    }
   }
 }
