@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/home/recommendFollow/lookmoreItem.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
@@ -13,7 +14,8 @@ class RecommendFollowBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (recommendedItems.isEmpty) {
+    if (recommendedItems.isEmpty ||
+        UserHelper.instance.currentUser.following.isEmpty) {
       return Container();
     }
     int itemLength = 5;
