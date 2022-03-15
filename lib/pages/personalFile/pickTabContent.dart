@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:readr/models/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';

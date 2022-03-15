@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';

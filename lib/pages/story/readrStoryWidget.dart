@@ -17,7 +17,6 @@ import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ReadrStoryWidget extends StatefulWidget {

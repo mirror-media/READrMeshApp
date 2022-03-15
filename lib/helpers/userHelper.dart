@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
-import 'package:readr/services/pickService.dart';
 import 'package:readr/services/visitorService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

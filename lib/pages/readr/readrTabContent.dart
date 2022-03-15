@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/readr/tabStoryList/tabStoryList_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/models/readrListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';

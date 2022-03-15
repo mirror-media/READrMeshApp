@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_embedded_webview/flutter_embedded_webview.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/annotation.dart';
 import 'package:readr/models/contentList.dart';
 import 'package:readr/models/paragraph.dart';
