@@ -25,7 +25,6 @@ import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:readr/initialApp.dart';
-import 'package:readr/models/tag.dart';
 import 'package:readr/pages/welcomePage.dart';
 
 part 'router.gr.dart';

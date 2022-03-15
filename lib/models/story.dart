@@ -3,8 +3,6 @@ import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
-import 'package:readr/models/storyListItemList.dart';
-import 'package:readr/models/tagList.dart';
 
 class Story {
   final String? style;
