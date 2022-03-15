@@ -73,8 +73,8 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
     if (_isFollowed &&
         !UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
       _followCount = widget.publisher.followerCount - 1;
-    } else if (UserHelper.instance
-        .isLocalFollowingPublisher(widget.publisher)) {
+    } else if (!_isFollowed &&
+        UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
       _followCount = widget.publisher.followerCount + 1;
     } else {
       _followCount = widget.publisher.followerCount;

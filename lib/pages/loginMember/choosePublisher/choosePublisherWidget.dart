@@ -209,7 +209,8 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
     if (isFollowed &&
         !UserHelper.instance.isLocalFollowingPublisher(publisher)) {
       return publisher.followerCount - 1;
-    } else if (UserHelper.instance.isLocalFollowingPublisher(publisher)) {
+    } else if (!isFollowed &&
+        UserHelper.instance.isLocalFollowingPublisher(publisher)) {
       return publisher.followerCount + 1;
     } else {
       return publisher.followerCount;
