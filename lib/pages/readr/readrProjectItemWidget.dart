@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
@@ -78,7 +80,11 @@ class ReadrProjectItemWidget extends StatelessWidget {
             PickBar(NewsListItemPick(projectItem)),
           ],
         ),
-        onTap: () async {});
+        onTap: () async {
+          AutoRouter.of(context).push(NewsStoryRoute(
+            news: projectItem,
+          ));
+        });
   }
 
   Widget _displayTitle() {

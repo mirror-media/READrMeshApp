@@ -153,7 +153,11 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () async {},
+          onTap: () async {
+            AutoRouter.of(context).push(NewsStoryRoute(
+              news: widget.editorChoiceList[_current].newsListItem!,
+            ));
+          },
           child: Container(
             color: Colors.black,
             child: Stack(
