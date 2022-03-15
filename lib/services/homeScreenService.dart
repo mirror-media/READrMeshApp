@@ -7,6 +7,7 @@ import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreenService {
   final ApiBaseHelper _helper = ApiBaseHelper();
@@ -574,13 +575,13 @@ class HomeScreenService {
 
     List<String> followingMemberIds = [];
     List<String> followingPublisherIds = [];
+    final prefs = await SharedPreferences.getInstance();
+    int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
-        .subtract(const Duration(hours: 24))
+        .subtract(Duration(hours: duration))
         .toUtc()
         .toIso8601String();
-    // TODO: Remove test data time
-    yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
     Member member = UserHelper.instance.currentUser;
 
@@ -859,13 +860,13 @@ class HomeScreenService {
     }
     """;
 
+    final prefs = await SharedPreferences.getInstance();
+    int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
-        .subtract(const Duration(hours: 24))
+        .subtract(Duration(hours: duration))
         .toUtc()
         .toIso8601String();
-    // TODO: Remove test data time
-    yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
     Member member = UserHelper.instance.currentUser;
     List<String> followingMemberIds = [];
@@ -1072,13 +1073,13 @@ class HomeScreenService {
     }
     """;
 
+    final prefs = await SharedPreferences.getInstance();
+    int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
-        .subtract(const Duration(hours: 24))
+        .subtract(Duration(hours: duration))
         .toUtc()
         .toIso8601String();
-    // TODO: Remove test data time
-    yesterday = DateTime(2021, 1, 1).toUtc().toIso8601String();
 
     Member member = UserHelper.instance.currentUser;
 
