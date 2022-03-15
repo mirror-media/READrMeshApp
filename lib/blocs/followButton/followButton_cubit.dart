@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/models/followableItem.dart';
 
@@ -10,6 +11,8 @@ class FollowButtonCubit extends Cubit<FollowButtonState> {
   updateLocalFollowing(FollowableItem item) {
     emit(FollowButtonTap());
     item.updateLocalList();
+    EasyDebounce.debounce(
+        item.id, const Duration(seconds: 2), () => updateFollowing(item));
     emit(FollowButtonUpdating());
   }
 

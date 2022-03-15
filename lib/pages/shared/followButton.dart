@@ -5,7 +5,6 @@ import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 
 class FollowButton extends StatelessWidget {
   final FollowableItem item;
@@ -41,8 +40,6 @@ class FollowButton extends StatelessWidget {
           AutoRouter.of(context).push(LoginRoute());
         } else {
           context.read<FollowButtonCubit>().updateLocalFollowing(item);
-          EasyDebounce.debounce(item.id, const Duration(seconds: 2),
-              () => context.read<FollowButtonCubit>().updateFollowing(item));
         }
       },
       style: OutlinedButton.styleFrom(
