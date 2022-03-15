@@ -17,7 +17,8 @@ class HomeScreenService {
     const String query = """
     query(
       \$followingMembers: [ID!]
-      \$yesterday: DateTime
+      \$timeFilter: DateTime
+  		\$yesterday: DateTime
       \$followingPublisherIds: [ID!]
       \$myId: ID
     ){
@@ -298,15 +299,14 @@ class HomeScreenService {
           is_active:{
             equals: true
           }
-          OR:[
-            {
-              source:{
-                id:{
-                  in: \$followingPublisherIds
-              }
-              }
-            }
-          ]
+          source:{
+            id:{
+              in: \$followingPublisherIds
+          	}
+          }
+          published_date:{
+            gte: \$timeFilter
+          }
         }
       ){
         id
@@ -497,17 +497,52 @@ class HomeScreenService {
           is_active: {
             equals: true
           }
-          OR:[
-            {
-              follow_publisher:{
-                some:{
-                  id:{
-                    in: \$followingPublisherIds
-                  }
-                }
+          follow_publisher:{
+            some:{
+              id:{
+                in: \$followingPublisherIds
               }
             }
-          ]
+          }
+        }
+        take: 20
+      ){
+        id
+        nickname
+        avatar
+        customId
+        followerCount
+        follower(take:1){
+          id
+          nickname
+          customId
+        }
+        pickCount(
+          where:{
+            picked_date:{
+              gte: \$yesterday
+            }
+          }
+        )
+        commentCount(
+          where:{
+            published_date:{
+              gte: \$yesterday
+            }
+          }
+        )
+      }
+      otherMembers:members(
+        where:{
+          id:{
+            notIn: \$followingMembers
+            not:{
+              equals: \$myId
+            }
+          }
+          is_active: {
+            equals: true
+          }
         }
         take: 20
       ){
@@ -540,6 +575,11 @@ class HomeScreenService {
         where:{
           id:{
             notIn: \$followingPublisherIds
+          }
+          title:{
+            not:{
+              equals: "readr"
+            }
           }
         }
         take: 20
@@ -578,8 +618,12 @@ class HomeScreenService {
     final prefs = await SharedPreferences.getInstance();
     int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
-    String yesterday = DateTime.now()
+    String timeFilter = DateTime.now()
         .subtract(Duration(hours: duration))
+        .toUtc()
+        .toIso8601String();
+    String yesterday = DateTime.now()
+        .subtract(const Duration(hours: 24))
         .toUtc()
         .toIso8601String();
 
@@ -598,6 +642,7 @@ class HomeScreenService {
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
       "myId": member.memberId,
+      "timeFilter": timeFilter,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -677,6 +722,21 @@ class HomeScreenService {
             (element) => element.memberId == followedFollowingMember.memberId);
       }
       recommendedMembers.addAll(otherRecommendMembers);
+    }
+
+    if (recommendedMembers.length < 20 &&
+        jsonResponse['data']['otherMembers'].isNotEmpty) {
+      for (var item in jsonResponse['data']['otherMembers']) {
+        Member member = Member.otherRecommend(item);
+        if (!recommendedMembers
+            .any((element) => element.memberId == member.memberId)) {
+          recommendedMembers.add(member);
+        }
+
+        if (recommendedMembers.length >= 20) {
+          break;
+        }
+      }
     }
 
     List<Publisher> recommendedPublishers = [];
@@ -860,11 +920,9 @@ class HomeScreenService {
     }
     """;
 
-    final prefs = await SharedPreferences.getInstance();
-    int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
     String yesterday = DateTime.now()
-        .subtract(Duration(hours: duration))
+        .subtract(const Duration(hours: 24))
         .toUtc()
         .toIso8601String();
 
@@ -914,7 +972,7 @@ class HomeScreenService {
     query(
       \$followingPublisherIds: [ID!]
       \$myId: ID
-      \$yesterday: DateTime
+      \$timeFilter: DateTime
       \$followingMembers: [ID!]
       \$lastPublishTime: DateTime
     ){
@@ -928,18 +986,14 @@ class HomeScreenService {
             equals: true
           }
           published_date:{
-            gte: \$yesterday
+            gte: \$timeFilter
             lt: \$lastPublishTime
           }
-          OR:[
-            {
-              source:{
-                id:{
-                  in: \$followingPublisherIds
-              }
-              }
+          source:{
+            id:{
+              in: \$followingPublisherIds
             }
-          ]
+          }
         }
       ){
         id
@@ -1076,7 +1130,7 @@ class HomeScreenService {
     final prefs = await SharedPreferences.getInstance();
     int duration = prefs.getInt('newsCoverage') ?? 24;
     //GQL DateTime must be Iso8601 format
-    String yesterday = DateTime.now()
+    String timeFilter = DateTime.now()
         .subtract(Duration(hours: duration))
         .toUtc()
         .toIso8601String();
@@ -1094,7 +1148,7 @@ class HomeScreenService {
     }
 
     Map<String, dynamic> variables = {
-      "yesterday": yesterday,
+      "timeFilter": timeFilter,
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
       "myId": member.memberId,
