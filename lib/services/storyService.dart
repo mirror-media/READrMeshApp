@@ -113,29 +113,6 @@ class StoryServices implements StoryRepos {
           }
         }
         otherByline
-        tags {
-          id
-          name
-          slug
-        }
-        relatedPosts {
-          id
-          slug
-          name
-          publishTime
-          style
-          readingTime
-          categories(where: {
-            state: active
-          }){
-            id
-            name
-            slug
-          }
-          heroImage {
-            urlMobileSized
-          }
-        }
       }
     }
     """;
@@ -158,16 +135,6 @@ class StoryServices implements StoryRepos {
     Story story;
     try {
       story = Story.fromJson(jsonResponse['data']['allPosts'][0]);
-      List<String> categoriesSlug = [];
-      List<String> tagsSlug = [];
-      story.categoryList?.forEach((element) {
-        categoriesSlug.add(element.slug);
-      });
-      story.tags?.forEach((element) {
-        tagsSlug.add(element.slug);
-      });
-      story.recommendedStories =
-          await fetchRecommenedStoryList(id, categoriesSlug, tagsSlug);
     } catch (e) {
       throw FormatException(e.toString());
     }

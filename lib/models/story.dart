@@ -31,10 +31,6 @@ class Story {
   final PeopleList? dataAnalysts;
   final String? otherByline;
 
-  final TagList? tags;
-  final StoryListItemList? relatedStories;
-  StoryListItemList? recommendedStories;
-
   Story({
     this.style,
     this.name,
@@ -54,10 +50,7 @@ class Story {
     this.engineers,
     this.dataAnalysts,
     this.otherByline,
-    this.tags,
-    this.relatedStories,
     this.citationApiData,
-    this.recommendedStories,
     this.contentAnnotationData,
   });
 
@@ -122,8 +115,6 @@ class Story {
       engineers: PeopleList.fromJson(json['engineers']),
       dataAnalysts: PeopleList.fromJson(json['dataAnalysts']),
       otherByline: json['otherByline'],
-      tags: TagList.fromJson(json['tags']),
-      relatedStories: StoryListItemList.fromJson(json['relatedPosts']),
       citationApiData: citationApiData,
       contentAnnotationData: contentAnnotationData,
     );
