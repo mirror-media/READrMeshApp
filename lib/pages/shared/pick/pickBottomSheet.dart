@@ -12,10 +12,17 @@ class PickBottomSheet {
     String? content;
     var result = await showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
-        return PickBottomSheetWidget(
-          oldContent: oldContent,
-          onTextChanged: (inputContent) => content = inputContent,
+        return AnimatedPadding(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: PickBottomSheetWidget(
+            oldContent: oldContent,
+            onTextChanged: (inputContent) => content = inputContent,
+          ),
         );
       },
     );
