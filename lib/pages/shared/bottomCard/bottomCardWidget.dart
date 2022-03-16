@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
@@ -12,7 +14,6 @@ import 'package:readr/pages/shared/bottomCard/collapsePickBar.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
-import 'package:readr/services/commentService.dart';
 
 class BottomCardWidget extends StatefulWidget {
   final NewsStoryItem news;
@@ -30,8 +31,6 @@ class BottomCardWidget extends StatefulWidget {
 }
 
 class _BottomCardWidgetState extends State<BottomCardWidget> {
-  final CommentService _commentService = CommentService();
-  bool _isSending = false;
   final TextEditingController _textController = TextEditingController();
   List<Comment> _allComments = [];
   bool _hasMyNewComment = false;
@@ -46,6 +45,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     _pickedMembers.addAll(widget.news.followingPickMembers);
     _pickedMembers.addAll(widget.news.otherPickMembers);
     _pick = NewsStoryItemPick(widget.news);
+    _allComments.addAll(widget.news.allComments);
   }
 
   @override
@@ -158,12 +158,26 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     height: 0.5,
                   ),
                 ),
-                CommentInputBox(
-                  onPressed: _sendComment,
-                  isSending: _isSending,
-                  onTextChanged: (text) => widget.onTextChanged(text),
-                  textController: _textController,
-                  isCollapsed: _isCollapsed,
+                BlocBuilder<CommentBloc, CommentState>(
+                  builder: (context, state) {
+                    bool isSending = false;
+
+                    if (state is CommentAdding) {
+                      isSending = true;
+                    }
+
+                    if (state is AddCommentSuccess) {
+                      _textController.clear();
+                    }
+
+                    return CommentInputBox(
+                      onPressed: _sendComment,
+                      isSending: isSending,
+                      onTextChanged: (text) => widget.onTextChanged(text),
+                      textController: _textController,
+                      isCollapsed: _isCollapsed,
+                    );
+                  },
                 ),
               ],
             );
@@ -286,26 +300,73 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   }
 
   Widget _allCommentList(BuildContext context) {
-    return SliverToBoxAdapter(
-      key: UniqueKey(),
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(0),
-        itemBuilder: (context, index) => CommentItem(
-          comment: _allComments[index],
-          isSending: (_isSending && index == 0),
-          isMyNewComment: _hasMyNewComment && index == 0,
-        ),
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.black12,
-          thickness: 0.5,
-          height: 0.5,
-          indent: 20,
-          endIndent: 20,
-        ),
-        itemCount: _allComments.length,
-      ),
+    return BlocBuilder<CommentBloc, CommentState>(
+      builder: (context, state) {
+        List<Comment> commentList = [];
+        commentList.addAll(_allComments);
+        bool isSending = false;
+
+        if (state is CommentAdding) {
+          commentList.insert(0, _myNewComment);
+          isSending = true;
+        }
+
+        if (state is AddCommentFailed) {
+          Fluttertoast.showToast(
+            msg: "留言失敗，請稍後再試一次",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          _hasMyNewComment = false;
+        }
+
+        if (state is AddCommentSuccess) {
+          _allComments = state.comments;
+          commentList = [];
+          commentList.addAll(_allComments);
+          int index = commentList.indexWhere((element) {
+            if (element.content == _myNewComment.content &&
+                element.member.memberId == _myNewComment.member.memberId) {
+              return true;
+            }
+            return false;
+          });
+          if (index != 0 && index != -1) {
+            _myNewComment = commentList.elementAt(index);
+            commentList.removeAt(index);
+            commentList.insert(0, _myNewComment);
+          }
+
+          Timer(const Duration(seconds: 5, milliseconds: 5),
+              () => _hasMyNewComment = false);
+        }
+
+        return SliverToBoxAdapter(
+          child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(0),
+            itemBuilder: (context, index) => CommentItem(
+              comment: commentList[index],
+              isSending: (isSending && index == 0),
+              isMyNewComment: _hasMyNewComment && index == 0,
+              key: ValueKey(commentList[index].id),
+            ),
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.black12,
+              thickness: 0.5,
+              height: 0.5,
+              indent: 20,
+              endIndent: 20,
+            ),
+            itemCount: commentList.length,
+          ),
+        );
+      },
     );
   }
 
@@ -317,51 +378,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
       state: "public",
       publishDate: DateTime.now(),
     );
-    _allComments.insert(0, _myNewComment);
-    setState(() {
-      _isSending = true;
-    });
-    List<Comment>? newAllComments = await _commentService.createComment(
-      storyId: widget.news.id,
-      content: text,
-      state: CommentTransparency.public,
-    );
-    setState(() {
-      _isSending = false;
-    });
-    if (newAllComments != null) {
-      _allComments = newAllComments;
-      // find new comment position
-      int index = _allComments.indexWhere((element) {
-        if (element.content == _myNewComment.content &&
-            element.member.memberId == _myNewComment.member.memberId) {
-          return true;
-        }
-        return false;
-      });
-      // if it's not the first, move to first
-      if (index != 0 && index != -1) {
-        _myNewComment = _allComments.elementAt(index);
-        _allComments.removeAt(index);
-        _allComments.insert(0, _myNewComment);
-      }
-
-      _textController.clear();
-      setState(() {
-        _hasMyNewComment = true;
-      });
-      Timer(const Duration(seconds: 5, milliseconds: 5),
-          () => _hasMyNewComment = false);
-    } else {
-      Fluttertoast.showToast(
-        msg: "留言失敗，請稍後再試一次",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    context.read<CommentBloc>().add(AddComment(
+          storyId: widget.news.id,
+          content: text,
+          commentTransparency: CommentTransparency.public,
+        ));
+    _hasMyNewComment = true;
   }
 }

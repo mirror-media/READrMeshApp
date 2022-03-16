@@ -22,7 +22,8 @@ class CommentItem extends StatefulWidget {
     this.isExpanded = false,
     this.isMyNewComment = false,
     this.isSending = false,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CommentItemState createState() => _CommentItemState();
