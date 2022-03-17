@@ -14,9 +14,17 @@ class PickButtonUpdating extends PickButtonState {
   const PickButtonUpdating({this.comment});
 }
 
-class PickButtonUpdateFailed extends PickButtonState {}
+class PickButtonUpdateFailed extends PickButtonState {
+  final bool originIsPicked;
+  const PickButtonUpdateFailed(this.originIsPicked);
+}
 
 class PickButtonUpdateSuccess extends PickButtonState {
   final Comment? comment;
   const PickButtonUpdateSuccess({this.comment});
+}
+
+class RemovePickAndComment extends PickButtonState {
+  final String commentId;
+  const RemovePickAndComment(this.commentId);
 }

@@ -46,6 +46,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
       if (originIsPicked) {
         bool isSuccess;
         if (tempData.pickCommentId != null) {
+          emit(RemovePickAndComment(tempData.pickCommentId!));
           isSuccess = await _pickService.deletePickAndComment(
               tempData.pickId, tempData.pickCommentId!);
         } else {
@@ -54,7 +55,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         PickToast.showPickToast(context, isSuccess, false);
         if (!isSuccess) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(PickButtonUpdateFailed());
+          emit(PickButtonUpdateFailed(originIsPicked));
         } else {
           emit(const PickButtonUpdateSuccess());
         }
@@ -69,7 +70,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         PickToast.showPickToast(context, result != null, true);
         if (result == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
-          emit(PickButtonUpdateFailed());
+          emit(PickButtonUpdateFailed(originIsPicked));
         } else {
           tempData.pickId = result['pickId'];
           tempData.pickCommentId = result['pickComment'].id;
@@ -86,7 +87,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         PickToast.showPickToast(context, pickId != null, true);
         if (pickId == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
-          emit(PickButtonUpdateFailed());
+          emit(PickButtonUpdateFailed(originIsPicked));
         } else {
           tempData.pickId = pickId;
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
@@ -100,7 +101,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
       } else {
         UserHelper.instance.updateNewsPickedMap(item.targetId, null);
       }
-      emit(PickButtonUpdateFailed());
+      emit(PickButtonUpdateFailed(originIsPicked));
     }
   }
 }

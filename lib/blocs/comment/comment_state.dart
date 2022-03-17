@@ -11,7 +11,10 @@ class CommentInitial extends CommentState {}
 
 class CommentLoading extends CommentState {}
 
-class CommentAdding extends CommentState {}
+class CommentAdding extends CommentState {
+  final Comment myNewComment;
+  const CommentAdding(this.myNewComment);
+}
 
 class CommentLoaded extends CommentState {
   final List<Comment> comments;
@@ -27,6 +30,23 @@ class AddCommentFailed extends CommentState {
   final dynamic error;
   const AddCommentFailed(this.error);
 }
+
+class AddingPickComment extends CommentState {
+  final Comment myNewComment;
+  const AddingPickComment(this.myNewComment);
+}
+
+class RemovingPickComment extends CommentState {
+  final String pickCommentId;
+  const RemovingPickComment(this.pickCommentId);
+}
+
+class PickCommentUpdateSuccess extends CommentState {
+  final Comment? comment;
+  const PickCommentUpdateSuccess(this.comment);
+}
+
+class PickCommentUpdateFailed extends CommentState {}
 
 class CommentError extends CommentState {
   final dynamic error;

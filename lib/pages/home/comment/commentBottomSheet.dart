@@ -20,18 +20,15 @@ class CommentBottomSheet {
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
-      builder: (context) => BlocProvider(
-        create: (context) => CommentBloc(),
-        child: SafeArea(
-          bottom: false,
-          child: Material(
-            child: CommentBottomSheetWidget(
-              context: context,
-              clickComment: clickComment,
-              storyId: storyId,
-              onTextChanged: (text) => inputContent = text,
-              oldContent: oldContent,
-            ),
+      builder: (context) => SafeArea(
+        bottom: false,
+        child: Material(
+          child: CommentBottomSheetWidget(
+            context: context,
+            clickComment: clickComment,
+            storyId: storyId,
+            onTextChanged: (text) => inputContent = text,
+            oldContent: oldContent,
           ),
         ),
       ),

@@ -30,3 +30,32 @@ class AddComment extends CommentEvent {
   @override
   String toString() => "Add comment";
 }
+
+class AddPickComment extends CommentEvent {
+  final Comment comment;
+
+  const AddPickComment(this.comment);
+
+  @override
+  String toString() => "Add pick_comment";
+}
+
+class UpdatePickCommentSuccess extends CommentEvent {
+  final Comment? comment;
+  const UpdatePickCommentSuccess(this.comment);
+  @override
+  String toString() => "Update pick_comment success";
+}
+
+class UpdatePickCommentFailed extends CommentEvent {
+  @override
+  String toString() => "Update pick_comment failed";
+}
+
+class RemovePickComment extends CommentEvent {
+  final String commentId;
+  const RemovePickComment(this.commentId);
+
+  @override
+  String toString() => "Remove pick_comment commentId = $commentId";
+}

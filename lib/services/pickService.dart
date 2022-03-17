@@ -172,7 +172,8 @@ class PickService {
           member{
             id
             nickname
-            email
+            customId
+            avatar
           }
           content
           state

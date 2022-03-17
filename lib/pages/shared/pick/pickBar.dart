@@ -27,48 +27,42 @@ class PickBar extends StatelessWidget {
 
         List<Widget> bottom = [];
         if (pickCountData <= 0) {
-          bottom = [
-            const Text(
-              '尚無人精選',
-              style: TextStyle(fontSize: 13, color: Colors.black54),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            PickButton(item),
-          ];
+          bottom.add(const Text(
+            '尚無人精選',
+            style: TextStyle(fontSize: 13, color: Colors.black54),
+          ));
         } else {
-          bottom = [
-            ProfilePhotoStack(pickedMemberList, 14),
-            const SizedBox(width: 8),
-            RichText(
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              text: TextSpan(
-                text: pickCountData.toString(),
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
-                children: const [
-                  TextSpan(
-                    text: ' 人精選',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ],
+          bottom.add(ProfilePhotoStack(pickedMemberList, 14));
+          bottom.add(const SizedBox(width: 8));
+          bottom.add(RichText(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+              text: pickCountData.toString(),
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
               ),
+              children: const [
+                TextSpan(
+                  text: ' 人精選',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              child: Container(),
-            ),
-            PickButton(item),
-          ];
+          ));
         }
+        bottom.addAll([
+          const Spacer(),
+          PickButton(
+            item,
+          ),
+        ]);
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,

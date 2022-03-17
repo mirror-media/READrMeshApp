@@ -37,9 +37,6 @@ class NewsStoryPage extends StatelessWidget {
           BlocProvider(
             create: (context) => NewsCubit(),
           ),
-          BlocProvider(
-            create: (context) => CommentBloc(),
-          ),
         ],
         child: child,
       ),

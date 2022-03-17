@@ -28,11 +28,12 @@ const Color themeColor = Color(0xffFFFFFF);
 const Color appBarColor = Color(0xffFFFFFF);
 const Color tabBarColor = Color(0xffFFFFFF);
 const Color hightLightColor = Color(0xffEBF02C);
-const Color tabBarSelectedColor = Colors.black87;
+const Color tabBarSelectedColor = Color.fromRGBO(0, 9, 40, 0.87);
 const Color editorChoiceTagColor = Color.fromRGBO(0, 9, 40, 0.66);
 const Color editorChoiceBackgroundColor = Color(0xffFFFFFF);
 const Color bottomNavigationBarSelectedColor = Colors.black;
 const Color bottomNavigationBarUnselectedColor = Colors.black54;
+const Color readrBlack87 = Color.fromRGBO(0, 9, 40, 0.87);
 
 const Color storyWidgetColor = Color(0xff04295E);
 const Color storySummaryFrameColor = storyWidgetColor;
