@@ -201,7 +201,7 @@ class FollowingBlock extends StatelessWidget {
                     ));
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.black,
+                primary: readrBlack,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 shape: RoundedRectangleBorder(
