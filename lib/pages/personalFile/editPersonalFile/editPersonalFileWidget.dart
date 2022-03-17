@@ -197,7 +197,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               ? const Text(
                   '取消',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 18,
                   ),
                 )
@@ -272,7 +272,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               decoration: InputDecoration(
                 labelText: '姓名',
                 labelStyle: const TextStyle(
-                  color: Colors.black54,
+                  color: readrBlack50,
                   fontSize: 18,
                 ),
                 focusedBorder: const UnderlineInputBorder(
@@ -329,7 +329,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               decoration: InputDecoration(
                 labelText: 'ID',
                 labelStyle: const TextStyle(
-                  color: Colors.black54,
+                  color: readrBlack50,
                   fontSize: 18,
                 ),
                 focusedBorder: const UnderlineInputBorder(
@@ -371,7 +371,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                   child: Text(
                     '簡介',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: readrBlack50,
                       fontSize: 14,
                     ),
                   ),
@@ -381,7 +381,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                   child: Text(
                     _introController.text.length.toString() + '/250字',
                     style: const TextStyle(
-                      color: Colors.black54,
+                      color: readrBlack50,
                       fontSize: 14,
                     ),
                   ),

@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w300,
-                    color: Colors.black54,
+                    color: readrBlack50,
                   ),
                 ),
               ),

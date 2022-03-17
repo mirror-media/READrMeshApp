@@ -55,7 +55,7 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black54,
+                      color: readrBlack50,
                     ),
                   );
                 },

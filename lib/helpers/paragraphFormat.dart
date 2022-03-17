@@ -75,7 +75,7 @@ class ParagraphFormat {
                     ParseTheTextToHtmlWidget(
                       html: paragraph.contents![0].data,
                       fontSize: 14,
-                      color: Colors.black54,
+                      color: readrBlack50,
                     )
                   ],
                 ),
@@ -158,7 +158,7 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
                   html: paragraph.contents![0].data,
                   fontSize: 14,
-                  color: Colors.black54,
+                  color: readrBlack50,
                 ),
               );
             }
@@ -302,7 +302,7 @@ class ParagraphFormat {
                 style: TextStyle(
                   fontSize: textSize,
                   height: 1.7,
-                  color: Colors.black54,
+                  color: readrBlack50,
                 ),
               ),
             ),
@@ -358,7 +358,7 @@ class ParagraphFormat {
                 width: 6,
                 height: 6,
                 decoration: const BoxDecoration(
-                  color: Colors.black54,
+                  color: readrBlack50,
                   shape: BoxShape.circle,
                 ),
               ),

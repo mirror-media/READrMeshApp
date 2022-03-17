@@ -49,7 +49,7 @@ class QuoteByWidget extends StatelessWidget {
                 '—— $quoteBy',
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Colors.black54,
+                  color: readrBlack50,
                   fontWeight: FontWeight.w400,
                 ),
               ),

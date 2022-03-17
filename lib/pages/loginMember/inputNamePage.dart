@@ -148,7 +148,7 @@ class _InputNamePageState extends State<InputNamePage> {
           '請輸入您想使用的公開顯示名稱，我們鼓勵您填寫真實姓名。\n字數以20字內為限。',
           style: TextStyle(
             fontSize: 13,
-            color: Colors.black54,
+            color: readrBlack50,
             fontWeight: FontWeight.w400,
           ),
         )

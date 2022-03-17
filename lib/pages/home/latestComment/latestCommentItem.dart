@@ -73,8 +73,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                         const EdgeInsets.only(top: 12, left: 12, right: 12),
                     child: Text(
                       widget.news.source!.title,
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 14),
+                      style: const TextStyle(color: readrBlack50, fontSize: 14),
                     ),
                   ),
                 Padding(
@@ -160,7 +159,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.black54,
+                          color: readrBlack50,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
@@ -199,7 +198,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                       TextSpan(
                         text: '看完整留言',
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: readrBlack50,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),

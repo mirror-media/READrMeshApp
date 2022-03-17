@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pickableItem.dart';
@@ -29,7 +30,7 @@ class PickBar extends StatelessWidget {
         if (pickCountData <= 0) {
           bottom.add(const Text(
             '尚無人精選',
-            style: TextStyle(fontSize: 13, color: Colors.black54),
+            style: TextStyle(fontSize: 13, color: readrBlack50),
           ));
         } else {
           bottom.add(ProfilePhotoStack(pickedMemberList, 14));
@@ -49,7 +50,7 @@ class PickBar extends StatelessWidget {
                   text: ' 人精選',
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontWeight: FontWeight.w400,
                   ),
                 )

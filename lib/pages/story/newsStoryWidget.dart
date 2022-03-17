@@ -197,7 +197,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         child: Text(
           widget.news.source!.title,
           style: const TextStyle(
-            color: Colors.black54,
+            color: readrBlack50,
             fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
@@ -227,7 +227,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         '更新時間：' +
             DateFormat('yyyy/MM/dd HH:mm').format(widget.news.publishedDate),
         style: const TextStyle(
-          color: Colors.black54,
+          color: readrBlack50,
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),
@@ -244,7 +244,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
       child: Text(
         '記者：' + _newsStoryItem.writer!,
         style: const TextStyle(
-          color: Colors.black54,
+          color: readrBlack50,
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),

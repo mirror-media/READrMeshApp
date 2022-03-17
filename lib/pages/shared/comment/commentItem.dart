@@ -200,7 +200,7 @@ class _CommentItemState extends State<CommentItem> {
                       softWrap: true,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.black54,
+                        color: readrBlack50,
                       ),
                     ),
                   if (!widget.isSending) Timestamp(widget.comment.publishDate),
@@ -222,7 +222,7 @@ class _CommentItemState extends State<CommentItem> {
                         '編輯留言',
                         softWrap: true,
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: readrBlack50,
                           fontSize: 12,
                         ),
                       ),
@@ -342,7 +342,7 @@ class _CommentItemState extends State<CommentItem> {
                 TextSpan(
                   text: '顯示更多',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),

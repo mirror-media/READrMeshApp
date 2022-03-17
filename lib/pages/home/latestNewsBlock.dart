@@ -59,7 +59,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
               text: const TextSpan(
                   text: '追蹤您感興趣的媒體\n並和大家一起討論',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
@@ -109,7 +109,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
               text: const TextSpan(
                   text: '您可以放下手機休息一下\n或者追蹤其他感興趣的媒體',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),

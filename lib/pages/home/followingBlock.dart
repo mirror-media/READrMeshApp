@@ -55,7 +55,7 @@ class FollowingBlock extends StatelessWidget {
               text: const TextSpan(
                   text: '追蹤您喜愛的人\n看看他們都精選了什麼新聞',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
@@ -152,7 +152,7 @@ class FollowingBlock extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                   child: Text(
                     item.source!.title,
-                    style: const TextStyle(color: Colors.black54, fontSize: 14),
+                    style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
                 ),
               Padding(
@@ -263,8 +263,7 @@ class FollowingBlock extends StatelessWidget {
                         const EdgeInsets.only(top: 12, left: 20, right: 20),
                     child: Text(
                       item.source!.title,
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 14),
+                      style: const TextStyle(color: readrBlack50, fontSize: 14),
                     ),
                   ),
                 Padding(
@@ -344,7 +343,7 @@ class FollowingBlock extends StatelessWidget {
       ));
       children.add(const Text(
         '精選了這篇',
-        style: TextStyle(fontSize: 14, color: Colors.black54),
+        style: TextStyle(fontSize: 14, color: readrBlack50),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ));
@@ -366,7 +365,7 @@ class FollowingBlock extends StatelessWidget {
       ));
       children.add(const Text(
         '及',
-        style: TextStyle(fontSize: 14, color: Colors.black54),
+        style: TextStyle(fontSize: 14, color: readrBlack50),
         maxLines: 1,
       ));
       children.add(Flexible(
@@ -386,7 +385,7 @@ class FollowingBlock extends StatelessWidget {
       ));
       children.add(const Text(
         '都精選了這篇',
-        style: TextStyle(fontSize: 14, color: Colors.black54),
+        style: TextStyle(fontSize: 14, color: readrBlack50),
         maxLines: 1,
       ));
     }
@@ -482,7 +481,7 @@ class FollowingBlock extends StatelessWidget {
                           TextSpan(
                             text: '看完整留言',
                             style: TextStyle(
-                              color: Colors.black54,
+                              color: readrBlack50,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                             ),

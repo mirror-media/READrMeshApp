@@ -37,7 +37,7 @@ class LookmoreItem extends StatelessWidget {
                 '探索更多為你推薦的使用者',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.black54,
+                  color: readrBlack50,
                   fontWeight: FontWeight.w400,
                 ),
                 maxLines: 2,

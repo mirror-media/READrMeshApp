@@ -151,7 +151,7 @@ class _SettingPageState extends State<SettingPage> {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
-                    color: Colors.black54,
+                    color: readrBlack50,
                   ),
                 ),
               ],
@@ -185,7 +185,7 @@ class _SettingPageState extends State<SettingPage> {
             if (!hideArrow)
               const Icon(
                 Icons.arrow_forward_ios_outlined,
-                color: Colors.black54,
+                color: readrBlack50,
                 size: 16,
               ),
           ],

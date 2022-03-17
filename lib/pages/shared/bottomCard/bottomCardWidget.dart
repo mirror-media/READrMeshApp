@@ -315,7 +315,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               widget.news.source!.title,
               maxLines: 1,
               style: const TextStyle(
-                color: Colors.black54,
+                color: readrBlack50,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),

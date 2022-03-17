@@ -1,6 +1,7 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -90,7 +91,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
             child: const Text(
               '編輯留言',
               style: TextStyle(
-                color: Colors.black54,
+                color: readrBlack50,
                 fontSize: 13,
               ),
             ),
@@ -185,7 +186,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 TextSpan(
                   text: '顯示更多',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),

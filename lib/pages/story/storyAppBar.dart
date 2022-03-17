@@ -51,7 +51,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
       title: Text(
         widget.url,
         style: const TextStyle(
-          color: Colors.black54,
+          color: readrBlack50,
           fontSize: 13,
         ),
       ),

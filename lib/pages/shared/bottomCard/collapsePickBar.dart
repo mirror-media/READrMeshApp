@@ -30,7 +30,7 @@ class CollapsePickBar extends StatelessWidget {
                   TextSpan(
                     text: ' 則留言',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: readrBlack50,
                       fontWeight: FontWeight.w400,
                     ),
                   )
@@ -59,7 +59,7 @@ class CollapsePickBar extends StatelessWidget {
                   TextSpan(
                     text: ' 人精選',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: readrBlack50,
                       fontWeight: FontWeight.w400,
                     ),
                   )

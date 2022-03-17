@@ -50,7 +50,7 @@ class RecommendFollowItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontWeight: FontWeight.w400,
                   ),
                   maxLines: 2,

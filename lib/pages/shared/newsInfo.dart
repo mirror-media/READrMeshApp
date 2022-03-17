@@ -21,14 +21,14 @@ class NewsInfo extends StatelessWidget {
             const ImageIcon(
               AssetImage(commentIconPng),
               size: 17,
-              color: Colors.black54,
+              color: readrBlack50,
             ),
             const SizedBox(width: 3),
             Text(
               displayCommentCount.toString(),
               style: const TextStyle(
                 fontSize: 12,
-                color: Colors.black54,
+                color: readrBlack50,
                 height: 1.4,
               ),
             ),
@@ -64,7 +64,7 @@ class NewsInfo extends StatelessWidget {
         '付費文章',
         style: TextStyle(
           fontSize: 13,
-          color: Colors.black54,
+          color: readrBlack50,
         ),
       ));
     }
@@ -84,7 +84,7 @@ class NewsInfo extends StatelessWidget {
         '蓋板廣告',
         style: TextStyle(
           fontSize: 13,
-          color: Colors.black54,
+          color: readrBlack50,
         ),
       ));
     }

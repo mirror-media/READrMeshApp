@@ -29,7 +29,7 @@ class NewsListItemWidget extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(
                 news.source!.title,
-                style: const TextStyle(color: Colors.black54, fontSize: 12),
+                style: const TextStyle(color: readrBlack50, fontSize: 12),
               ),
             ),
           Row(

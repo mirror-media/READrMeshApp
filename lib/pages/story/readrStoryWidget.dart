@@ -190,7 +190,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             alignment: Alignment.centerLeft,
             child: Text(
               story.heroCaption!,
-              style: const TextStyle(fontSize: 13, color: Colors.black54),
+              style: const TextStyle(fontSize: 13, color: readrBlack50),
             ),
           ),
       ],
@@ -226,7 +226,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             story.categoryList![index].name,
             style: const TextStyle(
               fontSize: 14,
-              color: Colors.black54,
+              color: readrBlack50,
               fontWeight: FontWeight.w400,
             ),
           );
@@ -271,7 +271,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             dateTimeFormat.changeStringToDisplayString(
                 story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm'),
         style: const TextStyle(
-          color: Colors.black54,
+          color: readrBlack50,
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),
@@ -327,7 +327,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
         softWrap: true,
         style: const TextStyle(
           fontSize: 13,
-          color: Colors.black54,
+          color: readrBlack50,
           fontWeight: FontWeight.w400,
         ),
       ));
@@ -347,7 +347,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             '記者：',
             style: TextStyle(
               fontSize: 13,
-              color: Colors.black54,
+              color: readrBlack50,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -370,7 +370,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
         peopleList[i].name,
         style: const TextStyle(
           fontSize: 13,
-          color: Colors.black54,
+          color: readrBlack50,
           fontWeight: FontWeight.w400,
         ),
       ));

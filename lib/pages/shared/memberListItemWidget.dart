@@ -49,7 +49,7 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black54,
+                  color: readrBlack50,
                 ),
               )
             ],

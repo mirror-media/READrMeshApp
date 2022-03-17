@@ -191,7 +191,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black54,
+                      color: readrBlack50,
                     ),
                   );
                 },

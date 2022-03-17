@@ -337,7 +337,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     child: const Text(
                       '自訂您想看到的新聞',
                       style: TextStyle(
-                        color: Colors.black54,
+                        color: readrBlack50,
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),

@@ -217,7 +217,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 Text(
                                   position,
                                   style: const TextStyle(
-                                    color: Colors.black54,
+                                    color: readrBlack50,
                                   ),
                                 ),
                                 const VerticalDivider(
@@ -228,7 +228,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 Text(
                                   duration,
                                   style: const TextStyle(
-                                    color: Colors.black54,
+                                    color: readrBlack50,
                                   ),
                                 ),
                               ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class Timestamp extends StatefulWidget {
   final DateTime dateTime;
@@ -10,7 +11,7 @@ class Timestamp extends StatefulWidget {
   const Timestamp(
     this.dateTime, {
     this.textSize = 12.0,
-    this.textColor = Colors.black54,
+    this.textColor = readrBlack50,
   });
 
   @override

@@ -145,7 +145,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black54,
+                              color: readrBlack50,
                             ),
                           )
                         ],

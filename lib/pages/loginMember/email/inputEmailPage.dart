@@ -126,7 +126,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
           '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
           style: TextStyle(
             fontSize: 13,
-            color: Colors.black54,
+            color: readrBlack50,
             fontWeight: FontWeight.w400,
           ),
         )

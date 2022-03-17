@@ -447,7 +447,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Colors.black54,
+                color: readrBlack50,
               ),
               textAlign: TextAlign.center,
             ),
@@ -480,7 +480,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Colors.black54,
+                            color: readrBlack50,
                           ),
                         )
                       ],
@@ -520,7 +520,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black54,
+                              color: readrBlack50,
                             ),
                           ),
                           WidgetSpan(
@@ -568,7 +568,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black54,
+                              color: readrBlack50,
                             ),
                           ),
                           WidgetSpan(

@@ -51,7 +51,7 @@ class RecommendFollowBlock extends StatelessWidget {
                   '查看全部',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black54,
+                    color: readrBlack50,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
