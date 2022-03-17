@@ -14,7 +14,7 @@ class ErrorPage extends StatelessWidget {
     required this.error,
     required this.onPressed,
     this.needPop = false,
-    this.hideAppbar = false,
+    this.hideAppbar = true,
   });
   @override
   Widget build(BuildContext context) {
@@ -49,19 +49,26 @@ class ErrorPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 4,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.white,
-        leading: Container(
-          padding: const EdgeInsets.only(
-            left: 8,
-          ),
-          margin: const EdgeInsets.all(11),
-          child: SvgPicture.asset(
-            logoSimplifySvg,
+        centerTitle: false,
+        elevation: 0,
+        title: const Text(
+          'Logo',
+          style: TextStyle(
             color: readrBlack,
+            fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications_none_outlined,
+              color: readrBlack,
+            ),
+          )
+        ],
       ),
       body: _errorWidget(
         title: title,
@@ -90,7 +97,7 @@ class ErrorPage extends StatelessWidget {
             imagePath,
           ),
           const SizedBox(
-            height: 24,
+            height: 20,
           ),
           Text(
             title,
@@ -116,29 +123,20 @@ class ErrorPage extends StatelessWidget {
             height: 48,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 111),
+            padding: const EdgeInsets.symmetric(horizontal: 135),
             child: OutlinedButton(
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                child: Text(
-                  '重新嘗試',
-                  style: TextStyle(
-                    color: Color.fromRGBO(4, 41, 94, 1),
-                  ),
+              child: const Text(
+                '重新嘗試',
+                style: TextStyle(
+                  color: readrBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-              style: ButtonStyle(
-                textStyle: MaterialStateProperty.all(
-                  const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                side: MaterialStateProperty.all(
-                  const BorderSide(
-                    color: Color.fromRGBO(4, 41, 94, 1),
-                  ),
-                ),
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                side: const BorderSide(color: readrBlack30),
               ),
               onPressed: onPressedFunction,
             ),
