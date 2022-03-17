@@ -240,7 +240,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.black26,
+              color: readrBlack20,
             ),
           );
         },
@@ -318,7 +318,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
           alignment: Alignment.center,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.black26,
+            color: readrBlack20,
           ),
         ));
       }
@@ -382,7 +382,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
           alignment: Alignment.center,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.black26,
+            color: readrBlack20,
           ),
         ));
       }
@@ -443,11 +443,11 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
         decoration: const BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Colors.black12,
+              color: readrBlack10,
               width: 1,
             ),
             bottom: BorderSide(
-              color: Colors.black12,
+              color: readrBlack10,
               width: 1,
             ),
           ),

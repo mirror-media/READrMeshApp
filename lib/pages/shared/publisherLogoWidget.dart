@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/publisher.dart';
 
 class PublisherLogoWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class PublisherLogoWidget extends StatelessWidget {
     Color randomColor =
         Colors.primaries[int.parse(publisher.id) % Colors.primaries.length];
     Color textColor =
-        randomColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+        randomColor.computeLuminance() > 0.5 ? readrBlack : Colors.white;
     List<String> splitTitle = publisher.title.split('');
     String firstLetter = '';
     for (int i = 0; i < splitTitle.length; i++) {
@@ -61,7 +62,7 @@ class PublisherLogoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         border: Border.all(
-          color: Colors.black12,
+          color: readrBlack10,
           width: 0.5,
         ),
       ),

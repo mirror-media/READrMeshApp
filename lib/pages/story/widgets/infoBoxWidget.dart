@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class InfoBoxWidget extends StatelessWidget {
   final String title;
@@ -29,7 +30,7 @@ class InfoBoxWidget extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: textSize,
-                  color: Colors.black,
+                  color: readrBlack,
                   fontWeight: FontWeight.w700,
                 ),
               ),

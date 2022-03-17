@@ -28,7 +28,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
         title: const Text(
           'Email',
           style: TextStyle(
-            color: Colors.black,
+            color: readrBlack,
             fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
@@ -36,7 +36,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: readrBlack87,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -111,10 +111,10 @@ class _InputEmailPageState extends State<InputEmailPage> {
                 borderSide: BorderSide(color: readrBlack87, width: 1.0),
               ),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                borderSide: BorderSide(color: readrBlack10, width: 1.0),
               ),
               border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                borderSide: BorderSide(color: readrBlack10, width: 1.0),
               ),
             ),
           ),

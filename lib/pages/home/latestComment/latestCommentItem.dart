@@ -101,7 +101,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
           const Divider(
             indent: 12,
             endIndent: 12,
-            color: Colors.black12,
+            color: readrBlack10,
             height: 1,
             thickness: 1,
           ),

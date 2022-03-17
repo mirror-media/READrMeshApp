@@ -28,7 +28,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
           title: const Text(
             '刪除帳號',
             style: TextStyle(
-              color: Colors.black,
+              color: readrBlack,
               fontSize: 20,
               fontWeight: FontWeight.w400,
             ),
@@ -37,7 +37,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               ? IconButton(
                   icon: const Icon(
                     Icons.arrow_back_ios_new_outlined,
-                    color: Colors.black,
+                    color: readrBlack,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
                 )
@@ -122,7 +122,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
               side: const BorderSide(
-                color: Colors.black,
+                color: readrBlack,
                 width: 1,
               ),
             ),
@@ -131,7 +131,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Colors.black,
+                color: readrBlack,
               ),
             ),
           ),

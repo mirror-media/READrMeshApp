@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
 
@@ -38,7 +37,7 @@ class CommentBottomSheet {
         Widget dialogTitle = const Text(
           '確定要刪除留言？',
           style: TextStyle(
-            color: Colors.black,
+            color: readrBlack,
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
@@ -46,7 +45,7 @@ class CommentBottomSheet {
         Widget dialogContent = const Text(
           '系統將不會儲存您剛剛輸入的內容',
           style: TextStyle(
-            color: Colors.black,
+            color: readrBlack,
             fontSize: 13,
             fontWeight: FontWeight.w400,
           ),

@@ -54,7 +54,7 @@ class _AboutPageState extends State<AboutPage> {
       leading: IconButton(
         icon: Icon(
           Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-          color: Colors.black,
+          color: readrBlack,
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),

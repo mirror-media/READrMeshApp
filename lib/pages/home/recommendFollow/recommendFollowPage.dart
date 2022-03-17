@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
 
@@ -19,14 +20,14 @@ class RecommendFollowPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Colors.black,
+            color: readrBlack87,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           '推薦追蹤',
           style: TextStyle(
-            color: Colors.black,
+            color: readrBlack,
             fontSize: 18,
             fontWeight: FontWeight.w400,
           ),

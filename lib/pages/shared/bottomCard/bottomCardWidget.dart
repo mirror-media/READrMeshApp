@@ -161,7 +161,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black12,
+                              color: readrBlack10,
                               offset: Offset(0, -8),
                               blurRadius: 10,
                               spreadRadius: 5,
@@ -197,7 +197,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                                   ),
                                   child: const Icon(
                                     Icons.expand_more_outlined,
-                                    color: Colors.black38,
+                                    color: readrBlack30,
                                     size: 32,
                                   ),
                                 ),
@@ -236,7 +236,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                     Container(
                       color: Colors.white,
                       child: const Divider(
-                        color: Colors.black12,
+                        color: readrBlack10,
                         thickness: 0.5,
                         height: 0.5,
                       ),
@@ -276,7 +276,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             constraints: const BoxConstraints(maxHeight: 1),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Colors.black26,
+              color: readrBlack20,
             ),
           ),
         ),
@@ -293,7 +293,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
       decoration: const BoxDecoration(
         border: Border.symmetric(
-          horizontal: BorderSide(color: Colors.black12, width: 0.5),
+          horizontal: BorderSide(color: readrBlack10, width: 0.5),
         ),
       ),
       child: Column(
@@ -358,7 +358,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         separatorBuilder: (context, index) {
           if (index == 0) return Container();
           return const Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 0.5,
             height: 0.5,
             indent: 20,
@@ -383,7 +383,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           key: ValueKey(_allComments[index].id),
         ),
         separatorBuilder: (context, index) => const Divider(
-          color: Colors.black12,
+          color: readrBlack10,
           thickness: 0.5,
           height: 0.5,
           indent: 20,

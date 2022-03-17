@@ -108,7 +108,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
           decoration: const BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: Colors.black12,
+                color: readrBlack10,
                 width: 0.5,
               ),
             ),
@@ -219,7 +219,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
         return const Padding(
           padding: EdgeInsets.only(top: 16, bottom: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),

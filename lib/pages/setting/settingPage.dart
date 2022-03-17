@@ -30,13 +30,13 @@ class _SettingPageState extends State<SettingPage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black,
+            color: readrBlack,
           ),
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Colors.black,
+            color: readrBlack,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -68,7 +68,7 @@ class _SettingPageState extends State<SettingPage> {
       icon = const FaIcon(
         FontAwesomeIcons.apple,
         size: 18,
-        color: Colors.black,
+        color: readrBlack,
       );
     } else if (widget.loginType == 'facebook') {
       icon = const FaIcon(
@@ -121,7 +121,7 @@ class _SettingPageState extends State<SettingPage> {
             },
           ),
           const Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             height: 1,
           ),
           _settingButton(
@@ -130,7 +130,7 @@ class _SettingPageState extends State<SettingPage> {
             hideArrow: true,
           ),
           const Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             height: 1,
           ),
           SizedBox(
@@ -221,7 +221,7 @@ class _SettingPageState extends State<SettingPage> {
             },
           ),
           const Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             height: 1,
           ),
           InkWell(

@@ -122,7 +122,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.black26,
+            color: readrBlack30,
           ),
           textAlign: TextAlign.center,
         ),
@@ -160,7 +160,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
                       _isExpanded
                           ? Icons.expand_less_outlined
                           : Icons.expand_more_outlined,
-                      color: Colors.black26,
+                      color: readrBlack30,
                     ),
                   ],
                 ),
@@ -205,7 +205,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
           return const Padding(
             padding: EdgeInsets.only(top: 20),
             child: Divider(
-              color: Colors.black12,
+              color: readrBlack10,
               thickness: 1,
               height: 1,
             ),
@@ -229,7 +229,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
         return const Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),
@@ -281,7 +281,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
         return const Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),

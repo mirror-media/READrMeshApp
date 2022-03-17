@@ -117,7 +117,7 @@ class _PickTabContentState extends State<PickTabContent> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.black26,
+            color: readrBlack30,
           ),
           textAlign: TextAlign.center,
         ),
@@ -201,7 +201,7 @@ class _PickTabContentState extends State<PickTabContent> {
         return const Padding(
           padding: EdgeInsets.only(top: 16, bottom: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),

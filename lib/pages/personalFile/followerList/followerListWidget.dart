@@ -116,7 +116,7 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.black26,
+            color: readrBlack30,
           ),
           textAlign: TextAlign.center,
         ),
@@ -164,7 +164,7 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
         return const Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),

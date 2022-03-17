@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/pages/loginMember/loginWidget.dart';
 
@@ -34,7 +35,7 @@ class LoginPage extends StatelessWidget {
           title: Text(
             appBarTitle,
             style: const TextStyle(
-              color: Colors.black,
+              color: readrBlack,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
@@ -44,7 +45,7 @@ class LoginPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(
                   Icons.close_outlined,
-                  color: Colors.black,
+                  color: readrBlack87,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

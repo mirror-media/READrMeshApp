@@ -98,7 +98,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
       elevation: 0,
       color: Colors.white,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.black12, width: 1.0),
+        side: const BorderSide(color: readrBlack10, width: 1.0),
         borderRadius: BorderRadius.circular(6.0),
       ),
       child: Padding(
@@ -190,7 +190,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                             child: _duration == 0
                                 ? Slider(
                                     value: 0,
-                                    inactiveColor: Colors.black26,
+                                    inactiveColor: readrBlack20,
                                     thumbColor: readrBlack87,
                                     onChanged: (v) {},
                                   )
@@ -199,7 +199,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                     max: _duration.toDouble(),
                                     value: sliderPosition,
                                     activeColor: readrBlack87,
-                                    inactiveColor: Colors.black26,
+                                    inactiveColor: readrBlack20,
                                     thumbColor: readrBlack87,
                                     onChanged: (v) {
                                       _audioPlayer.seek(
@@ -221,7 +221,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                   ),
                                 ),
                                 const VerticalDivider(
-                                  color: Colors.black12,
+                                  color: readrBlack10,
                                   thickness: 1,
                                   width: 17,
                                 ),

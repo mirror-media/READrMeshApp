@@ -191,7 +191,7 @@ class _CommentItemState extends State<CommentItem> {
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black26,
+                        color: readrBlack20,
                       ),
                     ),
                   if (widget.isSending)
@@ -213,7 +213,7 @@ class _CommentItemState extends State<CommentItem> {
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black26,
+                        color: readrBlack20,
                       ),
                     ),
                     GestureDetector(

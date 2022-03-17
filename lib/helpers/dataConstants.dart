@@ -37,6 +37,8 @@ const Color readrBlack87 = Color.fromRGBO(0, 9, 40, 0.87);
 const Color readrBlack66 = Color.fromRGBO(0, 9, 40, 0.66);
 const Color readrBlack50 = Color.fromRGBO(0, 9, 40, 0.5);
 const Color readrBlack30 = Color.fromRGBO(0, 9, 40, 0.3);
+const Color readrBlack20 = Color.fromRGBO(0, 9, 40, 0.2);
+const Color readrBlack10 = Color.fromRGBO(0, 9, 40, 0.1);
 
 const Color storyWidgetColor = Color(0xff04295E);
 const Color storySummaryFrameColor = storyWidgetColor;

@@ -59,7 +59,7 @@ class ErrorPage extends StatelessWidget {
           margin: const EdgeInsets.all(11),
           child: SvgPicture.asset(
             logoSimplifySvg,
-            color: Colors.black,
+            color: readrBlack,
           ),
         ),
       ),

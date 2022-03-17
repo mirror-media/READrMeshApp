@@ -231,7 +231,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           : IconButton(
               icon: const Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: Colors.black,
+                color: readrBlack87,
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -242,7 +242,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
-          color: Colors.black,
+          color: readrBlack87,
         ),
       ),
       centerTitle: Platform.isIOS,
@@ -263,7 +263,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           ),
           const SliverToBoxAdapter(
             child: Divider(
-              color: Colors.black12,
+              color: readrBlack10,
               thickness: 0.5,
               height: 0.5,
             ),
@@ -276,7 +276,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
             backgroundColor: Colors.white,
             bottom: TabBar(
               indicatorColor: tabBarSelectedColor,
-              unselectedLabelColor: Colors.black26,
+              unselectedLabelColor: readrBlack30,
               indicatorWeight: 0.5,
               tabs: _tabs.toList(),
               controller: _tabController,
@@ -295,7 +295,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     return IconButton(
       icon: const Icon(
         Icons.settings,
-        color: Colors.black,
+        color: readrBlack,
       ),
       onPressed: () async {
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -319,7 +319,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       leading = IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: Colors.black,
+          color: readrBlack87,
         ),
         onPressed: () => Navigator.pop(context),
       );
@@ -338,7 +338,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
-          color: Colors.black,
+          color: readrBlack,
         ),
       ),
       actions: widget.isMine && !widget.isVisitor && _pickCount != 0
@@ -346,7 +346,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               IconButton(
                 icon: const Icon(
                   Icons.add_sharp,
-                  color: Colors.black,
+                  color: readrBlack87,
                 ),
                 onPressed: () {},
               )
@@ -493,7 +493,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 height: 20,
                 child: const VerticalDivider(
-                  color: Colors.black12,
+                  color: readrBlack10,
                   thickness: 0.5,
                 ),
               ),
@@ -527,7 +527,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             child: Icon(
                               Icons.navigate_next_outlined,
                               size: 18,
-                              color: Colors.black26,
+                              color: readrBlack30,
                             ),
                           ),
                         ],
@@ -541,7 +541,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 height: 20,
                 child: const VerticalDivider(
-                  color: Colors.black12,
+                  color: readrBlack10,
                   thickness: 0.5,
                 ),
               ),
@@ -575,7 +575,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             child: Icon(
                               Icons.navigate_next_outlined,
                               size: 18,
-                              color: Colors.black26,
+                              color: readrBlack30,
                             ),
                           ),
                         ],

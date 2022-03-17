@@ -42,7 +42,7 @@ class NewsInfo extends StatelessWidget {
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.black26,
+          color: readrBlack20,
         ),
       ));
     }
@@ -57,7 +57,7 @@ class NewsInfo extends StatelessWidget {
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.black26,
+          color: readrBlack20,
         ),
       ));
       children.add(const Text(
@@ -77,7 +77,7 @@ class NewsInfo extends StatelessWidget {
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.black26,
+          color: readrBlack20,
         ),
       ));
       children.add(const Text(

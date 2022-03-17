@@ -36,13 +36,13 @@ class _SetNewsCoveragePageState extends State<SetNewsCoveragePage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black,
+            color: readrBlack,
           ),
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Colors.black,
+            color: readrBlack,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -54,7 +54,7 @@ class _SetNewsCoveragePageState extends State<SetNewsCoveragePage> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => _buildItem(context, index),
           separatorBuilder: (context, index) => const Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             height: 0.5,
             thickness: 0.5,
             indent: 20,

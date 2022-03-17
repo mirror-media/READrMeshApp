@@ -136,7 +136,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           label: const Text(
             '以 Email 信箱繼續',
             style: TextStyle(
-              color: Colors.black,
+              color: readrBlack,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
@@ -149,7 +149,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           style: OutlinedButton.styleFrom(
             backgroundColor: Colors.white,
             side: const BorderSide(
-              color: Colors.black,
+              color: readrBlack,
               width: 1,
             ),
             fixedSize: const Size(double.infinity, 48),
@@ -181,7 +181,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       },
       textStyle: const TextStyle(
         fontSize: 13,
-        color: Colors.black38,
+        color: readrBlack30,
       ),
     );
   }

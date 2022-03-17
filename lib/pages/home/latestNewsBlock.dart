@@ -68,7 +68,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
                       text: ' 🗣',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black,
+                        color: readrBlack,
                         fontWeight: FontWeight.w400,
                       ),
                     )
@@ -118,7 +118,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
                       text: ' 👇',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black,
+                        color: readrBlack,
                         fontWeight: FontWeight.w400,
                       ),
                     )
@@ -204,7 +204,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
         return const Padding(
           padding: EdgeInsets.only(top: 16, bottom: 20),
           child: Divider(
-            color: Colors.black12,
+            color: readrBlack10,
             thickness: 1,
             height: 1,
           ),
@@ -239,7 +239,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
                   TextSpan(
                     text: '你已看完所有新聞囉',
                     style: TextStyle(
-                      color: Colors.black38,
+                      color: readrBlack30,
                       fontSize: 14,
                     ),
                   )

@@ -42,7 +42,7 @@ class PickBar extends StatelessWidget {
               text: pickCountData.toString(),
               style: const TextStyle(
                 fontSize: 13,
-                color: Colors.black,
+                color: readrBlack,
                 fontWeight: FontWeight.w500,
               ),
               children: const [

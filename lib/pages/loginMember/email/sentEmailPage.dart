@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_mail_app/open_mail_app.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class SentEmailPage extends StatelessWidget {
   final String email;
@@ -16,7 +17,7 @@ class SentEmailPage extends StatelessWidget {
         title: const Text(
           '確認收件匣',
           style: TextStyle(
-            color: Colors.black,
+            color: readrBlack,
             fontSize: 20,
             fontWeight: FontWeight.w400,
           ),
@@ -24,7 +25,7 @@ class SentEmailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: readrBlack87,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -90,12 +91,12 @@ class SentEmailPage extends StatelessWidget {
             child: const Text('打開信件 APP'),
             style: OutlinedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 16),
-              primary: Colors.black,
+              primary: readrBlack,
               backgroundColor: Colors.white,
-              onSurface: Colors.black26,
+              onSurface: readrBlack20,
               minimumSize: const Size(double.infinity, 48),
               side: const BorderSide(
-                color: Colors.black,
+                color: readrBlack,
               ),
             ),
           ),
@@ -107,7 +108,7 @@ class SentEmailPage extends StatelessWidget {
           child: Text(
             '沒收到信件？請檢查垃圾信件匣',
             style: TextStyle(
-              color: Colors.black38,
+              color: readrBlack30,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -119,7 +120,7 @@ class SentEmailPage extends StatelessWidget {
             const Text(
               '或',
               style: TextStyle(
-                color: Colors.black38,
+                color: readrBlack30,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),
@@ -132,11 +133,11 @@ class SentEmailPage extends StatelessWidget {
                 '嘗試其他登入方式',
                 softWrap: true,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: readrBlack87,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   decoration: TextDecoration.underline,
-                  decorationColor: Colors.black,
+                  decorationColor: readrBlack87,
                 ),
               ),
             ),

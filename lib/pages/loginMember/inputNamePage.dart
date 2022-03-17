@@ -41,7 +41,7 @@ class _InputNamePageState extends State<InputNamePage> {
           title: const Text(
             '姓名',
             style: TextStyle(
-              color: Colors.black,
+              color: readrBlack,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
@@ -49,7 +49,7 @@ class _InputNamePageState extends State<InputNamePage> {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
-              color: Colors.black,
+              color: readrBlack,
             ),
             onPressed: () async {
               await FirebaseAuth.instance.currentUser?.delete();
@@ -132,10 +132,10 @@ class _InputNamePageState extends State<InputNamePage> {
                 borderSide: BorderSide(color: readrBlack87, width: 1.0),
               ),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                borderSide: BorderSide(color: readrBlack10, width: 1.0),
               ),
               border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                borderSide: BorderSide(color: readrBlack10, width: 1.0),
               ),
               counterText: '',
             ),

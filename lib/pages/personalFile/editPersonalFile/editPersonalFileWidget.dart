@@ -203,7 +203,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 )
               : const Icon(
                   Icons.close,
-                  color: Colors.black,
+                  color: readrBlack,
                 ),
         ),
       ),
@@ -211,7 +211,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
       title: const Text('編輯個人檔案',
           style: TextStyle(
             fontSize: 18,
-            color: Colors.black,
+            color: readrBlack,
             fontWeight: FontWeight.w400,
           )),
       actions: [
@@ -410,7 +410,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 decoration: const InputDecoration(
                   hintText: '向大家介紹一下自己吧...',
                   hintStyle: TextStyle(
-                    color: Colors.black26,
+                    color: readrBlack30,
                     fontSize: 16,
                   ),
                   focusedBorder: OutlineInputBorder(

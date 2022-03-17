@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/story/widgets/youtubeViewer.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -52,12 +53,12 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                         placeholder: (context, url) => Container(
                           width: imageWidth,
                           height: imageHeight,
-                          color: Colors.black,
+                          color: readrBlack,
                         ),
                         errorWidget: (context, url, error) => Container(
                           width: imageWidth,
                           height: imageHeight,
-                          color: Colors.black,
+                          color: readrBlack,
                         ),
                         fit: BoxFit.fitWidth,
                       ),

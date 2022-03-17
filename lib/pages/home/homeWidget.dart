@@ -249,7 +249,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       title: const Text(
         'Logo',
         style: TextStyle(
-          color: Colors.black,
+          color: readrBlack,
           fontSize: 18,
         ),
       ),
@@ -258,7 +258,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           onPressed: () {},
           icon: const Icon(
             Icons.notifications_none_outlined,
-            color: Colors.black,
+            color: readrBlack,
           ),
         )
       ],
@@ -289,7 +289,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             SizedBox(width: 6),
             Icon(
               Icons.expand_more_outlined,
-              color: Colors.black38,
+              color: readrBlack30,
               size: 30,
             ),
           ],
@@ -327,7 +327,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     child: Container(
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Colors.black26,
+                        color: readrBlack20,
                       ),
                     ),
                   ),
@@ -385,7 +385,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     height: 16,
                   ),
                   const Divider(
-                    color: Colors.black12,
+                    color: readrBlack10,
                     height: 0.5,
                     thickness: 0.5,
                   ),

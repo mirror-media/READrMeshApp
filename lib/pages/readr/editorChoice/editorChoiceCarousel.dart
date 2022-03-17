@@ -158,14 +158,14 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
             ));
           },
           child: Container(
-            color: Colors.black,
+            color: readrBlack,
             child: Stack(
               children: [
                 FadeIn(
                   key: UniqueKey(),
                   duration: const Duration(milliseconds: 500),
                   child: Container(
-                    color: Colors.black,
+                    color: readrBlack,
                     child: _displayImage(
                         width, widget.editorChoiceList.elementAt(_current)),
                   ),
@@ -199,7 +199,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
           ),
         ),
         const Divider(
-          color: Colors.black12,
+          color: readrBlack10,
           thickness: 0.5,
           height: 0.5,
         ),
@@ -219,9 +219,8 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                   ),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _current == entry.key
-                          ? readrBlack87
-                          : Colors.black12),
+                      color:
+                          _current == entry.key ? readrBlack87 : readrBlack10),
                 ),
               );
             }).toList(),

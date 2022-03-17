@@ -137,14 +137,14 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                           decoration: const BoxDecoration(
                             border: Border(
                               bottom:
-                                  BorderSide(color: Colors.black12, width: 1.0),
+                                  BorderSide(color: readrBlack10, width: 1.0),
                             ),
                           ),
                         ),
                         TabBar(
                           isScrollable: true,
                           indicatorColor: tabBarSelectedColor,
-                          unselectedLabelColor: Colors.black26,
+                          unselectedLabelColor: readrBlack20,
                           tabs: _tabs.toList(),
                           controller: _tabController,
                           indicatorWeight: 1,
@@ -186,7 +186,7 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
       title: const Text(
         'Logo',
         style: TextStyle(
-          color: Colors.black,
+          color: readrBlack,
           fontSize: 18,
         ),
       ),
@@ -195,7 +195,7 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
           onPressed: () {},
           icon: const Icon(
             Icons.notifications_none_outlined,
-            color: Colors.black,
+            color: readrBlack,
           ),
         )
       ],

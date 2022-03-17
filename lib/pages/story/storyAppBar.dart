@@ -62,7 +62,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               _isBookmarked
                   ? Icons.bookmark_outlined
                   : Icons.bookmark_border_outlined,
-              color: Colors.black,
+              color: readrBlack,
               size: 26,
             ),
             tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
@@ -112,7 +112,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               Platform.isAndroid
                   ? Icons.share_outlined
                   : Icons.ios_share_outlined,
-              color: Colors.black,
+              color: readrBlack,
               size: 26,
             ),
             tooltip: '分享',
@@ -124,7 +124,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
         IconButton(
           icon: const Icon(
             Icons.close_outlined,
-            color: Colors.black,
+            color: readrBlack,
             size: 26,
           ),
           tooltip: '回前頁',
@@ -133,7 +133,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               Widget dialogTitle = const Text(
                 '確定要刪除留言？',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: readrBlack,
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
@@ -141,7 +141,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               Widget dialogContent = const Text(
                 '系統將不會儲存您剛剛輸入的內容',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: readrBlack,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                 ),

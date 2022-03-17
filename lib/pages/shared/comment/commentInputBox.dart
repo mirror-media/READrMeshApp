@@ -101,12 +101,12 @@ class _CommentInputBoxState extends State<CommentInputBox> {
       );
     }
     Color sendTextColor;
-    Color textFieldTextColor = Colors.black;
+    Color textFieldTextColor = readrBlack;
     if (!_hasInput) {
       sendTextColor = Colors.white;
     } else if (widget.isSending) {
-      sendTextColor = Colors.black26;
-      textFieldTextColor = Colors.black26;
+      sendTextColor = readrBlack20;
+      textFieldTextColor = readrBlack20;
     } else {
       sendTextColor = Colors.blue;
     }

@@ -45,7 +45,7 @@ class CollapsePickBar extends StatelessWidget {
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black26,
+                color: readrBlack20,
               ),
             ),
             AutoSizeText.rich(

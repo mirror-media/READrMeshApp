@@ -44,7 +44,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
       decoration: BoxDecoration(
         color: const Color.fromRGBO(0, 9, 40, 0.05),
         border: Border.all(
-          color: Colors.black12,
+          color: readrBlack10,
           width: 0.5,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -83,7 +83,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.black26,
+              color: readrBlack20,
             ),
           ),
           GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/choosePublisher/choosePublisherWidget.dart';
 
 class ChoosePublisherPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class ChoosePublisherPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black,
+            color: readrBlack,
           ),
         ),
       ),

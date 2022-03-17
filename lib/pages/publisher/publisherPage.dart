@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/publisher/publisher_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/publisher/publisherWidget.dart';
 
@@ -17,7 +18,7 @@ class PublisherPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Colors.black,
+            color: readrBlack,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -29,7 +30,7 @@ class PublisherPage extends StatelessWidget {
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black,
+            color: readrBlack,
           ),
         ),
         elevation: 0,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheetWidget.dart';
 
 class PickBottomSheet {
@@ -31,7 +32,7 @@ class PickBottomSheet {
       Widget dialogTitle = const Text(
         '確定要刪除留言？',
         style: TextStyle(
-          color: Colors.black,
+          color: readrBlack,
           fontSize: 17,
           fontWeight: FontWeight.w600,
         ),
@@ -39,7 +40,7 @@ class PickBottomSheet {
       Widget dialogContent = const Text(
         '系統將不會儲存您剛剛輸入的內容',
         style: TextStyle(
-          color: Colors.black,
+          color: readrBlack,
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),

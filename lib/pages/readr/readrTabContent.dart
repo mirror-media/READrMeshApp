@@ -138,7 +138,7 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
             child: Divider(
-              color: Colors.black12,
+              color: readrBlack10,
               thickness: 0.5,
               height: 0.5,
               indent: 20,
@@ -198,7 +198,7 @@ class _ReadrTabContentState extends State<ReadrTabContent> {
                   TextSpan(
                     text: '你已看完所有新聞囉',
                     style: TextStyle(
-                      color: Colors.black38,
+                      color: readrBlack30,
                       fontSize: 14,
                     ),
                   )

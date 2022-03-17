@@ -64,7 +64,7 @@ class FollowingBlock extends StatelessWidget {
                       text: ' 👀',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black,
+                        color: readrBlack,
                         fontWeight: FontWeight.w400,
                       ),
                     )
@@ -292,7 +292,7 @@ class FollowingBlock extends StatelessWidget {
             const Divider(
               indent: 20,
               endIndent: 20,
-              color: Colors.black12,
+              color: readrBlack10,
               height: 1,
               thickness: 1,
             ),
@@ -335,7 +335,7 @@ class FollowingBlock extends StatelessWidget {
           child: ExtendedText(
             firstTwoMember[0].nickname,
             joinZeroWidthSpace: true,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: readrBlack87),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -357,7 +357,7 @@ class FollowingBlock extends StatelessWidget {
           child: ExtendedText(
             firstTwoMember[0].nickname,
             joinZeroWidthSpace: true,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: readrBlack87),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -377,7 +377,7 @@ class FollowingBlock extends StatelessWidget {
           child: ExtendedText(
             firstTwoMember[1].nickname,
             joinZeroWidthSpace: true,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: readrBlack87),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -451,7 +451,7 @@ class FollowingBlock extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black26,
+                        color: readrBlack20,
                       ),
                     ),
                     Timestamp(comment.publishDate),

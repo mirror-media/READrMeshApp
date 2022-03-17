@@ -35,7 +35,7 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
               const Text(
                 '從精選新聞或書籤中\n將數篇新聞打包成集錦',
                 style: TextStyle(
-                  color: Colors.black26,
+                  color: readrBlack30,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -75,7 +75,7 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
           child: Text(
             '這個人還沒有建立集錦',
             style: TextStyle(
-              color: Colors.black26,
+              color: readrBlack30,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),

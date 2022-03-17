@@ -70,7 +70,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                 color: Colors.white,
                 border: Border(
                   top: BorderSide(
-                    color: Colors.black12,
+                    color: readrBlack20,
                     width: 0.5,
                   ),
                 ),
@@ -94,7 +94,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                   _followingCount == 0 ? '請至少選擇 1 個' : buttonText,
                   style: TextStyle(
                     fontSize: 16,
-                    color: _followingCount == 0 ? Colors.black26 : Colors.white,
+                    color: _followingCount == 0 ? readrBlack20 : Colors.white,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
@@ -154,7 +154,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
       separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Divider(
-          color: Colors.black12,
+          color: readrBlack10,
           thickness: 1,
           height: 1,
         ),

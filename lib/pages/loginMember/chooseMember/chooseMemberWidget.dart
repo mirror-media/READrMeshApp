@@ -86,7 +86,7 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             separatorBuilder: (context, index) => const Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Divider(
-                color: Colors.black12,
+                color: readrBlack10,
                 thickness: 1,
                 height: 1,
               ),
@@ -101,7 +101,7 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             color: Colors.white,
             border: Border(
               top: BorderSide(
-                color: Colors.black12,
+                color: readrBlack20,
                 width: 0.5,
               ),
             ),

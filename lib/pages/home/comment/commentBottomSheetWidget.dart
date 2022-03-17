@@ -91,7 +91,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                 color: Colors.white,
                 child: const Icon(
                   Icons.expand_more_outlined,
-                  color: Colors.black38,
+                  color: readrBlack30,
                   size: 32,
                 ),
               ),
@@ -113,41 +113,12 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                 },
                 builder: (context, state) {
                   if (state is CommentError) {
-                    return Container(
-                      color: Colors.white,
-                      child: SafeArea(
-                        top: false,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                              onTap: () => Navigator.pop(context),
-                              child: Container(
-                                height: 48,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    topRight: Radius.circular(24),
-                                  ),
-                                  color: Colors.white,
-                                ),
-                                child: const Icon(
-                                  Icons.expand_more_outlined,
-                                  color: Colors.black38,
-                                  size: 32,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 500,
-                              child: ErrorPage(
-                                error: state.error,
-                                onPressed: () => _fetchComment(),
-                                hideAppbar: true,
-                              ),
-                            ),
-                          ],
-                        ),
+                    return SizedBox(
+                      height: 500,
+                      child: ErrorPage(
+                        error: state.error,
+                        onPressed: () => _fetchComment(),
+                        hideAppbar: true,
                       ),
                     );
                   }
@@ -267,7 +238,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     );
                   },
                   separatorBuilder: (context, index) => const Divider(
-                    color: Colors.black12,
+                    color: readrBlack10,
                     indent: 20,
                     endIndent: 20,
                     thickness: 0.5,
@@ -277,7 +248,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               ),
             ),
             const Divider(
-              color: Colors.black12,
+              color: readrBlack10,
               thickness: 0.5,
               height: 0.5,
             ),
