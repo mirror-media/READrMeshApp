@@ -95,9 +95,7 @@ class _AboutPageState extends State<AboutPage> {
             ? Container(
                 color: Colors.white,
                 child: const Center(
-                  child: CircularProgressIndicator(
-                    color: hightLightColor,
-                  ),
+                  child: CircularProgressIndicator.adaptive(),
                 ),
               )
             : Container(),

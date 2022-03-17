@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
@@ -85,7 +86,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: Colors.black87,
+            primary: readrBlack87,
             elevation: 0,
             padding: const EdgeInsets.symmetric(
               vertical: 12,

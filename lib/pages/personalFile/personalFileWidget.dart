@@ -363,7 +363,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           child: Text(
             '建立帳號，客製化追蹤更多優質新聞',
             style: TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
@@ -384,7 +384,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               ),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.black87,
+              primary: readrBlack87,
               elevation: 0,
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
@@ -425,7 +425,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
               ),
@@ -435,7 +435,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   child: Icon(
                     Icons.verified,
                     size: 16,
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
             ],
@@ -472,7 +472,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: readrBlack87,
                       ),
                       children: const [
                         TextSpan(
@@ -512,7 +512,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: readrBlack87,
                         ),
                         children: const [
                           TextSpan(
@@ -560,7 +560,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: readrBlack87,
                         ),
                         children: const [
                           TextSpan(
@@ -626,7 +626,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         }
       },
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Colors.black87, width: 1),
+        side: const BorderSide(color: readrBlack87, width: 1),
         backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       ),
@@ -636,7 +636,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         maxLines: 1,
         style: TextStyle(
           fontSize: 16,
-          color: Colors.black87,
+          color: readrBlack87,
         ),
       ),
     );

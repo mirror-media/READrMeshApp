@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class QuoteByWidget extends StatelessWidget {
   final String quote;
@@ -33,7 +34,7 @@ class QuoteByWidget extends StatelessWidget {
                 fontSize: 20,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                color: readrBlack87,
               ),
             ),
           ),

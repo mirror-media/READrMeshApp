@@ -47,7 +47,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             const Text(
               '喔不...這裡空空的',
               style: TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
@@ -97,7 +97,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
             const Text(
               '哇，今天沒有新文章！',
               style: TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),

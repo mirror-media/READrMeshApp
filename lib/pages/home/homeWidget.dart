@@ -282,7 +282,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Text(
               '所有最新文章',
               style: TextStyle(
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontSize: 18,
                   fontWeight: FontWeight.w500),
             ),
@@ -351,13 +351,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                         showPaywall = value!;
                       });
                     },
-                    activeColor: Colors.black87,
+                    activeColor: readrBlack87,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
                     title: const Text(
                       '付費文章',
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: readrBlack87,
                         fontSize: 16,
                       ),
                     ),
@@ -370,13 +370,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                         showFullScreenAd = value!;
                       });
                     },
-                    activeColor: Colors.black87,
+                    activeColor: readrBlack87,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
                     title: const Text(
                       '蓋板廣告',
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: readrBlack87,
                         fontSize: 16,
                       ),
                     ),
@@ -410,7 +410,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black87,
+                        primary: readrBlack87,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -43,8 +44,8 @@ class FollowButton extends StatelessWidget {
         }
       },
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: isFollowing ? Colors.black87 : Colors.white,
+        side: const BorderSide(color: readrBlack87, width: 1),
+        backgroundColor: isFollowing ? readrBlack87 : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       ),
       child: Text(
@@ -52,7 +53,7 @@ class FollowButton extends StatelessWidget {
         maxLines: 1,
         style: TextStyle(
           fontSize: textSize,
-          color: isFollowing ? Colors.white : Colors.black87,
+          color: isFollowing ? Colors.white : readrBlack87,
         ),
       ),
     );

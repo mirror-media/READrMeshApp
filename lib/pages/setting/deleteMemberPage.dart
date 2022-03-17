@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -82,7 +83,7 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
-              color: Colors.black87,
+              color: readrBlack87,
             ),
           ),
         ),

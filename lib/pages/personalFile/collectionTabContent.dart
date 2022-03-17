@@ -56,7 +56,7 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
                 ),
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  primary: Colors.black87,
+                  primary: readrBlack87,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   shape: RoundedRectangleBorder(

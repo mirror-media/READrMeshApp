@@ -5,6 +5,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
@@ -99,7 +100,7 @@ class _CommentItemState extends State<CommentItem> {
         border: _isFollowingMember
             ? const Border(
                 left: BorderSide(
-                color: Colors.black87,
+                color: readrBlack87,
                 width: 4,
               ))
             : null,
@@ -148,7 +149,7 @@ class _CommentItemState extends State<CommentItem> {
               var span = TextSpan(
                 text: widget.comment.member.nickname,
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),

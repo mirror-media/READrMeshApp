@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
@@ -84,7 +85,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: Colors.black87,
+                      color: readrBlack87,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
@@ -149,7 +150,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                         overflow: TextOverflow.ellipsis,
                         joinZeroWidthSpace: true,
                         style: const TextStyle(
-                          color: Colors.black87,
+                          color: readrBlack87,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),

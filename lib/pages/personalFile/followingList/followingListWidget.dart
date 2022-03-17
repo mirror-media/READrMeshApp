@@ -151,7 +151,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
                         '媒體  (${_followPublisherList.length})',
                         style: const TextStyle(
                           fontSize: 18,
-                          color: Colors.black87,
+                          color: readrBlack87,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -181,7 +181,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
                 '人物  (${_followingMemberList.length})',
                 style: const TextStyle(
                   fontSize: 18,
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontWeight: FontWeight.w500,
                 ),
               ),

@@ -95,7 +95,7 @@ class ErrorPage extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontWeight: FontWeight.w600,
               fontSize: 22,
             ),

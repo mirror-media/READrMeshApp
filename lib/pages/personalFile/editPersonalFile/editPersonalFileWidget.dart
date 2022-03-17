@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/editPersonalFile/editPersonalFile_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -265,7 +266,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 checkIsEdited();
               },
               style: const TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 16,
               ),
               decoration: InputDecoration(
@@ -276,7 +277,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 ),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
                 border: const UnderlineInputBorder(
@@ -295,7 +296,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                         },
                         child: const Icon(
                           Icons.cancel,
-                          color: Colors.black87,
+                          color: readrBlack87,
                           size: 16,
                         ),
                       ),
@@ -322,7 +323,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 checkIsEdited();
               },
               style: const TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 16,
               ),
               decoration: InputDecoration(
@@ -333,7 +334,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 ),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
                 border: const UnderlineInputBorder(
@@ -351,7 +352,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                         },
                         child: const Icon(
                           Icons.cancel,
-                          color: Colors.black87,
+                          color: readrBlack87,
                           size: 16,
                         ),
                       ),
@@ -403,7 +404,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                   checkIsEdited();
                 },
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontSize: 16,
                 ),
                 decoration: const InputDecoration(
@@ -414,7 +415,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.black87,
+                      color: readrBlack87,
                     ),
                   ),
                   border: OutlineInputBorder(

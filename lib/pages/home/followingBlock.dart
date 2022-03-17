@@ -43,7 +43,7 @@ class FollowingBlock extends StatelessWidget {
             const Text(
               '咦？這裡好像還缺點什麼...',
               style: TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
@@ -163,7 +163,7 @@ class FollowingBlock extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Colors.black87,
+                    color: readrBlack87,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
@@ -275,7 +275,7 @@ class FollowingBlock extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: Colors.black87,
+                      color: readrBlack87,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
@@ -438,7 +438,7 @@ class FollowingBlock extends StatelessWidget {
                           joinZeroWidthSpace: true,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            color: Colors.black87,
+                            color: readrBlack87,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),

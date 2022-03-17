@@ -1,5 +1,6 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
@@ -37,7 +38,7 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: readrBlack87,
                 ),
               ),
               ExtendedText(

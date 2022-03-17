@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -51,7 +52,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
           child: const Text(
             '請選擇您想追蹤的媒體',
             style: TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 16,
             ),
           ),
@@ -100,7 +101,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                   elevation: 0,
                   backgroundColor: _followingCount == 0
                       ? const Color.fromRGBO(224, 224, 224, 1)
-                      : Colors.black87,
+                      : readrBlack87,
                   padding: const EdgeInsets.symmetric(
                     vertical: 12,
                     horizontal: 24,
@@ -179,7 +180,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: readrBlack87,
                 ),
               ),
               BlocBuilder<FollowButtonCubit, FollowButtonState>(

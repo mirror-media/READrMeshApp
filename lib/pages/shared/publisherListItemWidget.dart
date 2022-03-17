@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -43,7 +44,7 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: readrBlack87,
                 ),
               ),
               BlocBuilder<FollowButtonCubit, FollowButtonState>(

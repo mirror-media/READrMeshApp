@@ -137,7 +137,7 @@ class _PickTabContentState extends State<PickTabContent> {
           child: const Text(
             '精選文章',
             style: TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),

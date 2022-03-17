@@ -89,7 +89,7 @@ class _SetNewsCoveragePageState extends State<SetNewsCoveragePage> {
             Text(
               title,
               style: const TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),

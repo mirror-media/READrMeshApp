@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 
 class READrAudioPlayer extends StatefulWidget {
@@ -116,11 +117,11 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 3,
-                                color: Colors.black87,
+                                color: readrBlack87,
                               )),
                           child: const Icon(
                             Icons.pause,
-                            color: Colors.black87,
+                            color: readrBlack87,
                             size: 40,
                           ),
                         )
@@ -130,11 +131,11 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 3,
-                                color: Colors.black87,
+                                color: readrBlack87,
                               )),
                           child: const Icon(
                             Icons.play_arrow_rounded,
-                            color: Colors.black87,
+                            color: readrBlack87,
                             size: 40,
                           ),
                         ),
@@ -159,7 +160,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                       style: TextStyle(
                         fontSize: _textSize - 4,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black87,
+                        color: readrBlack87,
                       ),
                     ),
                     const SizedBox(
@@ -190,16 +191,16 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 ? Slider(
                                     value: 0,
                                     inactiveColor: Colors.black26,
-                                    thumbColor: Colors.black87,
+                                    thumbColor: readrBlack87,
                                     onChanged: (v) {},
                                   )
                                 : Slider(
                                     min: 0.0,
                                     max: _duration.toDouble(),
                                     value: sliderPosition,
-                                    activeColor: Colors.black87,
+                                    activeColor: readrBlack87,
                                     inactiveColor: Colors.black26,
-                                    thumbColor: Colors.black87,
+                                    thumbColor: readrBlack87,
                                     onChanged: (v) {
                                       _audioPlayer.seek(
                                           Duration(milliseconds: v.toInt()));

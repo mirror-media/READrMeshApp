@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 
@@ -71,7 +72,7 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: Colors.black87,
+                      color: readrBlack87,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),

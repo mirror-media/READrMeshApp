@@ -96,7 +96,7 @@ class _SettingPageState extends State<SettingPage> {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Colors.black87,
+              color: readrBlack87,
             ),
           ),
           icon,
@@ -143,7 +143,7 @@ class _SettingPageState extends State<SettingPage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
                 Text(
@@ -179,7 +179,7 @@ class _SettingPageState extends State<SettingPage> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Colors.black87,
+                color: readrBlack87,
               ),
             ),
             if (!hideArrow)
@@ -210,7 +210,7 @@ class _SettingPageState extends State<SettingPage> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black87,
+                  color: readrBlack87,
                 ),
               ),
             ),

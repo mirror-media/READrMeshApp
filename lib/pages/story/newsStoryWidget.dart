@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -211,7 +212,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
       child: Text(
         _newsStoryItem.title,
         style: const TextStyle(
-          color: Colors.black87,
+          color: readrBlack87,
           fontSize: 24,
           fontWeight: FontWeight.w600,
         ),
@@ -287,7 +288,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
       textStyle: const TextStyle(
         fontSize: 18,
         height: 2,
-        color: Colors.black87,
+        color: readrBlack87,
       ),
     );
   }

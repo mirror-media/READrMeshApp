@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/followableItem.dart';
 
@@ -55,7 +56,7 @@ class LookmoreItem extends StatelessWidget {
                           context.read<HomeBloc>().add(RefreshHomeScreen()));
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.black87, width: 1),
+                  side: const BorderSide(color: readrBlack87, width: 1),
                   backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
@@ -64,7 +65,7 @@ class LookmoreItem extends StatelessWidget {
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
+                    color: readrBlack87,
                   ),
                 ),
               ),

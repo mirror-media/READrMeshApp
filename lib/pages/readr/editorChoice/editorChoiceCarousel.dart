@@ -220,7 +220,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _current == entry.key
-                          ? Colors.black87
+                          ? readrBlack87
                           : Colors.black12),
                 ),
               );

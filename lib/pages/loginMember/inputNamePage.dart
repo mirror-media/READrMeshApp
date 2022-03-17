@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -128,7 +129,7 @@ class _InputNamePageState extends State<InputNamePage> {
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(12.0),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black87, width: 1.0),
+                borderSide: BorderSide(color: readrBlack87, width: 1.0),
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black26, width: 1.0),

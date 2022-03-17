@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -47,7 +48,7 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black87,
+                      primary: readrBlack87,
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,
                         horizontal: 24,

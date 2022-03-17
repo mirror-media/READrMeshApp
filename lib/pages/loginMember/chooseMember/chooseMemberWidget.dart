@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -69,7 +70,7 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
           child: const Text(
             '根據您的喜好，我們推薦您追蹤這些人物',
             style: TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 16,
             ),
           ),
@@ -121,7 +122,7 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Colors.black87,
+              primary: readrBlack87,
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
                 horizontal: 24,

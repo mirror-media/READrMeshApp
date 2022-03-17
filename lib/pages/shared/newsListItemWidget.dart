@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
@@ -40,7 +41,7 @@ class NewsListItemWidget extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Colors.black87,
+                    color: readrBlack87,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),

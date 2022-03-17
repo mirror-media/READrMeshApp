@@ -7,6 +7,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +80,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: Text(
               widget.fromComment ? '立即登入以參與大家的討論' : '立即登入，享受更多個人化新聞選讀服務',
               style: const TextStyle(
-                color: Colors.black87,
+                color: readrBlack87,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -143,7 +144,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           icon: const Icon(
             Icons.email_outlined,
             size: 18,
-            color: Colors.black87,
+            color: readrBlack87,
           ),
           style: OutlinedButton.styleFrom(
             backgroundColor: Colors.white,

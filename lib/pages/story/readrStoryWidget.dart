@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -516,7 +517,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                     (index + 1).toString(),
                     textAlign: TextAlign.end,
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: readrBlack87,
                       fontSize: _textSize - 4,
                       height: 1.5,
                     ),
@@ -553,7 +554,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                       textStyle: TextStyle(
                         fontSize: _textSize - 4,
                         height: 1.5,
-                        color: Colors.black87,
+                        color: readrBlack87,
                       ),
                     ),
                   ),
@@ -578,7 +579,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
           decoration: const BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: Colors.black87,
+                color: readrBlack87,
                 width: 8,
               ),
             ),
@@ -587,7 +588,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
           child: const Text(
             '引用數據',
             style: TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),

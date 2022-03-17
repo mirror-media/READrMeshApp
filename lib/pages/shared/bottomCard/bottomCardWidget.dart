@@ -217,7 +217,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                                     '所有留言 (${_allComments.length})',
                                     style: const TextStyle(
                                       fontSize: 18,
-                                      color: Colors.black87,
+                                      color: readrBlack87,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -304,7 +304,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             widget.news.title,
             maxLines: 2,
             style: const TextStyle(
-              color: Colors.black87,
+              color: readrBlack87,
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
@@ -343,7 +343,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                 '熱門留言',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontWeight: FontWeight.w500,
                 ),
               ),

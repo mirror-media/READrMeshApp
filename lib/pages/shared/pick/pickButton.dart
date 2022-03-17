@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/pickableItem.dart';
@@ -66,8 +67,8 @@ class PickButton extends StatelessWidget {
               }
             },
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Colors.black87, width: 1),
-        backgroundColor: isPicked ? Colors.black87 : Colors.white,
+        side: const BorderSide(color: readrBlack87, width: 1),
+        backgroundColor: isPicked ? readrBlack87 : Colors.white,
         padding: const EdgeInsets.fromLTRB(11, 3, 12, 4),
       ),
       child: RichText(
@@ -77,7 +78,7 @@ class PickButton extends StatelessWidget {
               child: Icon(
                 isPicked ? Icons.done_outlined : Icons.add_outlined,
                 size: textSize + 4,
-                color: isPicked ? Colors.white : Colors.black87,
+                color: isPicked ? Colors.white : readrBlack87,
               ),
             ),
             TextSpan(
@@ -85,7 +86,7 @@ class PickButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: textSize,
                 height: 1.9,
-                color: isPicked ? Colors.white : Colors.black87,
+                color: isPicked ? Colors.white : readrBlack87,
               ),
             ),
           ],

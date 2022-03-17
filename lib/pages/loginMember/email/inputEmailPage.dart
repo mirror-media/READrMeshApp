@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/router/router.dart';
 
@@ -107,7 +108,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(12.0),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black87, width: 1.0),
+                borderSide: BorderSide(color: readrBlack87, width: 1.0),
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black26, width: 1.0),

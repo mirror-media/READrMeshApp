@@ -95,7 +95,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         style: const TextStyle(
-          color: Colors.black87,
+          color: readrBlack87,
           fontSize: 20.0,
           fontWeight: FontWeight.w500,
         ),

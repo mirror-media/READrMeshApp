@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 
@@ -22,7 +23,7 @@ class CollapsePickBar extends StatelessWidget {
               TextSpan(
                 text: commentCountData.toString(),
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontWeight: FontWeight.w500,
                 ),
                 children: const [
@@ -51,7 +52,7 @@ class CollapsePickBar extends StatelessWidget {
               TextSpan(
                 text: pickCountData.toString(),
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontWeight: FontWeight.w500,
                 ),
                 children: const [

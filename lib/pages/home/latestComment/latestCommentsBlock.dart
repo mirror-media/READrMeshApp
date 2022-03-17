@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/home/latestComment/latestCommentItem.dart';
 
@@ -28,7 +29,7 @@ class LatestCommentsBlock extends StatelessWidget {
                 '最新留言',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.black87,
+                  color: readrBlack87,
                   fontWeight: FontWeight.w500,
                 ),
               );

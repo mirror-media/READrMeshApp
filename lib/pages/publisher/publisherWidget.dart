@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/publisher/publisher_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -136,7 +137,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: readrBlack87,
                         ),
                         children: const [
                           TextSpan(
