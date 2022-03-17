@@ -156,5 +156,6 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
   void _sendComment() {
     widget.onPressed(_controller.text);
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 }
