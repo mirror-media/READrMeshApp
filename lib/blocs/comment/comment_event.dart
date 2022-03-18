@@ -40,11 +40,11 @@ class AddPickComment extends CommentEvent {
   String toString() => "Add pick_comment";
 }
 
-class UpdatePickCommentSuccess extends CommentEvent {
-  final Comment? comment;
-  const UpdatePickCommentSuccess(this.comment);
+class AddPickCommentSuccess extends CommentEvent {
+  final Comment comment;
+  const AddPickCommentSuccess(this.comment);
   @override
-  String toString() => "Update pick_comment success";
+  String toString() => "Add pick_comment success";
 }
 
 class UpdatePickCommentFailed extends CommentEvent {
@@ -54,7 +54,9 @@ class UpdatePickCommentFailed extends CommentEvent {
 
 class RemovePickComment extends CommentEvent {
   final String commentId;
-  const RemovePickComment(this.commentId);
+  final String targetId;
+  final PickObjective objective;
+  const RemovePickComment(this.commentId, this.targetId, this.objective);
 
   @override
   String toString() => "Remove pick_comment commentId = $commentId";

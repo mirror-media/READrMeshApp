@@ -154,17 +154,48 @@ class _PickTabContentState extends State<PickTabContent> {
         ),
         if (UserHelper.instance.currentUser.memberId !=
             widget.viewMember.memberId)
-          _buildPickStoryList(),
-        if (UserHelper.instance.currentUser.memberId ==
-            widget.viewMember.memberId)
           BlocBuilder<CommentBloc, CommentState>(
             builder: (context, state) {
-              if (state is PickCommentUpdateSuccess) {
+              if (state is PickCommentAdded) {
                 for (int i = 0; i < _storyPickList.length; i++) {
                   var pickItem = UserHelper.instance
                       .getNewsPickedItem(_storyPickList[i].story!.id);
                   if (pickItem != null &&
-                      pickItem.pickCommentId == state.comment?.id) {
+                      pickItem.pickCommentId == state.comment.id) {
+                    _storyPickList[i].story!.commentCount++;
+                    break;
+                  }
+                }
+              }
+
+              if (state is RemovingPickComment &&
+                  state.objective == PickObjective.story) {
+                _deleteIndex = _storyPickList.indexWhere(
+                    (element) => element.story!.id == state.targetId);
+                if (_deleteIndex != -1) {
+                  _storyPickList[_deleteIndex].story!.commentCount--;
+                  _isRemovePickComment = true;
+                }
+              }
+
+              if (state is PickCommentUpdateFailed && _isRemovePickComment) {
+                _storyPickList[_deleteIndex].story!.commentCount++;
+                _isRemovePickComment = false;
+              }
+
+              return _buildPickStoryList();
+            },
+          ),
+        if (UserHelper.instance.currentUser.memberId ==
+            widget.viewMember.memberId)
+          BlocBuilder<CommentBloc, CommentState>(
+            builder: (context, state) {
+              if (state is PickCommentAdded) {
+                for (int i = 0; i < _storyPickList.length; i++) {
+                  var pickItem = UserHelper.instance
+                      .getNewsPickedItem(_storyPickList[i].story!.id);
+                  if (pickItem != null &&
+                      pickItem.pickCommentId == state.comment.id) {
                     _storyPickList[i].pickComment = state.comment;
                     _storyPickList[i].story!.commentCount++;
                     break;

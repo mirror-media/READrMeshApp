@@ -26,5 +26,7 @@ class PickButtonUpdateSuccess extends PickButtonState {
 
 class RemovePickAndComment extends PickButtonState {
   final String commentId;
-  const RemovePickAndComment(this.commentId);
+  final String targetId;
+  final PickObjective objective;
+  const RemovePickAndComment(this.commentId, this.targetId, this.objective);
 }

@@ -120,10 +120,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             _isAddOrRemove = false;
           }
 
-          if (state is PickCommentUpdateSuccess && _isAddOrRemove) {
-            if (state.comment != null) {
-              _allComments[0] = state.comment!;
-            }
+          if (state is PickCommentAdded && _isAddOrRemove) {
+            _allComments[0] = state.comment;
             _hasMyNewComment = true;
             Timer(const Duration(seconds: 5, milliseconds: 5),
                 () => _hasMyNewComment = false);
@@ -427,7 +425,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         itemCount: _allComments.length,
       ),
     );
-    ;
   }
 
   void _sendComment(String text) async {

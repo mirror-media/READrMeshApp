@@ -4,7 +4,6 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/pickableItem.dart';
-import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/services/pickService.dart';
 
 part 'pickButton_state.dart';
@@ -45,7 +44,8 @@ class PickButtonCubit extends Cubit<PickButtonState> {
       if (originIsPicked) {
         bool isSuccess;
         if (tempData.pickCommentId != null) {
-          emit(RemovePickAndComment(tempData.pickCommentId!));
+          emit(RemovePickAndComment(
+              tempData.pickCommentId!, item.targetId, item.objective));
           isSuccess = await _pickService.deletePickAndComment(
               tempData.pickId, tempData.pickCommentId!);
         } else {

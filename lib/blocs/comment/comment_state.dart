@@ -38,12 +38,14 @@ class AddingPickComment extends CommentState {
 
 class RemovingPickComment extends CommentState {
   final String pickCommentId;
-  const RemovingPickComment(this.pickCommentId);
+  final String targetId;
+  final PickObjective objective;
+  const RemovingPickComment(this.pickCommentId, this.targetId, this.objective);
 }
 
-class PickCommentUpdateSuccess extends CommentState {
-  final Comment? comment;
-  const PickCommentUpdateSuccess(this.comment);
+class PickCommentAdded extends CommentState {
+  final Comment comment;
+  const PickCommentAdded(this.comment);
 }
 
 class PickCommentUpdateFailed extends CommentState {}

@@ -21,7 +21,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentBloc(this.pickButtonCubit) : super(CommentInitial()) {
     pickButtonCubitSubscription = pickButtonCubit.stream.listen((state) {
       if (state is PickButtonUpdateSuccess && state.comment != null) {
-        add(UpdatePickCommentSuccess(state.comment));
+        add(AddPickCommentSuccess(state.comment!));
       }
 
       if (state is PickButtonUpdateFailed) {
@@ -35,7 +35,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       }
 
       if (state is RemovePickAndComment) {
-        add(RemovePickComment(state.commentId));
+        add(RemovePickComment(
+            state.commentId, state.targetId, state.objective));
       }
     });
     on<CommentEvent>((event, emit) async {
@@ -71,10 +72,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           }
         } else if (event is AddPickComment) {
           emit(AddingPickComment(event.comment));
-        } else if (event is UpdatePickCommentSuccess) {
-          emit(PickCommentUpdateSuccess(event.comment));
+        } else if (event is AddPickCommentSuccess) {
+          emit(PickCommentAdded(event.comment));
         } else if (event is RemovePickComment) {
-          emit(RemovingPickComment(event.commentId));
+          emit(RemovingPickComment(
+              event.commentId, event.targetId, event.objective));
         } else if (event is UpdatePickCommentFailed) {
           emit(PickCommentUpdateFailed());
         } else if (event is DeleteComment) {
