@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
@@ -14,7 +13,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
   PickButtonCubit() : super(PickButtonInitial());
   final PickService _pickService = PickService();
 
-  updateButton(BuildContext context, PickableItem item, String? comment) async {
+  updateButton(PickableItem item, String? comment) async {
     bool originIsPicked = item.isPicked;
     Comment? pickComment;
     if (comment != null) {
@@ -52,7 +51,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         } else {
           isSuccess = await _pickService.deletePick(tempData.pickId);
         }
-        PickToast.showPickToast(context, isSuccess, false);
+
         if (!isSuccess) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
           emit(PickButtonUpdateFailed(originIsPicked));
@@ -67,7 +66,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
           kind: PickKind.read,
           commentContent: comment,
         );
-        PickToast.showPickToast(context, result != null, true);
+
         if (result == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
           emit(PickButtonUpdateFailed(originIsPicked));
@@ -84,7 +83,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
           state: PickState.public,
           kind: PickKind.read,
         );
-        PickToast.showPickToast(context, pickId != null, true);
+
         if (pickId == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
           emit(PickButtonUpdateFailed(originIsPicked));
