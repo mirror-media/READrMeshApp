@@ -56,7 +56,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
           emit(PickButtonUpdateFailed(originIsPicked));
         } else {
-          emit(const PickButtonUpdateSuccess());
+          emit(const PickButtonUpdateSuccess(false));
         }
       } else if (comment != null) {
         var result = await _pickService.createPickAndComment(
@@ -74,7 +74,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
           tempData.pickId = result['pickId'];
           tempData.pickCommentId = result['pickComment'].id;
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(PickButtonUpdateSuccess(comment: result['pickComment']));
+          emit(PickButtonUpdateSuccess(true, comment: result['pickComment']));
         }
       } else {
         String? pickId = await _pickService.createPick(
@@ -90,7 +90,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         } else {
           tempData.pickId = pickId;
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(const PickButtonUpdateSuccess());
+          emit(const PickButtonUpdateSuccess(true));
         }
       }
     } catch (e) {

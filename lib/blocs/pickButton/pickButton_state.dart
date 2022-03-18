@@ -21,7 +21,8 @@ class PickButtonUpdateFailed extends PickButtonState {
 
 class PickButtonUpdateSuccess extends PickButtonState {
   final Comment? comment;
-  const PickButtonUpdateSuccess({this.comment});
+  final bool isPicked;
+  const PickButtonUpdateSuccess(this.isPicked, {this.comment});
 }
 
 class RemovePickAndComment extends PickButtonState {

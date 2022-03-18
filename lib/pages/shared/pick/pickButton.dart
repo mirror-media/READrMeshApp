@@ -7,7 +7,6 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
-import 'package:readr/pages/shared/pick/pickToast.dart';
 
 class PickButton extends StatelessWidget {
   final PickableItem item;
@@ -22,16 +21,7 @@ class PickButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLoading = false;
-    return BlocConsumer<PickButtonCubit, PickButtonState>(
-      listener: (context, state) {
-        if (state is PickButtonUpdateSuccess) {
-          PickToast.showPickToast(context, true, item.isPicked);
-        }
-
-        if (state is PickButtonUpdateFailed) {
-          PickToast.showPickToast(context, false, state.originIsPicked);
-        }
-      },
+    return BlocBuilder<PickButtonCubit, PickButtonState>(
       builder: (context, state) {
         bool isPicked = item.isPicked;
 

@@ -18,9 +18,6 @@ class ReadrApp extends StatelessWidget {
         BlocProvider(
           create: (context) => FollowButtonCubit(),
         ),
-        // BlocProvider(
-        //   create: (context) => CommentBloc(_pickButtonCubit),
-        // ),
       ],
       child: MaterialApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
