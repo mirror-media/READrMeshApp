@@ -7,6 +7,7 @@ import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -109,7 +110,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                 ),
                 if (!_isSlideDown)
                   BottomCardWidget(
-                    news: _newsStoryItem,
+                    item: NewsStoryItemPick(_newsStoryItem),
                     onTextChanged: (value) => _inputText = value,
                     isPicked: _isPicked,
                   ),
@@ -187,15 +188,12 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildPublisher() {
-    if (widget.news.source == null) {
-      return Container();
-    }
     return GestureDetector(
       onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Text(
-          widget.news.source!.title,
+          widget.news.source.title,
           style: const TextStyle(
             color: readrBlack50,
             fontSize: 14,

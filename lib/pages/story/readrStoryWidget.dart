@@ -11,6 +11,7 @@ import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
@@ -125,7 +126,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
               ),
               if (!_isSlideDown)
                 BottomCardWidget(
-                  news: _newsStoryItem,
+                  item: NewsStoryItemPick(_newsStoryItem),
                   onTextChanged: (value) => _inputText = value,
                   isPicked: _isPicked,
                 ),

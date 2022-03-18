@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
@@ -15,14 +16,14 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class CommentBottomSheetWidget extends StatefulWidget {
   final BuildContext context;
   final Comment clickComment;
-  final String storyId;
+  final PickableItem item;
   final ValueChanged<String> onTextChanged;
   final String? oldContent;
 
   const CommentBottomSheetWidget({
     required this.context,
     required this.clickComment,
-    required this.storyId,
+    required this.item,
     required this.onTextChanged,
     this.oldContent,
   });
@@ -50,23 +51,18 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
   }
 
   _fetchComment() {
-    context.read<CommentBloc>().add(FetchComments(widget.storyId));
+    context
+        .read<CommentBloc>()
+        .add(FetchComments(widget.item.targetId, widget.item.objective));
   }
 
   _createComment(String content) {
     if (!_isSending) {
       context.read<CommentBloc>().add(AddComment(
-            storyId: widget.storyId,
+            targetId: widget.item.targetId,
             content: content,
-            commentTransparency: CommentTransparency.public,
+            objective: widget.item.objective,
           ));
-      _myNewComment = Comment(
-        id: 'sending',
-        member: UserHelper.instance.currentUser,
-        content: content,
-        state: "public",
-        publishDate: DateTime.now(),
-      );
     }
   }
 
@@ -110,6 +106,17 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                       textColor: Colors.white,
                       fontSize: 16.0,
                     );
+                  }
+                  if (state is AddCommentSuccess) {
+                    context
+                        .read<CommentCountCubit>()
+                        .updateCommentCount(widget.item, state.comments.length);
+                  }
+
+                  if (state is CommentLoaded) {
+                    context
+                        .read<CommentCountCubit>()
+                        .updateCommentCount(widget.item, state.comments.length);
                   }
                 },
                 builder: (context, state) {
@@ -188,7 +195,8 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
 
                   if (state is CommentAdding) {
                     if (!_isSending) {
-                      _allComments.insert(0, _myNewComment);
+                      _allComments.insert(0, state.myNewComment);
+                      _myNewComment = state.myNewComment;
                     }
 
                     _isSending = true;
@@ -200,11 +208,17 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     if (_deleteCommentIndex != -1) {
                       _deleteComment = _allComments[_deleteCommentIndex];
                       _allComments.removeAt(_deleteCommentIndex);
+                      context
+                          .read<CommentCountCubit>()
+                          .updateCommentCount(widget.item, _allComments.length);
                     }
                   }
 
                   if (state is DeleteCommentFailure) {
                     _allComments.insert(_deleteCommentIndex, _deleteComment);
+                    context
+                        .read<CommentCountCubit>()
+                        .updateCommentCount(widget.item, _allComments.length);
                   }
 
                   if (state is UpdatingComment) {

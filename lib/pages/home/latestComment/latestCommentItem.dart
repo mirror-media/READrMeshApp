@@ -2,13 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';
@@ -69,15 +68,13 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                     ),
                     fit: BoxFit.cover,
                   ),
-                if (widget.news.source != null)
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 12, left: 12, right: 12),
-                    child: Text(
-                      widget.news.source!.title,
-                      style: const TextStyle(color: readrBlack50, fontSize: 14),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
+                  child: Text(
+                    widget.news.source.title,
+                    style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 12, right: 12, bottom: 8),
@@ -112,7 +109,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
               await CommentBottomSheet.showCommentBottomSheet(
                 context: context,
                 clickComment: widget.news.showComment!,
-                storyId: widget.news.id,
+                item: NewsListItemPick(widget.news),
               );
             },
             child: _commentsWidget(context, widget.news.showComment!),

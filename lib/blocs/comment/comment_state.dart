@@ -38,17 +38,25 @@ class AddingPickComment extends CommentState {
 
 class RemovingPickComment extends CommentState {
   final String pickCommentId;
-  final String targetId;
-  final PickObjective objective;
-  const RemovingPickComment(this.pickCommentId, this.targetId, this.objective);
+  final PickableItem item;
+  const RemovingPickComment(this.pickCommentId, this.item);
 }
 
 class PickCommentAdded extends CommentState {
   final Comment comment;
-  const PickCommentAdded(this.comment);
+  final PickableItem item;
+  const PickCommentAdded(this.comment, this.item);
 }
 
-class PickCommentUpdateFailed extends CommentState {}
+class PickCommentAddFailed extends CommentState {
+  final PickableItem item;
+  const PickCommentAddFailed(this.item);
+}
+
+class PickCommentRemoveFailed extends CommentState {
+  final PickableItem item;
+  const PickCommentRemoveFailed(this.item);
+}
 
 class CommentError extends CommentState {
   final dynamic error;

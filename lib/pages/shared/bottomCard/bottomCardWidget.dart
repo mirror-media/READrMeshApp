@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/bottomCard/collapsePickBar.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
@@ -15,12 +15,12 @@ import 'package:readr/pages/shared/comment/commentItem.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 
 class BottomCardWidget extends StatefulWidget {
-  final NewsStoryItem news;
+  final PickableItem item;
   final ValueChanged<String> onTextChanged;
   final bool isPicked;
 
   const BottomCardWidget({
-    required this.news,
+    required this.item,
     required this.onTextChanged,
     this.isPicked = false,
   });
@@ -35,10 +35,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   bool _hasMyNewComment = false;
   late Comment _myNewComment;
   bool _isCollapsed = true;
-  late final NewsStoryItemPick _pick;
   bool _isSending = false;
-  // true mean add, false mean remove
-  bool _isAddOrRemove = false;
   int _removeIndex = -1;
   late Comment _removeComment;
   late int _deleteCommentIndex;
@@ -48,10 +45,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   void initState() {
     super.initState();
     List<Member> _pickedMembers = [];
-    _pickedMembers.addAll(widget.news.followingPickMembers);
-    _pickedMembers.addAll(widget.news.otherPickMembers);
-    _pick = NewsStoryItemPick(widget.news);
-    _allComments.addAll(widget.news.allComments);
+    _pickedMembers.addAll(widget.item.pickedMemberList);
+    _allComments.addAll(widget.item.allComments);
   }
 
   @override
@@ -87,6 +82,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             Timer(const Duration(seconds: 5, milliseconds: 5),
                 () => _hasMyNewComment = false);
             _textController.clear();
+            context
+                .read<CommentCountCubit>()
+                .updateCommentCount(widget.item, _allComments.length);
           }
 
           if (state is AddCommentFailed) {
@@ -105,7 +103,6 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           if (state is AddingPickComment) {
             _myNewComment = state.myNewComment;
             _allComments.insert(0, _myNewComment);
-            _isAddOrRemove = true;
             _isSending = true;
           }
 
@@ -116,23 +113,21 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               _removeComment = _allComments[_removeIndex];
               _allComments.removeAt(_removeIndex);
             }
-
-            _isAddOrRemove = false;
           }
 
-          if (state is PickCommentAdded && _isAddOrRemove) {
+          if (state is PickCommentAdded) {
             _allComments[0] = state.comment;
             _hasMyNewComment = true;
             Timer(const Duration(seconds: 5, milliseconds: 5),
                 () => _hasMyNewComment = false);
           }
 
-          if (state is PickCommentUpdateFailed) {
-            if (_isAddOrRemove) {
-              _allComments.removeAt(0);
-            } else {
-              _allComments.insert(_removeIndex, _removeComment);
-            }
+          if (state is PickCommentAddFailed) {
+            _allComments.removeAt(0);
+          }
+
+          if (state is PickCommentRemoveFailed) {
+            _allComments.insert(_removeIndex, _removeComment);
           }
 
           if (state is DeletingComment) {
@@ -141,11 +136,17 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             if (_deleteCommentIndex != -1) {
               _deleteComment = _allComments[_deleteCommentIndex];
               _allComments.removeAt(_deleteCommentIndex);
+              context
+                  .read<CommentCountCubit>()
+                  .updateCommentCount(widget.item, _allComments.length);
             }
           }
 
           if (state is DeleteCommentFailure) {
             _allComments.insert(_deleteCommentIndex, _deleteComment);
+            context
+                .read<CommentCountCubit>()
+                .updateCommentCount(widget.item, _allComments.length);
           }
 
           if (state is UpdatingComment) {
@@ -236,7 +237,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                                 SliverToBoxAdapter(
                                   child: _titleAndPickBar(),
                                 ),
-                                if (widget.news.popularComments.isNotEmpty)
+                                if (widget.item.popularComments.isNotEmpty)
                                   _popularCommentList(context),
                                 SliverAppBar(
                                   backgroundColor: Colors.white,
@@ -315,7 +316,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: CollapsePickBar(_pick, _allComments.length),
+          child: CollapsePickBar(widget.item, _allComments.length),
         ),
       ],
     );
@@ -334,7 +335,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.news.title,
+            widget.item.title,
             maxLines: 2,
             style: const TextStyle(
               color: readrBlack87,
@@ -342,20 +343,18 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          if (widget.news.source != null) ...[
-            const SizedBox(height: 8),
-            Text(
-              widget.news.source!.title,
-              maxLines: 1,
-              style: const TextStyle(
-                color: readrBlack50,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+          const SizedBox(height: 8),
+          Text(
+            widget.item.author,
+            maxLines: 1,
+            style: const TextStyle(
+              color: readrBlack50,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
             ),
-          ],
+          ),
           const SizedBox(height: 18),
-          PickBar(_pick),
+          PickBar(widget.item),
         ],
       ),
     );
@@ -383,7 +382,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             );
           }
           return CommentItem(
-            comment: widget.news.popularComments[index - 1],
+            comment: widget.item.popularComments[index - 1],
             isSending: false,
             isMyNewComment: false,
           );
@@ -398,7 +397,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             endIndent: 20,
           );
         },
-        itemCount: widget.news.popularComments.length + 1,
+        itemCount: widget.item.popularComments.length + 1,
       ),
     );
   }
@@ -429,9 +428,9 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
 
   void _sendComment(String text) async {
     context.read<CommentBloc>().add(AddComment(
-          storyId: widget.news.id,
+          targetId: widget.item.targetId,
           content: text,
-          commentTransparency: CommentTransparency.public,
+          objective: widget.item.objective,
         ));
     _hasMyNewComment = true;
   }

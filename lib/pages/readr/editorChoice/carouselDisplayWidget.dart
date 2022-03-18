@@ -27,13 +27,7 @@ class CarouselDisplayWidget extends StatelessWidget {
           children: [
             _displayTitle(),
             const SizedBox(height: 8),
-            BlocBuilder<PickButtonCubit, PickButtonState>(
-              builder: (context, state) => NewsInfo(
-                editorChoiceItem.newsListItem!,
-                commentCount: NewsListItemPick(editorChoiceItem.newsListItem!)
-                    .commentCount,
-              ),
-            ),
+            NewsInfo(editorChoiceItem.newsListItem!),
             const SizedBox(height: 18),
             PickBar(NewsListItemPick(editorChoiceItem.newsListItem!)),
           ],

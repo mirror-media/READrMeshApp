@@ -8,13 +8,14 @@ import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
 
 class CommentBottomSheet {
   static Future<void> showCommentBottomSheet({
     required BuildContext context,
     required Comment clickComment,
-    required String storyId,
+    required PickableItem item,
     String? oldContent,
   }) async {
     String? inputContent;
@@ -31,7 +32,7 @@ class CommentBottomSheet {
             child: CommentBottomSheetWidget(
               context: context,
               clickComment: clickComment,
-              storyId: storyId,
+              item: item,
               onTextChanged: (text) => inputContent = text,
               oldContent: oldContent,
             ),
@@ -75,7 +76,7 @@ class CommentBottomSheet {
               await showCommentBottomSheet(
                 context: context,
                 clickComment: clickComment,
-                storyId: storyId,
+                item: item,
                 oldContent: inputContent,
               );
             },

@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -13,11 +11,9 @@ import 'package:readr/pages/shared/pick/pickBar.dart';
 class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
   final bool hidePublisher;
-  final int? commentCount;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
-    this.commentCount,
   });
 
   @override
@@ -29,11 +25,11 @@ class NewsListItemWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (news.source != null && !hidePublisher)
+          if (!hidePublisher)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(
-                news.source!.title,
+                news.source.title,
                 style: const TextStyle(color: readrBlack50, fontSize: 12),
               ),
             ),
@@ -71,18 +67,7 @@ class NewsListItemWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          if (commentCount != null)
-            NewsInfo(
-              news,
-              commentCount: commentCount,
-            ),
-          if (commentCount == null)
-            BlocBuilder<PickButtonCubit, PickButtonState>(
-              builder: (context, state) => NewsInfo(
-                news,
-                commentCount: NewsListItemPick(news).commentCount,
-              ),
-            ),
+          NewsInfo(news),
           const SizedBox(height: 16),
           PickBar(
             NewsListItemPick(news),

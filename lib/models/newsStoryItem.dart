@@ -1,3 +1,4 @@
+import 'package:readr/helpers/commentCountHelper.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
@@ -7,7 +8,7 @@ import 'package:readr/models/publisher.dart';
 class NewsStoryItem {
   final String id;
   final String title;
-  final Publisher? source;
+  final Publisher source;
   final List<Member> followingPickMembers;
   final List<Member> otherPickMembers;
   final List<Comment> popularComments;
@@ -22,7 +23,7 @@ class NewsStoryItem {
   NewsStoryItem({
     required this.id,
     required this.title,
-    this.source,
+    required this.source,
     required this.followingPickMembers,
     required this.otherPickMembers,
     required this.popularComments,
@@ -36,7 +37,7 @@ class NewsStoryItem {
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
-    Publisher? source;
+    late Publisher source;
     List<Member> followingPickMembers = [];
     List<Member> otherPickMembers = [];
     List<Comment> allComments = [];
@@ -75,6 +76,8 @@ class NewsStoryItem {
       popularComments.sort((a, b) => b.likedCount.compareTo(a.likedCount));
       popularComments.take(3);
       popularComments.removeWhere((element) => element.likedCount == 0);
+      CommentCountHelper.instance
+          .updateStoryMap(json["id"], allComments.length);
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -92,7 +95,6 @@ class NewsStoryItem {
           PickedItem(
             pickId: myPickId!,
             pickCommentId: myPickCommentId,
-            commentCount: allComments.length,
             pickCount: pickCount,
           ),
         );

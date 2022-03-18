@@ -245,12 +245,10 @@ class UserHelper {
 class PickedItem {
   String pickId;
   int pickCount;
-  int commentCount;
   String? pickCommentId;
   PickedItem({
     required this.pickId,
     required this.pickCount,
-    required this.commentCount,
     this.pickCommentId,
   });
 }

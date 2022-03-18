@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -145,7 +146,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           ),
           if (!_isSlideDown)
             BottomCardWidget(
-              news: _newsStoryItem,
+              item: NewsStoryItemPick(_newsStoryItem),
               onTextChanged: (value) => _inputText = value,
               isPicked: _isPicked,
             ),

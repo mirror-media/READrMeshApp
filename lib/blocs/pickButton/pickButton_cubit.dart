@@ -33,19 +33,16 @@ class PickButtonCubit extends Cubit<PickButtonState> {
       tempData = PickedItem(
         pickId: 'temp',
         pickCount: item.pickCount + 1,
-        commentCount:
-            comment != null ? item.commentCount + 1 : item.commentCount,
       );
       UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
     }
-    emit(PickButtonUpdating(comment: pickComment));
+    emit(PickButtonUpdating(item, comment: pickComment));
 
     try {
       if (originIsPicked) {
         bool isSuccess;
         if (tempData.pickCommentId != null) {
-          emit(RemovePickAndComment(
-              tempData.pickCommentId!, item.targetId, item.objective));
+          emit(RemovePickAndComment(tempData.pickCommentId!, item));
           isSuccess = await _pickService.deletePickAndComment(
               tempData.pickId, tempData.pickCommentId!);
         } else {
@@ -54,9 +51,12 @@ class PickButtonCubit extends Cubit<PickButtonState> {
 
         if (!isSuccess) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(PickButtonUpdateFailed(originIsPicked));
+          if (tempData.pickCommentId != null) {
+            emit(RemovePickAndCommentFailed(item));
+          }
+          emit(PickButtonUpdateFailed(item, originIsPicked));
         } else {
-          emit(const PickButtonUpdateSuccess(false));
+          emit(PickButtonUpdateSuccess(false, item));
         }
       } else if (comment != null) {
         var result = await _pickService.createPickAndComment(
@@ -69,12 +69,14 @@ class PickButtonCubit extends Cubit<PickButtonState> {
 
         if (result == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
-          emit(PickButtonUpdateFailed(originIsPicked));
+          emit(AddPickCommentFailed(item));
+          emit(PickButtonUpdateFailed(item, originIsPicked));
         } else {
           tempData.pickId = result['pickId'];
           tempData.pickCommentId = result['pickComment'].id;
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(PickButtonUpdateSuccess(true, comment: result['pickComment']));
+          emit(PickButtonUpdateSuccess(true, item,
+              comment: result['pickComment']));
         }
       } else {
         String? pickId = await _pickService.createPick(
@@ -86,21 +88,27 @@ class PickButtonCubit extends Cubit<PickButtonState> {
 
         if (pickId == null) {
           UserHelper.instance.updateNewsPickedMap(item.targetId, null);
-          emit(PickButtonUpdateFailed(originIsPicked));
+          emit(PickButtonUpdateFailed(item, originIsPicked));
         } else {
           tempData.pickId = pickId;
           UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
-          emit(const PickButtonUpdateSuccess(true));
+          emit(PickButtonUpdateSuccess(true, item));
         }
       }
     } catch (e) {
       print("Pick Error: " + e.toString());
       if (originIsPicked) {
         UserHelper.instance.updateNewsPickedMap(item.targetId, tempData);
+        if (tempData.pickCommentId != null) {
+          emit(RemovePickAndCommentFailed(item));
+        }
       } else {
         UserHelper.instance.updateNewsPickedMap(item.targetId, null);
+        if (comment != null) {
+          emit(AddPickCommentFailed(item));
+        }
       }
-      emit(PickButtonUpdateFailed(originIsPicked));
+      emit(PickButtonUpdateFailed(item, originIsPicked));
     }
   }
 }

@@ -11,6 +11,7 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
@@ -147,14 +148,13 @@ class FollowingBlock extends StatelessWidget {
                   ),
                   fit: BoxFit.cover,
                 ),
-              if (item.source != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                  child: Text(
-                    item.source!.title,
-                    style: const TextStyle(color: readrBlack50, fontSize: 14),
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                child: Text(
+                  item.source.title,
+                  style: const TextStyle(color: readrBlack50, fontSize: 14),
                 ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                     top: 4, left: 20, right: 20, bottom: 8),
@@ -257,15 +257,13 @@ class FollowingBlock extends StatelessWidget {
                     ),
                     fit: BoxFit.cover,
                   ),
-                if (item.source != null)
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 12, left: 20, right: 20),
-                    child: Text(
-                      item.source!.title,
-                      style: const TextStyle(color: readrBlack50, fontSize: 14),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                  child: Text(
+                    item.source.title,
+                    style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 20, right: 20, bottom: 8),
@@ -301,7 +299,7 @@ class FollowingBlock extends StatelessWidget {
                 await CommentBottomSheet.showCommentBottomSheet(
                   context: context,
                   clickComment: item.showComment!,
-                  storyId: item.id,
+                  item: NewsListItemPick(item),
                 );
               },
               child: _commentsWidget(context, item.showComment!),

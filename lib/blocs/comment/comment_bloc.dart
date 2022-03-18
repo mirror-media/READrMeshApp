@@ -8,6 +8,7 @@ import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/pickableItem.dart';
 import 'package:readr/services/commentService.dart';
 
 part 'comment_event.dart';
@@ -21,22 +22,25 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentBloc(this.pickButtonCubit) : super(CommentInitial()) {
     pickButtonCubitSubscription = pickButtonCubit.stream.listen((state) {
       if (state is PickButtonUpdateSuccess && state.comment != null) {
-        add(AddPickCommentSuccess(state.comment!));
+        add(AddPickCommentSuccess(state.comment!, state.item));
       }
 
-      if (state is PickButtonUpdateFailed) {
-        add(UpdatePickCommentFailed());
+      if (state is AddPickCommentFailed) {
+        add(UpdatePickCommentFailed(state.item, true));
+      }
+
+      if (state is RemovePickAndCommentFailed) {
+        add(UpdatePickCommentFailed(state.item, false));
       }
 
       if (state is PickButtonUpdating) {
         if (state.comment != null) {
-          add(AddPickComment(state.comment!));
+          add(AddPickComment(state.comment!, state.item));
         }
       }
 
       if (state is RemovePickAndComment) {
-        add(RemovePickComment(
-            state.commentId, state.targetId, state.objective));
+        add(RemovePickComment(state.commentId, state.item));
       }
     });
     on<CommentEvent>((event, emit) async {
@@ -45,7 +49,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         if (event is FetchComments) {
           emit(CommentLoading());
           List<Comment>? allComments =
-              await _commentService.fetchCommentsByStoryId(event.storyId);
+              await _commentService.fetchCommentsByStoryId(event.targetId);
           if (allComments == null) {
             emit(CommentError(UnknownException('FetchCommentsFailed')));
           } else {
@@ -61,9 +65,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           );
           emit(CommentAdding(myNewComment));
           List<Comment>? allComments = await _commentService.createComment(
-            storyId: event.storyId,
+            storyId: event.targetId,
             content: event.content,
-            state: event.commentTransparency,
+            state: CommentTransparency.public,
           );
           if (allComments == null) {
             emit(AddCommentFailed(UnknownException('FetchCommentsFailed')));
@@ -73,12 +77,15 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         } else if (event is AddPickComment) {
           emit(AddingPickComment(event.comment));
         } else if (event is AddPickCommentSuccess) {
-          emit(PickCommentAdded(event.comment));
+          emit(PickCommentAdded(event.comment, event.item));
         } else if (event is RemovePickComment) {
-          emit(RemovingPickComment(
-              event.commentId, event.targetId, event.objective));
+          emit(RemovingPickComment(event.commentId, event.item));
         } else if (event is UpdatePickCommentFailed) {
-          emit(PickCommentUpdateFailed());
+          if (event.isAdd) {
+            emit(PickCommentAddFailed(event.item));
+          } else {
+            emit(PickCommentRemoveFailed(event.item));
+          }
         } else if (event is DeleteComment) {
           emit(DeletingComment(event.comment.id));
           var result = await _commentService.deleteComment(event.comment.id);

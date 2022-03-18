@@ -22,7 +22,7 @@ class NewsStoryPage extends StatelessWidget {
       child = NewsWebviewWidget(
         news: news,
       );
-    } else if (news.source?.title == 'readr') {
+    } else if (news.source.title == 'readr') {
       child = ReadrStoryWidget(
         news: news,
       );

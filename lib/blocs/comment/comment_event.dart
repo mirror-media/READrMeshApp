@@ -8,23 +8,24 @@ abstract class CommentEvent extends Equatable {
 }
 
 class FetchComments extends CommentEvent {
-  final String storyId;
+  final String targetId;
+  final PickObjective objective;
 
-  const FetchComments(this.storyId);
+  const FetchComments(this.targetId, this.objective);
 
   @override
   String toString() => "Fetch comments";
 }
 
 class AddComment extends CommentEvent {
-  final String storyId;
+  final PickObjective objective;
+  final String targetId;
   final String content;
-  final CommentTransparency commentTransparency;
 
   const AddComment({
-    required this.storyId,
+    required this.targetId,
     required this.content,
-    required this.commentTransparency,
+    required this.objective,
   });
 
   @override
@@ -33,8 +34,9 @@ class AddComment extends CommentEvent {
 
 class AddPickComment extends CommentEvent {
   final Comment comment;
+  final PickableItem item;
 
-  const AddPickComment(this.comment);
+  const AddPickComment(this.comment, this.item);
 
   @override
   String toString() => "Add pick_comment";
@@ -42,21 +44,25 @@ class AddPickComment extends CommentEvent {
 
 class AddPickCommentSuccess extends CommentEvent {
   final Comment comment;
-  const AddPickCommentSuccess(this.comment);
+  final PickableItem item;
+  const AddPickCommentSuccess(this.comment, this.item);
   @override
   String toString() => "Add pick_comment success";
 }
 
 class UpdatePickCommentFailed extends CommentEvent {
+  final PickableItem item;
+  final bool isAdd;
+  const UpdatePickCommentFailed(this.item, this.isAdd);
+
   @override
   String toString() => "Update pick_comment failed";
 }
 
 class RemovePickComment extends CommentEvent {
   final String commentId;
-  final String targetId;
-  final PickObjective objective;
-  const RemovePickComment(this.commentId, this.targetId, this.objective);
+  final PickableItem item;
+  const RemovePickComment(this.commentId, this.item);
 
   @override
   String toString() => "Remove pick_comment commentId = $commentId";

@@ -1,3 +1,4 @@
+import 'package:readr/helpers/commentCountHelper.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/category.dart';
@@ -11,7 +12,7 @@ class NewsListItem {
   final String url;
   final String? summary;
   final String? content;
-  final Publisher? source;
+  final Publisher source;
   final Category? category;
   final DateTime publishedDate;
   final String? heroImageUrl;
@@ -33,7 +34,7 @@ class NewsListItem {
     required this.url,
     this.summary,
     this.content,
-    this.source,
+    required this.source,
     this.category,
     required this.publishedDate,
     required this.heroImageUrl,
@@ -51,7 +52,7 @@ class NewsListItem {
   });
 
   factory NewsListItem.fromJson(Map<String, dynamic> json) {
-    Publisher? source;
+    late Publisher source;
     Category? category;
     bool payWall = false;
     bool fullContent = false;
@@ -89,6 +90,7 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['commentCount'])) {
       commentCount = json['commentCount'];
+      CommentCountHelper.instance.updateStoryMap(json["id"], commentCount);
     }
 
     if (BaseModel.checkJsonKeys(json, ['followingPicks']) &&
@@ -139,7 +141,6 @@ class NewsListItem {
           PickedItem(
             pickId: myPickId!,
             pickCommentId: myPickCommentId,
-            commentCount: commentCount,
             pickCount: pickCount,
           ),
         );
