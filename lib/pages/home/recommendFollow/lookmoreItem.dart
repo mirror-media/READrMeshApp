@@ -48,12 +48,9 @@ class LookmoreItem extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
-                  AutoRouter.of(context)
-                      .push(RecommendFollowRoute(
-                        recommendedItems: recommendedItems,
-                      ))
-                      .whenComplete(() =>
-                          context.read<HomeBloc>().add(RefreshHomeScreen()));
+                  AutoRouter.of(context).push(RecommendFollowRoute(
+                    recommendedItems: recommendedItems,
+                  ));
                 },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: readrBlack87, width: 1),

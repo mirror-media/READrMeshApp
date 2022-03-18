@@ -127,11 +127,9 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildHomeContent();
         }
 
-        if (state is HomeRefresh ||
-            state is LoadingMoreNews ||
+        if (state is LoadingMoreNews ||
             state is LoadMoreNewsFailed ||
-            state is HomeReloading ||
-            state is HomeRefreshing) {
+            state is HomeReloading) {
           return _buildHomeContent();
         }
 

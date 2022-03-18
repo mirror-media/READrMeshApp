@@ -17,11 +17,6 @@ class ReloadHomeScreen extends HomeEvent {
   String toString() => 'ReloadHomeScreen';
 }
 
-class RefreshHomeScreen extends HomeEvent {
-  @override
-  String toString() => 'RefreshHomeScreen';
-}
-
 class LoadMoreFollowingPicked extends HomeEvent {
   final DateTime lastPickTime;
   final List<String> alreadyFetchIds;

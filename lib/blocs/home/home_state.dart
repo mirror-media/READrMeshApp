@@ -13,10 +13,6 @@ class HomeLoading extends HomeState {}
 
 class HomeReloading extends HomeState {}
 
-class HomeRefreshing extends HomeState {}
-
-class HomeRefresh extends HomeState {}
-
 class HomeLoaded extends HomeState {
   final List<NewsListItem> allLatestNews;
   final List<NewsListItem> followingStories;
