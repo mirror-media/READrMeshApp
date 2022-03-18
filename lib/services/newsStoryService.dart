@@ -152,6 +152,7 @@ class NewsStoryService {
           state
           published_date
           likeCount
+          is_edited
           isLiked:likeCount(
             where:{
               is_active:{

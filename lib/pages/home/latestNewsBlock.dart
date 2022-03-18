@@ -180,9 +180,10 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           shrinkWrap: true,
           children: [
             const SizedBox(height: 12),
-            _latestNewsList(context, filteredList.sublist(0, 5)),
+            _latestNewsList(context, filteredList.take(5).toList()),
             RecommendFollowBlock(widget.recommendedPublishers),
-            _latestNewsList(context, filteredList.sublist(5)),
+            if (filteredList.length > 5)
+              _latestNewsList(context, filteredList.sublist(5)),
             _bottomWidget(),
           ],
         ),

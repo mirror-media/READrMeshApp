@@ -41,6 +41,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   bool _isAddOrRemove = false;
   int _removeIndex = -1;
   late Comment _removeComment;
+  late int _deleteCommentIndex;
+  late Comment _deleteComment;
 
   @override
   void initState() {
@@ -54,207 +56,240 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentBloc, CommentState>(
-      builder: (context, state) {
-        _isSending = false;
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: BlocBuilder<CommentBloc, CommentState>(
+        builder: (context, state) {
+          _isSending = false;
 
-        if (state is CommentAdding) {
-          _isSending = true;
-          _myNewComment = state.myNewComment;
-          _allComments.insert(0, _myNewComment);
-        }
-
-        if (state is AddCommentSuccess) {
-          _allComments = state.comments;
-
-          int index = _allComments.indexWhere((element) {
-            if (element.content == _myNewComment.content &&
-                element.member.memberId == _myNewComment.member.memberId) {
-              return true;
-            }
-            return false;
-          });
-          if (index != 0 && index != -1) {
-            _myNewComment = _allComments.elementAt(index);
-            _allComments.removeAt(index);
+          if (state is CommentAdding) {
+            _isSending = true;
+            _myNewComment = state.myNewComment;
             _allComments.insert(0, _myNewComment);
           }
 
-          Timer(const Duration(seconds: 5, milliseconds: 5),
-              () => _hasMyNewComment = false);
-          _textController.clear();
-        }
+          if (state is AddCommentSuccess) {
+            _allComments = state.comments;
 
-        if (state is AddCommentFailed) {
-          Fluttertoast.showToast(
-            msg: "留言失敗，請稍後再試一次",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          _hasMyNewComment = false;
-        }
-
-        if (state is AddingPickComment) {
-          _myNewComment = state.myNewComment;
-          _allComments.insert(0, _myNewComment);
-          _isAddOrRemove = true;
-          _isSending = true;
-        }
-
-        if (state is RemovingPickComment) {
-          _removeIndex = _allComments
-              .indexWhere((element) => element.id == state.pickCommentId);
-          if (_removeIndex != -1) {
-            _removeComment = _allComments[_removeIndex];
-            _allComments.removeAt(_removeIndex);
-          }
-
-          _isAddOrRemove = false;
-        }
-
-        if (state is PickCommentUpdateSuccess && _isAddOrRemove) {
-          if (state.comment != null) {
-            _allComments[0] = state.comment!;
-          }
-          _hasMyNewComment = true;
-          Timer(const Duration(seconds: 5, milliseconds: 5),
-              () => _hasMyNewComment = false);
-        }
-
-        if (state is PickCommentUpdateFailed) {
-          if (_isAddOrRemove) {
-            _allComments.removeAt(0);
-          } else {
-            _allComments.insert(_removeIndex, _removeComment);
-          }
-        }
-
-        return NotificationListener<DraggableScrollableNotification>(
-          onNotification: (DraggableScrollableNotification dSNotification) {
-            if (_isCollapsed && dSNotification.extent > 0.3) {
-              _isCollapsed = false;
-            } else if (!_isCollapsed && dSNotification.extent < 0.3) {
-              _isCollapsed = true;
+            int index = _allComments.indexWhere((element) {
+              if (element.content == _myNewComment.content &&
+                  element.member.memberId == _myNewComment.member.memberId) {
+                return true;
+              }
+              return false;
+            });
+            if (index != 0 && index != -1) {
+              _myNewComment = _allComments.elementAt(index);
+              _allComments.removeAt(index);
+              _allComments.insert(0, _myNewComment);
             }
-            return false;
-          },
-          child: DraggableScrollableActuator(
-            child: DraggableScrollableSheet(
-              snap: true,
-              initialChildSize: 0.2,
-              minChildSize: 0.2,
-              builder: (context, scrollController) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: readrBlack10,
-                              offset: Offset(0, -8),
-                              blurRadius: 10,
-                              spreadRadius: 5,
+
+            Timer(const Duration(seconds: 5, milliseconds: 5),
+                () => _hasMyNewComment = false);
+            _textController.clear();
+          }
+
+          if (state is AddCommentFailed) {
+            Fluttertoast.showToast(
+              msg: "留言失敗，請稍後再試一次",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+            _hasMyNewComment = false;
+          }
+
+          if (state is AddingPickComment) {
+            _myNewComment = state.myNewComment;
+            _allComments.insert(0, _myNewComment);
+            _isAddOrRemove = true;
+            _isSending = true;
+          }
+
+          if (state is RemovingPickComment) {
+            _removeIndex = _allComments
+                .indexWhere((element) => element.id == state.pickCommentId);
+            if (_removeIndex != -1) {
+              _removeComment = _allComments[_removeIndex];
+              _allComments.removeAt(_removeIndex);
+            }
+
+            _isAddOrRemove = false;
+          }
+
+          if (state is PickCommentUpdateSuccess && _isAddOrRemove) {
+            if (state.comment != null) {
+              _allComments[0] = state.comment!;
+            }
+            _hasMyNewComment = true;
+            Timer(const Duration(seconds: 5, milliseconds: 5),
+                () => _hasMyNewComment = false);
+          }
+
+          if (state is PickCommentUpdateFailed) {
+            if (_isAddOrRemove) {
+              _allComments.removeAt(0);
+            } else {
+              _allComments.insert(_removeIndex, _removeComment);
+            }
+          }
+
+          if (state is DeletingComment) {
+            _deleteCommentIndex = _allComments
+                .indexWhere((element) => element.id == state.commentId);
+            if (_deleteCommentIndex != -1) {
+              _deleteComment = _allComments[_deleteCommentIndex];
+              _allComments.removeAt(_deleteCommentIndex);
+            }
+          }
+
+          if (state is DeleteCommentFailure) {
+            _allComments.insert(_deleteCommentIndex, _deleteComment);
+          }
+
+          if (state is UpdatingComment) {
+            int index = _allComments
+                .indexWhere((element) => element.id == state.newComment.id);
+            if (index != -1) {
+              _allComments[index] = state.newComment;
+            }
+          }
+
+          if (state is UpdateCommentFailure) {
+            int index = _allComments
+                .indexWhere((element) => element.id == state.oldComment.id);
+            if (index != -1) {
+              _allComments[index] = state.oldComment;
+            }
+          }
+
+          return NotificationListener<DraggableScrollableNotification>(
+            onNotification: (DraggableScrollableNotification dSNotification) {
+              if (_isCollapsed && dSNotification.extent > 0.3) {
+                _isCollapsed = false;
+              } else if (!_isCollapsed && dSNotification.extent < 0.3) {
+                _isCollapsed = true;
+              }
+              return false;
+            },
+            child: DraggableScrollableActuator(
+              child: DraggableScrollableSheet(
+                snap: true,
+                initialChildSize: 0.2,
+                minChildSize: 0.2,
+                builder: (context, scrollController) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
                             ),
-                          ],
-                        ),
-                        child: CustomScrollView(
-                          controller: scrollController,
-                          physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          slivers: [
-                            if (_isCollapsed)
-                              SliverToBoxAdapter(
-                                child: _collapseWidget(context),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: readrBlack10,
+                                offset: Offset(0, -8),
+                                blurRadius: 10,
+                                spreadRadius: 5,
                               ),
-                            if (!_isCollapsed) ...[
-                              SliverAppBar(
-                                centerTitle: true,
-                                automaticallyImplyLeading: false,
-                                pinned: true,
-                                elevation: 0,
-                                titleSpacing: 0,
-                                backgroundColor: Colors.transparent,
-                                title: Container(
-                                  height: kToolbarHeight,
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
+                            ],
+                          ),
+                          child: CustomScrollView(
+                            controller: scrollController,
+                            physics: const ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            slivers: [
+                              if (_isCollapsed)
+                                SliverToBoxAdapter(
+                                  child: _collapseWidget(context),
+                                ),
+                              if (!_isCollapsed) ...[
+                                SliverAppBar(
+                                  centerTitle: true,
+                                  automaticallyImplyLeading: false,
+                                  pinned: true,
+                                  elevation: 0,
+                                  titleSpacing: 0,
+                                  backgroundColor: Colors.transparent,
+                                  title: Container(
+                                    height: kToolbarHeight,
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                      ),
+                                      color: Colors.white,
                                     ),
+                                    child: const Icon(
+                                      Icons.expand_more_outlined,
+                                      color: readrBlack30,
+                                      size: 32,
+                                    ),
+                                  ),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: _titleAndPickBar(),
+                                ),
+                                if (widget.news.popularComments.isNotEmpty)
+                                  _popularCommentList(context),
+                                SliverAppBar(
+                                  backgroundColor: Colors.white,
+                                  title: Container(
                                     color: Colors.white,
-                                  ),
-                                  child: const Icon(
-                                    Icons.expand_more_outlined,
-                                    color: readrBlack30,
-                                    size: 32,
-                                  ),
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: _titleAndPickBar(),
-                              ),
-                              if (widget.news.popularComments.isNotEmpty)
-                                _popularCommentList(context),
-                              SliverAppBar(
-                                backgroundColor: Colors.white,
-                                title: Container(
-                                  color: Colors.white,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                                  child: Text(
-                                    '所有留言 (${_allComments.length})',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      color: readrBlack87,
-                                      fontWeight: FontWeight.w500,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 16, 20, 12),
+                                    child: Text(
+                                      '所有留言 (${_allComments.length})',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: readrBlack87,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
+                                  centerTitle: false,
+                                  pinned: true,
+                                  automaticallyImplyLeading: false,
+                                  titleSpacing: 0,
+                                  elevation: 0.5,
                                 ),
-                                centerTitle: false,
-                                pinned: true,
-                                automaticallyImplyLeading: false,
-                                titleSpacing: 0,
-                              ),
-                              _allCommentList(context),
-                            ]
-                          ],
+                                _allCommentList(context),
+                              ]
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: const Divider(
-                        color: readrBlack10,
-                        thickness: 0.5,
-                        height: 0.5,
+                      Container(
+                        color: Colors.white,
+                        child: const Divider(
+                          color: readrBlack10,
+                          thickness: 0.5,
+                          height: 1,
+                        ),
                       ),
-                    ),
-                    CommentInputBox(
-                      onPressed: _sendComment,
-                      isSending: _isSending,
-                      onTextChanged: (text) => widget.onTextChanged(text),
-                      textController: _textController,
-                      isCollapsed: _isCollapsed,
-                    ),
-                  ],
-                );
-              },
+                      CommentInputBox(
+                        onPressed: _sendComment,
+                        isSending: _isSending,
+                        onTextChanged: (text) => widget.onTextChanged(text),
+                        textController: _textController,
+                        isCollapsed: _isCollapsed,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -282,7 +317,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: CollapsePickBar(_pick),
+          child: CollapsePickBar(_pick, _allComments.length),
         ),
       ],
     );

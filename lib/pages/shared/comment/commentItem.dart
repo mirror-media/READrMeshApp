@@ -4,12 +4,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
+import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 
@@ -203,7 +206,11 @@ class _CommentItemState extends State<CommentItem> {
                         color: readrBlack50,
                       ),
                     ),
-                  if (!widget.isSending) Timestamp(widget.comment.publishDate),
+                  if (!widget.isSending)
+                    Timestamp(
+                      widget.comment.publishDate,
+                      isEdited: widget.comment.isEdited,
+                    ),
                   if (widget.comment.member.memberId ==
                       UserHelper.instance.currentUser.memberId) ...[
                     Container(
@@ -217,7 +224,13 @@ class _CommentItemState extends State<CommentItem> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await EditCommentMenu.showEditCommentMenu(
+                          context,
+                          widget.comment,
+                          BlocProvider.of<CommentBloc>(context),
+                        );
+                      },
                       child: const Text(
                         '編輯留言',
                         softWrap: true,

@@ -8,10 +8,12 @@ class Timestamp extends StatefulWidget {
   final DateTime dateTime;
   final double textSize;
   final Color textColor;
+  final bool isEdited;
   const Timestamp(
     this.dateTime, {
     this.textSize = 12.0,
     this.textColor = readrBlack50,
+    this.isEdited = false,
   });
 
   @override
@@ -65,6 +67,11 @@ class _TimestampState extends State<Timestamp> {
       text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
       fontSize = widget.textSize + 0.1;
     }
+
+    if (widget.isEdited) {
+      text += '(已編輯)';
+    }
+
     return Text(
       text,
       softWrap: true,

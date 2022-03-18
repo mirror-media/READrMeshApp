@@ -178,6 +178,7 @@ class PickService {
           content
           state
           published_date
+          is_edited
         }
       }
     }

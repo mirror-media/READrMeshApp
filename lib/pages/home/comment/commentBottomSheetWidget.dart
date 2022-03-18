@@ -39,7 +39,8 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
   bool _hasMyNewComment = false;
   late final TextEditingController _textController;
   final ItemScrollController _controller = ItemScrollController();
-  bool _isInitialized = false;
+  late int _deleteCommentIndex;
+  late Comment _deleteComment;
 
   @override
   void initState() {
@@ -123,6 +124,15 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     );
                   }
 
+                  if (state is CommentInitial || state is CommentLoading) {
+                    return const SizedBox(
+                      height: 150,
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    );
+                  }
+
                   if (state is CommentLoaded) {
                     _allComments = state.comments;
                     int index = _allComments.indexWhere(
@@ -138,9 +148,6 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                       }
                     });
                     _isSending = false;
-                    _isInitialized = true;
-
-                    return _buildContent();
                   }
 
                   if (state is AddCommentFailed) {
@@ -148,10 +155,9 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                       _allComments.removeAt(0);
                     }
                     _isSending = false;
-                    return _buildContent();
                   }
 
-                  if (state is AddCommentSuccess && _isInitialized) {
+                  if (state is AddCommentSuccess) {
                     _allComments = state.comments;
 
                     // find new comment position
@@ -163,11 +169,6 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                       }
                       return false;
                     });
-
-                    //if not found, just return new comments
-                    if (index == -1) {
-                      return _buildContent();
-                    }
 
                     // if it's not the first, move to first
                     if (index != 0) {
@@ -183,8 +184,6 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
 
                     _isSending = false;
                     _textController.clear();
-
-                    return _buildContent();
                   }
 
                   if (state is CommentAdding) {
@@ -193,15 +192,38 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     }
 
                     _isSending = true;
-                    return _buildContent();
                   }
 
-                  return const SizedBox(
-                    height: 150,
-                    child: Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
-                  );
+                  if (state is DeletingComment) {
+                    _deleteCommentIndex = _allComments
+                        .indexWhere((element) => element.id == state.commentId);
+                    if (_deleteCommentIndex != -1) {
+                      _deleteComment = _allComments[_deleteCommentIndex];
+                      _allComments.removeAt(_deleteCommentIndex);
+                    }
+                  }
+
+                  if (state is DeleteCommentFailure) {
+                    _allComments.insert(_deleteCommentIndex, _deleteComment);
+                  }
+
+                  if (state is UpdatingComment) {
+                    int index = _allComments.indexWhere(
+                        (element) => element.id == state.newComment.id);
+                    if (index != -1) {
+                      _allComments[index] = state.newComment;
+                    }
+                  }
+
+                  if (state is UpdateCommentFailure) {
+                    int index = _allComments.indexWhere(
+                        (element) => element.id == state.oldComment.id);
+                    if (index != -1) {
+                      _allComments[index] = state.oldComment;
+                    }
+                  }
+
+                  return _buildContent();
                 },
               ),
             ),

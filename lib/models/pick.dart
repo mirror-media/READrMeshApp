@@ -9,7 +9,7 @@ class Pick {
   final NewsListItem? story;
   final PickObjective objective;
   final Comment? comment;
-  final Comment? pickComment;
+  Comment? pickComment;
   final DateTime pickedDate;
 
   Pick({

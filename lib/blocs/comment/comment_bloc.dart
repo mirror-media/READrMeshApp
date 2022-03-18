@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
-import 'package:readr/helpers/apiException.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/exceptions.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
@@ -78,26 +77,36 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           emit(RemovingPickComment(event.commentId));
         } else if (event is UpdatePickCommentFailed) {
           emit(PickCommentUpdateFailed());
+        } else if (event is DeleteComment) {
+          emit(DeletingComment(event.comment.id));
+          var result = await _commentService.deleteComment(event.comment.id);
+          if (result) {
+            if (event.comment.story != null) {
+              UserHelper.instance
+                  .removeNewsPickCommentId(event.comment.story!.id);
+            }
+            emit(DeleteCommentSuccess());
+          } else {
+            emit(DeleteCommentFailure());
+          }
+        } else if (event is EditComment) {
+          emit(UpdatingComment(event.newComment));
+          var result = await _commentService.editComment(event.newComment);
+          if (result) {
+            emit(UpdateCommentSuccess());
+          } else {
+            emit(UpdateCommentFailure(event.oldComment));
+          }
         }
       } catch (e) {
         if (event is AddComment) {
           emit(AddCommentFailed(e));
-        } else if (e is SocketException) {
-          emit(CommentError(NoInternetException('No Internet')));
-        } else if (e is HttpException) {
-          emit(CommentError(NoServiceFoundException('No Service Found')));
-        } else if (e is FormatException) {
-          emit(CommentError(InvalidFormatException('Invalid Response format')));
-        } else if (e is FetchDataException) {
-          emit(CommentError(NoInternetException('Error During Communication')));
-        } else if (e is BadRequestException ||
-            e is UnauthorisedException ||
-            e is InvalidInputException) {
-          emit(CommentError(Error400Exception('Unauthorised')));
-        } else if (e is InternalServerErrorException) {
-          emit(CommentError(Error500Exception('Internal Server Error')));
+        } else if (event is DeleteComment) {
+          emit(DeleteCommentFailure());
+        } else if (event is EditComment) {
+          emit(UpdateCommentFailure(event.oldComment));
         } else {
-          emit(CommentError(UnknownException(e.toString())));
+          emit(CommentError(determineException(e)));
         }
       }
     });

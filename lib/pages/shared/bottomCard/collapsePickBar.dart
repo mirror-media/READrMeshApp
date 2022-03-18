@@ -8,20 +8,21 @@ import 'package:readr/pages/shared/pick/pickButton.dart';
 
 class CollapsePickBar extends StatelessWidget {
   final PickableItem item;
-  const CollapsePickBar(this.item, {Key? key}) : super(key: key);
+  final int commentCount;
+  const CollapsePickBar(this.item, this.commentCount, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PickButtonCubit, PickButtonState>(
       builder: (context, state) {
         int pickCountData = item.pickCount;
-        int commentCountData = item.commentCount;
 
         return Row(
           children: [
             AutoSizeText.rich(
               TextSpan(
-                text: commentCountData.toString(),
+                text: commentCount.toString(),
                 style: const TextStyle(
                   color: readrBlack87,
                   fontWeight: FontWeight.w500,

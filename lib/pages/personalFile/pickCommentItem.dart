@@ -1,9 +1,11 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
+import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 
@@ -11,8 +13,10 @@ class PickCommentItem extends StatefulWidget {
   final Comment comment;
   final bool isExpanded;
   final bool isMyComment;
+  final CommentBloc commentBloc;
   const PickCommentItem({
     required this.comment,
+    required this.commentBloc,
     this.isExpanded = false,
     this.isMyComment = false,
   });
@@ -53,7 +57,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _time(),
+          _time(context),
           const SizedBox(height: 12),
           _content(),
         ],
@@ -61,7 +65,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
     );
   }
 
-  Widget _time() {
+  Widget _time(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +78,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
         Timestamp(
           widget.comment.publishDate,
           textSize: 13,
+          isEdited: widget.comment.isEdited,
         ),
         if (widget.isMyComment) ...[
           Container(
@@ -87,7 +92,13 @@ class _PickCommentItemState extends State<PickCommentItem> {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              await EditCommentMenu.showEditCommentMenu(
+                context,
+                widget.comment,
+                widget.commentBloc,
+              );
+            },
             child: const Text(
               '編輯留言',
               style: TextStyle(

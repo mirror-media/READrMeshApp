@@ -125,6 +125,7 @@ class CommentService {
               state
               published_date
               likeCount
+              is_edited
               isLiked:likeCount(
                 where:{
                   is_active:{
@@ -251,6 +252,7 @@ class CommentService {
           state
           published_date
           likeCount
+          is_edited
           isLiked:likeCount(
             where:{
               is_active:{
@@ -399,6 +401,50 @@ class CommentService {
       return jsonResponse['data']['updateComment']['likeCount'];
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<bool> editComment(Comment newComment) async {
+    const String mutation = """
+    mutation(
+      \$commentId: ID
+      \$newContent: String
+    ){
+      updateComment(
+        where:{
+          id: \$commentId
+        }
+        data:{
+          is_edited: true,
+          content: \$newContent
+        }
+      ){
+        id
+      }
+    }
+    """;
+
+    Map<String, String> variables = {
+      "commentId": newComment.id,
+      "newContent": newComment.content
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    try {
+      final jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(),
+      );
+
+      return !jsonResponse.containsKey('errors');
+    } catch (e) {
+      return false;
     }
   }
 }

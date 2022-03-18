@@ -226,6 +226,20 @@ class UserHelper {
   PickedItem? getNewsPickedItem(String newsId) {
     return _newsPickedMap[newsId];
   }
+
+  void removeNewsPickCommentId(String newsId) {
+    _newsPickedMap[newsId]?.pickCommentId == null;
+  }
+
+  PickedItem? getNewsPickedItemByPickCommentId(String commentId) {
+    PickedItem? newsPickedItem;
+    _newsPickedMap.forEach((key, value) {
+      if (value.pickCommentId == commentId) {
+        newsPickedItem = value;
+      }
+    });
+    return newsPickedItem;
+  }
 }
 
 class PickedItem {

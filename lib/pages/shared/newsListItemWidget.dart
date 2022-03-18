@@ -13,7 +13,12 @@ import 'package:readr/pages/shared/pick/pickBar.dart';
 class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
   final bool hidePublisher;
-  const NewsListItemWidget(this.news, {this.hidePublisher = false});
+  final int? commentCount;
+  const NewsListItemWidget(
+    this.news, {
+    this.hidePublisher = false,
+    this.commentCount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +71,18 @@ class NewsListItemWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          BlocBuilder<PickButtonCubit, PickButtonState>(
-            builder: (context, state) => NewsInfo(
+          if (commentCount != null)
+            NewsInfo(
               news,
-              commentCount: NewsListItemPick(news).commentCount,
+              commentCount: commentCount,
             ),
-          ),
+          if (commentCount == null)
+            BlocBuilder<PickButtonCubit, PickButtonState>(
+              builder: (context, state) => NewsInfo(
+                news,
+                commentCount: NewsListItemPick(news).commentCount,
+              ),
+            ),
           const SizedBox(height: 16),
           PickBar(
             NewsListItemPick(news),

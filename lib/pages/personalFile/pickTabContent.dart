@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/models/pick.dart';
@@ -13,7 +15,9 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class PickTabContent extends StatefulWidget {
   final Member viewMember;
-  const PickTabContent({required this.viewMember});
+  const PickTabContent({
+    required this.viewMember,
+  });
   @override
   _PickTabContentState createState() => _PickTabContentState();
 }
@@ -22,6 +26,11 @@ class _PickTabContentState extends State<PickTabContent> {
   List<Pick> _storyPickList = [];
   bool _isLoading = false;
   bool _isNoMore = false;
+  late Comment _deletePickComment;
+  late int _deleteIndex;
+  bool _isRemovePickComment = false;
+  late int _updateIndex;
+
   @override
   void initState() {
     super.initState();
@@ -143,7 +152,78 @@ class _PickTabContentState extends State<PickTabContent> {
             ),
           ),
         ),
-        _buildPickStoryList(),
+        if (UserHelper.instance.currentUser.memberId !=
+            widget.viewMember.memberId)
+          _buildPickStoryList(),
+        if (UserHelper.instance.currentUser.memberId ==
+            widget.viewMember.memberId)
+          BlocBuilder<CommentBloc, CommentState>(
+            builder: (context, state) {
+              if (state is PickCommentUpdateSuccess) {
+                for (int i = 0; i < _storyPickList.length; i++) {
+                  var pickItem = UserHelper.instance
+                      .getNewsPickedItem(_storyPickList[i].story!.id);
+                  if (pickItem != null &&
+                      pickItem.pickCommentId == state.comment?.id) {
+                    _storyPickList[i].pickComment = state.comment;
+                    _storyPickList[i].story!.commentCount++;
+                    break;
+                  }
+                }
+              }
+
+              if (state is RemovingPickComment) {
+                _deleteIndex = _storyPickList.indexWhere((element) =>
+                    element.pickComment != null &&
+                    element.pickComment!.id == state.pickCommentId);
+                if (_deleteIndex != -1) {
+                  _deletePickComment =
+                      _storyPickList[_deleteIndex].pickComment!;
+                  _storyPickList[_deleteIndex].pickComment = null;
+                  _storyPickList[_deleteIndex].story!.commentCount--;
+                  _isRemovePickComment = true;
+                }
+              }
+
+              if (state is PickCommentUpdateFailed && _isRemovePickComment) {
+                _storyPickList[_deleteIndex].pickComment = _deletePickComment;
+                _storyPickList[_deleteIndex].story!.commentCount++;
+                _isRemovePickComment = false;
+              }
+
+              if (state is DeletingComment) {
+                _deleteIndex = _storyPickList.indexWhere((element) =>
+                    element.pickComment != null &&
+                    element.pickComment!.id == state.commentId);
+                if (_deleteIndex != -1) {
+                  _deletePickComment =
+                      _storyPickList[_deleteIndex].pickComment!;
+                  _storyPickList[_deleteIndex].pickComment = null;
+                  _storyPickList[_deleteIndex].story!.commentCount--;
+                }
+              }
+
+              if (state is DeleteCommentFailure) {
+                _storyPickList[_deleteIndex].pickComment = _deletePickComment;
+                _storyPickList[_deleteIndex].story!.commentCount++;
+              }
+
+              if (state is UpdatingComment) {
+                _updateIndex = _storyPickList.indexWhere((element) =>
+                    element.pickComment != null &&
+                    element.pickComment!.id == state.newComment.id);
+                if (_updateIndex != -1) {
+                  _storyPickList[_updateIndex].pickComment = state.newComment;
+                }
+              }
+
+              if (state is UpdateCommentFailure) {
+                _storyPickList[_updateIndex].pickComment = state.oldComment;
+              }
+
+              return _buildPickStoryList();
+            },
+          ),
       ],
     );
   }
@@ -176,6 +256,7 @@ class _PickTabContentState extends State<PickTabContent> {
             children: [
               NewsListItemWidget(
                 _storyPickList[index].story!,
+                commentCount: _storyPickList[index].story!.commentCount,
               ),
               const SizedBox(
                 height: 12,
@@ -184,12 +265,14 @@ class _PickTabContentState extends State<PickTabContent> {
                 comment: _storyPickList[index].pickComment!,
                 isMyComment: UserHelper.instance.currentUser.memberId ==
                     widget.viewMember.memberId,
+                commentBloc: BlocProvider.of<CommentBloc>(context),
               ),
             ],
           );
         }
         return NewsListItemWidget(
           _storyPickList[index].story!,
+          commentCount: _storyPickList[index].story!.commentCount,
         );
       },
       separatorBuilder: (context, index) {

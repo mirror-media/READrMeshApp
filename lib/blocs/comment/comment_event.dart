@@ -59,3 +59,20 @@ class RemovePickComment extends CommentEvent {
   @override
   String toString() => "Remove pick_comment commentId = $commentId";
 }
+
+class DeleteComment extends CommentEvent {
+  final Comment comment;
+  const DeleteComment(this.comment);
+
+  @override
+  String toString() => "Delete comment commentId = ${comment.id}";
+}
+
+class EditComment extends CommentEvent {
+  final Comment oldComment;
+  final Comment newComment;
+  const EditComment({required this.oldComment, required this.newComment});
+
+  @override
+  String toString() => "Edit comment commentId = ${oldComment.id}";
+}

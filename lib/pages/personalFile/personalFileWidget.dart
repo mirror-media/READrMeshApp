@@ -5,9 +5,11 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
+import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
@@ -92,8 +94,16 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       ),
     );
 
-    _tabWidgets.add(BlocProvider(
-      create: (context) => PersonalFileTabBloc(),
+    _tabWidgets.add(MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PersonalFileTabBloc(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CommentBloc(BlocProvider.of<PickButtonCubit>(context)),
+        ),
+      ],
       child: PickTabContent(
         viewMember: widget.viewMember,
       ),

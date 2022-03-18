@@ -13,6 +13,7 @@ class Comment {
   final NewsListItem? story;
   int likedCount;
   bool isLiked;
+  bool isEdited;
 
   Comment({
     required this.id,
@@ -25,12 +26,14 @@ class Comment {
     this.story,
     this.likedCount = 0,
     this.isLiked = false,
+    this.isEdited = false,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     NewsListItem? story;
     int likedCount = 0;
     bool isLiked = false;
+    bool isEdited = false;
 
     if (BaseModel.checkJsonKeys(json, ['story'])) {
       story = NewsListItem.fromJson(json['story']);
@@ -48,6 +51,10 @@ class Comment {
       }
     }
 
+    if (BaseModel.checkJsonKeys(json, ['is_edited'])) {
+      isEdited = json['is_edited'];
+    }
+
     return Comment(
       id: json['id'],
       member: Member.fromJson(json['member']),
@@ -57,6 +64,7 @@ class Comment {
       story: story,
       likedCount: likedCount,
       isLiked: isLiked,
+      isEdited: isEdited,
     );
   }
 }

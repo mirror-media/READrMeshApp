@@ -16,7 +16,7 @@ class NewsListItem {
   final DateTime publishedDate;
   final String? heroImageUrl;
   int pickCount;
-  final int commentCount;
+  int commentCount;
   final bool payWall;
   final bool fullScreenAd;
   final bool fullContent;

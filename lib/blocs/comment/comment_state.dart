@@ -52,3 +52,24 @@ class CommentError extends CommentState {
   final dynamic error;
   const CommentError(this.error);
 }
+
+class DeletingComment extends CommentState {
+  final String commentId;
+  const DeletingComment(this.commentId);
+}
+
+class DeleteCommentSuccess extends CommentState {}
+
+class DeleteCommentFailure extends CommentState {}
+
+class UpdatingComment extends CommentState {
+  final Comment newComment;
+  const UpdatingComment(this.newComment);
+}
+
+class UpdateCommentSuccess extends CommentState {}
+
+class UpdateCommentFailure extends CommentState {
+  final Comment oldComment;
+  const UpdateCommentFailure(this.oldComment);
+}

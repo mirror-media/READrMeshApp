@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
@@ -19,15 +22,19 @@ class CommentBottomSheet {
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
-      builder: (context) => SafeArea(
-        bottom: false,
-        child: Material(
-          child: CommentBottomSheetWidget(
-            context: context,
-            clickComment: clickComment,
-            storyId: storyId,
-            onTextChanged: (text) => inputContent = text,
-            oldContent: oldContent,
+      builder: (context) => BlocProvider(
+        create: (context) =>
+            CommentBloc(BlocProvider.of<PickButtonCubit>(context)),
+        child: SafeArea(
+          bottom: false,
+          child: Material(
+            child: CommentBottomSheetWidget(
+              context: context,
+              clickComment: clickComment,
+              storyId: storyId,
+              onTextChanged: (text) => inputContent = text,
+              oldContent: oldContent,
+            ),
           ),
         ),
       ),
