@@ -168,6 +168,9 @@ class _HomeWidgetState extends State<HomeWidget> {
           _latestComments = state.latestComments;
           _recommendedMembers = state.recommendedMembers;
           _recommendedPublishers = state.recommendedPublishers;
+          if (_allLatestNews.length < 10) {
+            _noMoreLatestNews = true;
+          }
           return _buildHomeContent();
         }
 
