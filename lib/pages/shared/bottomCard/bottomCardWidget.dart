@@ -55,15 +55,14 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: BlocBuilder<CommentBloc, CommentState>(
         builder: (context, state) {
-          _isSending = false;
-
-          if (state is CommentAdding) {
+          if (state is CommentAdding && !_isSending) {
             _isSending = true;
             _myNewComment = state.myNewComment;
             _allComments.insert(0, _myNewComment);
           }
 
           if (state is AddCommentSuccess) {
+            _isSending = false;
             _allComments = state.comments;
 
             int index = _allComments.indexWhere((element) {
@@ -98,9 +97,10 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               fontSize: 16.0,
             );
             _hasMyNewComment = false;
+            _isSending = false;
           }
 
-          if (state is AddingPickComment) {
+          if (state is AddingPickComment && !_isSending) {
             _myNewComment = state.myNewComment;
             _allComments.insert(0, _myNewComment);
             _isSending = true;
@@ -116,6 +116,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           }
 
           if (state is PickCommentAdded) {
+            _isSending = false;
             _allComments[0] = state.comment;
             _hasMyNewComment = true;
             Timer(const Duration(seconds: 5, milliseconds: 5),
@@ -123,6 +124,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           }
 
           if (state is PickCommentAddFailed) {
+            _isSending = false;
             _allComments.removeAt(0);
           }
 
