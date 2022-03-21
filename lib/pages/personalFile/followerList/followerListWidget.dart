@@ -8,6 +8,7 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/personalFile/followSkeletonScreen.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -98,9 +99,7 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
           }
         }
 
-        return const Center(
-          child: CircularProgressIndicator.adaptive(),
-        );
+        return const FollowSkeletonScreen();
       },
     );
   }
