@@ -188,12 +188,13 @@ class TabStoryListServices {
       \$followingMembers: [ID!]
       \$myId: ID
       \$urlFilter: String!
+      \$readrId: ID
     ){
       stories(
         where:{
           source:{
-            title:{
-              equals: "readr"
+            id:{
+              equals: \$readrId
             }
           }
           content:{
@@ -346,6 +347,7 @@ class TabStoryListServices {
       "followingMembers": followingMemberIds,
       "myId": UserHelper.instance.currentUser.memberId,
       "urlFilter": Environment().config.readrWebsiteLink,
+      "readrId": Environment().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

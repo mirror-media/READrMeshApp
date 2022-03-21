@@ -22,12 +22,14 @@ class RecommendService {
 
   Future<List<Publisher>> fetchAllPublishers() async {
     const String query = """
-    query{
+    query(
+      \$readrId: ID
+    ){
       publishers(
         where:{
-          title:{
+          id:{
             not:{
-              equals: "readr"
+              equals: \$readrId
             }
           }
         }
@@ -46,7 +48,9 @@ class RecommendService {
     }
     """;
 
-    Map<String, dynamic> variables = {};
+    Map<String, dynamic> variables = {
+      "readrId": Environment().config.readrPublisherId
+    };
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,

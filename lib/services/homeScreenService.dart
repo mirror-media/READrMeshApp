@@ -21,6 +21,7 @@ class HomeScreenService {
   		\$yesterday: DateTime
       \$followingPublisherIds: [ID!]
       \$myId: ID
+      \$readrId: ID
     ){
       followingStories:stories(
         orderBy:{
@@ -570,10 +571,8 @@ class HomeScreenService {
         where:{
           id:{
             notIn: \$followingPublisherIds
-          }
-          title:{
             not:{
-              equals: "readr"
+              equals: \$readrId
             }
           }
         }
@@ -638,6 +637,7 @@ class HomeScreenService {
       "followingPublisherIds": followingPublisherIds,
       "myId": member.memberId,
       "timeFilter": timeFilter,
+      "readrId": Environment().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

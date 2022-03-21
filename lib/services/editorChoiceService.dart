@@ -64,12 +64,13 @@ class EditorChoiceServices {
       \$myId: ID
       \$urlList: [String!]
       \$urlFilter: String
+      \$readrId: ID
     ){
       stories(
         where:{
           source:{
-            title:{
-              equals: "readr"
+            id:{
+              equals: \$readrId
             }
           }
           url:{
@@ -246,6 +247,7 @@ class EditorChoiceServices {
       "urlList": urlList,
       "myId": UserHelper.instance.currentUser.memberId,
       "urlFilter": Environment().config.readrWebsiteLink,
+      "readrId": Environment().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

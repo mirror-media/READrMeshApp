@@ -4,4 +4,5 @@ abstract class BaseConfig {
   String get readrWebsiteLink;
   String get authlink;
   String get readrMeshApi;
+  String get readrPublisherId;
 }
