@@ -111,9 +111,13 @@ class NewsListItem {
       }
     }
 
-    if (BaseModel.checkJsonKeys(json, ['followingComment']) &&
-        json['followingComment'].isNotEmpty) {
-      showComment = Comment.fromJson(json['followingComment'][0]);
+    if (BaseModel.checkJsonKeys(json, ['followingPickComment']) &&
+        json['followingPickComment'].isNotEmpty) {
+      var pickComment = json['followingPickComment'][0];
+      if (BaseModel.checkJsonKeys(pickComment, ['pick_comment']) &&
+          pickComment['pick_comment'].isNotEmpty) {
+        showComment = Comment.fromJson(pickComment['pick_comment'][0]);
+      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['notFollowingComment']) &&

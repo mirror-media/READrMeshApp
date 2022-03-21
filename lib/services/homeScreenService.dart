@@ -91,52 +91,48 @@ class HomeScreenService {
             }
           }
         )
-        followingComment:comment(
-          orderBy:{
-            published_date: desc
-          }
-          take: 1
+        followingPickComment: pick(
           where:{
             is_active:{
-              equals: true
-            }
-            state:{
-              equals: "public"
-            }
+            	equals: true
+          	}
             member:{
+              is_active:{
+                equals: true
+              }
               id:{
                 in: \$followingMembers
               }
             }
           }
-        ){
-          id
-          member{
-            id
-            nickname
-            avatar
-            customId
+          orderBy:{
+            picked_date: desc
           }
-          content
-          state
-          published_date
-          likeCount(
+        ){
+          pick_comment(
             where:{
               is_active:{
                 equals: true
               }
+              state:{
+              	equals: "public"
+            	}
             }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
+            orderBy:{
+              published_date: desc
             }
-          )
+            take: 1
+          ){
+            id
+         		member{
+            	id
+            	nickname
+            	avatar
+            	customId
+          	}
+          	content
+          	published_date
+          }
         }
         followingPicks: pick(
           where:{
@@ -183,6 +179,9 @@ class HomeScreenService {
               is_active:{
                 equals: true
               }
+              published_date:{
+                gte: \$yesterday
+              }
               state:{
                 equals: "public"
               }
@@ -199,15 +198,11 @@ class HomeScreenService {
               }
             }
           }
-          OR:[
-            {
-              source:{
-                id:{
-                  in: \$followingPublisherIds
-              }
-              }
+          source:{
+            id:{
+              in: \$followingPublisherIds
             }
-          ]
+          }
         }
       ){
         id
