@@ -110,26 +110,26 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       ),
     ));
 
-    if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
-      _tabs.add(
-        const Tab(
-          child: Text(
-            '集錦',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ),
-      );
+    // if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
+    //   _tabs.add(
+    //     const Tab(
+    //       child: Text(
+    //         '集錦',
+    //         style: TextStyle(
+    //           fontSize: 16,
+    //         ),
+    //       ),
+    //     ),
+    //   );
 
-      _tabWidgets.add(BlocProvider(
-        create: (context) => PersonalFileTabBloc(),
-        child: CollectionTabContent(
-          viewMember: widget.viewMember,
-          isMine: widget.isMine,
-        ),
-      ));
-    }
+    //   _tabWidgets.add(BlocProvider(
+    //     create: (context) => PersonalFileTabBloc(),
+    //     child: CollectionTabContent(
+    //       viewMember: widget.viewMember,
+    //       isMine: widget.isMine,
+    //     ),
+    //   ));
+    // }
 
     if (widget.isMine) {
       _tabs.add(
@@ -350,17 +350,17 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           color: readrBlack,
         ),
       ),
-      actions: widget.isMine && !widget.isVisitor && _pickCount != 0
-          ? [
-              IconButton(
-                icon: const Icon(
-                  Icons.add_sharp,
-                  color: readrBlack87,
-                ),
-                onPressed: () {},
-              )
-            ]
-          : null,
+      // actions: widget.isMine && !widget.isVisitor && _pickCount != 0
+      //     ? [
+      //         IconButton(
+      //           icon: const Icon(
+      //             Icons.add_sharp,
+      //             color: readrBlack87,
+      //           ),
+      //           onPressed: () {},
+      //         )
+      //       ]
+      //     : null,
     );
   }
 
