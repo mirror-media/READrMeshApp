@@ -60,15 +60,6 @@ class ErrorPage extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_none_outlined,
-              color: readrBlack,
-            ),
-          )
-        ],
       ),
       body: _errorWidget(
         title: title,
