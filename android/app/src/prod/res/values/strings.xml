@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">READr</string>
+    <string name="app_name">READr Mesh</string>
     <string name="dynamiclink_host">readrprod.page.link</string>
     <string name="facebook_app_id">2138298816406811</string>
     <string name="fb_login_protocol_scheme">fb2138298816406811</string>
