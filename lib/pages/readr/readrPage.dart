@@ -12,6 +12,7 @@ import 'package:readr/models/category.dart';
 import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
+import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/readr/readrTabContent.dart';
 
@@ -108,7 +109,7 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return [
-                  _buildAppBar(),
+                  const HomeAppBar(),
                   SliverToBoxAdapter(
                     child: BlocProvider(
                       create: (context) => EditorChoiceCubit(),
@@ -163,7 +164,7 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
 
           return CustomScrollView(
             slivers: [
-              _buildAppBar(),
+              const HomeAppBar(),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -174,31 +175,6 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
           );
         }),
       ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
-      centerTitle: false,
-      elevation: 0.5,
-      title: const Text(
-        'Logo',
-        style: TextStyle(
-          color: readrBlack,
-          fontSize: 18,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.notifications_none_outlined,
-            color: readrBlack,
-          ),
-        )
-      ],
     );
   }
 }

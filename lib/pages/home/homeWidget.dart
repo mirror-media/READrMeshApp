@@ -14,6 +14,7 @@ import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestComment/latestCommentsBlock.dart';
 import 'package:readr/pages/home/latestNewsBlock.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowBlock.dart';
+import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -177,7 +178,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         return CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            _buildAppBar(),
+            const HomeAppBar(),
             SliverFillRemaining(
               child: HomeSkeletonScreen(),
             ),
@@ -193,7 +194,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          _buildAppBar(),
+          const HomeAppBar(),
           SliverToBoxAdapter(
             child: FollowingBlock(
               _followingStories,
@@ -243,31 +244,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
-      centerTitle: false,
-      elevation: 0,
-      title: const Text(
-        'Logo',
-        style: TextStyle(
-          color: readrBlack,
-          fontSize: 18,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.notifications_none_outlined,
-            color: readrBlack,
-          ),
-        )
-      ],
     );
   }
 
