@@ -20,13 +20,13 @@ class HomeAppBar extends StatelessWidget {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.notifications_none_outlined,
-            color: readrBlack,
-          ),
-        )
+        // IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(
+        //     Icons.notifications_none_outlined,
+        //     color: readrBlack,
+        //   ),
+        // )
       ],
     );
   }
