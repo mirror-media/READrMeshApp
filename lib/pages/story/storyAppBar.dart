@@ -51,7 +51,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
       title: Text(
         widget.url,
         style: const TextStyle(
-          color: readrBlack50,
+          color: readrBlack87,
           fontSize: 13,
         ),
       ),
@@ -62,7 +62,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               _isBookmarked
                   ? Icons.bookmark_outlined
                   : Icons.bookmark_border_outlined,
-              color: readrBlack,
+              color: readrBlack87,
               size: 26,
             ),
             tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
@@ -112,7 +112,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
               Platform.isAndroid
                   ? Icons.share_outlined
                   : Icons.ios_share_outlined,
-              color: readrBlack,
+              color: readrBlack87,
               size: 26,
             ),
             tooltip: '分享',
@@ -124,7 +124,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
         IconButton(
           icon: const Icon(
             Icons.close_outlined,
-            color: readrBlack,
+            color: readrBlack87,
             size: 26,
           ),
           tooltip: '回前頁',
