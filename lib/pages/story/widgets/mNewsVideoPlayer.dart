@@ -99,7 +99,8 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
               return SizedBox(
                   width: constraints.maxWidth,
                   height: constraints.maxWidth / widget.aspectRatio,
-                  child: const Center(child: CircularProgressIndicator()));
+                  child: const Center(
+                      child: CircularProgressIndicator.adaptive()));
             }
 
             Widget _videoPlayer = Chewie(

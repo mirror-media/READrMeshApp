@@ -269,7 +269,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
           color: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator.adaptive(),
           ),
         ),
       );

@@ -88,7 +88,8 @@ class _YoutubeViewerState extends State<YoutubeViewer>
               return SizedBox(
                   width: constraints.maxWidth,
                   height: constraints.maxWidth / (16 / 9),
-                  child: const Center(child: CircularProgressIndicator()));
+                  child: const Center(
+                      child: CircularProgressIndicator.adaptive()));
             }
 
             Widget _videoPlayer = Chewie(
