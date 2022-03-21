@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -202,30 +203,36 @@ class _HomeWidgetState extends State<HomeWidget> {
               _recommendedMembers,
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8.5,
-              color: homeScreenBackgroundColor,
+          if (_followingStories.isNotEmpty ||
+              UserHelper.instance.currentUser.following.isEmpty)
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8.5,
+                color: homeScreenBackgroundColor,
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: RecommendFollowBlock(_recommendedMembers),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8.5,
-              color: homeScreenBackgroundColor,
+          if (_recommendedMembers.isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: RecommendFollowBlock(_recommendedMembers),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: LatestCommentsBlock(_latestComments),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 8.5,
-              color: homeScreenBackgroundColor,
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8.5,
+                color: homeScreenBackgroundColor,
+              ),
             ),
-          ),
+          ],
+          if (_latestComments.isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: LatestCommentsBlock(_latestComments),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 8.5,
+                color: homeScreenBackgroundColor,
+              ),
+            ),
+          ],
           _latestNewsBar(),
           SliverToBoxAdapter(
             child: LatestNewsBlock(
