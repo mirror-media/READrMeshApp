@@ -14,6 +14,7 @@ import 'package:readr/pages/home/followingBlock.dart';
 import 'package:readr/pages/home/latestComment/latestCommentsBlock.dart';
 import 'package:readr/pages/home/latestNewsBlock.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowBlock.dart';
+import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -177,11 +178,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
             _buildAppBar(),
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+            SliverFillRemaining(
+              child: HomeSkeletonScreen(),
             ),
           ],
         );
