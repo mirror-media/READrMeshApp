@@ -136,7 +136,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
       }
 
       // state is Init, loading, or other
-      return StorySkeletonScreen();
+      return StorySkeletonScreen(widget.news.url);
     });
   }
 

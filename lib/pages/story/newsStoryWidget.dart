@@ -11,6 +11,7 @@ import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
+import 'package:readr/pages/story/storySkeletonScreen.dart';
 
 class NewsStoryWidget extends StatefulWidget {
   final NewsListItem news;
@@ -119,23 +120,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
           );
         }
 
-        return Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              StoryAppBar(
-                newsStoryItem: null,
-                inputText: _inputText,
-                url: widget.news.url,
-              ),
-              const Expanded(
-                child: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              )
-            ],
-          ),
-        );
+        return StorySkeletonScreen(widget.news.url);
       },
     );
   }
