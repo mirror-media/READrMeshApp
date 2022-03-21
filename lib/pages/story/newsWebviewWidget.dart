@@ -72,23 +72,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           return _webViewWidget(context);
         }
 
-        return Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              StoryAppBar(
-                newsStoryItem: null,
-                inputText: _inputText,
-                url: widget.news.url,
-              ),
-              const Expanded(
-                child: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              )
-            ],
-          ),
-        );
+        return StorySkeletonScreen(widget.news.url);
       },
     );
   }
