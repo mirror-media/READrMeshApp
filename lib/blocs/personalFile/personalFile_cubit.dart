@@ -29,7 +29,6 @@ class PersonalFileCubit extends Cubit<PersonalFileState> {
           .then((value) => viewMemberData = value),
       UserHelper.instance.fetchUserData(),
     ]);
-    UserHelper.instance.isFollowingMember(viewMemberData);
 
     emit(PersonalFileLoaded(viewMemberData));
   }
