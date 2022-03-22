@@ -42,7 +42,7 @@ class EditCommentMenu {
           child: const Text(
             '取消',
             style: TextStyle(
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
               fontSize: 20,
             ),
           ),
