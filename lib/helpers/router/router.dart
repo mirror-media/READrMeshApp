@@ -16,6 +16,7 @@ import 'package:readr/pages/personalFile/editPersonalFile/editPersonalFilePage.d
 import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
 import 'package:readr/pages/personalFile/followingList/followingListPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/personalFile/personalFileWidget.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +47,12 @@ part 'router.gr.dart';
         page: ReadrPage,
       ),
       AutoRoute(
-        path: "personalFile",
-        name: "PersonalFileRouter",
-        page: PersonalFilePage,
+        path: "personalFileWidget",
+        name: "PersonalFileWidgetRoute",
+        page: PersonalFileWidget,
       ),
     ]),
+    AutoRoute(page: PersonalFilePage),
     AutoRoute(page: ErrorPage, fullscreenDialog: true),
     AutoRoute(page: AboutPage),
     AutoRoute(page: DeleteMemberPage),

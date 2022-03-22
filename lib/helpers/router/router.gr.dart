@@ -20,6 +20,14 @@ class _$AppRouter extends RootStackRouter {
     Initial.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: InitialApp());
     },
+    PersonalFileRoute.name: (routeData) {
+      final args = routeData.argsAs<PersonalFileRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: PersonalFilePage(
+              viewMember: args.viewMember,
+              isFromBottomTab: args.isFromBottomTab));
+    },
     ErrorRoute.name: (routeData) {
       final args = routeData.argsAs<ErrorRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -50,14 +58,6 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: RecommendFollowPage(args.recommendedItems));
-    },
-    PersonalFileRoute.name: (routeData) {
-      final args = routeData.argsAs<PersonalFileRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: PersonalFilePage(
-              viewMember: args.viewMember,
-              isFromBottomTab: args.isFromBottomTab));
     },
     FollowerListRoute.name: (routeData) {
       final args = routeData.argsAs<FollowerListRouteArgs>();
@@ -135,12 +135,14 @@ class _$AppRouter extends RootStackRouter {
     ReadrRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: ReadrPage());
     },
-    PersonalFileRouter.name: (routeData) {
-      final args = routeData.argsAs<PersonalFileRouterArgs>();
+    PersonalFileWidgetRoute.name: (routeData) {
+      final args = routeData.argsAs<PersonalFileWidgetRouteArgs>();
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: PersonalFilePage(
+          child: PersonalFileWidget(
               viewMember: args.viewMember,
+              isMine: args.isMine,
+              isVisitor: args.isVisitor,
               isFromBottomTab: args.isFromBottomTab));
     }
   };
@@ -151,9 +153,10 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(HomeRouter.name, path: 'homePage', parent: Initial.name),
           RouteConfig(ReadrRouter.name,
               path: 'readrPage', parent: Initial.name),
-          RouteConfig(PersonalFileRouter.name,
-              path: 'personalFile', parent: Initial.name)
+          RouteConfig(PersonalFileWidgetRoute.name,
+              path: 'personalFileWidget', parent: Initial.name)
         ]),
+        RouteConfig(PersonalFileRoute.name, path: '/personal-file-page'),
         RouteConfig(ErrorRoute.name, path: '/error-page'),
         RouteConfig(AboutRoute.name, path: '/about-page'),
         RouteConfig(DeleteMemberRoute.name, path: '/delete-member-page'),
@@ -187,13 +190,39 @@ class Initial extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PersonalFilePage]
+class PersonalFileRoute extends PageRouteInfo<PersonalFileRouteArgs> {
+  PersonalFileRoute({required Member viewMember, bool isFromBottomTab = false})
+      : super(PersonalFileRoute.name,
+            path: '/personal-file-page',
+            args: PersonalFileRouteArgs(
+                viewMember: viewMember, isFromBottomTab: isFromBottomTab));
+
+  static const String name = 'PersonalFileRoute';
+}
+
+class PersonalFileRouteArgs {
+  const PersonalFileRouteArgs(
+      {required this.viewMember, this.isFromBottomTab = false});
+
+  final Member viewMember;
+
+  final bool isFromBottomTab;
+
+  @override
+  String toString() {
+    return 'PersonalFileRouteArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
+  }
+}
+
+/// generated route for
 /// [ErrorPage]
 class ErrorRoute extends PageRouteInfo<ErrorRouteArgs> {
   ErrorRoute(
       {required dynamic error,
       required void Function() onPressed,
       bool needPop = false,
-      bool hideAppbar = false})
+      bool hideAppbar = true})
       : super(ErrorRoute.name,
             path: '/error-page',
             args: ErrorRouteArgs(
@@ -210,7 +239,7 @@ class ErrorRouteArgs {
       {required this.error,
       required this.onPressed,
       this.needPop = false,
-      this.hideAppbar = false});
+      this.hideAppbar = true});
 
   final dynamic error;
 
@@ -283,32 +312,6 @@ class RecommendFollowRouteArgs {
   @override
   String toString() {
     return 'RecommendFollowRouteArgs{recommendedItems: $recommendedItems}';
-  }
-}
-
-/// generated route for
-/// [PersonalFilePage]
-class PersonalFileRoute extends PageRouteInfo<PersonalFileRouteArgs> {
-  PersonalFileRoute({required Member viewMember, bool isFromBottomTab = false})
-      : super(PersonalFileRoute.name,
-            path: '/personal-file-page',
-            args: PersonalFileRouteArgs(
-                viewMember: viewMember, isFromBottomTab: isFromBottomTab));
-
-  static const String name = 'PersonalFileRoute';
-}
-
-class PersonalFileRouteArgs {
-  const PersonalFileRouteArgs(
-      {required this.viewMember, this.isFromBottomTab = false});
-
-  final Member viewMember;
-
-  final bool isFromBottomTab;
-
-  @override
-  String toString() {
-    return 'PersonalFileRouteArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
   }
 }
 
@@ -572,27 +575,42 @@ class ReadrRouter extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [PersonalFilePage]
-class PersonalFileRouter extends PageRouteInfo<PersonalFileRouterArgs> {
-  PersonalFileRouter({required Member viewMember, bool isFromBottomTab = false})
-      : super(PersonalFileRouter.name,
-            path: 'personalFile',
-            args: PersonalFileRouterArgs(
-                viewMember: viewMember, isFromBottomTab: isFromBottomTab));
+/// [PersonalFileWidget]
+class PersonalFileWidgetRoute
+    extends PageRouteInfo<PersonalFileWidgetRouteArgs> {
+  PersonalFileWidgetRoute(
+      {required Member viewMember,
+      required bool isMine,
+      required bool isVisitor,
+      required bool isFromBottomTab})
+      : super(PersonalFileWidgetRoute.name,
+            path: 'personalFileWidget',
+            args: PersonalFileWidgetRouteArgs(
+                viewMember: viewMember,
+                isMine: isMine,
+                isVisitor: isVisitor,
+                isFromBottomTab: isFromBottomTab));
 
-  static const String name = 'PersonalFileRouter';
+  static const String name = 'PersonalFileWidgetRoute';
 }
 
-class PersonalFileRouterArgs {
-  const PersonalFileRouterArgs(
-      {required this.viewMember, this.isFromBottomTab = false});
+class PersonalFileWidgetRouteArgs {
+  const PersonalFileWidgetRouteArgs(
+      {required this.viewMember,
+      required this.isMine,
+      required this.isVisitor,
+      required this.isFromBottomTab});
 
   final Member viewMember;
+
+  final bool isMine;
+
+  final bool isVisitor;
 
   final bool isFromBottomTab;
 
   @override
   String toString() {
-    return 'PersonalFileRouterArgs{viewMember: $viewMember, isFromBottomTab: $isFromBottomTab}';
+    return 'PersonalFileWidgetRouteArgs{viewMember: $viewMember, isMine: $isMine, isVisitor: $isVisitor, isFromBottomTab: $isFromBottomTab}';
   }
 }

@@ -57,7 +57,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   @override
   void initState() {
     super.initState();
-    if (!widget.isVisitor || !widget.isFromBottomTab) {
+    if (!widget.isFromBottomTab) {
       _fetchMemberData();
     }
   }
@@ -160,13 +160,16 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   @override
   Widget build(BuildContext context) {
     if (widget.isVisitor && widget.isFromBottomTab) {
-      return Column(
-        children: [
-          _appBar(),
-          Expanded(
-            child: _visitorContent(),
-          ),
-        ],
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            _appBar(),
+            Expanded(
+              child: _visitorContent(),
+            ),
+          ],
+        ),
       );
     }
     return BlocBuilder<PersonalFileCubit, PersonalFileState>(
@@ -204,29 +207,23 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           }
 
           _initializeTabController();
-          return RefreshIndicator(
-            child: _buildContent(context),
-            onRefresh: () => _refetchMemberData(),
-            notificationPredicate: (scrollNotification) {
-              if (scrollNotification.depth == 2) {
-                return true;
-              }
-              return false;
-            },
-          );
+          return _buildContent(context);
         }
 
         if (state is PersonalFileReloading) {
           return _buildContent(context);
         }
 
-        return Column(
-          children: [
-            _appBar(),
-            const Expanded(
-              child: PersonalFileSkeletonScreen(),
-            ),
-          ],
+        return Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              _appBar(),
+              const Expanded(
+                child: PersonalFileSkeletonScreen(),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -261,41 +258,44 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   }
 
   Widget _buildContent(BuildContext context) {
-    return ExtendedNestedScrollView(
-      onlyOneScrollInBody: true,
-      physics: const AlwaysScrollableScrollPhysics(),
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return [
-          _buildBar(),
-          SliverToBoxAdapter(
-            child: _memberDataWidget(),
-          ),
-          const SliverToBoxAdapter(
-            child: Divider(
-              color: readrBlack10,
-              thickness: 0.5,
-              height: 0.5,
+    return Container(
+      color: Colors.white,
+      child: ExtendedNestedScrollView(
+        onlyOneScrollInBody: true,
+        physics: const AlwaysScrollableScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            _buildBar(),
+            SliverToBoxAdapter(
+              child: _memberDataWidget(),
             ),
-          ),
-          SliverAppBar(
-            pinned: true,
-            primary: false,
-            elevation: 0,
-            toolbarHeight: 8,
-            backgroundColor: Colors.white,
-            bottom: TabBar(
-              indicatorColor: tabBarSelectedColor,
-              unselectedLabelColor: readrBlack30,
-              indicatorWeight: 0.5,
-              tabs: _tabs.toList(),
-              controller: _tabController,
+            const SliverToBoxAdapter(
+              child: Divider(
+                color: readrBlack10,
+                thickness: 0.5,
+                height: 0.5,
+              ),
             ),
-          ),
-        ];
-      },
-      body: TabBarView(
-        controller: _tabController,
-        children: _tabWidgets.toList(),
+            SliverAppBar(
+              pinned: true,
+              primary: false,
+              elevation: 0,
+              toolbarHeight: 8,
+              backgroundColor: Colors.white,
+              bottom: TabBar(
+                indicatorColor: tabBarSelectedColor,
+                unselectedLabelColor: readrBlack30,
+                indicatorWeight: 0.5,
+                tabs: _tabs.toList(),
+                controller: _tabController,
+              ),
+            ),
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: _tabWidgets.toList(),
+        ),
       ),
     );
   }

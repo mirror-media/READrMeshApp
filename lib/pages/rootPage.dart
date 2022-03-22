@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
+import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/updateMessages.dart';
@@ -64,9 +65,11 @@ class _RootPageState extends State<RootPage> {
               routes: [
                 const HomeRouter(),
                 const ReadrRouter(),
-                PersonalFileRouter(
+                PersonalFileWidgetRoute(
                   viewMember: UserHelper.instance.currentUser,
                   isFromBottomTab: true,
+                  isMine: true,
+                  isVisitor: UserHelper.instance.isVisitor,
                 ),
               ],
               bottomNavigationBuilder: (_, tabsRouter) {
@@ -74,7 +77,14 @@ class _RootPageState extends State<RootPage> {
                   elevation: 10,
                   backgroundColor: Colors.white,
                   currentIndex: tabsRouter.activeIndex,
-                  onTap: tabsRouter.setActiveIndex,
+                  onTap: (index) {
+                    if (index == 2 && UserHelper.instance.isMember) {
+                      context
+                          .read<PersonalFileCubit>()
+                          .fetchMemberData(UserHelper.instance.currentUser);
+                    }
+                    tabsRouter.setActiveIndex(index);
+                  },
                   selectedItemColor: bottomNavigationBarSelectedColor,
                   unselectedItemColor: bottomNavigationBarUnselectedColor,
                   items: [

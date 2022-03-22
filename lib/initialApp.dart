@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/blocs/readr/categories/bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
@@ -31,6 +32,9 @@ class InitialApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 CategoriesBloc(categoryRepos: CategoryServices()),
+          ),
+          BlocProvider(
+            create: (context) => PersonalFileCubit(),
           ),
         ],
         child: RootPage(),
