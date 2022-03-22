@@ -270,6 +270,8 @@ class _CommentItemState extends State<CommentItem> {
                 });
                 EasyDebounce.debounce(widget.comment.id,
                     const Duration(seconds: 2), () => _updateLike());
+              } else {
+                AutoRouter.of(context).push(LoginRoute(fromComment: true));
               }
             },
             iconSize: 18,
