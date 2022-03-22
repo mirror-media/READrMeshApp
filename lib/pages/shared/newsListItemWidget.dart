@@ -33,39 +33,74 @@ class NewsListItemWidget extends StatelessWidget {
                 style: const TextStyle(color: readrBlack50, fontSize: 12),
               ),
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Text(
-                  news.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+          if (news.heroImageUrl == null)
+            Text(
+              news.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: readrBlack87,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          if (news.heroImageUrl != null)
+            CachedNetworkImage(
+              imageUrl: news.heroImageUrl!,
+              placeholder: (context, url) => Text(
+                news.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: readrBlack87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              if (news.heroImageUrl != null) ...[
-                const SizedBox(width: 12),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0),
-                  child: CachedNetworkImage(
-                    width: 96,
-                    height: 96 / 2,
-                    imageUrl: news.heroImageUrl!,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey,
-                    ),
-                    errorWidget: (context, url, error) => Container(),
-                    fit: BoxFit.cover,
-                  ),
+              errorWidget: (context, url, error) => Text(
+                news.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: readrBlack87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
-              ],
-            ],
-          ),
+              ),
+              imageBuilder: (context, imageProvider) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        news.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: readrBlack87,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 12),
+                      width: 96,
+                      height: 96 / 2,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: Image(
+                          image: imageProvider,
+                          width: 96,
+                          height: 96 / 2,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+              fit: BoxFit.cover,
+            ),
           const SizedBox(height: 8),
           NewsInfo(news),
           const SizedBox(height: 16),
