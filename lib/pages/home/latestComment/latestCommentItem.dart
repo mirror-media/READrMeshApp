@@ -173,7 +173,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 52, top: 8.5, bottom: 20),
+            padding: const EdgeInsets.only(left: 52, top: 8.5),
             child: ExtendedText(
               comment.content,
               maxLines: 2,
