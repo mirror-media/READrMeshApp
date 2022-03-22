@@ -610,6 +610,9 @@ class PersonalFileService {
               }
             }
           }
+          is_active:{
+            equals: true
+          }
         }
         orderBy:{
           customId: asc
@@ -681,6 +684,9 @@ class PersonalFileService {
                 equals: \$viewMemberId
               }
             }
+          }
+          is_active:{
+            equals: true
           }
         }
         orderBy:{

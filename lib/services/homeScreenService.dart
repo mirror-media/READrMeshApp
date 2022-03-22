@@ -507,8 +507,21 @@ class HomeScreenService {
         nickname
         avatar
         customId
-        followerCount
-        follower(take:1){
+        followerCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        follower(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+          take: 1
+        ){
           id
           nickname
           customId
@@ -518,12 +531,18 @@ class HomeScreenService {
             picked_date:{
               gte: \$yesterday
             }
+            is_active:{
+              equals: true
+            }
           }
         )
         commentCount(
           where:{
             published_date:{
               gte: \$yesterday
+            }
+            is_active:{
+              equals: true
             }
           }
         )
@@ -546,8 +565,21 @@ class HomeScreenService {
         nickname
         avatar
         customId
-        followerCount
-        follower(take:1){
+        followerCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        follower(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+          take: 1
+        ){
           id
           nickname
           customId
@@ -557,12 +589,18 @@ class HomeScreenService {
             picked_date:{
               gte: \$yesterday
             }
+            is_active:{
+              equals: true
+            }
           }
         )
         commentCount(
           where:{
             published_date:{
               gte: \$yesterday
+            }
+            is_active:{
+              equals: true
             }
           }
         )
