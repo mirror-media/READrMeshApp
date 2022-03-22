@@ -198,7 +198,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             }
           }
           double height = MediaQuery.of(context).size.height;
-          double percent = 16 / height;
+          double size = (-0.0002 * height) + 0.3914;
 
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (DraggableScrollableNotification dSNotification) {
@@ -212,8 +212,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             child: DraggableScrollableActuator(
               child: DraggableScrollableSheet(
                 snap: true,
-                initialChildSize: 0.2 + percent,
-                minChildSize: 0.2 + percent,
+                initialChildSize: size,
+                minChildSize: size,
                 builder: (context, scrollController) {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -303,6 +303,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                       ),
                       Container(
                         color: Colors.white,
+                        padding: const EdgeInsets.only(top: 16),
                         child: const Divider(
                           color: readrBlack10,
                           thickness: 0.5,
