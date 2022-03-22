@@ -372,7 +372,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     thickness: 0.5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
                     child: ElevatedButton(
                       onPressed: () async {
                         final prefs = await SharedPreferences.getInstance();

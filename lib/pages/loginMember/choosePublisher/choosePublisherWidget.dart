@@ -64,7 +64,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
           builder: (context, state) {
             _followingCount = UserHelper.instance.localPublisherList.length;
             return Container(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
