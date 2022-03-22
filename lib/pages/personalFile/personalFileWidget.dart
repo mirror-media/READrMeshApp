@@ -57,7 +57,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   @override
   void initState() {
     super.initState();
-    if (!widget.isFromBottomTab) {
+    if (!widget.isMine) {
+      _fetchMemberData();
+    } else if (!widget.isFromBottomTab && !widget.isVisitor) {
       _fetchMemberData();
     }
   }
@@ -242,7 +244,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               onPressed: () => Navigator.pop(context),
             ),
       title: Text(
-        widget.viewMember.customId,
+        widget.isVisitor && widget.isFromBottomTab
+            ? '個人檔案'
+            : widget.viewMember.customId,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -284,6 +288,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               backgroundColor: Colors.white,
               bottom: TabBar(
                 indicatorColor: tabBarSelectedColor,
+                labelColor: readrBlack87,
                 unselectedLabelColor: readrBlack30,
                 indicatorWeight: 0.5,
                 tabs: _tabs.toList(),
