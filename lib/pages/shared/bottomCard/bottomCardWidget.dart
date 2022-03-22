@@ -40,6 +40,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   late Comment _removeComment;
   late int _deleteCommentIndex;
   late Comment _deleteComment;
+  final List<Comment> _popularComments = [];
+  late int _deletePopularCommentIndex;
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
     List<Member> _pickedMembers = [];
     _pickedMembers.addAll(widget.item.pickedMemberList);
     _allComments.addAll(widget.item.allComments);
+    _popularComments.addAll(widget.item.popularComments);
   }
 
   @override
@@ -113,6 +116,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               _removeComment = _allComments[_removeIndex];
               _allComments.removeAt(_removeIndex);
             }
+            _deletePopularCommentIndex = _popularComments
+                .indexWhere((element) => element.id == state.pickCommentId);
+            if (_deletePopularCommentIndex != -1) {
+              _popularComments.removeAt(_deletePopularCommentIndex);
+            }
           }
 
           if (state is PickCommentAdded) {
@@ -130,6 +138,10 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
 
           if (state is PickCommentRemoveFailed) {
             _allComments.insert(_removeIndex, _removeComment);
+            if (_deletePopularCommentIndex != -1) {
+              _popularComments.insert(
+                  _deletePopularCommentIndex, _removeComment);
+            }
           }
 
           if (state is DeletingComment) {
@@ -142,10 +154,19 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                   .read<CommentCountCubit>()
                   .updateCommentCount(widget.item, _allComments.length);
             }
+            _deletePopularCommentIndex = _popularComments
+                .indexWhere((element) => element.id == state.commentId);
+            if (_deletePopularCommentIndex != -1) {
+              _popularComments.removeAt(_deletePopularCommentIndex);
+            }
           }
 
           if (state is DeleteCommentFailure) {
             _allComments.insert(_deleteCommentIndex, _deleteComment);
+            if (_deletePopularCommentIndex != -1) {
+              _popularComments.insert(
+                  _deletePopularCommentIndex, _deleteComment);
+            }
             context
                 .read<CommentCountCubit>()
                 .updateCommentCount(widget.item, _allComments.length);
@@ -157,6 +178,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             if (index != -1) {
               _allComments[index] = state.newComment;
             }
+            int popularIndex = _popularComments
+                .indexWhere((element) => element.id == state.newComment.id);
+            if (popularIndex != -1) {
+              _popularComments[popularIndex] = state.newComment;
+            }
           }
 
           if (state is UpdateCommentFailure) {
@@ -164,6 +190,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                 .indexWhere((element) => element.id == state.oldComment.id);
             if (index != -1) {
               _allComments[index] = state.oldComment;
+            }
+            int popularIndex = _popularComments
+                .indexWhere((element) => element.id == state.oldComment.id);
+            if (popularIndex != -1) {
+              _popularComments[popularIndex] = state.oldComment;
             }
           }
 
@@ -179,8 +210,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             child: DraggableScrollableActuator(
               child: DraggableScrollableSheet(
                 snap: true,
-                initialChildSize: 0.2,
-                minChildSize: 0.2,
+                initialChildSize: 0.23,
+                minChildSize: 0.23,
                 builder: (context, scrollController) {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -239,7 +270,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                                 SliverToBoxAdapter(
                                   child: _titleAndPickBar(),
                                 ),
-                                if (widget.item.popularComments.isNotEmpty)
+                                if (_popularComments.isNotEmpty)
                                   _popularCommentList(context),
                                 SliverAppBar(
                                   backgroundColor: Colors.white,
@@ -384,7 +415,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             );
           }
           return CommentItem(
-            comment: widget.item.popularComments[index - 1],
+            comment: _popularComments[index - 1],
             isSending: false,
             isMyNewComment: false,
           );
@@ -399,7 +430,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             endIndent: 20,
           );
         },
-        itemCount: widget.item.popularComments.length + 1,
+        itemCount: _popularComments.length + 1,
       ),
     );
   }
