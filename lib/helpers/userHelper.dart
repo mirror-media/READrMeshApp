@@ -76,10 +76,8 @@ class UserHelper {
 
     if (newFollowingList != null) {
       _member.following = newFollowingList;
-      syncFollowing();
       return true;
     } else {
-      syncFollowing();
       return false;
     }
   }
@@ -91,10 +89,8 @@ class UserHelper {
 
     if (newFollowingList != null) {
       _member.following = newFollowingList;
-      syncFollowing();
       return true;
     } else {
-      syncFollowing();
       return false;
     }
   }
@@ -122,10 +118,8 @@ class UserHelper {
 
     if (newFollowingList != null) {
       _member.followingPublisher = newFollowingList;
-      syncFollowing();
       return true;
     } else {
-      syncFollowing();
       return false;
     }
   }
@@ -142,10 +136,8 @@ class UserHelper {
 
     if (newFollowingList != null) {
       _member.followingPublisher = newFollowingList;
-      syncFollowing();
       return true;
     } else {
-      syncFollowing();
       return false;
     }
   }
@@ -194,13 +186,6 @@ class UserHelper {
     } else {
       _localFollowingPublisherList.removeAt(index);
     }
-  }
-
-  void syncFollowing() {
-    _localFollowingMemberList = [];
-    _localFollowingPublisherList = [];
-    _localFollowingMemberList.addAll(_member.following);
-    _localFollowingPublisherList.addAll(_member.followingPublisher);
   }
 
   // pick data
