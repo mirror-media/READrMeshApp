@@ -67,4 +67,20 @@ class Comment {
       isEdited: isEdited,
     );
   }
+
+  factory Comment.editComment(String newContent, Comment oldComment) {
+    return Comment(
+      id: oldComment.id,
+      member: oldComment.member,
+      content: newContent,
+      state: oldComment.state,
+      publishDate: oldComment.publishDate,
+      story: oldComment.story,
+      likedCount: oldComment.likedCount,
+      isLiked: oldComment.isLiked,
+      isEdited: true,
+      parent: oldComment.parent,
+      root: oldComment.root,
+    );
+  }
 }

@@ -93,14 +93,8 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                 ),
                 onPressed: () async {
                   if (_hasInput) {
-                    Comment newComment = Comment(
-                      id: widget.comment.id,
-                      member: widget.comment.member,
-                      content: _controller.text,
-                      state: widget.comment.state,
-                      publishDate: widget.comment.publishDate,
-                      isEdited: true,
-                    );
+                    Comment newComment =
+                        Comment.editComment(_controller.text, widget.comment);
 
                     widget.commentBloc.add(EditComment(
                         oldComment: widget.comment, newComment: newComment));
