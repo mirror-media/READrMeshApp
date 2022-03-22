@@ -197,6 +197,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               _popularComments[popularIndex] = state.oldComment;
             }
           }
+          double height = MediaQuery.of(context).size.height;
+          double percent = 16 / height;
 
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (DraggableScrollableNotification dSNotification) {
@@ -210,8 +212,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             child: DraggableScrollableActuator(
               child: DraggableScrollableSheet(
                 snap: true,
-                initialChildSize: 0.23,
-                minChildSize: 0.23,
+                initialChildSize: 0.2 + percent,
+                minChildSize: 0.2 + percent,
                 builder: (context, scrollController) {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
