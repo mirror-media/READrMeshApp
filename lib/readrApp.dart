@@ -27,9 +27,8 @@ class ReadrApp extends StatelessWidget {
       child: MaterialApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
         routerDelegate: _appRouter.delegate(),
-        title: 'readr',
+        title: 'READr Mesh',
         theme: ThemeData(
-          primaryColor: const Color(0xffEBF02C),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           appBarTheme: const AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
