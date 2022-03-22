@@ -125,6 +125,8 @@ dependencies:
   easy_debounce: ^2.0.2+1
   # open email app
   open_mail_app: ^0.4.5
+  # use widget depend on platform
+  flutter_platform_widgets: ^1.20.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -78,13 +80,36 @@ class SentEmailPage extends StatelessWidget {
                 // There is no native intent/default app system in iOS so
                 // you have to do it yourself.
               } else if (!result.didOpen && result.canOpen) {
-                showDialog(
+                showCupertinoModalPopup(
                   context: context,
-                  builder: (_) {
-                    return MailAppPickerDialog(
-                      mailApps: result.options,
-                    );
-                  },
+                  builder: (context) => CupertinoActionSheet(
+                    actions: [
+                      for (var app in result.options)
+                        CupertinoActionSheetAction(
+                          onPressed: () {
+                            OpenMailApp.openSpecificMailApp(app);
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            app.name == 'Apple Mail' ? '信件' : app.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        '取消',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               }
             },
@@ -148,23 +173,19 @@ class SentEmailPage extends StatelessWidget {
   }
 
   void showNoMailAppsDialog(BuildContext context) {
-    showDialog(
+    showPlatformDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("打開信件 APP"),
-          content: const Text("找不到信件 APP"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("確定"),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
+      builder: (_) => PlatformAlertDialog(
+        title: const Text("找不到信件 APP"),
+        actions: <Widget>[
+          PlatformDialogAction(
+            child: const Text("確定"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
