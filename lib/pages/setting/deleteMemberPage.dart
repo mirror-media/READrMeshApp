@@ -162,19 +162,17 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
 
   Future<bool> _deleteMember() async {
     try {
-      await MemberService().deleteMember();
       await FirebaseAuth.instance.currentUser!.delete();
+      await MemberService().deleteMember();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         print(
             'The user must reauthenticate before this operation can be executed.');
-        await FirebaseAuth.instance.signOut();
       }
       return false;
     } catch (e) {
       print('Delete member failed: $e');
-      await FirebaseAuth.instance.signOut();
       return false;
     }
   }
