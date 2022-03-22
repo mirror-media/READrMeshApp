@@ -31,11 +31,11 @@ class LookmoreItem extends StatelessWidget {
               child: _moreProfilePhotoStack(context),
             ),
             const SizedBox(height: 8),
-            const SizedBox(
+            SizedBox(
               height: 34,
               child: Text(
-                '探索更多為你推薦的使用者',
-                style: TextStyle(
+                recommendedItems[0].lookmoreText,
+                style: const TextStyle(
                   fontSize: 12,
                   color: readrBlack50,
                   fontWeight: FontWeight.w400,
