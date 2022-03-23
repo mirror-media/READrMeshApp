@@ -564,7 +564,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: e1be99817e859170fdee2ade932c0f94a5c0628d
+      resolved-ref: fbe71f60f3ddf0540d0cb7ad089456f3f5fe7913
       url: "https://github.com/mirror-media/flutter_login.git"
     source: git
     version: "0.0.6"

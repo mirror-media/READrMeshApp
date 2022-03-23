@@ -90,13 +90,14 @@ class _LoginWidgetState extends State<LoginWidget> {
         if (Platform.isIOS) ...[
           LoginButton(
             type: LoginType.apple,
-            onSuccess: (bool isNewUser) async {
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.setString('loginType', 'apple');
-              firebaseLoginSuccess(isNewUser);
-            },
-            onFailed: (error) {
-              showToast("登入失敗");
+            onFinished: (result, isNewUser, error) async {
+              if (result == FirebaseLoginStatus.success) {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setString('loginType', 'apple');
+                firebaseLoginSuccess(isNewUser);
+              } else if (result == FirebaseLoginStatus.error) {
+                showToast("登入失敗");
+              }
             },
           ),
           const SizedBox(
@@ -105,13 +106,14 @@ class _LoginWidgetState extends State<LoginWidget> {
         ],
         LoginButton(
           type: LoginType.facebook,
-          onSuccess: (bool isNewUser) async {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('loginType', 'facebook');
-            firebaseLoginSuccess(isNewUser);
-          },
-          onFailed: (error) {
-            showToast("登入失敗");
+          onFinished: (result, isNewUser, error) async {
+            if (result == FirebaseLoginStatus.success) {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('loginType', 'facebook');
+              firebaseLoginSuccess(isNewUser);
+            } else if (result == FirebaseLoginStatus.error) {
+              showToast("登入失敗");
+            }
           },
         ),
         const SizedBox(
@@ -119,13 +121,14 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         LoginButton(
           type: LoginType.google,
-          onSuccess: (bool isNewUser) async {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('loginType', 'google');
-            firebaseLoginSuccess(isNewUser);
-          },
-          onFailed: (error) {
-            showToast("登入失敗");
+          onFinished: (result, isNewUser, error) async {
+            if (result == FirebaseLoginStatus.success) {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('loginType', 'google');
+              firebaseLoginSuccess(isNewUser);
+            } else if (result == FirebaseLoginStatus.error) {
+              showToast("登入失敗");
+            }
           },
         ),
         const SizedBox(
