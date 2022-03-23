@@ -112,7 +112,7 @@ dependencies:
     git:
       url: https://github.com/mirror-media/flutter_login.git
       ref: main
-      version: ^0.0.5
+      version: ^0.0.6
   # more powerful text widget
   extended_text: ^9.0.0
   # bottom sheet
