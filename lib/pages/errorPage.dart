@@ -95,6 +95,7 @@ class ErrorPage extends StatelessWidget {
             style: const TextStyle(
               color: readrBlack87,
               fontWeight: FontWeight.w600,
+              decoration: TextDecoration.none,
               fontSize: 22,
             ),
             textAlign: TextAlign.center,
@@ -106,6 +107,7 @@ class ErrorPage extends StatelessWidget {
             description,
             style: const TextStyle(
               color: Color.fromRGBO(0, 9, 40, 0.66),
+              decoration: TextDecoration.none,
               fontSize: 15,
             ),
             textAlign: TextAlign.center,
