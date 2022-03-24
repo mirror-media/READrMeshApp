@@ -6,6 +6,8 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:readr/blocs/config/bloc.dart';
+import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -43,8 +45,8 @@ class _LoginWidgetState extends State<LoginWidget> {
           AutoRouter.of(context).push(
               InputNameRoute(publisherTitleList: state.publisherTitleList));
         } else if (state is ExistingMemberLogin) {
-          AutoRouter.of(context)
-              .pushAndPopUntil(const Initial(), predicate: (route) => false);
+          context.read<ConfigBloc>().add(LoginUpdate());
+          AutoRouter.of(context).navigate(const Initial());
         }
       },
       child: _buildContent(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
+import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'helpers/router/router.dart';
@@ -22,6 +23,9 @@ class ReadrApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CommentCountCubit(_pickButtonCubit),
+        ),
+        BlocProvider(
+          create: (context) => ConfigBloc(),
         ),
       ],
       child: MaterialApp.router(

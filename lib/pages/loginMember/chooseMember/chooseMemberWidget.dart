@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
+import 'package:readr/blocs/config/bloc.dart';
+import 'package:readr/blocs/config/events.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
@@ -110,8 +112,8 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             onPressed: () async {
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool('isFirstTime', false);
-              AutoRouter.of(context).pushAndPopUntil(const Initial(),
-                  predicate: (route) => false);
+              context.read<ConfigBloc>().add(LoginUpdate());
+              AutoRouter.of(context).navigate(const Initial());
             },
             child: const Text(
               '完成',

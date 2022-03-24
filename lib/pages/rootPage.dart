@@ -46,83 +46,18 @@ class _RootPageState extends State<RootPage> {
           return ErrorPage(error: error, onPressed: () => _loadingConfig());
         }
         if (state is ConfigLoaded) {
-          Widget personalPageIcon;
-          if (UserHelper.instance.isVisitor) {
-            personalPageIcon = Image.asset(
-              visitorAvatarPng,
-            );
-          } else {
-            personalPageIcon =
-                ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
-          }
           return UpgradeAlert(
             minAppVersion: state.minAppVersion,
             messages: UpdateMessages(),
             dialogStyle: Platform.isAndroid
                 ? UpgradeDialogStyle.material
                 : UpgradeDialogStyle.cupertino,
-            child: AutoTabsScaffold(
-              routes: [
-                const HomeRouter(),
-                const ReadrRouter(),
-                PersonalFileWidgetRoute(
-                  viewMember: UserHelper.instance.currentUser,
-                  isFromBottomTab: true,
-                  isMine: true,
-                  isVisitor: UserHelper.instance.isVisitor,
-                ),
-              ],
-              bottomNavigationBuilder: (_, tabsRouter) {
-                return BottomNavigationBar(
-                  elevation: 10,
-                  backgroundColor: Colors.white,
-                  currentIndex: tabsRouter.activeIndex,
-                  onTap: (index) {
-                    if (index == 2 && UserHelper.instance.isMember) {
-                      context
-                          .read<PersonalFileCubit>()
-                          .fetchMemberData(UserHelper.instance.currentUser);
-                    }
-                    tabsRouter.setActiveIndex(index);
-                  },
-                  selectedItemColor: bottomNavigationBarSelectedColor,
-                  unselectedItemColor: bottomNavigationBarUnselectedColor,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 20,
-                        child: Icon(
-                          tabsRouter.activeIndex == 0
-                              ? Icons.home_sharp
-                              : Icons.home_outlined,
-                        ),
-                      ),
-                      label: '首頁',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 20,
-                        child: Image.asset(
-                          logoSimplifyPng,
-                          color: tabsRouter.activeIndex == 1
-                              ? bottomNavigationBarSelectedColor
-                              : bottomNavigationBarUnselectedColor,
-                        ),
-                      ),
-                      label: 'READr',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 20,
-                        child: personalPageIcon,
-                      ),
-                      label: '個人檔案',
-                    ),
-                  ],
-                );
-              },
-            ),
+            child: _buildBody(),
           );
+        }
+
+        if (state is LoginStateUpdate) {
+          return _buildBody();
         }
 
         // state is Init, loading, or other
@@ -132,6 +67,79 @@ class _RootPageState extends State<RootPage> {
             logoPng,
             scale: 4,
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody() {
+    Widget personalPageIcon;
+    if (UserHelper.instance.isVisitor) {
+      personalPageIcon = Image.asset(
+        visitorAvatarPng,
+      );
+    } else {
+      personalPageIcon =
+          ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
+    }
+    return AutoTabsScaffold(
+      routes: [
+        const HomeRouter(),
+        const ReadrRouter(),
+        PersonalFileWidgetRoute(
+          viewMember: UserHelper.instance.currentUser,
+          isFromBottomTab: true,
+          isMine: true,
+          isVisitor: UserHelper.instance.isVisitor,
+        ),
+      ],
+      bottomNavigationBuilder: (_, tabsRouter) {
+        return BottomNavigationBar(
+          elevation: 10,
+          backgroundColor: Colors.white,
+          currentIndex: tabsRouter.activeIndex,
+          onTap: (index) {
+            if (index == 2 && UserHelper.instance.isMember) {
+              context
+                  .read<PersonalFileCubit>()
+                  .fetchMemberData(UserHelper.instance.currentUser);
+            }
+            tabsRouter.setActiveIndex(index);
+          },
+          selectedItemColor: bottomNavigationBarSelectedColor,
+          unselectedItemColor: bottomNavigationBarUnselectedColor,
+          items: [
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: Icon(
+                  tabsRouter.activeIndex == 0
+                      ? Icons.home_sharp
+                      : Icons.home_outlined,
+                ),
+              ),
+              label: '首頁',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: Image.asset(
+                  logoSimplifyPng,
+                  color: tabsRouter.activeIndex == 1
+                      ? bottomNavigationBarSelectedColor
+                      : bottomNavigationBarUnselectedColor,
+                ),
+              ),
+              label: 'READr',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: personalPageIcon,
+              ),
+              label: '個人檔案',
+            ),
+          ],
         );
       },
     );

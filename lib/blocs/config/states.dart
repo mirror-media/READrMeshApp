@@ -19,3 +19,5 @@ class ConfigError extends ConfigState {
 }
 
 class Onboarding extends ConfigState {}
+
+class LoginStateUpdate extends ConfigState {}

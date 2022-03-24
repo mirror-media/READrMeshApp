@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/blocs/config/bloc.dart';
+import 'package:readr/blocs/config/events.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:auto_route/auto_route.dart';
@@ -115,8 +118,8 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               if (_isInitialized) {
                 Navigator.of(context).pop();
               } else {
-                AutoRouter.of(context).pushAndPopUntil(const Initial(),
-                    predicate: (route) => false);
+                context.read<ConfigBloc>().add(LoginUpdate());
+                AutoRouter.of(context).navigate(const Initial());
               }
             },
             style: OutlinedButton.styleFrom(

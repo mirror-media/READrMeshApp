@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:readr/blocs/config/bloc.dart';
+import 'package:readr/blocs/config/events.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
@@ -216,8 +219,8 @@ class _SettingPageState extends State<SettingPage> {
             ),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
-              AutoRouter.of(context).pushAndPopUntil(const Initial(),
-                  predicate: (route) => false);
+              context.read<ConfigBloc>().add(LoginUpdate());
+              AutoRouter.of(context).navigate(const Initial());
             },
           ),
           const Divider(

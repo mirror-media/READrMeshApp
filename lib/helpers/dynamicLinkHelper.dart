@@ -2,7 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readr/blocs/config/bloc.dart';
+import 'package:readr/blocs/config/events.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/services/memberService.dart';
@@ -61,8 +64,8 @@ class DynamicLinkHelper {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isFirstTime', false);
           await prefs.setString('loginType', 'email');
-          AutoRouter.of(context)
-              .pushAndPopUntil(const Initial(), predicate: (route) => false);
+          context.read<ConfigBloc>().add(LoginUpdate());
+          AutoRouter.of(context).navigate(const Initial());
         } else {
           AutoRouter.of(context).replace(InputNameRoute(
               publisherTitleList: await _fetchPublisherTitles()));
