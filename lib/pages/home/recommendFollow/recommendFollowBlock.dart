@@ -78,7 +78,7 @@ class RecommendFollowBlock extends StatelessWidget {
               return RecommendFollowItem(recommendedItems[index]);
             },
             separatorBuilder: (context, index) => const SizedBox(width: 12),
-            itemCount: itemLength + 1,
+            itemCount: itemLength,
           ),
         ),
         const SizedBox(height: 16),
