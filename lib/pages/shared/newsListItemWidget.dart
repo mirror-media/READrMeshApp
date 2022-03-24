@@ -7,6 +7,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
@@ -47,15 +48,39 @@ class NewsListItemWidget extends StatelessWidget {
           if (news.heroImageUrl != null)
             CachedNetworkImage(
               imageUrl: news.heroImageUrl!,
-              placeholder: (context, url) => Text(
-                news.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: readrBlack87,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+              placeholder: (context, url) => Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      news.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: readrBlack87,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 12),
+                    width: 96,
+                    height: 96 / 2,
+                    child: Shimmer.fromColors(
+                      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: Container(
+                          width: 96,
+                          height: 96 / 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               errorWidget: (context, url, error) => Text(
                 news.title,
