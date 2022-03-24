@@ -95,6 +95,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
             keyboardType: TextInputType.emailAddress,
             autovalidateMode: AutovalidateMode.disabled,
             controller: _controller,
+            autocorrect: false,
             validator: (value) {
               if (value != null) {
                 if (value.isEmpty) {
