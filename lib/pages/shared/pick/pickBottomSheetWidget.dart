@@ -87,6 +87,7 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: '跟大家分享你為什麼精選這篇文章...',
+                hintStyle: TextStyle(color: readrBlack30),
               ),
             ),
             Align(

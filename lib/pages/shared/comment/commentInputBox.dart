@@ -134,6 +134,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: '在這裡輸入留言...',
+                      hintStyle: TextStyle(color: readrBlack30),
                     ),
                   ),
                 ),
