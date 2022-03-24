@@ -439,6 +439,21 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   }
 
   Widget _allCommentList(BuildContext context) {
+    if (_allComments.isEmpty) {
+      return const SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            '還沒有人留言，快來搶頭香！',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: readrBlack66,
+            ),
+          ),
+        ),
+      );
+    }
     return SliverToBoxAdapter(
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
