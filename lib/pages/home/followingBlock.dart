@@ -19,6 +19,7 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
@@ -34,6 +35,8 @@ class FollowingBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = width / 2;
     if (UserHelper.instance.currentUser.following.isEmpty) {
       return Container(
         color: Colors.white,
@@ -101,31 +104,28 @@ class FollowingBlock extends StatelessWidget {
     } else if (followingStories.isEmpty) {
       return Container();
     }
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Container(
-        color: homeScreenBackgroundColor,
-        child: ListView.separated(
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(0),
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            if (index == 5 &&
-                followingStories.length == 6 &&
-                !loadingMoreFinish) {
-              return _loadMoreWidget(context, followingStories[index]);
-            }
-            return _followingItem(context, followingStories[index]);
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 8.5),
-          itemCount: followingStories.length,
-        ),
+    return Container(
+      color: homeScreenBackgroundColor,
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(0),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          if (index == 5 &&
+              followingStories.length == 6 &&
+              !loadingMoreFinish) {
+            return _loadMoreWidget(context, followingStories[index], height);
+          }
+          return _followingItem(context, followingStories[index], height);
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8.5),
+        itemCount: followingStories.length,
       ),
     );
   }
 
-  Widget _loadMoreWidget(BuildContext context, NewsListItem item) {
+  Widget _loadMoreWidget(
+      BuildContext context, NewsListItem item, double height) {
     List<String> alreadyFetchIds = [];
     for (var item in followingStories) {
       alreadyFetchIds.add(item.id);
@@ -140,17 +140,29 @@ class FollowingBlock extends StatelessWidget {
               _pickBar(context, item.followingPickMembers),
               if (item.heroImageUrl != null)
                 CachedNetworkImage(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width / 2,
                   imageUrl: item.heroImageUrl!,
-                  placeholder: (context, url) => Container(
-                    color: Colors.grey,
+                  placeholder: (context, url) => SizedBox(
+                    width: double.infinity,
+                    height: height,
+                    child: Shimmer.fromColors(
+                      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                      child: Container(
+                        width: double.infinity,
+                        height: height,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    color: Colors.grey,
-                    child: const Icon(Icons.error),
-                  ),
-                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Container(),
+                  imageBuilder: (context, imageProvider) {
+                    return Image(
+                      image: imageProvider,
+                      width: double.infinity,
+                      height: height,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               Padding(
                 padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
@@ -231,7 +243,8 @@ class FollowingBlock extends StatelessWidget {
     );
   }
 
-  Widget _followingItem(BuildContext context, NewsListItem item) {
+  Widget _followingItem(
+      BuildContext context, NewsListItem item, double height) {
     return Container(
       color: Colors.white,
       child: Column(
@@ -249,17 +262,29 @@ class FollowingBlock extends StatelessWidget {
               children: [
                 if (item.heroImageUrl != null)
                   CachedNetworkImage(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width / 2,
                     imageUrl: item.heroImageUrl!,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey,
+                    placeholder: (context, url) => SizedBox(
+                      width: double.infinity,
+                      height: height,
+                      child: Shimmer.fromColors(
+                        baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                        highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                        child: Container(
+                          width: double.infinity,
+                          height: height,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey,
-                      child: const Icon(Icons.error),
-                    ),
-                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(),
+                    imageBuilder: (context, imageProvider) {
+                      return Image(
+                        image: imageProvider,
+                        width: double.infinity,
+                        height: height,
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),

@@ -8,6 +8,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ReadrProjectItemWidget extends StatelessWidget {
   final NewsListItem projectItem;
@@ -24,16 +25,28 @@ class ReadrProjectItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
         child: CachedNetworkImage(
           imageUrl: projectItem.heroImageUrl!,
-          placeholder: (context, url) => Container(
-            color: Colors.grey,
+          placeholder: (context, url) => SizedBox(
+            width: width,
+            height: height,
+            child: Shimmer.fromColors(
+              baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+              highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+              child: Container(
+                width: width,
+                height: height,
+                color: Colors.white,
+              ),
+            ),
           ),
-          errorWidget: (context, url, error) => Container(
-            color: Colors.grey,
-            child: const Icon(Icons.error),
-          ),
-          fit: BoxFit.cover,
-          width: width,
-          height: height,
+          errorWidget: (context, url, error) => Container(),
+          imageBuilder: (context, imageProvider) {
+            return Image(
+              image: imageProvider,
+              width: double.infinity,
+              height: height,
+              fit: BoxFit.cover,
+            );
+          },
         ),
       );
     } else {

@@ -118,6 +118,7 @@ class NewsListItemWidget extends StatelessWidget {
                           image: imageProvider,
                           width: 96,
                           height: 96 / 2,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     )

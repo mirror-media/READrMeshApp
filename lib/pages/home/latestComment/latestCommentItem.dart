@@ -12,6 +12,7 @@ import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
+import 'package:shimmer/shimmer.dart';
 
 class LatestCommentItem extends StatefulWidget {
   final NewsListItem news;
@@ -56,17 +57,29 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
               children: [
                 if (widget.news.heroImageUrl != null)
                   CachedNetworkImage(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width / 2,
                     imageUrl: widget.news.heroImageUrl!,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey,
+                    placeholder: (context, url) => SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width / 2,
+                      child: Shimmer.fromColors(
+                        baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                        highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width / 2,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey,
-                      child: const Icon(Icons.error),
-                    ),
-                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(),
+                    imageBuilder: (context, imageProvider) {
+                      return Image(
+                        image: imageProvider,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.width / 2,
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
