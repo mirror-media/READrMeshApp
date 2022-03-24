@@ -72,8 +72,9 @@ class DynamicLinkHelper {
       print('Error signing in with email link $onError');
       Fluttertoast.showToast(
         msg: "登入失敗，請重新登入",
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 5,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
         fontSize: 16.0,
       );
       if (FirebaseAuth.instance.currentUser != null) {
