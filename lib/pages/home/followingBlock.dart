@@ -23,11 +23,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FollowingBlock extends StatelessWidget {
   final List<NewsListItem> followingStories;
   final bool isLoadingMore;
+  final bool loadingMoreFinish;
   final List<MemberFollowableItem> recommendedMembers;
   const FollowingBlock(
     this.followingStories,
     this.isLoadingMore,
     this.recommendedMembers,
+    this.loadingMoreFinish,
   );
 
   @override
@@ -109,7 +111,9 @@ class FollowingBlock extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            if (index == 5 && followingStories.length == 6) {
+            if (index == 5 &&
+                followingStories.length == 6 &&
+                !loadingMoreFinish) {
               return _loadMoreWidget(context, followingStories[index]);
             }
             return _followingItem(context, followingStories[index]);

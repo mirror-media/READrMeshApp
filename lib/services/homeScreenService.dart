@@ -24,9 +24,6 @@ class HomeScreenService {
       \$readrId: ID
     ){
       followingStories:stories(
-        orderBy:{
-          published_date: desc
-        }
         take: 6
         where:{
           is_active:{
@@ -803,9 +800,6 @@ class HomeScreenService {
       \$alreadyFetchIds: [ID!]
     ){
       stories(
-        orderBy:{
-          published_date: desc
-        }
         where:{
           is_active:{
             equals: true

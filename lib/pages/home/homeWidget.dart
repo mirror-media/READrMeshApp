@@ -33,6 +33,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<NewsListItem> _latestComments = [];
   List<MemberFollowableItem> _recommendedMembers = [];
   List<PublisherFollowableItem> _recommendedPublishers = [];
+  bool _moreFollowingPickedLoaded = false;
 
   @override
   void initState() {
@@ -151,6 +152,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is LoadMoreFollowingPickedSuccess) {
           _followingStories.addAll(state.newFollowingStories);
           _isLoadingMoreFollowingPicked = false;
+          _moreFollowingPickedLoaded = true;
           return _buildHomeContent();
         }
 
@@ -172,6 +174,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           if (_allLatestNews.length < 10) {
             _noMoreLatestNews = true;
           }
+          _moreFollowingPickedLoaded = false;
           return _buildHomeContent();
         }
 
@@ -200,6 +203,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               _followingStories,
               _isLoadingMoreFollowingPicked,
               _recommendedMembers,
+              _moreFollowingPickedLoaded,
             ),
           ),
           if (_followingStories.isNotEmpty ||
