@@ -428,6 +428,9 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
