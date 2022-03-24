@@ -113,7 +113,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
       width: double.infinity,
       child: SafeArea(
         top: false,
