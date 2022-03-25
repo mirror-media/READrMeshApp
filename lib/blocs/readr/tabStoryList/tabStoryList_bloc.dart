@@ -47,7 +47,7 @@ class TabStoryListBloc extends Bloc<TabStoryListEvent, TabStoryListState> {
             storyFirst: 12,
           );
         }
-        if (result['story']!.length < 12) {
+        if (result['story']!.length < 12 && loadMore) {
           _noMore = true;
         }
 
