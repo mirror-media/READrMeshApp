@@ -512,7 +512,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 },
                 child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
                   builder: (context, state) {
-                    _updateFollowCount();
+                    _updateFollowerCount();
                     return RichText(
                       text: TextSpan(
                         text: _convertNumberToString(_followerCount),
@@ -561,33 +561,38 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                         viewMember: widget.viewMember,
                       ));
                     },
-                    child: RichText(
-                      text: TextSpan(
-                        text: _convertNumberToString(_followingCount),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: readrBlack87,
-                        ),
-                        children: const [
-                          TextSpan(
-                            text: '\n追蹤中',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: readrBlack50,
+                    child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
+                      builder: (context, state) {
+                        _updateFollowingCount();
+                        return RichText(
+                          text: TextSpan(
+                            text: _convertNumberToString(_followingCount),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: readrBlack87,
                             ),
+                            children: const [
+                              TextSpan(
+                                text: '\n追蹤中',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: readrBlack50,
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Icon(
+                                  Icons.navigate_next_outlined,
+                                  size: 18,
+                                  color: readrBlack30,
+                                ),
+                              ),
+                            ],
                           ),
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.navigate_next_outlined,
-                              size: 18,
-                              color: readrBlack30,
-                            ),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -637,7 +642,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     );
   }
 
-  void _updateFollowCount() {
+  void _updateFollowerCount() {
     if (_isFollowed &&
         !UserHelper.instance.isLocalFollowingMember(_viewMember)) {
       _followerCount = _originFollowerCount - 1;
@@ -646,6 +651,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       _followerCount = _originFollowerCount + 1;
     } else {
       _followerCount = _originFollowerCount;
+    }
+  }
+
+  void _updateFollowingCount() {
+    if (widget.isMine) {
+      _followingCount = UserHelper.instance.localFollowingMemberList.length +
+          UserHelper.instance.localPublisherList.length;
     }
   }
 
