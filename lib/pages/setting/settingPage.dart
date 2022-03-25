@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -218,6 +219,10 @@ class _SettingPageState extends State<SettingPage> {
               ),
             ),
             onTap: () async {
+              if (widget.loginType == 'google') {
+                GoogleSignIn _googleSignIn = GoogleSignIn();
+                await _googleSignIn.disconnect();
+              }
               await FirebaseAuth.instance.signOut();
               context.read<ConfigBloc>().add(LoginUpdate());
               AutoRouter.of(context).navigate(const Initial());
