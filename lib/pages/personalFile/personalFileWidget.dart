@@ -24,6 +24,7 @@ import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:validated/validated.dart' as validate;
 
 class PersonalFileWidget extends StatefulWidget {
   final Member viewMember;
@@ -455,16 +456,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
             ],
           ),
           const SizedBox(height: 4),
-          if (_viewMember.intro != null)
-            Text(
-              _viewMember.intro!,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: readrBlack50,
-              ),
-              textAlign: TextAlign.center,
-            ),
+          if (_viewMember.intro != null && _viewMember.intro!.isNotEmpty)
+            _buildIntro(_viewMember.intro!),
           const SizedBox(height: 12),
           if (!widget.isMine)
             FollowButton(
@@ -615,6 +608,33 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     } else {
       return number.toString();
     }
+  }
+
+  Widget _buildIntro(String intro) {
+    List<String> introChar = intro.characters.toList();
+    return RichText(
+      text: TextSpan(
+        text: introChar[0],
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: validate.isEmoji(introChar[0]) ? readrBlack : readrBlack50,
+        ),
+        children: [
+          for (int i = 1; i < introChar.length; i++)
+            TextSpan(
+              text: introChar[i],
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color:
+                    validate.isEmoji(introChar[i]) ? readrBlack : readrBlack50,
+              ),
+            )
+        ],
+      ),
+      textAlign: TextAlign.center,
+    );
   }
 
   void _updateFollowCount() {

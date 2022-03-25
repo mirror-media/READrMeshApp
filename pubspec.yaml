@@ -127,6 +127,10 @@ dependencies:
   open_mail_app: ^0.4.5
   # use widget depend on platform
   flutter_platform_widgets: ^1.20.0
+  # parse string to char
+  characters: ^1.2.0
+  # many validator
+  validated: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
