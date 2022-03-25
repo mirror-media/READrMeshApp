@@ -26,6 +26,7 @@ class RecommendFollowItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
           width: 150,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               recommendItem.defaultProfilePhotoWidget(context),
