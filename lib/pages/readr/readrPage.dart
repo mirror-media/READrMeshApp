@@ -145,6 +145,7 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                         TabBar(
                           isScrollable: true,
                           indicatorColor: tabBarSelectedColor,
+                          labelColor: readrBlack87,
                           unselectedLabelColor: readrBlack20,
                           tabs: _tabs.toList(),
                           controller: _tabController,
