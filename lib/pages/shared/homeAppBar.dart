@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -12,12 +13,8 @@ class HomeAppBar extends StatelessWidget {
       backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 0.5,
-      title: const Text(
-        'Logo',
-        style: TextStyle(
-          color: readrBlack,
-          fontSize: 18,
-        ),
+      title: SvgPicture.asset(
+        appBarIconSvg,
       ),
       actions: [
         // IconButton(

@@ -22,6 +22,7 @@ const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
 const String visitorAvatarPng = 'assets/icon/visitorAvatar.png';
 const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
+const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
