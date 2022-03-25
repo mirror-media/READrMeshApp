@@ -161,7 +161,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   void updateLike(bool isLike, String commentId) {
     EasyDebounce.debounce(
       commentId,
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () async {
         if (!isLike) {
           await _commentService.removeLike(
