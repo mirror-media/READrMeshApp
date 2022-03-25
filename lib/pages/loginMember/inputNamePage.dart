@@ -62,7 +62,7 @@ class _InputNamePageState extends State<InputNamePage> {
                 if (_formKey.currentState!.validate() && !_isSending) {
                   try {
                     _isSending = true;
-                    await MemberService().createMember();
+                    await MemberService().createMember(_controller.text);
                     final prefs = await SharedPreferences.getInstance();
                     final List<String> followingPublisherIds =
                         prefs.getStringList('followingPublisherIds') ?? [];

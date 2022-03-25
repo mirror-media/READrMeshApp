@@ -144,7 +144,7 @@ class MemberService {
     }
   }
 
-  Future<Member?> createMember({int? tryTimes}) async {
+  Future<Member?> createMember(String nickname, {int? tryTimes}) async {
     String mutation = """
     mutation (
 	    \$email: String
@@ -201,20 +201,6 @@ class MemberService {
     String feededEmail =
         firebaseUser.email ?? '[0x0001] - firebaseId:${firebaseUser.uid}';
 
-    String nickname;
-    if (firebaseUser.displayName != null) {
-      nickname = firebaseUser.displayName!;
-    } else if (firebaseUser.email != null) {
-      nickname = firebaseUser.email!.split('@')[0];
-    } else {
-      var splitUid = firebaseUser.uid.split('');
-      String randomName = '';
-      for (int i = 0; i < 5; i++) {
-        randomName = randomName + splitUid[i];
-      }
-      nickname = 'User $randomName';
-    }
-
     String customId = '';
     if (firebaseUser.email != null) {
       customId = firebaseUser.email!.split('@')[0];
@@ -232,7 +218,7 @@ class MemberService {
     Map<String, String> variables = {
       "email": feededEmail,
       "firebaseId": firebaseUser.uid,
-      "name": nickname,
+      "name": FirebaseAuth.instance.currentUser?.displayName ?? nickname,
       "nickname": nickname,
       "avatar": firebaseUser.photoURL ?? "",
       "customId": customId
@@ -268,7 +254,7 @@ class MemberService {
       if (tryTimes != null) {
         times = tryTimes++;
       }
-      return await createMember(tryTimes: times);
+      return await createMember(nickname, tryTimes: times);
     } else {
       return null;
     }
