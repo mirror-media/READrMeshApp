@@ -11,8 +11,8 @@ class RecommendFollowPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int itemLength = recommendedItems.length;
-    if (itemLength > 20) itemLength = 20;
+    List<FollowableItem> recommendedItemList = [];
+    recommendedItemList.addAll(recommendedItems);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -35,20 +35,45 @@ class RecommendFollowPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocProvider(
-          create: (context) => HomeBloc(),
-          child: GridView.builder(
-            padding: const EdgeInsets.all(20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 0.74,
-            ),
-            itemBuilder: (context, index) =>
-                RecommendFollowItem(recommendedItems[index]),
-            itemCount: itemLength,
-          ),
+        child: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state is HomeLoaded && recommendedItems.isNotEmpty) {
+              if (recommendedItems[0].type == 'member' &&
+                  state.recommendedMembers.isEmpty) {
+                Navigator.pop(context);
+              } else if (recommendedItems[0].type == 'publisher' &&
+                  state.recommendedPublishers.isEmpty) {
+                Navigator.pop(context);
+              }
+            }
+          },
+          builder: (context, state) {
+            if (state is HomeLoaded && recommendedItems.isNotEmpty) {
+              if (recommendedItems[0].type == 'member') {
+                recommendedItemList = [];
+                recommendedItemList.addAll(state.recommendedMembers);
+              } else if (recommendedItems[0].type == 'publisher') {
+                recommendedItemList = [];
+                recommendedItemList.addAll(state.recommendedPublishers);
+              }
+            }
+
+            int itemLength = recommendedItemList.length;
+            if (itemLength > 20) itemLength = 20;
+
+            return GridView.builder(
+              padding: const EdgeInsets.all(20),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.73,
+              ),
+              itemBuilder: (context, index) =>
+                  RecommendFollowItem(recommendedItemList[index]),
+              itemCount: itemLength,
+            );
+          },
         ),
       ),
     );

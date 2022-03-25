@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'helpers/router/router.dart';
 
 class ReadrApp extends StatelessWidget {
   final _appRouter = AppRouter();
   final _pickButtonCubit = PickButtonCubit();
+  final _followButtonCubit = FollowButtonCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +21,16 @@ class ReadrApp extends StatelessWidget {
           create: (context) => _pickButtonCubit,
         ),
         BlocProvider(
-          create: (context) => FollowButtonCubit(),
+          create: (context) => _followButtonCubit,
         ),
         BlocProvider(
           create: (context) => CommentCountCubit(_pickButtonCubit),
         ),
         BlocProvider(
           create: (context) => ConfigBloc(),
+        ),
+        BlocProvider(
+          create: (context) => HomeBloc(_followButtonCubit),
         ),
       ],
       child: MaterialApp.router(

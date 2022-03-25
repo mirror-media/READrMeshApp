@@ -8,10 +8,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocProvider(
-          create: (context) => HomeBloc(),
-          child: HomeWidget(),
-        ),
+        child: HomeWidget(),
       ),
       backgroundColor: Colors.white,
     );

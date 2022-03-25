@@ -195,6 +195,12 @@ class _HomeWidgetState extends State<HomeWidget> {
     return RefreshIndicator(
       onRefresh: () => _reloadHomeScreen(),
       child: CustomScrollView(
+        key: ValueKey(
+          _followingStories.length.toString() +
+              _allLatestNews.length.toString() +
+              _recommendedMembers.length.toString() +
+              _recommendedPublishers.length.toString(),
+        ),
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           const HomeAppBar(),

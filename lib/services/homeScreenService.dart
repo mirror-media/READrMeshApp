@@ -658,11 +658,11 @@ class HomeScreenService {
 
     Member member = UserHelper.instance.currentUser;
 
-    for (var memberId in member.following) {
+    for (var memberId in UserHelper.instance.localFollowingMemberList) {
       followingMemberIds.add(memberId.memberId);
     }
 
-    for (var publisher in member.followingPublisher) {
+    for (var publisher in UserHelper.instance.localPublisherList) {
       followingPublisherIds.add(publisher.id);
     }
 
@@ -955,7 +955,7 @@ class HomeScreenService {
 
     Member member = UserHelper.instance.currentUser;
     List<String> followingMemberIds = [];
-    for (var memberId in member.following) {
+    for (var memberId in UserHelper.instance.localFollowingMemberList) {
       followingMemberIds.add(memberId.memberId);
     }
 
@@ -1165,12 +1165,12 @@ class HomeScreenService {
     Member member = UserHelper.instance.currentUser;
 
     List<String> followingMemberIds = [];
-    for (var memberId in member.following) {
+    for (var memberId in UserHelper.instance.localFollowingMemberList) {
       followingMemberIds.add(memberId.memberId);
     }
 
     List<String> followingPublisherIds = [];
-    for (var publisher in member.followingPublisher) {
+    for (var publisher in UserHelper.instance.localPublisherList) {
       followingPublisherIds.add(publisher.id);
     }
 

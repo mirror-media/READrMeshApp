@@ -31,6 +31,8 @@ class UserHelper {
 
   List<Publisher> get localPublisherList => _localFollowingPublisherList;
 
+  List<Member> get localFollowingMemberList => _localFollowingMemberList;
+
   // if want to use member, must call fetchUserData() once
   Member get currentUser => _member;
 
