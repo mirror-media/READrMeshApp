@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
@@ -61,11 +62,18 @@ class _RootPageState extends State<RootPage> {
         }
 
         // state is Init, loading, or other
-        return Container(
-          color: Colors.white,
-          child: Image.asset(
-            logoPng,
-            scale: 4,
+        return Scaffold(
+          appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.light,
+            backgroundColor: const Color.fromRGBO(4, 13, 44, 1),
+            toolbarHeight: 0,
+          ),
+          backgroundColor: const Color.fromRGBO(4, 13, 44, 1),
+          body: Center(
+            child: Image.asset(
+              splashIconPng,
+              scale: 4,
+            ),
           ),
         );
       },
@@ -82,66 +90,74 @@ class _RootPageState extends State<RootPage> {
       personalPageIcon =
           ProfilePhotoWidget(UserHelper.instance.currentUser, 11);
     }
-    return AutoTabsScaffold(
-      routes: [
-        const HomeRouter(),
-        const ReadrRouter(),
-        PersonalFileWidgetRoute(
-          viewMember: UserHelper.instance.currentUser,
-          isFromBottomTab: true,
-          isMine: true,
-          isVisitor: UserHelper.instance.isVisitor,
-        ),
-      ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          elevation: 10,
-          backgroundColor: Colors.white,
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (index) {
-            if (index == 2 && UserHelper.instance.isMember) {
-              context
-                  .read<PersonalFileCubit>()
-                  .fetchMemberData(UserHelper.instance.currentUser);
-            }
-            tabsRouter.setActiveIndex(index);
-          },
-          selectedItemColor: bottomNavigationBarSelectedColor,
-          unselectedItemColor: bottomNavigationBarUnselectedColor,
-          items: [
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                child: Icon(
-                  tabsRouter.activeIndex == 0
-                      ? Icons.home_sharp
-                      : Icons.home_outlined,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        elevation: 0,
+      ),
+      body: AutoTabsScaffold(
+        routes: [
+          const HomeRouter(),
+          const ReadrRouter(),
+          PersonalFileWidgetRoute(
+            viewMember: UserHelper.instance.currentUser,
+            isFromBottomTab: true,
+            isMine: true,
+            isVisitor: UserHelper.instance.isVisitor,
+          ),
+        ],
+        bottomNavigationBuilder: (_, tabsRouter) {
+          return BottomNavigationBar(
+            elevation: 10,
+            backgroundColor: Colors.white,
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (index) {
+              if (index == 2 && UserHelper.instance.isMember) {
+                context
+                    .read<PersonalFileCubit>()
+                    .fetchMemberData(UserHelper.instance.currentUser);
+              }
+              tabsRouter.setActiveIndex(index);
+            },
+            selectedItemColor: bottomNavigationBarSelectedColor,
+            unselectedItemColor: bottomNavigationBarUnselectedColor,
+            items: [
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 20,
+                  child: Icon(
+                    tabsRouter.activeIndex == 0
+                        ? Icons.home_sharp
+                        : Icons.home_outlined,
+                  ),
                 ),
+                label: '首頁',
               ),
-              label: '首頁',
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                child: Image.asset(
-                  logoSimplifyPng,
-                  color: tabsRouter.activeIndex == 1
-                      ? bottomNavigationBarSelectedColor
-                      : bottomNavigationBarUnselectedColor,
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 20,
+                  child: Image.asset(
+                    logoSimplifyPng,
+                    color: tabsRouter.activeIndex == 1
+                        ? bottomNavigationBarSelectedColor
+                        : bottomNavigationBarUnselectedColor,
+                  ),
                 ),
+                label: 'READr',
               ),
-              label: 'READr',
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                child: personalPageIcon,
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 20,
+                  child: personalPageIcon,
+                ),
+                label: '個人檔案',
               ),
-              label: '個人檔案',
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }
