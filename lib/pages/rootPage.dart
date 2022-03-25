@@ -62,18 +62,11 @@ class _RootPageState extends State<RootPage> {
         }
 
         // state is Init, loading, or other
-        return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle.light,
-            backgroundColor: const Color.fromRGBO(4, 13, 44, 1),
-            toolbarHeight: 0,
-          ),
-          backgroundColor: const Color.fromRGBO(4, 13, 44, 1),
-          body: Center(
-            child: Image.asset(
-              splashIconPng,
-              scale: 4,
-            ),
+        return Container(
+          color: const Color.fromRGBO(4, 13, 44, 1),
+          child: Image.asset(
+            splashIconPng,
+            scale: 4,
           ),
         );
       },
