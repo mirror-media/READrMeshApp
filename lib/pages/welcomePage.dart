@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 
@@ -15,21 +16,13 @@ class WelcomePage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 120, left: 40),
-                child: Text(
-                  'OUR LOGO\nNEWS\nSLOGAN',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w300,
-                    color: readrBlack50,
-                  ),
+              Expanded(
+                child: SvgPicture.asset(
+                  welcomeScreenLogoSvg,
                 ),
               ),
-              const Spacer(),
               Padding(
                 padding: const EdgeInsets.fromLTRB(40, 0, 40, 107),
                 child: SizedBox(
