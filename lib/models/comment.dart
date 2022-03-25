@@ -83,4 +83,14 @@ class Comment {
       root: oldComment.root,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Comment &&
+          id == other.id &&
+          member.memberId == other.member.memberId;
+
+  @override
+  int get hashCode => id.hashCode ^ member.memberId.hashCode;
 }

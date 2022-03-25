@@ -84,3 +84,19 @@ class EditComment extends CommentEvent {
   @override
   String toString() => "Edit comment commentId = ${oldComment.id}";
 }
+
+class AddLike extends CommentEvent {
+  final Comment comment;
+  const AddLike(this.comment);
+
+  @override
+  String toString() => 'Add like commentId = ${comment.id}';
+}
+
+class RemoveLike extends CommentEvent {
+  final Comment comment;
+  const RemoveLike(this.comment);
+
+  @override
+  String toString() => 'Remove like commentId = ${comment.id}';
+}

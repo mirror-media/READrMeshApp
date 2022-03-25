@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -46,6 +47,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     on<CommentEvent>((event, emit) async {
       try {
         print(event.toString());
+
         if (event is FetchComments) {
           emit(CommentLoading());
           List<Comment>? allComments =
@@ -55,7 +57,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           } else {
             emit(CommentLoaded(allComments));
           }
-        } else if (event is AddComment) {
+        }
+
+        if (event is AddComment) {
           Comment myNewComment = Comment(
             id: 'sending',
             member: UserHelper.instance.currentUser,
@@ -74,19 +78,29 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           } else {
             emit(AddCommentSuccess(allComments));
           }
-        } else if (event is AddPickComment) {
+        }
+
+        if (event is AddPickComment) {
           emit(AddingPickComment(event.comment));
-        } else if (event is AddPickCommentSuccess) {
+        }
+
+        if (event is AddPickCommentSuccess) {
           emit(PickCommentAdded(event.comment, event.item));
-        } else if (event is RemovePickComment) {
+        }
+
+        if (event is RemovePickComment) {
           emit(RemovingPickComment(event.commentId, event.item));
-        } else if (event is UpdatePickCommentFailed) {
+        }
+
+        if (event is UpdatePickCommentFailed) {
           if (event.isAdd) {
             emit(PickCommentAddFailed(event.item));
           } else {
             emit(PickCommentRemoveFailed(event.item));
           }
-        } else if (event is DeleteComment) {
+        }
+
+        if (event is DeleteComment) {
           emit(DeletingComment(event.comment.id));
           var result = await _commentService.deleteComment(event.comment.id);
           if (result) {
@@ -98,7 +112,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           } else {
             emit(DeleteCommentFailure());
           }
-        } else if (event is EditComment) {
+        }
+
+        if (event is EditComment) {
           emit(UpdatingComment(event.newComment));
           var result = await _commentService.editComment(event.newComment);
           if (result) {
@@ -106,6 +122,27 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           } else {
             emit(UpdateCommentFailure(event.oldComment));
           }
+        }
+
+        if (event is AddLike) {
+          emit(UpdatingCommentLike());
+          var comment = event.comment;
+          comment.isLiked = true;
+          comment.likedCount++;
+          updateLike(true, comment.id);
+          emit(UpdateCommentLike(comment));
+        }
+
+        if (event is RemoveLike) {
+          emit(UpdatingCommentLike());
+          var comment = event.comment;
+          comment.isLiked = false;
+          comment.likedCount--;
+          if (comment.likedCount < 0) {
+            comment.likedCount = 0;
+          }
+          updateLike(false, comment.id);
+          emit(UpdateCommentLike(comment));
         }
       } catch (e) {
         if (event is AddComment) {
@@ -119,6 +156,24 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         }
       }
     });
+  }
+
+  void updateLike(bool isLike, String commentId) {
+    EasyDebounce.debounce(
+      commentId,
+      const Duration(seconds: 2),
+      () async {
+        if (!isLike) {
+          await _commentService.removeLike(
+            commentId: commentId,
+          );
+        } else {
+          await _commentService.addLike(
+            commentId: commentId,
+          );
+        }
+      },
+    );
   }
 
   @override

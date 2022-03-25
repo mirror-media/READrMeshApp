@@ -237,6 +237,14 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     }
                   }
 
+                  if (state is UpdateCommentLike) {
+                    int allCommentsIndex = _allComments
+                        .indexWhere((element) => element == state.newComment);
+                    if (allCommentsIndex != -1) {
+                      _allComments[allCommentsIndex] = state.newComment;
+                    }
+                  }
+
                   return _buildContent();
                 },
               ),
@@ -267,7 +275,8 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return CommentItem(
-                      key: ValueKey(_allComments[index].id),
+                      key: ValueKey(_allComments[index].id +
+                          _allComments[index].likedCount.toString()),
                       comment: _allComments[index],
                       isSending: (_isSending && index == 0),
                       isMyNewComment: _hasMyNewComment && index == 0,

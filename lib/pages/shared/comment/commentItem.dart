@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,6 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
-import 'package:readr/services/commentService.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
@@ -259,17 +257,11 @@ class _CommentItemState extends State<CommentItem> {
           IconButton(
             onPressed: () async {
               if (UserHelper.instance.isMember) {
-                // refresh UI first
-                setState(() {
-                  if (_isLiked) {
-                    widget.comment.likedCount--;
-                  } else {
-                    widget.comment.likedCount++;
-                  }
-                  _isLiked = !_isLiked;
-                });
-                EasyDebounce.debounce(widget.comment.id,
-                    const Duration(seconds: 2), () => _updateLike());
+                if (_isLiked) {
+                  context.read<CommentBloc>().add(RemoveLike(widget.comment));
+                } else {
+                  context.read<CommentBloc>().add(AddLike(widget.comment));
+                }
               } else {
                 AutoRouter.of(context).push(LoginRoute(fromComment: true));
               }
@@ -291,38 +283,15 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   String _convertNumberToString(int number) {
+    if (number <= 0) {
+      return '0';
+    }
+
     if (number < 10000) {
       return number.toString();
     }
     double temp = number / 1000;
     return '${temp.floor().toString()}K';
-  }
-
-  Future<void> _updateLike() async {
-    int originLikeCount = widget.comment.likedCount;
-
-    CommentService commentService = CommentService();
-    int? newLikeCount;
-    if (!_isLiked) {
-      newLikeCount = await commentService.removeLike(
-        commentId: widget.comment.id,
-      );
-    } else {
-      newLikeCount = await commentService.addLike(
-        commentId: widget.comment.id,
-      );
-    }
-
-    // if return null mean failed
-    if (newLikeCount != null) {
-      widget.comment.likedCount = newLikeCount;
-    } else {
-      widget.comment.likedCount = originLikeCount;
-      _isLiked = !_isLiked;
-      if (mounted) {
-        setState(() {});
-      }
-    }
   }
 
   Widget _content() {

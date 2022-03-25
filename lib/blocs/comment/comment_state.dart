@@ -83,3 +83,10 @@ class UpdateCommentFailure extends CommentState {
   final Comment oldComment;
   const UpdateCommentFailure(this.oldComment);
 }
+
+class UpdatingCommentLike extends CommentState {}
+
+class UpdateCommentLike extends CommentState {
+  final Comment newComment;
+  const UpdateCommentLike(this.newComment);
+}

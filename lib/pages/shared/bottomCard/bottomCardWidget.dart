@@ -197,6 +197,21 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
               _popularComments[popularIndex] = state.oldComment;
             }
           }
+
+          if (state is UpdateCommentLike) {
+            int allCommentsIndex = _allComments
+                .indexWhere((element) => element == state.newComment);
+            if (allCommentsIndex != -1) {
+              _allComments[allCommentsIndex] = state.newComment;
+            }
+
+            int popularCommentsIndex = _popularComments
+                .indexWhere((element) => element == state.newComment);
+            if (popularCommentsIndex != -1) {
+              _popularComments[popularCommentsIndex] = state.newComment;
+            }
+          }
+
           double height = MediaQuery.of(context).size.height;
           double size = (-0.0002 * height) + 0.3914;
 
@@ -421,6 +436,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             comment: _popularComments[index - 1],
             isSending: false,
             isMyNewComment: false,
+            key: ValueKey(_popularComments[index - 1].id +
+                _popularComments[index - 1].likedCount.toString()),
           );
         },
         separatorBuilder: (context, index) {
@@ -463,7 +480,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
           comment: _allComments[index],
           isSending: (_isSending && index == 0),
           isMyNewComment: _hasMyNewComment && index == 0,
-          key: ValueKey(_allComments[index].id),
+          key: ValueKey(_allComments[index].id +
+              _allComments[index].likedCount.toString()),
         ),
         separatorBuilder: (context, index) => const Divider(
           color: readrBlack10,
