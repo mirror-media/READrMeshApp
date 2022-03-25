@@ -54,6 +54,8 @@ class DynamicLinkHelper {
       // value.additionalUserInfo.isNewUser;
 
       print('Successfully signed in with email link!');
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('loginType', 'email');
       if (value.additionalUserInfo!.isNewUser) {
         AutoRouter.of(context).replace(
             InputNameRoute(publisherTitleList: await _fetchPublisherTitles()));
@@ -61,9 +63,7 @@ class DynamicLinkHelper {
         var result = await MemberService().fetchMemberData();
         if (result != null) {
           await UserHelper.instance.fetchUserData();
-          final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isFirstTime', false);
-          await prefs.setString('loginType', 'email');
           context.read<ConfigBloc>().add(LoginUpdate());
           AutoRouter.of(context).navigate(const Initial());
         } else {
