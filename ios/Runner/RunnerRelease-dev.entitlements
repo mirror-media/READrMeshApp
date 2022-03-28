@@ -10,9 +10,9 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:readr-dev-38eec.firebaseapp.com</string>
-		<string>applinks:readr-prod.firebaseapp.com</string>
-		<string>applinks:readr-staging.firebaseapp.com</string>
+		<string>applinks:readrdev.page.link</string>
+		<string>applinks:readrprod.page.link</string>
+		<string>applinks:readrstaging.page.link</string>
 	</array>
 </dict>
 </plist>
