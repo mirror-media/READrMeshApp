@@ -14,17 +14,13 @@ class LoginCubit extends Cubit<LoginState> {
   login(bool isNewUser) async {
     emit(Loading());
     try {
-      if (!isNewUser) {
-        var result = await _memberService.fetchMemberData();
-        if (result != null) {
-          await UserHelper.instance.fetchUserData(member: result);
-          await UserHelper.instance.addVisitorFollowing();
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isFirstTime', false);
-          emit(ExistingMemberLogin());
-        } else {
-          emit(NewMemberSignup(await _fetchPublisherTitles()));
-        }
+      var result = await _memberService.fetchMemberData();
+      if (result != null) {
+        await UserHelper.instance.fetchUserData(member: result);
+        await UserHelper.instance.addVisitorFollowing();
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isFirstTime', false);
+        emit(ExistingMemberLogin());
       } else {
         emit(NewMemberSignup(await _fetchPublisherTitles()));
       }
