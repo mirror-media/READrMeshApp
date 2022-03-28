@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/userHelper.dart';
@@ -50,8 +48,8 @@ class PersonalFileService {
     """;
 
     Map<String, String> variables = {
-      "email": DevConfig().appHelperEmail,
-      "password": DevConfig().appHelperPassword,
+      "email": Environment().config.appHelperEmail,
+      "password": Environment().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

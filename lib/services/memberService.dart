@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:readr/configs/devConfig.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/userHelper.dart';
@@ -12,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberService {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  // TODO: Change to Environment config when all environment built
   final String api = Environment().config.readrMeshApi;
 
   Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
@@ -52,8 +50,8 @@ class MemberService {
     """;
 
     Map<String, String> variables = {
-      "email": DevConfig().appHelperEmail,
-      "password": DevConfig().appHelperPassword,
+      "email": Environment().config.appHelperEmail,
+      "password": Environment().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
