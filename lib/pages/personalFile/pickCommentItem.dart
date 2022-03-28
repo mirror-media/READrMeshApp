@@ -8,6 +8,7 @@ import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
+import 'package:validated/validated.dart' as validate;
 
 class PickCommentItem extends StatefulWidget {
   final Comment comment;
@@ -174,36 +175,57 @@ class _PickCommentItemState extends State<PickCommentItem> {
           });
         }
       },
-      child: ExtendedText(
-        widget.comment.content,
-        maxLines: _isExpanded ? null : 3,
-        style: const TextStyle(
-          color: Color.fromRGBO(0, 9, 40, 0.66),
+      child: _buildComment(widget.comment.content),
+    );
+  }
+
+  Widget _buildComment(String content) {
+    List<String> contentChar = content.characters.toList();
+    return ExtendedText.rich(
+      TextSpan(
+        text: contentChar[0],
+        style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
+          color: validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
         ),
-        joinZeroWidthSpace: true,
-        overflowWidget: TextOverflowWidget(
-          position: TextOverflowPosition.end,
-          child: RichText(
-            text: const TextSpan(
-              text: '... ',
+        children: [
+          for (int i = 1; i < contentChar.length; i++)
+            TextSpan(
+              text: contentChar[i],
               style: TextStyle(
-                color: Color.fromRGBO(0, 9, 40, 0.66),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
+                color: validate.isEmoji(contentChar[i])
+                    ? readrBlack
+                    : readrBlack66,
               ),
-              children: [
-                TextSpan(
-                  text: '顯示更多',
-                  style: TextStyle(
-                    color: readrBlack50,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              ],
+            )
+        ],
+      ),
+      textAlign: TextAlign.center,
+      maxLines: _isExpanded ? null : 3,
+      joinZeroWidthSpace: true,
+      overflowWidget: TextOverflowWidget(
+        position: TextOverflowPosition.end,
+        child: RichText(
+          text: const TextSpan(
+            text: '... ',
+            style: TextStyle(
+              color: Color.fromRGBO(0, 9, 40, 0.66),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
             ),
+            children: [
+              TextSpan(
+                text: '顯示更多',
+                style: TextStyle(
+                  color: readrBlack50,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              )
+            ],
           ),
         ),
       ),
