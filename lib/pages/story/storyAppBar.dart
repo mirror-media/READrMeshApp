@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,12 +29,13 @@ class StoryAppBar extends StatefulWidget {
 
 class _StoryAppBarState extends State<StoryAppBar> {
   bool _isBookmarked = false;
-  bool _isSending = false;
   bool _isLoading = true;
+  late bool _originIsBookmarked;
   final PickService _pickService = PickService();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (widget.newsStoryItem == null) {
       _isLoading = true;
     } else if (widget.newsStoryItem!.bookmarkId != null) {
@@ -42,6 +44,11 @@ class _StoryAppBarState extends State<StoryAppBar> {
     } else {
       _isLoading = false;
     }
+    _originIsBookmarked = _isBookmarked;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: Colors.white,
@@ -66,46 +73,19 @@ class _StoryAppBarState extends State<StoryAppBar> {
               size: 26,
             ),
             tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
-            onPressed: _isSending
-                ? null
-                : () async {
-                    if (UserHelper.instance.isMember) {
-                      bool originState = _isBookmarked;
-                      setState(() {
-                        _isBookmarked = !_isBookmarked;
-                        _isSending = true;
-                      });
-                      if (originState) {
-                        bool isDelete = await _pickService
-                            .deletePick(widget.newsStoryItem!.bookmarkId!);
-                        PickToast.showBookmarkToast(context, isDelete, false);
-                        if (!isDelete) {
-                          _isBookmarked = originState;
-                        } else {
-                          widget.newsStoryItem!.bookmarkId = null;
-                        }
-                      } else {
-                        String? pickId = await _pickService.createPick(
-                          targetId: widget.newsStoryItem!.id,
-                          objective: PickObjective.story,
-                          state: PickState.private,
-                          kind: PickKind.bookmark,
-                        );
-                        PickToast.showBookmarkToast(
-                            context, pickId != null, true);
-                        if (pickId != null) {
-                          widget.newsStoryItem!.bookmarkId = pickId;
-                        } else {
-                          _isBookmarked = originState;
-                        }
-                      }
-                      setState(() {
-                        _isSending = false;
-                      });
-                    } else {
-                      AutoRouter.of(context).push(LoginRoute());
-                    }
-                  },
+            onPressed: () async {
+              if (UserHelper.instance.isMember) {
+                setState(() {
+                  _isBookmarked = !_isBookmarked;
+                });
+                EasyDebounce.debounce(
+                    'UpdateBookmark',
+                    const Duration(seconds: 1),
+                    () async => await updateBookmark());
+              } else {
+                AutoRouter.of(context).push(LoginRoute());
+              }
+            },
           ),
           IconButton(
             icon: Icon(
@@ -200,5 +180,39 @@ class _StoryAppBarState extends State<StoryAppBar> {
         ),
       ],
     );
+  }
+
+  Future<void> updateBookmark() async {
+    if (_isBookmarked != _originIsBookmarked) {
+      if (!_isBookmarked) {
+        bool isDelete =
+            await _pickService.deletePick(widget.newsStoryItem!.bookmarkId!);
+        PickToast.showBookmarkToast(context, isDelete, false);
+        if (!isDelete) {
+          setState(() {
+            _isBookmarked = _originIsBookmarked;
+          });
+        } else {
+          widget.newsStoryItem!.bookmarkId = null;
+          _originIsBookmarked = _isBookmarked;
+        }
+      } else {
+        String? pickId = await _pickService.createPick(
+          targetId: widget.newsStoryItem!.id,
+          objective: PickObjective.story,
+          state: PickState.private,
+          kind: PickKind.bookmark,
+        );
+        PickToast.showBookmarkToast(context, pickId != null, true);
+        if (pickId != null) {
+          widget.newsStoryItem!.bookmarkId = pickId;
+          _originIsBookmarked = _isBookmarked;
+        } else {
+          setState(() {
+            _isBookmarked = _originIsBookmarked;
+          });
+        }
+      }
+    }
   }
 }
