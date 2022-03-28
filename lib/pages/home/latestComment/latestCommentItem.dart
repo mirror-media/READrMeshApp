@@ -135,7 +135,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
   Widget _commentsWidget(BuildContext context, Comment comment) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.only(top: 16, right: 20, left: 20, bottom: 16),
+      padding: const EdgeInsets.only(top: 16, right: 12, left: 12, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
