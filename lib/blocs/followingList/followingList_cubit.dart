@@ -13,12 +13,15 @@ class FollowingListCubit extends Cubit<FollowingListState> {
 
   fetchFollowingList({required Member viewMember}) async {
     try {
+      var result = await _personalFileService.fetchFollowingList(viewMember);
+
       emit(FollowingListLoaded(
-          followingMemberList:
-              await _personalFileService.fetchFollowingList(viewMember),
-          followPublisherList: await _personalFileService.fetchFollowPublisher(
-            viewMember,
-          )));
+        followingMemberList: result['followingList'],
+        followPublisherList: await _personalFileService.fetchFollowPublisher(
+          viewMember,
+        ),
+        followingMemberCount: result['followingMemberCount'],
+      ));
     } catch (e) {
       emit(FollowingListError(determineException(e)));
     }
@@ -29,8 +32,9 @@ class FollowingListCubit extends Cubit<FollowingListState> {
     required int skip,
   }) async {
     try {
-      emit(FollowingListLoadMoreSuccess(await _personalFileService
-          .fetchFollowingList(viewMember, skip: skip)));
+      var result =
+          await _personalFileService.fetchFollowingList(viewMember, skip: skip);
+      emit(FollowingListLoadMoreSuccess(result['followingList']));
     } catch (e) {
       emit(FollowingListLoadMoreFailed(determineException(e)));
     }

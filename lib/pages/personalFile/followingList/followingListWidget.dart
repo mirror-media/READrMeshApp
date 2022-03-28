@@ -24,6 +24,7 @@ class FollowingListWidget extends StatefulWidget {
 class _FollowingListWidgetState extends State<FollowingListWidget> {
   List<Member> _followingMemberList = [];
   List<Publisher> _followPublisherList = [];
+  late int _followingMemberCount;
   bool _isLoading = false;
   bool _isNoMore = false;
   bool _isExpanded = false;
@@ -101,6 +102,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
             if (_followingMemberList.length < 10) {
               _isNoMore = true;
             }
+            _followingMemberCount = state.followingMemberCount;
             return _buildContent();
           }
         }
@@ -178,7 +180,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
-                '人物  (${_followingMemberList.length})',
+                '人物  ($_followingMemberCount)',
                 style: const TextStyle(
                   fontSize: 18,
                   color: readrBlack87,

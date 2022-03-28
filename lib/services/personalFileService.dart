@@ -668,7 +668,7 @@ class PersonalFileService {
     return followerList;
   }
 
-  Future<List<Member>> fetchFollowingList(Member viewMember,
+  Future<Map<String, dynamic>> fetchFollowingList(Member viewMember,
       {int skip = 0}) async {
     const String query = """
     query(
@@ -709,6 +709,20 @@ class PersonalFileService {
           id
         }
       }
+      membersCount(
+        where:{
+          follower:{
+            some:{
+              id:{
+                equals: \$viewMemberId
+              }
+            }
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
     }
     """;
 
@@ -740,7 +754,10 @@ class PersonalFileService {
       followingList.add(followingMember);
     }
 
-    return followingList;
+    return {
+      'followingList': followingList,
+      'followingMemberCount': jsonResponse['data']['membersCount'],
+    };
   }
 
   Future<List<Publisher>> fetchFollowPublisher(Member viewMember) async {

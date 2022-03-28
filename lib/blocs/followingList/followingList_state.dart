@@ -16,8 +16,12 @@ class FollowingListLoadingMore extends FollowingListState {}
 class FollowingListLoaded extends FollowingListState {
   final List<Member> followingMemberList;
   final List<Publisher> followPublisherList;
-  const FollowingListLoaded(
-      {required this.followingMemberList, required this.followPublisherList});
+  final int followingMemberCount;
+  const FollowingListLoaded({
+    required this.followingMemberList,
+    required this.followPublisherList,
+    required this.followingMemberCount,
+  });
 }
 
 class FollowingListLoadMoreSuccess extends FollowingListState {
