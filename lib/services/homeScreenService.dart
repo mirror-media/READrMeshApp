@@ -436,6 +436,9 @@ class HomeScreenService {
         where:{
           id:{
             notIn: \$followingMembers
+            not:{
+              equals: \$myId
+            }
           }
           follower:{
             some:{
@@ -768,6 +771,9 @@ class HomeScreenService {
         }
       }
     }
+
+    recommendedMembers.removeWhere((element) =>
+        element.memberId == UserHelper.instance.currentUser.memberId);
 
     List<Publisher> recommendedPublishers = [];
     if (jsonResponse['data']['RecommendPublisher'].isNotEmpty) {
