@@ -57,6 +57,7 @@ class RecommendFollowItem extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
+              const Spacer(),
               const SizedBox(height: 12),
               FollowButton(
                 recommendItem,
