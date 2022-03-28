@@ -84,7 +84,11 @@ class MemberFollowableItem implements FollowableItem {
 
   @override
   Widget defaultProfilePhotoWidget(BuildContext context) {
-    return ProfilePhotoWidget(member, 32);
+    return ProfilePhotoWidget(
+      member,
+      32,
+      key: ValueKey(member.hashCode),
+    );
   }
 
   @override
@@ -149,7 +153,11 @@ class PublisherFollowableItem implements FollowableItem {
 
   @override
   Widget defaultProfilePhotoWidget(BuildContext context) {
-    return PublisherLogoWidget(publisher, size: 60);
+    return PublisherLogoWidget(
+      publisher,
+      size: 60,
+      key: ValueKey(publisher.hashCode),
+    );
   }
 
   @override

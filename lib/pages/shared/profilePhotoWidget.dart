@@ -7,7 +7,8 @@ class ProfilePhotoWidget extends StatelessWidget {
   final Member member;
   final double radius;
   final double? textSize;
-  const ProfilePhotoWidget(this.member, this.radius, {this.textSize});
+  const ProfilePhotoWidget(this.member, this.radius, {this.textSize, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

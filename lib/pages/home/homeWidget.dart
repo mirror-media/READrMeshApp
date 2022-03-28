@@ -114,6 +114,17 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
       },
       builder: (context, state) {
+        if (state is HomeLoading || state is HomeInitial) {
+          return CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            slivers: [
+              const HomeAppBar(),
+              SliverFillRemaining(
+                child: HomeSkeletonScreen(),
+              ),
+            ],
+          );
+        }
         if (state is HomeError) {
           final error = state.error;
           print('HomePageError: ${error.message}');
@@ -128,65 +139,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (state is HomeReloadFailed) {
           final error = state.error;
           print('HomeReloadFailed: ${error.message}');
-          return _buildHomeContent();
         }
 
-        if (state is LoadingMoreNews ||
-            state is LoadMoreNewsFailed ||
-            state is HomeReloading) {
-          return _buildHomeContent();
-        }
-
-        if (state is LoadingMoreFollowingPicked) {
-          _isLoadingMoreFollowingPicked = true;
-          return _buildHomeContent();
-        }
-
-        if (state is LoadMoreFollowingPickedFailed) {
-          final error = state.error;
-          print('LoadMoreFollowingPickedFailed: ${error.message()}');
-          _isLoadingMoreFollowingPicked = false;
-          return _buildHomeContent();
-        }
-
-        if (state is LoadMoreFollowingPickedSuccess) {
-          _followingStories.addAll(state.newFollowingStories);
-          _isLoadingMoreFollowingPicked = false;
-          _moreFollowingPickedLoaded = true;
-          return _buildHomeContent();
-        }
-
-        if (state is LoadMoreNewsSuccess) {
-          if (state.newLatestNews.length < 10) {
-            _noMoreLatestNews = true;
-          }
-          _allLatestNews.addAll(state.newLatestNews);
-          return _buildHomeContent();
-        }
-
-        if (state is HomeLoaded) {
-          _noMoreLatestNews = false;
-          _followingStories = state.followingStories;
-          _allLatestNews = state.allLatestNews;
-          _latestComments = state.latestComments;
-          _recommendedMembers = state.recommendedMembers;
-          _recommendedPublishers = state.recommendedPublishers;
-          if (_allLatestNews.length < 10) {
-            _noMoreLatestNews = true;
-          }
-          _moreFollowingPickedLoaded = false;
-          return _buildHomeContent();
-        }
-
-        return CustomScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          slivers: [
-            const HomeAppBar(),
-            SliverFillRemaining(
-              child: HomeSkeletonScreen(),
-            ),
-          ],
-        );
+        return _buildHomeContent();
       },
     );
   }
@@ -195,59 +150,139 @@ class _HomeWidgetState extends State<HomeWidget> {
     return RefreshIndicator(
       onRefresh: () => _reloadHomeScreen(),
       child: CustomScrollView(
-        key: ValueKey(
-          _recommendedMembers.length.toString() +
-              _recommendedPublishers.length.toString(),
-        ),
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           const HomeAppBar(),
           SliverToBoxAdapter(
-            child: FollowingBlock(
-              _followingStories,
-              _isLoadingMoreFollowingPicked,
-              _recommendedMembers,
-              _moreFollowingPickedLoaded,
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  _followingStories = state.followingStories;
+                  _recommendedMembers = state.recommendedMembers;
+                  _moreFollowingPickedLoaded = false;
+                }
+
+                if (state is LoadingMoreFollowingPicked) {
+                  _isLoadingMoreFollowingPicked = true;
+                  return _buildHomeContent();
+                }
+
+                if (state is LoadMoreFollowingPickedFailed) {
+                  final error = state.error;
+                  print('LoadMoreFollowingPickedFailed: ${error.message()}');
+                  _isLoadingMoreFollowingPicked = false;
+                  return _buildHomeContent();
+                }
+
+                if (state is LoadMoreFollowingPickedSuccess) {
+                  _followingStories.addAll(state.newFollowingStories);
+                  _isLoadingMoreFollowingPicked = false;
+                  _moreFollowingPickedLoaded = true;
+                  return _buildHomeContent();
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: FollowingBlock(
+                        _followingStories,
+                        _isLoadingMoreFollowingPicked,
+                        _recommendedMembers,
+                        _moreFollowingPickedLoaded,
+                      ),
+                    ),
+                    if (_followingStories.isNotEmpty ||
+                        UserHelper.instance.currentUser.following.isEmpty)
+                      Container(
+                        height: 8.5,
+                        color: homeScreenBackgroundColor,
+                      ),
+                  ],
+                );
+              },
             ),
           ),
-          if (_followingStories.isNotEmpty ||
-              UserHelper.instance.currentUser.following.isEmpty)
-            SliverToBoxAdapter(
-              child: Container(
-                height: 8.5,
-                color: homeScreenBackgroundColor,
-              ),
+          SliverToBoxAdapter(
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  _recommendedMembers = state.recommendedMembers;
+                }
+
+                if (_recommendedMembers.isEmpty) {
+                  return Container();
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: RecommendFollowBlock(_recommendedMembers),
+                    ),
+                    Container(
+                      height: 8.5,
+                      color: homeScreenBackgroundColor,
+                    ),
+                  ],
+                );
+              },
             ),
-          if (_recommendedMembers.isNotEmpty) ...[
-            SliverToBoxAdapter(
-              child: RecommendFollowBlock(_recommendedMembers),
+          ),
+          SliverToBoxAdapter(
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  _latestComments = state.latestComments;
+                }
+
+                if (_latestComments.isEmpty) {
+                  return Container();
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: LatestCommentsBlock(_latestComments),
+                    ),
+                    Container(
+                      height: 8.5,
+                      color: homeScreenBackgroundColor,
+                    ),
+                  ],
+                );
+              },
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 8.5,
-                color: homeScreenBackgroundColor,
-              ),
-            ),
-          ],
-          if (_latestComments.isNotEmpty) ...[
-            SliverToBoxAdapter(
-              child: LatestCommentsBlock(_latestComments),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 8.5,
-                color: homeScreenBackgroundColor,
-              ),
-            ),
-          ],
+          ),
           _latestNewsBar(),
           SliverToBoxAdapter(
-            child: LatestNewsBlock(
-              allLatestNews: _allLatestNews,
-              recommendedPublishers: _recommendedPublishers,
-              showFullScreenAd: _showFullScreenAd,
-              showPaywall: _showPaywall,
-              noMore: _noMoreLatestNews,
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  _noMoreLatestNews = false;
+                  _allLatestNews = state.allLatestNews;
+                  _recommendedPublishers = state.recommendedPublishers;
+                  if (_allLatestNews.length < 10) {
+                    _noMoreLatestNews = true;
+                  }
+                }
+
+                if (state is LoadMoreNewsSuccess) {
+                  if (state.newLatestNews.length < 10) {
+                    _noMoreLatestNews = true;
+                  }
+                  _allLatestNews.addAll(state.newLatestNews);
+                }
+
+                return LatestNewsBlock(
+                  allLatestNews: _allLatestNews,
+                  recommendedPublishers: _recommendedPublishers,
+                  showFullScreenAd: _showFullScreenAd,
+                  showPaywall: _showPaywall,
+                  noMore: _noMoreLatestNews,
+                );
+              },
             ),
           ),
         ],

@@ -7,7 +7,8 @@ import 'package:readr/models/publisher.dart';
 class PublisherLogoWidget extends StatelessWidget {
   final Publisher publisher;
   final double size;
-  const PublisherLogoWidget(this.publisher, {this.size = 40});
+  const PublisherLogoWidget(this.publisher, {this.size = 40, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
