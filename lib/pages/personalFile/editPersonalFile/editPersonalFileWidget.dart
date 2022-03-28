@@ -188,25 +188,27 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 0.5,
-      leading: Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 20),
-        child: GestureDetector(
-          onTap: () => context.popRoute(false),
-          child: Platform.isIOS
-              ? const Text(
-                  '取消',
-                  style: TextStyle(
-                    color: readrBlack50,
-                    fontSize: 18,
-                  ),
-                )
-              : const Icon(
-                  Icons.close,
-                  color: readrBlack,
-                ),
-        ),
-      ),
+      leading: _isSaving
+          ? null
+          : Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 20),
+              child: GestureDetector(
+                onTap: () => context.popRoute(false),
+                child: Platform.isIOS
+                    ? const Text(
+                        '取消',
+                        style: TextStyle(
+                          color: readrBlack50,
+                          fontSize: 18,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.close,
+                        color: readrBlack,
+                      ),
+              ),
+            ),
       centerTitle: Platform.isIOS,
       title: const Text('編輯個人檔案',
           style: TextStyle(
@@ -217,10 +219,17 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
       actions: [
         if (_isEdited)
           TextButton(
-            onPressed: _isSaving ? null : () => _saveMemberData(),
-            child: const Text(
-              '儲存',
-              style: TextStyle(
+            onPressed: _isSaving
+                ? null
+                : () {
+                    setState(() {
+                      _isSaving = true;
+                    });
+                    _saveMemberData();
+                  },
+            child: Text(
+              _isSaving ? '儲存中' : '儲存',
+              style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -261,6 +270,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               autocorrect: false,
               keyboardType: TextInputType.name,
               maxLength: 20,
+              readOnly: _isSaving,
               onChanged: (value) {
                 _nicknameError = false;
                 checkIsEdited();
@@ -314,6 +324,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               focusNode: _customIdFocusNode,
               keyboardType: TextInputType.name,
               autocorrect: false,
+              readOnly: _isSaving,
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp(r'[\u4E00-\u9FFF]')),
                 FilteringTextInputFormatter.allow(RegExp(r'[_.\w]'))
@@ -398,6 +409,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 maxLength: 250,
+                readOnly: _isSaving,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
                 onChanged: (value) {
