@@ -131,6 +131,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
 
   Widget _buildContent() {
     return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
       slivers: [
         if (_followPublisherList.isNotEmpty) ...[
           SliverToBoxAdapter(
@@ -186,7 +187,7 @@ class _FollowingListWidgetState extends State<FollowingListWidget> {
               ),
             ),
           ),
-          SliverFillRemaining(
+          SliverToBoxAdapter(
             child: _buildFollowingMemberList(),
           ),
         ]
