@@ -203,7 +203,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
             )
         ],
       ),
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.start,
       maxLines: _isExpanded ? null : 3,
       joinZeroWidthSpace: true,
       overflowWidget: TextOverflowWidget(
