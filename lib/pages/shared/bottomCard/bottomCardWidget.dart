@@ -42,6 +42,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
   late Comment _deleteComment;
   final List<Comment> _popularComments = [];
   late int _deletePopularCommentIndex;
+  final DraggableScrollableController _controller =
+      DraggableScrollableController();
 
   @override
   void initState() {
@@ -229,6 +231,7 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                 snap: true,
                 initialChildSize: size,
                 minChildSize: size,
+                controller: _controller,
                 builder: (context, scrollController) {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -367,7 +370,14 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: CollapsePickBar(widget.item, _allComments.length),
+          child: GestureDetector(
+            onTap: () {
+              _controller.animateTo(1,
+                  duration: const Duration(milliseconds: 450),
+                  curve: Curves.linear);
+            },
+            child: CollapsePickBar(widget.item, _allComments.length),
+          ),
         ),
       ],
     );
