@@ -15,6 +15,7 @@ import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
+import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -315,13 +316,17 @@ class FollowingBlock extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+            child: PickBar(NewsListItemPick(item)),
+          ),
           if (item.showComment != null) ...[
             const Divider(
               indent: 20,
               endIndent: 20,
-              color: readrBlack10,
+              color: Colors.black12,
               height: 1,
-              thickness: 1,
+              thickness: 0.5,
             ),
             InkWell(
               onTap: () async {
@@ -333,7 +338,7 @@ class FollowingBlock extends StatelessWidget {
               },
               child: _commentsWidget(context, item.showComment!),
             ),
-          ]
+          ],
         ],
       ),
     );

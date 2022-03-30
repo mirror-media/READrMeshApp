@@ -152,7 +152,7 @@ class HomeScreenService {
           orderBy:{
             picked_date: desc
           }
-          take: 2
+          take: 4
         ){
           picked_date
           member{
@@ -162,6 +162,48 @@ class HomeScreenService {
             customId
           }
         }
+        otherPicks:pick(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        pickCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
       }
       latestComments: stories(
         take: 3
