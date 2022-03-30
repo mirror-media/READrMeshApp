@@ -23,6 +23,7 @@ const String visitorAvatarPng = 'assets/icon/visitorAvatar.png';
 const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
 const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
+const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);

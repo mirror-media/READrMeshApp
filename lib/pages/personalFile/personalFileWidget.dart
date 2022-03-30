@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
@@ -521,9 +522,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                           fontWeight: FontWeight.w600,
                           color: readrBlack87,
                         ),
-                        children: const [
-                          TextSpan(
-                            text: '\n粉絲',
+                        children: [
+                          const TextSpan(
+                            text: '\n粉絲 ',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -531,10 +532,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             ),
                           ),
                           WidgetSpan(
-                            child: Icon(
-                              Icons.navigate_next_outlined,
-                              size: 18,
-                              color: readrBlack30,
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              personalFileArrowSvg,
                             ),
                           ),
                         ],
@@ -572,9 +572,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                               fontWeight: FontWeight.w600,
                               color: readrBlack87,
                             ),
-                            children: const [
-                              TextSpan(
-                                text: '\n追蹤中',
+                            children: [
+                              const TextSpan(
+                                text: '\n追蹤中 ',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -582,10 +582,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                                 ),
                               ),
                               WidgetSpan(
-                                child: Icon(
-                                  Icons.navigate_next_outlined,
-                                  size: 18,
-                                  color: readrBlack30,
+                                alignment: PlaceholderAlignment.middle,
+                                child: SvgPicture.asset(
+                                  personalFileArrowSvg,
                                 ),
                               ),
                             ],
