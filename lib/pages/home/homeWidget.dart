@@ -138,7 +138,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
         if (state is HomeReloadFailed) {
           final error = state.error;
-          print('HomeReloadFailed: ${error.message}');
+          print('HomeReloadFailed: ${error.toString()}');
         }
 
         return _buildHomeContent();
