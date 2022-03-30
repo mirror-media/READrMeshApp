@@ -26,6 +26,7 @@ import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:readr/initialApp.dart';
+import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 import 'package:readr/pages/welcomePage.dart';
 
 part 'router.gr.dart';
@@ -72,6 +73,10 @@ part 'router.gr.dart';
     AutoRoute(page: WelcomePage),
     AutoRoute(page: SettingPage),
     AutoRoute(page: SetNewsCoveragePage),
+    AutoRoute(
+      page: ImageViewerWidget,
+      name: 'ImageViewerWidgetRoute',
+    ),
   ],
 )
 // extend the generated private router

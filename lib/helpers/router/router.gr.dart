@@ -129,6 +129,14 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: SetNewsCoveragePage(args.duration, key: args.key));
     },
+    ImageViewerWidgetRoute.name: (routeData) {
+      final args = routeData.argsAs<ImageViewerWidgetRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: ImageViewerWidget(
+              imageUrlList: args.imageUrlList,
+              openImageUrl: args.openImageUrl));
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -176,7 +184,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(ChooseMemberRoute.name, path: '/choose-member-page'),
         RouteConfig(WelcomeRoute.name, path: '/welcome-page'),
         RouteConfig(SettingRoute.name, path: '/setting-page'),
-        RouteConfig(SetNewsCoverageRoute.name, path: '/set-news-coverage-page')
+        RouteConfig(SetNewsCoverageRoute.name, path: '/set-news-coverage-page'),
+        RouteConfig(ImageViewerWidgetRoute.name, path: '/image-viewer-widget')
       ];
 }
 
@@ -555,6 +564,33 @@ class SetNewsCoverageRouteArgs {
   @override
   String toString() {
     return 'SetNewsCoverageRouteArgs{duration: $duration, key: $key}';
+  }
+}
+
+/// generated route for
+/// [ImageViewerWidget]
+class ImageViewerWidgetRoute extends PageRouteInfo<ImageViewerWidgetRouteArgs> {
+  ImageViewerWidgetRoute(
+      {required List<String> imageUrlList, required String openImageUrl})
+      : super(ImageViewerWidgetRoute.name,
+            path: '/image-viewer-widget',
+            args: ImageViewerWidgetRouteArgs(
+                imageUrlList: imageUrlList, openImageUrl: openImageUrl));
+
+  static const String name = 'ImageViewerWidgetRoute';
+}
+
+class ImageViewerWidgetRouteArgs {
+  const ImageViewerWidgetRouteArgs(
+      {required this.imageUrlList, required this.openImageUrl});
+
+  final List<String> imageUrlList;
+
+  final String openImageUrl;
+
+  @override
+  String toString() {
+    return 'ImageViewerWidgetRouteArgs{imageUrlList: $imageUrlList, openImageUrl: $openImageUrl}';
   }
 }
 
