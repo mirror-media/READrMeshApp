@@ -29,6 +29,8 @@ class Story {
   final PeopleList? dataAnalysts;
   final String? otherByline;
 
+  final List<String> imageUrlList;
+
   Story({
     this.style,
     this.name,
@@ -50,10 +52,18 @@ class Story {
     this.otherByline,
     this.citationApiData,
     this.contentAnnotationData,
+    required this.imageUrlList,
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
     ParagraphList summaryApiData = ParagraphList();
+    List<String> imageUrlList = [];
+    String? photoUrl;
+    if (BaseModel.checkJsonKeys(json, ['heroImage', 'mobile'])) {
+      photoUrl = json['heroImage']['mobile'];
+      imageUrlList.add(photoUrl!);
+    }
+
     if (BaseModel.hasKey(json, 'summaryApiData') &&
         json["summaryApiData"] != 'NaN') {
       summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
@@ -72,6 +82,13 @@ class Story {
           if (annotationData != null) {
             contentAnnotationData.add(annotationData);
           }
+        } else if (paragraph.type == 'image' &&
+            paragraph.contents!.isNotEmpty) {
+          imageUrlList.add(paragraph.contents![0].data);
+        } else if (paragraph.type == 'slideshow') {
+          for (var content in paragraph.contents!) {
+            imageUrlList.add(content.data);
+          }
         }
       }
     }
@@ -81,11 +98,6 @@ class Story {
         json["citationApiData"] != 'NaN') {
       citationApiData =
           ParagraphList.parseResponseBody(json["citationApiData"]);
-    }
-
-    String? photoUrl;
-    if (BaseModel.checkJsonKeys(json, ['heroImage', 'mobile'])) {
-      photoUrl = json['heroImage']['mobile'];
     }
 
     String? videoUrl;
@@ -115,6 +127,7 @@ class Story {
       otherByline: json['otherByline'],
       citationApiData: citationApiData,
       contentAnnotationData: contentAnnotationData,
+      imageUrlList: imageUrlList,
     );
   }
 }
