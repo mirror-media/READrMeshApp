@@ -237,6 +237,11 @@ class CommentService {
             state:{
               equals: "public"
             }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
           }
         ){
           id
