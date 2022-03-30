@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/router/router.dart';
 
 class ImageDescriptionWidget extends StatelessWidget {
   final String imageUrl;
@@ -7,19 +9,21 @@ class ImageDescriptionWidget extends StatelessWidget {
   final double width;
   final double aspectRatio;
   final double textSize;
+  final List<String> imageUrlList;
   const ImageDescriptionWidget({
     required this.imageUrl,
     required this.description,
     required this.width,
     this.aspectRatio = 16 / 9,
     this.textSize = 16,
+    required this.imageUrlList,
   });
 
   @override
   Widget build(BuildContext context) {
     double height = width / aspectRatio;
 
-    return InkWell(
+    return GestureDetector(
       child: Wrap(
         //direction: Axis.vertical,
         children: [
@@ -51,7 +55,12 @@ class ImageDescriptionWidget extends StatelessWidget {
             ),
         ],
       ),
-      onTap: () {},
+      onTap: () {
+        AutoRouter.of(context).push(ImageViewerWidgetRoute(
+          imageUrlList: imageUrlList,
+          openImageUrl: imageUrl,
+        ));
+      },
     );
   }
 }
