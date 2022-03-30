@@ -18,6 +18,8 @@ import 'package:readr/pages/story/widgets/youtubeWidget.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ParagraphFormat {
+  final List<String> imageUrlList;
+  ParagraphFormat(this.imageUrlList);
   bool _isCitation = false;
   int _annotationCounter = 0;
   Widget parseTheParagraph(
@@ -116,6 +118,7 @@ class ParagraphFormat {
                 description: paragraph.contents![0].description,
                 width: width,
                 textSize: 13,
+                imageUrlList: imageUrlList,
               ),
             );
           }
@@ -127,7 +130,10 @@ class ParagraphFormat {
           return Padding(
             padding: const EdgeInsets.only(top: 32),
             child: ImageAndDescriptionSlideShowWidget(
-                contentList: paragraph.contents!, textSize: textSize),
+              contentList: paragraph.contents!,
+              textSize: textSize,
+              imageUrlList: imageUrlList,
+            ),
           );
         }
       case 'annotation':
