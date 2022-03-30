@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,6 +7,7 @@ import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/paragraph.dart';
@@ -39,6 +41,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
   bool _isSlideDown = false;
   double _oldOffset = 0;
   final ScrollController _scrollController = ScrollController();
+  late ParagraphFormat paragraphFormat;
 
   @override
   void initState() {
@@ -102,6 +105,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
       }
       if (state is ReadrStoryLoaded) {
         Story story = state.story;
+        paragraphFormat = ParagraphFormat(story.imageUrlList);
 
         _newsStoryItem = state.newsStoryItem;
         if (_newsStoryItem.myPickId != null) {
@@ -174,16 +178,24 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
       children: [
         if (story.heroVideo != null) _buildVideoWidget(story.heroVideo!),
         if (!_isNullOrEmpty(story.heroImage) && story.heroVideo == null)
-          CachedNetworkImage(
-            width: width,
-            imageUrl: story.heroImage!,
-            placeholder: (context, url) => Container(
-              height: height,
+          GestureDetector(
+            onTap: () {
+              AutoRouter.of(context).push(ImageViewerWidgetRoute(
+                imageUrlList: story.imageUrlList,
+                openImageUrl: story.heroImage!,
+              ));
+            },
+            child: CachedNetworkImage(
               width: width,
-              color: Colors.grey,
+              imageUrl: story.heroImage!,
+              placeholder: (context, url) => Container(
+                height: height,
+                width: width,
+                color: Colors.grey,
+              ),
+              errorWidget: (context, url, error) => Container(),
+              fit: BoxFit.cover,
             ),
-            errorWidget: (context, url, error) => Container(),
-            fit: BoxFit.cover,
           ),
         if (!_isNullOrEmpty(story.heroCaption))
           Container(
@@ -397,8 +409,6 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
 
-      ParagraphFormat paragraphFormat = ParagraphFormat();
-
       if (articles[0].contents!.isNotEmpty &&
           !_isNullOrEmpty(articles[0].contents![0].data)) {
         articleWidgets.add(
@@ -465,7 +475,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
 
   Widget _buildContent(Story story) {
     ParagraphList storyContents = story.contentApiData!;
-    ParagraphFormat paragraphFormat = ParagraphFormat();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: ListView.builder(
@@ -571,8 +581,6 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
     ParagraphList articles = story.citationApiData!;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
-
-      ParagraphFormat paragraphFormat = ParagraphFormat();
 
       if (articles[0].contents!.isNotEmpty &&
           !_isNullOrEmpty(articles[0].contents![0].data)) {
