@@ -9,14 +9,11 @@ const readrProjectLink = 'https://www.readr.tw/';
 const String error400Svg = 'assets/image/error404.svg';
 const String error500Svg = 'assets/image/error500.svg';
 const String noInternetSvg = 'assets/image/noInternet.svg';
-const String logoSimplifySvg = 'assets/icon/logoSimplify.svg';
 const String defaultImageSvg = 'assets/image/defaultImage.svg';
 const String tabNoContentPng = 'assets/image/tabNoContent.png';
-const String homeIconSvg = 'assets/icon/homeIcon.svg';
 const String googleLogoSvg = 'assets/icon/googleLogo.svg';
 const String authorDefaultPng = 'assets/image/authorDefaultImage.png';
 const String commentIconPng = 'assets/icon/commentIcon.png';
-const String logoSimplifyPng = 'assets/icon/logoSimplify.png';
 const String noFollowingSvg = 'assets/image/noFollowing.svg';
 const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
 const String visitorAvatarPng = 'assets/icon/visitorAvatar.png';
@@ -24,6 +21,10 @@ const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
 const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
+const String homeActiveSvg = 'assets/icon/homeActive.svg';
+const String homeDefaultSvg = 'assets/icon/homeDefault.svg';
+const String readrActiveSvg = 'assets/icon/readrActive.svg';
+const String readrDefaultSvg = 'assets/icon/readrDefault.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);

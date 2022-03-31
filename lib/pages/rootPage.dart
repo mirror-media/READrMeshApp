@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/config/states.dart';
@@ -105,6 +106,7 @@ class _RootPageState extends State<RootPage> {
           return BottomNavigationBar(
             elevation: 10,
             backgroundColor: Colors.white,
+            selectedFontSize: 12,
             currentIndex: tabsRouter.activeIndex,
             onTap: (index) {
               if (index == 2 && UserHelper.instance.isMember) {
@@ -120,22 +122,31 @@ class _RootPageState extends State<RootPage> {
               BottomNavigationBarItem(
                 icon: SizedBox(
                   height: 20,
-                  child: Icon(
-                    tabsRouter.activeIndex == 0
-                        ? Icons.home_sharp
-                        : Icons.home_outlined,
+                  child: SvgPicture.asset(
+                    homeDefaultSvg,
+                  ),
+                ),
+                activeIcon: SizedBox(
+                  height: 20,
+                  child: SvgPicture.asset(
+                    homeActiveSvg,
                   ),
                 ),
                 label: '首頁',
               ),
               BottomNavigationBarItem(
-                icon: SizedBox(
+                icon: Container(
                   height: 20,
-                  child: Image.asset(
-                    logoSimplifyPng,
-                    color: tabsRouter.activeIndex == 1
-                        ? bottomNavigationBarSelectedColor
-                        : bottomNavigationBarUnselectedColor,
+                  margin: const EdgeInsets.only(bottom: 1.5),
+                  child: SvgPicture.asset(
+                    readrDefaultSvg,
+                  ),
+                ),
+                activeIcon: Container(
+                  height: 20,
+                  margin: const EdgeInsets.only(bottom: 1.5),
+                  child: SvgPicture.asset(
+                    readrActiveSvg,
                   ),
                 ),
                 label: 'READr',
