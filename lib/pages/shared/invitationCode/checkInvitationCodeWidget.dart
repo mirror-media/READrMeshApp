@@ -1,8 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:readr/blocs/invitationCode/invitationCode_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/invitationCode.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 
 class CheckInvitationCodeWidget extends StatelessWidget {
@@ -10,22 +16,32 @@ class CheckInvitationCodeWidget extends StatelessWidget {
 
   final List<InvitationCode> _usableCodeList = [];
   final List<InvitationCode> _activatedCodeList = [];
+
   @override
   Widget build(BuildContext context) {
-    // mock data
-    _usableCodeList.add(InvitationCode(code: 'FRISAT'));
-    _usableCodeList.add(InvitationCode(code: 'SATSUN'));
-    _usableCodeList.add(InvitationCode(code: 'SUNFRI'));
-    _activatedCodeList.add(InvitationCode(
-      code: 'SUNFRI',
-      activeMember: UserHelper.instance.currentUser,
-    ));
-    _activatedCodeList.add(InvitationCode(
-      code: 'FRISAT',
-      activeMember: UserHelper.instance.currentUser,
-    ));
+    context.read<InvitationCodeCubit>().fetchMyInvitationCode();
+    return BlocBuilder<InvitationCodeCubit, InvitationCodeState>(
+      builder: (context, state) {
+        if (state is InvitationCodeError) {
+          return ErrorPage(
+            error: state.error,
+            onPressed: () =>
+                context.read<InvitationCodeCubit>().fetchMyInvitationCode(),
+            hideAppbar: true,
+          );
+        }
 
-    return _buildContent(context);
+        if (state is InvitationCodeLoaded) {
+          _usableCodeList.addAll(state.usableCodeList);
+          _activatedCodeList.addAll(state.activatedCodeList);
+          return _buildContent(context);
+        }
+
+        return const Center(
+          child: CircularProgressIndicator.adaptive(),
+        );
+      },
+    );
   }
 
   Widget _buildContent(BuildContext context) {
@@ -39,7 +55,9 @@ class CheckInvitationCodeWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUsableCodeList(BuildContext context) {
+  Widget _buildUsableCodeList(
+    BuildContext context,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +103,10 @@ class CheckInvitationCodeWidget extends StatelessWidget {
             ),
           ),
           OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: invitationCode.code));
+              showCopiedToast(context);
+            },
             icon: const FaIcon(
               FontAwesomeIcons.link,
               size: 11,
@@ -160,7 +181,10 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           const SizedBox(width: 20),
           const Spacer(),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              AutoRouter.of(context).push(
+                  PersonalFileRoute(viewMember: invitationCode.activeMember!));
+            },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -182,6 +206,49 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void showCopiedToast(BuildContext context) {
+    showToastWidget(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6.0),
+          color: const Color.fromRGBO(0, 9, 40, 0.66),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(
+              Icons.check_circle,
+              size: 16,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 6.0,
+            ),
+            Text(
+              '已複製邀請碼',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+      ),
+      context: context,
+      animation: StyledToastAnimation.slideFromTop,
+      reverseAnimation: StyledToastAnimation.slideToTop,
+      position: StyledToastPosition.top,
+      startOffset: const Offset(0.0, -3.0),
+      reverseEndOffset: const Offset(0.0, -3.0),
+      duration: const Duration(seconds: 3),
+      //Animation duration   animDuration * 2 <= duration
+      animDuration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      reverseCurve: Curves.linear,
     );
   }
 }
