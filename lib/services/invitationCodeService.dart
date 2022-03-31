@@ -5,6 +5,7 @@ import 'package:readr/helpers/environment.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/invitationCode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum InvitationCodeStatus {
   valid,
@@ -183,6 +184,7 @@ class InvitationCodeService {
           }
         }
       ){
+        id
         receive{
           id
         }
@@ -214,10 +216,57 @@ class InvitationCodeService {
           null) {
         return InvitationCodeStatus.activated;
       } else {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('invitationCodeId',
+            jsonResponse['data']['invitationCodes'][0]['id']);
         return InvitationCodeStatus.valid;
       }
     } catch (e) {
       return InvitationCodeStatus.error;
     }
+  }
+
+  Future<void> linkInvitationCode(String codeId) async {
+    const String mutation = '''
+    mutation(
+      \$codeId: ID
+      \$myId: ID
+    ){
+      updateInvitationCode(
+        where:{
+          id: \$codeId
+        }
+        data:{
+          receive:{
+            connect:{
+              id: \$myId
+            }
+          }
+        }
+      ){
+        id
+      }
+    }
+    ''';
+
+    Map<String, dynamic> variables = {
+      "codeId": codeId,
+      "myId": UserHelper.instance.currentUser.memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await getHeaders(needAuth: false),
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('invitationCodeId', '');
   }
 }
