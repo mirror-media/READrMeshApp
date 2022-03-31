@@ -139,7 +139,9 @@ class _$AppRouter extends RootStackRouter {
     },
     CheckInvitationCodeRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const CheckInvitationCodePage());
+          routeData: routeData,
+          child: const CheckInvitationCodePage(),
+          fullscreenDialog: true);
     },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());

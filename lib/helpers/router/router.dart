@@ -78,7 +78,7 @@ part 'router.gr.dart';
       page: ImageViewerWidget,
       name: 'ImageViewerWidgetRoute',
     ),
-    AutoRoute(page: CheckInvitationCodePage),
+    AutoRoute(page: CheckInvitationCodePage, fullscreenDialog: true),
   ],
 )
 // extend the generated private router
