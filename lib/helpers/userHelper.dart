@@ -146,17 +146,13 @@ class UserHelper {
     }
   }
 
-  Future<void> addVisitorFollowing() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String> followingPublisherIds =
-        prefs.getStringList('followingPublisherIds') ?? [];
-    if (followingPublisherIds.isNotEmpty) {
-      List<Future> futureList = [];
-      for (var publisherId in followingPublisherIds) {
-        futureList.add(_memberService.addFollowPublisher(publisherId));
-      }
-      await Future.wait(futureList);
+  Future<void> addVisitorFollowing(List<String> followingPublisherIds) async {
+    List<Future> futureList = [];
+    for (var publisherId in followingPublisherIds) {
+      futureList.add(_memberService.addFollowPublisher(publisherId));
     }
+    await Future.wait(futureList);
+
     await UserHelper.instance.fetchUserData();
   }
 
