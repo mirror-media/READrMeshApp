@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -54,7 +55,53 @@ class PickButton extends StatelessWidget {
                     context.read<PickButtonCubit>().updateButton(item, null);
                   }
                 } else {
-                  context.read<PickButtonCubit>().updateButton(item, null);
+                  bool? result = await showPlatformDialog<bool>(
+                    context: context,
+                    builder: (context) => PlatformAlertDialog(
+                      title: const Text(
+                        '確認移除精選？',
+                      ),
+                      content: const Text(
+                        '移除精選文章，將會一併移除您的留言',
+                      ),
+                      actions: [
+                        PlatformDialogAction(
+                          child: const Text(
+                            '移除',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () => Navigator.pop<bool>(context, true),
+                        ),
+                        PlatformDialogAction(
+                          child: const Text(
+                            '取消',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                          onPressed: () => Navigator.pop<bool>(context, false),
+                        )
+                      ],
+                      material: (context, target) => MaterialAlertDialogData(
+                        titleTextStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                        contentTextStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(109, 120, 133, 1),
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                  if (result != null && result) {
+                    context.read<PickButtonCubit>().updateButton(item, null);
+                  }
                 }
               } else {
                 AutoRouter.of(context).push(LoginRoute());
