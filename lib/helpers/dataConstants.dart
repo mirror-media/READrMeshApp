@@ -25,6 +25,8 @@ const String homeActiveSvg = 'assets/icon/homeActive.svg';
 const String homeDefaultSvg = 'assets/icon/homeDefault.svg';
 const String readrActiveSvg = 'assets/icon/readrActive.svg';
 const String readrDefaultSvg = 'assets/icon/readrDefault.svg';
+const String invitationCodeSvg = 'assets/icon/invitationCode.svg';
+const String newInvitationCodeSvg = 'assets/icon/newInvitationCode.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
