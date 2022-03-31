@@ -6,6 +6,13 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/invitationCode.dart';
 
+enum InvitationCodeStatus {
+  valid,
+  invalid,
+  activated,
+  error,
+}
+
 class InvitationCodeService {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
@@ -161,6 +168,56 @@ class InvitationCodeService {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<InvitationCodeStatus> checkInvitationCode(String code) async {
+    const String query = '''
+    query(
+      \$code: String
+    ){
+      invitationCodes(
+        where:{
+          code:{
+            equals: \$code
+          }
+        }
+      ){
+        receive{
+          id
+        }
+      }
+    }
+    ''';
+
+    Map<String, dynamic> variables = {
+      "code": code,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    try {
+      late final dynamic jsonResponse;
+      jsonResponse = await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await getHeaders(needAuth: false),
+      );
+
+      if (jsonResponse['data']['invitationCodes'].isEmpty) {
+        return InvitationCodeStatus.invalid;
+      } else if (jsonResponse['data']['invitationCodes'][0]['receive'] !=
+          null) {
+        return InvitationCodeStatus.activated;
+      } else {
+        return InvitationCodeStatus.valid;
+      }
+    } catch (e) {
+      return InvitationCodeStatus.error;
     }
   }
 }
