@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +44,7 @@ class UserHelper {
       var memberData = await _memberService.fetchMemberData();
       if (memberData != null) {
         _member = memberData;
+        await checkInvitationCode();
       } else {
         await FirebaseAuth.instance.signOut();
         _member = await _visitorService.fetchMemberData();
@@ -144,17 +146,13 @@ class UserHelper {
     }
   }
 
-  Future<void> addVisitorFollowing() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String> followingPublisherIds =
-        prefs.getStringList('followingPublisherIds') ?? [];
-    if (followingPublisherIds.isNotEmpty) {
-      List<Future> futureList = [];
-      for (var publisherId in followingPublisherIds) {
-        futureList.add(_memberService.addFollowPublisher(publisherId));
-      }
-      await Future.wait(futureList);
+  Future<void> addVisitorFollowing(List<String> followingPublisherIds) async {
+    List<Future> futureList = [];
+    for (var publisherId in followingPublisherIds) {
+      futureList.add(_memberService.addFollowPublisher(publisherId));
     }
+    await Future.wait(futureList);
+
     await UserHelper.instance.fetchUserData();
   }
 
@@ -226,6 +224,17 @@ class UserHelper {
       }
     });
     return newsPickedItem;
+  }
+
+  // invitationCode
+  bool _hasInvitationCode = false;
+
+  bool get hasInvitationCode => _hasInvitationCode;
+
+  Future<void> checkInvitationCode() async {
+    InvitationCodeService _invitationCodeService = InvitationCodeService();
+    _hasInvitationCode =
+        await _invitationCodeService.checkUsableInvitationCode();
   }
 }
 

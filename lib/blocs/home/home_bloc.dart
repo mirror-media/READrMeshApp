@@ -56,6 +56,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               showSyncToast = true;
               await prefs.setStringList('followingPublisherIds', []);
             }
+            await UserHelper.instance.checkInvitationCode();
           }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
@@ -67,7 +68,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recommendedPublishers: recommendedPublishers,
             showSyncToast: showSyncToast,
           ));
-        } else if (event is ReloadHomeScreen) {
+        }
+
+        if (event is ReloadHomeScreen) {
           emit(HomeReloading());
           Map<String, dynamic> data =
               await _homeScreenService.fetchHomeScreenData();
@@ -83,6 +86,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           for (var publisher in data['recommendedPublishers']) {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
+
+          if (UserHelper.instance.isMember) {
+            await UserHelper.instance.checkInvitationCode();
+          }
+
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
             followingStories: data['followingStories'],
@@ -92,7 +100,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             showPaywall: showPaywall,
             recommendedPublishers: recommendedPublishers,
           ));
-        } else if (event is LoadMoreFollowingPicked) {
+        }
+
+        if (event is LoadMoreFollowingPicked) {
           emit(LoadingMoreFollowingPicked());
 
           List<NewsListItem> newFollowingStories =
@@ -102,7 +112,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
 
           emit(LoadMoreFollowingPickedSuccess(newFollowingStories));
-        } else if (event is LoadMoreLatestNews) {
+        }
+
+        if (event is LoadMoreLatestNews) {
           emit(LoadingMoreNews());
 
           List<NewsListItem> newLatestNews =

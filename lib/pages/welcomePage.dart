@@ -30,7 +30,7 @@ class WelcomePage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       AutoRouter.of(context)
-                          .replace(LoginRoute(fromOnboard: true));
+                          .replace(const InputInvitationCodeRoute());
                     },
                     child: const Text(
                       '開始使用',

@@ -9,7 +9,6 @@ import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseMemberWidget extends StatefulWidget {
   const ChooseMemberWidget({Key? key}) : super(key: key);
@@ -110,8 +109,6 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
           ),
           child: ElevatedButton(
             onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.setBool('isFirstTime', false);
               context.read<ConfigBloc>().add(LoginUpdate());
               AutoRouter.of(context).navigate(const Initial());
             },
