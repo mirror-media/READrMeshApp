@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
+import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,6 +65,16 @@ class _InputNamePageState extends State<InputNamePage> {
                     _isSending = true;
                     await MemberService().createMember(_controller.text);
                     final prefs = await SharedPreferences.getInstance();
+
+                    final String invitationCodeId =
+                        prefs.getString('invitationCodeId') ?? '';
+                    if (invitationCodeId.isNotEmpty) {
+                      await InvitationCodeService()
+                          .linkInvitationCode(invitationCodeId);
+                    }
+
+                    await prefs.setBool('isFirstTime', false);
+
                     final List<String> followingPublisherIds =
                         prefs.getStringList('followingPublisherIds') ?? [];
                     if (followingPublisherIds.isNotEmpty) {
