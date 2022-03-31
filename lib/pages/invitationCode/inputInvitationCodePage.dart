@@ -5,7 +5,6 @@ import 'package:pinput/pinput.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
 import 'package:readr/services/invitationCodeService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InputInvitationCodePage extends StatefulWidget {
@@ -54,8 +53,6 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                 _status = await _invitationCodeService
                     .checkInvitationCode(_pinController.text);
                 if (_status == InvitationCodeStatus.valid) {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('invitationCode', _pinController.text);
                   Navigator.pop(context);
                   AutoRouter.of(context).replace(LoginRoute(fromOnboard: true));
                 } else {
@@ -124,6 +121,10 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
               pinputAutovalidateMode: PinputAutovalidateMode.disabled,
               crossAxisAlignment: CrossAxisAlignment.center,
               controller: _pinController,
+              onChanged: (value) {
+                _status = InvitationCodeStatus.valid;
+                _formKey.currentState!.validate();
+              },
               validator: (code) {
                 switch (_status) {
                   case InvitationCodeStatus.valid:
