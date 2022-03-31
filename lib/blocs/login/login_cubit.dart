@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,12 @@ class LoginCubit extends Cubit<LoginState> {
         final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
         if (isFirstTime) {
           await prefs.setBool('isFirstTime', false);
+        }
+
+        final String invitationCodeId =
+            prefs.getString('invitationCodeId') ?? '';
+        if (invitationCodeId.isNotEmpty) {
+          await InvitationCodeService().linkInvitationCode(invitationCodeId);
         }
 
         emit(ExistingMemberLogin());
