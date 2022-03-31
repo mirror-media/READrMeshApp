@@ -24,6 +24,7 @@ import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 import 'package:readr/pages/setting/settingPage.dart';
+import 'package:readr/pages/shared/invitationCode/checkInvitationCodePage.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:readr/initialApp.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
@@ -77,6 +78,7 @@ part 'router.gr.dart';
       page: ImageViewerWidget,
       name: 'ImageViewerWidgetRoute',
     ),
+    AutoRoute(page: CheckInvitationCodePage),
   ],
 )
 // extend the generated private router

@@ -137,6 +137,10 @@ class _$AppRouter extends RootStackRouter {
               imageUrlList: args.imageUrlList,
               openImageUrl: args.openImageUrl));
     },
+    CheckInvitationCodeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CheckInvitationCodePage());
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -185,7 +189,9 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(WelcomeRoute.name, path: '/welcome-page'),
         RouteConfig(SettingRoute.name, path: '/setting-page'),
         RouteConfig(SetNewsCoverageRoute.name, path: '/set-news-coverage-page'),
-        RouteConfig(ImageViewerWidgetRoute.name, path: '/image-viewer-widget')
+        RouteConfig(ImageViewerWidgetRoute.name, path: '/image-viewer-widget'),
+        RouteConfig(CheckInvitationCodeRoute.name,
+            path: '/check-invitation-code-page')
       ];
 }
 
@@ -592,6 +598,16 @@ class ImageViewerWidgetRouteArgs {
   String toString() {
     return 'ImageViewerWidgetRouteArgs{imageUrlList: $imageUrlList, openImageUrl: $openImageUrl}';
   }
+}
+
+/// generated route for
+/// [CheckInvitationCodePage]
+class CheckInvitationCodeRoute extends PageRouteInfo<void> {
+  const CheckInvitationCodeRoute()
+      : super(CheckInvitationCodeRoute.name,
+            path: '/check-invitation-code-page');
+
+  static const String name = 'CheckInvitationCodeRoute';
 }
 
 /// generated route for
