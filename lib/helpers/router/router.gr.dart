@@ -143,6 +143,10 @@ class _$AppRouter extends RootStackRouter {
           child: const CheckInvitationCodePage(),
           fullscreenDialog: true);
     },
+    InputInvitationCodeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const InputInvitationCodePage());
+    },
     HomeRouter.name: (routeData) {
       return MaterialPageX<dynamic>(routeData: routeData, child: HomePage());
     },
@@ -193,7 +197,9 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(SetNewsCoverageRoute.name, path: '/set-news-coverage-page'),
         RouteConfig(ImageViewerWidgetRoute.name, path: '/image-viewer-widget'),
         RouteConfig(CheckInvitationCodeRoute.name,
-            path: '/check-invitation-code-page')
+            path: '/check-invitation-code-page'),
+        RouteConfig(InputInvitationCodeRoute.name,
+            path: '/input-invitation-code-page')
       ];
 }
 
@@ -610,6 +616,16 @@ class CheckInvitationCodeRoute extends PageRouteInfo<void> {
             path: '/check-invitation-code-page');
 
   static const String name = 'CheckInvitationCodeRoute';
+}
+
+/// generated route for
+/// [InputInvitationCodePage]
+class InputInvitationCodeRoute extends PageRouteInfo<void> {
+  const InputInvitationCodeRoute()
+      : super(InputInvitationCodeRoute.name,
+            path: '/input-invitation-code-page');
+
+  static const String name = 'InputInvitationCodeRoute';
 }
 
 /// generated route for

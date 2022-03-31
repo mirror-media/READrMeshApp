@@ -7,6 +7,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/home/homePage.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
 import 'package:readr/pages/invitationCode/checkInvitationCodePage.dart';
+import 'package:readr/pages/invitationCode/inputInvitationCodePage.dart';
 import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
 import 'package:readr/pages/loginMember/choosePublisher/choosePublisherPage.dart';
 import 'package:readr/pages/loginMember/email/inputEmailPage.dart';
@@ -79,6 +80,7 @@ part 'router.gr.dart';
       name: 'ImageViewerWidgetRoute',
     ),
     AutoRoute(page: CheckInvitationCodePage, fullscreenDialog: true),
+    AutoRoute(page: InputInvitationCodePage),
   ],
 )
 // extend the generated private router
