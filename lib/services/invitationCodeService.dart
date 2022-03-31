@@ -136,8 +136,8 @@ class InvitationCodeService {
               equals: \$myId
             }
           }
-          updatedAt:{
-            equals: null
+          expired:{
+            equals: false
           }
         }
       )
@@ -242,6 +242,7 @@ class InvitationCodeService {
               id: \$myId
             }
           }
+          expired: true
         }
       ){
         id
