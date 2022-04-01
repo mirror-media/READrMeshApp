@@ -25,8 +25,6 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
   late NewsStoryItem _newsStoryItem;
   String _inputText = '';
   bool _isPicked = false;
-  bool _isSlideDown = false;
-  int _originY = 0;
 
   @override
   void initState() {
@@ -113,28 +111,15 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
                       _isLoading = false;
                     });
                   },
-                  onScrollChanged: (controller, x, y) {
-                    if (y > _originY) {
-                      setState(() {
-                        _isSlideDown = true;
-                      });
-                    } else if (y < _originY) {
-                      setState(() {
-                        _isSlideDown = false;
-                      });
-                    }
-                    _originY = y;
-                  },
                 ),
               ),
             ],
           ),
-          if (!_isSlideDown)
-            BottomCardWidget(
-              item: NewsStoryItemPick(_newsStoryItem),
-              onTextChanged: (value) => _inputText = value,
-              isPicked: _isPicked,
-            ),
+          BottomCardWidget(
+            item: NewsStoryItemPick(_newsStoryItem),
+            onTextChanged: (value) => _inputText = value,
+            isPicked: _isPicked,
+          ),
           _isLoading ? StorySkeletonScreen(widget.news.url) : Container(),
         ],
       ),

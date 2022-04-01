@@ -27,38 +27,17 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   late NewsStoryItem _newsStoryItem;
   String _inputText = '';
   bool _isPicked = false;
-  bool _isSlideDown = false;
-  final ScrollController _scrollController = ScrollController();
-  double _oldOffset = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchNewsData();
-    _scrollController.addListener(() {
-      if (_scrollController.offset > _oldOffset) {
-        setState(() {
-          _isSlideDown = true;
-        });
-      } else {
-        setState(() {
-          _isSlideDown = false;
-        });
-      }
-      _oldOffset = _scrollController.offset;
-    });
   }
 
   _fetchNewsData() async {
     context.read<NewsCubit>().fetchNewsData(
           newsId: widget.news.id,
         );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.removeListener(() {});
   }
 
   @override
@@ -109,12 +88,11 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                     ),
                   ],
                 ),
-                if (!_isSlideDown)
-                  BottomCardWidget(
-                    item: NewsStoryItemPick(_newsStoryItem),
-                    onTextChanged: (value) => _inputText = value,
-                    isPicked: _isPicked,
-                  ),
+                BottomCardWidget(
+                  item: NewsStoryItemPick(_newsStoryItem),
+                  onTextChanged: (value) => _inputText = value,
+                  isPicked: _isPicked,
+                ),
               ],
             ),
           );
@@ -142,7 +120,6 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         const SizedBox(height: 32),
         const SizedBox(height: 160),
       ],
-      controller: _scrollController,
     );
   }
 
