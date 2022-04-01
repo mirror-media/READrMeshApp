@@ -18,7 +18,6 @@ import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
-import 'package:readr/pages/personalFile/collectionTabContent.dart';
 import 'package:readr/pages/personalFile/personalFileSkeletonScreen.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/pages/shared/followButton.dart';

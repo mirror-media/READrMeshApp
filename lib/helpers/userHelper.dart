@@ -4,7 +4,6 @@ import 'package:readr/models/publisher.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserHelper {
   UserHelper._internal();
