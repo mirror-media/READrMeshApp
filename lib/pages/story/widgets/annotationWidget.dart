@@ -116,7 +116,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
         if (url == 'annotation') {
           if (widget.itemScrollController != null) {
             widget.itemScrollController!.scrollTo(
-                index: 12, duration: const Duration(milliseconds: 800));
+                index: 13, duration: const Duration(milliseconds: 800));
             return true;
           } else {
             return false;

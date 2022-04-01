@@ -21,6 +21,7 @@ import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ReadrStoryWidget extends StatefulWidget {
@@ -38,33 +39,13 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
   late NewsStoryItem _newsStoryItem;
   String _inputText = '';
   bool _isPicked = false;
-  bool _isSlideDown = false;
-  double _oldOffset = 0;
-  final ScrollController _scrollController = ScrollController();
+  final ItemScrollController _itemScrollController = ItemScrollController();
   late ParagraphFormat paragraphFormat;
 
   @override
   void initState() {
     _fetchStory();
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.offset > _oldOffset) {
-        setState(() {
-          _isSlideDown = true;
-        });
-      } else {
-        setState(() {
-          _isSlideDown = false;
-        });
-      }
-      _oldOffset = _scrollController.offset;
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.removeListener(() {});
   }
 
   bool _isNullOrEmpty(String? input) {
@@ -128,12 +109,11 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                   ),
                 ],
               ),
-              if (!_isSlideDown)
-                BottomCardWidget(
-                  item: NewsStoryItemPick(_newsStoryItem),
-                  onTextChanged: (value) => _inputText = value,
-                  isPicked: _isPicked,
-                ),
+              BottomCardWidget(
+                item: NewsStoryItemPick(_newsStoryItem),
+                onTextChanged: (value) => _inputText = value,
+                isPicked: _isPicked,
+              ),
             ],
           ),
         );
@@ -145,29 +125,31 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
   }
 
   Widget _storyContent(double width, Story story) {
-    return ListView(
+    List contentList = [
+      _buildHeroWidget(width, story),
+      const SizedBox(height: 24),
+      _buildCategory(story),
+      const SizedBox(height: 4),
+      _buildStoryTitle(story.name!),
+      const SizedBox(height: 12),
+      _buildPublishedDate(story),
+      const SizedBox(height: 4),
+      _buildAuthors(story),
+      const SizedBox(height: 24),
+      _buildSummary(story),
+      _buildContent(story),
+      const SizedBox(height: 32),
+      _buildAnnotationBlock(story),
+      const SizedBox(height: 48),
+      _buildCitation(story),
+      const SizedBox(height: 160),
+    ];
+    return ScrollablePositionedList.builder(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
-      children: [
-        _buildHeroWidget(width, story),
-        const SizedBox(height: 24),
-        _buildCategory(story),
-        const SizedBox(height: 4),
-        _buildStoryTitle(story.name!),
-        const SizedBox(height: 12),
-        _buildPublishedDate(story),
-        const SizedBox(height: 4),
-        _buildAuthors(story),
-        const SizedBox(height: 24),
-        _buildSummary(story),
-        _buildContent(story),
-        const SizedBox(height: 32),
-        _buildAnnotationBlock(story),
-        const SizedBox(height: 48),
-        _buildCitation(story),
-        const SizedBox(height: 160),
-      ],
-      controller: _scrollController,
+      itemScrollController: _itemScrollController,
+      itemBuilder: (context, index) => contentList[index],
+      itemCount: contentList.length,
     );
   }
 
@@ -495,6 +477,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                 _textSize,
                 showAnnotations: true,
                 annotationLength: story.contentAnnotationData!.length,
+                itemScrollController: _itemScrollController,
               ),
             );
           }
