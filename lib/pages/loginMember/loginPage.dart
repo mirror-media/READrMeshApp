@@ -1,12 +1,10 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/pages/loginMember/loginWidget.dart';
 
 class LoginPage extends StatelessWidget {
@@ -49,20 +47,20 @@ class LoginPage extends StatelessWidget {
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-            if (fromOnboard)
-              TextButton(
-                onPressed: () {
-                  AutoRouter.of(context).replace(const ChoosePublisherRoute());
-                },
-                child: const Text(
-                  '略過',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
+            // if (fromOnboard)
+            //   TextButton(
+            //     onPressed: () {
+            //       AutoRouter.of(context).replace(const ChoosePublisherRoute());
+            //     },
+            //     child: const Text(
+            //       '略過',
+            //       style: TextStyle(
+            //         color: Colors.blue,
+            //         fontSize: 18,
+            //         fontWeight: FontWeight.w400,
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
         body: SafeArea(
