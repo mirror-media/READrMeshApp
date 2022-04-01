@@ -49,7 +49,7 @@ class CheckInvitationCodeWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       physics: const ClampingScrollPhysics(),
       children: [
-        if (_usableCodeList.isNotEmpty) _buildUsableCodeList(context),
+        _buildUsableCodeList(context),
         if (_activatedCodeList.isNotEmpty) _buildActivatedCodeList(context),
       ],
     );
@@ -71,6 +71,18 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
+        if (_usableCodeList.isEmpty)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 40),
+            child: Text(
+              '目前沒有可用的邀請碼...',
+              style: TextStyle(
+                color: readrBlack66,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
         Flexible(
           child: ListView.separated(
             shrinkWrap: true,
