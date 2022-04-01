@@ -42,7 +42,7 @@ class _YoutubeViewerState extends State<YoutubeViewer>
       // Highest resolution is 720P
       // Only use this for get not live video
       var manifest = await yt.videos.streamsClient.getManifest(widget.videoID);
-      var streamInfo = manifest.muxed.withHighestBitrate();
+      var streamInfo = manifest.muxed.bestQuality;
       String videoUrl = streamInfo.url.toString();
       _videoPlayerController = VideoPlayerController.network(
         videoUrl,
