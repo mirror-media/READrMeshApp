@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class MNewsVideoPlayer extends StatefulWidget {
@@ -66,6 +67,10 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
         autoInitialize: true,
         autoPlay: widget.autoPlay,
         showOptions: false,
+        deviceOrientationsAfterFullScreen: [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
       );
       if (widget.muted) _chewieController.setVolume(0.0);
       _isInitialized = true;

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -55,6 +56,10 @@ class _YoutubeViewerState extends State<YoutubeViewer>
         autoInitialize: true,
         autoPlay: widget.autoPlay,
         showOptions: false,
+        deviceOrientationsAfterFullScreen: [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
       );
       if (widget.mute) _chewieController.setVolume(0.0);
     } catch (e) {
