@@ -214,14 +214,11 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             }
           }
 
-          double height = MediaQuery.of(context).size.height;
-          double size = (-0.0002 * height) + 0.3914;
-
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (DraggableScrollableNotification dSNotification) {
-              if (_isCollapsed && dSNotification.extent > 0.3) {
+              if (_isCollapsed && dSNotification.extent > 0.25) {
                 _isCollapsed = false;
-              } else if (!_isCollapsed && dSNotification.extent < 0.3) {
+              } else if (!_isCollapsed && dSNotification.extent < 0.25) {
                 _isCollapsed = true;
               }
               return false;
@@ -229,8 +226,8 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
             child: DraggableScrollableActuator(
               child: DraggableScrollableSheet(
                 snap: true,
-                initialChildSize: size,
-                minChildSize: size,
+                initialChildSize: 0.12,
+                minChildSize: 0.12,
                 controller: _controller,
                 builder: (context, scrollController) {
                   return Column(
@@ -319,21 +316,27 @@ class _BottomCardWidgetState extends State<BottomCardWidget> {
                           ),
                         ),
                       ),
-                      Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.only(top: 16),
-                        child: const Divider(
-                          color: readrBlack10,
-                          thickness: 0.5,
-                          height: 1,
+                      Visibility(
+                        visible: !_isCollapsed,
+                        child: Container(
+                          color: Colors.white,
+                          padding: const EdgeInsets.only(top: 16),
+                          child: const Divider(
+                            color: readrBlack10,
+                            thickness: 0.5,
+                            height: 1,
+                          ),
                         ),
                       ),
-                      CommentInputBox(
-                        onPressed: _sendComment,
-                        isSending: _isSending,
-                        onTextChanged: (text) => widget.onTextChanged(text),
-                        textController: _textController,
-                        isCollapsed: _isCollapsed,
+                      Visibility(
+                        visible: !_isCollapsed,
+                        child: CommentInputBox(
+                          onPressed: _sendComment,
+                          isSending: _isSending,
+                          onTextChanged: (text) => widget.onTextChanged(text),
+                          textController: _textController,
+                          isCollapsed: _isCollapsed,
+                        ),
                       ),
                     ],
                   );
