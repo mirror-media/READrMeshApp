@@ -170,7 +170,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   Widget _statement() {
     String html =
-        "<div style='text-align:center'>繼續使用代表您同意與接受</div><div style='text-align:center'>我們的<a href='https://www.readr.tw/privacy-rule'>《服務條款》</a>及<a href='https://www.readr.tw/privacy-rule'>《隱私政策》</div>";
+        "<div style='text-align:center'>繼續使用代表您同意與接受</div><div style='text-align:center'>我們的<a href='https://www.readr.tw/post/2901'>《服務條款》</a>及<a href='https://www.readr.tw/privacy-rule'>《隱私政策》</div>";
     return HtmlWidget(
       html,
       customStylesBuilder: (element) {
