@@ -22,6 +22,9 @@ class PickBar extends StatelessWidget {
         List<Member> pickedMemberList = [];
         pickedMemberList.addAll(item.pickedMemberList);
 
+        pickedMemberList.removeWhere((element) =>
+            element.memberId == UserHelper.instance.currentUser.memberId);
+
         if (isPicked && pickedMemberList.length < 4) {
           pickedMemberList.add(UserHelper.instance.currentUser);
         }
