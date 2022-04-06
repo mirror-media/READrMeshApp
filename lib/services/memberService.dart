@@ -81,6 +81,7 @@ class MemberService implements MemberRepos {
     return token;
   }
 
+  @override
   Future<Member?> fetchMemberData() async {
     const String query = """
     query(
@@ -153,6 +154,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<Member?> createMember(String nickname, {int? tryTimes}) async {
     String mutation = """
     mutation (
@@ -269,6 +271,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<bool> deleteMember() async {
     String mutation = """
     mutation(
@@ -309,6 +312,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<List<Member>?> addFollowingMember(String targetMemberId) async {
     String mutation = """
     mutation(
@@ -368,6 +372,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<List<Member>?> removeFollowingMember(String targetMemberId) async {
     String mutation = """
     mutation(
@@ -427,6 +432,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<List<Publisher>?> addFollowPublisher(String publisherId) async {
     String mutation = """
     mutation(
@@ -486,6 +492,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<List<Publisher>?> removeFollowPublisher(String publisherId) async {
     String mutation = """
     mutation(
@@ -545,6 +552,7 @@ class MemberService implements MemberRepos {
     }
   }
 
+  @override
   Future<bool?> updateMember(Member member) async {
     String mutation = """
     mutation(
