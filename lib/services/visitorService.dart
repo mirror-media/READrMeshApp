@@ -7,12 +7,20 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class VisitorService {
+abstract class VisitorRepos {
+  Future<Member> fetchMemberData();
+  Future<List<Publisher>?> addFollowPublisher(String publisherId);
+  Future<List<Publisher>?> removeFollowPublisher(String publisherId);
+  Future<List<Publisher>?> fetchFollowPublisherData(
+      List<String> followingPublisherIdList);
+}
+
+class VisitorService implements VisitorRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   final String api = Environment().config.readrMeshApi;
 
-  Future<Map<String, String>> getHeaders() async {
+  Future<Map<String, String>> _getHeaders() async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
@@ -20,6 +28,7 @@ class VisitorService {
     return headers;
   }
 
+  @override
   Future<Member> fetchMemberData() async {
     // fetch shared preferences
     final prefs = await SharedPreferences.getInstance();
@@ -58,7 +67,7 @@ class VisitorService {
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(),
+      headers: await _getHeaders(),
     );
 
     List<Publisher> followingPublishers = [];
@@ -76,6 +85,7 @@ class VisitorService {
     );
   }
 
+  @override
   Future<List<Publisher>?> addFollowPublisher(String publisherId) async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> followingPublisherIds =
@@ -90,6 +100,7 @@ class VisitorService {
     return followPublisher;
   }
 
+  @override
   Future<List<Publisher>?> removeFollowPublisher(String publisherId) async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> followingPublisherIds =
@@ -104,6 +115,7 @@ class VisitorService {
     return followPublisher;
   }
 
+  @override
   Future<List<Publisher>?> fetchFollowPublisherData(
       List<String> followingPublisherIdList) async {
     const String query = """
@@ -138,7 +150,7 @@ class VisitorService {
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(),
+      headers: await _getHeaders(),
     );
 
     if (jsonResponse.containsKey('errors')) {
