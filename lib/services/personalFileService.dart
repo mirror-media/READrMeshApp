@@ -212,6 +212,8 @@ class PersonalFileService implements PersonalFileRepos {
             published_date
             og_image
             full_content
+            full_screen_ad
+            paywall
             source{
               id
               title
@@ -451,6 +453,8 @@ class PersonalFileService implements PersonalFileRepos {
             published_date
             og_image
             full_content
+            full_screen_ad
+            paywall
             source{
               id
               title
