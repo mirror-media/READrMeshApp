@@ -20,7 +20,7 @@ class NewsInfo extends StatelessWidget {
 
         if (displayCommentCount != 0) {
           children.add(SizedBox(
-            height: 22,
+            height: 17,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -95,9 +95,12 @@ class NewsInfo extends StatelessWidget {
           ));
         }
 
-        return Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: children,
+        return SizedBox(
+          height: 17,
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: children,
+          ),
         );
       },
     );
