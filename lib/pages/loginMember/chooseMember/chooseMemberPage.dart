@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/chooseMember/chooseMemberWidget.dart';
+import 'package:readr/services/recommendService.dart';
 
 class ChooseMemberPage extends StatelessWidget {
   final bool isFromPublisher;
@@ -38,7 +39,8 @@ class ChooseMemberPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => ChooseFollowCubit(),
+          create: (context) =>
+              ChooseFollowCubit(recommendRepos: RecommendService()),
           child: const ChooseMemberWidget(),
         ),
       ),

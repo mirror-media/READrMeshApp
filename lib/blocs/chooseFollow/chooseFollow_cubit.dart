@@ -9,13 +9,14 @@ import 'package:readr/services/recommendService.dart';
 part 'chooseFollow_state.dart';
 
 class ChooseFollowCubit extends Cubit<ChooseFollowState> {
-  ChooseFollowCubit() : super(ChooseFollowInitial());
-  final RecommendService _recommendService = RecommendService();
+  final RecommendRepos recommendRepos;
+  ChooseFollowCubit({required this.recommendRepos})
+      : super(ChooseFollowInitial());
 
   fetchAllPublishers() async {
     emit(ChooseFollowLoading());
     try {
-      List<Publisher> publishers = await _recommendService.fetchAllPublishers();
+      List<Publisher> publishers = await recommendRepos.fetchAllPublishers();
       await UserHelper.instance.fetchUserData();
       emit(PublisherListLoaded(publishers));
     } catch (e) {
@@ -26,7 +27,7 @@ class ChooseFollowCubit extends Cubit<ChooseFollowState> {
   fetchRecommendMember() async {
     emit(ChooseFollowLoading());
     try {
-      List<Member> members = await _recommendService.fetchRecommendedMembers();
+      List<Member> members = await recommendRepos.fetchRecommendedMembers();
       emit(MemberListLoaded(members));
     } catch (e) {
       emit(ChooseFollowError(determineException(e)));

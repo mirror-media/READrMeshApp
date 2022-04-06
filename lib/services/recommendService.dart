@@ -7,7 +7,12 @@ import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 
-class RecommendService {
+abstract class RecommendRepos {
+  Future<List<Publisher>> fetchAllPublishers();
+  Future<List<Member>> fetchRecommendedMembers();
+}
+
+class RecommendService implements RecommendRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   final String api = Environment().config.readrMeshApi;
@@ -20,6 +25,7 @@ class RecommendService {
     return headers;
   }
 
+  @override
   Future<List<Publisher>> fetchAllPublishers() async {
     const String query = """
     query(
@@ -73,6 +79,7 @@ class RecommendService {
     return allPublisherList;
   }
 
+  @override
   Future<List<Member>> fetchRecommendedMembers() async {
     const String query = """
     query(
