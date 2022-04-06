@@ -7,12 +7,13 @@ import 'package:readr/services/invitationCodeService.dart';
 part 'invitationCode_state.dart';
 
 class InvitationCodeCubit extends Cubit<InvitationCodeState> {
-  InvitationCodeCubit() : super(InvitationCodeInitial());
-  final InvitationCodeService _invitationCodeService = InvitationCodeService();
+  final InvitationCodeRepos invitationCodeRepos;
+  InvitationCodeCubit({required this.invitationCodeRepos})
+      : super(InvitationCodeInitial());
 
   fetchMyInvitationCode() async {
     List<InvitationCode> allMyInvitationCodes =
-        await _invitationCodeService.fetchMyInvitationCode();
+        await invitationCodeRepos.fetchMyInvitationCode();
     List<InvitationCode> usableCodeList = [];
     List<InvitationCode> activatedCodeList = [];
     for (var code in allMyInvitationCodes) {

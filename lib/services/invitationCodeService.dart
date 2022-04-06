@@ -14,11 +14,18 @@ enum InvitationCodeStatus {
   error,
 }
 
-class InvitationCodeService {
+abstract class InvitationCodeRepos {
+  Future<List<InvitationCode>> fetchMyInvitationCode();
+  Future<bool> checkUsableInvitationCode();
+  Future<InvitationCodeStatus> checkInvitationCode(String code);
+  Future<void> linkInvitationCode(String codeId);
+}
+
+class InvitationCodeService implements InvitationCodeRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
-  Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
+  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
@@ -75,6 +82,7 @@ class InvitationCodeService {
     return token;
   }
 
+  @override
   Future<List<InvitationCode>> fetchMyInvitationCode() async {
     const String query = '''
     query(
@@ -114,7 +122,7 @@ class InvitationCodeService {
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(needAuth: false),
+      headers: await _getHeaders(needAuth: false),
     );
 
     List<InvitationCode> allInvitationCode = [];
@@ -124,6 +132,7 @@ class InvitationCodeService {
     return allInvitationCode;
   }
 
+  @override
   Future<bool> checkUsableInvitationCode() async {
     const String query = '''
     query(
@@ -159,7 +168,7 @@ class InvitationCodeService {
       jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(needAuth: false),
+        headers: await _getHeaders(needAuth: false),
       );
 
       if (jsonResponse['data']['invitationCodesCount'] != 0) {
@@ -172,6 +181,7 @@ class InvitationCodeService {
     }
   }
 
+  @override
   Future<InvitationCodeStatus> checkInvitationCode(String code) async {
     const String query = '''
     query(
@@ -207,7 +217,7 @@ class InvitationCodeService {
       jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(needAuth: false),
+        headers: await _getHeaders(needAuth: false),
       );
 
       if (jsonResponse['data']['invitationCodes'].isEmpty) {
@@ -226,6 +236,7 @@ class InvitationCodeService {
     }
   }
 
+  @override
   Future<void> linkInvitationCode(String codeId) async {
     const String mutation = '''
     mutation(
@@ -264,7 +275,7 @@ class InvitationCodeService {
     await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(needAuth: false),
+      headers: await _getHeaders(needAuth: false),
     );
 
     final prefs = await SharedPreferences.getInstance();

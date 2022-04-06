@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/invitationCode/invitationCode_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/invitationCode/checkInvitationCodeWidget.dart';
+import 'package:readr/services/invitationCodeService.dart';
 
 class CheckInvitationCodePage extends StatelessWidget {
   const CheckInvitationCodePage({Key? key}) : super(key: key);
@@ -37,7 +38,8 @@ class CheckInvitationCodePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => InvitationCodeCubit(),
+          create: (context) =>
+              InvitationCodeCubit(invitationCodeRepos: InvitationCodeService()),
           child: CheckInvitationCodeWidget(),
         ),
       ),
