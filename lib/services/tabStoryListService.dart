@@ -6,7 +6,24 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
-class TabStoryListServices {
+abstract class TabStoryListRepos {
+  Future<Map<String, List<NewsListItem>>> fetchStoryList({
+    int storySkip = 0,
+    int storyFirst = 18,
+    int projectSkip = 0,
+    int projectFirst = 2,
+  });
+  Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
+    String slug, {
+    int storySkip = 0,
+    int storyFirst = 18,
+    int projectSkip = 0,
+    int projectFirst = 2,
+  });
+  Future<List<NewsListItem>> fetchMeshStoryList(List<String> storyIdList);
+}
+
+class TabStoryListServices implements TabStoryListRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final List<String> _fetchedStoryIdList = [];
   final List<String> _fetchedProjectIdList = [];
@@ -39,6 +56,7 @@ class TabStoryListServices {
   }
   """;
 
+  @override
   Future<Map<String, List<NewsListItem>>> fetchStoryList({
     int storySkip = 0,
     int storyFirst = 18,
@@ -108,6 +126,7 @@ class TabStoryListServices {
     return mixedStoryList;
   }
 
+  @override
   Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
@@ -180,6 +199,7 @@ class TabStoryListServices {
     return mixedStoryList;
   }
 
+  @override
   Future<List<NewsListItem>> fetchMeshStoryList(
       List<String> storyIdList) async {
     const String query = '''

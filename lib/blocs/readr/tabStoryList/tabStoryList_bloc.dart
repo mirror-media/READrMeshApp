@@ -9,12 +9,13 @@ part 'tabStoryList_event.dart';
 part 'tabStoryList_state.dart';
 
 class TabStoryListBloc extends Bloc<TabStoryListEvent, TabStoryListState> {
-  final TabStoryListServices _tabStoryListServices = TabStoryListServices();
+  final TabStoryListRepos tabStoryListRepos;
   int _storySkip = 0;
   int _projectSkip = 0;
   bool _noMore = false;
 
-  TabStoryListBloc() : super(TabStoryListInitial()) {
+  TabStoryListBloc({required this.tabStoryListRepos})
+      : super(TabStoryListInitial()) {
     on<TabStoryListEvent>((event, emit) async {
       try {
         Map<String, List<NewsListItem>> result = {
@@ -24,15 +25,15 @@ class TabStoryListBloc extends Bloc<TabStoryListEvent, TabStoryListState> {
         bool loadMore = false;
         if (event is FetchStoryList) {
           emit(TabStoryListLoading());
-          result = await _tabStoryListServices.fetchStoryList();
+          result = await tabStoryListRepos.fetchStoryList();
         } else if (event is FetchStoryListByCategorySlug) {
           emit(TabStoryListLoading());
-          result = await _tabStoryListServices
-              .fetchStoryListByCategorySlug(event.slug);
+          result =
+              await tabStoryListRepos.fetchStoryListByCategorySlug(event.slug);
         } else if (event is FetchNextPage) {
           emit(TabStoryListLoadingMore());
           loadMore = true;
-          result = await _tabStoryListServices.fetchStoryList(
+          result = await tabStoryListRepos.fetchStoryList(
             storySkip: _storySkip,
             projectSkip: _projectSkip,
             storyFirst: 12,
@@ -40,7 +41,7 @@ class TabStoryListBloc extends Bloc<TabStoryListEvent, TabStoryListState> {
         } else if (event is FetchNextPageByCategorySlug) {
           emit(TabStoryListLoadingMore());
           loadMore = true;
-          result = await _tabStoryListServices.fetchStoryListByCategorySlug(
+          result = await tabStoryListRepos.fetchStoryListByCategorySlug(
             event.slug,
             storySkip: _storySkip,
             projectSkip: _projectSkip,

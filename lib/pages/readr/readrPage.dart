@@ -16,6 +16,7 @@ import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/readr/readrTabContent.dart';
 import 'package:readr/services/editorChoiceService.dart';
+import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrPage extends StatefulWidget {
   @override
@@ -58,7 +59,8 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
       );
 
       _tabWidgets.add(BlocProvider(
-        create: (context) => TabStoryListBloc(),
+        create: (context) =>
+            TabStoryListBloc(tabStoryListRepos: TabStoryListServices()),
         child: ReadrTabContent(
           categorySlug: category.slug,
         ),
