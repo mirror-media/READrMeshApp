@@ -7,16 +7,16 @@ import 'package:readr/services/publisherService.dart';
 part 'publisher_state.dart';
 
 class PublisherCubit extends Cubit<PublisherState> {
-  PublisherCubit() : super(PublisherInitial());
-  final PublisherService _publisherService = PublisherService();
+  final PublisherRepos publisherRepos;
+  PublisherCubit({required this.publisherRepos}) : super(PublisherInitial());
   int _followerCount = 0;
 
   fetchPublisherNews(String publisherId) async {
     try {
       emit(PublisherLoading());
       var futureList = await Future.wait([
-        _publisherService.fetchPublisherNews(publisherId, DateTime.now()),
-        _publisherService.fetchPublisherFollowerCount(publisherId),
+        publisherRepos.fetchPublisherNews(publisherId, DateTime.now()),
+        publisherRepos.fetchPublisherFollowerCount(publisherId),
       ]);
       _followerCount = futureList[1] as int;
       emit(
@@ -30,7 +30,7 @@ class PublisherCubit extends Cubit<PublisherState> {
     try {
       emit(PublisherLoadingMore());
       emit(PublisherLoaded(
-        await _publisherService.fetchPublisherNews(publisherId, filter),
+        await publisherRepos.fetchPublisherNews(publisherId, filter),
         _followerCount,
       ));
     } catch (e) {

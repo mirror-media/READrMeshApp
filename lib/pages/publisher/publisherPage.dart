@@ -6,6 +6,7 @@ import 'package:readr/blocs/publisher/publisher_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/publisher/publisherWidget.dart';
+import 'package:readr/services/publisherService.dart';
 
 class PublisherPage extends StatelessWidget {
   final Publisher publisher;
@@ -38,7 +39,8 @@ class PublisherPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => PublisherCubit(),
+          create: (context) =>
+              PublisherCubit(publisherRepos: PublisherService()),
           child: PublisherWidget(publisher),
         ),
       ),

@@ -6,11 +6,18 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
-class PublisherService {
+abstract class PublisherRepos {
+  Future<List<NewsListItem>> fetchPublisherNews(
+      String publisherId, DateTime newsFilterTime);
+  Future<int> fetchPublisherFollowerCount(String publisherId);
+}
+
+class PublisherService implements PublisherRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   final String api = Environment().config.readrMeshApi;
 
+  @override
   Future<List<NewsListItem>> fetchPublisherNews(
       String publisherId, DateTime newsFilterTime) async {
     const String query = """
@@ -207,6 +214,7 @@ class PublisherService {
     return allNews;
   }
 
+  @override
   Future<int> fetchPublisherFollowerCount(String publisherId) async {
     const String query = '''
     query(
