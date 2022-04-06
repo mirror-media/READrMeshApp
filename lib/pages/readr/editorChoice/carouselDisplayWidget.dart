@@ -47,6 +47,7 @@ class CarouselDisplayWidget extends StatelessWidget {
         editorChoiceItem.newsListItem!.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
+        minFontSize: 20,
         style: const TextStyle(
           color: readrBlack87,
           fontSize: 20.0,
