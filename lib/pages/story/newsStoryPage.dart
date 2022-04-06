@@ -9,6 +9,7 @@ import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
 import 'package:readr/pages/story/readrStoryWidget.dart';
 import 'package:readr/services/commentService.dart';
+import 'package:readr/services/newsStoryService.dart';
 
 class NewsStoryPage extends StatelessWidget {
   final NewsListItem news;
@@ -38,7 +39,7 @@ class NewsStoryPage extends StatelessWidget {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => NewsCubit(),
+            create: (context) => NewsCubit(newsStoryRepos: NewsStoryService()),
           ),
           BlocProvider(
             create: (context) => CommentBloc(

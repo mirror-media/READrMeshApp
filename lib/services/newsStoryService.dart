@@ -6,10 +6,15 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsStoryItem.dart';
 
-class NewsStoryService {
+abstract class NewsStoryRepos {
+  Future<NewsStoryItem> fetchNewsData(String storyId);
+}
+
+class NewsStoryService implements NewsStoryRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
+  @override
   Future<NewsStoryItem> fetchNewsData(String storyId) async {
     const String query = '''
     query(

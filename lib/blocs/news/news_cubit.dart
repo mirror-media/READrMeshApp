@@ -10,8 +10,8 @@ import 'package:readr/services/storyService.dart';
 part 'news_state.dart';
 
 class NewsCubit extends Cubit<NewsState> {
-  NewsCubit() : super(NewsInitial());
-  final NewsStoryService _newsStoryService = NewsStoryService();
+  final NewsStoryRepos newsStoryRepos;
+  NewsCubit({required this.newsStoryRepos}) : super(NewsInitial());
   final StoryServices _storyService = StoryServices();
 
   fetchNewsData({
@@ -21,8 +21,7 @@ class NewsCubit extends Cubit<NewsState> {
     emit(NewsLoading());
     try {
       await UserHelper.instance.fetchUserData();
-      NewsStoryItem newsStoryItem =
-          await _newsStoryService.fetchNewsData(newsId);
+      NewsStoryItem newsStoryItem = await newsStoryRepos.fetchNewsData(newsId);
       emit(NewsLoaded(newsStoryItem));
     } catch (e) {
       emit(NewsError(determineException(e)));
@@ -34,8 +33,7 @@ class NewsCubit extends Cubit<NewsState> {
     emit(NewsLoading());
     try {
       await UserHelper.instance.fetchUserData();
-      NewsStoryItem newsStoryItem =
-          await _newsStoryService.fetchNewsData(newsId);
+      NewsStoryItem newsStoryItem = await newsStoryRepos.fetchNewsData(newsId);
       if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
         emit(NewsError(determineException('No content error')));
       } else {
