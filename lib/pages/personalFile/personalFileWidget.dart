@@ -24,6 +24,7 @@ import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:readr/services/commentService.dart';
+import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validated/validated.dart' as validate;
 
@@ -102,7 +103,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
     _tabWidgets.add(MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => PersonalFileTabBloc(),
+          create: (context) =>
+              PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
         ),
         BlocProvider(
           create: (context) => CommentBloc(
@@ -150,7 +152,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       );
 
       _tabWidgets.add(BlocProvider(
-        create: (context) => PersonalFileTabBloc(),
+        create: (context) =>
+            PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
         child: const BookmarkTabContent(),
       ));
     }

@@ -15,10 +15,11 @@ enum TabContentType {
 
 class PersonalFileTabBloc
     extends Bloc<PersonalFileTabEvent, PersonalFileTabState> {
-  final PersonalFileService _personalFileService = PersonalFileService();
+  final PersonalFileRepos personalFileRepos;
   late final Member _viewMember;
   late final TabContentType _tabContentType;
-  PersonalFileTabBloc() : super(PersonalFileTabInitial()) {
+  PersonalFileTabBloc({required this.personalFileRepos})
+      : super(PersonalFileTabInitial()) {
     on<PersonalFileTabEvent>((event, emit) async {
       try {
         if (event is FetchTabContent) {
@@ -48,18 +49,18 @@ class PersonalFileTabBloc
 
   dynamic _fetchTabContent() async {
     if (_tabContentType == TabContentType.pick) {
-      return await _personalFileService.fetchPickData(_viewMember);
+      return await personalFileRepos.fetchPickData(_viewMember);
     } else if (_tabContentType == TabContentType.bookmark) {
-      return await _personalFileService.fetchBookmark();
+      return await personalFileRepos.fetchBookmark();
     }
   }
 
   dynamic _fetchMoreTabContent(DateTime lastItemPublishTime) async {
     if (_tabContentType == TabContentType.pick) {
-      return await _personalFileService.fetchPickData(_viewMember,
+      return await personalFileRepos.fetchPickData(_viewMember,
           pickFilterTime: lastItemPublishTime);
     } else if (_tabContentType == TabContentType.bookmark) {
-      return await _personalFileService.fetchBookmark(
+      return await personalFileRepos.fetchBookmark(
         pickFilterTime: lastItemPublishTime,
       );
     }

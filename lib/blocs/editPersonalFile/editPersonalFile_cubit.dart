@@ -11,10 +11,10 @@ part 'editPersonalFile_state.dart';
 
 class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
   final MemberRepos memberRepos;
-  EditPersonalFileCubit({required this.memberRepos})
+  final PersonalFileRepos personalFileRepos;
+  EditPersonalFileCubit(
+      {required this.memberRepos, required this.personalFileRepos})
       : super(EditPersonalFileInitial());
-
-  final PersonalFileService _personalFileService = PersonalFileService();
 
   loadPersonalFile() async {
     emit(EditPersonalFileLoading());
@@ -30,7 +30,7 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
     emit(PersonalFileSaving());
     try {
       List<Publisher> _publisherList =
-          await _personalFileService.fetchAllPublishers();
+          await personalFileRepos.fetchAllPublishers();
       bool checkResult = _validateNicknameAndId(_publisherList, member);
       if (!checkResult) {
         emit(PersonalFileNicknameError());

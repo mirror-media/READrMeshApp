@@ -7,13 +7,14 @@ import 'package:readr/services/personalFileService.dart';
 part 'followerList_state.dart';
 
 class FollowerListCubit extends Cubit<FollowerListState> {
-  FollowerListCubit() : super(FollowerListInitial());
-  final PersonalFileService _personalFileService = PersonalFileService();
+  final PersonalFileRepos personalFileRepos;
+  FollowerListCubit({required this.personalFileRepos})
+      : super(FollowerListInitial());
 
   fetchFollowerList({required Member viewMember}) async {
     try {
       emit(FollowerListLoaded(
-          await _personalFileService.fetchFollowerList(viewMember)));
+          await personalFileRepos.fetchFollowerList(viewMember)));
     } catch (e) {
       emit(FollowerListError(determineException(e)));
     }
@@ -24,8 +25,8 @@ class FollowerListCubit extends Cubit<FollowerListState> {
     required int skip,
   }) async {
     try {
-      emit(FollowerListLoadMoreSuccess(await _personalFileService
-          .fetchFollowerList(viewMember, skip: skip)));
+      emit(FollowerListLoadMoreSuccess(
+          await personalFileRepos.fetchFollowerList(viewMember, skip: skip)));
     } catch (e) {
       emit(FollowerListLoadMoreFailed(determineException(e)));
     }

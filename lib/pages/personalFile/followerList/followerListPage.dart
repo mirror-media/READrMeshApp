@@ -6,6 +6,7 @@ import 'package:readr/blocs/followerList/followerList_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/followerList/followerListWidget.dart';
+import 'package:readr/services/personalFileService.dart';
 
 class FollowerListPage extends StatelessWidget {
   final Member viewMember;
@@ -14,7 +15,8 @@ class FollowerListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FollowerListCubit(),
+      create: (context) =>
+          FollowerListCubit(personalFileRepos: PersonalFileService()),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

@@ -10,7 +10,9 @@ part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final MemberRepos memberRepos;
-  LoginCubit({required this.memberRepos}) : super(LoginInitial());
+  final PersonalFileRepos personalFileRepos;
+  LoginCubit({required this.memberRepos, required this.personalFileRepos})
+      : super(LoginInitial());
 
   login(bool isNewUser) async {
     emit(Loading());
@@ -47,7 +49,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<List<String>> _fetchPublisherTitles() async {
-    var publisherList = await PersonalFileService().fetchAllPublishers();
+    var publisherList = await personalFileRepos.fetchAllPublishers();
     List<String> publisherTitleList = [];
     for (var publisher in publisherList) {
       publisherTitleList.add(publisher.title);

@@ -7,7 +7,19 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/models/publisher.dart';
 
-class PersonalFileService {
+abstract class PersonalFileRepos {
+  Future<Member> fetchMemberData(Member member);
+  Future<Map<String, dynamic>> fetchPickData(Member targetMember,
+      {DateTime? pickFilterTime});
+  Future<List<Pick>> fetchBookmark({DateTime? pickFilterTime});
+  Future<List<Member>> fetchFollowerList(Member viewMember, {int skip = 0});
+  Future<Map<String, dynamic>> fetchFollowingList(Member viewMember,
+      {int skip = 0});
+  Future<List<Publisher>> fetchFollowPublisher(Member viewMember);
+  Future<List<Publisher>> fetchAllPublishers();
+}
+
+class PersonalFileService implements PersonalFileRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
@@ -68,6 +80,7 @@ class PersonalFileService {
     return token;
   }
 
+  @override
   Future<Member> fetchMemberData(Member member) async {
     const String query = """
     query(
@@ -149,6 +162,7 @@ class PersonalFileService {
     return Member.fromJson(jsonResponse['data']['member']);
   }
 
+  @override
   Future<Map<String, dynamic>> fetchPickData(Member targetMember,
       {DateTime? pickFilterTime}) async {
     const String query = """
@@ -392,6 +406,7 @@ class PersonalFileService {
     return returnData;
   }
 
+  @override
   Future<List<Pick>> fetchBookmark({DateTime? pickFilterTime}) async {
     const String query = """
     query(
@@ -591,6 +606,7 @@ class PersonalFileService {
     return bookmarkList;
   }
 
+  @override
   Future<List<Member>> fetchFollowerList(Member viewMember,
       {int skip = 0}) async {
     const String query = """
@@ -666,6 +682,7 @@ class PersonalFileService {
     return followerList;
   }
 
+  @override
   Future<Map<String, dynamic>> fetchFollowingList(Member viewMember,
       {int skip = 0}) async {
     const String query = """
@@ -758,6 +775,7 @@ class PersonalFileService {
     };
   }
 
+  @override
   Future<List<Publisher>> fetchFollowPublisher(Member viewMember) async {
     const String query = """
     query(
@@ -808,6 +826,7 @@ class PersonalFileService {
     return followPublisherList;
   }
 
+  @override
   Future<List<Publisher>> fetchAllPublishers() async {
     const String query = """
     query{

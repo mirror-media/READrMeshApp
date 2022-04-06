@@ -4,6 +4,7 @@ import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/personalFileWidget.dart';
+import 'package:readr/services/personalFileService.dart';
 
 class PersonalFilePage extends StatelessWidget {
   final Member viewMember;
@@ -21,7 +22,8 @@ class PersonalFilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocProvider(
-        create: (BuildContext context) => PersonalFileCubit(),
+        create: (BuildContext context) =>
+            PersonalFileCubit(personalFileRepos: PersonalFileService()),
         child: PersonalFileWidget(
           viewMember: viewMember,
           isMine: isMine,

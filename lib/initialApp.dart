@@ -6,6 +6,7 @@ import 'package:readr/blocs/readr/categories/bloc.dart';
 import 'package:readr/pages/rootPage.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/services/categoryService.dart';
+import 'package:readr/services/personalFileService.dart';
 
 class InitialApp extends StatelessWidget {
   @override
@@ -27,7 +28,8 @@ class InitialApp extends StatelessWidget {
                 CategoriesBloc(categoryRepos: CategoryServices()),
           ),
           BlocProvider(
-            create: (context) => PersonalFileCubit(),
+            create: (context) =>
+                PersonalFileCubit(personalFileRepos: PersonalFileService()),
           ),
         ],
         child: RootPage(),

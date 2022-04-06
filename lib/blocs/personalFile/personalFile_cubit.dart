@@ -8,9 +8,9 @@ import 'package:readr/services/personalFileService.dart';
 part 'personalFile_state.dart';
 
 class PersonalFileCubit extends Cubit<PersonalFileState> {
-  PersonalFileCubit() : super(PersonalFileInitial());
-
-  final PersonalFileService _personalFileService = PersonalFileService();
+  final PersonalFileRepos personalFileRepos;
+  PersonalFileCubit({required this.personalFileRepos})
+      : super(PersonalFileInitial());
 
   fetchMemberData(
     Member viewMember, {
@@ -24,7 +24,7 @@ class PersonalFileCubit extends Cubit<PersonalFileState> {
 
     late Member viewMemberData;
     await Future.wait([
-      _personalFileService
+      personalFileRepos
           .fetchMemberData(viewMember)
           .then((value) => viewMemberData = value),
       UserHelper.instance.fetchUserData(),
