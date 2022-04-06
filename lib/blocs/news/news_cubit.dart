@@ -11,8 +11,9 @@ part 'news_state.dart';
 
 class NewsCubit extends Cubit<NewsState> {
   final NewsStoryRepos newsStoryRepos;
-  NewsCubit({required this.newsStoryRepos}) : super(NewsInitial());
-  final StoryServices _storyService = StoryServices();
+  final StoryRepos storyRepos;
+  NewsCubit({required this.newsStoryRepos, required this.storyRepos})
+      : super(NewsInitial());
 
   fetchNewsData({
     required String newsId,
@@ -38,7 +39,7 @@ class NewsCubit extends Cubit<NewsState> {
         emit(NewsError(determineException('No content error')));
       } else {
         Story story =
-            await _storyService.fetchPublishedStoryById(newsStoryItem.content!);
+            await storyRepos.fetchPublishedStoryById(newsStoryItem.content!);
         emit(ReadrStoryLoaded(newsStoryItem, story));
       }
     } catch (e) {

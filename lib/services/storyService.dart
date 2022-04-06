@@ -6,9 +6,14 @@ import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/story.dart';
 
-class StoryServices {
+abstract class StoryRepos {
+  Future<Story> fetchPublishedStoryById(String id);
+}
+
+class StoryServices implements StoryRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
+  @override
   Future<Story> fetchPublishedStoryById(String id) async {
     final key = 'fetchPublishedStoryById?id=$id';
 
