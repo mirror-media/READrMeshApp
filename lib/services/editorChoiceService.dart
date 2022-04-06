@@ -8,9 +8,15 @@ import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
-class EditorChoiceServices {
+abstract class EditorChoiceRepos {
+  Future<List<EditorChoiceItem>> fetchEditorChoiceList();
+  Future<List<EditorChoiceItem>> fetchNewsListItemList();
+}
+
+class EditorChoiceService implements EditorChoiceRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
+  @override
   Future<List<EditorChoiceItem>> fetchEditorChoiceList() async {
     const key = 'fetchEditorChoiceList';
 
@@ -56,6 +62,7 @@ class EditorChoiceServices {
     return editorChoiceList;
   }
 
+  @override
   Future<List<EditorChoiceItem>> fetchNewsListItemList() async {
     const String query = '''
     query(

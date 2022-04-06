@@ -15,6 +15,7 @@ import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/readr/readrTabContent.dart';
+import 'package:readr/services/editorChoiceService.dart';
 
 class ReadrPage extends StatefulWidget {
   @override
@@ -112,7 +113,8 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                   const HomeAppBar(),
                   SliverToBoxAdapter(
                     child: BlocProvider(
-                      create: (context) => EditorChoiceCubit(),
+                      create: (context) => EditorChoiceCubit(
+                          editorChoiceRepo: EditorChoiceService()),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4),
                         child: BuildEditorChoiceCarousel(),

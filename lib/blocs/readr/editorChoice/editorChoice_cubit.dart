@@ -6,14 +6,14 @@ import 'package:readr/services/editorChoiceService.dart';
 part 'editorChoice_state.dart';
 
 class EditorChoiceCubit extends Cubit<EditorChoiceState> {
-  EditorChoiceCubit() : super(EditorChoiceInitial());
-  final EditorChoiceServices _editorChoiceServices = EditorChoiceServices();
+  final EditorChoiceRepos editorChoiceRepo;
+  EditorChoiceCubit({required this.editorChoiceRepo})
+      : super(EditorChoiceInitial());
 
   fetchEditorChoice() async {
     emit(EditorChoiceLoading());
     try {
-      emit(EditorChoiceLoaded(
-          await _editorChoiceServices.fetchNewsListItemList()));
+      emit(EditorChoiceLoaded(await editorChoiceRepo.fetchNewsListItemList()));
     } catch (e) {
       emit(EditorChoiceError(e.toString()));
     }
