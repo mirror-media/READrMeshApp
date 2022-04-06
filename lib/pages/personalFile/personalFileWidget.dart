@@ -23,6 +23,7 @@ import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:readr/services/commentService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validated/validated.dart' as validate;
 
@@ -104,8 +105,10 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           create: (context) => PersonalFileTabBloc(),
         ),
         BlocProvider(
-          create: (context) =>
-              CommentBloc(BlocProvider.of<PickButtonCubit>(context)),
+          create: (context) => CommentBloc(
+            pickButtonCubit: BlocProvider.of<PickButtonCubit>(context),
+            commentRepos: CommentService(),
+          ),
         ),
       ],
       child: PickTabContent(

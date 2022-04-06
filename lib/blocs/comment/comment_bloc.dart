@@ -16,11 +16,12 @@ part 'comment_event.dart';
 part 'comment_state.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
-  final CommentService _commentService = CommentService();
+  final CommentRepos commentRepos;
   final PickButtonCubit pickButtonCubit;
   late final StreamSubscription pickButtonCubitSubscription;
 
-  CommentBloc(this.pickButtonCubit) : super(CommentInitial()) {
+  CommentBloc({required this.pickButtonCubit, required this.commentRepos})
+      : super(CommentInitial()) {
     pickButtonCubitSubscription = pickButtonCubit.stream.listen((state) {
       if (state is PickButtonUpdateSuccess && state.comment != null) {
         add(AddPickCommentSuccess(state.comment!, state.item));
@@ -51,7 +52,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         if (event is FetchComments) {
           emit(CommentLoading());
           List<Comment>? allComments =
-              await _commentService.fetchCommentsByStoryId(event.targetId);
+              await commentRepos.fetchCommentsByStoryId(event.targetId);
           if (allComments == null) {
             emit(CommentError(UnknownException('FetchCommentsFailed')));
           } else {
@@ -68,7 +69,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
             publishDate: DateTime.now(),
           );
           emit(CommentAdding(myNewComment));
-          List<Comment>? allComments = await _commentService.createComment(
+          List<Comment>? allComments = await commentRepos.createComment(
             storyId: event.targetId,
             content: event.content,
             state: CommentTransparency.public,
@@ -102,7 +103,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
         if (event is DeleteComment) {
           emit(DeletingComment(event.comment.id));
-          var result = await _commentService.deleteComment(event.comment.id);
+          var result = await commentRepos.deleteComment(event.comment.id);
           if (result) {
             if (event.comment.story != null) {
               UserHelper.instance
@@ -116,7 +117,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
         if (event is EditComment) {
           emit(UpdatingComment(event.newComment));
-          var result = await _commentService.editComment(event.newComment);
+          var result = await commentRepos.editComment(event.newComment);
           if (result) {
             emit(UpdateCommentSuccess());
           } else {
@@ -164,11 +165,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       const Duration(seconds: 1),
       () async {
         if (!isLike) {
-          await _commentService.removeLike(
+          await commentRepos.removeLike(
             commentId: commentId,
           );
         } else {
-          await _commentService.addLike(
+          await commentRepos.addLike(
             commentId: commentId,
           );
         }

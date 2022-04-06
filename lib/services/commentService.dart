@@ -6,10 +6,29 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
-class CommentService {
+abstract class CommentRepos {
+  Future<Map<String, String>> getHeaders({bool needAuth = true});
+  Future<List<Comment>?> createComment({
+    required String storyId,
+    required String content,
+    required CommentTransparency state,
+  });
+  Future<bool> deleteComment(String commentId);
+  Future<List<Comment>?> fetchCommentsByStoryId(String storyId);
+  Future<int?> addLike({
+    required String commentId,
+  });
+  Future<int?> removeLike({
+    required String commentId,
+  });
+  Future<bool> editComment(Comment newComment);
+}
+
+class CommentService implements CommentRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
+  @override
   Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -67,6 +86,7 @@ class CommentService {
     return token;
   }
 
+  @override
   Future<List<Comment>?> createComment({
     required String storyId,
     required String content,
@@ -176,6 +196,7 @@ class CommentService {
     }
   }
 
+  @override
   Future<bool> deleteComment(String commentId) async {
     String mutation = """
       mutation(
@@ -215,6 +236,7 @@ class CommentService {
     }
   }
 
+  @override
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId) async {
     String query = """
       query(
@@ -303,6 +325,7 @@ class CommentService {
     }
   }
 
+  @override
   Future<int?> addLike({
     required String commentId,
   }) async {
@@ -355,6 +378,7 @@ class CommentService {
     }
   }
 
+  @override
   Future<int?> removeLike({
     required String commentId,
   }) async {
@@ -407,6 +431,7 @@ class CommentService {
     }
   }
 
+  @override
   Future<bool> editComment(Comment newComment) async {
     const String mutation = """
     mutation(

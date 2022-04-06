@@ -10,6 +10,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
+import 'package:readr/services/commentService.dart';
 
 class CommentBottomSheet {
   static Future<void> showCommentBottomSheet({
@@ -24,8 +25,10 @@ class CommentBottomSheet {
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
       builder: (context) => BlocProvider(
-        create: (context) =>
-            CommentBloc(BlocProvider.of<PickButtonCubit>(context)),
+        create: (context) => CommentBloc(
+          pickButtonCubit: BlocProvider.of<PickButtonCubit>(context),
+          commentRepos: CommentService(),
+        ),
         child: SafeArea(
           bottom: false,
           child: Material(

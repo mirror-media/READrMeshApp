@@ -8,6 +8,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
 import 'package:readr/pages/story/readrStoryWidget.dart';
+import 'package:readr/services/commentService.dart';
 
 class NewsStoryPage extends StatelessWidget {
   final NewsListItem news;
@@ -40,8 +41,10 @@ class NewsStoryPage extends StatelessWidget {
             create: (context) => NewsCubit(),
           ),
           BlocProvider(
-            create: (context) =>
-                CommentBloc(BlocProvider.of<PickButtonCubit>(context)),
+            create: (context) => CommentBloc(
+              pickButtonCubit: BlocProvider.of<PickButtonCubit>(context),
+              commentRepos: CommentService(),
+            ),
           ),
         ],
         child: child,
