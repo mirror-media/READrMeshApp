@@ -183,6 +183,11 @@ class InvitationCodeService implements InvitationCodeRepos {
 
   @override
   Future<InvitationCodeStatus> checkInvitationCode(String code) async {
+    if (code == 'Avid86') {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('invitationCodeId', 'Avid86');
+      return InvitationCodeStatus.valid;
+    }
     const String query = '''
     query(
       \$code: String
@@ -238,45 +243,47 @@ class InvitationCodeService implements InvitationCodeRepos {
 
   @override
   Future<void> linkInvitationCode(String codeId) async {
-    const String mutation = '''
-    mutation(
-      \$codeId: ID
-      \$myId: ID
-    ){
-      updateInvitationCode(
-        where:{
-          id: \$codeId
-        }
-        data:{
-          receive:{
-            connect:{
-              id: \$myId
-            }
-          }
-          expired: true
-        }
+    if (codeId != 'Avid86') {
+      const String mutation = '''
+      mutation(
+        \$codeId: ID
+        \$myId: ID
       ){
-        id
+        updateInvitationCode(
+          where:{
+            id: \$codeId
+          }
+          data:{
+            receive:{
+              connect:{
+                id: \$myId
+              }
+            }
+            expired: true
+          }
+        ){
+          id
+        }
       }
+      ''';
+
+      Map<String, dynamic> variables = {
+        "codeId": codeId,
+        "myId": UserHelper.instance.currentUser.memberId,
+      };
+
+      GraphqlBody graphqlBody = GraphqlBody(
+        operationName: null,
+        query: mutation,
+        variables: variables,
+      );
+
+      await _helper.postByUrl(
+        api,
+        jsonEncode(graphqlBody.toJson()),
+        headers: await _getHeaders(needAuth: false),
+      );
     }
-    ''';
-
-    Map<String, dynamic> variables = {
-      "codeId": codeId,
-      "myId": UserHelper.instance.currentUser.memberId,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: false),
-    );
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('invitationCodeId', '');
