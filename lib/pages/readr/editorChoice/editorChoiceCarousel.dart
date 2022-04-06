@@ -195,7 +195,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                 _current = index;
               });
             },
-            height: 185,
+            height: 186,
           ),
         ),
         const Divider(

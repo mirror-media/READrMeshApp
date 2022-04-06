@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/router/router.dart';
@@ -42,7 +43,7 @@ class CarouselDisplayWidget extends StatelessWidget {
   Widget _displayTitle() {
     return Container(
       color: editorChoiceBackgroundColor,
-      child: Text(
+      child: AutoSizeText(
         editorChoiceItem.newsListItem!.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
