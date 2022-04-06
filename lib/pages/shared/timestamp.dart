@@ -65,7 +65,6 @@ class _TimestampState extends State<Timestamp> {
       text = '${_duration.inDays}天前';
     } else {
       text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
-      fontSize = widget.textSize + 0.1;
     }
 
     if (widget.isEdited) {
