@@ -9,11 +9,22 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MemberService {
+abstract class MemberRepos {
+  Future<Member?> fetchMemberData();
+  Future<Member?> createMember(String nickname, {int? tryTimes});
+  Future<bool> deleteMember();
+  Future<List<Member>?> addFollowingMember(String targetMemberId);
+  Future<List<Member>?> removeFollowingMember(String targetMemberId);
+  Future<List<Publisher>?> addFollowPublisher(String publisherId);
+  Future<List<Publisher>?> removeFollowPublisher(String publisherId);
+  Future<bool?> updateMember(Member member);
+}
+
+class MemberService implements MemberRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
-  Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
+  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
@@ -131,7 +142,7 @@ class MemberService {
     jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(needAuth: false),
+      headers: await _getHeaders(needAuth: false),
     );
 
     // create new member when firebase is signed in but member is not created
@@ -231,7 +242,7 @@ class MemberService {
     final jsonResponse = await _helper.postByUrl(
       api,
       jsonEncode(graphqlBody.toJson()),
-      headers: await getHeaders(),
+      headers: await _getHeaders(),
     );
 
     if (!jsonResponse.containsKey('errors')) {
@@ -289,7 +300,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
@@ -340,7 +351,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -399,7 +410,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -457,7 +468,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -516,7 +527,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -573,7 +584,7 @@ class MemberService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       // true mean success, false mean customId error, null mean other error.

@@ -9,13 +9,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginInitial());
-  final MemberService _memberService = MemberService();
+  final MemberRepos memberRepos;
+  LoginCubit({required this.memberRepos}) : super(LoginInitial());
 
   login(bool isNewUser) async {
     emit(Loading());
     try {
-      var result = await _memberService.fetchMemberData();
+      var result = await memberRepos.fetchMemberData();
       if (result != null) {
         await UserHelper.instance.fetchUserData(member: result);
         final prefs = await SharedPreferences.getInstance();

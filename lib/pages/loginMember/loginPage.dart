@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginWidget.dart';
+import 'package:readr/services/memberService.dart';
 
 class LoginPage extends StatelessWidget {
   final bool fromComment;
@@ -65,7 +66,8 @@ class LoginPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: BlocProvider(
-            create: (BuildContext context) => LoginCubit(),
+            create: (BuildContext context) =>
+                LoginCubit(memberRepos: MemberService()),
             child: LoginWidget(fromComment, fromOnboard),
           ),
         ),

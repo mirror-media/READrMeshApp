@@ -10,8 +10,10 @@ import 'package:readr/services/personalFileService.dart';
 part 'editPersonalFile_state.dart';
 
 class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
-  EditPersonalFileCubit() : super(EditPersonalFileInitial());
-  final MemberService _memberService = MemberService();
+  final MemberRepos memberRepos;
+  EditPersonalFileCubit({required this.memberRepos})
+      : super(EditPersonalFileInitial());
+
   final PersonalFileService _personalFileService = PersonalFileService();
 
   loadPersonalFile() async {
@@ -33,7 +35,7 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
       if (!checkResult) {
         emit(PersonalFileNicknameError());
       } else {
-        bool? result = await _memberService.updateMember(member);
+        bool? result = await memberRepos.updateMember(member);
         if (result == null) {
           emit(SavePersonalFileFailed());
         } else if (result) {
