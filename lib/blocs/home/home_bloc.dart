@@ -15,11 +15,12 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final HomeScreenService _homeScreenService = HomeScreenService();
+  final HomeScreenRepos homeScreenRepos;
   final FollowButtonCubit followButtonCubit;
   late final StreamSubscription followButtonCubitSubscription;
 
-  HomeBloc(this.followButtonCubit) : super(HomeInitial()) {
+  HomeBloc({required this.followButtonCubit, required this.homeScreenRepos})
+      : super(HomeInitial()) {
     followButtonCubitSubscription = followButtonCubit.stream.listen((state) {
       if (state is FollowButtonUpdated) {
         EasyDebounce.debounce(
@@ -36,7 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (event is InitialHomeScreen) {
           emit(HomeLoading());
           Map<String, dynamic> data =
-              await _homeScreenService.fetchHomeScreenData();
+              await homeScreenRepos.fetchHomeScreenData();
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
@@ -73,7 +74,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (event is ReloadHomeScreen) {
           emit(HomeReloading());
           Map<String, dynamic> data =
-              await _homeScreenService.fetchHomeScreenData();
+              await homeScreenRepos.fetchHomeScreenData();
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
@@ -106,7 +107,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(LoadingMoreFollowingPicked());
 
           List<NewsListItem> newFollowingStories =
-              await _homeScreenService.fetchMoreFollowingStories(
+              await homeScreenRepos.fetchMoreFollowingStories(
             event.lastPickTime,
             event.alreadyFetchIds,
           );
@@ -118,7 +119,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(LoadingMoreNews());
 
           List<NewsListItem> newLatestNews =
-              await _homeScreenService.fetchMoreLatestNews(
+              await homeScreenRepos.fetchMoreLatestNews(
             event.lastPublishTime,
           );
 

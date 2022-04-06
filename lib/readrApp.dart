@@ -6,6 +6,7 @@ import 'package:readr/blocs/config/bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/services/homeScreenService.dart';
 import 'helpers/router/router.dart';
 
 class ReadrApp extends StatelessWidget {
@@ -30,7 +31,9 @@ class ReadrApp extends StatelessWidget {
           create: (context) => ConfigBloc(),
         ),
         BlocProvider(
-          create: (context) => HomeBloc(_followButtonCubit),
+          create: (context) => HomeBloc(
+              followButtonCubit: _followButtonCubit,
+              homeScreenRepos: HomeScreenService()),
         ),
       ],
       child: MaterialApp.router(

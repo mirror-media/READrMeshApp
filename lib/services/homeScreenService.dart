@@ -9,10 +9,22 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreenService {
+abstract class HomeScreenRepos {
+  Future<Map<String, dynamic>> fetchHomeScreenData();
+  Future<List<NewsListItem>> fetchMoreFollowingStories(
+    DateTime lastPickTime,
+    List<String> alreadyFetchIds,
+  );
+  Future<List<NewsListItem>> fetchMoreLatestNews(
+    DateTime lastPublishTime,
+  );
+}
+
+class HomeScreenService implements HomeScreenRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
+  @override
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
     const String query = """
     query(
@@ -835,6 +847,7 @@ class HomeScreenService {
     return result;
   }
 
+  @override
   Future<List<NewsListItem>> fetchMoreFollowingStories(
     DateTime lastPickTime,
     List<String> alreadyFetchIds,
@@ -1040,6 +1053,7 @@ class HomeScreenService {
     return moreFollowingStories;
   }
 
+  @override
   Future<List<NewsListItem>> fetchMoreLatestNews(
     DateTime lastPublishTime,
   ) async {
