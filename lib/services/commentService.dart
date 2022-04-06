@@ -7,7 +7,6 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
 abstract class CommentRepos {
-  Future<Map<String, String>> getHeaders({bool needAuth = true});
   Future<List<Comment>?> createComment({
     required String storyId,
     required String content,
@@ -28,8 +27,7 @@ class CommentService implements CommentRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
   final String api = Environment().config.readrMeshApi;
 
-  @override
-  Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
+  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
@@ -178,7 +176,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
       if (jsonResponse.containsKey('errors')) {
         return null;
@@ -227,7 +225,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
@@ -307,7 +305,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(needAuth: false),
+        headers: await _getHeaders(needAuth: false),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -366,7 +364,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
       if (jsonResponse.containsKey('errors')) {
         return null;
@@ -419,7 +417,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
       if (jsonResponse.containsKey('errors')) {
         return null;
@@ -467,7 +465,7 @@ class CommentService implements CommentRepos {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
