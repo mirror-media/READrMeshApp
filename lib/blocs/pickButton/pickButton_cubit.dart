@@ -9,8 +9,8 @@ import 'package:readr/services/pickService.dart';
 part 'pickButton_state.dart';
 
 class PickButtonCubit extends Cubit<PickButtonState> {
-  PickButtonCubit() : super(PickButtonInitial());
-  final PickService _pickService = PickService();
+  final PickRepos pickRepos;
+  PickButtonCubit({required this.pickRepos}) : super(PickButtonInitial());
 
   updateButton(PickableItem item, String? comment) async {
     bool originIsPicked = item.isPicked;
@@ -43,10 +43,10 @@ class PickButtonCubit extends Cubit<PickButtonState> {
         bool isSuccess;
         if (tempData.pickCommentId != null) {
           emit(RemovePickAndComment(tempData.pickCommentId!, item));
-          isSuccess = await _pickService.deletePickAndComment(
+          isSuccess = await pickRepos.deletePickAndComment(
               tempData.pickId, tempData.pickCommentId!);
         } else {
-          isSuccess = await _pickService.deletePick(tempData.pickId);
+          isSuccess = await pickRepos.deletePick(tempData.pickId);
         }
 
         if (!isSuccess) {
@@ -59,7 +59,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
           emit(PickButtonUpdateSuccess(false, item));
         }
       } else if (comment != null) {
-        var result = await _pickService.createPickAndComment(
+        var result = await pickRepos.createPickAndComment(
           targetId: item.targetId,
           objective: item.objective,
           state: PickState.public,
@@ -79,7 +79,7 @@ class PickButtonCubit extends Cubit<PickButtonState> {
               comment: result['pickComment']));
         }
       } else {
-        String? pickId = await _pickService.createPick(
+        String? pickId = await pickRepos.createPick(
           targetId: item.targetId,
           objective: item.objective,
           state: PickState.public,

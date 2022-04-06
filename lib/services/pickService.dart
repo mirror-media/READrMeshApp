@@ -6,12 +6,34 @@ import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
-class PickService {
+abstract class PickRepos {
+  Future<String?> createPick({
+    required String targetId,
+    required PickObjective objective,
+    required PickState state,
+    required PickKind kind,
+    bool paywall = false,
+    String? rootCommentId,
+  });
+  Future<Map<String, dynamic>?> createPickAndComment({
+    required String targetId,
+    required PickObjective objective,
+    required PickState state,
+    required PickKind kind,
+    required String commentContent,
+    bool paywall = false,
+    String? rootCommentId,
+  });
+  Future<bool> deletePick(String pickId);
+  Future<bool> deletePickAndComment(String pickId, String commentId);
+}
+
+class PickService implements PickRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   final String api = Environment().config.readrMeshApi;
 
-  Future<Map<String, String>> getHeaders({bool needAuth = true}) async {
+  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
@@ -68,6 +90,7 @@ class PickService {
     return token;
   }
 
+  @override
   Future<String?> createPick({
     required String targetId,
     required PickObjective objective,
@@ -135,7 +158,7 @@ class PickService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -148,6 +171,7 @@ class PickService {
     }
   }
 
+  @override
   Future<Map<String, dynamic>?> createPickAndComment({
     required String targetId,
     required PickObjective objective,
@@ -269,7 +293,7 @@ class PickService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       if (jsonResponse.containsKey('errors')) {
@@ -288,6 +312,7 @@ class PickService {
     }
   }
 
+  @override
   Future<bool> deletePick(String pickId) async {
     String mutation = """
       mutation(
@@ -318,7 +343,7 @@ class PickService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');
@@ -327,6 +352,7 @@ class PickService {
     }
   }
 
+  @override
   Future<bool> deletePickAndComment(String pickId, String commentId) async {
     String mutation = """
       mutation(
@@ -371,7 +397,7 @@ class PickService {
       final jsonResponse = await _helper.postByUrl(
         api,
         jsonEncode(graphqlBody.toJson()),
-        headers: await getHeaders(),
+        headers: await _getHeaders(),
       );
 
       return !jsonResponse.containsKey('errors');

@@ -7,11 +7,12 @@ import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/services/homeScreenService.dart';
+import 'package:readr/services/pickService.dart';
 import 'helpers/router/router.dart';
 
 class ReadrApp extends StatelessWidget {
   final _appRouter = AppRouter();
-  final _pickButtonCubit = PickButtonCubit();
+  final _pickButtonCubit = PickButtonCubit(pickRepos: PickService());
   final _followButtonCubit = FollowButtonCubit();
 
   @override
