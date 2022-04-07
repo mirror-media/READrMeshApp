@@ -69,16 +69,11 @@ class _ImageViewerWidgetState extends State<ImageViewerWidget> {
               minScale: PhotoViewComputedScale.contained,
             );
           },
-          loadingBuilder: (context, progress) => Center(
+          loadingBuilder: (context, progress) => const Center(
             child: SizedBox(
               width: 20.0,
               height: 20.0,
-              child: CircularProgressIndicator.adaptive(
-                value: progress == null
-                    ? null
-                    : progress.cumulativeBytesLoaded /
-                        progress.expectedTotalBytes!,
-              ),
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
           backgroundDecoration: const BoxDecoration(color: Colors.black),
