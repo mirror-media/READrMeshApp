@@ -55,7 +55,7 @@ class PickButton extends StatelessWidget {
                     context.read<PickButtonCubit>().updateButton(item, null);
                   }
                 } else {
-                  bool? result = await showPlatformDialog<bool>(
+                  bool? result = await showDialog<bool>(
                     context: context,
                     builder: (context) => PlatformAlertDialog(
                       title: const Text(
