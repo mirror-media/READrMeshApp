@@ -37,7 +37,7 @@ class ReadrStoryWidget extends StatefulWidget {
 class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
   final double _textSize = 18;
   late NewsStoryItem _newsStoryItem;
-  String _inputText = '';
+  final ValueNotifier<String> _inputValue = ValueNotifier('');
   bool _isPicked = false;
   final ItemScrollController _itemScrollController = ItemScrollController();
   late ParagraphFormat paragraphFormat;
@@ -71,7 +71,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
           children: [
             StoryAppBar(
               newsStoryItem: null,
-              inputText: _inputText,
+              inputText: '',
               url: widget.news.url,
             ),
             Expanded(
@@ -99,10 +99,15 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(
-                    newsStoryItem: _newsStoryItem,
-                    inputText: _inputText,
-                    url: widget.news.url,
+                  ValueListenableBuilder(
+                    valueListenable: _inputValue,
+                    builder: (context, String text, child) {
+                      return StoryAppBar(
+                        newsStoryItem: _newsStoryItem,
+                        inputText: text,
+                        url: widget.news.url,
+                      );
+                    },
                   ),
                   Expanded(
                     child: _storyContent(width, story),
@@ -111,7 +116,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
               ),
               BottomCardWidget(
                 item: NewsStoryItemPick(_newsStoryItem),
-                onTextChanged: (value) => _inputText = value,
+                onTextChanged: (value) => _inputValue.value = value,
                 isPicked: _isPicked,
               ),
             ],

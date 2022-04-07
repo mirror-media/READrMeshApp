@@ -23,8 +23,8 @@ class NewsWebviewWidget extends StatefulWidget {
 class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
   bool _isLoading = true;
   late NewsStoryItem _newsStoryItem;
-  String _inputText = '';
   bool _isPicked = false;
+  final ValueNotifier<String> _inputValue = ValueNotifier('');
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
             children: [
               StoryAppBar(
                 newsStoryItem: null,
-                inputText: _inputText,
+                inputText: '',
                 url: widget.news.url,
               ),
               Expanded(
@@ -96,10 +96,15 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
         children: [
           Column(
             children: [
-              StoryAppBar(
-                newsStoryItem: _newsStoryItem,
-                inputText: _inputText,
-                url: widget.news.url,
+              ValueListenableBuilder(
+                valueListenable: _inputValue,
+                builder: (context, String text, child) {
+                  return StoryAppBar(
+                    newsStoryItem: _newsStoryItem,
+                    inputText: text,
+                    url: widget.news.url,
+                  );
+                },
               ),
               Expanded(
                 child: InAppWebView(
@@ -117,7 +122,7 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
           ),
           BottomCardWidget(
             item: NewsStoryItemPick(_newsStoryItem),
-            onTextChanged: (value) => _inputText = value,
+            onTextChanged: (value) => _inputValue.value = value,
             isPicked: _isPicked,
           ),
           _isLoading ? StorySkeletonScreen(widget.news.url) : Container(),

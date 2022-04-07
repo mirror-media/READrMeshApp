@@ -25,7 +25,7 @@ class NewsStoryWidget extends StatefulWidget {
 
 class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   late NewsStoryItem _newsStoryItem;
-  String _inputText = '';
+  final ValueNotifier<String> _inputValue = ValueNotifier('');
   bool _isPicked = false;
 
   @override
@@ -52,7 +52,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
             children: [
               StoryAppBar(
                 newsStoryItem: null,
-                inputText: _inputText,
+                inputText: '',
                 url: widget.news.url,
               ),
               Expanded(
@@ -78,10 +78,15 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
               children: [
                 Column(
                   children: [
-                    StoryAppBar(
-                      newsStoryItem: _newsStoryItem,
-                      inputText: _inputText,
-                      url: widget.news.url,
+                    ValueListenableBuilder(
+                      valueListenable: _inputValue,
+                      builder: (context, String text, child) {
+                        return StoryAppBar(
+                          newsStoryItem: _newsStoryItem,
+                          inputText: text,
+                          url: widget.news.url,
+                        );
+                      },
                     ),
                     Expanded(
                       child: _buildContent(context),
@@ -90,7 +95,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                 ),
                 BottomCardWidget(
                   item: NewsStoryItemPick(_newsStoryItem),
-                  onTextChanged: (value) => _inputText = value,
+                  onTextChanged: (value) => _inputValue.value = value,
                   isPicked: _isPicked,
                 ),
               ],
