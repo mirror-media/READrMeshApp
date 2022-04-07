@@ -164,21 +164,18 @@ class _HomeWidgetState extends State<HomeWidget> {
 
                 if (state is LoadingMoreFollowingPicked) {
                   _isLoadingMoreFollowingPicked = true;
-                  return _buildHomeContent();
                 }
 
                 if (state is LoadMoreFollowingPickedFailed) {
                   final error = state.error;
                   print('LoadMoreFollowingPickedFailed: ${error.message()}');
                   _isLoadingMoreFollowingPicked = false;
-                  return _buildHomeContent();
                 }
 
                 if (state is LoadMoreFollowingPickedSuccess) {
                   _followingStories.addAll(state.newFollowingStories);
                   _isLoadingMoreFollowingPicked = false;
                   _moreFollowingPickedLoaded = true;
-                  return _buildHomeContent();
                 }
 
                 return Column(

@@ -213,7 +213,6 @@ class FollowingBlock extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 context.read<HomeBloc>().add(LoadMoreFollowingPicked(
-                      item.latestPickTime!,
                       alreadyFetchIds,
                     ));
               },

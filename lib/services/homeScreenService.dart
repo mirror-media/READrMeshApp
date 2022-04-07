@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class HomeScreenRepos {
   Future<Map<String, dynamic>> fetchHomeScreenData();
   Future<List<NewsListItem>> fetchMoreFollowingStories(
-    DateTime lastPickTime,
     List<String> alreadyFetchIds,
   );
   Future<List<NewsListItem>> fetchMoreLatestNews(
@@ -849,7 +848,6 @@ class HomeScreenService implements HomeScreenRepos {
 
   @override
   Future<List<NewsListItem>> fetchMoreFollowingStories(
-    DateTime lastPickTime,
     List<String> alreadyFetchIds,
   ) async {
     const String query = """
@@ -857,7 +855,6 @@ class HomeScreenService implements HomeScreenRepos {
       \$followingMembers: [ID!]
       \$myId: ID
       \$yesterday: DateTime
-      \$lastPickTime: DateTime
       \$alreadyFetchIds: [ID!]
     ){
       stories(
@@ -889,7 +886,6 @@ class HomeScreenService implements HomeScreenRepos {
                 }
                 picked_date:{
                   gte: \$yesterday
-                  lt: \$lastPickTime
                 }
               }
             }
@@ -1023,7 +1019,6 @@ class HomeScreenService implements HomeScreenRepos {
     Map<String, dynamic> variables = {
       "yesterday": yesterday,
       "followingMembers": followingMemberIds,
-      "lastPickTime": lastPickTime.toUtc().toIso8601String(),
       "myId": member.memberId,
       "alreadyFetchIds": alreadyFetchIds
     };

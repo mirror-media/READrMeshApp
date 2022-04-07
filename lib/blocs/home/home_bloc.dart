@@ -108,7 +108,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           List<NewsListItem> newFollowingStories =
               await homeScreenRepos.fetchMoreFollowingStories(
-            event.lastPickTime,
             event.alreadyFetchIds,
           );
 

@@ -18,10 +18,9 @@ class ReloadHomeScreen extends HomeEvent {
 }
 
 class LoadMoreFollowingPicked extends HomeEvent {
-  final DateTime lastPickTime;
   final List<String> alreadyFetchIds;
 
-  const LoadMoreFollowingPicked(this.lastPickTime, this.alreadyFetchIds);
+  const LoadMoreFollowingPicked(this.alreadyFetchIds);
 
   @override
   String toString() => 'LoadMoreFollowingPicked';
