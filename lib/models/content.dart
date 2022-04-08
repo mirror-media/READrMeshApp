@@ -38,7 +38,7 @@ class Content {
         double? widthPercent;
         if (json['width'] == null || json['height'] == null) {
           aspectRatio = null;
-        } else {
+        } else if (json['width'] is String) {
           if (json['width'].contains('%')) {
             String percent = json['width'].replaceAll('%', '');
             widthPercent = double.parse(percent) / 100;
@@ -50,6 +50,8 @@ class Content {
             double width = double.parse(json['height']) * widthPercent;
             aspectRatio = width / double.parse(json['height']);
           }
+        } else {
+          aspectRatio = json['width'] / json['height'];
         }
         return Content(
           data: json['embeddedCode'],
