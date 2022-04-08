@@ -26,6 +26,7 @@ class ParagraphList extends CustomizedList<Paragraph> {
 
       return ParagraphList.fromJson(jsonData);
     } catch (e) {
+      print(e.toString());
       return ParagraphList();
     }
   }
