@@ -166,21 +166,13 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
           alignment: Alignment.center,
           child: RichText(
             text: TextSpan(
-              text: 'READr Mesh App 公開測試中，請向發行人取得邀請碼以繼續使用。\n',
+              text: '請輸入邀請碼後繼續使用，如邀請碼有使用異常之狀況，請聯繋',
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
                 color: readrBlack50,
               ),
               children: [
-                const TextSpan(
-                  text: '如邀請碼有使用異常之狀況，請聯繫 ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
-                    color: readrBlack50,
-                  ),
-                ),
                 WidgetSpan(
                   child: GestureDetector(
                     onTap: () async {
