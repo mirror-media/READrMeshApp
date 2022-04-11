@@ -40,7 +40,7 @@ class _InputNamePageState extends State<InputNamePage> {
           backgroundColor: Colors.white,
           elevation: 0,
           title: const Text(
-            '姓名',
+            '暱稱',
             style: TextStyle(
               color: readrBlack,
               fontSize: 18,
@@ -131,9 +131,9 @@ class _InputNamePageState extends State<InputNamePage> {
             controller: _controller,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return '請輸入姓名。';
+                return '請輸入暱稱。';
               } else if (!_validateNickname(value)) {
-                return '這個名稱目前無法使用，請使用其他名稱。';
+                return '這個暱稱目前無法使用，請使用其他暱稱。';
               }
               return null;
             },
@@ -156,7 +156,7 @@ class _InputNamePageState extends State<InputNamePage> {
           height: 12,
         ),
         const Text(
-          '請輸入您想使用的公開顯示名稱，我們鼓勵您填寫真實姓名。\n字數以20字內為限。',
+          '請輸入您想使用的公開顯示名稱，字數以20字內為限。',
           style: TextStyle(
             fontSize: 13,
             color: readrBlack50,
