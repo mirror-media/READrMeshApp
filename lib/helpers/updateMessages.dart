@@ -6,7 +6,7 @@ class UpdateMessages extends UpgraderMessages {
     if (languageCode == 'zh') {
       switch (messageKey) {
         case UpgraderMessage.body:
-          return 'READr App有新的版本可供更新！\n最新版本：{{currentAppStoreVersion}}\n您安裝的版本：{{currentInstalledVersion}}';
+          return 'READr Mesh有新的版本可供更新！\n最新版本：{{currentAppStoreVersion}}\n您安裝的版本：{{currentInstalledVersion}}';
         case UpgraderMessage.buttonTitleIgnore:
           return '忽略';
         case UpgraderMessage.buttonTitleLater:
