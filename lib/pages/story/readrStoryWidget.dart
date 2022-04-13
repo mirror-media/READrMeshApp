@@ -22,6 +22,7 @@ import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ReadrStoryWidget extends StatefulWidget {
@@ -147,6 +148,8 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
       _buildAnnotationBlock(story),
       const SizedBox(height: 48),
       _buildCitation(story),
+      const SizedBox(height: 32),
+      _buildContact(),
       const SizedBox(height: 160),
     ];
     return ScrollablePositionedList.builder(
@@ -673,5 +676,47 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
     }
 
     return Container();
+  }
+
+  Widget _buildContact() {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: 'READr連絡信箱：',
+        style: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 13,
+          color: readrBlack50,
+        ),
+        children: [
+          WidgetSpan(
+            child: GestureDetector(
+              onTap: () async {
+                final Uri params = Uri(
+                  scheme: 'mailto',
+                  path: 'readr@readr.tw',
+                );
+                String url = params.toString();
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  print('Could not launch $url');
+                }
+              },
+              child: const Text(
+                'readr@readr.tw',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                  color: readrBlack50,
+                  decoration: TextDecoration.underline,
+                  decorationColor: readrBlack50,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -12,6 +12,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsStoryWidget extends StatefulWidget {
   final NewsListItem news;
@@ -123,6 +124,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         const SizedBox(height: 24),
         _buildStoryContent(),
         const SizedBox(height: 32),
+        _buildContact(),
         const SizedBox(height: 160),
       ],
     );
@@ -254,6 +256,51 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
         fontSize: 18,
         height: 2,
         color: readrBlack87,
+      ),
+    );
+  }
+
+  Widget _buildContact() {
+    if (widget.news.source.title != '鏡週刊') {
+      return Container();
+    }
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: '鏡週刊連絡信箱：',
+        style: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 13,
+          color: readrBlack50,
+        ),
+        children: [
+          WidgetSpan(
+            child: GestureDetector(
+              onTap: () async {
+                final Uri params = Uri(
+                  scheme: 'mailto',
+                  path: 'MM-onlineservice@mirrormedia.mg',
+                );
+                String url = params.toString();
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  print('Could not launch $url');
+                }
+              },
+              child: const Text(
+                'MM-onlineservice@mirrormedia.mg',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                  color: readrBlack50,
+                  decoration: TextDecoration.underline,
+                  decorationColor: readrBlack50,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
