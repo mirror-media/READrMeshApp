@@ -140,6 +140,8 @@ dependencies:
       ref: master
   # for invitation code input
   pinput: ^2.2.5
+  # app tracking transparency
+  app_tracking_transparency: ^2.0.2+2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
