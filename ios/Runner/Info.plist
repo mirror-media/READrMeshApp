@@ -22,6 +22,8 @@
 		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>Your data will be used to deliver personalized ads and recommended member to you.</string>
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
