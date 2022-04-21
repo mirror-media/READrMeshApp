@@ -264,44 +264,83 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
     if (widget.news.source.title != '鏡週刊') {
       return Container();
     }
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        text: '鏡週刊連絡信箱：',
-        style: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 13,
-          color: readrBlack50,
-        ),
-        children: [
-          WidgetSpan(
-            child: GestureDetector(
-              onTap: () async {
-                final Uri params = Uri(
-                  scheme: 'mailto',
-                  path: 'MM-onlineservice@mirrormedia.mg',
-                );
-                String url = params.toString();
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  print('Could not launch $url');
-                }
-              },
-              child: const Text(
-                'MM-onlineservice@mirrormedia.mg',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13,
-                  color: readrBlack50,
-                  decoration: TextDecoration.underline,
-                  decorationColor: readrBlack50,
+    return Column(
+      children: [
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: '鏡週刊連絡信箱：',
+            style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 13,
+              color: readrBlack87,
+            ),
+            children: [
+              WidgetSpan(
+                child: GestureDetector(
+                  onTap: () async {
+                    final Uri params = Uri(
+                      scheme: 'mailto',
+                      path: 'MM-onlineservice@mirrormedia.mg',
+                    );
+                    String url = params.toString();
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      print('Could not launch $url');
+                    }
+                  },
+                  child: const Text(
+                    'MM-onlineservice@mirrormedia.mg',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                      color: readrBlack87,
+                      decoration: TextDecoration.underline,
+                      decorationColor: readrBlack50,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: '鏡週刊客服電話：',
+            style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 13,
+              color: readrBlack87,
+            ),
+            children: [
+              WidgetSpan(
+                child: GestureDetector(
+                  onTap: () async {
+                    String url = 'tel://0266333966';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      print('Could not launch $url');
+                    }
+                  },
+                  child: const Text(
+                    '（02）6633-3966',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                      color: readrBlack87,
+                      decoration: TextDecoration.underline,
+                      decorationColor: readrBlack50,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
