@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:readr/pages/errorPage.dart';
 
-abstract class MNewException {
+abstract class MeshException {
   dynamic message;
-  MNewException(this.message);
+  MeshException(this.message);
 
   Widget renderWidget({
     required void Function() onPressed,
   });
 }
 
-class Error500Exception implements MNewException {
+class Error500Exception implements MeshException {
   @override
   dynamic message;
   Error500Exception(this.message);
@@ -22,7 +22,7 @@ class Error500Exception implements MNewException {
       ErrorPage(error: this, onPressed: onPressed);
 }
 
-class Error400Exception implements MNewException {
+class Error400Exception implements MeshException {
   @override
   dynamic message;
   Error400Exception(this.message);
@@ -34,7 +34,7 @@ class Error400Exception implements MNewException {
       ErrorPage(error: this, onPressed: onPressed);
 }
 
-class NoInternetException implements MNewException {
+class NoInternetException implements MeshException {
   @override
   dynamic message;
   NoInternetException(this.message);
