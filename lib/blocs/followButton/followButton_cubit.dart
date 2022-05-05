@@ -10,7 +10,6 @@ class FollowButtonCubit extends Cubit<FollowButtonState> {
 
   updateLocalFollowing(FollowableItem item) {
     emit(FollowButtonTap());
-    item.updateLocalList();
     EasyDebounce.debounce(item.id, const Duration(seconds: 1),
         () async => await updateFollowing(item));
     emit(FollowButtonUpdating());

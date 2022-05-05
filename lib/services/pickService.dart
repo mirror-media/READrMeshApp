@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -31,7 +33,7 @@ abstract class PickRepos {
 class PickService implements PickRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
@@ -70,8 +72,8 @@ class PickService implements PickRepos {
     """;
 
     Map<String, String> variables = {
-      "email": Environment().config.appHelperEmail,
-      "password": Environment().config.appHelperPassword,
+      "email": Get.find<EnvironmentService>().config.appHelperEmail,
+      "password": Get.find<EnvironmentService>().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -114,7 +116,7 @@ class PickService implements PickRepos {
     Map<String, Map> variables = {
       "data": {
         "member": {
-          "connect": {"id": UserHelper.instance.currentUser.memberId}
+          "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
         "objective": objective.toString().split('.').last,
         "kind": kind.toString().split('.').last,
@@ -209,7 +211,7 @@ class PickService implements PickRepos {
     Map<String, Map> variables = {
       "data": {
         "member": {
-          "connect": {"id": UserHelper.instance.currentUser.memberId}
+          "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
         "objective": objective.toString().split('.').last,
         "kind": kind.toString().split('.').last,
@@ -245,7 +247,7 @@ class PickService implements PickRepos {
         "pick_comment": {
           "create": {
             "member": {
-              "connect": {"id": UserHelper.instance.currentUser.memberId}
+              "connect": {"id": Get.find<UserService>().currentUser.memberId}
             },
             "story": {
               "connect": {"id": targetId}
@@ -261,7 +263,7 @@ class PickService implements PickRepos {
         "pick_comment": {
           "create": {
             "member": {
-              "connect": {"id": UserHelper.instance.currentUser.memberId}
+              "connect": {"id": Get.find<UserService>().currentUser.memberId}
             },
             "parent": {
               "connect": {"id": targetId}

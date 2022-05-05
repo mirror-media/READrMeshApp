@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
@@ -32,7 +33,7 @@ class _LatestNewsBlockState extends State<LatestNewsBlock> {
   bool _isLoadingMore = false;
   @override
   Widget build(BuildContext context) {
-    if (UserHelper.instance.currentUser.followingPublisher.isEmpty) {
+    if (Get.find<UserService>().currentUser.followingPublisher.isEmpty) {
       return Container(
         color: Colors.white,
         child: Column(

@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/services/personalFileService.dart';
 
@@ -27,7 +28,7 @@ class PersonalFileCubit extends Cubit<PersonalFileState> {
       personalFileRepos
           .fetchMemberData(viewMember)
           .then((value) => viewMemberData = value),
-      UserHelper.instance.fetchUserData(),
+      Get.find<UserService>().fetchUserData(),
     ]);
 
     emit(PersonalFileLoaded(viewMemberData));

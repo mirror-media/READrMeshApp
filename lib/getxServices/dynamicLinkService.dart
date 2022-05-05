@@ -1,26 +1,24 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:readr/blocs/config/bloc.dart';
-import 'package:readr/blocs/config/events.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/initialApp.dart';
+import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DynamicLinkHelper {
+class DynamicLinkService extends GetxService {
   final _auth = FirebaseAuth.instance;
-  void initDynamicLinks(BuildContext context) async {
+  Future<DynamicLinkService> initDynamicLinks() async {
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
       final Uri? deepLink = dynamicLink.link;
 
       if (deepLink != null) {
         if (_auth.isSignInWithEmailLink(deepLink.toString())) {
-          _loginWithEmailLink(context, deepLink.toString());
+          _loginWithEmailLink(deepLink.toString());
         }
       }
     }).onError((e) async {
@@ -34,13 +32,15 @@ class DynamicLinkHelper {
 
     if (deepLink != null) {
       if (_auth.isSignInWithEmailLink(deepLink.toString())) {
-        _loginWithEmailLink(context, deepLink.toString());
+        _loginWithEmailLink(deepLink.toString());
       }
     }
+
+    return this;
   }
 
-  _loginWithEmailLink(BuildContext context, String emailLink) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  _loginWithEmailLink(String emailLink) async {
+    SharedPreferences prefs = Get.find<SharedPreferencesService>().prefs;
     String email = prefs.getString('signInEmail') ?? "";
 
     // The client SDK will parse the code from the link for you.
@@ -54,21 +54,17 @@ class DynamicLinkHelper {
       // value.additionalUserInfo.isNewUser;
 
       print('Successfully signed in with email link!');
-      final prefs = await SharedPreferences.getInstance();
       await prefs.setString('loginType', 'email');
       if (value.additionalUserInfo!.isNewUser) {
-        AutoRouter.of(context).replace(
-            InputNameRoute(publisherTitleList: await _fetchPublisherTitles()));
+        Get.to(() async => InputNamePage(await _fetchPublisherTitles()));
       } else {
         var result = await MemberService().fetchMemberData();
         if (result != null) {
-          await UserHelper.instance.fetchUserData();
+          Get.find<UserService>().fetchUserData(member: result);
           await prefs.setBool('isFirstTime', false);
-          context.read<ConfigBloc>().add(LoginUpdate());
-          AutoRouter.of(context).navigate(const Initial());
+          Get.offAll(() => InitialApp());
         } else {
-          AutoRouter.of(context).replace(InputNameRoute(
-              publisherTitleList: await _fetchPublisherTitles()));
+          Get.to(() async => InputNamePage(await _fetchPublisherTitles()));
         }
       }
     }).catchError((onError) async {

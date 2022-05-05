@@ -1,9 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
@@ -25,10 +26,9 @@ abstract class FollowableItem {
 
   Future<bool> addFollow();
   Future<bool> removeFollow();
-  Future<void> onTap(BuildContext context);
-  Widget defaultProfilePhotoWidget(BuildContext context);
-  Widget profilePhotoWidget(BuildContext context);
-  void updateLocalList();
+  Future<void> onTap();
+  Widget defaultProfilePhotoWidget();
+  Widget profilePhotoWidget();
 }
 
 class MemberFollowableItem implements FollowableItem {
@@ -59,41 +59,36 @@ class MemberFollowableItem implements FollowableItem {
   String get name => member.nickname;
 
   @override
-  bool get isFollowed => UserHelper.instance.isLocalFollowingMember(member);
+  bool get isFollowed => Get.find<UserService>().isFollowingMember(member);
 
   @override
   String get lookmoreText => '探索更多為你推薦的使用者';
 
   @override
   Future<bool> addFollow() async =>
-      await UserHelper.instance.addFollowingMember(member.memberId);
+      await Get.find<UserService>().addFollowingMember(member.memberId);
 
   @override
   Future<bool> removeFollow() async =>
-      await UserHelper.instance.removeFollowingMember(member.memberId);
+      await Get.find<UserService>().removeFollowingMember(member.memberId);
 
   @override
-  Future<void> onTap(BuildContext context) async {
-    AutoRouter.of(context).push(PersonalFileRoute(viewMember: member));
+  Future<void> onTap() async {
+    Get.to(() => PersonalFilePage(viewMember: member));
   }
 
   @override
-  Widget profilePhotoWidget(BuildContext context) {
+  Widget profilePhotoWidget() {
     return ProfilePhotoWidget(member, 26);
   }
 
   @override
-  Widget defaultProfilePhotoWidget(BuildContext context) {
+  Widget defaultProfilePhotoWidget() {
     return ProfilePhotoWidget(
       member,
       32,
       key: ValueKey(member.hashCode),
     );
-  }
-
-  @override
-  void updateLocalList() {
-    UserHelper.instance.updateLocalFollowingMember(member);
   }
 }
 
@@ -126,42 +121,37 @@ class PublisherFollowableItem implements FollowableItem {
 
   @override
   bool get isFollowed =>
-      UserHelper.instance.isLocalFollowingPublisher(publisher);
+      Get.find<UserService>().isFollowingPublisher(publisher);
 
   @override
   Future<bool> addFollow() async =>
-      await UserHelper.instance.addFollowPublisher(publisher.id);
+      await Get.find<UserService>().addFollowPublisher(publisher.id);
 
   @override
   Future<bool> removeFollow() async =>
-      await UserHelper.instance.removeFollowPublisher(publisher.id);
+      await Get.find<UserService>().removeFollowPublisher(publisher.id);
 
   @override
   String get lookmoreText => '探索更多為你推薦的媒體';
 
   @override
-  Future<void> onTap(BuildContext context) async {
-    AutoRouter.of(context).push(PublisherRoute(
-      publisher: publisher,
-    ));
+  Future<void> onTap() async {
+    Get.to(() => PublisherPage(
+          publisher,
+        ));
   }
 
   @override
-  Widget profilePhotoWidget(BuildContext context) {
+  Widget profilePhotoWidget() {
     return PublisherLogoWidget(publisher, size: 48);
   }
 
   @override
-  Widget defaultProfilePhotoWidget(BuildContext context) {
+  Widget defaultProfilePhotoWidget() {
     return PublisherLogoWidget(
       publisher,
       size: 60,
       key: ValueKey(publisher.hashCode),
     );
-  }
-
-  @override
-  void updateLocalList() {
-    UserHelper.instance.updateLocalFollowingPublisher(publisher);
   }
 }

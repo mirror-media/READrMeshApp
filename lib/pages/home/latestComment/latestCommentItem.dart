@@ -1,17 +1,18 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
+import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LatestCommentItem extends StatefulWidget {
@@ -48,9 +49,12 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
         children: [
           InkWell(
             onTap: () {
-              AutoRouter.of(context).push(NewsStoryRoute(
-                news: widget.news,
-              ));
+              Get.to(
+                () => NewsStoryPage(
+                  news: widget.news,
+                ),
+                fullscreenDialog: true,
+              );
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,8 +145,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
         children: [
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context)
-                  .push(PersonalFileRoute(viewMember: comment.member));
+              Get.to(() => PersonalFilePage(viewMember: comment.member));
             },
             child: Row(
               children: [

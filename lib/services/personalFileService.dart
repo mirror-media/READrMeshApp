@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
@@ -21,7 +23,7 @@ abstract class PersonalFileRepos {
 
 class PersonalFileService implements PersonalFileRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = false}) async {
     Map<String, String> headers = {
@@ -60,8 +62,8 @@ class PersonalFileService implements PersonalFileRepos {
     """;
 
     Map<String, String> variables = {
-      "email": Environment().config.appHelperEmail,
-      "password": Environment().config.appHelperPassword,
+      "email": Get.find<EnvironmentService>().config.appHelperEmail,
+      "password": Get.find<EnvironmentService>().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -369,13 +371,13 @@ class PersonalFileService implements PersonalFileRepos {
     """;
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
       "viewMemberId": targetMember.memberId
@@ -576,13 +578,13 @@ class PersonalFileService implements PersonalFileRepos {
     """;
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
     };
@@ -657,7 +659,7 @@ class PersonalFileService implements PersonalFileRepos {
 
     Map<String, dynamic> variables = {
       "viewMemberId": viewMember.memberId,
-      "currentMemberId": UserHelper.instance.currentUser.memberId,
+      "currentMemberId": Get.find<UserService>().currentUser.memberId,
       "skip": skip,
     };
 
@@ -677,8 +679,8 @@ class PersonalFileService implements PersonalFileRepos {
     List<Member> followerList = [];
     for (var member in jsonResponse['data']['members']) {
       Member follower = Member.fromJson(member);
-      if (UserHelper.instance.isVisitor) {
-        UserHelper.instance.isFollowingMember(follower);
+      if (Get.find<UserService>().isVisitor) {
+        Get.find<UserService>().isFollowingMember(follower);
       }
       followerList.add(follower);
     }
@@ -747,7 +749,7 @@ class PersonalFileService implements PersonalFileRepos {
 
     Map<String, dynamic> variables = {
       "viewMemberId": viewMember.memberId,
-      "currentMemberId": UserHelper.instance.currentUser.memberId,
+      "currentMemberId": Get.find<UserService>().currentUser.memberId,
       "skip": skip,
     };
 
@@ -767,8 +769,8 @@ class PersonalFileService implements PersonalFileRepos {
     List<Member> followingList = [];
     for (var member in jsonResponse['data']['members']) {
       Member followingMember = Member.fromJson(member);
-      if (UserHelper.instance.isVisitor) {
-        UserHelper.instance.isFollowingMember(followingMember);
+      if (Get.find<UserService>().isVisitor) {
+        Get.find<UserService>().isFollowingMember(followingMember);
       }
       followingList.add(followingMember);
     }

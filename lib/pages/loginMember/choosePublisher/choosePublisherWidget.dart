@@ -1,20 +1,18 @@
-import 'package:auto_route/auto_route.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
-import 'package:readr/blocs/config/bloc.dart';
-import 'package:readr/blocs/config/events.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/initialApp.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChoosePublisherWidget extends StatefulWidget {
   const ChoosePublisherWidget({Key? key}) : super(key: key);
@@ -41,7 +39,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
   @override
   Widget build(BuildContext context) {
     String buttonText;
-    if (UserHelper.instance.isVisitor) {
+    if (Get.find<UserService>().isVisitor) {
       buttonText = '完成';
     } else {
       buttonText = '下一步';
@@ -64,7 +62,8 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
         ),
         BlocBuilder<FollowButtonCubit, FollowButtonState>(
           builder: (context, state) {
-            _followingCount = UserHelper.instance.localPublisherList.length;
+            _followingCount =
+                Get.find<UserService>().currentUser.followingPublisher.length;
             return Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
               width: double.infinity,
@@ -81,14 +80,13 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
                 onPressed: _followingCount == 0
                     ? null
                     : () async {
-                        if (UserHelper.instance.isMember) {
-                          AutoRouter.of(context)
-                              .push(ChooseMemberRoute(isFromPublisher: true));
+                        if (Get.find<UserService>().isMember) {
+                          Get.to(() => const ChooseMemberPage(true));
                         } else {
-                          final prefs = await SharedPreferences.getInstance();
+                          final prefs =
+                              Get.find<SharedPreferencesService>().prefs;
                           await prefs.setBool('isFirstTime', false);
-                          context.read<ConfigBloc>().add(LoginUpdate());
-                          AutoRouter.of(context).navigate(const Initial());
+                          Get.offAll(() => InitialApp());
                         }
                       },
                 child: Text(
@@ -165,7 +163,7 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
   }
 
   Widget _buildItem(BuildContext context, Publisher publisher) {
-    bool _isFollowed = UserHelper.instance.isFollowingPublisher(publisher);
+    bool _isFollowed = Get.find<UserService>().isFollowingPublisher(publisher);
     return Row(
       children: [
         PublisherLogoWidget(publisher),
@@ -209,10 +207,10 @@ class _ChoosePublisherWidgetState extends State<ChoosePublisherWidget> {
 
   int _updateFollowCount(bool isFollowed, Publisher publisher) {
     if (isFollowed &&
-        !UserHelper.instance.isLocalFollowingPublisher(publisher)) {
+        !Get.find<UserService>().isFollowingPublisher(publisher)) {
       return publisher.followerCount - 1;
     } else if (!isFollowed &&
-        UserHelper.instance.isLocalFollowingPublisher(publisher)) {
+        Get.find<UserService>().isFollowingPublisher(publisher)) {
       return publisher.followerCount + 1;
     } else {
       return publisher.followerCount;

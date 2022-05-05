@@ -1,31 +1,35 @@
 import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
+import 'package:readr/pages/personalFile/collectionTabContent.dart';
+import 'package:readr/pages/personalFile/editPersonalFile/editPersonalFilePage.dart';
+import 'package:readr/pages/personalFile/followerList/followerListPage.dart';
+import 'package:readr/pages/personalFile/followingList/followingListPage.dart';
 import 'package:readr/pages/personalFile/personalFileSkeletonScreen.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
+import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:readr/services/commentService.dart';
 import 'package:readr/services/personalFileService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validated/validated.dart' as validate;
 
 class PersonalFileWidget extends StatefulWidget {
@@ -118,26 +122,27 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       ),
     ));
 
-    // if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
-    //   _tabs.add(
-    //     const Tab(
-    //       child: Text(
-    //         '集錦',
-    //         style: TextStyle(
-    //           fontSize: 16,
-    //         ),
-    //       ),
-    //     ),
-    //   );
+    if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
+      _tabs.add(
+        const Tab(
+          child: Text(
+            '集錦',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ),
+      );
 
-    //   _tabWidgets.add(BlocProvider(
-    //     create: (context) => PersonalFileTabBloc(),
-    //     child: CollectionTabContent(
-    //       viewMember: widget.viewMember,
-    //       isMine: widget.isMine,
-    //     ),
-    //   ));
-    // }
+      _tabWidgets.add(BlocProvider(
+        create: (context) =>
+            PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
+        child: CollectionTabContent(
+          viewMember: widget.viewMember,
+          isMine: widget.isMine,
+        ),
+      ));
+    }
 
     if (widget.isMine) {
       _tabs.add(
@@ -196,7 +201,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
         if (state is PersonalFileLoaded) {
           _viewMember = state.viewMember;
-          _isFollowed = UserHelper.instance.isLocalFollowingMember(_viewMember);
+          _isFollowed = Get.find<UserService>().isFollowingMember(_viewMember);
           if (_viewMember.pickCount != null) {
             _pickCount = _viewMember.pickCount!;
           }
@@ -318,16 +323,8 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         Icons.settings,
         color: readrBlack,
       ),
-      onPressed: () async {
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        String version = packageInfo.version;
-        String buildNumber = packageInfo.buildNumber;
-        final prefs = await SharedPreferences.getInstance();
-        String loginType = prefs.getString('loginType') ?? '';
-        AutoRouter.of(context).push(SettingRoute(
-          version: 'v$version ($buildNumber)',
-          loginType: loginType,
-        ));
+      onPressed: () {
+        Get.to(() => SettingPage());
       },
     );
   }
@@ -362,17 +359,17 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           color: readrBlack,
         ),
       ),
-      // actions: widget.isMine && !widget.isVisitor && _pickCount != 0
-      //     ? [
-      //         IconButton(
-      //           icon: const Icon(
-      //             Icons.add_sharp,
-      //             color: readrBlack87,
-      //           ),
-      //           onPressed: () {},
-      //         )
-      //       ]
-      //     : null,
+      actions: widget.isMine && !widget.isVisitor && _pickCount != 0
+          ? [
+              IconButton(
+                icon: const Icon(
+                  Icons.add_sharp,
+                  color: readrBlack87,
+                ),
+                onPressed: () => Get.to(() => ChooseStoryPage()),
+              )
+            ]
+          : null,
     );
   }
 
@@ -394,7 +391,10 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: ElevatedButton(
             onPressed: () {
-              AutoRouter.of(context).push(LoginRoute());
+              Get.to(
+                () => const LoginPage(),
+                fullscreenDialog: true,
+              );
             },
             child: const Text(
               '立即建立',
@@ -512,9 +512,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
               ),
               GestureDetector(
                 onTap: () {
-                  AutoRouter.of(context).push(FollowerListRoute(
-                    viewMember: widget.viewMember,
-                  ));
+                  Get.to(() => FollowerListPage(
+                        viewMember: widget.viewMember,
+                      ));
                 },
                 child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
                   builder: (context, state) {
@@ -562,9 +562,9 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {
-                      AutoRouter.of(context).push(FollowingListRoute(
-                        viewMember: widget.viewMember,
-                      ));
+                      Get.to(() => FollowingListPage(
+                            viewMember: widget.viewMember,
+                          ));
                     },
                     child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
                       builder: (context, state) {
@@ -648,10 +648,10 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
   void _updateFollowerCount() {
     if (_isFollowed &&
-        !UserHelper.instance.isLocalFollowingMember(_viewMember)) {
+        !Get.find<UserService>().isFollowingMember(_viewMember)) {
       _followerCount = _originFollowerCount - 1;
     } else if (!_isFollowed &&
-        UserHelper.instance.isLocalFollowingMember(_viewMember)) {
+        Get.find<UserService>().isFollowingMember(_viewMember)) {
       _followerCount = _originFollowerCount + 1;
     } else {
       _followerCount = _originFollowerCount;
@@ -660,16 +660,18 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
   void _updateFollowingCount() {
     if (widget.isMine) {
-      _followingCount = UserHelper.instance.localFollowingMemberList.length +
-          UserHelper.instance.localPublisherList.length;
+      _followingCount = Get.find<UserService>().currentUser.following.length +
+          Get.find<UserService>().currentUser.followingPublisher.length;
     }
   }
 
   Widget _editProfileButton() {
     return OutlinedButton(
       onPressed: () async {
-        final needReload =
-            await context.pushRoute(const EditPersonalFileRoute());
+        final needReload = await Get.to(
+          () => EditPersonalFilePage(),
+          fullscreenDialog: true,
+        );
 
         if (needReload is bool && needReload) {
           _refetchMemberData();

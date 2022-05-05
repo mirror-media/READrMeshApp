@@ -1,14 +1,14 @@
 import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/newsStoryItem.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
 import 'package:readr/services/pickService.dart';
 import 'package:share_plus/share_plus.dart';
@@ -74,7 +74,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
             ),
             tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
             onPressed: () async {
-              if (UserHelper.instance.isMember) {
+              if (Get.find<UserService>().isMember) {
                 setState(() {
                   _isBookmarked = !_isBookmarked;
                 });
@@ -83,7 +83,10 @@ class _StoryAppBarState extends State<StoryAppBar> {
                     const Duration(seconds: 1),
                     () async => await updateBookmark());
               } else {
-                AutoRouter.of(context).push(LoginRoute());
+                Get.to(
+                  () => const LoginPage(),
+                  fullscreenDialog: true,
+                );
               }
             },
           ),

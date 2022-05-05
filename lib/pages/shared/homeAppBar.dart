@@ -1,12 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
+import 'package:readr/pages/invitationCode/checkInvitationCodePage.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({Key? key}) : super(key: key);
@@ -33,10 +34,13 @@ class HomeAppBar extends StatelessWidget {
           builder: (context, state) {
             return IconButton(
               onPressed: () {
-                AutoRouter.of(context).push(const CheckInvitationCodeRoute());
+                Get.to(
+                  () => const CheckInvitationCodePage(),
+                  fullscreenDialog: true,
+                );
               },
               icon: SvgPicture.asset(
-                UserHelper.instance.hasInvitationCode
+                Get.find<UserService>().hasInvitationCode
                     ? newInvitationCodeSvg
                     : invitationCodeSvg,
                 fit: BoxFit.cover,

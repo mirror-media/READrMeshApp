@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/publisher/publisher_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -33,7 +35,7 @@ class _PublisherWidgetState extends State<PublisherWidget> {
     super.initState();
     _fetchPublisherNews();
     _isFollowed =
-        UserHelper.instance.isLocalFollowingPublisher(widget.publisher);
+        Get.find<UserService>().isFollowingPublisher(widget.publisher);
   }
 
   _fetchPublisherNews() {
@@ -182,10 +184,10 @@ class _PublisherWidgetState extends State<PublisherWidget> {
 
   void _updateFollowCount() {
     if (_isFollowed &&
-        !UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
+        !Get.find<UserService>().isFollowingPublisher(widget.publisher)) {
       _publisherCount = _originFollowerCount - 1;
     } else if (!_isFollowed &&
-        UserHelper.instance.isLocalFollowingPublisher(widget.publisher)) {
+        Get.find<UserService>().isFollowingPublisher(widget.publisher)) {
       _publisherCount = _originFollowerCount + 1;
     } else {
       _publisherCount = _originFollowerCount;

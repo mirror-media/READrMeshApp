@@ -1,14 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/invitationCode/invitationCode_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 
 class CheckInvitationCodeWidget extends StatelessWidget {
@@ -194,8 +194,8 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(
-                  PersonalFileRoute(viewMember: invitationCode.activeMember!));
+              Get.to(() =>
+                  PersonalFilePage(viewMember: invitationCode.activeMember!));
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,

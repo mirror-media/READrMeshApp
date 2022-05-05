@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/editPersonalFile/editPersonalFile_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 
@@ -69,10 +68,10 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
 
   _saveMemberData() {
     context.read<EditPersonalFileCubit>().savePersonalFile(Member(
-          memberId: UserHelper.instance.currentUser.memberId,
+          memberId: Get.find<UserService>().currentUser.memberId,
           nickname: _nicknameController.text,
           customId: _customIdController.text,
-          avatar: UserHelper.instance.currentUser.avatar,
+          avatar: Get.find<UserService>().currentUser.avatar,
           intro: _introController.text,
           followingPublisher: [],
           following: [],
@@ -94,7 +93,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
     return BlocConsumer<EditPersonalFileCubit, EditPersonalFileState>(
       listener: (context, state) {
         if (state is PersonalFileSaved) {
-          context.popRoute(true);
+          Get.back(result: true);
         }
 
         if (state is SavePersonalFileFailed) {
@@ -156,11 +155,11 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
         if (state is EditPersonalFileLoaded) {
           if (!_isAttached) {
             _nicknameController = TextEditingController(
-                text: UserHelper.instance.currentUser.nickname);
+                text: Get.find<UserService>().currentUser.nickname);
             _customIdController = TextEditingController(
-                text: UserHelper.instance.currentUser.customId);
+                text: Get.find<UserService>().currentUser.customId);
             _introController = TextEditingController(
-                text: UserHelper.instance.currentUser.intro);
+                text: Get.find<UserService>().currentUser.intro);
             _isAttached = true;
           }
 
@@ -194,7 +193,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 20),
               child: GestureDetector(
-                onTap: () => context.popRoute(false),
+                onTap: () => Get.back(result: false),
                 child: Platform.isIOS
                     ? const Text(
                         '取消',
@@ -455,16 +454,17 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
         _isEdited = false;
       });
     } else if (_nicknameController.text !=
-        UserHelper.instance.currentUser.nickname) {
+        Get.find<UserService>().currentUser.nickname) {
       setState(() {
         _isEdited = true;
       });
     } else if (_customIdController.text !=
-        UserHelper.instance.currentUser.customId) {
+        Get.find<UserService>().currentUser.customId) {
       setState(() {
         _isEdited = true;
       });
-    } else if (_introController.text != UserHelper.instance.currentUser.intro) {
+    } else if (_introController.text !=
+        Get.find<UserService>().currentUser.intro) {
       setState(() {
         _isEdited = true;
       });

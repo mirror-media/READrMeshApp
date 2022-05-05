@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -25,7 +27,7 @@ abstract class CommentRepos {
 
 class CommentService implements CommentRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
@@ -64,8 +66,8 @@ class CommentService implements CommentRepos {
     """;
 
     Map<String, String> variables = {
-      "email": Environment().config.appHelperEmail,
-      "password": Environment().config.appHelperPassword,
+      "email": Get.find<EnvironmentService>().config.appHelperEmail,
+      "password": Get.find<EnvironmentService>().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -159,7 +161,7 @@ class CommentService implements CommentRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
       "storyId": storyId,
       "content": content,
       "published_date": DateTime.now().toUtc().toIso8601String(),
@@ -292,7 +294,7 @@ class CommentService implements CommentRepos {
 
     Map<String, String> variables = {
       "storyId": storyId,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -351,7 +353,7 @@ class CommentService implements CommentRepos {
 
     Map<String, dynamic> variables = {
       "commentId": commentId,
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -404,7 +406,7 @@ class CommentService implements CommentRepos {
 
     Map<String, dynamic> variables = {
       "commentId": commentId,
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

@@ -1,15 +1,17 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/comment.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -46,7 +48,7 @@ class _CommentItemState extends State<CommentItem> {
     _isExpanded = widget.isExpanded;
     _isMyNewComment = widget.isMyNewComment;
     _isFollowingMember =
-        UserHelper.instance.isLocalFollowingMember(widget.comment.member);
+        Get.find<UserService>().isFollowingMember(widget.comment.member);
     if (widget.isSending) {
       _isExpanded = true;
       _backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
@@ -115,9 +117,9 @@ class _CommentItemState extends State<CommentItem> {
         children: [
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(PersonalFileRoute(
-                viewMember: widget.comment.member,
-              ));
+              Get.to(() => PersonalFilePage(
+                    viewMember: widget.comment.member,
+                  ));
             },
             child: ProfilePhotoWidget(
               widget.comment.member,
@@ -174,9 +176,9 @@ class _CommentItemState extends State<CommentItem> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      AutoRouter.of(context).push(PersonalFileRoute(
-                        viewMember: widget.comment.member,
-                      ));
+                      Get.to(() => PersonalFilePage(
+                            viewMember: widget.comment.member,
+                          ));
                     },
                     child: Text.rich(
                       innerTextSpan,
@@ -210,7 +212,7 @@ class _CommentItemState extends State<CommentItem> {
                       isEdited: widget.comment.isEdited,
                     ),
                   if (widget.comment.member.memberId ==
-                      UserHelper.instance.currentUser.memberId) ...[
+                      Get.find<UserService>().currentUser.memberId) ...[
                     Container(
                       width: 2,
                       height: 2,
@@ -256,14 +258,19 @@ class _CommentItemState extends State<CommentItem> {
           const SizedBox(width: 5),
           IconButton(
             onPressed: () async {
-              if (UserHelper.instance.isMember) {
+              if (Get.find<UserService>().isMember) {
                 if (_isLiked) {
                   context.read<CommentBloc>().add(RemoveLike(widget.comment));
                 } else {
                   context.read<CommentBloc>().add(AddLike(widget.comment));
                 }
               } else {
-                AutoRouter.of(context).push(LoginRoute(fromComment: true));
+                Get.to(
+                  () => const LoginPage(
+                    fromComment: true,
+                  ),
+                  fullscreenDialog: true,
+                );
               }
             },
             iconSize: 18,

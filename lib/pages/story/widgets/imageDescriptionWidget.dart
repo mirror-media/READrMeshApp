@@ -1,7 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:get/get.dart';
+import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 
 class ImageDescriptionWidget extends StatelessWidget {
   final String imageUrl;
@@ -56,10 +56,10 @@ class ImageDescriptionWidget extends StatelessWidget {
         ],
       ),
       onTap: () {
-        AutoRouter.of(context).push(ImageViewerWidgetRoute(
-          imageUrlList: imageUrlList,
-          openImageUrl: imageUrl,
-        ));
+        Get.to(() => ImageViewerWidget(
+              imageUrlList: imageUrlList,
+              openImageUrl: imageUrl,
+            ));
       },
     );
   }

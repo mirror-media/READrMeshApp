@@ -1,13 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
+import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ReadrProjectItemWidget extends StatelessWidget {
@@ -87,9 +87,12 @@ class ReadrProjectItemWidget extends StatelessWidget {
           ],
         ),
         onTap: () async {
-          AutoRouter.of(context).push(NewsStoryRoute(
-            news: projectItem,
-          ));
+          Get.to(
+            () => NewsStoryPage(
+              news: projectItem,
+            ),
+            fullscreenDialog: true,
+          );
         });
   }
 

@@ -1,18 +1,18 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
@@ -20,6 +20,7 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FollowingBlock extends StatelessWidget {
@@ -38,7 +39,7 @@ class FollowingBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = width / 2;
-    if (UserHelper.instance.currentUser.following.isEmpty) {
+    if (Get.find<UserService>().currentUser.following.isEmpty) {
       return Container(
         color: Colors.white,
         child: Column(
@@ -253,9 +254,12 @@ class FollowingBlock extends StatelessWidget {
           _pickBar(context, item.followingPickMembers),
           InkWell(
             onTap: () {
-              AutoRouter.of(context).push(NewsStoryRoute(
-                news: item,
-              ));
+              Get.to(
+                () => NewsStoryPage(
+                  news: item,
+                ),
+                fullscreenDialog: true,
+              );
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,15 +357,18 @@ class FollowingBlock extends StatelessWidget {
     }
 
     List<Widget> children = [
-      ProfilePhotoStack(firstTwoMember, 14),
+      ProfilePhotoStack(
+        firstTwoMember,
+        14,
+        key: UniqueKey(),
+      ),
       const SizedBox(width: 8),
     ];
     if (firstTwoMember.length == 1) {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context)
-                .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
+            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[0]));
           },
           child: ExtendedText(
             firstTwoMember[0].nickname,
@@ -382,8 +389,7 @@ class FollowingBlock extends StatelessWidget {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context)
-                .push(PersonalFileRoute(viewMember: firstTwoMember[0]));
+            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[0]));
           },
           child: ExtendedText(
             firstTwoMember[0].nickname,
@@ -402,8 +408,7 @@ class FollowingBlock extends StatelessWidget {
       children.add(Flexible(
         child: GestureDetector(
           onTap: () {
-            AutoRouter.of(context)
-                .push(PersonalFileRoute(viewMember: firstTwoMember[1]));
+            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[1]));
           },
           child: ExtendedText(
             firstTwoMember[1].nickname,
@@ -439,8 +444,7 @@ class FollowingBlock extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context)
-                  .push(PersonalFileRoute(viewMember: comment.member));
+              Get.to(() => PersonalFilePage(viewMember: comment.member));
             },
             child: ProfilePhotoWidget(
               comment.member,
@@ -458,9 +462,9 @@ class FollowingBlock extends StatelessWidget {
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
-                          AutoRouter.of(context).push(PersonalFileRoute(
-                            viewMember: comment.member,
-                          ));
+                          Get.to(() => PersonalFilePage(
+                                viewMember: comment.member,
+                              ));
                         },
                         child: ExtendedText(
                           comment.member.nickname,

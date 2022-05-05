@@ -1,27 +1,22 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:readr/blocs/config/bloc.dart';
-import 'package:readr/blocs/config/events.dart';
+import 'package:readr/controller/settingPageController.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingPage extends StatefulWidget {
-  final String version;
-  final String loginType;
-  const SettingPage(this.version, this.loginType, {Key? key}) : super(key: key);
+import 'package:readr/pages/setting/aboutPage.dart';
+import 'package:readr/pages/setting/deleteMemberPage.dart';
+import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 
-  @override
-  State<SettingPage> createState() => _SettingPageState();
-}
+class SettingPage extends StatelessWidget {
+  SettingPage({Key? key}) : super(key: key);
+  final SettingPageController controller = Get.put(SettingPageController());
 
-class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +46,23 @@ class _SettingPageState extends State<SettingPage> {
           padding: const EdgeInsets.all(0),
           physics: const ClampingScrollPhysics(),
           children: [
-            if (UserHelper.instance.isMember) _userInfo(),
+            Obx(
+              () {
+                if (controller.isLogin.isTrue) {
+                  return _userInfo();
+                }
+                return Container();
+              },
+            ),
             _settingTile(context),
-            if (UserHelper.instance.isMember) _accountTile(context),
+            Obx(
+              () {
+                if (controller.isLogin.isTrue) {
+                  return _accountTile();
+                }
+                return Container();
+              },
+            ),
           ],
         ),
       ),
@@ -62,25 +71,25 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _userInfo() {
     String email = '';
-    if (UserHelper.instance.currentUser.email!.contains('[0x0001]')) {
-      email = UserHelper.instance.currentUser.nickname;
+    if (Get.find<UserService>().currentUser.email!.contains('[0x0001]')) {
+      email = Get.find<UserService>().currentUser.nickname;
     } else {
-      email = '${UserHelper.instance.currentUser.email}';
+      email = '${Get.find<UserService>().currentUser.email}';
     }
     Widget icon = Container();
-    if (widget.loginType == 'apple') {
+    if (controller.loginType.value == 'apple') {
       icon = const FaIcon(
         FontAwesomeIcons.apple,
         size: 18,
         color: readrBlack,
       );
-    } else if (widget.loginType == 'facebook') {
+    } else if (controller.loginType.value == 'facebook') {
       icon = const FaIcon(
         FontAwesomeIcons.facebookSquare,
         size: 18,
         color: Color.fromRGBO(59, 89, 152, 1),
       );
-    } else if (widget.loginType == 'google') {
+    } else if (controller.loginType.value == 'google') {
       icon = SvgPicture.asset(
         googleLogoSvg,
         width: 16,
@@ -118,10 +127,12 @@ class _SettingPageState extends State<SettingPage> {
         children: [
           _settingButton(
             text: '顯示新聞範圍',
-            onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              int duration = prefs.getInt('newsCoverage') ?? 24;
-              context.pushRoute(SetNewsCoverageRoute(duration: duration));
+            onPressed: () {
+              int duration = Get.find<SharedPreferencesService>()
+                      .prefs
+                      .getInt('newsCoverage') ??
+                  24;
+              Get.to(() => SetNewsCoveragePage(duration));
             },
           ),
           const Divider(
@@ -130,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
           ),
           _settingButton(
             text: '關於',
-            onPressed: () => AutoRouter.of(context).push(const AboutRoute()),
+            onPressed: () => Get.to(() => AboutPage()),
             hideArrow: true,
           ),
           const Divider(
@@ -150,12 +161,14 @@ class _SettingPageState extends State<SettingPage> {
                     color: readrBlack87,
                   ),
                 ),
-                Text(
-                  widget.version,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    color: readrBlack50,
+                Obx(
+                  () => Text(
+                    controller.versionAndBuildNumber.value,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: readrBlack50,
+                    ),
                   ),
                 ),
               ],
@@ -198,7 +211,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget _accountTile(BuildContext context) {
+  Widget _accountTile() {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -219,13 +232,13 @@ class _SettingPageState extends State<SettingPage> {
               ),
             ),
             onTap: () async {
-              if (widget.loginType == 'google') {
+              if (controller.loginType.value == 'google') {
                 GoogleSignIn _googleSignIn = GoogleSignIn();
                 await _googleSignIn.disconnect();
               }
               await FirebaseAuth.instance.signOut();
-              context.read<ConfigBloc>().add(LoginUpdate());
-              AutoRouter.of(context).navigate(const Initial());
+              await Get.find<UserService>().fetchUserData();
+              controller.isLogin.value = false;
             },
           ),
           const Divider(
@@ -246,7 +259,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
             ),
             onTap: () {
-              context.pushRoute(const DeleteMemberRoute());
+              Get.to(() => DeleteMemberPage());
             },
           ),
         ],

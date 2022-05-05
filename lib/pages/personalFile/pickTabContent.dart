@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,8 +119,8 @@ class _PickTabContentState extends State<PickTabContent> {
   }
 
   Widget _emptyWidget() {
-    bool isMine =
-        UserHelper.instance.currentUser.memberId == widget.viewMember.memberId;
+    bool isMine = Get.find<UserService>().currentUser.memberId ==
+        widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -153,10 +155,10 @@ class _PickTabContentState extends State<PickTabContent> {
             ),
           ),
         ),
-        if (UserHelper.instance.currentUser.memberId !=
+        if (Get.find<UserService>().currentUser.memberId !=
             widget.viewMember.memberId)
           _buildPickStoryList(),
-        if (UserHelper.instance.currentUser.memberId ==
+        if (Get.find<UserService>().currentUser.memberId ==
             widget.viewMember.memberId)
           BlocConsumer<CommentBloc, CommentState>(
             listener: (context, state) {
@@ -168,7 +170,7 @@ class _PickTabContentState extends State<PickTabContent> {
             builder: (context, state) {
               if (state is PickCommentAdded) {
                 for (int i = 0; i < _storyPickList.length; i++) {
-                  var pickItem = UserHelper.instance
+                  var pickItem = Get.find<UserService>()
                       .getNewsPickedItem(_storyPickList[i].story!.id);
                   if (pickItem != null &&
                       pickItem.pickCommentId == state.comment.id) {
@@ -262,7 +264,7 @@ class _PickTabContentState extends State<PickTabContent> {
               ),
               PickCommentItem(
                 comment: _storyPickList[index].pickComment!,
-                isMyComment: UserHelper.instance.currentUser.memberId ==
+                isMyComment: Get.find<UserService>().currentUser.memberId ==
                     widget.viewMember.memberId,
                 commentBloc: BlocProvider.of<CommentBloc>(context),
               ),

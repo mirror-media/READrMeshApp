@@ -1,14 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/followerList/followerList_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/followSkeletonScreen.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -105,8 +105,8 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
   }
 
   Widget _emptyWidget() {
-    bool isMine =
-        UserHelper.instance.currentUser.memberId == widget.viewMember.memberId;
+    bool isMine = Get.find<UserService>().currentUser.memberId ==
+        widget.viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -145,9 +145,9 @@ class _FollowerListWidgetState extends State<FollowerListWidget> {
         }
         return InkWell(
           onTap: () {
-            AutoRouter.of(context).push(PersonalFileRoute(
-              viewMember: _followerList[index],
-            ));
+            Get.to(() => PersonalFilePage(
+                  viewMember: _followerList[index],
+                ));
           },
           child: MemberListItemWidget(
             viewMember: _followerList[index],

@@ -1,18 +1,21 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
+import 'package:readr/pages/loginMember/choosePublisher/choosePublisherPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class InputNamePage extends StatefulWidget {
   final List<String> publisherTitleList;
-  const InputNamePage(this.publisherTitleList);
+  const InputNamePage(
+    this.publisherTitleList,
+  );
   @override
   _InputNamePageState createState() => _InputNamePageState();
 }
@@ -64,7 +67,7 @@ class _InputNamePageState extends State<InputNamePage> {
                   try {
                     _isSending = true;
                     await MemberService().createMember(_controller.text);
-                    final prefs = await SharedPreferences.getInstance();
+                    final prefs = Get.find<SharedPreferencesService>().prefs;
 
                     final String invitationCodeId =
                         prefs.getString('invitationCodeId') ?? '';
@@ -78,11 +81,9 @@ class _InputNamePageState extends State<InputNamePage> {
                     final List<String> followingPublisherIds =
                         prefs.getStringList('followingPublisherIds') ?? [];
                     if (followingPublisherIds.isNotEmpty) {
-                      AutoRouter.of(context)
-                          .replace(ChooseMemberRoute(isFromPublisher: false));
+                      Get.off(() => const ChooseMemberPage(false));
                     } else {
-                      AutoRouter.of(context)
-                          .replace(const ChoosePublisherRoute());
+                      Get.off(() => ChoosePublisherPage());
                     }
                   } catch (e) {
                     Fluttertoast.showToast(

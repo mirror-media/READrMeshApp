@@ -1,11 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/followableItem.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 
 class FollowButton extends StatelessWidget {
   final FollowableItem item;
@@ -37,8 +38,11 @@ class FollowButton extends StatelessWidget {
   Widget _buildButton(BuildContext context, bool isFollowing) {
     return OutlinedButton(
       onPressed: () async {
-        if (item.type == 'member' && UserHelper.instance.isVisitor) {
-          AutoRouter.of(context).push(LoginRoute());
+        if (item.type == 'member' && Get.find<UserService>().isVisitor) {
+          Get.to(
+            () => const LoginPage(),
+            fullscreenDialog: true,
+          );
         } else {
           context.read<FollowButtonCubit>().updateLocalFollowing(item);
         }

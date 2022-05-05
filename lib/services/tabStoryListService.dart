@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:readr/helpers/environment.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
@@ -92,11 +94,14 @@ class TabStoryListServices implements TabStoryListRepos {
     late final dynamic jsonResponse;
     if (storySkip > 30) {
       jsonResponse = await _helper.postByUrl(
-          Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+          Get.find<EnvironmentService>().config.readrApi,
+          jsonEncode(graphqlBody.toJson()),
           headers: {"Content-Type": "application/json"});
     } else {
       jsonResponse = await _helper.postByCacheAndAutoCache(
-          key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+          key,
+          Get.find<EnvironmentService>().config.readrApi,
+          jsonEncode(graphqlBody.toJson()),
           maxAge: newsTabStoryList,
           headers: {"Content-Type": "application/json"});
     }
@@ -165,11 +170,14 @@ class TabStoryListServices implements TabStoryListRepos {
     late final dynamic jsonResponse;
     if (storySkip > 30) {
       jsonResponse = await _helper.postByUrl(
-          Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+          Get.find<EnvironmentService>().config.readrApi,
+          jsonEncode(graphqlBody.toJson()),
           headers: {"Content-Type": "application/json"});
     } else {
       jsonResponse = await _helper.postByCacheAndAutoCache(
-          key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+          key,
+          Get.find<EnvironmentService>().config.readrApi,
+          jsonEncode(graphqlBody.toJson()),
           maxAge: newsTabStoryList,
           headers: {"Content-Type": "application/json"});
     }
@@ -358,16 +366,16 @@ class TabStoryListServices implements TabStoryListRepos {
     ''';
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "storyIdList": storyIdList,
       "followingMembers": followingMemberIds,
-      "myId": UserHelper.instance.currentUser.memberId,
-      "urlFilter": Environment().config.readrWebsiteLink,
-      "readrId": Environment().config.readrPublisherId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "urlFilter": Get.find<EnvironmentService>().config.readrWebsiteLink,
+      "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -378,7 +386,7 @@ class TabStoryListServices implements TabStoryListRepos {
 
     late final dynamic jsonResponse;
     jsonResponse = await _helper.postByUrl(
-      Environment().config.readrMeshApi,
+      Get.find<EnvironmentService>().config.readrMeshApi,
       jsonEncode(graphqlBody.toJson()),
       headers: {"Content-Type": "application/json"},
     );

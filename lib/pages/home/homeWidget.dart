@@ -3,10 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -190,7 +191,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                     ),
                     if (_followingStories.isNotEmpty ||
-                        UserHelper.instance.currentUser.following.isEmpty)
+                        Get.find<UserService>().currentUser.following.isEmpty)
                       Container(
                         height: 8.5,
                         color: homeScreenBackgroundColor,

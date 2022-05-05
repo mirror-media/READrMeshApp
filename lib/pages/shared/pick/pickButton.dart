@@ -1,12 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/pickableItem.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
 
 class PickButton extends StatelessWidget {
@@ -43,7 +44,7 @@ class PickButton extends StatelessWidget {
           ? null
           : () async {
               // check whether is login
-              if (UserHelper.instance.isMember) {
+              if (Get.find<UserService>().isMember) {
                 if (!isPicked) {
                   var result = await PickBottomSheet.showPickBottomSheet(
                     context: context,
@@ -104,7 +105,10 @@ class PickButton extends StatelessWidget {
                   }
                 }
               } else {
-                AutoRouter.of(context).push(LoginRoute());
+                Get.to(
+                  () => const LoginPage(),
+                  fullscreenDialog: true,
+                );
               }
             },
       style: OutlinedButton.styleFrom(

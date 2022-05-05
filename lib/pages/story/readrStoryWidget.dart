@@ -1,13 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/paragraph.dart';
@@ -19,6 +18,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
+import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -170,10 +170,10 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
         if (!_isNullOrEmpty(story.heroImage) && story.heroVideo == null)
           GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(ImageViewerWidgetRoute(
-                imageUrlList: story.imageUrlList,
-                openImageUrl: story.heroImage!,
-              ));
+              Get.to(() => ImageViewerWidget(
+                    imageUrlList: story.imageUrlList,
+                    openImageUrl: story.heroImage!,
+                  ));
             },
             child: CachedNetworkImage(
               width: width,

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:readr/blocs/config/bloc.dart';
-import 'package:readr/blocs/config/events.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readr/initialApp.dart';
+import 'package:readr/pages/loginMember/email/inputEmailPage.dart';
+import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -42,11 +42,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         if (state is LoginError) {
           showToast("登入失敗");
         } else if (state is NewMemberSignup) {
-          AutoRouter.of(context).push(
-              InputNameRoute(publisherTitleList: state.publisherTitleList));
+          Get.to(() => InputNamePage(state.publisherTitleList));
         } else if (state is ExistingMemberLogin) {
-          context.read<ConfigBloc>().add(LoginUpdate());
-          AutoRouter.of(context).navigate(const Initial());
+          Get.offAll(() => InitialApp());
         }
       },
       child: _buildContent(),
@@ -137,7 +135,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           height: 12,
         ),
         OutlinedButton.icon(
-          onPressed: () => context.pushRoute(const InputEmailRoute()),
+          onPressed: () => Get.to(InputEmailPage()),
           label: const Text(
             '以 Email 信箱繼續',
             style: TextStyle(

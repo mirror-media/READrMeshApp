@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/config/bloc.dart';
-import 'package:readr/blocs/config/events.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:readr/helpers/router/router.dart';
+
 import 'package:readr/services/memberService.dart';
 
 class DeleteMemberPage extends StatefulWidget {
@@ -56,10 +53,10 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
 
   Widget _buildContent() {
     String email;
-    if (UserHelper.instance.currentUser.email!.contains('[0x0001]')) {
+    if (Get.find<UserService>().currentUser.email!.contains('[0x0001]')) {
       email = '您';
     } else {
-      email = '${UserHelper.instance.currentUser.email} ';
+      email = '${Get.find<UserService>().currentUser.email} ';
     }
     String title = '真的要刪除帳號嗎？';
     String discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
@@ -114,13 +111,11 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
           margin: const EdgeInsets.symmetric(horizontal: 24),
           alignment: Alignment.center,
           child: OutlinedButton(
-            onPressed: () {
-              if (_isInitialized) {
-                Navigator.of(context).pop();
-              } else {
-                context.read<ConfigBloc>().add(LoginUpdate());
-                AutoRouter.of(context).navigate(const Initial());
+            onPressed: () async {
+              if (!_isInitialized) {
+                await Get.find<UserService>().fetchUserData();
               }
+              Get.back();
             },
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),

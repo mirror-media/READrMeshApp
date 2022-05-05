@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
@@ -29,7 +30,7 @@ class _BookmarkTabContentState extends State<BookmarkTabContent> {
   _fetchBookmark() {
     context.read<PersonalFileTabBloc>().add(FetchTabContent(
           tabContentType: TabContentType.bookmark,
-          viewMember: UserHelper.instance.currentUser,
+          viewMember: Get.find<UserService>().currentUser,
         ));
   }
 

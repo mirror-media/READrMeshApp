@@ -1,5 +1,6 @@
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/commentCountHelper.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
@@ -90,7 +91,7 @@ class NewsStoryItem {
         if (json['myPickId'][0]['pick_comment'].isNotEmpty) {
           myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
         }
-        UserHelper.instance.updateNewsPickedMap(
+        Get.find<UserService>().updateNewsPickedMap(
           json['id'],
           PickedItem(
             pickId: myPickId!,
@@ -98,8 +99,8 @@ class NewsStoryItem {
             pickCount: pickCount,
           ),
         );
-      } else if (UserHelper.instance.isNewsPicked(json['id'])) {
-        UserHelper.instance.updateNewsPickedMap(json['id'], null);
+      } else if (Get.find<UserService>().isNewsPicked(json['id'])) {
+        Get.find<UserService>().updateNewsPickedMap(json['id'], null);
       }
     }
 

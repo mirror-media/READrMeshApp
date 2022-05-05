@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -19,12 +20,13 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       var result = await memberRepos.fetchMemberData();
       if (result != null) {
-        await UserHelper.instance.fetchUserData(member: result);
+        await Get.find<UserService>().fetchUserData(member: result);
         final prefs = await SharedPreferences.getInstance();
         final List<String> followingPublisherIds =
             prefs.getStringList('followingPublisherIds') ?? [];
         if (followingPublisherIds.isNotEmpty) {
-          await UserHelper.instance.addVisitorFollowing(followingPublisherIds);
+          await Get.find<UserService>()
+              .addVisitorFollowing(followingPublisherIds);
         }
 
         final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;

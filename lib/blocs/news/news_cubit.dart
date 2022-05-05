@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/services/newsStoryService.dart';
@@ -21,7 +22,7 @@ class NewsCubit extends Cubit<NewsState> {
     print('Fetch news data id=$newsId');
     emit(NewsLoading());
     try {
-      await UserHelper.instance.fetchUserData();
+      await Get.find<UserService>().fetchUserData();
       NewsStoryItem newsStoryItem = await newsStoryRepos.fetchNewsData(newsId);
       emit(NewsLoaded(newsStoryItem));
     } catch (e) {
@@ -33,7 +34,7 @@ class NewsCubit extends Cubit<NewsState> {
     print('Fetch news data id=$newsId');
     emit(NewsLoading());
     try {
-      await UserHelper.instance.fetchUserData();
+      await Get.find<UserService>().fetchUserData();
       NewsStoryItem newsStoryItem = await newsStoryRepos.fetchNewsData(newsId);
       if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
         emit(NewsError(determineException('No content error')));

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
@@ -56,11 +58,11 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
           children: [
             Row(
               children: [
-                ProfilePhotoWidget(UserHelper.instance.currentUser, 22),
+                ProfilePhotoWidget(Get.find<UserService>().currentUser, 22),
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    UserHelper.instance.currentUser.nickname,
+                    Get.find<UserService>().currentUser.nickname,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(

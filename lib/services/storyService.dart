@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:readr/helpers/environment.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/graphqlBody.dart';
@@ -119,7 +120,9 @@ class StoryServices implements StoryRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+        key,
+        Get.find<EnvironmentService>().config.readrApi,
+        jsonEncode(graphqlBody.toJson()),
         maxAge: newsStoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 

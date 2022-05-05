@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/readr/editorChoice/editorChoice_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
+import 'package:readr/pages/story/newsStoryPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BuildEditorChoiceCarousel extends StatefulWidget {
@@ -152,11 +152,12 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () async {
-            AutoRouter.of(context).push(NewsStoryRoute(
+          onTap: () => Get.to(
+            () => NewsStoryPage(
               news: widget.editorChoiceList[_current].newsListItem!,
-            ));
-          },
+            ),
+            fullscreenDialog: true,
+          ),
           child: Container(
             color: readrBlack,
             child: Stack(

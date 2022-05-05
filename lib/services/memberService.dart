@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -22,7 +24,7 @@ abstract class MemberRepos {
 
 class MemberService implements MemberRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
@@ -61,8 +63,8 @@ class MemberService implements MemberRepos {
     """;
 
     Map<String, String> variables = {
-      "email": Environment().config.appHelperEmail,
-      "password": Environment().config.appHelperPassword,
+      "email": Get.find<EnvironmentService>().config.appHelperEmail,
+      "password": Get.find<EnvironmentService>().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -258,8 +260,8 @@ class MemberService implements MemberRepos {
         }
         await Future.wait(futureList);
       }
-      await UserHelper.instance.fetchUserData();
-      return UserHelper.instance.currentUser;
+      await Get.find<UserService>().fetchUserData();
+      return Get.find<UserService>().currentUser;
     } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
       int times = 2;
       if (tryTimes != null) {
@@ -290,7 +292,7 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "id": UserHelper.instance.currentUser.memberId
+      "id": Get.find<UserService>().currentUser.memberId
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -341,7 +343,7 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
       "targetMemberId": targetMemberId
     };
 
@@ -401,7 +403,7 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
       "targetMemberId": targetMemberId
     };
 
@@ -460,7 +462,7 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
       "publisherId": publisherId
     };
 
@@ -520,7 +522,7 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "memberId": UserHelper.instance.currentUser.memberId,
+      "memberId": Get.find<UserService>().currentUser.memberId,
       "publisherId": publisherId
     };
 

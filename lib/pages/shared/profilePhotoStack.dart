@@ -5,7 +5,8 @@ import 'package:readr/pages/shared/profilePhotoWidget.dart';
 class ProfilePhotoStack extends StatelessWidget {
   final List<Member> members;
   final double radius;
-  const ProfilePhotoStack(this.members, this.radius);
+  const ProfilePhotoStack(this.members, this.radius, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +17,19 @@ class ProfilePhotoStack extends StatelessWidget {
     List<Widget> headShots = [];
     for (int i = 0; i < members.length && i < 4; i++) {
       if (i == 0) {
-        headShots.add(ProfilePhotoWidget(members[i], radius));
+        headShots.add(ProfilePhotoWidget(
+          members[i],
+          radius,
+          key: ValueKey(members[i].memberId),
+        ));
       } else {
         headShots.add(Padding(
           padding: EdgeInsets.only(left: padding),
-          child: ProfilePhotoWidget(members[i], radius),
+          child: ProfilePhotoWidget(
+            members[i],
+            radius,
+            key: ValueKey(members[i].memberId),
+          ),
         ));
         padding = padding + radius;
       }

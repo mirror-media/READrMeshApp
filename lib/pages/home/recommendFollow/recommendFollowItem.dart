@@ -12,7 +12,7 @@ class RecommendFollowItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        recommendItem.onTap(context);
+        recommendItem.onTap();
       },
       child: Card(
         color: Colors.white,
@@ -29,7 +29,7 @@ class RecommendFollowItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              recommendItem.defaultProfilePhotoWidget(context),
+              recommendItem.defaultProfilePhotoWidget(),
               const SizedBox(height: 12),
               ExtendedText(
                 recommendItem.name,

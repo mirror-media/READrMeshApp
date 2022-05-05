@@ -1,12 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
+import 'package:readr/pages/story/newsStoryPage.dart';
 
 class CarouselDisplayWidget extends StatelessWidget {
   final EditorChoiceItem editorChoiceItem;
@@ -32,11 +32,12 @@ class CarouselDisplayWidget extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () async {
-        AutoRouter.of(context).push(NewsStoryRoute(
+      onTap: () => Get.to(
+        () => NewsStoryPage(
           news: editorChoiceItem.newsListItem!,
-        ));
-      },
+        ),
+        fullscreenDialog: true,
+      ),
     );
   }
 

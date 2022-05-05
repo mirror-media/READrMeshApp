@@ -1,11 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
 
 class InputEmailPage extends StatefulWidget {
   @override
@@ -47,11 +47,10 @@ class _InputEmailPageState extends State<InputEmailPage> {
                 _isSending = true;
                 bool isSuccess = await LoginHelper().signInWithEmailAndLink(
                   _controller.text,
-                  Environment().config.authlink,
+                  Get.find<EnvironmentService>().config.authlink,
                 );
                 if (isSuccess) {
-                  AutoRouter.of(context)
-                      .replace(SentEmailRoute(email: _controller.text));
+                  Get.off(() => SentEmailPage(_controller.text));
                 } else {
                   Fluttertoast.showToast(
                     msg: "Email寄送失敗",

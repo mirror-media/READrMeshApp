@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
@@ -23,10 +24,10 @@ class PickBar extends StatelessWidget {
         pickedMemberList.addAll(item.pickedMemberList);
 
         pickedMemberList.removeWhere((element) =>
-            element.memberId == UserHelper.instance.currentUser.memberId);
+            element.memberId == Get.find<UserService>().currentUser.memberId);
 
         if (isPicked && pickedMemberList.length < 4) {
-          pickedMemberList.add(UserHelper.instance.currentUser);
+          pickedMemberList.add(Get.find<UserService>().currentUser);
         }
 
         List<Widget> bottom = [];

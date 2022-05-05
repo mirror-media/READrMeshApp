@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
 
 class CollectionTabContent extends StatefulWidget {
   final Member viewMember;
@@ -45,7 +47,7 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => Get.to(() => ChooseStoryPage()),
                 child: const Text(
                   '立即嘗試',
                   style: TextStyle(

@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/exceptions.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/pickableItem.dart';
 import 'package:readr/services/commentService.dart';
@@ -63,7 +64,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         if (event is AddComment) {
           Comment myNewComment = Comment(
             id: 'sending',
-            member: UserHelper.instance.currentUser,
+            member: Get.find<UserService>().currentUser,
             content: event.content,
             state: "public",
             publishDate: DateTime.now(),
@@ -106,7 +107,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           var result = await commentRepos.deleteComment(event.comment.id);
           if (result) {
             if (event.comment.story != null) {
-              UserHelper.instance
+              Get.find<UserService>()
                   .removeNewsPickCommentId(event.comment.story!.id);
             }
             emit(DeleteCommentSuccess());

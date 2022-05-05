@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/comment/comment_bloc.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/userService.dart';
+
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/editCommentWidget.dart';
 
@@ -66,7 +68,7 @@ class EditCommentMenu {
     } else if (result == 'delete') {
       Widget? dialogContent;
       var item =
-          UserHelper.instance.getNewsPickedItemByPickCommentId(comment.id);
+          Get.find<UserService>().getNewsPickedItemByPickCommentId(comment.id);
       if (item != null) {
         dialogContent = const Text(
           '系統仍會保留您的精選記錄',

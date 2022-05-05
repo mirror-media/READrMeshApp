@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,14 +18,14 @@ enum InvitationCodeStatus {
 
 abstract class InvitationCodeRepos {
   Future<List<InvitationCode>> fetchMyInvitationCode();
-  Future<bool> checkUsableInvitationCode();
+  Future<bool> checkUsableInvitationCode(String memberId);
   Future<InvitationCodeStatus> checkInvitationCode(String code);
   Future<void> linkInvitationCode(String codeId);
 }
 
 class InvitationCodeService implements InvitationCodeRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
     Map<String, String> headers = {
@@ -62,8 +64,8 @@ class InvitationCodeService implements InvitationCodeRepos {
     """;
 
     Map<String, String> variables = {
-      "email": Environment().config.appHelperEmail,
-      "password": Environment().config.appHelperPassword,
+      "email": Get.find<EnvironmentService>().config.appHelperEmail,
+      "password": Get.find<EnvironmentService>().config.appHelperPassword,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -109,7 +111,7 @@ class InvitationCodeService implements InvitationCodeRepos {
     ''';
 
     Map<String, dynamic> variables = {
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -133,7 +135,7 @@ class InvitationCodeService implements InvitationCodeRepos {
   }
 
   @override
-  Future<bool> checkUsableInvitationCode() async {
+  Future<bool> checkUsableInvitationCode(String memberId) async {
     const String query = '''
     query(
       \$myId: ID
@@ -154,7 +156,7 @@ class InvitationCodeService implements InvitationCodeRepos {
     ''';
 
     Map<String, dynamic> variables = {
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -269,7 +271,7 @@ class InvitationCodeService implements InvitationCodeRepos {
 
       Map<String, dynamic> variables = {
         "codeId": codeId,
-        "myId": UserHelper.instance.currentUser.memberId,
+        "myId": Get.find<UserService>().currentUser.memberId,
       };
 
       GraphqlBody graphqlBody = GraphqlBody(

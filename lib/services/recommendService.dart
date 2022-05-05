@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -15,7 +17,7 @@ abstract class RecommendRepos {
 class RecommendService implements RecommendRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders() async {
     Map<String, String> headers = {
@@ -55,7 +57,7 @@ class RecommendService implements RecommendRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "readrId": Environment().config.readrPublisherId
+      "readrId": Get.find<EnvironmentService>().config.readrPublisherId
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -133,13 +135,14 @@ class RecommendService implements RecommendRepos {
     """;
 
     List<String> followPublisherIdList = [];
-    for (var publisher in UserHelper.instance.localPublisherList) {
+    for (var publisher
+        in Get.find<UserService>().currentUser.followingPublisher) {
       followPublisherIdList.add(publisher.id);
     }
 
     Map<String, dynamic> variables = {
       "followPublisher": followPublisherIdList,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

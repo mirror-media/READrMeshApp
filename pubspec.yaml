@@ -29,8 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # route manage
-  auto_route: ^3.2.0
   # flutter bloc
   flutter_bloc: ^7.1.0
   # The dart library for making HTTP requests.
@@ -142,6 +140,8 @@ dependencies:
   pinput: ^2.2.5
   # app tracking transparency
   app_tracking_transparency: ^2.0.2+2
+  # getx
+  get: ^4.6.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -151,9 +151,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # generate routes
-  auto_route_generator: ^3.2.0
-  build_runner: ^2.1.5
   # generate splash screen
   flutter_native_splash: ^2.1.1
   # generate app icons

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsStoryItem.dart';
 
@@ -12,7 +14,7 @@ abstract class NewsStoryRepos {
 
 class NewsStoryService implements NewsStoryRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   @override
   Future<NewsStoryItem> fetchNewsData(String storyId) async {
@@ -179,14 +181,14 @@ class NewsStoryService implements NewsStoryRepos {
     ''';
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "storyId": storyId,
       "followingMembers": followingMemberIds,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

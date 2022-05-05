@@ -1,12 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FirebaseMessagingHelper {
+class FirebaseMessagingService extends GetxService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  FirebaseMessagingHelper();
-
-  configFirebaseMessaging(BuildContext context) async {
+  Future<FirebaseMessagingService> init() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
@@ -19,12 +17,13 @@ class FirebaseMessagingHelper {
 
     print('User granted permission: ${settings.authorizationStatus}');
 
-    RemoteMessage? initialMessage =
-        await _firebaseMessaging.getInitialMessage();
+    // RemoteMessage? initialMessage =
+    //     await _firebaseMessaging.getInitialMessage();
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
+    return this;
   }
 
   subscribeToTopic(String topic) {

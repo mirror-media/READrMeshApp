@@ -1,11 +1,10 @@
 import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:readr/pages/invitationCode/inputInvitationCodePage.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -28,10 +27,8 @@ class WelcomePage extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      AutoRouter.of(context)
-                          .replace(const InputInvitationCodeRoute());
-                    },
+                    onPressed: () =>
+                        Get.off(() => const InputInvitationCodePage()),
                     child: const Text(
                       '開始使用',
                       style: TextStyle(

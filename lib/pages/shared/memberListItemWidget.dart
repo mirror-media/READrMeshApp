@@ -1,7 +1,9 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
@@ -59,7 +61,7 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
           width: 8,
         ),
         if (!(widget.viewMember.memberId ==
-            UserHelper.instance.currentUser.memberId))
+            Get.find<UserService>().currentUser.memberId))
           FollowButton(MemberFollowableItem(widget.viewMember)),
       ],
     );

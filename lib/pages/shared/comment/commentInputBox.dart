@@ -1,8 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
+
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
 class CommentInputBox extends StatefulWidget {
@@ -69,13 +70,18 @@ class _CommentInputBoxState extends State<CommentInputBox> {
 
   @override
   Widget build(BuildContext context) {
-    if (UserHelper.instance.isVisitor) {
+    if (Get.find<UserService>().isVisitor) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         color: Colors.white,
         child: ElevatedButton(
           onPressed: () {
-            AutoRouter.of(context).push(LoginRoute(fromComment: true));
+            Get.to(
+              () => const LoginPage(
+                fromComment: true,
+              ),
+              fullscreenDialog: true,
+            );
           },
           child: Text(
             widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
@@ -119,7 +125,7 @@ class _CommentInputBoxState extends State<CommentInputBox> {
         top: false,
         child: Stack(
           children: [
-            ProfilePhotoWidget(UserHelper.instance.currentUser, 22),
+            ProfilePhotoWidget(Get.find<UserService>().currentUser, 22),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

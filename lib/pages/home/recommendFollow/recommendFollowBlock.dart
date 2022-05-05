@@ -1,11 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/home/recommendFollow/lookmoreItem.dart';
 import 'package:readr/pages/home/recommendFollow/recommendFollowItem.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
 
 class RecommendFollowBlock extends StatelessWidget {
   final List<FollowableItem> recommendedItems;
@@ -17,7 +17,7 @@ class RecommendFollowBlock extends StatelessWidget {
       return Container();
     }
 
-    if (UserHelper.instance.currentUser.following.isEmpty &&
+    if (Get.find<UserService>().currentUser.following.isEmpty &&
         recommendedItems.first.type == 'member') {
       return Container();
     }
@@ -43,9 +43,9 @@ class RecommendFollowBlock extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  AutoRouter.of(context).push(RecommendFollowRoute(
-                    recommendedItems: recommendedItems,
-                  ));
+                  Get.to(() => RecommendFollowPage(
+                        recommendedItems,
+                      ));
                 },
                 child: const Text(
                   '查看全部',

@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/homeScreenService.dart';
@@ -50,14 +51,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
           bool showSyncToast = false;
-          if (UserHelper.instance.isMember) {
+          if (Get.find<UserService>().isMember) {
             final List<String> followingPublisherIds =
                 prefs.getStringList('followingPublisherIds') ?? [];
             if (followingPublisherIds.isNotEmpty) {
               showSyncToast = true;
               await prefs.setStringList('followingPublisherIds', []);
             }
-            await UserHelper.instance.checkInvitationCode();
+            await Get.find<UserService>().checkInvitationCode();
           }
           emit(HomeLoaded(
             allLatestNews: data['allLatestNews'],
@@ -78,7 +79,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final prefs = await SharedPreferences.getInstance();
           bool showPaywall = prefs.getBool('showPaywall') ?? true;
           bool showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
-          await UserHelper.instance.fetchUserData();
+          await Get.find<UserService>().fetchUserData();
           List<MemberFollowableItem> recommendedMembers = [];
           List<PublisherFollowableItem> recommendedPublishers = [];
           for (var member in data['recommendedMembers']) {
@@ -88,8 +89,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
 
-          if (UserHelper.instance.isMember) {
-            await UserHelper.instance.checkInvitationCode();
+          if (Get.find<UserService>().isMember) {
+            await Get.find<UserService>().checkInvitationCode();
           }
 
           emit(HomeLoaded(

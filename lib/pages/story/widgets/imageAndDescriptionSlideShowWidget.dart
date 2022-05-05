@@ -1,8 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:get/get.dart';
 import 'package:readr/models/contentList.dart';
+import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 
 class ImageAndDescriptionSlideShowWidget extends StatefulWidget {
   final ContentList contentList;
@@ -40,10 +40,10 @@ class _ImageAndDescriptionSlideShowWidgetState
         .map(
           (content) => GestureDetector(
             onTap: () {
-              AutoRouter.of(context).push(ImageViewerWidgetRoute(
-                imageUrlList: widget.imageUrlList,
-                openImageUrl: content.data,
-              ));
+              Get.to(() => ImageViewerWidget(
+                    imageUrlList: widget.imageUrlList,
+                    openImageUrl: content.data,
+                  ));
             },
             child: Column(
               children: [

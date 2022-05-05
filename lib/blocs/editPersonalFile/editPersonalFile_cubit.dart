@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
@@ -19,7 +20,7 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
   loadPersonalFile() async {
     emit(EditPersonalFileLoading());
     try {
-      await UserHelper.instance.fetchUserData();
+      await Get.find<UserService>().fetchUserData();
       emit(EditPersonalFileLoaded());
     } catch (e) {
       emit(EditPersonalFileError(determineException(e)));

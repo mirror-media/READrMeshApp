@@ -1,8 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
 import 'package:readr/models/followableItem.dart';
+import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
 
 class LookmoreItem extends StatelessWidget {
   final List<FollowableItem> recommendedItems;
@@ -48,9 +48,9 @@ class LookmoreItem extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
-                  AutoRouter.of(context).push(RecommendFollowRoute(
-                    recommendedItems: recommendedItems,
-                  ));
+                  Get.to(() => RecommendFollowPage(
+                        recommendedItems,
+                      ));
                 },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: readrBlack87, width: 1),
@@ -79,19 +79,19 @@ class LookmoreItem extends StatelessWidget {
       items.add(recommendedItems[i]);
     }
     if (items.length == 1) {
-      return items[0].defaultProfilePhotoWidget(context);
+      return items[0].defaultProfilePhotoWidget();
     } else if (items.length == 2) {
       return Stack(
         children: [
           Container(
             padding: const EdgeInsets.only(right: 24),
             alignment: Alignment.topRight,
-            child: items[0].profilePhotoWidget(context),
+            child: items[0].profilePhotoWidget(),
           ),
           Container(
             padding: const EdgeInsets.only(left: 24),
             alignment: Alignment.bottomLeft,
-            child: items[1].profilePhotoWidget(context),
+            child: items[1].profilePhotoWidget(),
           ),
         ],
       );
@@ -101,17 +101,17 @@ class LookmoreItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(left: 29),
             alignment: Alignment.topLeft,
-            child: items[0].profilePhotoWidget(context),
+            child: items[0].profilePhotoWidget(),
           ),
           Container(
             padding: const EdgeInsets.only(bottom: 8, right: 18),
             alignment: Alignment.bottomRight,
-            child: items[1].profilePhotoWidget(context),
+            child: items[1].profilePhotoWidget(),
           ),
           Container(
             padding: const EdgeInsets.only(left: 16),
             alignment: Alignment.bottomLeft,
-            child: items[2].profilePhotoWidget(context),
+            child: items[2].profilePhotoWidget(),
           ),
         ],
       );

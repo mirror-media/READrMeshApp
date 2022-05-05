@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
@@ -15,7 +17,7 @@ abstract class PublisherRepos {
 class PublisherService implements PublisherRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   @override
   Future<List<NewsListItem>> fetchPublisherNews(
@@ -180,13 +182,13 @@ class PublisherService implements PublisherRepos {
     """;
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     Map<String, dynamic> variables = {
       "followingMembers": followingMemberIds,
-      "myId": UserHelper.instance.currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
       "publisherId": publisherId,
       "timeFilter": newsFilterTime.toUtc().toIso8601String()
     };

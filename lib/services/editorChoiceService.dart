@@ -1,9 +1,11 @@
 import 'dart:convert';
 
-import 'package:readr/helpers/environment.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
-import 'package:readr/helpers/userHelper.dart';
+
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -50,7 +52,9 @@ class EditorChoiceService implements EditorChoiceRepos {
     );
 
     final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key, Environment().config.readrApi, jsonEncode(graphqlBody.toJson()),
+        key,
+        Get.find<EnvironmentService>().config.readrApi,
+        jsonEncode(graphqlBody.toJson()),
         maxAge: editorChoiceCacheDuration,
         headers: {"Content-Type": "application/json"});
 
@@ -230,7 +234,7 @@ class EditorChoiceService implements EditorChoiceRepos {
     ''';
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.currentUser.following) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
@@ -252,9 +256,9 @@ class EditorChoiceService implements EditorChoiceRepos {
       "storyIdList": storyIdList,
       "followingMembers": followingMemberIds,
       "urlList": urlList,
-      "myId": UserHelper.instance.currentUser.memberId,
-      "urlFilter": Environment().config.readrWebsiteLink,
-      "readrId": Environment().config.readrPublisherId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "urlFilter": Get.find<EnvironmentService>().config.readrWebsiteLink,
+      "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -265,7 +269,7 @@ class EditorChoiceService implements EditorChoiceRepos {
 
     late final dynamic jsonResponse;
     jsonResponse = await _helper.postByUrl(
-      Environment().config.readrMeshApi,
+      Get.find<EnvironmentService>().config.readrMeshApi,
       jsonEncode(graphqlBody.toJson()),
       headers: {"Content-Type": "application/json"},
     );

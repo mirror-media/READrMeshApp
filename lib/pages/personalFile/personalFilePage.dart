@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/personalFileWidget.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -17,7 +18,7 @@ class PersonalFilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMine =
-        viewMember.memberId == UserHelper.instance.currentUser.memberId;
+        viewMember.memberId == Get.find<UserService>().currentUser.memberId;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -27,7 +28,7 @@ class PersonalFilePage extends StatelessWidget {
         child: PersonalFileWidget(
           viewMember: viewMember,
           isMine: isMine,
-          isVisitor: UserHelper.instance.isVisitor,
+          isVisitor: Get.find<UserService>().isVisitor,
           isFromBottomTab: isFromBottomTab,
         ),
       ),

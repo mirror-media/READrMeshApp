@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -18,7 +19,7 @@ abstract class VisitorRepos {
 class VisitorService implements VisitorRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   Future<Map<String, String>> _getHeaders() async {
     Map<String, String> headers = {

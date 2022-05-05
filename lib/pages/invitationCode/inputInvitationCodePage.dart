@@ -1,9 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/router/router.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -54,7 +54,10 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                     .checkInvitationCode(_pinController.text);
                 if (_status == InvitationCodeStatus.valid) {
                   Navigator.pop(context);
-                  AutoRouter.of(context).replace(LoginRoute(fromOnboard: true));
+                  Get.off(
+                    () => const LoginPage(fromOnboard: true),
+                    fullscreenDialog: true,
+                  );
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();

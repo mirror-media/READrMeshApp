@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/environment.dart';
-import 'package:readr/helpers/userHelper.dart';
+import 'package:readr/getxServices/environmentService.dart';
+
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -21,7 +23,7 @@ abstract class HomeScreenRepos {
 
 class HomeScreenService implements HomeScreenRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Environment().config.readrMeshApi;
+  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   @override
   Future<Map<String, dynamic>> fetchHomeScreenData() async {
@@ -712,13 +714,14 @@ class HomeScreenService implements HomeScreenRepos {
         .toUtc()
         .toIso8601String();
 
-    Member member = UserHelper.instance.currentUser;
+    Member member = Get.find<UserService>().currentUser;
 
-    for (var memberId in UserHelper.instance.localFollowingMemberList) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
-    for (var publisher in UserHelper.instance.localPublisherList) {
+    for (var publisher
+        in Get.find<UserService>().currentUser.followingPublisher) {
       followingPublisherIds.add(publisher.id);
     }
 
@@ -728,7 +731,7 @@ class HomeScreenService implements HomeScreenRepos {
       "followingPublisherIds": followingPublisherIds,
       "myId": member.memberId,
       "timeFilter": timeFilter,
-      "readrId": Environment().config.readrPublisherId,
+      "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -826,7 +829,7 @@ class HomeScreenService implements HomeScreenRepos {
     }
 
     recommendedMembers.removeWhere((element) =>
-        element.memberId == UserHelper.instance.currentUser.memberId);
+        element.memberId == Get.find<UserService>().currentUser.memberId);
 
     List<Publisher> recommendedPublishers = [];
     if (jsonResponse['data']['RecommendPublisher'].isNotEmpty) {
@@ -1010,9 +1013,9 @@ class HomeScreenService implements HomeScreenRepos {
         .toUtc()
         .toIso8601String();
 
-    Member member = UserHelper.instance.currentUser;
+    Member member = Get.find<UserService>().currentUser;
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.localFollowingMemberList) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
@@ -1219,15 +1222,16 @@ class HomeScreenService implements HomeScreenRepos {
         .toUtc()
         .toIso8601String();
 
-    Member member = UserHelper.instance.currentUser;
+    Member member = Get.find<UserService>().currentUser;
 
     List<String> followingMemberIds = [];
-    for (var memberId in UserHelper.instance.localFollowingMemberList) {
+    for (var memberId in Get.find<UserService>().currentUser.following) {
       followingMemberIds.add(memberId.memberId);
     }
 
     List<String> followingPublisherIds = [];
-    for (var publisher in UserHelper.instance.localPublisherList) {
+    for (var publisher
+        in Get.find<UserService>().currentUser.followingPublisher) {
       followingPublisherIds.add(publisher.id);
     }
 

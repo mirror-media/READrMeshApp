@@ -1,5 +1,6 @@
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/userHelper.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -51,12 +52,12 @@ class NewsStoryItemPick implements PickableItem {
   PickObjective get objective => PickObjective.story;
 
   @override
-  bool get isPicked => UserHelper.instance.isNewsPicked(targetId);
+  bool get isPicked => Get.find<UserService>().isNewsPicked(targetId);
 
   @override
   int get pickCount {
     if (isPicked) {
-      return UserHelper.instance.getNewsPickedItem(targetId)!.pickCount;
+      return Get.find<UserService>().getNewsPickedItem(targetId)!.pickCount;
     } else if (newsStoryItem.myPickId != null) {
       return newsStoryItem.pickCount - 1;
     }
@@ -98,12 +99,12 @@ class NewsListItemPick implements PickableItem {
   PickObjective get objective => PickObjective.story;
 
   @override
-  bool get isPicked => UserHelper.instance.isNewsPicked(targetId);
+  bool get isPicked => Get.find<UserService>().isNewsPicked(targetId);
 
   @override
   int get pickCount {
     if (isPicked) {
-      return UserHelper.instance.getNewsPickedItem(targetId)!.pickCount;
+      return Get.find<UserService>().getNewsPickedItem(targetId)!.pickCount;
     } else if (newsListItem.myPickId != null) {
       return newsListItem.pickCount - 1;
     }

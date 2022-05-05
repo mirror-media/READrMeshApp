@@ -1,7 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/exceptions.dart';
 
@@ -34,7 +34,7 @@ class ErrorPage extends StatelessWidget {
     if (needPop) {
       onPressedFunction = () {
         onPressed;
-        context.popRoute();
+        Get.back();
       };
     }
 
