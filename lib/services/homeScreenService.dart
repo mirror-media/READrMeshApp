@@ -217,6 +217,35 @@ class HomeScreenService implements HomeScreenRepos {
             }
           }
         )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
+        }
       }
       latestComments: stories(
         take: 3
@@ -928,51 +957,48 @@ class HomeScreenService implements HomeScreenRepos {
             }
           }
         )
-        followingComment:comment(
-          orderBy:{
-            published_date: desc
-          }
-          take: 1
+        followingPickComment: pick(
           where:{
             is_active:{
-              equals: true
-            }
-            state:{
-              equals: "public"
-            }
+            	equals: true
+          	}
             member:{
+              is_active:{
+                equals: true
+              }
               id:{
                 in: \$followingMembers
               }
             }
           }
-        ){
-          id
-          member{
-            id
-            nickname
-            avatar
+          orderBy:{
+            picked_date: desc
           }
-          content
-          state
-          published_date
-          likeCount(
+        ){
+          pick_comment(
             where:{
               is_active:{
                 equals: true
               }
+              state:{
+              	equals: "public"
+            	}
             }
-          )
-          isLiked:likeCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              id:{
-                equals: \$myId
-              }
+            orderBy:{
+              published_date: desc
             }
-          )
+            take: 1
+          ){
+            id
+         		member{
+            	id
+            	nickname
+            	avatar
+            	customId
+          	}
+          	content
+          	published_date
+          }
         }
         followingPicks: pick(
           where:{
@@ -994,13 +1020,85 @@ class HomeScreenService implements HomeScreenRepos {
           orderBy:{
             picked_date: desc
           }
-          take: 2
+          take: 4
         ){
           picked_date
           member{
             id
             nickname
             avatar
+            customId
+          }
+        }
+        otherPicks:pick(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        pickCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
           }
         }
       }
