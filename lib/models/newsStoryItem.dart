@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/commentCountHelper.dart';
+import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
+import 'package:readr/services/pickService.dart';
 
 class NewsStoryItem {
   final String id;
@@ -20,6 +21,7 @@ class NewsStoryItem {
   String? bookmarkId;
   final String? content;
   final String? writer;
+  final String controllerTag;
 
   NewsStoryItem({
     required this.id,
@@ -29,6 +31,7 @@ class NewsStoryItem {
     required this.otherPickMembers,
     required this.popularComments,
     required this.allComments,
+    required this.controllerTag,
     this.pickCount = 0,
     this.myPickId,
     this.bookmarkId,
@@ -77,8 +80,6 @@ class NewsStoryItem {
       popularComments.sort((a, b) => b.likedCount.compareTo(a.likedCount));
       popularComments.take(3);
       popularComments.removeWhere((element) => element.likedCount == 0);
-      CommentCountHelper.instance
-          .updateStoryMap(json["id"], allComments.length);
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -91,16 +92,6 @@ class NewsStoryItem {
         if (json['myPickId'][0]['pick_comment'].isNotEmpty) {
           myPickCommentId = json['myPickId'][0]['pick_comment'][0]['id'];
         }
-        Get.find<UserService>().updateNewsPickedMap(
-          json['id'],
-          PickedItem(
-            pickId: myPickId!,
-            pickCommentId: myPickCommentId,
-            pickCount: pickCount,
-          ),
-        );
-      } else if (Get.find<UserService>().isNewsPicked(json['id'])) {
-        Get.find<UserService>().updateNewsPickedMap(json['id'], null);
       }
     }
 
@@ -122,9 +113,39 @@ class NewsStoryItem {
       writer = json['writer'];
     }
 
+    List<Member> allPickedMember = [];
+    allPickedMember.addAll(followingPickMembers);
+    allPickedMember.addAll(otherPickMembers);
+    if (Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
+      final controller =
+          Get.find<PickableItemController>(tag: 'News${json['id']}');
+      controller.myPickId.value = myPickId;
+      controller.myPickCommentId.value = myPickCommentId;
+      controller.pickCount.value = pickCount;
+      controller.commentCount.value = allComments.length;
+      controller.pickedMembers.assignAll(allPickedMember);
+    } else {
+      Get.lazyPut<PickableItemController>(
+        () => PickableItemController(
+          targetId: json["id"],
+          pickRepos: PickService(),
+          objective: PickObjective.story,
+          myPickId: myPickId,
+          myPickCommentId: myPickCommentId,
+          pickCount: pickCount,
+          commentCount: allComments.length,
+          pickedMembers: allPickedMember,
+          controllerTag: 'News${json['id']}',
+        ),
+        tag: 'News${json['id']}',
+        fenix: true,
+      );
+    }
+
     return NewsStoryItem(
       id: json['id'],
       title: json['title'],
+      controllerTag: 'News${json['id']}',
       source: source,
       followingPickMembers: followingPickMembers,
       otherPickMembers: otherPickMembers,

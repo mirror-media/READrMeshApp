@@ -7,7 +7,6 @@ import 'package:readr/blocs/news/news_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -95,9 +94,15 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                   ],
                 ),
                 BottomCardWidget(
-                  item: NewsStoryItemPick(_newsStoryItem),
+                  controllerTag: _newsStoryItem.controllerTag,
                   onTextChanged: (value) => _inputValue.value = value,
                   isPicked: _isPicked,
+                  title: _newsStoryItem.title,
+                  author: _newsStoryItem.source.title,
+                  id: _newsStoryItem.id,
+                  objective: PickObjective.story,
+                  allComments: _newsStoryItem.allComments,
+                  popularComments: _newsStoryItem.popularComments,
                 ),
               ],
             ),

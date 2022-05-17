@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
-import 'package:readr/getxServices/userService.dart';
+import 'package:readr/controller/comment/commentController.dart';
+import 'package:readr/controller/personalFile/pickTabController.dart';
+import 'package:readr/controller/pickableItemController.dart';
 
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/editCommentWidget.dart';
@@ -11,8 +12,9 @@ class EditCommentMenu {
   static Future<void> showEditCommentMenu(
     BuildContext context,
     Comment comment,
-    CommentBloc commentBloc,
-  ) async {
+    String controllerTag, {
+    bool isFromPickTab = false,
+  }) async {
     var result = await showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -61,15 +63,17 @@ class EditCommentMenu {
             curve: Curves.easeOut,
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: EditCommentWidget(comment, commentBloc),
+            child: EditCommentWidget(comment),
           );
         },
       );
     } else if (result == 'delete') {
       Widget? dialogContent;
-      var item =
-          Get.find<UserService>().getNewsPickedItemByPickCommentId(comment.id);
-      if (item != null) {
+
+      final pickableItemController =
+          Get.find<PickableItemController>(tag: controllerTag);
+      if (pickableItemController.myPickId.value != null &&
+          pickableItemController.myPickCommentId.value == comment.id) {
         dialogContent = const Text(
           '系統仍會保留您的精選記錄',
           style: TextStyle(
@@ -93,7 +97,13 @@ class EditCommentMenu {
           actions: [
             TextButton(
               onPressed: () {
-                commentBloc.add(DeleteComment(comment));
+                if (isFromPickTab) {
+                  Get.find<PickTabController>()
+                      .deletePickComment(comment.id, controllerTag);
+                } else {
+                  Get.find<CommentController>(tag: controllerTag)
+                      .deleteComment(comment.id);
+                }
                 Navigator.pop(context);
               },
               child: const Text(

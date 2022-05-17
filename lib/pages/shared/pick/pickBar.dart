@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
+import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 
 class PickBar extends StatelessWidget {
-  final PickableItem item;
-  const PickBar(this.item, {Key? key}) : super(key: key);
+  final String contorllerTag;
+  final bool isInMyPersonalFile;
+  const PickBar(
+    this.contorllerTag, {
+    this.isInMyPersonalFile = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PickButtonCubit, PickButtonState>(
-      builder: (context, state) {
-        bool isPicked = item.isPicked;
-        int pickCountData = item.pickCount;
+    final controller = Get.find<PickableItemController>(tag: contorllerTag);
+    return Obx(
+      () {
+        bool isPicked = controller.isPicked.value;
+        int pickCountData = controller.pickCount.value;
 
         List<Member> pickedMemberList = [];
-        pickedMemberList.addAll(item.pickedMemberList);
+        pickedMemberList.addAll(controller.pickedMembers);
 
         pickedMemberList.removeWhere((element) =>
             element.memberId == Get.find<UserService>().currentUser.memberId);
@@ -65,7 +68,8 @@ class PickBar extends StatelessWidget {
         bottom.addAll([
           const Spacer(),
           PickButton(
-            item,
+            contorllerTag,
+            isInMyPersonalFile: isInMyPersonalFile,
           ),
         ]);
 

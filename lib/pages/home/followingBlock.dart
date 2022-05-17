@@ -10,7 +10,6 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
@@ -321,7 +320,7 @@ class FollowingBlock extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            child: PickBar(NewsListItemPick(item)),
+            child: PickBar(item.controllerTag),
           ),
           if (item.showComment != null) ...[
             const Divider(
@@ -336,7 +335,9 @@ class FollowingBlock extends StatelessWidget {
                 await CommentBottomSheet.showCommentBottomSheet(
                   context: context,
                   clickComment: item.showComment!,
-                  item: NewsListItemPick(item),
+                  objective: PickObjective.story,
+                  id: item.id,
+                  controllerTag: item.controllerTag,
                 );
               },
               child: _commentsWidget(context, item.showComment!),

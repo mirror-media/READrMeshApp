@@ -1,9 +1,11 @@
 import 'package:extended_text/extended_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:get/get.dart';
+import 'package:readr/controller/comment/commentItemController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -14,13 +16,23 @@ class PickCommentItem extends StatefulWidget {
   final Comment comment;
   final bool isExpanded;
   final bool isMyComment;
-  final CommentBloc commentBloc;
-  const PickCommentItem({
+  final String pickControllerTag;
+  late final CommentItemController controller;
+  PickCommentItem({
     required this.comment,
-    required this.commentBloc,
+    required this.pickControllerTag,
     this.isExpanded = false,
     this.isMyComment = false,
-  });
+  }) {
+    if (Get.isRegistered<CommentItemController>(tag: 'Comment${comment.id}')) {
+      controller = Get.find<CommentItemController>(tag: 'Comment${comment.id}');
+    } else {
+      controller = Get.put(
+        CommentItemController(commentRepos: CommentService(), comment: comment),
+        tag: 'Comment${comment.id}',
+      );
+    }
+  }
 
   @override
   _PickCommentItemState createState() => _PickCommentItemState();
@@ -28,19 +40,6 @@ class PickCommentItem extends StatefulWidget {
 
 class _PickCommentItemState extends State<PickCommentItem> {
   bool _isExpanded = false;
-  bool _isLiked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isExpanded = widget.isExpanded;
-    _isLiked = widget.comment.isLiked;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +75,12 @@ class _PickCommentItemState extends State<PickCommentItem> {
           14,
         ),
         const SizedBox(width: 8),
-        Timestamp(
-          widget.comment.publishDate,
-          textSize: 13,
-          isEdited: widget.comment.isEdited,
+        Obx(
+          () => Timestamp(
+            widget.comment.publishDate,
+            textSize: 13,
+            isEdited: widget.controller.isEdited.value,
+          ),
         ),
         if (widget.isMyComment) ...[
           Container(
@@ -96,8 +97,9 @@ class _PickCommentItemState extends State<PickCommentItem> {
             onTap: () async {
               await EditCommentMenu.showEditCommentMenu(
                 context,
-                widget.comment,
-                widget.commentBloc,
+                widget.controller.comment,
+                widget.pickControllerTag,
+                isFromPickTab: true,
               );
             },
             child: const Text(
@@ -110,56 +112,46 @@ class _PickCommentItemState extends State<PickCommentItem> {
           ),
         ],
         const Spacer(),
-        Text(
-          widget.comment.likedCount.toString(),
-          style: const TextStyle(
-            color: Color.fromRGBO(0, 9, 40, 0.66),
-            fontSize: 12,
+        Obx(
+          () => Text(
+            widget.controller.likeCount.toString(),
+            style: const TextStyle(
+              color: Color.fromRGBO(0, 9, 40, 0.66),
+              fontSize: 12,
+            ),
           ),
         ),
         const SizedBox(width: 5),
-        IconButton(
-          onPressed: () async {
-            if (FirebaseAuth.instance.currentUser != null) {
-              // save origin state
-              bool originIsLiked = _isLiked;
-              int originLikeCount = widget.comment.likedCount;
-              // refresh UI first
-              setState(() {
-                if (_isLiked) {
-                  widget.comment.likedCount--;
+        Obx(
+          () => IconButton(
+            onPressed: () async {
+              if (Get.find<UserService>().isMember) {
+                widget.controller.isLiked.toggle();
+                if (widget.controller.isLiked.isTrue) {
+                  widget.controller.likeCount.value++;
                 } else {
-                  widget.comment.likedCount++;
+                  widget.controller.likeCount.value--;
                 }
-                _isLiked = !_isLiked;
-              });
-              CommentService commentService = CommentService();
-              int? newLikeCount;
-              if (originIsLiked) {
-                newLikeCount = await commentService.removeLike(
-                  commentId: widget.comment.id,
-                );
               } else {
-                newLikeCount = await commentService.addLike(
-                  commentId: widget.comment.id,
+                Get.to(
+                  () => const LoginPage(
+                    fromComment: true,
+                  ),
+                  fullscreenDialog: true,
                 );
               }
-
-              // if return null mean failed
-              if (newLikeCount == null) {
-                widget.comment.likedCount = originLikeCount;
-                _isLiked = originIsLiked;
-              } else {
-                widget.comment.likedCount = newLikeCount;
-              }
-            }
-          },
-          iconSize: 18,
-          padding: const EdgeInsets.all(0),
-          constraints: const BoxConstraints(),
-          icon: Icon(
-            _isLiked ? Icons.favorite_outlined : Icons.favorite_border_outlined,
-            color: _isLiked ? Colors.red : const Color.fromRGBO(0, 9, 40, 0.66),
+            },
+            iconSize: 18,
+            padding: const EdgeInsets.all(0),
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              widget.controller.isLiked.value
+                  ? Icons.favorite_outlined
+                  : Icons.favorite_border_outlined,
+              color: widget.controller.isLiked.value
+                  ? Colors.red
+                  : const Color.fromRGBO(0, 9, 40, 0.66),
+            ),
           ),
         ),
       ],
@@ -175,60 +167,63 @@ class _PickCommentItemState extends State<PickCommentItem> {
           });
         }
       },
-      child: _buildComment(widget.comment.content),
+      child: _buildComment(),
     );
   }
 
-  Widget _buildComment(String content) {
-    List<String> contentChar = content.characters.toList();
-    return ExtendedText.rich(
-      TextSpan(
-        text: contentChar[0],
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
-        ),
-        children: [
-          for (int i = 1; i < contentChar.length; i++)
-            TextSpan(
-              text: contentChar[i],
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: validate.isEmoji(contentChar[i])
-                    ? readrBlack
-                    : readrBlack66,
-              ),
-            )
-        ],
-      ),
-      textAlign: TextAlign.start,
-      maxLines: _isExpanded ? null : 3,
-      joinZeroWidthSpace: true,
-      overflowWidget: TextOverflowWidget(
-        position: TextOverflowPosition.end,
-        child: RichText(
-          text: const TextSpan(
-            text: '... ',
-            style: TextStyle(
-              color: Color.fromRGBO(0, 9, 40, 0.66),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            children: [
+  Widget _buildComment() {
+    return Obx(() {
+      List<String> contentChar =
+          widget.controller.commentContent.value.characters.toList();
+      return ExtendedText.rich(
+        TextSpan(
+          text: contentChar[0],
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
+          ),
+          children: [
+            for (int i = 1; i < contentChar.length; i++)
               TextSpan(
-                text: '顯示更多',
+                text: contentChar[i],
                 style: TextStyle(
-                  color: readrBlack50,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
+                  color: validate.isEmoji(contentChar[i])
+                      ? readrBlack
+                      : readrBlack66,
                 ),
               )
-            ],
+          ],
+        ),
+        textAlign: TextAlign.start,
+        maxLines: _isExpanded ? null : 3,
+        joinZeroWidthSpace: true,
+        overflowWidget: TextOverflowWidget(
+          position: TextOverflowPosition.end,
+          child: RichText(
+            text: const TextSpan(
+              text: '... ',
+              style: TextStyle(
+                color: Color.fromRGBO(0, 9, 40, 0.66),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              children: [
+                TextSpan(
+                  text: '顯示更多',
+                  style: TextStyle(
+                    color: readrBlack50,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

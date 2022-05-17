@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
+import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -9,9 +9,7 @@ import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
 class EditCommentWidget extends StatefulWidget {
   final Comment comment;
-  final CommentBloc commentBloc;
-  const EditCommentWidget(this.comment, this.commentBloc, {Key? key})
-      : super(key: key);
+  const EditCommentWidget(this.comment, {Key? key}) : super(key: key);
 
   @override
   State<EditCommentWidget> createState() => _EditCommentWidgetState();
@@ -97,8 +95,9 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                     Comment newComment =
                         Comment.editComment(_controller.text, widget.comment);
 
-                    widget.commentBloc.add(EditComment(
-                        oldComment: widget.comment, newComment: newComment));
+                    Get.find<CommentItemController>(
+                            tag: 'Comment${widget.comment.id}')
+                        .editComment(newComment);
                   }
                   Navigator.pop(context);
                 },

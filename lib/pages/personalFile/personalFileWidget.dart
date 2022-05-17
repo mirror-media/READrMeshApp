@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
 import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
-import 'package:readr/blocs/pickButton/pickButton_cubit.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
@@ -28,7 +25,6 @@ import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:readr/services/commentService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:validated/validated.dart' as validate;
 
@@ -109,12 +105,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         BlocProvider(
           create: (context) =>
               PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
-        ),
-        BlocProvider(
-          create: (context) => CommentBloc(
-            pickButtonCubit: BlocProvider.of<PickButtonCubit>(context),
-            commentRepos: CommentService(),
-          ),
         ),
       ],
       child: PickTabContent(

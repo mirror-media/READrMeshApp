@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
@@ -83,7 +82,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
             const SizedBox(height: 8),
             NewsInfo(projectItem),
             const SizedBox(height: 18),
-            PickBar(NewsListItemPick(projectItem)),
+            PickBar(projectItem.controllerTag),
           ],
         ),
         onTap: () async {

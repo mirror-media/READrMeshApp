@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/blocs/news/news_cubit.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -121,9 +121,15 @@ class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {
             ],
           ),
           BottomCardWidget(
-            item: NewsStoryItemPick(_newsStoryItem),
+            controllerTag: _newsStoryItem.controllerTag,
             onTextChanged: (value) => _inputValue.value = value,
             isPicked: _isPicked,
+            title: _newsStoryItem.title,
+            author: _newsStoryItem.source.title,
+            id: _newsStoryItem.id,
+            objective: PickObjective.story,
+            allComments: _newsStoryItem.allComments,
+            popularComments: _newsStoryItem.popularComments,
           ),
           _isLoading ? StorySkeletonScreen(widget.news.url) : Container(),
         ],

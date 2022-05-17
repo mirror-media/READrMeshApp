@@ -12,7 +12,6 @@ import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
@@ -116,9 +115,15 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                 ],
               ),
               BottomCardWidget(
-                item: NewsStoryItemPick(_newsStoryItem),
+                controllerTag: _newsStoryItem.controllerTag,
                 onTextChanged: (value) => _inputValue.value = value,
                 isPicked: _isPicked,
+                title: _newsStoryItem.title,
+                author: _newsStoryItem.source.title,
+                id: _newsStoryItem.id,
+                objective: PickObjective.story,
+                allComments: _newsStoryItem.allComments,
+                popularComments: _newsStoryItem.popularComments,
               ),
             ],
           ),

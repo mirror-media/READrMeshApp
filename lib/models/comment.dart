@@ -1,6 +1,5 @@
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsListItem.dart';
 
 class Comment {
   final String id;
@@ -10,7 +9,6 @@ class Comment {
   final Comment? root;
   final String state;
   final DateTime publishDate;
-  final NewsListItem? story;
   int likedCount;
   bool isLiked;
   bool isEdited;
@@ -23,21 +21,15 @@ class Comment {
     this.root,
     required this.state,
     required this.publishDate,
-    this.story,
     this.likedCount = 0,
     this.isLiked = false,
     this.isEdited = false,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
-    NewsListItem? story;
     int likedCount = 0;
     bool isLiked = false;
     bool isEdited = false;
-
-    if (BaseModel.checkJsonKeys(json, ['story'])) {
-      story = NewsListItem.fromJson(json['story']);
-    }
 
     if (BaseModel.checkJsonKeys(json, ['likeCount'])) {
       likedCount = json['likeCount'];
@@ -61,7 +53,6 @@ class Comment {
       content: json['content'],
       state: json['state'] ?? "public",
       publishDate: DateTime.parse(json["published_date"]).toLocal(),
-      story: story,
       likedCount: likedCount,
       isLiked: isLiked,
       isEdited: isEdited,
@@ -75,7 +66,6 @@ class Comment {
       content: newContent,
       state: oldComment.state,
       publishDate: oldComment.publishDate,
-      story: oldComment.story,
       likedCount: oldComment.likedCount,
       isLiked: oldComment.isLiked,
       isEdited: true,

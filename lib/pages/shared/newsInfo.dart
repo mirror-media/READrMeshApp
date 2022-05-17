@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
-import 'package:readr/helpers/commentCountHelper.dart';
+import 'package:get/get.dart';
+import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -12,11 +11,12 @@ class NewsInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCountCubit, CommentCountState>(
-      builder: (context, state) {
+    final controller =
+        Get.find<PickableItemController>(tag: 'News${newsListItem.id}');
+    return Obx(
+      () {
         List<Widget> children = [];
-        int displayCommentCount =
-            CommentCountHelper.instance.getStoryCommentCount(newsListItem.id);
+        int displayCommentCount = controller.commentCount.value;
 
         if (displayCommentCount != 0) {
           children.add(SizedBox(

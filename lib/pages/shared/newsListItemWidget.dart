@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
@@ -12,9 +11,11 @@ import 'package:shimmer/shimmer.dart';
 class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
   final bool hidePublisher;
+  final bool isInMyPersonalFile;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
+    this.isInMyPersonalFile = false,
   });
 
   @override
@@ -134,7 +135,8 @@ class NewsListItemWidget extends StatelessWidget {
           NewsInfo(news),
           const SizedBox(height: 16),
           PickBar(
-            NewsListItemPick(news),
+            'News${news.id}',
+            isInMyPersonalFile: isInMyPersonalFile,
           ),
         ],
       ),

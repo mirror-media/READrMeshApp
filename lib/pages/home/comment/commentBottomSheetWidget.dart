@@ -1,73 +1,36 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
-import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
+import 'package:get/get.dart';
+import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/pickableItem.dart';
-import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class CommentBottomSheetWidget extends StatefulWidget {
-  final BuildContext context;
+class CommentBottomSheetWidget extends GetView<CommentController> {
   final Comment clickComment;
-  final PickableItem item;
+  final String controllerTag;
   final ValueChanged<String> onTextChanged;
   final String? oldContent;
+  late final TextEditingController _textController;
+  final ItemScrollController _itemScrollController = ItemScrollController();
 
-  const CommentBottomSheetWidget({
-    required this.context,
+  CommentBottomSheetWidget({
     required this.clickComment,
-    required this.item,
     required this.onTextChanged,
+    required this.controllerTag,
     this.oldContent,
   });
 
   @override
-  _CommentBottomSheetWidgetState createState() =>
-      _CommentBottomSheetWidgetState();
-}
-
-class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
-  List<Comment> _allComments = [];
-  late Comment _myNewComment;
-  bool _isSending = false;
-  bool _hasMyNewComment = false;
-  late final TextEditingController _textController;
-  final ItemScrollController _controller = ItemScrollController();
-  late int _deleteCommentIndex;
-  late Comment _deleteComment;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchComment();
-    _textController = TextEditingController(text: widget.oldContent);
-  }
-
-  _fetchComment() {
-    context
-        .read<CommentBloc>()
-        .add(FetchComments(widget.item.targetId, widget.item.objective));
-  }
-
-  _createComment(String content) {
-    if (!_isSending) {
-      context.read<CommentBloc>().add(AddComment(
-            targetId: widget.item.targetId,
-            content: content,
-            objective: widget.item.objective,
-          ));
-    }
-  }
+  String? get tag => controllerTag;
 
   @override
   Widget build(BuildContext context) {
+    _textController = TextEditingController(text: oldContent);
+    controller.fetchComments();
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -94,44 +57,9 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               ),
             ),
             Flexible(
-              child: BlocConsumer<CommentBloc, CommentState>(
-                listener: (context, state) {
-                  if (state is AddCommentFailed) {
-                    Fluttertoast.showToast(
-                      msg: "留言失敗，請稍後再試一次",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                  }
-                  if (state is AddCommentSuccess) {
-                    context
-                        .read<CommentCountCubit>()
-                        .updateCommentCount(widget.item, state.comments.length);
-                  }
-
-                  if (state is CommentLoaded) {
-                    context
-                        .read<CommentCountCubit>()
-                        .updateCommentCount(widget.item, state.comments.length);
-                  }
-                },
-                builder: (context, state) {
-                  if (state is CommentError) {
-                    return SizedBox(
-                      height: 500,
-                      child: ErrorPage(
-                        error: state.error,
-                        onPressed: () => _fetchComment(),
-                        hideAppbar: true,
-                      ),
-                    );
-                  }
-
-                  if (state is CommentInitial || state is CommentLoading) {
+              child: Obx(
+                () {
+                  if (controller.isLoading.isTrue) {
                     return const SizedBox(
                       height: 150,
                       child: Center(
@@ -140,112 +68,20 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
                     );
                   }
 
-                  if (state is CommentLoaded) {
-                    _allComments = state.comments;
-                    int index = _allComments.indexWhere(
-                        (comment) => comment.id == widget.clickComment.id);
-                    Timer.periodic(const Duration(microseconds: 1), (timer) {
-                      if (_controller.isAttached) {
-                        _controller.scrollTo(
-                            index: index,
-                            duration: const Duration(
-                              microseconds: 1,
-                            ));
-                        timer.cancel();
-                      }
-                    });
-                    _isSending = false;
-                  }
-
-                  if (state is AddCommentFailed) {
-                    if (_allComments[0].id == 'sending') {
-                      _allComments.removeAt(0);
+                  Timer.periodic(const Duration(microseconds: 1), (timer) {
+                    if (_itemScrollController.isAttached) {
+                      int index = controller.allComments.indexWhere(
+                          (comment) => comment.id == clickComment.id);
+                      _itemScrollController.scrollTo(
+                          index: index,
+                          duration: const Duration(
+                            microseconds: 1,
+                          ));
+                      timer.cancel();
                     }
-                    _isSending = false;
-                  }
+                  });
 
-                  if (state is AddCommentSuccess) {
-                    _allComments = state.comments;
-
-                    // find new comment position
-                    int index = _allComments.indexWhere((element) {
-                      if (element.content == _myNewComment.content &&
-                          element.member.memberId ==
-                              _myNewComment.member.memberId) {
-                        return true;
-                      }
-                      return false;
-                    });
-
-                    // if it's not the first, move to first
-                    if (index != 0) {
-                      _myNewComment = _allComments.elementAt(index);
-                      _allComments.removeAt(index);
-                      _allComments.insert(0, _myNewComment);
-                    }
-                    _hasMyNewComment = true;
-                    if (_isSending) {
-                      Timer(const Duration(seconds: 5, milliseconds: 5),
-                          () => _hasMyNewComment = false);
-                    }
-
-                    _isSending = false;
-                    _textController.clear();
-                  }
-
-                  if (state is CommentAdding) {
-                    if (!_isSending) {
-                      _allComments.insert(0, state.myNewComment);
-                      _myNewComment = state.myNewComment;
-                    }
-
-                    _isSending = true;
-                  }
-
-                  if (state is DeletingComment) {
-                    _deleteCommentIndex = _allComments
-                        .indexWhere((element) => element.id == state.commentId);
-                    if (_deleteCommentIndex != -1) {
-                      _deleteComment = _allComments[_deleteCommentIndex];
-                      _allComments.removeAt(_deleteCommentIndex);
-                      context
-                          .read<CommentCountCubit>()
-                          .updateCommentCount(widget.item, _allComments.length);
-                    }
-                  }
-
-                  if (state is DeleteCommentFailure) {
-                    _allComments.insert(_deleteCommentIndex, _deleteComment);
-                    context
-                        .read<CommentCountCubit>()
-                        .updateCommentCount(widget.item, _allComments.length);
-                  }
-
-                  if (state is UpdatingComment) {
-                    int index = _allComments.indexWhere(
-                        (element) => element.id == state.newComment.id);
-                    if (index != -1) {
-                      _allComments[index] = state.newComment;
-                    }
-                  }
-
-                  if (state is UpdateCommentFailure) {
-                    int index = _allComments.indexWhere(
-                        (element) => element.id == state.oldComment.id);
-                    if (index != -1) {
-                      _allComments[index] = state.oldComment;
-                    }
-                  }
-
-                  if (state is UpdateCommentLike) {
-                    int allCommentsIndex = _allComments
-                        .indexWhere((element) => element == state.newComment);
-                    if (allCommentsIndex != -1) {
-                      _allComments[allCommentsIndex] = state.newComment;
-                    }
-                  }
-
-                  return _buildContent();
+                  return _buildContent(context);
                 },
               ),
             ),
@@ -255,7 +91,7 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -267,27 +103,27 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
             Flexible(
               child: GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: ScrollablePositionedList.separated(
-                  itemCount: _allComments.length,
-                  itemScrollController: _controller,
-                  padding: const EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return CommentItem(
-                      key: ValueKey(_allComments[index].id +
-                          _allComments[index].likedCount.toString()),
-                      comment: _allComments[index],
-                      isSending: (_isSending && index == 0),
-                      isMyNewComment: _hasMyNewComment && index == 0,
-                    );
-                  },
-                  separatorBuilder: (context, index) => const Divider(
-                    color: readrBlack10,
-                    indent: 20,
-                    endIndent: 20,
-                    thickness: 0.5,
-                    height: 0.5,
+                child: Obx(
+                  () => ScrollablePositionedList.separated(
+                    itemCount: controller.allComments.length,
+                    itemScrollController: _itemScrollController,
+                    padding: const EdgeInsets.all(0),
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return CommentItem(
+                        key: ValueKey(controller.allComments[index].id),
+                        comment: controller.allComments[index],
+                        pickableItemControllerTag: controllerTag,
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Divider(
+                      color: readrBlack10,
+                      indent: 20,
+                      endIndent: 20,
+                      thickness: 0.5,
+                      height: 0.5,
+                    ),
                   ),
                 ),
               ),
@@ -302,15 +138,21 @@ class _CommentBottomSheetWidgetState extends State<CommentBottomSheetWidget> {
               curve: Curves.easeOut,
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: CommentInputBox(
-                isSending: _isSending,
-                onPressed: (text) {
-                  _createComment(text);
-                  _controller.scrollTo(
-                      index: 0, duration: const Duration(milliseconds: 500));
-                },
-                onTextChanged: widget.onTextChanged,
-                textController: _textController,
+              child: Obx(
+                () => CommentInputBox(
+                  isSending: controller.isSending.value,
+                  onPressed: (text) async {
+                    bool success = await controller.addComment(text);
+                    if (success) {
+                      _itemScrollController.scrollTo(
+                          index: 0,
+                          duration: const Duration(milliseconds: 500));
+                      _textController.clear();
+                    }
+                  },
+                  onTextChanged: onTextChanged,
+                  textController: _textController,
+                ),
               ),
             ),
           ],

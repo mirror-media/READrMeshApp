@@ -6,7 +6,6 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/home/comment/commentBottomSheet.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
@@ -126,7 +125,9 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
               await CommentBottomSheet.showCommentBottomSheet(
                 context: context,
                 clickComment: widget.news.showComment!,
-                item: NewsListItemPick(widget.news),
+                objective: PickObjective.story,
+                id: widget.news.id,
+                controllerTag: widget.news.controllerTag,
               );
             },
             child: _commentsWidget(context, widget.news.showComment!),

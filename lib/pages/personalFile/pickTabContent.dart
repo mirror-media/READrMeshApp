@@ -1,114 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/comment/comment_bloc.dart';
-import 'package:readr/blocs/commentCount/commentCount_cubit.dart';
-import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
+import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
-import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/models/pick.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/services/commentService.dart';
+import 'package:readr/services/personalFileService.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class PickTabContent extends StatefulWidget {
+class PickTabContent extends GetView<PickTabController> {
   final Member viewMember;
   const PickTabContent({
     required this.viewMember,
   });
-  @override
-  _PickTabContentState createState() => _PickTabContentState();
-}
-
-class _PickTabContentState extends State<PickTabContent> {
-  List<Pick> _storyPickList = [];
-  bool _isLoading = false;
-  bool _isNoMore = false;
-  late Comment _deletePickComment;
-  late int _deleteIndex;
-  late int _updateIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchPickData();
-  }
-
-  _fetchPickData() async {
-    context.read<PersonalFileTabBloc>().add(FetchTabContent(
-          viewMember: widget.viewMember,
-          tabContentType: TabContentType.pick,
-        ));
-  }
-
-  _loadMore() {
-    _isLoading = true;
-    context
-        .read<PersonalFileTabBloc>()
-        .add(LoadMore(lastPickTime: _storyPickList.last.pickedDate));
-  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PersonalFileTabBloc, PersonalFileTabState>(
-      listener: (context, state) {
-        if (state is PersonalFileTabLoadMoreFailed ||
-            state is PersonalFileTabReloadFailed) {
-          _isLoading = false;
-          Fluttertoast.showToast(
-            msg: "載入失敗",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        }
-      },
-      builder: (context, state) {
-        if (state is PersonalFileTabError) {
-          final error = state.error;
-          print('PickTabError: ${error.message}');
-
+    Get.put(
+        PickTabController(PersonalFileService(), CommentService(), viewMember));
+    return Obx(
+      () {
+        if (controller.isError.isTrue) {
           return ErrorPage(
-            error: error,
-            onPressed: () => _fetchPickData(),
+            error: controller.error,
+            onPressed: () => controller.fetchPickList(),
             hideAppbar: true,
           );
-        }
-
-        if (state is PersonalFileTabLoadingMore) {
-          return _buildContent();
-        }
-
-        if (state is PersonalFileTabLoadMoreSuccess) {
-          if (state.data != null && state.data!['storyPickList'].isNotEmpty) {
-            _storyPickList.addAll(state.data!['storyPickList']);
-            if (state.data!['storyPickList'].length < 10) {
-              _isNoMore = true;
-            }
-          }
-          _isLoading = false;
-          return _buildContent();
-        }
-
-        if (state is PersonalFileTabLoaded) {
-          if (state.data != null && state.data!['storyPickList'].isNotEmpty) {
-            _storyPickList = state.data!['storyPickList'];
-            if (_storyPickList.length < 10) {
-              _isNoMore = true;
-            }
-            return _buildContent();
-          } else {
+        } else if (controller.isLoading.isFalse) {
+          if (controller.storyPickList.isEmpty) {
             return _emptyWidget();
           }
+          return _buildContent();
         }
 
         return const Center(
@@ -119,8 +44,8 @@ class _PickTabContentState extends State<PickTabContent> {
   }
 
   Widget _emptyWidget() {
-    bool isMine = Get.find<UserService>().currentUser.memberId ==
-        widget.viewMember.memberId;
+    bool isMine =
+        Get.find<UserService>().currentUser.memberId == viewMember.memberId;
     return Container(
       color: homeScreenBackgroundColor,
       child: Center(
@@ -155,142 +80,83 @@ class _PickTabContentState extends State<PickTabContent> {
             ),
           ),
         ),
-        if (Get.find<UserService>().currentUser.memberId !=
-            widget.viewMember.memberId)
-          _buildPickStoryList(),
-        if (Get.find<UserService>().currentUser.memberId ==
-            widget.viewMember.memberId)
-          BlocConsumer<CommentBloc, CommentState>(
-            listener: (context, state) {
-              if (state is DeleteCommentSuccess) {
-                context.read<CommentCountCubit>().deleteComment(
-                    NewsListItemPick(_storyPickList[_deleteIndex].story!));
-              }
-            },
-            builder: (context, state) {
-              if (state is PickCommentAdded) {
-                for (int i = 0; i < _storyPickList.length; i++) {
-                  var pickItem = Get.find<UserService>()
-                      .getNewsPickedItem(_storyPickList[i].story!.id);
-                  if (pickItem != null &&
-                      pickItem.pickCommentId == state.comment.id) {
-                    _storyPickList[i].pickComment = state.comment;
-                    break;
-                  }
-                }
-              }
-
-              if (state is RemovingPickComment) {
-                _deleteIndex = _storyPickList.indexWhere((element) =>
-                    element.pickComment != null &&
-                    element.pickComment!.id == state.pickCommentId);
-                if (_deleteIndex != -1) {
-                  _deletePickComment =
-                      _storyPickList[_deleteIndex].pickComment!;
-                  _storyPickList[_deleteIndex].pickComment = null;
-                }
-              }
-
-              if (state is PickCommentRemoveFailed) {
-                _storyPickList[_deleteIndex].pickComment = _deletePickComment;
-              }
-
-              if (state is DeletingComment) {
-                _deleteIndex = _storyPickList.indexWhere((element) =>
-                    element.pickComment != null &&
-                    element.pickComment!.id == state.commentId);
-                if (_deleteIndex != -1) {
-                  _deletePickComment =
-                      _storyPickList[_deleteIndex].pickComment!;
-                  _storyPickList[_deleteIndex].pickComment = null;
-                }
-              }
-
-              if (state is DeleteCommentFailure) {
-                _storyPickList[_deleteIndex].pickComment = _deletePickComment;
-              }
-
-              if (state is UpdatingComment) {
-                _updateIndex = _storyPickList.indexWhere((element) =>
-                    element.pickComment != null &&
-                    element.pickComment!.id == state.newComment.id);
-                if (_updateIndex != -1) {
-                  _storyPickList[_updateIndex].pickComment = state.newComment;
-                }
-              }
-
-              if (state is UpdateCommentFailure) {
-                _storyPickList[_updateIndex].pickComment = state.oldComment;
-              }
-
-              return _buildPickStoryList();
-            },
-          ),
+        _buildPickStoryList(),
       ],
     );
   }
 
   Widget _buildPickStoryList() {
-    return ListView.separated(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemBuilder: (context, index) {
-        if (index == _storyPickList.length) {
-          if (_isNoMore) {
-            return Container();
+    return Obx(
+      () => ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemBuilder: (context, index) {
+          if (index == controller.storyPickList.length) {
+            if (controller.isNoMore.isTrue) {
+              return Container();
+            }
+
+            return VisibilityDetector(
+              key: const Key('pickTab'),
+              onVisibilityChanged: (visibilityInfo) {
+                var visiblePercentage = visibilityInfo.visibleFraction * 100;
+                if (visiblePercentage > 50 &&
+                    controller.isLoadingMore.isFalse) {
+                  controller.fetchMoreStoryPick();
+                }
+              },
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
           }
 
-          return VisibilityDetector(
-            key: const Key('pickTab'),
-            onVisibilityChanged: (visibilityInfo) {
-              var visiblePercentage = visibilityInfo.visibleFraction * 100;
-              if (visiblePercentage > 50 && !_isLoading) _loadMore();
-            },
-            child: const Center(
-              child: CircularProgressIndicator.adaptive(),
+          var pick = controller.storyPickList[index];
+
+          if (pick.pickComment != null) {
+            return Column(
+              children: [
+                NewsListItemWidget(
+                  pick.story!,
+                  isInMyPersonalFile: viewMember.memberId ==
+                      Get.find<UserService>().currentUser.memberId,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                PickCommentItem(
+                  comment: pick.pickComment!,
+                  isMyComment: Get.find<UserService>().currentUser.memberId ==
+                      viewMember.memberId,
+                  pickControllerTag: pick.story!.controllerTag,
+                ),
+              ],
+            );
+          }
+          return NewsListItemWidget(
+            pick.story!,
+            isInMyPersonalFile: viewMember.memberId ==
+                Get.find<UserService>().currentUser.memberId,
+          );
+        },
+        separatorBuilder: (context, index) {
+          if (index == controller.storyPickList.length - 1) {
+            return const SizedBox(
+              height: 36,
+            );
+          }
+          return const Padding(
+            padding: EdgeInsets.only(top: 16, bottom: 20),
+            child: Divider(
+              color: readrBlack10,
+              thickness: 1,
+              height: 1,
             ),
           );
-        }
-
-        if (_storyPickList[index].pickComment != null) {
-          return Column(
-            children: [
-              NewsListItemWidget(
-                _storyPickList[index].story!,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              PickCommentItem(
-                comment: _storyPickList[index].pickComment!,
-                isMyComment: Get.find<UserService>().currentUser.memberId ==
-                    widget.viewMember.memberId,
-                commentBloc: BlocProvider.of<CommentBloc>(context),
-              ),
-            ],
-          );
-        }
-        return NewsListItemWidget(
-          _storyPickList[index].story!,
-        );
-      },
-      separatorBuilder: (context, index) {
-        if (index == _storyPickList.length - 1) {
-          return const SizedBox(
-            height: 36,
-          );
-        }
-        return const Padding(
-          padding: EdgeInsets.only(top: 16, bottom: 20),
-          child: Divider(
-            color: readrBlack10,
-            thickness: 1,
-            height: 1,
-          ),
-        );
-      },
-      itemCount: _storyPickList.length + 1,
+        },
+        itemCount: controller.storyPickList.length + 1,
+      ),
     );
   }
 }

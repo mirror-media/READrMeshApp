@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:get/get.dart';
 
 class PickToast {
-  static void showPickToast(
-      BuildContext context, bool isSuccess, bool isCreate) {
+  static void showPickToast(bool isSuccess, bool isCreate) {
     String message;
     if (isCreate) {
       message = isSuccess ? '成功加入精選' : '加入精選失敗';
@@ -40,7 +40,7 @@ class PickToast {
     );
     showToastWidget(
       toast,
-      context: context,
+      context: Get.overlayContext,
       animation: StyledToastAnimation.slideFromTop,
       reverseAnimation: StyledToastAnimation.slideToTop,
       position: StyledToastPosition.top,

@@ -6,17 +6,6 @@ import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
 
-class PickedItem {
-  String pickId;
-  int pickCount;
-  String? pickCommentId;
-  PickedItem({
-    required this.pickId,
-    required this.pickCount,
-    this.pickCommentId,
-  });
-}
-
 class UserService extends GetxService {
   final MemberService _memberService = MemberService();
   final VisitorService _visitorService = VisitorService();
@@ -28,8 +17,6 @@ class UserService extends GetxService {
 
   late Member currentUser;
   bool hasInvitationCode = false;
-
-  final Map<String, PickedItem> _newsPickedMap = {};
 
   Future<UserService> init() async {
     await fetchUserData();
@@ -129,41 +116,6 @@ class UserService extends GetxService {
     await Future.wait(futureList);
 
     await fetchUserData();
-  }
-
-  void updateNewsPickedMap(String newsId, PickedItem? item) {
-    if (item != null) {
-      _newsPickedMap.update(
-        newsId,
-        (value) => item,
-        ifAbsent: () => item,
-      );
-    } else {
-      _newsPickedMap.remove(newsId);
-    }
-  }
-
-  bool isNewsPicked(String newsId) {
-    if (isVisitor) return false;
-    return _newsPickedMap.containsKey(newsId);
-  }
-
-  PickedItem? getNewsPickedItem(String newsId) {
-    return _newsPickedMap[newsId];
-  }
-
-  void removeNewsPickCommentId(String newsId) {
-    _newsPickedMap[newsId]?.pickCommentId == null;
-  }
-
-  PickedItem? getNewsPickedItemByPickCommentId(String commentId) {
-    PickedItem? newsPickedItem;
-    _newsPickedMap.forEach((key, value) {
-      if (value.pickCommentId == commentId) {
-        newsPickedItem = value;
-      }
-    });
-    return newsPickedItem;
   }
 
   Future<void> checkInvitationCode() async {

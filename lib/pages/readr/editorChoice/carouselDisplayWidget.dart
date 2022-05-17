@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
-import 'package:readr/models/pickableItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/story/newsStoryPage.dart';
@@ -28,7 +27,7 @@ class CarouselDisplayWidget extends StatelessWidget {
             const SizedBox(height: 8),
             NewsInfo(editorChoiceItem.newsListItem!),
             const SizedBox(height: 18),
-            PickBar(NewsListItemPick(editorChoiceItem.newsListItem!)),
+            PickBar(editorChoiceItem.newsListItem!.controllerTag),
           ],
         ),
       ),
