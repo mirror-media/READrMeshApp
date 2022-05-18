@@ -8,7 +8,7 @@ import 'package:readr/services/memberService.dart';
 
 class DeleteMemberPage extends StatefulWidget {
   @override
-  _DeleteMemberPageState createState() => _DeleteMemberPageState();
+  State<DeleteMemberPage> createState() => _DeleteMemberPageState();
 }
 
 class _DeleteMemberPageState extends State<DeleteMemberPage> {

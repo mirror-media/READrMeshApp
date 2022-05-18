@@ -12,7 +12,7 @@ class EmbeddedCodeWithoutScriptWidget extends StatefulWidget {
       {required this.embeddedCode, this.aspectRatio});
 
   @override
-  _EmbeddedCodeWithoutScriptWidgetState createState() =>
+  State<EmbeddedCodeWithoutScriptWidget> createState() =>
       _EmbeddedCodeWithoutScriptWidgetState();
 }
 

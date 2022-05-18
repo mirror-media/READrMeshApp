@@ -22,6 +22,7 @@ import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ReadrStoryWidget extends StatefulWidget {
@@ -31,7 +32,7 @@ class ReadrStoryWidget extends StatefulWidget {
   });
 
   @override
-  _ReadrStoryWidgetState createState() => _ReadrStoryWidgetState();
+  State<ReadrStoryWidget> createState() => _ReadrStoryWidgetState();
 }
 
 class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
@@ -275,9 +276,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：' +
-            dateTimeFormat.changeStringToDisplayString(
-                story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm'),
+        '更新時間：${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -703,11 +702,11 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                       scheme: 'mailto',
                       path: 'readr@readr.tw',
                     );
-                    String url = params.toString();
-                    if (await canLaunch(url)) {
-                      await launch(url);
+
+                    if (await canLaunchUrl(params)) {
+                      await launchUrl(params);
                     } else {
-                      print('Could not launch $url');
+                      print('Could not launch ${params.toString()}');
                     }
                   },
                   child: const Text(
@@ -739,8 +738,8 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
                 child: GestureDetector(
                   onTap: () async {
                     String url = 'tel://0266333890';
-                    if (await canLaunch(url)) {
-                      await launch(url);
+                    if (await canLaunchUrlString(url)) {
+                      await launchUrlString(url);
                     } else {
                       print('Could not launch $url');
                     }

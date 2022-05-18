@@ -15,7 +15,7 @@ class ImageAndDescriptionSlideShowWidget extends StatefulWidget {
   });
 
   @override
-  _ImageAndDescriptionSlideShowWidgetState createState() =>
+  State<ImageAndDescriptionSlideShowWidget> createState() =>
       _ImageAndDescriptionSlideShowWidgetState();
 }
 

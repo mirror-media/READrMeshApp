@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
@@ -41,7 +39,7 @@ class PersonalFileWidget extends StatefulWidget {
   });
 
   @override
-  _PersonalFileWidgetState createState() => _PersonalFileWidgetState();
+  State<PersonalFileWidget> createState() => _PersonalFileWidgetState();
 }
 
 class _PersonalFileWidgetState extends State<PersonalFileWidget>
@@ -49,13 +47,11 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   late Member _viewMember;
   int _pickCount = 0;
   int _followerCount = 0;
-  int _originFollowerCount = 0;
   int _followingCount = 0;
   late TabController _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
   final List<Widget> _tabWidgets = List.empty(growable: true);
   bool _tabIsInitialized = false;
-  late bool _isFollowed;
 
   @override
   void initState() {
@@ -191,14 +187,13 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
 
         if (state is PersonalFileLoaded) {
           _viewMember = state.viewMember;
-          _isFollowed = Get.find<UserService>().isFollowingMember(_viewMember);
+
           if (_viewMember.pickCount != null) {
             _pickCount = _viewMember.pickCount!;
           }
 
           if (_viewMember.followerCount != null) {
             _followerCount = _viewMember.followerCount!;
-            _originFollowerCount = _followerCount;
           }
 
           if (_viewMember.followingCount != null) {
@@ -386,14 +381,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 fullscreenDialog: true,
               );
             },
-            child: const Text(
-              '立即建立',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            ),
             style: ElevatedButton.styleFrom(
               primary: readrBlack87,
               elevation: 0,
@@ -405,6 +392,14 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                 borderRadius: BorderRadius.circular(6.0),
               ),
               minimumSize: const Size.fromHeight(48),
+            ),
+            child: const Text(
+              '立即建立',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -506,37 +501,32 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                         viewMember: widget.viewMember,
                       ));
                 },
-                child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
-                  builder: (context, state) {
-                    _updateFollowerCount();
-                    return RichText(
-                      text: TextSpan(
-                        text: _convertNumberToString(_followerCount),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: readrBlack87,
+                child: RichText(
+                  text: TextSpan(
+                    text: _convertNumberToString(_followerCount),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: readrBlack87,
+                    ),
+                    children: [
+                      const TextSpan(
+                        text: '\n粉絲 ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: readrBlack50,
                         ),
-                        children: [
-                          const TextSpan(
-                            text: '\n粉絲 ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: readrBlack50,
-                            ),
-                          ),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: SvgPicture.asset(
-                              personalFileArrowSvg,
-                            ),
-                          ),
-                        ],
                       ),
-                      textAlign: TextAlign.center,
-                    );
-                  },
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: SvgPicture.asset(
+                          personalFileArrowSvg,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
@@ -556,37 +546,32 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
                             viewMember: widget.viewMember,
                           ));
                     },
-                    child: BlocBuilder<FollowButtonCubit, FollowButtonState>(
-                      builder: (context, state) {
-                        _updateFollowingCount();
-                        return RichText(
-                          text: TextSpan(
-                            text: _convertNumberToString(_followingCount),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: readrBlack87,
+                    child: RichText(
+                      text: TextSpan(
+                        text: _convertNumberToString(_followingCount),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: readrBlack87,
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: '\n追蹤中 ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: readrBlack50,
                             ),
-                            children: [
-                              const TextSpan(
-                                text: '\n追蹤中 ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: readrBlack50,
-                                ),
-                              ),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: SvgPicture.asset(
-                                  personalFileArrowSvg,
-                                ),
-                              ),
-                            ],
                           ),
-                          textAlign: TextAlign.center,
-                        );
-                      },
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              personalFileArrowSvg,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -601,9 +586,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
   String _convertNumberToString(int number) {
     if (number >= 10000) {
       double newNumber = number / 10000;
-      return newNumber.toStringAsFixed(
-              newNumber.truncateToDouble() == newNumber ? 0 : 1) +
-          '萬';
+      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}萬';
     } else {
       return number.toString();
     }
@@ -634,25 +617,6 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       ),
       textAlign: TextAlign.center,
     );
-  }
-
-  void _updateFollowerCount() {
-    if (_isFollowed &&
-        !Get.find<UserService>().isFollowingMember(_viewMember)) {
-      _followerCount = _originFollowerCount - 1;
-    } else if (!_isFollowed &&
-        Get.find<UserService>().isFollowingMember(_viewMember)) {
-      _followerCount = _originFollowerCount + 1;
-    } else {
-      _followerCount = _originFollowerCount;
-    }
-  }
-
-  void _updateFollowingCount() {
-    if (widget.isMine) {
-      _followingCount = Get.find<UserService>().currentUser.following.length +
-          Get.find<UserService>().currentUser.followingPublisher.length;
-    }
   }
 
   Widget _editProfileButton() {

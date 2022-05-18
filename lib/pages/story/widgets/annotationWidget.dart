@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:readr/models/annotation.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AnnotationWidget extends StatefulWidget {
   final double textSize;
@@ -19,7 +19,7 @@ class AnnotationWidget extends StatefulWidget {
   });
 
   @override
-  _AnnotationWidgetState createState() => _AnnotationWidgetState();
+  State<AnnotationWidget> createState() => _AnnotationWidgetState();
 }
 
 class _AnnotationWidgetState extends State<AnnotationWidget> {
@@ -59,12 +59,8 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
           newHtml = newHtml + annotation.text;
         } else {
           String annotationTextHtml;
-          annotationTextHtml = '<a id="annotation" href="annotation">' +
-              annotation.text +
-              '</a>' +
-              '<sup id="annotationNumber">' +
-              widget.annotationNumber.toString() +
-              '</sup> ';
+          annotationTextHtml =
+              '<a id="annotation" href="annotation">${annotation.text}</a><sup id="annotationNumber">${widget.annotationNumber}</sup> ';
           newHtml = newHtml + annotationTextHtml;
         }
       } else {
@@ -122,7 +118,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
             return false;
           }
         } else {
-          await launch(url);
+          await launchUrlString(url);
           return true;
         }
       },

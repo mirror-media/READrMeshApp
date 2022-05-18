@@ -44,7 +44,7 @@ class ParagraphFormat {
               padding: const EdgeInsets.only(
                   top: 32, bottom: 16, left: 20, right: 20),
               child: ParseTheTextToHtmlWidget(
-                html: '<h1>' + paragraph.contents![0].data + '</h1>',
+                html: '<h1>${paragraph.contents![0].data}</h1>',
                 fontSize: 22,
               ),
             );
@@ -58,7 +58,7 @@ class ParagraphFormat {
               padding: const EdgeInsets.only(
                   top: 32, bottom: 16, left: 20, right: 20),
               child: ParseTheTextToHtmlWidget(
-                html: '<h2>' + paragraph.contents![0].data + '</h2>',
+                html: '<h2>${paragraph.contents![0].data}</h2>',
                 fontSize: textSize,
               ),
             );
@@ -304,7 +304,7 @@ class ParagraphFormat {
             SizedBox(
               width: 16,
               child: Text(
-                (index + 1).toString() + '.',
+                '${index + 1}.',
                 style: TextStyle(
                   fontSize: textSize,
                   height: 1.7,

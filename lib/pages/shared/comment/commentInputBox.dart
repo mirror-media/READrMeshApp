@@ -23,7 +23,7 @@ class CommentInputBox extends StatefulWidget {
   });
 
   @override
-  _CommentInputBoxState createState() => _CommentInputBoxState();
+  State<CommentInputBox> createState() => _CommentInputBoxState();
 }
 
 class _CommentInputBoxState extends State<CommentInputBox> {
@@ -83,14 +83,6 @@ class _CommentInputBoxState extends State<CommentInputBox> {
               fullscreenDialog: true,
             );
           },
-          child: Text(
-            widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
-          ),
           style: ElevatedButton.styleFrom(
             primary: readrBlack87,
             elevation: 0,
@@ -102,6 +94,14 @@ class _CommentInputBoxState extends State<CommentInputBox> {
               borderRadius: BorderRadius.circular(6.0),
             ),
             minimumSize: const Size.fromHeight(48),
+          ),
+          child: Text(
+            widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
           ),
         ),
       );
@@ -145,14 +145,14 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                   ),
                 ),
                 TextButton(
+                  onPressed:
+                      (_hasInput && !widget.isSending) ? _sendComment : null,
                   child: Text(
                     '發佈',
                     style: TextStyle(
                       color: sendTextColor,
                     ),
                   ),
-                  onPressed:
-                      (_hasInput && !widget.isSending) ? _sendComment : null,
                 ),
               ],
             ),

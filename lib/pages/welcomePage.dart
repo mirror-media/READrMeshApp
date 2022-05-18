@@ -29,19 +29,19 @@ class WelcomePage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () =>
                         Get.off(() => const InputInvitationCodePage()),
+                    style: ElevatedButton.styleFrom(
+                      primary: readrBlack87,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                    ),
                     child: const Text(
                       '開始使用',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: readrBlack87,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 24,
                       ),
                     ),
                   ),

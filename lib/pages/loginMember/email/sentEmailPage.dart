@@ -113,7 +113,6 @@ class SentEmailPage extends StatelessWidget {
                 );
               }
             },
-            child: const Text('打開信件 APP'),
             style: OutlinedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 16),
               primary: readrBlack,
@@ -124,6 +123,7 @@ class SentEmailPage extends StatelessWidget {
                 color: readrBlack,
               ),
             ),
+            child: const Text('打開信件 APP'),
           ),
         ),
         const SizedBox(

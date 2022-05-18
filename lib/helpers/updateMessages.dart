@@ -17,6 +17,8 @@ class UpdateMessages extends UpgraderMessages {
           return '您要現在更新嗎？';
         case UpgraderMessage.title:
           return '更新App？';
+        case UpgraderMessage.releaseNotes:
+          return '更新內容';
       }
     }
     // Messages that are not provided above can still use the default values.

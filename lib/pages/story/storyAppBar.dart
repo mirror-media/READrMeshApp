@@ -24,7 +24,7 @@ class StoryAppBar extends StatefulWidget {
   });
 
   @override
-  _StoryAppBarState createState() => _StoryAppBarState();
+  State<StoryAppBar> createState() => _StoryAppBarState();
 }
 
 class _StoryAppBarState extends State<StoryAppBar> {

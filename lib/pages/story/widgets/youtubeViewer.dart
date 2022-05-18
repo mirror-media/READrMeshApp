@@ -16,7 +16,7 @@ class YoutubeViewer extends StatefulWidget {
   });
 
   @override
-  _YoutubeViewerState createState() => _YoutubeViewerState();
+  State<YoutubeViewer> createState() => _YoutubeViewerState();
 }
 
 class _YoutubeViewerState extends State<YoutubeViewer>
@@ -97,12 +97,12 @@ class _YoutubeViewerState extends State<YoutubeViewer>
                       child: CircularProgressIndicator.adaptive()));
             }
 
-            Widget _videoPlayer = Chewie(
+            Widget videoPlayer = Chewie(
               controller: _chewieController,
             );
 
             if (Platform.isAndroid) {
-              _videoPlayer = Theme(
+              videoPlayer = Theme(
                 data: ThemeData.light().copyWith(
                   platform: TargetPlatform.windows,
                 ),
@@ -116,7 +116,7 @@ class _YoutubeViewerState extends State<YoutubeViewer>
               width: constraints.maxWidth,
               height: constraints.maxWidth /
                   _videoPlayerController.value.aspectRatio,
-              child: _videoPlayer,
+              child: videoPlayer,
             );
           },
         );

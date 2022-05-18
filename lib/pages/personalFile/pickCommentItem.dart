@@ -35,7 +35,7 @@ class PickCommentItem extends StatefulWidget {
   }
 
   @override
-  _PickCommentItemState createState() => _PickCommentItemState();
+  State<PickCommentItem> createState() => _PickCommentItemState();
 }
 
 class _PickCommentItemState extends State<PickCommentItem> {

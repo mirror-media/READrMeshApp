@@ -20,7 +20,7 @@ class FollowingListWidget extends StatefulWidget {
   final Member viewMember;
   const FollowingListWidget({required this.viewMember});
   @override
-  _FollowingListWidgetState createState() => _FollowingListWidgetState();
+  State<FollowingListWidget> createState() => _FollowingListWidgetState();
 }
 
 class _FollowingListWidgetState extends State<FollowingListWidget> {

@@ -9,7 +9,7 @@ class YoutubeWidget extends StatefulWidget {
       {required this.youtubeId, this.description, this.textSize = 20});
 
   @override
-  _YoutubeWidgetState createState() => _YoutubeWidgetState();
+  State<YoutubeWidget> createState() => _YoutubeWidgetState();
 }
 
 class _YoutubeWidgetState extends State<YoutubeWidget> {

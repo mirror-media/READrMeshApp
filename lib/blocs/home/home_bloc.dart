@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/followButton/followButton_cubit.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -17,21 +15,9 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeScreenRepos homeScreenRepos;
-  final FollowButtonCubit followButtonCubit;
   late final StreamSubscription followButtonCubitSubscription;
 
-  HomeBloc({required this.followButtonCubit, required this.homeScreenRepos})
-      : super(HomeInitial()) {
-    followButtonCubitSubscription = followButtonCubit.stream.listen((state) {
-      if (state is FollowButtonUpdated) {
-        EasyDebounce.debounce(
-          'followingUpdate',
-          const Duration(seconds: 1),
-          () => add(ReloadHomeScreen()),
-        );
-      }
-    });
-
+  HomeBloc({required this.homeScreenRepos}) : super(HomeInitial()) {
     on<HomeEvent>((event, emit) async {
       try {
         print(event.toString());

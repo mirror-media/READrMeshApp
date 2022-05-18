@@ -13,7 +13,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 class BookmarkTabContent extends StatefulWidget {
   const BookmarkTabContent();
   @override
-  _BookmarkTabContentState createState() => _BookmarkTabContentState();
+  State<BookmarkTabContent> createState() => _BookmarkTabContentState();
 }
 
 class _BookmarkTabContentState extends State<BookmarkTabContent> {

@@ -296,14 +296,6 @@ class ChooseStoryPage extends StatelessWidget {
                               controller.showBookmark.value = showBookmark;
                               Navigator.pop(context);
                             },
-                      child: const Text(
-                        '篩選',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
                       style: ElevatedButton.styleFrom(
                         primary: readrBlack87,
                         elevation: 0,
@@ -315,6 +307,14 @@ class ChooseStoryPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6.0),
                         ),
                         minimumSize: const Size.fromHeight(48),
+                      ),
+                      child: const Text(
+                        '篩選',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

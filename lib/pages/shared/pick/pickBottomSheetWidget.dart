@@ -15,7 +15,7 @@ class PickBottomSheetWidget extends StatefulWidget {
   });
 
   @override
-  _PickBottomSheetWidgetState createState() => _PickBottomSheetWidgetState();
+  State<PickBottomSheetWidget> createState() => _PickBottomSheetWidgetState();
 }
 
 class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {

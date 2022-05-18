@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -30,9 +30,9 @@ class EditPersonalFileCubit extends Cubit<EditPersonalFileState> {
   savePersonalFile(Member member) async {
     emit(PersonalFileSaving());
     try {
-      List<Publisher> _publisherList =
+      List<Publisher> publisherList =
           await personalFileRepos.fetchAllPublishers();
-      bool checkResult = _validateNicknameAndId(_publisherList, member);
+      bool checkResult = _validateNicknameAndId(publisherList, member);
       if (!checkResult) {
         emit(PersonalFileNicknameError());
       } else {

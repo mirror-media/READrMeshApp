@@ -16,7 +16,7 @@ class ReadrTabContent extends StatefulWidget {
   });
 
   @override
-  _ReadrTabContentState createState() => _ReadrTabContentState();
+  State<ReadrTabContent> createState() => _ReadrTabContentState();
 }
 
 class _ReadrTabContentState extends State<ReadrTabContent> {

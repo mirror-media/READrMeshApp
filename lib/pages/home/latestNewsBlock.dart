@@ -26,7 +26,7 @@ class LatestNewsBlock extends StatefulWidget {
   });
 
   @override
-  _LatestNewsBlockState createState() => _LatestNewsBlockState();
+  State<LatestNewsBlock> createState() => _LatestNewsBlockState();
 }
 
 class _LatestNewsBlockState extends State<LatestNewsBlock> {

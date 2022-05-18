@@ -16,7 +16,7 @@ class FollowerListWidget extends StatefulWidget {
   final Member viewMember;
   const FollowerListWidget({required this.viewMember});
   @override
-  _FollowerListWidgetState createState() => _FollowerListWidgetState();
+  State<FollowerListWidget> createState() => _FollowerListWidgetState();
 }
 
 class _FollowerListWidgetState extends State<FollowerListWidget> {

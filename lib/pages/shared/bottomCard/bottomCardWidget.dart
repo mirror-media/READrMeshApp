@@ -53,15 +53,15 @@ class BottomCardWidget extends StatelessWidget {
     );
     pickableItemController =
         Get.find<PickableItemController>(tag: controllerTag);
-    bool _isCollapsed = true;
+    bool isCollapsed = true;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: NotificationListener<DraggableScrollableNotification>(
         onNotification: (DraggableScrollableNotification dSNotification) {
-          if (_isCollapsed && dSNotification.extent > 0.25) {
-            _isCollapsed = false;
-          } else if (!_isCollapsed && dSNotification.extent < 0.25) {
-            _isCollapsed = true;
+          if (isCollapsed && dSNotification.extent > 0.25) {
+            isCollapsed = false;
+          } else if (!isCollapsed && dSNotification.extent < 0.25) {
+            isCollapsed = true;
           }
           return false;
         },
@@ -97,11 +97,11 @@ class BottomCardWidget extends StatelessWidget {
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
                         slivers: [
-                          if (_isCollapsed)
+                          if (isCollapsed)
                             SliverToBoxAdapter(
                               child: _collapseWidget(context),
                             ),
-                          if (!_isCollapsed) ...[
+                          if (!isCollapsed) ...[
                             SliverAppBar(
                               centerTitle: true,
                               automaticallyImplyLeading: false,
@@ -160,7 +160,7 @@ class BottomCardWidget extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: !_isCollapsed,
+                    visible: !isCollapsed,
                     child: Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(top: 16),
@@ -172,7 +172,7 @@ class BottomCardWidget extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: !_isCollapsed,
+                    visible: !isCollapsed,
                     child: Obx(
                       () => CommentInputBox(
                         onPressed: (text) async {
@@ -185,7 +185,7 @@ class BottomCardWidget extends StatelessWidget {
                         isSending: commentController.isSending.value,
                         onTextChanged: (text) => onTextChanged(text),
                         textController: _textController,
-                        isCollapsed: _isCollapsed,
+                        isCollapsed: isCollapsed,
                       ),
                     ),
                   ),

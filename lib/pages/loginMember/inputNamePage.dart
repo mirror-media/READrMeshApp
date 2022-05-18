@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
-import 'package:readr/pages/loginMember/choosePublisher/choosePublisherPage.dart';
+import 'package:readr/pages/loginMember/choosePublisherPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 
@@ -17,7 +17,7 @@ class InputNamePage extends StatefulWidget {
     this.publisherTitleList,
   );
   @override
-  _InputNamePageState createState() => _InputNamePageState();
+  State<InputNamePage> createState() => _InputNamePageState();
 }
 
 class _InputNamePageState extends State<InputNamePage> {

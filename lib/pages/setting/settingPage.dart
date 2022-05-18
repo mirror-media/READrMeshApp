@@ -233,8 +233,8 @@ class SettingPage extends StatelessWidget {
             ),
             onTap: () async {
               if (controller.loginType.value == 'google') {
-                GoogleSignIn _googleSignIn = GoogleSignIn();
-                await _googleSignIn.disconnect();
+                GoogleSignIn googleSignIn = GoogleSignIn();
+                await googleSignIn.disconnect();
               }
               await FirebaseAuth.instance.signOut();
               await Get.find<UserService>().fetchUserData();

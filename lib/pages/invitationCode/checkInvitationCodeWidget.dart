@@ -115,8 +115,8 @@ class CheckInvitationCodeWidget extends StatelessWidget {
             ),
           ),
           OutlinedButton.icon(
-            onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: invitationCode.code));
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: invitationCode.code));
               showCopiedToast(context);
             },
             icon: const FaIcon(

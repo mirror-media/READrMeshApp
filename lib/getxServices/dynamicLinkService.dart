@@ -14,12 +14,10 @@ class DynamicLinkService extends GetxService {
   final _auth = FirebaseAuth.instance;
   Future<DynamicLinkService> initDynamicLinks() async {
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      final Uri? deepLink = dynamicLink.link;
+      final Uri deepLink = dynamicLink.link;
 
-      if (deepLink != null) {
-        if (_auth.isSignInWithEmailLink(deepLink.toString())) {
-          _loginWithEmailLink(deepLink.toString());
-        }
+      if (_auth.isSignInWithEmailLink(deepLink.toString())) {
+        _loginWithEmailLink(deepLink.toString());
       }
     }).onError((e) async {
       print('onLinkError');

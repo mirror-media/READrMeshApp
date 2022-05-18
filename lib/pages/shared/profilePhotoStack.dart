@@ -35,8 +35,8 @@ class ProfilePhotoStack extends StatelessWidget {
       }
     }
     return Stack(
-      children: headShots.reversed.toList(),
       alignment: Alignment.centerLeft,
+      children: headShots.reversed.toList(),
     );
   }
 }

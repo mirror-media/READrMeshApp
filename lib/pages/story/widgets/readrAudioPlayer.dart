@@ -20,7 +20,7 @@ class READrAudioPlayer extends StatefulWidget {
       this.textSize = 20});
 
   @override
-  _READrAudioPlayerState createState() => _READrAudioPlayerState();
+  State<READrAudioPlayer> createState() => _READrAudioPlayerState();
 }
 
 class _READrAudioPlayerState extends State<READrAudioPlayer>

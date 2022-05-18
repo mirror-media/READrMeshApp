@@ -19,7 +19,7 @@ class LoginWidget extends StatefulWidget {
   final bool fromOnboard;
   const LoginWidget(this.fromComment, this.fromOnboard);
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  State<LoginWidget> createState() => _LoginWidgetState();
 }
 
 class _LoginWidgetState extends State<LoginWidget> {

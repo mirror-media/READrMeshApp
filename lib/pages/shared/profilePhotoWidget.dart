@@ -29,12 +29,12 @@ class ProfilePhotoWidget extends StatelessWidget {
       return CircleAvatar(
         foregroundImage: NetworkImage(member.avatar!),
         backgroundColor: randomColor,
+        radius: radius,
         child: AutoSizeText(
           firstLetter,
           style: TextStyle(color: textColor, fontSize: textSize),
           minFontSize: 5,
         ),
-        radius: radius,
       );
     }
     return CircleAvatar(

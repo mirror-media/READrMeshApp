@@ -9,7 +9,7 @@ import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
 
 class InputEmailPage extends StatefulWidget {
   @override
-  _InputEmailPageState createState() => _InputEmailPageState();
+  State<InputEmailPage> createState() => _InputEmailPageState();
 }
 
 class _InputEmailPageState extends State<InputEmailPage> {

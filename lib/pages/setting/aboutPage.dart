@@ -7,7 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 
 class AboutPage extends StatefulWidget {
   @override
-  _AboutPageState createState() => _AboutPageState();
+  State<AboutPage> createState() => _AboutPageState();
 }
 
 class _AboutPageState extends State<AboutPage> {

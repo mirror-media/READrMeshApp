@@ -14,7 +14,7 @@ class MemberListItemWidget extends StatefulWidget {
   const MemberListItemWidget({required this.viewMember});
 
   @override
-  _MemberListItemWidgetState createState() => _MemberListItemWidgetState();
+  State<MemberListItemWidget> createState() => _MemberListItemWidgetState();
 }
 
 class _MemberListItemWidgetState extends State<MemberListItemWidget> {

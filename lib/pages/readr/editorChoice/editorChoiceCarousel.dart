@@ -15,7 +15,7 @@ import 'package:shimmer/shimmer.dart';
 
 class BuildEditorChoiceCarousel extends StatefulWidget {
   @override
-  _BuildEditorChoiceCarouselState createState() =>
+  State<BuildEditorChoiceCarousel> createState() =>
       _BuildEditorChoiceCarouselState();
 }
 
@@ -117,7 +117,7 @@ class EditorChoiceCarousel extends StatefulWidget {
   });
 
   @override
-  _EditorChoiceCarouselState createState() => _EditorChoiceCarouselState();
+  State<EditorChoiceCarousel> createState() => _EditorChoiceCarouselState();
 }
 
 class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {

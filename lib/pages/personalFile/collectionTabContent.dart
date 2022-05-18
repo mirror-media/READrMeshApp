@@ -12,7 +12,7 @@ class CollectionTabContent extends StatefulWidget {
     required this.isMine,
   });
   @override
-  _CollectionTabContentState createState() => _CollectionTabContentState();
+  State<CollectionTabContent> createState() => _CollectionTabContentState();
 }
 
 class _CollectionTabContentState extends State<CollectionTabContent> {
@@ -48,14 +48,6 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
               ),
               ElevatedButton(
                 onPressed: () => Get.to(() => ChooseStoryPage()),
-                child: const Text(
-                  '立即嘗試',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   primary: readrBlack87,
@@ -63,6 +55,14 @@ class _CollectionTabContentState extends State<CollectionTabContent> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.0),
+                  ),
+                ),
+                child: const Text(
+                  '立即嘗試',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),

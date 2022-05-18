@@ -38,7 +38,7 @@ class MNewsVideoPlayer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MNewsVideoPlayerState createState() => _MNewsVideoPlayerState();
+  State<MNewsVideoPlayer> createState() => _MNewsVideoPlayerState();
 }
 
 class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
@@ -75,7 +75,7 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
       if (widget.muted) _chewieController.setVolume(0.0);
       _isInitialized = true;
     } catch (e) {
-      print("Video Player error:" + e.toString());
+      print("Video Player error:$e");
       return false;
     }
 
@@ -108,12 +108,12 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
                       child: CircularProgressIndicator.adaptive()));
             }
 
-            Widget _videoPlayer = Chewie(
+            Widget videoPlayer = Chewie(
               controller: _chewieController,
             );
 
             if (Platform.isAndroid) {
-              _videoPlayer = Theme(
+              videoPlayer = Theme(
                 data: ThemeData.light().copyWith(
                   platform: TargetPlatform.windows,
                 ),
@@ -127,7 +127,7 @@ class _MNewsVideoPlayerState extends State<MNewsVideoPlayer>
               width: constraints.maxWidth,
               height: constraints.maxWidth /
                   _videoPlayerController.value.aspectRatio,
-              child: _videoPlayer,
+              child: videoPlayer,
             );
           });
         });

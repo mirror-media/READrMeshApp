@@ -17,7 +17,7 @@ class Timestamp extends StatefulWidget {
   });
 
   @override
-  _TimestampState createState() => _TimestampState();
+  State<Timestamp> createState() => _TimestampState();
 }
 
 class _TimestampState extends State<Timestamp> {

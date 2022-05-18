@@ -13,7 +13,7 @@ class YoutubePlayer extends StatefulWidget {
   });
 
   @override
-  _YoutubePlayerState createState() => _YoutubePlayerState();
+  State<YoutubePlayer> createState() => _YoutubePlayerState();
 }
 
 class _YoutubePlayerState extends State<YoutubePlayer> {

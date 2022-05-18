@@ -12,6 +12,7 @@ import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsStoryWidget extends StatefulWidget {
   final NewsListItem news;
@@ -20,7 +21,7 @@ class NewsStoryWidget extends StatefulWidget {
   });
 
   @override
-  _NewsStoryWidgetState createState() => _NewsStoryWidgetState();
+  State<NewsStoryWidget> createState() => _NewsStoryWidgetState();
 }
 
 class _NewsStoryWidgetState extends State<NewsStoryWidget> {
@@ -196,8 +197,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：' +
-            DateFormat('yyyy/MM/dd HH:mm').format(widget.news.publishedDate),
+        '更新時間：${DateFormat('yyyy/MM/dd HH:mm').format(widget.news.publishedDate)}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -214,7 +214,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '記者：' + _newsStoryItem.writer!,
+        '記者：${_newsStoryItem.writer!}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -288,11 +288,11 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                       scheme: 'mailto',
                       path: 'MM-onlineservice@mirrormedia.mg',
                     );
-                    String url = params.toString();
-                    if (await canLaunch(url)) {
-                      await launch(url);
+
+                    if (await canLaunchUrl(params)) {
+                      await launchUrl(params);
                     } else {
-                      print('Could not launch $url');
+                      print('Could not launch ${params.toString()}');
                     }
                   },
                   child: const Text(
@@ -324,8 +324,8 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
                 child: GestureDetector(
                   onTap: () async {
                     String url = 'tel://0266333966';
-                    if (await canLaunch(url)) {
-                      await launch(url);
+                    if (await canLaunchUrlString(url)) {
+                      await launchUrlString(url);
                     } else {
                       print('Could not launch $url');
                     }

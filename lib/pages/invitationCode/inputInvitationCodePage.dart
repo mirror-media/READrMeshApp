@@ -53,12 +53,14 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                 _status = await _invitationCodeService
                     .checkInvitationCode(_pinController.text);
                 if (_status == InvitationCodeStatus.valid) {
+                  if (!mounted) return;
                   Navigator.pop(context);
                   Get.off(
                     () => const LoginPage(fromOnboard: true),
                     fullscreenDialog: true,
                   );
                 } else {
+                  if (!mounted) return;
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
                 }
@@ -81,7 +83,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    const _defaultPinTheme = PinTheme(
+    const defaultPinTheme = PinTheme(
       width: 40,
       height: 32,
       textStyle: TextStyle(
@@ -99,14 +101,14 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
         ),
       ),
     );
-    final _focusedPinTheme = _defaultPinTheme.copyDecorationWith(
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: const Border(
         bottom: BorderSide(
           color: Color.fromRGBO(0, 9, 40, 0.1),
         ),
       ),
     );
-    final _errorPinTheme = _defaultPinTheme.copyDecorationWith(
+    final errorPinTheme = defaultPinTheme.copyDecorationWith(
       border: const Border(
         bottom: BorderSide(
           color: Colors.red,
@@ -158,9 +160,9 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))
               ],
-              defaultPinTheme: _defaultPinTheme,
-              followingPinTheme: _focusedPinTheme,
-              errorPinTheme: _errorPinTheme,
+              defaultPinTheme: defaultPinTheme,
+              followingPinTheme: focusedPinTheme,
+              errorPinTheme: errorPinTheme,
             ),
           ),
         ),
@@ -186,11 +188,11 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                           'subject': '邀請碼問題',
                         },
                       );
-                      String url = params.toString();
-                      if (await canLaunch(url)) {
-                        await launch(url);
+
+                      if (await canLaunchUrl(params)) {
+                        await launchUrl(params);
                       } else {
-                        print('Could not launch $url');
+                        print('Could not launch ${params.toString()}');
                       }
                     },
                     child: const Text(

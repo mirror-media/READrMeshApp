@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/readrListItem.dart';

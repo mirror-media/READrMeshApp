@@ -12,7 +12,7 @@ import 'package:readr/pages/errorPage.dart';
 
 class EditPersonalFileWidget extends StatefulWidget {
   @override
-  _EditPersonalFileWidgetState createState() => _EditPersonalFileWidgetState();
+  State<EditPersonalFileWidget> createState() => _EditPersonalFileWidgetState();
 }
 
 class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
@@ -389,7 +389,7 @@ class _EditPersonalFileWidgetState extends State<EditPersonalFileWidget> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    _introController.text.length.toString() + '/250字',
+                    '${_introController.text.length}/250字',
                     style: const TextStyle(
                       color: readrBlack50,
                       fontSize: 14,

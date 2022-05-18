@@ -21,7 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
-  _HomeWidgetState createState() => _HomeWidgetState();
+  State<HomeWidget> createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
@@ -422,16 +422,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                         await prefs.setBool('showPaywall', _showPaywall);
                         await prefs.setBool(
                             'showFullScreenAd', _showFullScreenAd);
-                        Navigator.pop(context);
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
                       },
-                      child: const Text(
-                        '篩選',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
                       style: ElevatedButton.styleFrom(
                         primary: readrBlack87,
                         elevation: 0,
@@ -443,6 +436,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                           borderRadius: BorderRadius.circular(6.0),
                         ),
                         minimumSize: const Size.fromHeight(48),
+                      ),
+                      child: const Text(
+                        '篩選',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

@@ -118,6 +118,12 @@ class ErrorPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 135),
             child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                side: const BorderSide(color: readrBlack30),
+              ),
+              onPressed: onPressedFunction,
               child: const Text(
                 '重新嘗試',
                 style: TextStyle(
@@ -126,12 +132,6 @@ class ErrorPage extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              style: OutlinedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                side: const BorderSide(color: readrBlack30),
-              ),
-              onPressed: onPressedFunction,
             ),
           ),
         ],

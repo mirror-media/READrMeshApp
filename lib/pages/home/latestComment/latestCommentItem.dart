@@ -19,7 +19,7 @@ class LatestCommentItem extends StatefulWidget {
   const LatestCommentItem(this.news);
 
   @override
-  _LatestCommentItemState createState() => _LatestCommentItemState();
+  State<LatestCommentItem> createState() => _LatestCommentItemState();
 }
 
 class _LatestCommentItemState extends State<LatestCommentItem> {

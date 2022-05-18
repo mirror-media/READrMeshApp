@@ -22,11 +22,13 @@ class RootPage extends GetView<RootPageController> {
       builder: (controller) {
         if (controller.isInitialized) {
           return UpgradeAlert(
-            minAppVersion: controller.minAppVersion,
-            messages: UpdateMessages(),
-            dialogStyle: Platform.isAndroid
-                ? UpgradeDialogStyle.material
-                : UpgradeDialogStyle.cupertino,
+            upgrader: Upgrader(
+              minAppVersion: controller.minAppVersion,
+              messages: UpdateMessages(),
+              dialogStyle: Platform.isAndroid
+                  ? UpgradeDialogStyle.material
+                  : UpgradeDialogStyle.cupertino,
+            ),
             child: _buildBody(context),
           );
         }

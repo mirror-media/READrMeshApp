@@ -17,7 +17,7 @@ class NewsWebviewWidget extends StatefulWidget {
   });
 
   @override
-  _NewsWebviewWidgetState createState() => _NewsWebviewWidgetState();
+  State<NewsWebviewWidget> createState() => _NewsWebviewWidgetState();
 }
 
 class _NewsWebviewWidgetState extends State<NewsWebviewWidget> {

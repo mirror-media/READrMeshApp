@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -45,7 +45,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(NewMemberSignup(await _fetchPublisherTitles()));
       }
     } catch (e) {
-      print('Login Error:' + e.toString());
+      print('Login Error:$e');
       emit(LoginError());
     }
   }

@@ -20,7 +20,7 @@ import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrPage extends StatefulWidget {
   @override
-  _ReadrPageState createState() => _ReadrPageState();
+  State<ReadrPage> createState() => _ReadrPageState();
 }
 
 class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
