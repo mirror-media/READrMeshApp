@@ -15,6 +15,7 @@ abstract class FollowableItem {
   final bool isFollowed;
   final String lookmoreText;
   final String type;
+  final String tag;
   FollowableItem(
     this.id,
     this.name,
@@ -22,6 +23,7 @@ abstract class FollowableItem {
     this.isFollowed,
     this.lookmoreText,
     this.type,
+    this.tag,
   );
 
   Future<bool> addFollow();
@@ -63,6 +65,9 @@ class MemberFollowableItem implements FollowableItem {
 
   @override
   String get lookmoreText => '探索更多為你推薦的使用者';
+
+  @override
+  String get tag => 'member${member.memberId}';
 
   @override
   Future<bool> addFollow() async =>
@@ -118,6 +123,9 @@ class PublisherFollowableItem implements FollowableItem {
 
   @override
   String get name => publisher.title;
+
+  @override
+  String get tag => 'publisher${publisher.id}';
 
   @override
   bool get isFollowed =>

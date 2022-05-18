@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/followButton/followButton_cubit.dart';
+import 'package:readr/controller/followableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
-class PublisherListItemWidget extends StatefulWidget {
+class PublisherListItemWidget extends GetView<FollowableItemController> {
   final Publisher publisher;
   const PublisherListItemWidget({required this.publisher});
 
   @override
-  _PublisherListItemWidgetState createState() =>
-      _PublisherListItemWidgetState();
-}
-
-class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
-  int _followCount = 0;
-  late final bool _isFollowed;
-  @override
-  void initState() {
-    super.initState();
-    _followCount = widget.publisher.followerCount;
-    _isFollowed =
-        Get.find<UserService>().isFollowingPublisher(widget.publisher);
-  }
+  String get tag => 'publisher${publisher.id}';
 
   @override
   Widget build(BuildContext context) {
+    PublisherFollowableItem item = PublisherFollowableItem(publisher);
+    if (!Get.isRegistered<FollowableItemController>(tag: tag)) {
+      Get.put<FollowableItemController>(
+        FollowableItemController(item),
+        tag: tag,
+      );
+    }
+    bool originFollow = Get.find<UserService>().isFollowingPublisher(publisher);
     return Row(
       children: [
-        PublisherLogoWidget(widget.publisher),
+        PublisherLogoWidget(publisher),
         const SizedBox(
           width: 12,
         ),
@@ -43,18 +36,23 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.publisher.title,
+                publisher.title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: readrBlack87,
                 ),
               ),
-              BlocBuilder<FollowButtonCubit, FollowButtonState>(
-                builder: (context, state) {
-                  _updateFollowCount();
+              Obx(
+                () {
+                  int followCount = publisher.followerCount;
+                  if (originFollow && controller.isFollowed.isFalse) {
+                    followCount--;
+                  } else if (!originFollow && controller.isFollowed.isTrue) {
+                    followCount++;
+                  }
                   return Text(
-                    '${_followCount.toString()} 人追蹤',
+                    '${followCount.toString()} 人追蹤',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -67,21 +65,9 @@ class _PublisherListItemWidgetState extends State<PublisherListItemWidget> {
           ),
         ),
         FollowButton(
-          PublisherFollowableItem(widget.publisher),
+          item,
         ),
       ],
     );
-  }
-
-  void _updateFollowCount() {
-    if (_isFollowed &&
-        !Get.find<UserService>().isFollowingPublisher(widget.publisher)) {
-      _followCount = widget.publisher.followerCount - 1;
-    } else if (!_isFollowed &&
-        Get.find<UserService>().isFollowingPublisher(widget.publisher)) {
-      _followCount = widget.publisher.followerCount + 1;
-    } else {
-      _followCount = widget.publisher.followerCount;
-    }
   }
 }
