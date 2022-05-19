@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:readr/blocs/news/news_cubit.dart';
+import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -14,103 +12,46 @@ import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class NewsStoryWidget extends StatefulWidget {
-  final NewsListItem news;
-  const NewsStoryWidget({
-    required this.news,
-  });
-
-  @override
-  State<NewsStoryWidget> createState() => _NewsStoryWidgetState();
-}
-
-class _NewsStoryWidgetState extends State<NewsStoryWidget> {
-  late NewsStoryItem _newsStoryItem;
-  final ValueNotifier<String> _inputValue = ValueNotifier('');
-  bool _isPicked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchNewsData();
-  }
-
-  _fetchNewsData() async {
-    context.read<NewsCubit>().fetchNewsData(
-          newsId: widget.news.id,
-        );
-  }
-
+class NewsStoryWidget extends GetView<StoryPageController> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewsCubit, NewsState>(
-      builder: (context, state) {
-        if (state is NewsError) {
-          final error = state.error;
-          print('NewsPageError: ${error.message}');
+    return GetBuilder<StoryPageController>(
+      builder: (controller) {
+        if (controller.isError) {
+          return ErrorPage(
+            error: controller.error,
+            onPressed: () => controller.fetchNewsData(),
+            hideAppbar: true,
+          );
+        }
 
-          return Column(
+        if (!controller.isLoading) {
+          return Stack(
+            fit: StackFit.expand,
             children: [
-              StoryAppBar(
-                newsStoryItem: null,
-                inputText: '',
-                url: widget.news.url,
+              Column(
+                children: [
+                  StoryAppBar(),
+                  Expanded(
+                    child: _buildContent(context),
+                  ),
+                ],
               ),
-              Expanded(
-                child: ErrorPage(
-                  error: error,
-                  onPressed: () => _fetchNewsData(),
-                  hideAppbar: true,
-                ),
+              BottomCardWidget(
+                controllerTag: controller.newsStoryItem.controllerTag,
+                onTextChanged: (value) => controller.inputText = value,
+                title: controller.newsStoryItem.title,
+                author: controller.newsStoryItem.source.title,
+                id: controller.newsStoryItem.id,
+                objective: PickObjective.story,
+                allComments: controller.newsStoryItem.allComments,
+                popularComments: controller.newsStoryItem.popularComments,
               ),
             ],
           );
         }
 
-        if (state is NewsLoaded) {
-          _newsStoryItem = state.newsStoryItem;
-          if (_newsStoryItem.myPickId != null) {
-            _isPicked = true;
-          }
-
-          return SafeArea(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Column(
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: _inputValue,
-                      builder: (context, String text, child) {
-                        return StoryAppBar(
-                          newsStoryItem: _newsStoryItem,
-                          inputText: text,
-                          url: widget.news.url,
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: _buildContent(context),
-                    ),
-                  ],
-                ),
-                BottomCardWidget(
-                  controllerTag: _newsStoryItem.controllerTag,
-                  onTextChanged: (value) => _inputValue.value = value,
-                  isPicked: _isPicked,
-                  title: _newsStoryItem.title,
-                  author: _newsStoryItem.source.title,
-                  id: _newsStoryItem.id,
-                  objective: PickObjective.story,
-                  allComments: _newsStoryItem.allComments,
-                  popularComments: _newsStoryItem.popularComments,
-                ),
-              ],
-            ),
-          );
-        }
-
-        return StorySkeletonScreen(widget.news.url);
+        return StorySkeletonScreen();
       },
     );
   }
@@ -137,16 +78,16 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildHeroWidget() {
-    double width = MediaQuery.of(context).size.width;
+    double width = Get.width;
     double height = width / 16 * 9;
 
-    if (widget.news.heroImageUrl == null) {
+    if (controller.newsListItem.heroImageUrl == null) {
       return Container();
     }
 
     return CachedNetworkImage(
       width: width,
-      imageUrl: widget.news.heroImageUrl!,
+      imageUrl: controller.newsListItem.heroImageUrl!,
       placeholder: (context, url) => Container(
         height: height,
         width: width,
@@ -168,7 +109,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Text(
-          widget.news.source.title,
+          controller.newsListItem.source.title,
           style: const TextStyle(
             color: readrBlack50,
             fontSize: 14,
@@ -183,7 +124,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        _newsStoryItem.title,
+        controller.newsStoryItem.title,
         style: const TextStyle(
           color: readrBlack87,
           fontSize: 24,
@@ -197,7 +138,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：${DateFormat('yyyy/MM/dd HH:mm').format(widget.news.publishedDate)}',
+        '更新時間：${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -208,13 +149,14 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildAuthor() {
-    if (_newsStoryItem.writer == null || _newsStoryItem.writer!.isEmpty) {
+    if (controller.newsStoryItem.writer == null ||
+        controller.newsStoryItem.writer!.isEmpty) {
       return Container();
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '記者：${_newsStoryItem.writer!}',
+        '記者：${controller.newsStoryItem.writer!}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -226,7 +168,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
 
   Widget _buildStoryContent() {
     return HtmlWidget(
-      _newsStoryItem.content!,
+      controller.newsStoryItem.content!,
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
@@ -266,7 +208,7 @@ class _NewsStoryWidgetState extends State<NewsStoryWidget> {
   }
 
   Widget _buildContact() {
-    if (widget.news.source.title != '鏡週刊') {
+    if (controller.newsListItem.source.title != '鏡週刊') {
       return Container();
     }
     return Column(

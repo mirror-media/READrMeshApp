@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/news/news_cubit.dart';
+import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
-import 'package:readr/models/newsListItem.dart';
-import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
@@ -25,115 +22,62 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class ReadrStoryWidget extends StatefulWidget {
-  final NewsListItem news;
-  const ReadrStoryWidget({
-    required this.news,
-  });
-
-  @override
-  State<ReadrStoryWidget> createState() => _ReadrStoryWidgetState();
-}
-
-class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
+class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
-  late NewsStoryItem _newsStoryItem;
-  final ValueNotifier<String> _inputValue = ValueNotifier('');
-  bool _isPicked = false;
   final ItemScrollController _itemScrollController = ItemScrollController();
-  late ParagraphFormat paragraphFormat;
-
-  @override
-  void initState() {
-    _fetchStory();
-    super.initState();
-  }
+  late final ParagraphFormat paragraphFormat;
 
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
-  }
-
-  _fetchStory() async {
-    context.read<NewsCubit>().fetchNewsAndReadrData(
-          newsId: widget.news.id,
-        );
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<NewsCubit, NewsState>(
-        builder: (BuildContext context, NewsState state) {
-      if (state is NewsError) {
-        final error = state.error;
-        print('READr Story Error: ${error.message}');
-        return Column(
-          children: [
-            StoryAppBar(
-              newsStoryItem: null,
-              inputText: '',
-              url: widget.news.url,
-            ),
-            Expanded(
-              child: ErrorPage(
-                error: error,
-                onPressed: () => _fetchStory(),
-                hideAppbar: true,
-              ),
-            ),
-          ],
-        );
-      }
-      if (state is ReadrStoryLoaded) {
-        Story story = state.story;
-        paragraphFormat = ParagraphFormat(story.imageUrlList);
-
-        _newsStoryItem = state.newsStoryItem;
-        if (_newsStoryItem.myPickId != null) {
-          _isPicked = true;
+    return GetBuilder<StoryPageController>(
+      builder: (controller) {
+        if (controller.isError) {
+          return ErrorPage(
+            error: controller.error,
+            onPressed: () => controller.fetchNewsData(),
+            hideAppbar: true,
+          );
         }
 
-        return SafeArea(
-          child: Stack(
+        if (!controller.isLoading) {
+          Story story = controller.readrStory;
+          paragraphFormat = ParagraphFormat(story.imageUrlList);
+
+          return Stack(
             fit: StackFit.expand,
             children: [
               Column(
                 children: [
-                  ValueListenableBuilder(
-                    valueListenable: _inputValue,
-                    builder: (context, String text, child) {
-                      return StoryAppBar(
-                        newsStoryItem: _newsStoryItem,
-                        inputText: text,
-                        url: widget.news.url,
-                      );
-                    },
-                  ),
+                  StoryAppBar(),
                   Expanded(
                     child: _storyContent(width, story),
                   ),
                 ],
               ),
               BottomCardWidget(
-                controllerTag: _newsStoryItem.controllerTag,
-                onTextChanged: (value) => _inputValue.value = value,
-                isPicked: _isPicked,
-                title: _newsStoryItem.title,
-                author: _newsStoryItem.source.title,
-                id: _newsStoryItem.id,
+                controllerTag: controller.newsStoryItem.controllerTag,
+                onTextChanged: (value) => controller.inputText = value,
+                title: controller.newsStoryItem.title,
+                author: controller.newsStoryItem.source.title,
+                id: controller.newsStoryItem.id,
                 objective: PickObjective.story,
-                allComments: _newsStoryItem.allComments,
-                popularComments: _newsStoryItem.popularComments,
+                allComments: controller.newsStoryItem.allComments,
+                popularComments: controller.newsStoryItem.popularComments,
               ),
             ],
-          ),
-        );
-      }
+          );
+        }
 
-      // state is Init, loading, or other
-      return StorySkeletonScreen(widget.news.url);
-    });
+        // state is Init, loading, or other
+        return StorySkeletonScreen();
+      },
+    );
   }
 
   Widget _storyContent(double width, Story story) {
@@ -225,7 +169,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       height: 25,
-      width: MediaQuery.of(context).size.width - 40,
+      width: Get.width - 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
@@ -346,7 +290,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-      width: MediaQuery.of(context).size.width - 40,
+      width: Get.width - 40,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -501,7 +445,7 @@ class _ReadrStoryWidgetState extends State<ReadrStoryWidget> {
   }
 
   Widget _buildAnnotationBlock(Story story) {
-    double width = MediaQuery.of(context).size.width;
+    double width = Get.width;
     if (story.contentAnnotationData != null) {
       List<String> annotationDataList = story.contentAnnotationData!;
 

@@ -3,9 +3,6 @@ import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StorySkeletonScreen extends StatelessWidget {
-  final String url;
-  const StorySkeletonScreen(this.url);
-
   @override
   Widget build(BuildContext context) {
     double widthWithPadding = MediaQuery.of(context).size.width - 40;
@@ -13,11 +10,7 @@ class StorySkeletonScreen extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          StoryAppBar(
-            newsStoryItem: null,
-            inputText: '',
-            url: url,
-          ),
+          StoryAppBar(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(0),

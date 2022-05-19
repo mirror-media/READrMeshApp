@@ -1,52 +1,15 @@
-import 'dart:io';
-import 'package:easy_debounce/easy_debounce.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
-import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
-import 'package:readr/pages/shared/pick/pickToast.dart';
-import 'package:readr/services/pickService.dart';
 import 'package:share_plus/share_plus.dart';
 
-class StoryAppBar extends StatefulWidget {
-  final NewsStoryItem? newsStoryItem;
-  final String inputText;
-  final String url;
-  const StoryAppBar({
-    required this.newsStoryItem,
-    required this.inputText,
-    required this.url,
-  });
-
-  @override
-  State<StoryAppBar> createState() => _StoryAppBarState();
-}
-
-class _StoryAppBarState extends State<StoryAppBar> {
-  bool _isBookmarked = false;
-  bool _isLoading = true;
-  late bool _originIsBookmarked;
-  final PickService _pickService = PickService();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.newsStoryItem == null) {
-      _isLoading = true;
-    } else if (widget.newsStoryItem!.bookmarkId != null) {
-      _isBookmarked = true;
-      _isLoading = false;
-    } else {
-      _isLoading = false;
-    }
-    _originIsBookmarked = _isBookmarked;
-  }
-
+class StoryAppBar extends GetView<StoryPageController> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -55,55 +18,68 @@ class _StoryAppBarState extends State<StoryAppBar> {
       centerTitle: false,
       automaticallyImplyLeading: false,
       elevation: 0,
-      title: Text(
-        widget.url,
+      title: ExtendedText(
+        controller.newsListItem.url,
+        joinZeroWidthSpace: true,
         style: const TextStyle(
           color: readrBlack87,
           fontSize: 13,
         ),
       ),
       actions: <Widget>[
-        if (!_isLoading) ...[
-          IconButton(
-            icon: Icon(
-              _isBookmarked
-                  ? Icons.bookmark_outlined
-                  : Icons.bookmark_border_outlined,
-              color: readrBlack87,
-              size: 26,
-            ),
-            tooltip: _isBookmarked ? '移出書籤' : '加入書籤',
-            onPressed: () async {
-              if (Get.find<UserService>().isMember) {
-                setState(() {
-                  _isBookmarked = !_isBookmarked;
-                });
-                EasyDebounce.debounce(
-                    'UpdateBookmark',
-                    const Duration(seconds: 1),
-                    () async => await updateBookmark());
-              } else {
-                Get.to(
-                  () => const LoginPage(),
-                  fullscreenDialog: true,
+        GetBuilder<StoryPageController>(
+          builder: (controller) {
+            if (controller.isLoading || controller.isError) {
+              return Container();
+            }
+
+            return Obx(
+              () {
+                return IconButton(
+                  icon: Icon(
+                    controller.isBookmarked.value
+                        ? Icons.bookmark_outlined
+                        : Icons.bookmark_border_outlined,
+                    color: readrBlack87,
+                    size: 26,
+                  ),
+                  tooltip: controller.isBookmarked.value ? '移出書籤' : '加入書籤',
+                  onPressed: () async {
+                    if (Get.find<UserService>().isMember) {
+                      controller.isBookmarked.toggle();
+                    } else {
+                      Get.to(
+                        () => const LoginPage(),
+                        fullscreenDialog: true,
+                      );
+                    }
+                  },
                 );
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Platform.isAndroid
-                  ? Icons.share_outlined
-                  : Icons.ios_share_outlined,
-              color: readrBlack87,
-              size: 26,
-            ),
-            tooltip: '分享',
-            onPressed: () {
-              Share.share(widget.url);
-            },
-          ),
-        ],
+              },
+            );
+          },
+        ),
+        GetBuilder<StoryPageController>(
+          builder: (controller) {
+            if (controller.isLoading || controller.isError) {
+              return Container();
+            }
+
+            return IconButton(
+              icon: Icon(
+                GetPlatform.isAndroid
+                    ? Icons.share_outlined
+                    : Icons.ios_share_outlined,
+                color: readrBlack87,
+                size: 26,
+              ),
+              tooltip: '分享',
+              onPressed: () {
+                Share.share(controller.newsListItem.url);
+              },
+            );
+          },
+        ),
         IconButton(
           icon: const Icon(
             Icons.close_outlined,
@@ -112,7 +88,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
           ),
           tooltip: '回前頁',
           onPressed: () async {
-            if (widget.inputText.trim().isNotEmpty) {
+            if (controller.inputText.trim().isNotEmpty) {
               Widget dialogTitle = const Text(
                 '確定要刪除留言？',
                 style: TextStyle(
@@ -156,7 +132,7 @@ class _StoryAppBarState extends State<StoryAppBar> {
                   ),
                 )
               ];
-              if (!Platform.isIOS) {
+              if (!GetPlatform.isIOS) {
                 await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -177,45 +153,11 @@ class _StoryAppBarState extends State<StoryAppBar> {
                 );
               }
             } else {
-              Navigator.pop(context);
+              Get.back();
             }
           },
         ),
       ],
     );
-  }
-
-  Future<void> updateBookmark() async {
-    if (_isBookmarked != _originIsBookmarked) {
-      if (!_isBookmarked) {
-        bool isDelete =
-            await _pickService.deletePick(widget.newsStoryItem!.bookmarkId!);
-        PickToast.showBookmarkToast(context, isDelete, false);
-        if (!isDelete) {
-          setState(() {
-            _isBookmarked = _originIsBookmarked;
-          });
-        } else {
-          widget.newsStoryItem!.bookmarkId = null;
-          _originIsBookmarked = _isBookmarked;
-        }
-      } else {
-        String? pickId = await _pickService.createPick(
-          targetId: widget.newsStoryItem!.id,
-          objective: PickObjective.story,
-          state: PickState.private,
-          kind: PickKind.bookmark,
-        );
-        PickToast.showBookmarkToast(context, pickId != null, true);
-        if (pickId != null) {
-          widget.newsStoryItem!.bookmarkId = pickId;
-          _originIsBookmarked = _isBookmarked;
-        } else {
-          setState(() {
-            _isBookmarked = _originIsBookmarked;
-          });
-        }
-      }
-    }
   }
 }
