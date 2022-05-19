@@ -66,8 +66,8 @@ class BottomCardWidget extends StatelessWidget {
         child: DraggableScrollableActuator(
           child: DraggableScrollableSheet(
             snap: true,
-            initialChildSize: 0.12,
-            minChildSize: 0.12,
+            initialChildSize: 0.125,
+            minChildSize: 0.125,
             controller: _controller,
             builder: (context, scrollController) {
               return Column(
@@ -106,7 +106,7 @@ class BottomCardWidget extends StatelessWidget {
                               pinned: true,
                               elevation: 0,
                               titleSpacing: 0,
-                              backgroundColor: Colors.transparent,
+                              backgroundColor: Colors.white,
                               title: Container(
                                 height: kToolbarHeight,
                                 width: double.infinity,
@@ -228,6 +228,9 @@ class BottomCardWidget extends StatelessWidget {
             },
             child: CollapsePickBar(controllerTag),
           ),
+        ),
+        const SizedBox(
+          height: 25,
         ),
       ],
     );
