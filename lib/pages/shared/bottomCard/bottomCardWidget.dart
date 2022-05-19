@@ -13,7 +13,6 @@ import 'package:readr/services/commentService.dart';
 class BottomCardWidget extends StatelessWidget {
   final String controllerTag;
   final ValueChanged<String> onTextChanged;
-  final bool isPicked;
   late final CommentController commentController;
   late final PickableItemController pickableItemController;
   final TextEditingController _textController = TextEditingController();
@@ -35,7 +34,6 @@ class BottomCardWidget extends StatelessWidget {
     required this.id,
     required this.allComments,
     required this.popularComments,
-    this.isPicked = false,
   });
 
   @override
