@@ -54,8 +54,7 @@ class PickToast {
     );
   }
 
-  static void showBookmarkToast(
-      BuildContext context, bool isSuccess, bool isAdd) {
+  static void showBookmarkToast(bool isSuccess, bool isAdd) {
     String message;
     if (isAdd) {
       message = isSuccess ? '成功加入書籤' : '加入書籤失敗';
@@ -92,7 +91,7 @@ class PickToast {
     );
     showToastWidget(
       toast,
-      context: context,
+      context: Get.overlayContext,
       animation: StyledToastAnimation.slideFromTop,
       reverseAnimation: StyledToastAnimation.slideToTop,
       position: StyledToastPosition.top,
