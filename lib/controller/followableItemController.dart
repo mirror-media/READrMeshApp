@@ -16,21 +16,29 @@ class FollowableItemController extends GetxController {
       isFollowed,
       (callback) {
         if (callback) {
+          addFollow();
+        } else {
+          removeFollow();
+        }
+      },
+      time: const Duration(milliseconds: 500),
+    );
+    ever<bool>(
+      isFollowed,
+      (callback) {
+        if (callback) {
           //update follow publisher count when onbroad
           if (Get.isRegistered<ChoosePublisherController>()) {
             Get.find<ChoosePublisherController>().followedCount.value++;
           }
-          addFollow();
         } else {
           //update follow publisher count when onbroad
           if (Get.isRegistered<ChoosePublisherController>() &&
               Get.find<ChoosePublisherController>().followedCount.value > 0) {
             Get.find<ChoosePublisherController>().followedCount.value--;
           }
-          removeFollow();
         }
       },
-      time: const Duration(seconds: 1),
     );
   }
 
