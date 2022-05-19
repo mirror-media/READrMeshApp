@@ -26,8 +26,35 @@ class ProfilePhotoWidget extends StatelessWidget {
     }
 
     if (member.avatar != null) {
-      return CircleAvatar(
-        foregroundImage: NetworkImage(member.avatar!),
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            width: 1,
+            color: Colors.white,
+          ),
+        ),
+        child: CircleAvatar(
+          foregroundImage: NetworkImage(member.avatar!),
+          backgroundColor: randomColor,
+          radius: radius,
+          child: AutoSizeText(
+            firstLetter,
+            style: TextStyle(color: textColor, fontSize: textSize),
+            minFontSize: 5,
+          ),
+        ),
+      );
+    }
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          width: 1,
+          color: Colors.white,
+        ),
+      ),
+      child: CircleAvatar(
         backgroundColor: randomColor,
         radius: radius,
         child: AutoSizeText(
@@ -35,15 +62,6 @@ class ProfilePhotoWidget extends StatelessWidget {
           style: TextStyle(color: textColor, fontSize: textSize),
           minFontSize: 5,
         ),
-      );
-    }
-    return CircleAvatar(
-      backgroundColor: randomColor,
-      radius: radius,
-      child: AutoSizeText(
-        firstLetter,
-        style: TextStyle(color: textColor, fontSize: textSize),
-        minFontSize: 5,
       ),
     );
   }
