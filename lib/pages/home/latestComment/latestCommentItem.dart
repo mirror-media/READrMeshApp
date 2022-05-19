@@ -11,7 +11,7 @@ import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
-import 'package:readr/pages/story/newsStoryPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LatestCommentItem extends StatefulWidget {
@@ -49,7 +49,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
           InkWell(
             onTap: () {
               Get.to(
-                () => NewsStoryPage(
+                () => StoryPage(
                   news: widget.news,
                 ),
                 fullscreenDialog: true,

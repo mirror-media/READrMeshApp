@@ -19,7 +19,7 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/pages/story/newsStoryPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FollowingBlock extends StatelessWidget {
@@ -254,7 +254,7 @@ class FollowingBlock extends StatelessWidget {
           InkWell(
             onTap: () {
               Get.to(
-                () => NewsStoryPage(
+                () => StoryPage(
                   news: item,
                 ),
                 fullscreenDialog: true,

@@ -10,7 +10,7 @@ import 'package:readr/blocs/readr/editorChoice/editorChoice_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
-import 'package:readr/pages/story/newsStoryPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BuildEditorChoiceCarousel extends StatefulWidget {
@@ -153,7 +153,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
       children: [
         GestureDetector(
           onTap: () => Get.to(
-            () => NewsStoryPage(
+            () => StoryPage(
               news: widget.editorChoiceList[_current].newsListItem!,
             ),
             fullscreenDialog: true,

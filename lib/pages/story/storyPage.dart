@@ -10,10 +10,10 @@ import 'package:readr/pages/story/readrStoryWidget.dart';
 import 'package:readr/services/newsStoryService.dart';
 import 'package:readr/services/storyService.dart';
 
-class NewsStoryPage extends StatelessWidget {
+class StoryPage extends StatelessWidget {
   final NewsListItem news;
 
-  const NewsStoryPage({
+  const StoryPage({
     required this.news,
   });
 

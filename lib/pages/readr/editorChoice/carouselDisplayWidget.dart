@@ -5,7 +5,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
-import 'package:readr/pages/story/newsStoryPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 
 class CarouselDisplayWidget extends StatelessWidget {
   final EditorChoiceItem editorChoiceItem;
@@ -32,7 +32,7 @@ class CarouselDisplayWidget extends StatelessWidget {
         ),
       ),
       onTap: () => Get.to(
-        () => NewsStoryPage(
+        () => StoryPage(
           news: editorChoiceItem.newsListItem!,
         ),
         fullscreenDialog: true,

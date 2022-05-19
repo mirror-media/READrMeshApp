@@ -6,7 +6,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
-import 'package:readr/pages/story/newsStoryPage.dart';
+import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ReadrProjectItemWidget extends StatelessWidget {
@@ -87,7 +87,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
         ),
         onTap: () async {
           Get.to(
-            () => NewsStoryPage(
+            () => StoryPage(
               news: projectItem,
             ),
             fullscreenDialog: true,
