@@ -75,33 +75,35 @@ class _CommentInputBoxState extends State<CommentInputBox> {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           color: Colors.white,
-          child: ElevatedButton(
-            onPressed: () {
-              Get.to(
-                () => const LoginPage(
-                  fromComment: true,
+          child: SafeArea(
+            child: ElevatedButton(
+              onPressed: () {
+                Get.to(
+                  () => const LoginPage(
+                    fromComment: true,
+                  ),
+                  fullscreenDialog: true,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                primary: readrBlack87,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 24,
                 ),
-                fullscreenDialog: true,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              primary: readrBlack87,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 24,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                minimumSize: const Size.fromHeight(48),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              minimumSize: const Size.fromHeight(48),
-            ),
-            child: Text(
-              widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
+              child: Text(
+                widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
