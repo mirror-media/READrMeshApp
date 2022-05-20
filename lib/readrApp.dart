@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/helpers/initControllerBinding.dart';
-import 'package:readr/initialApp.dart';
+import 'package:readr/pages/rootPage.dart';
 import 'package:readr/services/homeScreenService.dart';
 
 class ReadrApp extends StatelessWidget {
@@ -25,7 +25,7 @@ class ReadrApp extends StatelessWidget {
           ),
         ),
         initialBinding: InitControllerBinding(),
-        home: InitialApp(),
+        home: RootPage(),
       ),
     );
   }
