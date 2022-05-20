@@ -53,13 +53,17 @@ class ErrorPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0,
-        title: const Text(
-          'Logo',
-          style: TextStyle(
-            color: readrBlack,
-            fontSize: 18,
+        actions: [
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.close_outlined,
+              color: readrBlack87,
+              size: 26,
+            ),
+            tooltip: '回前頁',
           ),
-        ),
+        ],
       ),
       body: _errorWidget(
         title: title,

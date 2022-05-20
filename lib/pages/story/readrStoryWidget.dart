@@ -41,7 +41,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           return ErrorPage(
             error: controller.error,
             onPressed: () => controller.fetchNewsData(),
-            hideAppbar: true,
+            hideAppbar: false,
           );
         }
 
