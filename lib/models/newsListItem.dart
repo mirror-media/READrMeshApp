@@ -160,7 +160,7 @@ class NewsListItem {
     List<Member> allPickedMember = [];
     allPickedMember.addAll(followingPickMembers);
     allPickedMember.addAll(otherPickMembers);
-    if (Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
+    if (Get.isRegistered<PickableItemController>(tag: 'News${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'News${json['id']}');
       controller.myPickId.value = myPickId;
