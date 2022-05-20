@@ -37,7 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
           bool showSyncToast = false;
-          if (Get.find<UserService>().isMember) {
+          if (Get.find<UserService>().isMember.isTrue) {
             final List<String> followingPublisherIds =
                 prefs.getStringList('followingPublisherIds') ?? [];
             if (followingPublisherIds.isNotEmpty) {
@@ -75,7 +75,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recommendedPublishers.add(PublisherFollowableItem(publisher));
           }
 
-          if (Get.find<UserService>().isMember) {
+          if (Get.find<UserService>().isMember.isTrue) {
             await Get.find<UserService>().checkInvitationCode();
           }
 

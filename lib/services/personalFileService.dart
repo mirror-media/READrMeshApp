@@ -679,9 +679,6 @@ class PersonalFileService implements PersonalFileRepos {
     List<Member> followerList = [];
     for (var member in jsonResponse['data']['members']) {
       Member follower = Member.fromJson(member);
-      if (Get.find<UserService>().isVisitor) {
-        Get.find<UserService>().isFollowingMember(follower);
-      }
       followerList.add(follower);
     }
 
@@ -769,9 +766,6 @@ class PersonalFileService implements PersonalFileRepos {
     List<Member> followingList = [];
     for (var member in jsonResponse['data']['members']) {
       Member followingMember = Member.fromJson(member);
-      if (Get.find<UserService>().isVisitor) {
-        Get.find<UserService>().isFollowingMember(followingMember);
-      }
       followingList.add(followingMember);
     }
 

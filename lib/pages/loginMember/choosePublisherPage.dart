@@ -38,7 +38,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
 
   Widget _buildBody(context) {
     String buttonText;
-    if (Get.find<UserService>().isVisitor) {
+    if (Get.find<UserService>().isMember.isFalse) {
       buttonText = '完成';
     } else {
       buttonText = '下一步';
@@ -76,7 +76,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
               onPressed: controller.followedCount.value == 0
                   ? null
                   : () async {
-                      if (Get.find<UserService>().isMember) {
+                      if (Get.find<UserService>().isMember.isTrue) {
                         Get.to(() => const ChooseMemberPage(true));
                       } else {
                         final prefs =

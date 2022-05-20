@@ -13,12 +13,10 @@ import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/setNewsCoveragePage.dart';
 
-class SettingPage extends StatelessWidget {
-  SettingPage({Key? key}) : super(key: key);
-  final SettingPageController controller = Get.put(SettingPageController());
-
+class SettingPage extends GetView<SettingPageController> {
   @override
   Widget build(BuildContext context) {
+    Get.put(SettingPageController());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -48,7 +46,7 @@ class SettingPage extends StatelessWidget {
           children: [
             Obx(
               () {
-                if (controller.isLogin.isTrue) {
+                if (Get.find<UserService>().isMember.isTrue) {
                   return _userInfo();
                 }
                 return Container();
@@ -57,7 +55,7 @@ class SettingPage extends StatelessWidget {
             _settingTile(context),
             Obx(
               () {
-                if (controller.isLogin.isTrue) {
+                if (Get.find<UserService>().isMember.isTrue) {
                   return _accountTile();
                 }
                 return Container();
@@ -238,7 +236,6 @@ class SettingPage extends StatelessWidget {
               }
               await FirebaseAuth.instance.signOut();
               await Get.find<UserService>().fetchUserData();
-              controller.isLogin.value = false;
             },
           ),
           const Divider(

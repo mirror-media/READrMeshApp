@@ -11,9 +11,9 @@ class UserService extends GetxService {
   final VisitorService _visitorService = VisitorService();
   final InvitationCodeService _invitationCodeService = InvitationCodeService();
 
-  bool get isMember => FirebaseAuth.instance.currentUser != null;
+  bool get _isMember => FirebaseAuth.instance.currentUser != null;
 
-  bool get isVisitor => FirebaseAuth.instance.currentUser == null;
+  final isMember = false.obs;
 
   late Member currentUser;
   bool hasInvitationCode = false;
@@ -26,7 +26,7 @@ class UserService extends GetxService {
   Future<void> fetchUserData({Member? member}) async {
     if (member != null) {
       currentUser = member;
-    } else if (isMember) {
+    } else if (_isMember) {
       var memberData = await _memberService.fetchMemberData();
       if (memberData != null) {
         currentUser = memberData;
@@ -38,6 +38,7 @@ class UserService extends GetxService {
     } else {
       currentUser = await _visitorService.fetchMemberData();
     }
+    isMember.value = _isMember;
   }
 
   bool isFollowingMember(Member member) {
@@ -76,7 +77,7 @@ class UserService extends GetxService {
 
   Future<bool> addFollowPublisher(String publisherId) async {
     List<Publisher>? newFollowingList;
-    if (isMember) {
+    if (_isMember) {
       newFollowingList = await _memberService.addFollowPublisher(publisherId);
     } else {
       newFollowingList = await _visitorService.addFollowPublisher(publisherId);
@@ -92,7 +93,7 @@ class UserService extends GetxService {
 
   Future<bool> removeFollowPublisher(String publisherId) async {
     List<Publisher>? newFollowingList;
-    if (isMember) {
+    if (_isMember) {
       newFollowingList =
           await _memberService.removeFollowPublisher(publisherId);
     } else {

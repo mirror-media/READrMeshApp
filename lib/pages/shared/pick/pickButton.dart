@@ -40,7 +40,7 @@ class PickButton extends StatelessWidget {
             ? null
             : () async {
                 // check whether is login
-                if (Get.find<UserService>().isMember) {
+                if (Get.find<UserService>().isMember.isTrue) {
                   if (controller.isPicked.isFalse) {
                     var result = await PickBottomSheet.showPickBottomSheet(
                       context: context,

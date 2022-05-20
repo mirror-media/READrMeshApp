@@ -45,7 +45,7 @@ class StoryAppBar extends GetView<StoryPageController> {
                   ),
                   tooltip: controller.isBookmarked.value ? '移出書籤' : '加入書籤',
                   onPressed: () async {
-                    if (Get.find<UserService>().isMember) {
+                    if (Get.find<UserService>().isMember.isTrue) {
                       controller.isBookmarked.toggle();
                     } else {
                       Get.to(

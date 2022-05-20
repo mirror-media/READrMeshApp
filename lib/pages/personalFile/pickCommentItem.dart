@@ -125,7 +125,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
         Obx(
           () => IconButton(
             onPressed: () async {
-              if (Get.find<UserService>().isMember) {
+              if (Get.find<UserService>().isMember.isTrue) {
                 widget.controller.isLiked.toggle();
                 if (widget.controller.isLiked.isTrue) {
                   widget.controller.likeCount.value++;

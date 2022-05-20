@@ -254,7 +254,7 @@ class CommentItem extends GetView<CommentItemController> {
             Obx(
               () => IconButton(
                 onPressed: () async {
-                  if (Get.find<UserService>().isMember) {
+                  if (Get.find<UserService>().isMember.isTrue) {
                     controller.isLiked.toggle();
                     if (controller.isLiked.isTrue) {
                       controller.likeCount.value++;

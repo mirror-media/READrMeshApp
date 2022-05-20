@@ -51,7 +51,7 @@ class RootPage extends GetView<RootPageController> {
         viewMember: Get.find<UserService>().currentUser,
         isFromBottomTab: true,
         isMine: true,
-        isVisitor: Get.find<UserService>().isVisitor,
+        isVisitor: Get.find<UserService>().isMember.isFalse,
       ),
     ];
     return Scaffold(
@@ -68,7 +68,7 @@ class RootPage extends GetView<RootPageController> {
           selectedFontSize: 12,
           currentIndex: controller.tabIndex.value,
           onTap: (index) {
-            if (index == 2 && Get.find<UserService>().isMember) {
+            if (index == 2 && Get.find<UserService>().isMember.isTrue) {
               context
                   .read<PersonalFileCubit>()
                   .fetchMemberData(Get.find<UserService>().currentUser);
@@ -115,7 +115,7 @@ class RootPage extends GetView<RootPageController> {
                 height: 20,
                 child: Obx(
                   () {
-                    if (controller.isVisitor.value) {
+                    if (Get.find<UserService>().isMember.isFalse) {
                       return Image.asset(
                         visitorAvatarPng,
                       );

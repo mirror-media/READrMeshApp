@@ -28,7 +28,7 @@ class PersonalFilePage extends StatelessWidget {
         child: PersonalFileWidget(
           viewMember: viewMember,
           isMine: isMine,
-          isVisitor: Get.find<UserService>().isVisitor,
+          isVisitor: Get.find<UserService>().isMember.isFalse,
           isFromBottomTab: isFromBottomTab,
         ),
       ),

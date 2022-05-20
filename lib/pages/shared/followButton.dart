@@ -41,7 +41,8 @@ class FollowButton extends GetView<FollowableItemController> {
     return Obx(
       () => OutlinedButton(
         onPressed: () async {
-          if (item.type == 'member' && Get.find<UserService>().isVisitor) {
+          if (item.type == 'member' &&
+              Get.find<UserService>().isMember.isFalse) {
             Get.to(
               () => const LoginPage(),
               fullscreenDialog: true,
