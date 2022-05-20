@@ -4,78 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/readr/readrPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/category.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
-import 'package:readr/pages/readr/readrTabContent.dart';
 import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/editorChoiceService.dart';
 
-class ReadrPage extends StatefulWidget {
-  @override
-  State<ReadrPage> createState() => _ReadrPageState();
-}
-
-class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
-  late List<Category> categoryList;
-  final int _initialTabIndex = 0;
-  TabController? _tabController;
-  final List<Tab> _tabs = List.empty(growable: true);
-  final List<Widget> _tabWidgets = List.empty(growable: true);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  _initializeTabController() {
-    _tabs.clear();
-    _tabWidgets.clear();
-
-    for (int i = 0; i < categoryList.length; i++) {
-      Category category = categoryList[i];
-      _tabs.add(
-        Tab(
-          child: Text(
-            category.name,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-      );
-
-      _tabWidgets.add(
-        ReadrTabContent(
-          categorySlug: category.slug,
-        ),
-      );
-    }
-
-    // set controller
-    _tabController = TabController(
-      vsync: this,
-      length: categoryList.length,
-      initialIndex:
-          _tabController == null ? _initialTabIndex : _tabController!.index,
-    );
-  }
-
-  @override
-  void dispose() {
-    _tabController?.dispose();
-    super.dispose();
-  }
-
+class ReadrPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Get.put(ReadrPageController(
-      categoryRepos: CategoryServices(),
-      editorChoiceRepo: EditorChoiceService(),
-    ));
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -86,6 +24,10 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: GetBuilder<ReadrPageController>(
+          init: ReadrPageController(
+            categoryRepos: CategoryServices(),
+            editorChoiceRepo: EditorChoiceService(),
+          ),
           builder: (controller) {
             if (controller.isError) {
               final error = controller.error;
@@ -96,9 +38,6 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
             }
 
             if (!controller.isLoading) {
-              categoryList = controller.categoryList;
-              _initializeTabController();
-
               return ExtendedNestedScrollView(
                 onlyOneScrollInBody: true,
                 headerSliverBuilder:
@@ -142,8 +81,8 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                             indicatorColor: tabBarSelectedColor,
                             labelColor: readrBlack87,
                             unselectedLabelColor: readrBlack20,
-                            tabs: _tabs.toList(),
-                            controller: _tabController,
+                            tabs: controller.tabs.toList(),
+                            controller: controller.tabController,
                             indicatorWeight: 1,
                           ),
                         ],
@@ -152,8 +91,8 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
                   ];
                 },
                 body: TabBarView(
-                  controller: _tabController,
-                  children: _tabWidgets.toList(),
+                  controller: controller.tabController,
+                  children: controller.tabWidgets.toList(),
                 ),
               );
             }
