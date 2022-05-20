@@ -1,6 +1,6 @@
 import 'package:readr/models/annotation.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/categoryList.dart';
+import 'package:readr/models/category.dart';
 import 'package:readr/models/paragrpahList.dart';
 import 'package:readr/models/peopleList.dart';
 
@@ -19,7 +19,7 @@ class Story {
   final String? heroVideo;
   final String? heroCaption;
 
-  final CategoryList? categoryList;
+  final List<Category>? categoryList;
 
   final PeopleList? writers;
   final PeopleList? photographers;
@@ -117,7 +117,8 @@ class Story {
       heroImage: photoUrl,
       heroVideo: videoUrl,
       heroCaption: json['heroCaption'],
-      categoryList: CategoryList.fromJson(json['categories']),
+      categoryList: List<Category>.from(
+          json['categories'].map((item) => Category.fromJson(item))),
       writers: PeopleList.fromJson(json['writers']),
       photographers: PeopleList.fromJson(json['photographers']),
       cameraOperators: PeopleList.fromJson(json['cameraOperators']),

@@ -5,18 +5,17 @@ import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/cacheDurationCache.dart';
 import 'package:readr/models/category.dart';
-import 'package:readr/models/categoryList.dart';
 import 'package:readr/models/graphqlBody.dart';
 
 abstract class CategoryRepos {
-  Future<CategoryList> fetchCategoryList();
+  Future<List<Category>> fetchCategoryList();
 }
 
 class CategoryServices implements CategoryRepos {
   final ApiBaseHelper _helper = ApiBaseHelper();
 
   @override
-  Future<CategoryList> fetchCategoryList() async {
+  Future<List<Category>> fetchCategoryList() async {
     const key = 'fetchCategoryList';
 
     String query = """
@@ -52,18 +51,19 @@ class CategoryServices implements CategoryRepos {
         maxAge: categoryCacheDuration,
         headers: {"Content-Type": "application/json"});
 
-    CategoryList categoryList =
-        CategoryList.fromJson(jsonResponse['data']['allCategories']);
+    List<Category> categoryList = List<Category>.from(jsonResponse['data']
+            ['allCategories']
+        .map((item) => Category.fromJson(item)));
 
     categoryList.sort((a, b) => b.latestPostTime!.compareTo(a.latestPostTime!));
-    CategoryList fixedCategoryList = CategoryList();
-    fixedCategoryList.add(Category(
-      id: '0',
-      name: '最新文章',
-      slug: 'latest',
-    ));
-    fixedCategoryList.addAll(categoryList);
+    categoryList.insert(
+        0,
+        Category(
+          id: '0',
+          name: '最新文章',
+          slug: 'latest',
+        ));
 
-    return fixedCategoryList;
+    return categoryList;
   }
 }

@@ -1,22 +1,17 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/blocs/readr/categories/bloc.dart';
-import 'package:readr/blocs/readr/categories/events.dart';
-import 'package:readr/blocs/readr/categories/states.dart';
-import 'package:readr/blocs/readr/editorChoice/editorChoice_cubit.dart';
-import 'package:readr/blocs/readr/tabStoryList/tabStoryList_bloc.dart';
+import 'package:get/get.dart';
+import 'package:readr/controller/readr/readrPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/category.dart';
-import 'package:readr/models/categoryList.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/pages/shared/homeAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/readr/readrTabContent.dart';
+import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/editorChoiceService.dart';
-import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrPage extends StatefulWidget {
   @override
@@ -24,7 +19,7 @@ class ReadrPage extends StatefulWidget {
 }
 
 class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
-  late CategoryList categoryList;
+  late List<Category> categoryList;
   final int _initialTabIndex = 0;
   TabController? _tabController;
   final List<Tab> _tabs = List.empty(growable: true);
@@ -33,11 +28,6 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _fetchCategoryList();
-  }
-
-  _fetchCategoryList() async {
-    context.read<CategoriesBloc>().add(FetchCategories());
   }
 
   _initializeTabController() {
@@ -58,13 +48,11 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
         ),
       );
 
-      _tabWidgets.add(BlocProvider(
-        create: (context) =>
-            TabStoryListBloc(tabStoryListRepos: TabStoryListServices()),
-        child: ReadrTabContent(
+      _tabWidgets.add(
+        ReadrTabContent(
           categorySlug: category.slug,
         ),
-      ));
+      );
     }
 
     // set controller
@@ -84,6 +72,10 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ReadrPageController(
+      categoryRepos: CategoryServices(),
+      editorChoiceRepo: EditorChoiceService(),
+    ));
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -93,92 +85,92 @@ class _ReadrPageState extends State<ReadrPage> with TickerProviderStateMixin {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocBuilder<CategoriesBloc, CategoriesState>(
-            builder: (BuildContext context, CategoriesState state) {
-          if (state.status == CategoriesStatus.error) {
-            final error = state.error;
-            print('CategoriesError: ${error.message}');
+        child: GetBuilder<ReadrPageController>(
+          builder: (controller) {
+            if (controller.isError) {
+              final error = controller.error;
 
-            return ErrorPage(
-                error: error, onPressed: () => _fetchCategoryList());
-          }
+              return ErrorPage(
+                  error: error,
+                  onPressed: () => controller.fetchCategoryAndEditorChoice());
+            }
 
-          if (state.status == CategoriesStatus.loaded) {
-            categoryList = state.categoryList!;
-            _initializeTabController();
+            if (!controller.isLoading) {
+              categoryList = controller.categoryList;
+              _initializeTabController();
 
-            return ExtendedNestedScrollView(
-              onlyOneScrollInBody: true,
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  const HomeAppBar(),
-                  SliverToBoxAdapter(
-                    child: BlocProvider(
-                      create: (context) => EditorChoiceCubit(
-                          editorChoiceRepo: EditorChoiceService()),
+              return ExtendedNestedScrollView(
+                onlyOneScrollInBody: true,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    const HomeAppBar(),
+                    SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4),
-                        child: BuildEditorChoiceCarousel(),
+                        child: EditorChoiceCarousel(
+                          editorChoiceList: controller.editorChoiceList,
+                          width: Get.width,
+                        ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      color: const Color.fromRGBO(246, 246, 251, 1),
-                      height: 8,
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: const Color.fromRGBO(246, 246, 251, 1),
+                        height: 8,
+                      ),
                     ),
-                  ),
-                  SliverAppBar(
-                    pinned: true,
-                    primary: false,
-                    elevation: 0,
-                    backgroundColor: Colors.white,
-                    flexibleSpace: Stack(
-                      fit: StackFit.passthrough,
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(color: readrBlack10, width: 1.0),
+                    SliverAppBar(
+                      pinned: true,
+                      primary: false,
+                      elevation: 0,
+                      backgroundColor: Colors.white,
+                      flexibleSpace: Stack(
+                        fit: StackFit.passthrough,
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom:
+                                    BorderSide(color: readrBlack10, width: 1.0),
+                              ),
                             ),
                           ),
-                        ),
-                        TabBar(
-                          isScrollable: true,
-                          indicatorColor: tabBarSelectedColor,
-                          labelColor: readrBlack87,
-                          unselectedLabelColor: readrBlack20,
-                          tabs: _tabs.toList(),
-                          controller: _tabController,
-                          indicatorWeight: 1,
-                        ),
-                      ],
+                          TabBar(
+                            isScrollable: true,
+                            indicatorColor: tabBarSelectedColor,
+                            labelColor: readrBlack87,
+                            unselectedLabelColor: readrBlack20,
+                            tabs: _tabs.toList(),
+                            controller: _tabController,
+                            indicatorWeight: 1,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController,
-                children: _tabWidgets.toList(),
-              ),
-            );
-          }
-
-          return CustomScrollView(
-            slivers: [
-              const HomeAppBar(),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: HomeSkeletonScreen(),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: _tabWidgets.toList(),
                 ),
-              )
-            ],
-          );
-        }),
+              );
+            }
+
+            return CustomScrollView(
+              slivers: [
+                const HomeAppBar(),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: HomeSkeletonScreen(),
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,112 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/readr/editorChoice/editorChoice_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
 import 'package:readr/pages/story/storyPage.dart';
-import 'package:shimmer/shimmer.dart';
-
-class BuildEditorChoiceCarousel extends StatefulWidget {
-  @override
-  State<BuildEditorChoiceCarousel> createState() =>
-      _BuildEditorChoiceCarouselState();
-}
-
-class _BuildEditorChoiceCarouselState extends State<BuildEditorChoiceCarousel> {
-  @override
-  void initState() {
-    _loadEditorChoice();
-    super.initState();
-  }
-
-  _loadEditorChoice() {
-    context.read<EditorChoiceCubit>().fetchEditorChoice();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<EditorChoiceCubit, EditorChoiceState>(
-      builder: (BuildContext context, EditorChoiceState state) {
-        if (state is EditorChoiceError) {
-          print('EditorChoiceError: ${state.error}');
-          return Container();
-        }
-
-        if (state is EditorChoiceLoaded) {
-          List<EditorChoiceItem> editorChoiceList = state.editorChoiceList;
-
-          if (editorChoiceList.isEmpty) {
-            return Container();
-          }
-
-          return EditorChoiceCarousel(
-            editorChoiceList: editorChoiceList,
-            width: MediaQuery.of(context).size.width,
-          );
-        }
-
-        // state is Init, loading, or other
-        return Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(2.0),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 20,
-                    ),
-                    height: 12,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                child: Container(
-                  height: MediaQuery.of(context).size.width / 2,
-                  width: double.infinity,
-                  color: Colors.white,
-                ),
-              ),
-              Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(2.0),
-                        child: Container(
-                          height: 32,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
 
 class EditorChoiceCarousel extends StatefulWidget {
   final List<EditorChoiceItem> editorChoiceList;
