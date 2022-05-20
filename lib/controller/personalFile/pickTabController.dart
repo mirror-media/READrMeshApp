@@ -14,10 +14,10 @@ class PickTabController extends GetxController {
   final Member viewMember;
   PickTabController(this.personalFileRepos, this.commentRepos, this.viewMember);
 
-  final isLoading = true.obs;
+  bool isLoading = true;
   final isLoadingMore = false.obs;
   final isNoMore = false.obs;
-  final isError = false.obs;
+  bool isError = false;
   final storyPickList = <Pick>[].obs;
   dynamic error;
 
@@ -28,19 +28,22 @@ class PickTabController extends GetxController {
   }
 
   void fetchPickList() async {
+    isLoading = true;
+    isError = false;
+    update();
     try {
       var result = await personalFileRepos.fetchPickData(viewMember);
       storyPickList.assignAll(result['storyPickList']);
       if (storyPickList.length < 10) {
         isNoMore.value = true;
       }
-      isError.value = false;
     } catch (e) {
       print('Fetch Pick Tab Error: $e');
       error = determineException(e);
-      isError.value = true;
+      isError = true;
     }
-    isLoading(false);
+    isLoading = false;
+    update();
   }
 
   void fetchMoreStoryPick() async {

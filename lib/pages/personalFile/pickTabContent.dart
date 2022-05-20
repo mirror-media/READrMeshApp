@@ -18,18 +18,27 @@ class PickTabContent extends GetView<PickTabController> {
   });
 
   @override
+  String get tag => 'Member${viewMember.memberId}';
+
+  @override
   Widget build(BuildContext context) {
-    Get.put(
-        PickTabController(PersonalFileService(), CommentService(), viewMember));
-    return Obx(
-      () {
-        if (controller.isError.isTrue) {
+    return GetBuilder<PickTabController>(
+      init: PickTabController(
+        PersonalFileService(),
+        CommentService(),
+        viewMember,
+      ),
+      tag: 'Member${viewMember.memberId}',
+      builder: (controller) {
+        if (controller.isError) {
           return ErrorPage(
             error: controller.error,
             onPressed: () => controller.fetchPickList(),
             hideAppbar: true,
           );
-        } else if (controller.isLoading.isFalse) {
+        }
+
+        if (!controller.isLoading) {
           if (controller.storyPickList.isEmpty) {
             return _emptyWidget();
           }
