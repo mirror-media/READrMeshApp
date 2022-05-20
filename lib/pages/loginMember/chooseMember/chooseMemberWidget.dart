@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:readr/blocs/chooseFollow/chooseFollow_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/initialApp.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
@@ -106,8 +105,9 @@ class _ChooseMemberWidgetState extends State<ChooseMemberWidget> {
             ),
           ),
           child: ElevatedButton(
-            onPressed: () async {
-              Get.offAll(() => InitialApp());
+            onPressed: () {
+              Get.until((route) => Get.currentRoute == '/LoginPage');
+              Get.back();
             },
             style: ElevatedButton.styleFrom(
               elevation: 0,

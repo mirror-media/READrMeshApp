@@ -4,7 +4,6 @@ import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/initialApp.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
 import 'package:readr/pages/shared/publisherListItemWidget.dart';
@@ -82,7 +81,8 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
                         final prefs =
                             Get.find<SharedPreferencesService>().prefs;
                         await prefs.setBool('isFirstTime', false);
-                        Get.offAll(() => InitialApp());
+                        Get.until((route) => Get.currentRoute == '/LoginPage');
+                        Get.back();
                       }
                     },
               style: OutlinedButton.styleFrom(

@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/updateMessages.dart';
 import 'package:readr/pages/home/homePage.dart';
-import 'package:readr/pages/personalFile/personalFileWidget.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/personalFile/visitorPersonalFile.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:upgrader/upgrader.dart';
@@ -47,11 +46,17 @@ class RootPage extends GetView<RootPageController> {
     List<Widget> bodyList = [
       HomePage(),
       ReadrPage(),
-      PersonalFileWidget(
-        viewMember: Get.find<UserService>().currentUser,
-        isFromBottomTab: true,
-        isMine: true,
-        isVisitor: Get.find<UserService>().isMember.isFalse,
+      Obx(
+        () {
+          if (Get.find<UserService>().isMember.isTrue) {
+            return PersonalFilePage(
+              viewMember: Get.find<UserService>().currentUser,
+              isFromBottomTab: true,
+            );
+          }
+
+          return const VisitorPersonalFile();
+        },
       ),
     ];
     return Scaffold(
@@ -67,14 +72,7 @@ class RootPage extends GetView<RootPageController> {
           backgroundColor: Colors.white,
           selectedFontSize: 12,
           currentIndex: controller.tabIndex.value,
-          onTap: (index) {
-            if (index == 2 && Get.find<UserService>().isMember.isTrue) {
-              context
-                  .read<PersonalFileCubit>()
-                  .fetchMemberData(Get.find<UserService>().currentUser);
-            }
-            controller.changeTabIndex(index);
-          },
+          onTap: (index) => controller.changeTabIndex(index),
           selectedItemColor: bottomNavigationBarSelectedColor,
           unselectedItemColor: bottomNavigationBarUnselectedColor,
           items: [
