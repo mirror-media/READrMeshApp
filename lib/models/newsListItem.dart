@@ -182,7 +182,7 @@ class NewsListItem {
           controllerTag: 'News${json['id']}',
         ),
         tag: 'News${json['id']}',
-        fenix: true,
+        fenix: false,
       );
     }
 
