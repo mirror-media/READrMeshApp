@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/blocs/personalFile/personalFile_cubit.dart';
-import 'package:readr/blocs/personalFileTab/personalFileTab_bloc.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
@@ -23,7 +22,6 @@ import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/followButton.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:readr/services/personalFileService.dart';
 import 'package:validated/validated.dart' as validate;
 
 class PersonalFileWidget extends StatefulWidget {
@@ -96,39 +94,27 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
       ),
     );
 
-    _tabWidgets.add(MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) =>
-              PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
-        ),
-      ],
-      child: PickTabContent(
-        viewMember: widget.viewMember,
-      ),
+    _tabWidgets.add(PickTabContent(
+      viewMember: widget.viewMember,
     ));
 
-    if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
-      _tabs.add(
-        const Tab(
-          child: Text(
-            '集錦',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ),
-      );
+    // if (!widget.isMine || _pickCount != 0 || _viewMember.bookmarkCount != 0) {
+    //   _tabs.add(
+    //     const Tab(
+    //       child: Text(
+    //         '集錦',
+    //         style: TextStyle(
+    //           fontSize: 16,
+    //         ),
+    //       ),
+    //     ),
+    //   );
 
-      _tabWidgets.add(BlocProvider(
-        create: (context) =>
-            PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
-        child: CollectionTabContent(
-          viewMember: widget.viewMember,
-          isMine: widget.isMine,
-        ),
-      ));
-    }
+    //   _tabWidgets.add(CollectionTabContent(
+    //     viewMember: widget.viewMember,
+    //     isMine: widget.isMine,
+    //   ));
+    // }
 
     if (widget.isMine) {
       _tabs.add(
@@ -142,11 +128,7 @@ class _PersonalFileWidgetState extends State<PersonalFileWidget>
         ),
       );
 
-      _tabWidgets.add(BlocProvider(
-        create: (context) =>
-            PersonalFileTabBloc(personalFileRepos: PersonalFileService()),
-        child: const BookmarkTabContent(),
-      ));
+      _tabWidgets.add(BookmarkTabContent());
     }
 
     // set controller
