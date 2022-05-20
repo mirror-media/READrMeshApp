@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:readr/blocs/login/login_cubit.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readr/initialApp.dart';
 import 'package:readr/pages/loginMember/email/inputEmailPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +43,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         } else if (state is NewMemberSignup) {
           Get.to(() => InputNamePage(state.publisherTitleList));
         } else if (state is ExistingMemberLogin) {
-          Get.offAll(() => InitialApp());
+          Get.back();
         }
       },
       child: _buildContent(),

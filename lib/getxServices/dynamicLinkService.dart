@@ -2,10 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/initialApp.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
+import 'package:readr/pages/rootPage.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +61,10 @@ class DynamicLinkService extends GetxService {
         if (result != null) {
           Get.find<UserService>().fetchUserData(member: result);
           await prefs.setBool('isFirstTime', false);
-          Get.offAll(() => InitialApp());
+          if (Get.isRegistered<RootPageController>()) {
+            Get.find<RootPageController>().tabIndex.value = 0;
+          }
+          Get.offAll(() => RootPage());
         } else {
           Get.to(() async => InputNamePage(await _fetchPublisherTitles()));
         }
