@@ -1,17 +1,17 @@
 import 'package:readr/models/annotation.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/category.dart';
-import 'package:readr/models/paragrpahList.dart';
-import 'package:readr/models/peopleList.dart';
+import 'package:readr/models/paragraph.dart';
+import 'package:readr/models/people.dart';
 
 class Story {
   final String? style;
   final String? name;
-  final ParagraphList? summaryApiData;
+  final List<Paragraph>? summaryApiData;
   final int readingTime;
-  final ParagraphList? contentApiData;
+  final List<Paragraph>? contentApiData;
   final List<String>? contentAnnotationData;
-  final ParagraphList? citationApiData;
+  final List<Paragraph>? citationApiData;
   final String? publishTime;
   final String? updatedAt;
 
@@ -21,12 +21,12 @@ class Story {
 
   final List<Category>? categoryList;
 
-  final PeopleList? writers;
-  final PeopleList? photographers;
-  final PeopleList? cameraOperators;
-  final PeopleList? designers;
-  final PeopleList? engineers;
-  final PeopleList? dataAnalysts;
+  final List<People>? writers;
+  final List<People>? photographers;
+  final List<People>? cameraOperators;
+  final List<People>? designers;
+  final List<People>? engineers;
+  final List<People>? dataAnalysts;
   final String? otherByline;
 
   final List<String> imageUrlList;
@@ -56,7 +56,7 @@ class Story {
   });
 
   factory Story.fromJson(Map<String, dynamic> json) {
-    ParagraphList summaryApiData = ParagraphList();
+    List<Paragraph> summaryApiData = [];
     List<String> imageUrlList = [];
     String? photoUrl;
     if (BaseModel.checkJsonKeys(json, ['heroImage', 'mobile'])) {
@@ -66,14 +66,14 @@ class Story {
 
     if (BaseModel.hasKey(json, 'summaryApiData') &&
         json["summaryApiData"] != 'NaN') {
-      summaryApiData = ParagraphList.parseResponseBody(json['summaryApiData']);
+      summaryApiData = Paragraph.parseResponseBody(json['summaryApiData']);
     }
 
-    ParagraphList contentApiData = ParagraphList();
+    List<Paragraph> contentApiData = [];
     List<String>? contentAnnotationData = [];
     if (BaseModel.hasKey(json, 'contentApiData') &&
         json["contentApiData"] != 'NaN') {
-      contentApiData = ParagraphList.parseResponseBody(json["contentApiData"]);
+      contentApiData = Paragraph.parseResponseBody(json["contentApiData"]);
       for (var paragraph in contentApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
           List<String> sourceData =
@@ -93,11 +93,10 @@ class Story {
       }
     }
 
-    ParagraphList citationApiData = ParagraphList();
+    List<Paragraph> citationApiData = [];
     if (BaseModel.hasKey(json, 'citationApiData') &&
         json["citationApiData"] != 'NaN') {
-      citationApiData =
-          ParagraphList.parseResponseBody(json["citationApiData"]);
+      citationApiData = Paragraph.parseResponseBody(json["citationApiData"]);
     }
 
     String? videoUrl;
@@ -119,12 +118,12 @@ class Story {
       heroCaption: json['heroCaption'],
       categoryList: List<Category>.from(
           json['categories'].map((item) => Category.fromJson(item))),
-      writers: PeopleList.fromJson(json['writers']),
-      photographers: PeopleList.fromJson(json['photographers']),
-      cameraOperators: PeopleList.fromJson(json['cameraOperators']),
-      designers: PeopleList.fromJson(json['designers']),
-      engineers: PeopleList.fromJson(json['engineers']),
-      dataAnalysts: PeopleList.fromJson(json['dataAnalysts']),
+      writers: People.parseListFromJson(json['writers']),
+      photographers: People.parseListFromJson(json['photographers']),
+      cameraOperators: People.parseListFromJson(json['cameraOperators']),
+      designers: People.parseListFromJson(json['designers']),
+      engineers: People.parseListFromJson(json['engineers']),
+      dataAnalysts: People.parseListFromJson(json['dataAnalysts']),
       otherByline: json['otherByline'],
       citationApiData: citationApiData,
       contentAnnotationData: contentAnnotationData,

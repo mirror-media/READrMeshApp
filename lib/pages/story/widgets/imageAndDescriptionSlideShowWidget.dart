@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/models/contentList.dart';
+import 'package:readr/models/content.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 
 class ImageAndDescriptionSlideShowWidget extends StatefulWidget {
-  final ContentList contentList;
+  final List<Content> contentList;
   final double textSize;
   final List<String> imageUrlList;
   const ImageAndDescriptionSlideShowWidget({
@@ -21,7 +21,7 @@ class ImageAndDescriptionSlideShowWidget extends StatefulWidget {
 
 class _ImageAndDescriptionSlideShowWidgetState
     extends State<ImageAndDescriptionSlideShowWidget> {
-  late ContentList contentList;
+  late List<Content> contentList;
   late double textSize;
 
   @override

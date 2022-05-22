@@ -7,8 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/paragraph.dart';
-import 'package:readr/models/paragrpahList.dart';
-import 'package:readr/models/peopleList.dart';
+import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
@@ -232,7 +231,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
   Widget _buildAuthors(Story story) {
     List<Widget> authorItems = List.empty(growable: true);
-    PeopleList peopleList = PeopleList();
+    List<People> peopleList = [];
 
     if (story.writers!.isNotEmpty) {
       peopleList.addAll(story.writers!);
@@ -313,7 +312,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  List<Widget> _addAuthorItems(PeopleList peopleList) {
+  List<Widget> _addAuthorItems(List<People> peopleList) {
     List<Widget> authorNameList = [];
 
     for (int i = 0; i < peopleList.length; i++) {
@@ -342,7 +341,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildSummary(Story story) {
-    ParagraphList articles = story.summaryApiData!;
+    List<Paragraph> articles = story.summaryApiData!;
     bool noData = false;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
@@ -412,7 +411,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildContent(Story story) {
-    ParagraphList storyContents = story.contentApiData!;
+    List<Paragraph> storyContents = story.contentApiData!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -517,7 +516,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildCitation(Story story) {
-    ParagraphList articles = story.citationApiData!;
+    List<Paragraph> articles = story.citationApiData!;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
 

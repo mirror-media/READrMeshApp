@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:readr/models/baseModel.dart';
 
 class People {
@@ -35,4 +37,22 @@ class People {
         BaseModel.slugKey: slug,
         BaseModel.nameKey: name,
       };
+
+  static List<People> parseResponseBody(String body) {
+    try {
+      final jsonData = json.decode(body);
+      if (jsonData == "" || jsonData == null) {
+        return [];
+      }
+
+      return parseListFromJson(jsonData);
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  static List<People> parseListFromJson(List<dynamic> parsedJson) {
+    return List<People>.from(parsedJson.map((e) => People.fromJson(e)));
+  }
 }
