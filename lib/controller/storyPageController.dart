@@ -52,15 +52,17 @@ class StoryPageController extends GetxController {
     }
     isLoading = true;
     isError = false;
+    bool isFullContent = newsListItem.fullContent;
     print('Fetch news data id=${newsListItem.id}');
     update();
     await Get.find<UserService>().fetchUserData();
     try {
       newsStoryItem = await newsStoryRepos.fetchNewsData(newsListItem.id);
 
-      //if publisher is readr, fetch story from readr CMS
+      //if publisher is readr and not project, fetch story from readr CMS
       if (newsListItem.source.id ==
-          Get.find<EnvironmentService>().config.readrPublisherId) {
+              Get.find<EnvironmentService>().config.readrPublisherId &&
+          isFullContent) {
         if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
           error = determineException('No content error');
           isError = true;
