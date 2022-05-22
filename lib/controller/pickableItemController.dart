@@ -62,12 +62,17 @@ class PickableItemController extends GetxController {
     isPicked.value = true;
     pickCount.value++;
 
-    myPickId.value = await pickRepos.createPick(
-      targetId: targetId,
-      objective: objective,
-      state: PickState.public,
-      kind: PickKind.read,
-    );
+    myPickId.value = await pickRepos
+        .createPick(
+          targetId: targetId,
+          objective: objective,
+          state: PickState.public,
+          kind: PickKind.read,
+        )
+        .timeout(
+          const Duration(seconds: 90),
+          onTimeout: () => null,
+        );
 
     if (myPickId.value == null) {
       pickCount.value--;
@@ -90,13 +95,18 @@ class PickableItemController extends GetxController {
       commentController.commentSending(comment);
     }
 
-    var result = await pickRepos.createPickAndComment(
-      targetId: targetId,
-      objective: objective,
-      state: PickState.public,
-      kind: PickKind.read,
-      commentContent: comment,
-    );
+    var result = await pickRepos
+        .createPickAndComment(
+          targetId: targetId,
+          objective: objective,
+          state: PickState.public,
+          kind: PickKind.read,
+          commentContent: comment,
+        )
+        .timeout(
+          const Duration(seconds: 90),
+          onTimeout: () => null,
+        );
 
     if (result != null) {
       myPickId.value = result['pickId'];
@@ -128,10 +138,17 @@ class PickableItemController extends GetxController {
     bool isSuccess = false;
     if (myPickCommentId.value != null) {
       commentCount.value--;
-      isSuccess = await pickRepos.deletePickAndComment(
-          myPickId.value!, myPickCommentId.value!);
+      isSuccess = await pickRepos
+          .deletePickAndComment(myPickId.value!, myPickCommentId.value!)
+          .timeout(
+            const Duration(seconds: 90),
+            onTimeout: () => false,
+          );
     } else {
-      isSuccess = await pickRepos.deletePick(myPickId.value!);
+      isSuccess = await pickRepos.deletePick(myPickId.value!).timeout(
+            const Duration(seconds: 90),
+            onTimeout: () => false,
+          );
     }
 
     if (isSuccess) {
