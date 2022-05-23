@@ -61,7 +61,7 @@ class FollowerListPage extends GetView<FollowerListController> {
           if (controller.isError) {
             return ErrorPage(
               error: controller.error,
-              onPressed: () => controller.fetchFollowerList(),
+              onPressed: () => controller.initPage(),
               hideAppbar: true,
             );
           }

@@ -23,14 +23,18 @@ class FollowerListController extends GetxController {
 
   @override
   void onInit() {
-    fetchFollowerList();
+    initPage();
     super.onInit();
   }
 
-  void fetchFollowerList() async {
+  void initPage() async {
     isLoading = true;
     isError = false;
     update();
+    await fetchFollowerList();
+  }
+
+  Future<void> fetchFollowerList() async {
     try {
       followerList
           .assignAll(await personalFileRepos.fetchFollowerList(viewMember));

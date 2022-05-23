@@ -27,14 +27,18 @@ class FollowingListController extends GetxController {
 
   @override
   void onInit() {
-    fetchFollowingList();
+    initPage();
     super.onInit();
   }
 
-  void fetchFollowingList() async {
+  void initPage() async {
     isLoading = true;
     isError = false;
     update();
+    await fetchFollowingList();
+  }
+
+  Future<void> fetchFollowingList() async {
     try {
       Map<String, dynamic> followingMemberResult = {};
 
