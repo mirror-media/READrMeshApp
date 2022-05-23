@@ -17,7 +17,7 @@ class FollowerListPage extends GetView<FollowerListController> {
   const FollowerListPage({required this.viewMember});
 
   @override
-  String get tag => 'Member${viewMember.memberId}';
+  String get tag => viewMember.memberId;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class FollowerListPage extends GetView<FollowerListController> {
           personalFileRepos: PersonalFileService(),
           viewMember: viewMember,
         ),
-        tag: 'Member${viewMember.memberId}',
+        tag: viewMember.memberId,
         builder: (controller) {
           if (controller.isError) {
             return ErrorPage(
