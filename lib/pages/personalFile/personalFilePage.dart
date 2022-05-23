@@ -33,7 +33,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       controllerTag = 'OwnPersonalFile';
       isOwnPersonalFile = true;
     } else {
-      controllerTag = 'Member${viewMember.memberId}';
+      controllerTag = viewMember.memberId;
       isOwnPersonalFile = false;
     }
   }
