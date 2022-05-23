@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/login/choosePublisherController.dart';
+import 'package:readr/controller/personalFile/followerListController.dart';
+import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/followableItem.dart';
 
 class FollowableItemController extends GetxController {
@@ -8,6 +11,7 @@ class FollowableItemController extends GetxController {
   FollowableItemController(this.item);
 
   final isFollowed = false.obs;
+  final _isSuccess = false.obs;
 
   @override
   void onInit() {
@@ -24,6 +28,15 @@ class FollowableItemController extends GetxController {
       },
       time: const Duration(milliseconds: 500),
     );
+    debounce<bool>(
+      _isSuccess,
+      (callback) {
+        if (callback) {
+          _updatePersonalFile();
+        }
+      },
+      time: const Duration(seconds: 5),
+    );
     ever<bool>(
       isFollowed,
       (callback) {
@@ -33,52 +46,12 @@ class FollowableItemController extends GetxController {
               item.type == FollowableItemType.publisher) {
             Get.find<ChoosePublisherController>().followedCount.value++;
           }
-
-          //update own personal file if exists
-          if (Get.isRegistered<PersonalFilePageController>(
-              tag: 'OwnPersonalFile')) {
-            Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
-                .followingCount
-                .value++;
-          }
-
-          //update target member personal file if exists
-          if (item.type == FollowableItemType.member &&
-              Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
-            Get.find<PersonalFilePageController>(tag: item.id)
-                .followerCount
-                .value++;
-          }
         } else {
           //update follow publisher count when onbroad
           if (Get.isRegistered<ChoosePublisherController>() &&
               Get.find<ChoosePublisherController>().followedCount.value > 0 &&
               item.type == FollowableItemType.publisher) {
             Get.find<ChoosePublisherController>().followedCount.value--;
-          }
-
-          //update own personal file if exists
-          if (Get.isRegistered<PersonalFilePageController>(
-                  tag: 'OwnPersonalFile') &&
-              Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
-                      .followingCount
-                      .value >
-                  0) {
-            Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
-                .followingCount
-                .value--;
-          }
-
-          //update target member personal file if exists
-          if (item.type == FollowableItemType.member &&
-              Get.isRegistered<PersonalFilePageController>(tag: item.id) &&
-              Get.find<PersonalFilePageController>(tag: item.id)
-                      .followerCount
-                      .value >
-                  0) {
-            Get.find<PersonalFilePageController>(tag: item.id)
-                .followerCount
-                .value--;
           }
         }
       },
@@ -89,6 +62,8 @@ class FollowableItemController extends GetxController {
     bool result = await item.addFollow();
     if (!result) {
       isFollowed(false);
+    } else {
+      _isSuccess.value = true;
     }
   }
 
@@ -96,6 +71,34 @@ class FollowableItemController extends GetxController {
     bool result = await item.removeFollow();
     if (!result) {
       isFollowed(true);
+    } else {
+      _isSuccess.value = true;
+    }
+  }
+
+  void _updatePersonalFile() {
+    //update own following list if isRegistered
+    String ownId = Get.find<UserService>().currentUser.memberId;
+    if (Get.isRegistered<FollowingListController>(tag: ownId)) {
+      Get.find<FollowingListController>(tag: ownId).fetchFollowingList();
+    }
+
+    //update target member followerList if isRegistered
+    if (item.type == FollowableItemType.member &&
+        Get.isRegistered<FollowerListController>(tag: item.id)) {
+      Get.find<FollowerListController>(tag: item.id).fetchFollowerList();
+    }
+
+    //update own personal file if exists
+    if (Get.isRegistered<PersonalFilePageController>(tag: 'OwnPersonalFile')) {
+      Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+          .fetchMemberData();
+    }
+
+    //update target member personal file if exists
+    if (item.type == FollowableItemType.member &&
+        Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
+      Get.find<PersonalFilePageController>(tag: item.id).fetchMemberData();
     }
   }
 }
