@@ -35,10 +35,12 @@ class FollowingListController extends GetxController {
     isLoading = true;
     isError = false;
     update();
-    await fetchFollowingList();
+    isError = await fetchFollowingList();
+    isLoading = false;
+    update();
   }
 
-  Future<void> fetchFollowingList() async {
+  Future<bool> fetchFollowingList() async {
     try {
       Map<String, dynamic> followingMemberResult = {};
 
@@ -56,13 +58,13 @@ class FollowingListController extends GetxController {
       if (followingMemberCount < 10) {
         isNoMore.value = true;
       }
+      update();
+      return false;
     } catch (e) {
       print('Fetch member${viewMember.memberId} following list error: $e');
-      isError = true;
       error = determineException(e);
+      return true;
     }
-    isLoading = false;
-    update();
   }
 
   void fetchMoreFollowingMember() async {

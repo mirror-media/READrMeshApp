@@ -31,23 +31,24 @@ class FollowerListController extends GetxController {
     isLoading = true;
     isError = false;
     update();
-    await fetchFollowerList();
+    isError = await fetchFollowerList();
+    isLoading = false;
+    update();
   }
 
-  Future<void> fetchFollowerList() async {
+  Future<bool> fetchFollowerList() async {
     try {
       followerList
           .assignAll(await personalFileRepos.fetchFollowerList(viewMember));
       if (followerList.length < 10) {
         isNoMore.value = true;
       }
+      return false;
     } catch (e) {
       print('Fetch member${viewMember.memberId} follower list error: $e');
-      isError = true;
       error = determineException(e);
+      return true;
     }
-    isLoading = false;
-    update();
   }
 
   void fetchMoreFollower() async {
