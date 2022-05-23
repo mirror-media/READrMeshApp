@@ -105,8 +105,9 @@ class PickButton extends StatelessWidget {
                       if (isInMyPersonalFile) {
                         await Future.delayed(const Duration(milliseconds: 50));
                         Get.find<PickTabController>(
-                                tag:
-                                    'Member${Get.find<UserService>().currentUser.memberId}')
+                                tag: Get.find<UserService>()
+                                    .currentUser
+                                    .memberId)
                             .unPick(pickId);
                       }
                     }

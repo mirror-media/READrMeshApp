@@ -18,22 +18,29 @@ class PickTabContent extends GetView<PickTabController> {
   });
 
   @override
-  String get tag => 'Member${viewMember.memberId}';
+  String get tag => viewMember.memberId;
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered<PickTabController>(tag: viewMember.memberId)) {
+      controller.fetchPickList();
+    } else {
+      Get.put(
+        PickTabController(
+          PersonalFileService(),
+          CommentService(),
+          viewMember,
+        ),
+        tag: viewMember.memberId,
+      );
+    }
     return GetBuilder<PickTabController>(
-      init: PickTabController(
-        PersonalFileService(),
-        CommentService(),
-        viewMember,
-      ),
-      tag: 'Member${viewMember.memberId}',
+      tag: viewMember.memberId,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
             error: controller.error,
-            onPressed: () => controller.fetchPickList(),
+            onPressed: () => controller.initPage(),
             hideAppbar: true,
           );
         }

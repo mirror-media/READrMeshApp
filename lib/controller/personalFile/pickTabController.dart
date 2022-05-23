@@ -24,13 +24,17 @@ class PickTabController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchPickList();
+    initPage();
   }
 
-  void fetchPickList() async {
+  void initPage() async {
     isLoading = true;
     isError = false;
     update();
+    await fetchPickList();
+  }
+
+  Future<void> fetchPickList() async {
     try {
       var result = await personalFileRepos.fetchPickData(viewMember);
       storyPickList.assignAll(result['storyPickList']);
