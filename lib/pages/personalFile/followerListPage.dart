@@ -11,6 +11,7 @@ import 'package:readr/pages/personalFile/followSkeletonScreen.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:readr/services/personalFileService.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowerListPage extends GetView<FollowerListController> {
   final Member viewMember;
@@ -21,6 +22,17 @@ class FollowerListPage extends GetView<FollowerListController> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered<FollowerListController>(tag: viewMember.memberId)) {
+      controller.fetchFollowerList();
+    } else {
+      Get.put(
+        FollowerListController(
+          personalFileRepos: PersonalFileService(),
+          viewMember: viewMember,
+        ),
+        tag: viewMember.memberId,
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -44,10 +56,6 @@ class FollowerListPage extends GetView<FollowerListController> {
         ),
       ),
       body: GetBuilder<FollowerListController>(
-        init: FollowerListController(
-          personalFileRepos: PersonalFileService(),
-          viewMember: viewMember,
-        ),
         tag: viewMember.memberId,
         builder: (controller) {
           if (controller.isError) {
@@ -100,12 +108,18 @@ class FollowerListPage extends GetView<FollowerListController> {
               return Container();
             }
 
-            if (controller.isLoadingMore.isFalse) {
-              controller.fetchMoreFollower();
-            }
-
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
+            return VisibilityDetector(
+              key: ValueKey('followerList${viewMember.memberId}'),
+              onVisibilityChanged: (VisibilityInfo info) {
+                var visiblePercentage = info.visibleFraction * 100;
+                if (visiblePercentage > 50 &&
+                    controller.isLoadingMore.isFalse) {
+                  controller.fetchMoreFollower();
+                }
+              },
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
             );
           }
           return InkWell(
