@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
@@ -77,6 +78,14 @@ class PickableItemController extends GetxController {
     if (myPickId.value == null) {
       pickCount.value--;
       isPicked.value = false;
+    } else {
+      //update own personal file if exists
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: 'OwnPersonalFile')) {
+        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+            .pickCount
+            .value++;
+      }
     }
 
     PickToast.showPickToast(myPickId.value != null, true);
@@ -111,6 +120,13 @@ class PickableItemController extends GetxController {
     if (result != null) {
       myPickId.value = result['pickId'];
       myPickCommentId.value = result['pickComment'].id;
+      //update own personal file if exists
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: 'OwnPersonalFile')) {
+        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+            .pickCount
+            .value++;
+      }
     } else {
       pickCount.value--;
       commentCount.value--;
@@ -158,6 +174,13 @@ class PickableItemController extends GetxController {
       }
       myPickId.value = null;
       myPickCommentId.value = null;
+      //update own personal file if exists
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: 'OwnPersonalFile')) {
+        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+            .pickCount
+            .value--;
+      }
     } else {
       pickCount.value++;
       if (myPickCommentId.value != null) {
