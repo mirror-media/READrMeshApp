@@ -41,7 +41,7 @@ class FollowButton extends GetView<FollowableItemController> {
     return Obx(
       () => OutlinedButton(
         onPressed: () async {
-          if (item.type == 'member' &&
+          if (item.type == FollowableItemType.member &&
               Get.find<UserService>().isMember.isFalse) {
             Get.to(
               () => const LoginPage(),

@@ -8,13 +8,18 @@ import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
+enum FollowableItemType {
+  member,
+  publisher,
+}
+
 abstract class FollowableItem {
   final String id;
   final String name;
   final String descriptionText;
   final bool isFollowed;
   final String lookmoreText;
-  final String type;
+  final FollowableItemType type;
   final String tag;
   FollowableItem(
     this.id,
@@ -52,7 +57,7 @@ class MemberFollowableItem implements FollowableItem {
   }
 
   @override
-  String get type => 'member';
+  FollowableItemType get type => FollowableItemType.member;
 
   @override
   String get id => member.memberId;
@@ -116,7 +121,7 @@ class PublisherFollowableItem implements FollowableItem {
   }
 
   @override
-  String get type => 'publisher';
+  FollowableItemType get type => FollowableItemType.publisher;
 
   @override
   String get id => publisher.id;

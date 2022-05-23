@@ -38,10 +38,11 @@ class RecommendFollowPage extends StatelessWidget {
         child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
             if (state is HomeLoaded && recommendedItems.isNotEmpty) {
-              if (recommendedItems[0].type == 'member' &&
+              if (recommendedItems[0].type == FollowableItemType.member &&
                   state.recommendedMembers.isEmpty) {
                 Navigator.pop(context);
-              } else if (recommendedItems[0].type == 'publisher' &&
+              } else if (recommendedItems[0].type ==
+                      FollowableItemType.publisher &&
                   state.recommendedPublishers.isEmpty) {
                 Navigator.pop(context);
               }
@@ -49,10 +50,11 @@ class RecommendFollowPage extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is HomeLoaded && recommendedItems.isNotEmpty) {
-              if (recommendedItems[0].type == 'member') {
+              if (recommendedItems[0].type == FollowableItemType.member) {
                 recommendedItemList = [];
                 recommendedItemList.addAll(state.recommendedMembers);
-              } else if (recommendedItems[0].type == 'publisher') {
+              } else if (recommendedItems[0].type ==
+                  FollowableItemType.publisher) {
                 recommendedItemList = [];
                 recommendedItemList.addAll(state.recommendedPublishers);
               }

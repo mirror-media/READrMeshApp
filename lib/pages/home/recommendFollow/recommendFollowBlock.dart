@@ -18,7 +18,7 @@ class RecommendFollowBlock extends StatelessWidget {
     }
 
     if (Get.find<UserService>().currentUser.following.isEmpty &&
-        recommendedItems.first.type == 'member') {
+        recommendedItems.first.type == FollowableItemType.member) {
       return Container();
     }
     int itemLength = 5;
