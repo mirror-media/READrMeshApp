@@ -3,6 +3,5 @@
     <string name="app_name">READr Mesh Dev</string>
     <string name="dynamiclink_host">readrdev.page.link</string>
     <string name="facebook_app_id">2138298816406811</string>
-    <string name="fb_login_protocol_scheme">fb2138298816406811</string>
-    <string name="facebook_client_token">832e761fef78441a976e5dcf649538a7</string>
+    <string name="facebook_client_token">daf271c3447854bf8258b232068aa89e</string>
 </resources>
