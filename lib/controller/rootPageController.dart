@@ -19,6 +19,8 @@ class RootPageController extends GetxController {
   final followingMemberUpdate = false.obs;
   final followingPublisherUpdate = false.obs;
 
+  final prefs = Get.find<SharedPreferencesService>().prefs;
+
   @override
   void onInit() {
     _initRootPage();
@@ -52,9 +54,8 @@ class RootPageController extends GetxController {
     ));
     await remoteConfig.fetchAndActivate();
     minAppVersion = remoteConfig.getString('min_version_number');
-    bool isFirstTime =
-        Get.find<SharedPreferencesService>().prefs.getBool('isFirstTime') ??
-            true;
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    tabIndex.value = prefs.getInt('initialPageIndex') ?? 0;
     isInitialized = true;
     if (isFirstTime) {
       Get.offAll(() => WelcomePage());
