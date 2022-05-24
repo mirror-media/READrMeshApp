@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/controller/personalFile/followerListController.dart';
-import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
-import 'package:readr/getxServices/userService.dart';
+import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/models/followableItem.dart';
 
 class FollowableItemController extends GetxController {
@@ -32,10 +31,16 @@ class FollowableItemController extends GetxController {
       _isSuccess,
       (callback) {
         if (callback) {
-          _updatePersonalFile();
+          _updateTargetPersonalFile();
+          if (item.type == FollowableItemType.member) {
+            Get.find<RootPageController>().followingMemberUpdate.value = true;
+          } else {
+            Get.find<RootPageController>().followingPublisherUpdate.value =
+                true;
+          }
         }
       },
-      time: const Duration(seconds: 5),
+      time: const Duration(milliseconds: 500),
     );
     ever<bool>(
       isFollowed,
@@ -76,23 +81,11 @@ class FollowableItemController extends GetxController {
     }
   }
 
-  void _updatePersonalFile() {
-    //update own following list if isRegistered
-    String ownId = Get.find<UserService>().currentUser.memberId;
-    if (Get.isRegistered<FollowingListController>(tag: ownId)) {
-      Get.find<FollowingListController>(tag: ownId).fetchFollowingList();
-    }
-
+  void _updateTargetPersonalFile() {
     //update target member followerList if isRegistered
     if (item.type == FollowableItemType.member &&
         Get.isRegistered<FollowerListController>(tag: item.id)) {
       Get.find<FollowerListController>(tag: item.id).fetchFollowerList();
-    }
-
-    //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(tag: 'OwnPersonalFile')) {
-      Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
-          .fetchMemberData();
     }
 
     //update target member personal file if exists
