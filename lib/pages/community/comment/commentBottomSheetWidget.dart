@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
+import 'package:readr/controller/comment/commentItemController.dart';
+import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
@@ -72,11 +74,20 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                     if (_itemScrollController.isAttached) {
                       int index = controller.allComments.indexWhere(
                           (comment) => comment.id == clickComment.id);
-                      _itemScrollController.scrollTo(
-                          index: index,
-                          duration: const Duration(
-                            microseconds: 1,
-                          ));
+                      if (index != -1) {
+                        _itemScrollController.scrollTo(
+                            index: index,
+                            duration: const Duration(
+                              microseconds: 1,
+                            ));
+                        Get.find<CommentItemController>(
+                                tag: 'Comment${clickComment.id}')
+                            .isExpanded(true);
+                      } else {
+                        Get.back();
+                        Get.find<CommunityPageController>()
+                            .fetchFollowingPickedNews();
+                      }
                       timer.cancel();
                     }
                   });
