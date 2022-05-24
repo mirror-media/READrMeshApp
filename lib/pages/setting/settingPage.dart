@@ -11,7 +11,8 @@ import 'package:readr/helpers/dataConstants.dart';
 
 import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
-import 'package:readr/pages/setting/setNewsCoveragePage.dart';
+import 'package:readr/pages/setting/initialSettingPage.dart';
+import 'package:readr/pages/setting/newsCoverageSettingPage.dart';
 
 class SettingPage extends GetView<SettingPageController> {
   @override
@@ -126,11 +127,17 @@ class SettingPage extends GetView<SettingPageController> {
           _settingButton(
             text: '顯示新聞範圍',
             onPressed: () {
-              int duration = Get.find<SharedPreferencesService>()
-                      .prefs
-                      .getInt('newsCoverage') ??
-                  24;
-              Get.to(() => SetNewsCoveragePage(duration));
+              Get.to(() => NewsCoverageSettingPage());
+            },
+          ),
+          const Divider(
+            color: readrBlack10,
+            height: 1,
+          ),
+          _settingButton(
+            text: '預設顯示頁面',
+            onPressed: () {
+              Get.to(() => InitialSettingPage());
             },
           ),
           const Divider(
