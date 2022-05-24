@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/publisher.dart';
 
@@ -25,28 +26,21 @@ class PublisherLogoWidget extends StatelessWidget {
       }
     }
     Widget child;
-    Widget background;
+    Widget background = Container(
+      alignment: Alignment.center,
+      color: randomColor,
+      padding: const EdgeInsets.all(5),
+      child: AutoSizeText(
+        firstLetter,
+        style: TextStyle(color: textColor, fontSize: 30),
+        minFontSize: 5,
+      ),
+    );
     if (publisher.logoUrl == null || publisher.logoUrl! == '') {
-      child = Container(
-        alignment: Alignment.center,
-        color: randomColor,
-        padding: const EdgeInsets.all(5),
-        child: AutoSizeText(
-          firstLetter,
-          style: TextStyle(color: textColor, fontSize: 30),
-          minFontSize: 5,
-        ),
-      );
+      child = background;
+    } else if (publisher.logoUrl!.contains('svg')) {
+      child = SvgPicture.network(publisher.logoUrl!);
     } else {
-      background = Container(
-        color: randomColor,
-        padding: const EdgeInsets.all(5),
-        child: AutoSizeText(
-          firstLetter,
-          style: TextStyle(color: textColor, fontSize: 30),
-          minFontSize: 5,
-        ),
-      );
       child = CachedNetworkImage(
         imageUrl: publisher.logoUrl!,
         placeholder: (context, url) => Container(
