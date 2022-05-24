@@ -29,10 +29,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 class CommunityPage extends GetView<CommunityPageController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.isLoading) {
+    if (!controller.isInitialized) {
       controller.initPage();
-    } else {
-      controller.updateCommunityPage();
     }
     return Scaffold(
       backgroundColor: homeScreenBackgroundColor,
@@ -54,7 +52,7 @@ class CommunityPage extends GetView<CommunityPageController> {
             );
           }
 
-          if (!controller.isLoading) {
+          if (controller.isInitialized) {
             return _buildBody(context);
           }
 
@@ -77,6 +75,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       onRefresh: () async => await controller.updateCommunityPage(),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
+        controller: controller.scrollController,
         slivers: [
           const HomeAppBar(),
           SliverToBoxAdapter(

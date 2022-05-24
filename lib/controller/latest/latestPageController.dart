@@ -20,11 +20,12 @@ class LatestPageController extends GetxController {
   late bool showPaywall;
   late bool showFullScreenAd;
 
-  bool isLoading = true;
+  bool isInitialized = false;
   bool isError = false;
   dynamic error;
 
   final prefs = Get.find<SharedPreferencesService>().prefs;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
@@ -34,15 +35,29 @@ class LatestPageController extends GetxController {
   }
 
   void initPage() async {
-    isLoading = true;
+    isInitialized = false;
     isError = false;
     update();
     await Future.wait([
       fetchLatestNews().then((value) => isError = !value),
       Get.find<RecommendPublisherBlockController>().fetchRecommendPublishers(),
     ]);
-    isLoading = false;
+    isInitialized = true;
     update();
+  }
+
+  void scrollToTopAndRefresh() async {
+    if (isInitialized) {
+      await Future.doWhile(() async {
+        await Future.delayed(const Duration(microseconds: 100));
+        return !scrollController.hasClients;
+      });
+      await Future.wait([
+        scrollController.animateTo(0,
+            duration: const Duration(seconds: 2), curve: Curves.fastOutSlowIn),
+        updateLatestNewsPage()
+      ]);
+    }
   }
 
   Future<void> updateLatestNewsPage() async {

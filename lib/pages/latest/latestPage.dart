@@ -18,10 +18,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 class LatestPage extends GetView<LatestPageController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.isLoading) {
+    if (!controller.isInitialized) {
       controller.initPage();
-    } else {
-      controller.updateLatestNewsPage();
     }
     return Scaffold(
       backgroundColor: homeScreenBackgroundColor,
@@ -43,7 +41,7 @@ class LatestPage extends GetView<LatestPageController> {
             );
           }
 
-          if (!controller.isLoading) {
+          if (controller.isInitialized) {
             return _buildBody(context);
           }
 
@@ -66,6 +64,7 @@ class LatestPage extends GetView<LatestPageController> {
       onRefresh: () async => await controller.updateLatestNewsPage(),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
+        controller: controller.scrollController,
         slivers: [
           const HomeAppBar(),
           _latestNewsBar(context),
@@ -83,7 +82,7 @@ class LatestPage extends GetView<LatestPageController> {
 
                 return Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 12),
                   child: _buildNewsList(
                       context, controller.showLatestNews.sublist(0, end)),
                 );

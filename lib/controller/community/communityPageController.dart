@@ -15,20 +15,21 @@ class CommunityPageController extends GetxController {
   final isLoadingMore = false.obs;
   final isNoMore = false.obs;
 
-  bool isLoading = true;
+  bool isInitialized = false;
   bool isError = false;
   dynamic error;
+  final ScrollController scrollController = ScrollController();
 
   void initPage() async {
-    isLoading = true;
+    isInitialized = false;
     isError = false;
     update();
     await Future.wait([
-      fetchFollowingPickedNews().then((value) => isError = value),
+      fetchFollowingPickedNews().then((value) => isError = !value),
       Get.find<LatestCommentBlockController>().fetchLatestCommentNews(),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
-    isLoading = false;
+    isInitialized = true;
     update();
   }
 
@@ -36,11 +37,25 @@ class CommunityPageController extends GetxController {
     try {
       followingPickedNews
           .assignAll(await repository.fetchFollowingPickedNews());
-      return false;
+      return true;
     } catch (e) {
       print('Fetch following picked news error: $e');
       error = determineException(e);
-      return true;
+      return false;
+    }
+  }
+
+  void scrollToTopAndRefresh() async {
+    if (isInitialized) {
+      await Future.doWhile(() async {
+        await Future.delayed(const Duration(microseconds: 100));
+        return !scrollController.hasClients;
+      });
+      await Future.wait([
+        scrollController.animateTo(0,
+            duration: const Duration(seconds: 2), curve: Curves.fastOutSlowIn),
+        updateCommunityPage()
+      ]);
     }
   }
 
