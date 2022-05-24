@@ -225,8 +225,18 @@ class LatestService implements LatestRepos {
         allLatestNews.add(NewsListItem.fromJson(item));
       }
       _earliestNewsPublishTime = allLatestNews.last.publishedDate;
-      // allLatestNews
-      //     .sort((a, b) => b.publishedDate.hour.compareTo(a.publishedDate.hour));
+      int start = allLatestNews.indexWhere((element) =>
+          element.publishedDate.difference(DateTime.now()).inMinutes > 60);
+
+      if (start != -1) {
+        List<NewsListItem> tempList = allLatestNews.sublist(0, start);
+        List<NewsListItem> needSortNews = allLatestNews.sublist(start);
+
+        needSortNews.sort(
+            (a, b) => b.publishedDate.hour.compareTo(a.publishedDate.hour));
+        allLatestNews.assignAll(tempList);
+        allLatestNews.addAll(needSortNews);
+      }
     }
 
     return allLatestNews;
