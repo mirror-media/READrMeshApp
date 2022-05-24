@@ -6,7 +6,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/home/comment/commentBottomSheet.dart';
+import 'package:readr/pages/community/comment/commentBottomSheet.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/followButton.dart';

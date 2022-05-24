@@ -8,7 +8,7 @@ import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/pages/home/comment/commentBottomSheetWidget.dart';
+import 'package:readr/pages/community/comment/commentBottomSheetWidget.dart';
 import 'package:readr/services/commentService.dart';
 
 class CommentBottomSheet {

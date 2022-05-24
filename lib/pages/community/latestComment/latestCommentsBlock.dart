@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:readr/controller/community/latestCommentBlockController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/home/latestComment/latestCommentItem.dart';
+import 'package:readr/pages/community/latestComment/latestCommentItem.dart';
 
-class LatestCommentsBlock extends StatelessWidget {
-  final List<NewsListItem> latestCommentsNewsList;
-  const LatestCommentsBlock(
-    this.latestCommentsNewsList,
-  );
-
+class LatestCommentsBlock extends GetView<LatestCommentBlockController> {
   @override
   Widget build(BuildContext context) {
-    if (latestCommentsNewsList.isEmpty) {
+    if (controller.latestCommentsNewsList.isEmpty) {
       return Container();
     }
     return SafeArea(
@@ -36,13 +32,13 @@ class LatestCommentsBlock extends StatelessWidget {
             }
 
             return LatestCommentItem(
-              latestCommentsNewsList[index - 1],
+              controller.latestCommentsNewsList[index - 1],
             );
           },
           separatorBuilder: (context, index) => const SizedBox(
             height: 20,
           ),
-          itemCount: latestCommentsNewsList.length + 1,
+          itemCount: controller.latestCommentsNewsList.length + 1,
         ),
       ),
     );

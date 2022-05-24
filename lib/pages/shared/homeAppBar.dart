@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/home/home_bloc.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -30,23 +28,19 @@ class HomeAppBar extends StatelessWidget {
         //     color: readrBlack,
         //   ),
         // )
-        BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            return IconButton(
-              onPressed: () {
-                Get.to(
-                  () => const CheckInvitationCodePage(),
-                  fullscreenDialog: true,
-                );
-              },
-              icon: SvgPicture.asset(
-                Get.find<UserService>().hasInvitationCode
-                    ? newInvitationCodeSvg
-                    : invitationCodeSvg,
-                fit: BoxFit.cover,
-              ),
+        IconButton(
+          onPressed: () {
+            Get.to(
+              () => const CheckInvitationCodePage(),
+              fullscreenDialog: true,
             );
           },
+          icon: SvgPicture.asset(
+            Get.find<UserService>().hasInvitationCode
+                ? newInvitationCodeSvg
+                : invitationCodeSvg,
+            fit: BoxFit.cover,
+          ),
         )
       ],
     );

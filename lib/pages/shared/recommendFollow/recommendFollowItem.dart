@@ -31,6 +31,7 @@ class RecommendFollowItem extends StatelessWidget {
             children: [
               recommendItem.defaultProfilePhotoWidget(),
               const SizedBox(height: 12),
+              const Spacer(),
               ExtendedText(
                 recommendItem.name,
                 maxLines: 1,
@@ -43,6 +44,7 @@ class RecommendFollowItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
+              const Spacer(),
               SizedBox(
                 height: 34,
                 child: ExtendedText(

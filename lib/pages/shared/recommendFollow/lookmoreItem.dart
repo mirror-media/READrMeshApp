@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/recommendItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
-import 'package:readr/pages/home/recommendFollow/recommendFollowPage.dart';
+import 'package:readr/pages/shared/recommendFollow/recommendFollowPage.dart';
 
 class LookmoreItem extends StatelessWidget {
-  final List<FollowableItem> recommendedItems;
-  const LookmoreItem(this.recommendedItems);
+  final RecommendItemController controller;
+  const LookmoreItem(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class LookmoreItem extends StatelessWidget {
             SizedBox(
               height: 34,
               child: Text(
-                recommendedItems[0].lookmoreText,
+                controller.recommendItems.first.lookmoreText,
                 style: const TextStyle(
                   fontSize: 12,
                   color: readrBlack50,
@@ -48,9 +49,7 @@ class LookmoreItem extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
-                  Get.to(() => RecommendFollowPage(
-                        recommendedItems,
-                      ));
+                  Get.to(() => RecommendFollowPage(controller));
                 },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: readrBlack87, width: 1),
@@ -75,8 +74,8 @@ class LookmoreItem extends StatelessWidget {
 
   Widget _moreProfilePhotoStack(BuildContext context) {
     List<FollowableItem> items = [];
-    for (int i = 4; i < 7 && i < recommendedItems.length; i++) {
-      items.add(recommendedItems[i]);
+    for (int i = 4; i < 7 && i < controller.recommendItems.length; i++) {
+      items.add(controller.recommendItems[i]);
     }
     if (items.length == 1) {
       return items[0].defaultProfilePhotoWidget();

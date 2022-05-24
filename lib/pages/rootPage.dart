@@ -7,7 +7,8 @@ import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/updateMessages.dart';
-import 'package:readr/pages/home/homePage.dart';
+import 'package:readr/pages/community/communityPage.dart';
+import 'package:readr/pages/latest/latestPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/personalFile/visitorPersonalFile.dart';
 import 'package:readr/pages/readr/readrPage.dart';
@@ -44,7 +45,8 @@ class RootPage extends GetView<RootPageController> {
 
   Widget _buildBody(BuildContext context) {
     List<Widget> bodyList = [
-      HomePage(),
+      CommunityPage(),
+      LatestPage(),
       ReadrPage(),
       Obx(
         () {
@@ -75,35 +77,51 @@ class RootPage extends GetView<RootPageController> {
           onTap: (index) => controller.changeTabIndex(index),
           selectedItemColor: bottomNavigationBarSelectedColor,
           unselectedItemColor: bottomNavigationBarUnselectedColor,
+          type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: SizedBox(
                 height: 20,
                 child: SvgPicture.asset(
-                  homeDefaultSvg,
+                  communityPageDefaultSvg,
                 ),
               ),
               activeIcon: SizedBox(
                 height: 20,
                 child: SvgPicture.asset(
-                  homeActiveSvg,
+                  communityPageActiveSvg,
                 ),
               ),
-              label: '首頁',
+              label: '社群',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  latestPageDefaultSvg,
+                ),
+              ),
+              activeIcon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  latestPageActiveSvg,
+                ),
+              ),
+              label: '最新',
             ),
             BottomNavigationBarItem(
               icon: Container(
                 height: 20,
                 margin: const EdgeInsets.only(bottom: 1.5),
                 child: SvgPicture.asset(
-                  readrDefaultSvg,
+                  readrPageDefaultSvg,
                 ),
               ),
               activeIcon: Container(
                 height: 20,
                 margin: const EdgeInsets.only(bottom: 1.5),
                 child: SvgPicture.asset(
-                  readrActiveSvg,
+                  readrPageActiveSvg,
                 ),
               ),
               label: 'READr',
