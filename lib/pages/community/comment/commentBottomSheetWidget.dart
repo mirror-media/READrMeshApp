@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
@@ -84,7 +85,15 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                                 tag: 'Comment${clickComment.id}')
                             .isExpanded(true);
                       } else {
-                        Get.back();
+                        Fluttertoast.showToast(
+                          msg: "留言好像被刪除了...",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                         Get.find<CommunityPageController>()
                             .fetchFollowingPickedNews();
                       }
