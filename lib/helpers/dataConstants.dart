@@ -21,12 +21,14 @@ const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
 const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
-const String homeActiveSvg = 'assets/icon/homeActive.svg';
-const String homeDefaultSvg = 'assets/icon/homeDefault.svg';
-const String readrActiveSvg = 'assets/icon/readrActive.svg';
-const String readrDefaultSvg = 'assets/icon/readrDefault.svg';
+const String communityPageActiveSvg = 'assets/icon/communityPageActive.svg';
+const String communityPageDefaultSvg = 'assets/icon/communityPageDefault.svg';
+const String readrPageActiveSvg = 'assets/icon/readrPageActive.svg';
+const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
 const String invitationCodeSvg = 'assets/icon/invitationCode.svg';
 const String newInvitationCodeSvg = 'assets/icon/newInvitationCode.svg';
+const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
+const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
