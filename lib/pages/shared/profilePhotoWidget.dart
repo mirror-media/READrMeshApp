@@ -25,6 +25,12 @@ class ProfilePhotoWidget extends StatelessWidget {
       }
     }
 
+    Widget child = AutoSizeText(
+      firstLetter,
+      style: TextStyle(color: textColor, fontSize: textSize),
+      minFontSize: 5,
+    );
+
     if (member.avatar != null) {
       return Container(
         decoration: BoxDecoration(
@@ -38,11 +44,7 @@ class ProfilePhotoWidget extends StatelessWidget {
           foregroundImage: NetworkImage(member.avatar!),
           backgroundColor: randomColor,
           radius: radius,
-          child: AutoSizeText(
-            firstLetter,
-            style: TextStyle(color: textColor, fontSize: textSize),
-            minFontSize: 5,
-          ),
+          child: child,
         ),
       );
     }
@@ -57,11 +59,7 @@ class ProfilePhotoWidget extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: randomColor,
         radius: radius,
-        child: AutoSizeText(
-          firstLetter,
-          style: TextStyle(color: textColor, fontSize: textSize),
-          minFontSize: 5,
-        ),
+        child: child,
       ),
     );
   }
