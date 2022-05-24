@@ -284,7 +284,7 @@ class LatestPage extends GetView<LatestPageController> {
     return Container(
       color: Colors.white,
       child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
