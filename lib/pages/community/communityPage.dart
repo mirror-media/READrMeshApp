@@ -13,7 +13,7 @@ import 'package:readr/pages/community/comment/commentBottomSheet.dart';
 import 'package:readr/pages/community/latestComment/latestCommentsBlock.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
-import 'package:readr/pages/shared/homeAppBar.dart';
+import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
@@ -40,7 +40,7 @@ class CommunityPage extends GetView<CommunityPageController> {
             return CustomScrollView(
               physics: const NeverScrollableScrollPhysics(),
               slivers: [
-                const HomeAppBar(),
+                MainAppBar(),
                 SliverFillRemaining(
                   child: ErrorPage(
                     error: controller.error,
@@ -59,7 +59,7 @@ class CommunityPage extends GetView<CommunityPageController> {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
-              const HomeAppBar(),
+              MainAppBar(),
               SliverFillRemaining(
                 child: HomeSkeletonScreen(),
               ),
@@ -77,7 +77,7 @@ class CommunityPage extends GetView<CommunityPageController> {
         physics: const AlwaysScrollableScrollPhysics(),
         controller: controller.scrollController,
         slivers: [
-          const HomeAppBar(),
+          MainAppBar(),
           SliverToBoxAdapter(
             child: Obx(
               () {

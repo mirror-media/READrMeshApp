@@ -6,7 +6,7 @@ import 'package:readr/controller/readr/readrPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
-import 'package:readr/pages/shared/homeAppBar.dart';
+import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/services/categoryService.dart';
 import 'package:readr/services/editorChoiceService.dart';
@@ -43,7 +43,7 @@ class ReadrPage extends StatelessWidget {
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return [
-                    const HomeAppBar(),
+                    MainAppBar(),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4),
@@ -99,7 +99,7 @@ class ReadrPage extends StatelessWidget {
 
             return CustomScrollView(
               slivers: [
-                const HomeAppBar(),
+                MainAppBar(),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20),

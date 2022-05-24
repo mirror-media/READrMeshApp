@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:readr/blocs/invitationCode/invitationCode_cubit.dart';
+import 'package:readr/controller/invitationCodePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
+import 'package:readr/services/invitationCodeService.dart';
 
-class CheckInvitationCodeWidget extends StatelessWidget {
-  CheckInvitationCodeWidget({Key? key}) : super(key: key);
-
-  final List<InvitationCode> _usableCodeList = [];
-  final List<InvitationCode> _activatedCodeList = [];
-
+class InvitationCodePage extends GetView<InvitationCodePageController> {
   @override
   Widget build(BuildContext context) {
-    context.read<InvitationCodeCubit>().fetchMyInvitationCode();
-    return BlocBuilder<InvitationCodeCubit, InvitationCodeState>(
-      builder: (context, state) {
-        if (state is InvitationCodeError) {
-          return ErrorPage(
-            error: state.error,
-            onPressed: () =>
-                context.read<InvitationCodeCubit>().fetchMyInvitationCode(),
-            hideAppbar: true,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        elevation: 0.5,
+        backgroundColor: Colors.white,
+        title: const Text(
+          '邀請碼',
+          style: TextStyle(
+            color: readrBlack,
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.close,
+              size: 26,
+              color: readrBlack87,
+            ),
+          )
+        ],
+      ),
+      body: GetBuilder<InvitationCodePageController>(
+        init: InvitationCodePageController(InvitationCodeService()),
+        builder: (controller) {
+          if (controller.isError) {
+            return ErrorPage(
+              error: controller.error,
+              onPressed: () => controller.fetchMyInvitationCode(),
+              hideAppbar: true,
+            );
+          }
+
+          if (!controller.isLoading) {
+            return _buildContent(context);
+          }
+
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
           );
-        }
-
-        if (state is InvitationCodeLoaded) {
-          _usableCodeList.addAll(state.usableCodeList);
-          _activatedCodeList.addAll(state.activatedCodeList);
-          return _buildContent(context);
-        }
-
-        return const Center(
-          child: CircularProgressIndicator.adaptive(),
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -50,7 +69,8 @@ class CheckInvitationCodeWidget extends StatelessWidget {
       physics: const ClampingScrollPhysics(),
       children: [
         _buildUsableCodeList(context),
-        if (_activatedCodeList.isNotEmpty) _buildActivatedCodeList(context),
+        if (controller.activatedCodeList.isNotEmpty)
+          _buildActivatedCodeList(context),
       ],
     );
   }
@@ -71,7 +91,7 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        if (_usableCodeList.isEmpty)
+        if (controller.usableCodeList.isEmpty)
           const Padding(
             padding: EdgeInsets.only(bottom: 40),
             child: Text(
@@ -88,12 +108,12 @@ class CheckInvitationCodeWidget extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
-                _usableCodeItem(context, _usableCodeList[index]),
+                _usableCodeItem(context, controller.usableCodeList[index]),
             separatorBuilder: (context, index) => const Divider(
               color: readrBlack10,
               height: 1,
             ),
-            itemCount: _usableCodeList.length,
+            itemCount: controller.usableCodeList.length,
           ),
         ),
       ],
@@ -162,13 +182,13 @@ class CheckInvitationCodeWidget extends StatelessWidget {
           child: ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) =>
-                _activatedCodeItem(context, _activatedCodeList[index]),
+            itemBuilder: (context, index) => _activatedCodeItem(
+                context, controller.activatedCodeList[index]),
             separatorBuilder: (context, index) => const Divider(
               color: readrBlack10,
               height: 1,
             ),
-            itemCount: _activatedCodeList.length,
+            itemCount: controller.activatedCodeList.length,
           ),
         ),
         const SizedBox(height: 16),

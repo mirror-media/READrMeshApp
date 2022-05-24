@@ -9,7 +9,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/homeAppBar.dart';
+import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
@@ -29,7 +29,7 @@ class LatestPage extends GetView<LatestPageController> {
             return CustomScrollView(
               physics: const NeverScrollableScrollPhysics(),
               slivers: [
-                const HomeAppBar(),
+                MainAppBar(),
                 SliverFillRemaining(
                   child: ErrorPage(
                     error: controller.error,
@@ -48,7 +48,7 @@ class LatestPage extends GetView<LatestPageController> {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
-              const HomeAppBar(),
+              MainAppBar(),
               SliverFillRemaining(
                 child: HomeSkeletonScreen(),
               ),
@@ -66,7 +66,7 @@ class LatestPage extends GetView<LatestPageController> {
         physics: const AlwaysScrollableScrollPhysics(),
         controller: controller.scrollController,
         slivers: [
-          const HomeAppBar(),
+          MainAppBar(),
           _latestNewsBar(context),
           SliverToBoxAdapter(
             child: Obx(

@@ -4,8 +4,10 @@ import 'package:readr/controller/community/latestCommentBlockController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
+import 'package:readr/controller/mainAppBarController.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/services/communityService.dart';
+import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/latestService.dart';
 
 class InitControllerBinding implements Bindings {
@@ -19,5 +21,6 @@ class InitControllerBinding implements Bindings {
     Get.put(RecommendPublisherBlockController(LatestService()),
         permanent: true);
     Get.put(LatestPageController(LatestService()), permanent: true);
+    Get.put(MainAppBarController(InvitationCodeService()), permanent: true);
   }
 }

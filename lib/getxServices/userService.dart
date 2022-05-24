@@ -2,14 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
-import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/visitorService.dart';
 
 class UserService extends GetxService {
   final MemberService _memberService = MemberService();
   final VisitorService _visitorService = VisitorService();
-  final InvitationCodeService _invitationCodeService = InvitationCodeService();
 
   bool get _isMember => FirebaseAuth.instance.currentUser != null;
 
@@ -30,7 +28,6 @@ class UserService extends GetxService {
       var memberData = await _memberService.fetchMemberData();
       if (memberData != null) {
         currentUser = memberData;
-        await checkInvitationCode();
       } else {
         await FirebaseAuth.instance.signOut();
         currentUser = await _visitorService.fetchMemberData();
@@ -117,10 +114,5 @@ class UserService extends GetxService {
     await Future.wait(futureList);
 
     await fetchUserData();
-  }
-
-  Future<void> checkInvitationCode() async {
-    hasInvitationCode = await _invitationCodeService
-        .checkUsableInvitationCode(currentUser.memberId);
   }
 }
