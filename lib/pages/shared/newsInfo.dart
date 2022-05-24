@@ -12,7 +12,7 @@ class NewsInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller =
-        Get.find<PickableItemController>(tag: 'News${newsListItem.id}');
+        Get.find<PickableItemController>(tag: newsListItem.controllerTag);
     return Obx(
       () {
         List<Widget> children = [];
