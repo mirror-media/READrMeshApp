@@ -97,6 +97,7 @@ class MemberFollowableItem implements FollowableItem {
     return ProfilePhotoWidget(
       member,
       32,
+      textSize: 30,
       key: ValueKey(member.hashCode),
     );
   }
