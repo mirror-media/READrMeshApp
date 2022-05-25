@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -98,8 +99,9 @@ class ReadrProjectItemWidget extends StatelessWidget {
   Widget _displayTitle() {
     return Container(
       color: editorChoiceBackgroundColor,
-      child: Text(
+      child: ExtendedText(
         projectItem.title,
+        joinZeroWidthSpace: true,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         style: const TextStyle(

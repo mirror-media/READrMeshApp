@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -33,14 +34,16 @@ class NewsListItemWidget extends StatelessWidget {
           if (!hidePublisher)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
+              child: ExtendedText(
                 news.source.title,
+                joinZeroWidthSpace: true,
                 style: const TextStyle(color: readrBlack50, fontSize: 12),
               ),
             ),
           if (news.heroImageUrl == null)
-            Text(
+            ExtendedText(
               news.title,
+              joinZeroWidthSpace: true,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -56,8 +59,9 @@ class NewsListItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: ExtendedText(
                       news.title,
+                      joinZeroWidthSpace: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -86,8 +90,9 @@ class NewsListItemWidget extends StatelessWidget {
                   )
                 ],
               ),
-              errorWidget: (context, url, error) => Text(
+              errorWidget: (context, url, error) => ExtendedText(
                 news.title,
+                joinZeroWidthSpace: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -101,8 +106,9 @@ class NewsListItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: Text(
+                      child: ExtendedText(
                         news.title,
+                        joinZeroWidthSpace: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

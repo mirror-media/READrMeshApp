@@ -86,16 +86,18 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                   ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                  child: Text(
+                  child: ExtendedText(
                     widget.news.source.title,
+                    joinZeroWidthSpace: true,
                     style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 12, right: 12, bottom: 8),
-                  child: Text(
+                  child: ExtendedText(
                     widget.news.title,
+                    joinZeroWidthSpace: true,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(

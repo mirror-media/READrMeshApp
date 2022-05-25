@@ -275,16 +275,18 @@ class CommunityPage extends GetView<CommunityPageController> {
                   ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                  child: Text(
+                  child: ExtendedText(
                     item.source.title,
+                    joinZeroWidthSpace: true,
                     style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 20, right: 20, bottom: 8),
-                  child: Text(
+                  child: ExtendedText(
                     item.title,
+                    joinZeroWidthSpace: true,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
