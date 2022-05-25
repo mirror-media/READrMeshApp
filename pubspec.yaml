@@ -29,8 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # flutter bloc
-  flutter_bloc: ^8.0.1
   # The dart library for making HTTP requests.
   http: ^0.13.4
   # Provides internationalization and localization facilities
