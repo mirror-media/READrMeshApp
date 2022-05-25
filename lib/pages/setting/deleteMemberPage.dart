@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/pages/rootPage.dart';
 
 import 'package:readr/services/memberService.dart';
 
@@ -114,8 +118,10 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
             onPressed: () async {
               if (!_isInitialized) {
                 await Get.find<UserService>().fetchUserData();
+                Get.offAll(RootPage());
+              } else {
+                Get.back();
               }
-              Get.back();
             },
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
@@ -160,8 +166,18 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
 
   Future<bool> _deleteMember() async {
     try {
+      if (Get.find<SettingPageController>().loginType.value == 'google') {
+        GoogleSignIn googleSignIn = GoogleSignIn();
+        await googleSignIn.disconnect();
+      }
       await FirebaseAuth.instance.currentUser!.delete();
       await MemberService().deleteMember();
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.delete<PersonalFilePageController>(
+            tag: Get.find<UserService>().currentUser.memberId, force: true);
+      }
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {

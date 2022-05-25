@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/rootPage.dart';
+import 'package:readr/pages/shared/followingSyncToast.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,18 +55,56 @@ class DynamicLinkService extends GetxService {
       print('Successfully signed in with email link!');
       await prefs.setString('loginType', 'email');
       if (value.additionalUserInfo!.isNewUser) {
-        Get.to(() async => InputNamePage(await _fetchPublisherTitles()));
+        List<String> publisherTitleList = await _fetchPublisherTitles();
+        Get.to(() => InputNamePage(publisherTitleList));
       } else {
         var result = await MemberService().fetchMemberData();
         if (result != null) {
-          Get.find<UserService>().fetchUserData(member: result);
-          await prefs.setBool('isFirstTime', false);
-          if (Get.isRegistered<RootPageController>()) {
-            Get.find<RootPageController>().tabIndex.value = 0;
+          Fluttertoast.showToast(
+            msg: "登入成功",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0,
+          );
+          final List<String> followingPublisherIds =
+              prefs.getStringList('followingPublisherIds') ?? [];
+          if (followingPublisherIds.isNotEmpty) {
+            Fluttertoast.showToast(
+              msg: "同步追蹤清單中",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              fontSize: 16.0,
+            );
+            await Get.find<UserService>()
+                .addVisitorFollowing(followingPublisherIds)
+                .timeout(
+              const Duration(minutes: 1),
+              onTimeout: () {
+                Get.find<UserService>().fetchUserData(member: result);
+              },
+            );
+          } else {
+            Get.find<UserService>().fetchUserData(member: result);
           }
-          Get.offAll(() => RootPage());
+
+          final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+          if (isFirstTime) {
+            Get.offAll(RootPage());
+            await prefs.setBool('isFirstTime', false);
+          } else {
+            if (Get.currentRoute != '/') {
+              Get.until((route) => Get.currentRoute != '/LoginPage');
+            }
+
+            if (followingPublisherIds.isNotEmpty) {
+              showFollowingSyncToast();
+            }
+          }
         } else {
-          Get.to(() async => InputNamePage(await _fetchPublisherTitles()));
+          List<String> publisherTitleList = await _fetchPublisherTitles();
+          Get.to(() => InputNamePage(publisherTitleList));
         }
       }
     }).catchError((onError) async {

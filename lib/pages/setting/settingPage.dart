@@ -4,10 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
 import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/initialSettingPage.dart';
@@ -241,6 +241,12 @@ class SettingPage extends GetView<SettingPageController> {
                 await googleSignIn.disconnect();
               }
               await FirebaseAuth.instance.signOut();
+              if (Get.isRegistered<PersonalFilePageController>(
+                  tag: Get.find<UserService>().currentUser.memberId)) {
+                Get.delete<PersonalFilePageController>(
+                    tag: Get.find<UserService>().currentUser.memberId,
+                    force: true);
+              }
               await Get.find<UserService>().fetchUserData();
             },
           ),

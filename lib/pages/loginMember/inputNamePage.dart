@@ -4,18 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/loginMember/chooseMember/chooseMemberPage.dart';
+import 'package:readr/pages/loginMember/chooseMemberPage.dart';
 import 'package:readr/pages/loginMember/choosePublisherPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 
 class InputNamePage extends StatefulWidget {
   final List<String> publisherTitleList;
-  const InputNamePage(
-    this.publisherTitleList,
-  );
+  final bool isGoogle;
+  const InputNamePage(this.publisherTitleList, {this.isGoogle = false});
   @override
   State<InputNamePage> createState() => _InputNamePageState();
 }
@@ -57,6 +57,9 @@ class _InputNamePageState extends State<InputNamePage> {
             ),
             onPressed: () async {
               await FirebaseAuth.instance.currentUser?.delete();
+              if (widget.isGoogle) {
+                await GoogleSignIn().disconnect();
+              }
               Navigator.of(context).pop();
             },
           ),
@@ -75,8 +78,6 @@ class _InputNamePageState extends State<InputNamePage> {
                       await InvitationCodeService()
                           .linkInvitationCode(invitationCodeId);
                     }
-
-                    await prefs.setBool('isFirstTime', false);
 
                     final List<String> followingPublisherIds =
                         prefs.getStringList('followingPublisherIds') ?? [];
@@ -115,6 +116,9 @@ class _InputNamePageState extends State<InputNamePage> {
       ),
       onWillPop: () async {
         await FirebaseAuth.instance.currentUser?.delete();
+        if (widget.isGoogle) {
+          await GoogleSignIn().disconnect();
+        }
         return true;
       },
     );
