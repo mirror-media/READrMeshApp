@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
@@ -20,7 +21,6 @@ import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
-import 'package:readr/pages/shared/recommendFollow/recommendFollowItem.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
@@ -102,8 +102,9 @@ class CommunityPage extends GetView<CommunityPageController> {
             child: Obx(
               () {
                 if (Get.find<RecommendMemberBlockController>()
-                    .recommendMembers
-                    .isEmpty) {
+                        .recommendMembers
+                        .isEmpty ||
+                    controller.followingPickedNews.isEmpty) {
                   return Container();
                 }
 
@@ -204,29 +205,9 @@ class CommunityPage extends GetView<CommunityPageController> {
           const SizedBox(
             height: 32,
           ),
-          Obx(
-            () {
-              if (recommendMemberBlockController.recommendMembers.isNotEmpty) {
-                return SizedBox(
-                  height: 230,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.only(left: 20),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => RecommendFollowItem(
-                        recommendMemberBlockController.recommendMembers[index]),
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 12),
-                    itemCount:
-                        recommendMemberBlockController.recommendMembers.length,
-                  ),
-                );
-              }
-              return Container();
-            },
-          ),
-          const SizedBox(
-            height: 16,
+          RecommendFollowBlock(
+            recommendMemberBlockController,
+            showTitleBar: false,
           ),
         ],
       ),
@@ -543,6 +524,9 @@ class CommunityPage extends GetView<CommunityPageController> {
   Widget _bottomWidget() {
     return Obx(
       () {
+        if (Get.find<UserService>().isMember.isFalse) {
+          return Container();
+        }
         if (controller.isNoMore.isTrue) {
           return Container(
             alignment: Alignment.center,

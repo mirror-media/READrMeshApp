@@ -93,8 +93,9 @@ class LatestPage extends GetView<LatestPageController> {
             child: Obx(
               () {
                 if (Get.find<RecommendPublisherBlockController>()
-                    .recommendPublishers
-                    .isEmpty) {
+                        .recommendPublishers
+                        .isEmpty ||
+                    controller.showLatestNews.isEmpty) {
                   if (controller.showLatestNews.length >= 5) {
                     return Container(
                       color: Colors.white,
@@ -191,7 +192,10 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(
               height: 20,
             ),
-            RecommendFollowBlock(recommendPublisherBlockController),
+            RecommendFollowBlock(
+              recommendPublisherBlockController,
+              showTitleBar: false,
+            ),
           ],
         ),
       );
@@ -241,7 +245,10 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(
               height: 20,
             ),
-            RecommendFollowBlock(recommendPublisherBlockController),
+            RecommendFollowBlock(
+              recommendPublisherBlockController,
+              showTitleBar: false,
+            ),
           ],
         ),
       );

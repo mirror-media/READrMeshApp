@@ -7,40 +7,41 @@ import 'package:readr/pages/community/latestComment/latestCommentItem.dart';
 class LatestCommentsBlock extends GetView<LatestCommentBlockController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.latestCommentsNewsList.isEmpty) {
-      return Container();
-    }
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Container(
-        color: Colors.white,
-        child: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return const Text(
-                '最新留言',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: readrBlack87,
-                  fontWeight: FontWeight.w500,
-                ),
-              );
-            }
+    return Obx(
+      () {
+        if (controller.latestCommentsNewsList.isEmpty) {
+          return Container();
+        }
 
-            return LatestCommentItem(
-              controller.latestCommentsNewsList[index - 1],
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(
-            height: 20,
+        return Container(
+          color: Colors.white,
+          child: ListView.separated(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const Text(
+                  '最新留言',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: readrBlack87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+              }
+
+              return LatestCommentItem(
+                controller.latestCommentsNewsList[index - 1],
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 20,
+            ),
+            itemCount: controller.latestCommentsNewsList.length + 1,
           ),
-          itemCount: controller.latestCommentsNewsList.length + 1,
-        ),
-      ),
+        );
+      },
     );
   }
 }
