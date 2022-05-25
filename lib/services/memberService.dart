@@ -263,10 +263,13 @@ class MemberService implements MemberRepos {
       await Get.find<UserService>().fetchUserData();
       return Get.find<UserService>().currentUser;
     } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
-      int times = 2;
+      int times;
       if (tryTimes != null) {
-        times = tryTimes++;
+        times = tryTimes + 1;
+      } else {
+        times = 2;
       }
+      await Future.delayed(const Duration(milliseconds: 100));
       return await createMember(nickname, tryTimes: times);
     } else {
       return null;
