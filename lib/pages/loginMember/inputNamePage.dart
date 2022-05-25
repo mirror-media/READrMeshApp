@@ -2,38 +2,25 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/controller/login/inputNamePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/loginMember/chooseMemberPage.dart';
-import 'package:readr/pages/loginMember/choosePublisherPage.dart';
-import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 
-class InputNamePage extends StatefulWidget {
+class InputNamePage extends GetView<InputNamePageController> {
   final List<String> publisherTitleList;
   final bool isGoogle;
-  const InputNamePage(this.publisherTitleList, {this.isGoogle = false});
-  @override
-  State<InputNamePage> createState() => _InputNamePageState();
-}
+  InputNamePage(this.publisherTitleList, {this.isGoogle = false});
 
-class _InputNamePageState extends State<InputNamePage> {
-  late final TextEditingController _controller;
   final _formKey = GlobalKey<FormState>();
-  bool _isSending = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(
-        text: FirebaseAuth.instance.currentUser!.displayName);
-  }
 
   @override
   Widget build(BuildContext context) {
+    Get.put(InputNamePageController(
+      memberRepos: MemberService(),
+    ));
     return WillPopScope(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -56,67 +43,75 @@ class _InputNamePageState extends State<InputNamePage> {
               color: readrBlack,
             ),
             onPressed: () async {
-              await FirebaseAuth.instance.currentUser?.delete();
-              if (widget.isGoogle) {
-                await GoogleSignIn().disconnect();
+              if (controller.isCreating.isFalse) {
+                await FirebaseAuth.instance.currentUser?.delete();
+                if (isGoogle) {
+                  await GoogleSignIn().disconnect();
+                }
+                Navigator.of(context).pop();
               }
-              Navigator.of(context).pop();
             },
           ),
           actions: [
-            TextButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate() && !_isSending) {
-                  try {
-                    _isSending = true;
-                    await MemberService().createMember(_controller.text);
-                    final prefs = Get.find<SharedPreferencesService>().prefs;
-
-                    final String invitationCodeId =
-                        prefs.getString('invitationCodeId') ?? '';
-                    if (invitationCodeId.isNotEmpty) {
-                      await InvitationCodeService()
-                          .linkInvitationCode(invitationCodeId);
+            Obx(() {
+              if (controller.isCreating.isFalse) {
+                return TextButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      controller.createMember();
                     }
-
-                    final List<String> followingPublisherIds =
-                        prefs.getStringList('followingPublisherIds') ?? [];
-                    if (followingPublisherIds.isNotEmpty) {
-                      Get.off(() => const ChooseMemberPage(false));
-                    } else {
-                      Get.off(() => ChoosePublisherPage());
-                    }
-                  } catch (e) {
-                    Fluttertoast.showToast(
-                      msg: "發生錯誤，請稍後再試",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      fontSize: 16.0,
-                    );
-                  }
-                  _isSending = false;
-                }
-              },
-              child: const Text(
-                '完成註冊',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+                  },
+                  child: const Text(
+                    '完成註冊',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            }),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-          child: _buildBody(context),
-        ),
+        body: Obx(() {
+          if (controller.isCreating.isFalse) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+              child: _buildBody(context),
+            );
+          }
+
+          return Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SpinKitWanderingCubes(
+                  color: readrBlack,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    '建立帳號中',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
       onWillPop: () async {
+        if (controller.isCreating.isTrue) {
+          return false;
+        }
         await FirebaseAuth.instance.currentUser?.delete();
-        if (widget.isGoogle) {
+        if (isGoogle) {
           await GoogleSignIn().disconnect();
         }
         return true;
@@ -133,7 +128,7 @@ class _InputNamePageState extends State<InputNamePage> {
             keyboardType: TextInputType.name,
             maxLength: 20,
             autovalidateMode: AutovalidateMode.disabled,
-            controller: _controller,
+            controller: controller.textController,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return '請輸入暱稱。';
@@ -173,7 +168,7 @@ class _InputNamePageState extends State<InputNamePage> {
   }
 
   bool _validateNickname(String text) {
-    for (var title in widget.publisherTitleList) {
+    for (var title in publisherTitleList) {
       if (_equalsIgnoreCase(text, title)) {
         return false;
       }
