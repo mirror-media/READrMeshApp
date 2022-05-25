@@ -66,8 +66,8 @@ class BottomCardWidget extends StatelessWidget {
         child: DraggableScrollableActuator(
           child: DraggableScrollableSheet(
             snap: true,
-            initialChildSize: 0.125,
-            minChildSize: 0.125,
+            initialChildSize: 0.13,
+            minChildSize: 0.13,
             controller: _controller,
             builder: (context, scrollController) {
               return Column(
