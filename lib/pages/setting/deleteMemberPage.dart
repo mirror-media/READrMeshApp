@@ -144,19 +144,22 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
           height: 28,
         ),
         if (_isInitialized)
-          TextButton(
-            onPressed: () async {
-              _isSuccess = await _deleteMember();
-              setState(() {
-                _isInitialized = false;
-              });
-            },
-            child: const Text(
-              '確認刪除',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.red,
+          Align(
+            alignment: Alignment.center,
+            child: GestureDetector(
+              onTap: () async {
+                _isSuccess = await _deleteMember();
+                setState(() {
+                  _isInitialized = false;
+                });
+              },
+              child: const Text(
+                '確認刪除',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),
@@ -184,9 +187,11 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
         print(
             'The user must reauthenticate before this operation can be executed.');
       }
+      await FirebaseAuth.instance.signOut();
       return false;
     } catch (e) {
       print('Delete member failed: $e');
+      await FirebaseAuth.instance.signOut();
       return false;
     }
   }
