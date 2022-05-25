@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
@@ -81,8 +82,9 @@ class PickableItemController extends GetxController {
     } else {
       //update own personal file if exists
       if (Get.isRegistered<PersonalFilePageController>(
-          tag: 'OwnPersonalFile')) {
-        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
             .pickCount
             .value++;
       }
@@ -122,8 +124,9 @@ class PickableItemController extends GetxController {
       myPickCommentId.value = result['pickComment'].id;
       //update own personal file if exists
       if (Get.isRegistered<PersonalFilePageController>(
-          tag: 'OwnPersonalFile')) {
-        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
             .pickCount
             .value++;
       }
@@ -176,8 +179,9 @@ class PickableItemController extends GetxController {
       myPickCommentId.value = null;
       //update own personal file if exists
       if (Get.isRegistered<PersonalFilePageController>(
-          tag: 'OwnPersonalFile')) {
-        Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
             .pickCount
             .value--;
       }

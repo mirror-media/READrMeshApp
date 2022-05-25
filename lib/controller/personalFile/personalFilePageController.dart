@@ -10,7 +10,7 @@ import 'package:readr/services/personalFileService.dart';
 class PersonalFilePageController extends GetxController
     with GetTickerProviderStateMixin {
   final PersonalFileRepos personalFileRepos;
-  final Member viewMember;
+  Member viewMember;
   PersonalFilePageController({
     required this.personalFileRepos,
     required this.viewMember,

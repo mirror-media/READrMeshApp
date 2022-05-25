@@ -81,8 +81,10 @@ class RootPageController extends GetxController {
     }
 
     //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(tag: 'OwnPersonalFile')) {
-      Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+    if (Get.isRegistered<PersonalFilePageController>(
+        tag: Get.find<UserService>().currentUser.memberId)) {
+      Get.find<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)
           .fetchMemberData();
     }
 
@@ -102,8 +104,10 @@ class RootPageController extends GetxController {
     }
 
     //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(tag: 'OwnPersonalFile')) {
-      Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+    if (Get.isRegistered<PersonalFilePageController>(
+        tag: Get.find<UserService>().currentUser.memberId)) {
+      Get.find<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)
           .fetchMemberData();
     }
 

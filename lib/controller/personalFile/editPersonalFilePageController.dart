@@ -137,7 +137,8 @@ class EditPersonalFilePageController extends GetxController {
           saveError.value = true;
           isSaving.value = false;
         } else if (result) {
-          await Get.find<PersonalFilePageController>(tag: 'OwnPersonalFile')
+          await Get.find<PersonalFilePageController>(
+                  tag: Get.find<UserService>().currentUser.memberId)
               .fetchMemberData();
           Fluttertoast.showToast(
             msg: "更新完成",

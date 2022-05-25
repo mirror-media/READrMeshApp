@@ -23,19 +23,11 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
   final Member viewMember;
   final bool isFromBottomTab;
   late final String controllerTag;
-  late final bool isOwnPersonalFile;
   PersonalFilePage({
     required this.viewMember,
     this.isFromBottomTab = false,
   }) {
-    if (isFromBottomTab ||
-        viewMember.memberId == Get.find<UserService>().currentUser.memberId) {
-      controllerTag = 'OwnPersonalFile';
-      isOwnPersonalFile = true;
-    } else {
-      controllerTag = viewMember.memberId;
-      isOwnPersonalFile = false;
-    }
+    controllerTag = viewMember.memberId;
   }
 
   @override
@@ -50,7 +42,8 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           viewMember: viewMember,
         ),
         tag: controllerTag,
-        permanent: controllerTag == 'OwnPersonalFile',
+        permanent:
+            controllerTag == Get.find<UserService>().currentUser.memberId,
       );
     } else {
       controller.fetchMemberData();
@@ -228,13 +221,21 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             },
           ),
           const SizedBox(height: 12),
-          if (!isOwnPersonalFile)
-            FollowButton(
-              MemberFollowableItem(controller.viewMemberData.value),
-              expanded: true,
-              textSize: 16,
-            ),
-          if (isOwnPersonalFile) _editProfileButton(),
+          Obx(
+            () {
+              if (Get.find<UserService>().isMember.isTrue &&
+                  controller.viewMemberData.value.memberId ==
+                      Get.find<UserService>().currentUser.memberId) {
+                return _editProfileButton();
+              }
+
+              return FollowButton(
+                MemberFollowableItem(controller.viewMemberData.value),
+                expanded: true,
+                textSize: 16,
+              );
+            },
+          ),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
