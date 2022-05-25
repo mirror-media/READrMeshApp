@@ -203,37 +203,62 @@ class CommentItem extends GetView<CommentItemController> {
                         isEdited: controller.isEdited.value,
                       );
                     }),
-                    if (comment.member.memberId ==
-                            Get.find<UserService>().currentUser.memberId &&
-                        controller.isSending.isFalse) ...[
-                      Container(
-                        width: 2,
-                        height: 2,
-                        margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: readrBlack20,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await EditCommentMenu.showEditCommentMenu(
-                            context,
-                            controller.comment,
-                            pickableItemControllerTag,
+                    Obx(
+                      () {
+                        if (Get.find<UserService>().isMember.isFalse) {
+                          return Container();
+                        }
+
+                        if (comment.member.memberId ==
+                                Get.find<UserService>().currentUser.memberId &&
+                            controller.isSending.isFalse) {
+                          return Container(
+                            width: 2,
+                            height: 2,
+                            margin:
+                                const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                            alignment: Alignment.center,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: readrBlack20,
+                            ),
                           );
-                        },
-                        child: const Text(
-                          '編輯留言',
-                          softWrap: true,
-                          style: TextStyle(
-                            color: readrBlack50,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ]
+                        }
+
+                        return Container();
+                      },
+                    ),
+                    Obx(
+                      () {
+                        if (Get.find<UserService>().isMember.isFalse) {
+                          return Container();
+                        }
+
+                        if (comment.member.memberId ==
+                                Get.find<UserService>().currentUser.memberId &&
+                            controller.isSending.isFalse) {
+                          return GestureDetector(
+                            onTap: () async {
+                              await EditCommentMenu.showEditCommentMenu(
+                                context,
+                                controller.comment,
+                                pickableItemControllerTag,
+                              );
+                            },
+                            child: const Text(
+                              '編輯留言',
+                              softWrap: true,
+                              style: TextStyle(
+                                color: readrBlack50,
+                                fontSize: 12,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Container();
+                      },
+                    ),
                   ],
                 );
               },

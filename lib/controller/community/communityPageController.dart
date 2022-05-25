@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/latestCommentBlockController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/controller/rootPageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/communityService.dart';
@@ -19,6 +21,16 @@ class CommunityPageController extends GetxController {
   bool isError = false;
   dynamic error;
   final ScrollController scrollController = ScrollController();
+
+  @override
+  void onInit() {
+    ever<bool>(Get.find<UserService>().isMember, (callback) {
+      if (Get.find<RootPageController>().tabIndex.value == 0) {
+        initPage();
+      }
+    });
+    super.onInit();
+  }
 
   void initPage() async {
     isInitialized = false;

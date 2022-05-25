@@ -143,8 +143,6 @@ class PickTabContent extends GetView<PickTabController> {
                 ),
                 PickCommentItem(
                   comment: pick.pickComment!,
-                  isMyComment: Get.find<UserService>().currentUser.memberId ==
-                      viewMember.memberId,
                   pickControllerTag: pick.story!.controllerTag,
                 ),
               ],

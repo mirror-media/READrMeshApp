@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
+import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/latestService.dart';
@@ -31,6 +33,11 @@ class LatestPageController extends GetxController {
   void onInit() {
     showPaywall = prefs.getBool('showPaywall') ?? true;
     showFullScreenAd = prefs.getBool('showFullScreenAd') ?? true;
+    ever<bool>(Get.find<UserService>().isMember, (callback) {
+      if (Get.find<RootPageController>().tabIndex.value == 1) {
+        initPage();
+      }
+    });
     super.onInit();
   }
 

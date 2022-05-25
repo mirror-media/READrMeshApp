@@ -15,14 +15,12 @@ import 'package:validated/validated.dart' as validate;
 class PickCommentItem extends StatefulWidget {
   final Comment comment;
   final bool isExpanded;
-  final bool isMyComment;
   final String pickControllerTag;
   late final CommentItemController controller;
   PickCommentItem({
     required this.comment,
     required this.pickControllerTag,
     this.isExpanded = false,
-    this.isMyComment = false,
   }) {
     if (Get.isRegistered<CommentItemController>(tag: 'Comment${comment.id}')) {
       controller = Get.find<CommentItemController>(tag: 'Comment${comment.id}');
@@ -82,35 +80,53 @@ class _PickCommentItemState extends State<PickCommentItem> {
             isEdited: widget.controller.isEdited.value,
           ),
         ),
-        if (widget.isMyComment) ...[
-          Container(
-            width: 4,
-            height: 4,
-            margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: readrBlack20,
-            ),
-          ),
-          GestureDetector(
-            onTap: () async {
-              await EditCommentMenu.showEditCommentMenu(
-                context,
-                widget.controller.comment,
-                widget.pickControllerTag,
-                isFromPickTab: true,
+        Obx(
+          () {
+            if (Get.find<UserService>().isMember.isTrue &&
+                Get.find<UserService>().currentUser.memberId ==
+                    widget.comment.member.memberId) {
+              return Container(
+                width: 4,
+                height: 4,
+                margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: readrBlack20,
+                ),
               );
-            },
-            child: const Text(
-              '編輯留言',
-              style: TextStyle(
-                color: readrBlack50,
-                fontSize: 13,
-              ),
-            ),
-          ),
-        ],
+            }
+
+            return Container();
+          },
+        ),
+        Obx(
+          () {
+            if (Get.find<UserService>().isMember.isTrue &&
+                Get.find<UserService>().currentUser.memberId ==
+                    widget.comment.member.memberId) {
+              return GestureDetector(
+                onTap: () async {
+                  await EditCommentMenu.showEditCommentMenu(
+                    context,
+                    widget.controller.comment,
+                    widget.pickControllerTag,
+                    isFromPickTab: true,
+                  );
+                },
+                child: const Text(
+                  '編輯留言',
+                  style: TextStyle(
+                    color: readrBlack50,
+                    fontSize: 13,
+                  ),
+                ),
+              );
+            }
+
+            return Container();
+          },
+        ),
         const Spacer(),
         Obx(
           () => Text(
@@ -172,58 +188,70 @@ class _PickCommentItemState extends State<PickCommentItem> {
   }
 
   Widget _buildComment() {
-    return Obx(() {
-      List<String> contentChar =
-          widget.controller.commentContent.value.characters.toList();
-      return ExtendedText.rich(
-        TextSpan(
-          text: contentChar[0],
-          style: TextStyle(
+    return SizedBox(
+      width: double.maxFinite,
+      child: Obx(() {
+        List<String> contentChar =
+            widget.controller.commentContent.value.characters.toList();
+        return ExtendedText.rich(
+          TextSpan(
+            text: contentChar[0],
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color:
+                  validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
+            ),
+            children: [
+              for (int i = 1; i < contentChar.length; i++)
+                TextSpan(
+                  text: contentChar[i],
+                  style: TextStyle(
+                    color: validate.isEmoji(contentChar[i])
+                        ? readrBlack
+                        : readrBlack66,
+                  ),
+                )
+            ],
+          ),
+          strutStyle: const StrutStyle(
+            forceStrutHeight: true,
+            leading: 0.1,
+          ),
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
           ),
-          children: [
-            for (int i = 1; i < contentChar.length; i++)
-              TextSpan(
-                text: contentChar[i],
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: validate.isEmoji(contentChar[i])
-                      ? readrBlack
-                      : readrBlack66,
-                ),
-              )
-          ],
-        ),
-        textAlign: TextAlign.start,
-        maxLines: _isExpanded ? null : 3,
-        joinZeroWidthSpace: true,
-        overflowWidget: TextOverflowWidget(
-          position: TextOverflowPosition.end,
-          child: RichText(
-            text: const TextSpan(
-              text: '... ',
-              style: TextStyle(
-                color: Color.fromRGBO(0, 9, 40, 0.66),
+          textAlign: TextAlign.start,
+          maxLines: _isExpanded ? null : 3,
+          joinZeroWidthSpace: true,
+          overflowWidget: TextOverflowWidget(
+            position: TextOverflowPosition.end,
+            child: RichText(
+              strutStyle: const StrutStyle(
+                forceStrutHeight: true,
+                leading: 0.1,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
-              children: [
-                TextSpan(
-                  text: '顯示更多',
-                  style: TextStyle(
-                    color: readrBlack50,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              ],
+              text: const TextSpan(
+                text: '... ',
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                ),
+                children: [
+                  TextSpan(
+                    text: '顯示更多',
+                    style: TextStyle(
+                      color: readrBlack50,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }
