@@ -275,8 +275,9 @@ class CommunityService implements CommunityRepos {
       List<String> fetchedStoryIds = List<String>.from(followingPickedNews.map(
         (e) => e.id,
       ));
-      fetchedStoryIds.addAllIf(
-          alreadyFetchStoryIds != null, alreadyFetchStoryIds!);
+      if (alreadyFetchStoryIds != null) {
+        fetchedStoryIds.addAll(alreadyFetchStoryIds);
+      }
       followingPickedNews
           .addAll(await fetchMoreFollowingPickedNews(fetchedStoryIds));
     }
@@ -458,8 +459,9 @@ class CommunityService implements CommunityRepos {
       List<String> fetchedStoryIds = List<String>.from(latestCommentNews.map(
         (e) => e.id,
       ));
-      fetchedStoryIds.addAllIf(
-          alreadyFetchStoryIds != null, alreadyFetchStoryIds!);
+      if (alreadyFetchStoryIds != null) {
+        fetchedStoryIds.addAll(alreadyFetchStoryIds);
+      }
       latestCommentNews.addAll(await fetchLatestCommentNews(
         alreadyFetchStoryIds: fetchedStoryIds,
         needAmount: needAmount - latestCommentNews.length,
