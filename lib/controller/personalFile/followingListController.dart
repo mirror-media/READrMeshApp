@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -58,6 +59,11 @@ class FollowingListController extends GetxController {
       if (followingMemberCount < 10) {
         isNoMore.value = true;
       }
+
+      var personalFilePageController =
+          Get.find<PersonalFilePageController>(tag: viewMember.memberId);
+      personalFilePageController.followingCount.value =
+          followingPublisherList.length + followingMemberCount;
       update();
       return false;
     } catch (e) {
@@ -75,6 +81,10 @@ class FollowingListController extends GetxController {
       followingMemberList.addAll(result['followingList']);
       if (result['followingList'].length < 10) {
         isNoMore.value = true;
+      }
+
+      if (followingMemberList.length > followingMemberCount) {
+        followingMemberCount = followingMemberList.length;
       }
     } catch (e) {
       print(
