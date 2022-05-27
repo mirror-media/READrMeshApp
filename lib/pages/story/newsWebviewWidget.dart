@@ -95,6 +95,12 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                     inAppWerViewController.evaluateJavascript(
                         source:
                             "document.getElementsByClassName('latest-coverages')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('readr-header')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('readr-donate-link')[0].style.display = 'none';");
                   }
 
                   controller.webviewLoading.value = false;
