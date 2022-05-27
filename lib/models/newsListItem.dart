@@ -164,8 +164,10 @@ class NewsListItem {
         Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'News${json['id']}');
-      controller.myPickId.value = myPickId;
-      controller.myPickCommentId.value = myPickCommentId;
+      if (controller.isLoading.isFalse) {
+        controller.myPickId.value = myPickId;
+        controller.myPickCommentId.value = myPickCommentId;
+      }
       controller.pickCount.value = pickCount;
       controller.commentCount.value = commentCount;
       controller.pickedMembers.assignAll(allPickedMember);
