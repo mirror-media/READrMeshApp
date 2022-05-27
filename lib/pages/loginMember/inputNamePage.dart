@@ -44,10 +44,7 @@ class InputNamePage extends GetView<InputNamePageController> {
             ),
             onPressed: () async {
               if (controller.isCreating.isFalse) {
-                await FirebaseAuth.instance.currentUser?.delete();
-                if (isGoogle) {
-                  await GoogleSignIn().disconnect();
-                }
+                await _cancelRegistration();
                 Navigator.of(context).pop();
               }
             },
@@ -110,13 +107,17 @@ class InputNamePage extends GetView<InputNamePageController> {
         if (controller.isCreating.isTrue) {
           return false;
         }
-        await FirebaseAuth.instance.currentUser?.delete();
-        if (isGoogle) {
-          await GoogleSignIn().disconnect();
-        }
+        await _cancelRegistration();
         return true;
       },
     );
+  }
+
+  Future<void> _cancelRegistration() async {
+    await FirebaseAuth.instance.currentUser?.delete();
+    if (isGoogle && GetPlatform.isAndroid) {
+      GoogleSignIn().disconnect();
+    }
   }
 
   Widget _buildBody(BuildContext context) {
