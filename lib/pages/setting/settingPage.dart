@@ -9,6 +9,7 @@ import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
+import 'package:readr/pages/setting/contactUsPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/initialSettingPage.dart';
 import 'package:readr/pages/setting/newsCoverageSettingPage.dart';
@@ -137,6 +138,20 @@ class SettingPage extends GetView<SettingPageController> {
             text: '預設顯示頁面',
             onPressed: () {
               Get.to(() => InitialSettingPage());
+            },
+          ),
+          const Divider(
+            color: readrBlack10,
+            height: 1,
+          ),
+          _settingButton(
+            text: '聯絡我們',
+            onPressed: () {
+              Get.to(() => ContactUsPage(
+                    appVersion: controller.versionAndBuildNumber.value,
+                    platform: controller.platform,
+                    device: controller.device,
+                  ));
             },
           ),
           const Divider(
