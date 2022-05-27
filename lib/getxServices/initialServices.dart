@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/firebaseAnalyticsService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 
@@ -27,6 +28,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   Get.put(EnvironmentService(buildFlavor));
+  Get.put(FirebaseAnalyticsService());
   await Get.putAsync(() => SharedPreferencesService().init());
   await Get.putAsync(() => DynamicLinkService().initDynamicLinks());
   await Get.putAsync(() => FirebaseMessagingService().init());
