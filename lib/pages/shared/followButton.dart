@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/followableItemController.dart';
+import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -48,7 +50,21 @@ class FollowButton extends GetView<FollowableItemController> {
               fullscreenDialog: true,
             );
           } else {
-            controller.isFollowed.toggle();
+            if (await Get.find<InternetCheckService>()
+                .meshCheckInstance
+                .hasConnection) {
+              controller.isFollowed.toggle();
+            } else {
+              Fluttertoast.showToast(
+                msg: "伺服器連接失敗 請稍後再試",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.grey,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }
           }
         },
         style: OutlinedButton.styleFrom(

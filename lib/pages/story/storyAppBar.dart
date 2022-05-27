@@ -2,8 +2,10 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
+import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -45,12 +47,24 @@ class StoryAppBar extends GetView<StoryPageController> {
                   ),
                   tooltip: controller.isBookmarked.value ? '移出書籤' : '加入書籤',
                   onPressed: () async {
-                    if (Get.find<UserService>().isMember.isTrue) {
-                      controller.isBookmarked.toggle();
-                    } else {
+                    if (Get.find<UserService>().isMember.isFalse) {
                       Get.to(
                         () => const LoginPage(),
                         fullscreenDialog: true,
+                      );
+                    } else if (await Get.find<InternetCheckService>()
+                        .meshCheckInstance
+                        .hasConnection) {
+                      controller.isBookmarked.toggle();
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "伺服器連接失敗 請稍後再試",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
                       );
                     }
                   },

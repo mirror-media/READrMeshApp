@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -36,89 +38,109 @@ class PickButton extends StatelessWidget {
     final controller = Get.find<PickableItemController>(tag: contorllerTag);
     return Obx(
       () => OutlinedButton(
-        onPressed: controller.isLoading.value
-            ? null
-            : () async {
-                // check whether is login
-                if (Get.find<UserService>().isMember.isTrue) {
-                  if (controller.isPicked.isFalse) {
-                    var result = await PickBottomSheet.showPickBottomSheet(
-                      context: context,
-                    );
+        onPressed: () async {
+          if (Get.find<UserService>().isMember.isFalse) {
+            Get.to(
+              () => const LoginPage(),
+              fullscreenDialog: true,
+            );
+          } else if (controller.isLoading.isFalse) {
+            if (controller.isPicked.isFalse) {
+              var result = await PickBottomSheet.showPickBottomSheet(
+                context: context,
+              );
 
-                    if (result is String) {
-                      controller.addPickAndComment(result);
-                    } else if (result is bool && result) {
-                      controller.addPick();
-                    }
-                  } else {
-                    bool? result = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => PlatformAlertDialog(
-                        title: const Text(
-                          '確認移除精選？',
-                        ),
-                        content: controller.myPickCommentId.value != null
-                            ? const Text(
-                                '移除精選文章，將會一併移除您的留言',
-                              )
-                            : null,
-                        actions: [
-                          PlatformDialogAction(
-                            child: const Text(
-                              '移除',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            onPressed: () => Navigator.pop<bool>(context, true),
-                          ),
-                          PlatformDialogAction(
-                            child: const Text(
-                              '取消',
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                            onPressed: () =>
-                                Navigator.pop<bool>(context, false),
-                          )
-                        ],
-                        material: (context, target) => MaterialAlertDialogData(
-                          titleTextStyle: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                          contentTextStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color.fromRGBO(109, 120, 133, 1),
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12.0),
-                            ),
-                          ),
-                        ),
+              if (result is String) {
+                controller.addPickAndComment(result);
+              } else if (result is bool && result) {
+                controller.addPick();
+              }
+            } else {
+              bool? result = await showDialog<bool>(
+                context: context,
+                builder: (context) => PlatformAlertDialog(
+                  title: const Text(
+                    '確認移除精選？',
+                  ),
+                  content: controller.myPickCommentId.value != null
+                      ? const Text(
+                          '移除精選文章，將會一併移除您的留言',
+                        )
+                      : null,
+                  actions: [
+                    PlatformDialogAction(
+                      child: const Text(
+                        '移除',
+                        style: TextStyle(color: Colors.red),
                       ),
-                    );
-                    if (result != null && result) {
-                      String pickId = controller.myPickId.value!;
-                      controller.deletePick();
-                      if (isInMyPersonalFile) {
-                        await Future.delayed(const Duration(milliseconds: 50));
-                        Get.find<PickTabController>(
-                                tag: Get.find<UserService>()
-                                    .currentUser
-                                    .memberId)
-                            .unPick(pickId);
-                      }
-                    }
-                  }
-                } else {
-                  Get.to(
-                    () => const LoginPage(),
-                    fullscreenDialog: true,
-                  );
+                      onPressed: () async {
+                        if (await Get.find<InternetCheckService>()
+                            .meshCheckInstance
+                            .hasConnection) {
+                          Navigator.pop<bool>(context, true);
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "伺服器連接失敗 請稍後再試",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      },
+                    ),
+                    PlatformDialogAction(
+                      child: const Text(
+                        '取消',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onPressed: () => Navigator.pop<bool>(context, false),
+                    )
+                  ],
+                  material: (context, target) => MaterialAlertDialogData(
+                    titleTextStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                    contentTextStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(109, 120, 133, 1),
+                    ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12.0),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+              if (result != null && result) {
+                String pickId = controller.myPickId.value!;
+                controller.deletePick();
+                if (isInMyPersonalFile) {
+                  await Future.delayed(const Duration(milliseconds: 50));
+                  Get.find<PickTabController>(
+                          tag: Get.find<UserService>().currentUser.memberId)
+                      .unPick(pickId);
                 }
-              },
+              }
+            }
+          } else if (controller.isLoading.isTrue) {
+            Fluttertoast.showToast(
+              msg: "更新伺服器中 請稍候",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          }
+        },
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: readrBlack87, width: 1),
           backgroundColor:
