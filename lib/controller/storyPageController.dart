@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:readr/controller/personalFile/bookmarkTabController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -96,6 +97,8 @@ class StoryPageController extends GetxController {
       PickToast.showBookmarkToast(_bookmarkId != null, true);
       if (_bookmarkId == null) {
         isBookmarked(false);
+      } else if (Get.isRegistered<BookmarkTabController>()) {
+        Get.find<BookmarkTabController>().fetchBookmark();
       }
     } else if (isBookmarked.isFalse && _bookmarkId != null) {
       bool isDelete = await pickRepos.deletePick(_bookmarkId!);
@@ -103,6 +106,11 @@ class StoryPageController extends GetxController {
       if (!isDelete) {
         isBookmarked(true);
       } else {
+        if (Get.isRegistered<BookmarkTabController>()) {
+          Get.find<BookmarkTabController>()
+              .bookmarkList
+              .removeWhere((element) => element.id == _bookmarkId);
+        }
         _bookmarkId = null;
       }
     }
