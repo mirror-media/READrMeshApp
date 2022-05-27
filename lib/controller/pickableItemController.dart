@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
@@ -85,8 +86,15 @@ class PickableItemController extends GetxController {
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<PersonalFilePageController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .pickCount
-            .value++;
+            .fetchMemberData();
+      }
+
+      //update own personal file pick tab if exists
+      if (Get.isRegistered<PickTabController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PickTabController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .fetchPickList();
       }
     }
 
@@ -127,8 +135,15 @@ class PickableItemController extends GetxController {
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<PersonalFilePageController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .pickCount
-            .value++;
+            .fetchMemberData();
+      }
+
+      //update own personal file pick tab if exists
+      if (Get.isRegistered<PickTabController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PickTabController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .fetchPickList();
       }
     } else {
       pickCount.value--;
@@ -182,8 +197,15 @@ class PickableItemController extends GetxController {
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<PersonalFilePageController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .pickCount
-            .value--;
+            .fetchMemberData();
+      }
+
+      //update own personal file pick tab if exists
+      if (Get.isRegistered<PickTabController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PickTabController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .fetchPickList();
       }
     } else {
       pickCount.value++;
