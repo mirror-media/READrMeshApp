@@ -6,4 +6,5 @@ abstract class BaseConfig {
   String get readrPublisherId;
   String get appHelperEmail;
   String get appHelperPassword;
+  String get meshConnectCheckAddress;
 }
