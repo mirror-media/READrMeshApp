@@ -1,6 +1,8 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
@@ -14,6 +16,8 @@ import 'package:readr/getxServices/dynamicLinkService.dart';
 Future<void> appInitial(BuildFlavor buildFlavor) async {
   print('App starting ...');
   await Firebase.initializeApp();
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   if (GetPlatform.isIOS) {
     await AppTrackingTransparency.requestTrackingAuthorization();
   }
