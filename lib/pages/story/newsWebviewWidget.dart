@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
@@ -62,6 +63,40 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                   }
                 },
                 onLoadStop: (inAppWerViewController, uri) {
+                  if (controller.newsListItem.source.id ==
+                      Get.find<EnvironmentService>().config.readrPublisherId) {
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('header')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('footer')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('footer')[1].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('frame__donate')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('frame__tag-list-wrapper')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('news-letter')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('frame__related-list-wrapper')[0].style.display = 'none';");
+                    inAppWerViewController.evaluateJavascript(
+                        source:
+                            "document.getElementsByClassName('latest-coverages')[0].style.display = 'none';");
+                  }
+
                   controller.webviewLoading.value = false;
                 },
               ),
