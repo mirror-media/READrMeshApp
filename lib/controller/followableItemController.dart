@@ -11,6 +11,7 @@ class FollowableItemController extends GetxController {
 
   final isFollowed = false.obs;
   final _isSuccess = false.obs;
+  bool _isError = false;
 
   @override
   void onInit() {
@@ -19,10 +20,14 @@ class FollowableItemController extends GetxController {
     debounce<bool>(
       isFollowed,
       (callback) {
-        if (callback) {
-          addFollow();
+        if (!_isError) {
+          if (callback) {
+            addFollow();
+          } else {
+            removeFollow();
+          }
         } else {
-          removeFollow();
+          _isError = false;
         }
       },
       time: const Duration(milliseconds: 500),
@@ -67,8 +72,9 @@ class FollowableItemController extends GetxController {
     bool result = await item.addFollow();
     if (!result) {
       isFollowed(false);
+      _isError = true;
     } else {
-      _isSuccess.value = true;
+      _isSuccess(true);
     }
   }
 
@@ -76,8 +82,9 @@ class FollowableItemController extends GetxController {
     bool result = await item.removeFollow();
     if (!result) {
       isFollowed(true);
+      _isError = true;
     } else {
-      _isSuccess.value = true;
+      _isSuccess(true);
     }
   }
 
