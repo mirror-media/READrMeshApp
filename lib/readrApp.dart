@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/firebaseAnalyticsService.dart';
 import 'package:readr/helpers/initControllerBinding.dart';
 import 'package:readr/pages/rootPage.dart';
 
 class ReadrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Get.find<FirebaseAnalyticsService>().logAppOpen();
     return GetMaterialApp(
       title: 'READr Mesh',
       theme: ThemeData(
