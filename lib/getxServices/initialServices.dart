@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
+import 'package:readr/getxServices/internetCheckService.dart';
 
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -22,9 +23,10 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   Get.put(EnvironmentService(buildFlavor));
-  await Get.putAsync(() => FirebaseMessagingService().init());
   await Get.putAsync(() => SharedPreferencesService().init());
   await Get.putAsync(() => DynamicLinkService().initDynamicLinks());
+  await Get.putAsync(() => FirebaseMessagingService().init());
+  await Get.putAsync(() => InternetCheckService().init());
   await Get.putAsync(() => UserService().init());
 
   print('All services started...');
