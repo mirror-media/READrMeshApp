@@ -100,7 +100,7 @@ class LoginPage extends GetView<LoginPageController> {
                         '登入中',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.black,
+                          color: readrBlack,
                         ),
                       ),
                     ),

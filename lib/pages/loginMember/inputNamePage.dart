@@ -94,7 +94,7 @@ class InputNamePage extends GetView<InputNamePageController> {
                     '建立帳號中',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.black,
+                      color: readrBlack,
                     ),
                   ),
                 ),
