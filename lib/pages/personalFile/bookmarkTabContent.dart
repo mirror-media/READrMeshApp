@@ -21,11 +21,15 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
         }
 
         if (!controller.isLoading) {
-          if (controller.bookmarkList.isNotEmpty) {
-            return _buildContent();
-          } else {
-            return _emptyWidget();
-          }
+          return Obx(
+            () {
+              if (controller.bookmarkList.isNotEmpty) {
+                return _buildContent();
+              } else {
+                return _emptyWidget();
+              }
+            },
+          );
         }
 
         return const Center(
