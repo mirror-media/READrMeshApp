@@ -31,8 +31,4 @@ class InternetCheckService extends GetxService {
     );
     return this;
   }
-
-  Future<bool> checkMeshConnect() async {
-    return await meshCheckInstance.hasConnection;
-  }
 }
