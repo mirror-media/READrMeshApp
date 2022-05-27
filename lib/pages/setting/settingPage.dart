@@ -13,11 +13,12 @@ import 'package:readr/pages/setting/contactUsPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/initialSettingPage.dart';
 import 'package:readr/pages/setting/newsCoverageSettingPage.dart';
+import 'package:readr/services/memberService.dart';
 
 class SettingPage extends GetView<SettingPageController> {
   @override
   Widget build(BuildContext context) {
-    Get.put(SettingPageController());
+    Get.put(SettingPageController(memberRepos: MemberService()));
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

@@ -1,23 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/settingPageController.dart';
+import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/rootPage.dart';
 
-import 'package:readr/services/memberService.dart';
-
-class DeleteMemberPage extends StatefulWidget {
-  @override
-  State<DeleteMemberPage> createState() => _DeleteMemberPageState();
-}
-
-class _DeleteMemberPageState extends State<DeleteMemberPage> {
-  bool _isInitialized = true;
-  bool _isSuccess = false;
+class DeleteMemberPage extends GetView<SettingPageController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -37,21 +28,48 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
               fontWeight: FontWeight.w400,
             ),
           ),
-          leading: _isInitialized
-              ? IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: readrBlack,
+          leading: GetBuilder<SettingPageController>(builder: (controller) {
+            if (controller.isInitial) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: readrBlack,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              );
+            }
+            return Container();
+          }),
+        ),
+        body: Obx(() {
+          if (controller.isDeleting.isFalse) {
+            return _buildContent();
+          }
+
+          return Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SpinKitWanderingCubes(
+                  color: readrBlack,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    '刪除帳號中',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: readrBlack,
+                    ),
                   ),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              : null,
-        ),
-        body: SafeArea(
-          child: _buildContent(),
-        ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
-      onWillPop: () async => _isInitialized,
+      onWillPop: () async => controller.isInitial,
     );
   }
 
@@ -62,33 +80,30 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
     } else {
       email = '${Get.find<UserService>().currentUser.email} ';
     }
-    String title = '真的要刪除帳號嗎？';
-    String discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
-    String buttonText = '那我再想想';
-    if (!_isInitialized && _isSuccess) {
-      title = '刪除帳號成功';
-      discription = '謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)';
-      buttonText = '回首頁';
-    } else if (!_isInitialized && !_isSuccess) {
-      title = '喔不，出錯了...';
-      discription = '刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@gmail.com 由專人為您服務。';
-      buttonText = '回首頁';
-    }
+
     return ListView(
       padding: const EdgeInsets.only(top: 48, left: 40, right: 40),
-      physics: MediaQuery.of(context).orientation == Orientation.portrait
-          ? const NeverScrollableScrollPhysics()
-          : null,
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         Container(
           alignment: Alignment.center,
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: readrBlack87,
-            ),
+          child: GetBuilder<SettingPageController>(
+            builder: (controller) {
+              String title = '真的要刪除帳號嗎？';
+              if (!controller.isInitial && controller.deleteSuccess) {
+                title = '刪除帳號成功';
+              } else if (!controller.isInitial && !controller.deleteSuccess) {
+                title = '喔不，出錯了...';
+              }
+              return Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: readrBlack87,
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(
@@ -96,15 +111,25 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
         ),
         Container(
           alignment: Alignment.center,
-          child: Text(
-            discription,
-            softWrap: true,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Color.fromRGBO(0, 9, 40, 0.66),
-            ),
+          child: GetBuilder<SettingPageController>(
+            builder: (controller) {
+              String discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
+              if (!controller.isInitial && controller.deleteSuccess) {
+                discription = '謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)';
+              } else if (!controller.isInitial && !controller.deleteSuccess) {
+                discription = '刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@readr.tw 由專人為您服務。';
+              }
+              return Text(
+                discription,
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(
@@ -114,85 +139,79 @@ class _DeleteMemberPageState extends State<DeleteMemberPage> {
           height: 48,
           margin: const EdgeInsets.symmetric(horizontal: 24),
           alignment: Alignment.center,
-          child: OutlinedButton(
-            onPressed: () async {
-              if (!_isInitialized) {
-                await Get.find<UserService>().fetchUserData();
-                Get.offAll(RootPage());
-              } else {
-                Get.back();
+          child: GetBuilder<SettingPageController>(
+            builder: (controller) {
+              String buttonText = '那我再想想';
+              if (!controller.isInitial) {
+                buttonText = '回首頁';
               }
+              return OutlinedButton(
+                onPressed: () async {
+                  if (!controller.isInitial) {
+                    await Get.find<UserService>().fetchUserData();
+                    Get.offAll(() => RootPage());
+                  } else {
+                    Get.back();
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
+                  side: const BorderSide(
+                    color: readrBlack,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  buttonText,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: readrBlack,
+                  ),
+                ),
+              );
             },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
-              side: const BorderSide(
-                color: readrBlack,
-                width: 1,
-              ),
-            ),
-            child: Text(
-              buttonText,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: readrBlack,
-              ),
-            ),
           ),
         ),
         const SizedBox(
           height: 28,
         ),
-        if (_isInitialized)
-          Align(
-            alignment: Alignment.center,
-            child: GestureDetector(
-              onTap: () async {
-                _isSuccess = await _deleteMember();
-                setState(() {
-                  _isInitialized = false;
-                });
-              },
-              child: const Text(
-                '確認刪除',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.red,
+        GetBuilder<SettingPageController>(builder: (controller) {
+          if (controller.isInitial) {
+            return Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: () async {
+                  if (await Get.find<InternetCheckService>()
+                      .meshCheckInstance
+                      .hasConnection) {
+                    controller.deleteMember();
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "伺服器連接失敗 請稍後再試",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  }
+                },
+                child: const Text(
+                  '確認刪除',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.red,
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }
+          return Container();
+        }),
       ],
     );
-  }
-
-  Future<bool> _deleteMember() async {
-    try {
-      if (Get.find<SettingPageController>().loginType.value == 'google') {
-        GoogleSignIn googleSignIn = GoogleSignIn();
-        await googleSignIn.disconnect();
-      }
-      await FirebaseAuth.instance.currentUser!.delete();
-      await MemberService().deleteMember();
-      if (Get.isRegistered<PersonalFilePageController>(
-          tag: Get.find<UserService>().currentUser.memberId)) {
-        Get.delete<PersonalFilePageController>(
-            tag: Get.find<UserService>().currentUser.memberId, force: true);
-      }
-
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'requires-recent-login') {
-        print(
-            'The user must reauthenticate before this operation can be executed.');
-      }
-      await FirebaseAuth.instance.signOut();
-      return false;
-    } catch (e) {
-      print('Delete member failed: $e');
-      await FirebaseAuth.instance.signOut();
-      return false;
-    }
   }
 }

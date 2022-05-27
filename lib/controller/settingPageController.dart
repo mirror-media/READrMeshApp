@@ -1,10 +1,16 @@
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/services/memberService.dart';
 
 class SettingPageController extends GetxController {
-  SettingPageController();
+  final MemberRepos memberRepos;
+  SettingPageController({required this.memberRepos});
 
   final versionAndBuildNumber = ''.obs;
   final loginType = ''.obs;
@@ -18,6 +24,11 @@ class SettingPageController extends GetxController {
   //information for contactUsPage
   late final String platform;
   late final String device;
+
+  //for deleteMemberPage
+  final isDeleting = false.obs;
+  bool deleteSuccess = false;
+  bool isInitial = true;
 
   @override
   void onInit() {
@@ -101,6 +112,46 @@ class SettingPageController extends GetxController {
       duration = 168;
     } else {
       duration = 24;
+    }
+  }
+
+  void deleteMember() async {
+    isDeleting.value = true;
+    isInitial = false;
+    update();
+
+    try {
+      await memberRepos.deleteMember().then((value) => deleteSuccess = value);
+      if (deleteSuccess) {
+        await FirebaseAuth.instance.currentUser!.delete();
+        if (Get.isRegistered<PersonalFilePageController>(
+            tag: Get.find<UserService>().currentUser.memberId)) {
+          Get.delete<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId, force: true);
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed.');
+      }
+      await FirebaseAuth.instance.signOut();
+      deleteSuccess = false;
+    } catch (e) {
+      print('Delete member failed: $e');
+      await FirebaseAuth.instance.signOut();
+      deleteSuccess = false;
+    }
+    update();
+    isDeleting.value = false;
+
+    if (Get.find<SettingPageController>().loginType.value == 'google' &&
+        GetPlatform.isAndroid) {
+      try {
+        GoogleSignIn().disconnect();
+      } catch (e) {
+        print('Disconnect goolge failed: $e');
+      }
     }
   }
 }
