@@ -9,25 +9,15 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/followButton.dart';
 
-class MemberListItemWidget extends StatefulWidget {
+class MemberListItemWidget extends StatelessWidget {
   final Member viewMember;
   const MemberListItemWidget({required this.viewMember});
-
-  @override
-  State<MemberListItemWidget> createState() => _MemberListItemWidgetState();
-}
-
-class _MemberListItemWidgetState extends State<MemberListItemWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ProfilePhotoWidget(widget.viewMember, 22),
+        ProfilePhotoWidget(viewMember, 22),
         const SizedBox(
           width: 8,
         ),
@@ -36,7 +26,7 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.viewMember.customId,
+                viewMember.customId,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -44,7 +34,7 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
                 ),
               ),
               ExtendedText(
-                widget.viewMember.nickname,
+                viewMember.nickname,
                 maxLines: 1,
                 joinZeroWidthSpace: true,
                 overflow: TextOverflow.ellipsis,
@@ -60,9 +50,8 @@ class _MemberListItemWidgetState extends State<MemberListItemWidget> {
         const SizedBox(
           width: 8,
         ),
-        if (!(widget.viewMember.memberId ==
-            Get.find<UserService>().currentUser.memberId))
-          FollowButton(MemberFollowableItem(widget.viewMember)),
+        if (viewMember.memberId != Get.find<UserService>().currentUser.memberId)
+          FollowButton(MemberFollowableItem(viewMember)),
       ],
     );
   }
