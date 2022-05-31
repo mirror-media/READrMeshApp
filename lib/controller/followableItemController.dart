@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/controller/personalFile/followerListController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
@@ -22,6 +24,7 @@ class FollowableItemController extends GetxController {
       (callback) {
         if (!_isError) {
           if (callback) {
+            _updateRecommendBlock();
             addFollow();
           } else {
             removeFollow();
@@ -30,7 +33,7 @@ class FollowableItemController extends GetxController {
           _isError = false;
         }
       },
-      time: const Duration(milliseconds: 500),
+      time: const Duration(milliseconds: 300),
     );
     debounce<bool>(
       _isSuccess,
@@ -99,6 +102,20 @@ class FollowableItemController extends GetxController {
     if (item.type == FollowableItemType.member &&
         Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
       Get.find<PersonalFilePageController>(tag: item.id).fetchMemberData();
+    }
+  }
+
+  void _updateRecommendBlock() {
+    if (item.type == FollowableItemType.member &&
+        Get.isRegistered<RecommendMemberBlockController>()) {
+      Get.find<RecommendMemberBlockController>()
+          .recommendMembers
+          .removeWhere((element) => element.id == item.id);
+    } else if (item.type == FollowableItemType.publisher &&
+        Get.isRegistered<RecommendPublisherBlockController>()) {
+      Get.find<RecommendPublisherBlockController>()
+          .recommendPublishers
+          .removeWhere((element) => element.id == item.id);
     }
   }
 }
