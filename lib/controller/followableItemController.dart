@@ -12,7 +12,6 @@ class FollowableItemController extends GetxController {
   FollowableItemController(this.item);
 
   final isFollowed = false.obs;
-  final _isSuccess = false.obs;
   bool _isError = false;
 
   @override
@@ -34,21 +33,6 @@ class FollowableItemController extends GetxController {
         }
       },
       time: const Duration(milliseconds: 300),
-    );
-    debounce<bool>(
-      _isSuccess,
-      (callback) {
-        if (callback) {
-          _updateTargetPersonalFile();
-          if (item.type == FollowableItemType.member) {
-            Get.find<RootPageController>().followingMemberUpdate.value = true;
-          } else {
-            Get.find<RootPageController>().followingPublisherUpdate.value =
-                true;
-          }
-        }
-      },
-      time: const Duration(milliseconds: 500),
     );
     ever<bool>(
       isFollowed,
@@ -77,7 +61,7 @@ class FollowableItemController extends GetxController {
       isFollowed(false);
       _isError = true;
     } else {
-      _isSuccess(true);
+      _updatePages();
     }
   }
 
@@ -87,7 +71,16 @@ class FollowableItemController extends GetxController {
       isFollowed(true);
       _isError = true;
     } else {
-      _isSuccess(true);
+      _updatePages();
+    }
+  }
+
+  void _updatePages() {
+    _updateTargetPersonalFile();
+    if (item.type == FollowableItemType.member) {
+      Get.find<RootPageController>().followingMemberUpdate.value = true;
+    } else {
+      Get.find<RootPageController>().followingPublisherUpdate.value = true;
     }
   }
 
