@@ -1,9 +1,17 @@
+import 'package:hive/hive.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/member.dart';
 
+part 'publisher.g.dart';
+
+@HiveType(typeId: 1)
 class Publisher {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
+
   final String? officialSite;
   final String? summary;
   final String? logoUrl;
