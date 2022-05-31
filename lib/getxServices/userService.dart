@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -17,6 +18,13 @@ class UserService extends GetxService {
   late Member currentUser;
   bool hasInvitationCode = false;
 
+  Duration get _timeout {
+    if (Get.find<EnvironmentService>().flavor == BuildFlavor.development) {
+      return const Duration(minutes: 3);
+    }
+    return const Duration(minutes: 1);
+  }
+
   Future<UserService> init() async {
     await fetchUserData();
     return this;
@@ -31,7 +39,7 @@ class UserService extends GetxService {
         print('Fetch user data failed: $error');
         return Get.find<HiveService>().localMember;
       }).timeout(
-        const Duration(minutes: 1),
+        _timeout,
         onTimeout: () {
           print('Fetch user data timeout');
           return Get.find<HiveService>().localMember;
@@ -46,7 +54,7 @@ class UserService extends GetxService {
         print('Fetch visitor data failed: $error');
         return Get.find<HiveService>().localMember;
       }).timeout(
-        const Duration(minutes: 1),
+        _timeout,
         onTimeout: () {
           print('Fetch user data timeout');
           return Get.find<HiveService>().localMember;
