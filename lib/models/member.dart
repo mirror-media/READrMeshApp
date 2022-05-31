@@ -1,23 +1,43 @@
+import 'package:hive/hive.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/publisher.dart';
 
+part 'member.g.dart';
+
+@HiveType(typeId: 0)
 class Member {
   final String? email;
   final String? firebaseId;
+
+  @HiveField(0)
   final String memberId;
+
+  @HiveField(1)
   String nickname;
+
   final String? name;
+
+  @HiveField(2)
   String? avatar;
+
   int? followerCount;
   int? pickCount;
   int? commentCount;
   List<Member>? follower;
+
+  @HiveField(3)
   List<Publisher> followingPublisher;
+
+  @HiveField(4)
   List<Member> following;
+
   final bool verified;
   String? intro;
+
+  @HiveField(5)
   String customId;
+
   int? followingCount;
   int? followingPublisherCount;
   int? bookmarkCount;
