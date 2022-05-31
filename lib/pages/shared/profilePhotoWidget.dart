@@ -41,6 +41,7 @@ class ProfilePhotoWidget extends StatelessWidget {
           ),
         ),
         child: CircleAvatar(
+          key: UniqueKey(),
           foregroundImage: NetworkImage(member.avatar!),
           backgroundColor: randomColor,
           radius: radius,
@@ -57,6 +58,7 @@ class ProfilePhotoWidget extends StatelessWidget {
         ),
       ),
       child: CircleAvatar(
+        key: UniqueKey(),
         backgroundColor: randomColor,
         radius: radius,
         child: child,
