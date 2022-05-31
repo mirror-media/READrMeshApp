@@ -4,7 +4,6 @@ import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/latestCommentBlockController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
-import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -16,32 +15,12 @@ class RootPageController extends GetxController {
   String minAppVersion = '0.0.1';
   bool isInitialized = false;
   var tabIndex = 0.obs;
-  final followingMemberUpdate = false.obs;
-  final followingPublisherUpdate = false.obs;
 
   final prefs = Get.find<SharedPreferencesService>().prefs;
 
   @override
   void onInit() {
     _initRootPage();
-    debounce<bool>(
-      followingMemberUpdate,
-      (callback) {
-        if (callback) {
-          _updateMemberRelatedPages();
-        }
-      },
-      time: const Duration(seconds: 1),
-    );
-    debounce<bool>(
-      followingPublisherUpdate,
-      (callback) {
-        if (callback) {
-          _updatePublisherRelatedPages();
-        }
-      },
-      time: const Duration(seconds: 1),
-    );
     super.onInit();
   }
 
@@ -73,13 +52,7 @@ class RootPageController extends GetxController {
     }
   }
 
-  void _updateMemberRelatedPages() {
-    //update own following list if isRegistered
-    String ownId = Get.find<UserService>().currentUser.memberId;
-    if (Get.isRegistered<FollowingListController>(tag: ownId)) {
-      Get.find<FollowingListController>(tag: ownId).fetchFollowingList();
-    }
-
+  void updateMemberRelatedPages() {
     //update own personal file if exists
     if (Get.isRegistered<PersonalFilePageController>(
         tag: Get.find<UserService>().currentUser.memberId)) {
@@ -92,17 +65,9 @@ class RootPageController extends GetxController {
     if (tabIndex.value == 0) {
       Get.find<CommunityPageController>().updateCommunityPage();
     }
-
-    followingMemberUpdate.value = false;
   }
 
-  void _updatePublisherRelatedPages() {
-    //update own following list if isRegistered
-    String ownId = Get.find<UserService>().currentUser.memberId;
-    if (Get.isRegistered<FollowingListController>(tag: ownId)) {
-      Get.find<FollowingListController>(tag: ownId).fetchFollowingList();
-    }
-
+  void updatePublisherRelatedPages() {
     //update own personal file if exists
     if (Get.isRegistered<PersonalFilePageController>(
         tag: Get.find<UserService>().currentUser.memberId)) {
@@ -118,7 +83,5 @@ class RootPageController extends GetxController {
       Get.find<LatestCommentBlockController>().fetchLatestCommentNews();
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
     }
-
-    followingPublisherUpdate.value = false;
   }
 }

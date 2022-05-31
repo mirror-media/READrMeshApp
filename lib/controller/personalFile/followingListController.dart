@@ -17,8 +17,8 @@ class FollowingListController extends GetxController {
 
   final isLoadingMore = false.obs;
   final followingMemberList = <Member>[].obs;
-  int followingMemberCount = 0;
-  final List<Publisher> followingPublisherList = [];
+  final followingMemberCount = 0.obs;
+  final followingPublisherList = <Publisher>[].obs;
   final isNoMore = false.obs;
   final isExpanded = false.obs;
 
@@ -55,16 +55,17 @@ class FollowingListController extends GetxController {
       ]);
 
       followingMemberList.assignAll(followingMemberResult['followingList']);
-      followingMemberCount = followingMemberResult['followingMemberCount'];
-      if (followingMemberCount < 10) {
+      followingMemberCount.value =
+          followingMemberResult['followingMemberCount'];
+      if (followingMemberList.length == followingMemberCount.value) {
         isNoMore.value = true;
       }
 
       var personalFilePageController =
           Get.find<PersonalFilePageController>(tag: viewMember.memberId);
       personalFilePageController.followingCount.value =
-          followingPublisherList.length + followingMemberCount;
-      update();
+          followingPublisherList.length + followingMemberCount.value;
+
       return false;
     } catch (e) {
       print('Fetch member${viewMember.memberId} following list error: $e');
@@ -79,12 +80,10 @@ class FollowingListController extends GetxController {
       var result = await personalFileRepos.fetchFollowingList(viewMember,
           skip: followingMemberList.length);
       followingMemberList.addAll(result['followingList']);
-      if (result['followingList'].length < 10) {
+      if (followingMemberList.length == followingMemberCount.value) {
         isNoMore.value = true;
-      }
-
-      if (followingMemberList.length > followingMemberCount) {
-        followingMemberCount = followingMemberList.length;
+      } else if (followingMemberList.length > followingMemberCount.value) {
+        followingMemberCount.value = followingMemberList.length;
       }
     } catch (e) {
       print(

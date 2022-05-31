@@ -1,10 +1,14 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/controller/personalFile/followerListController.dart';
+import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/controller/publisherPageController.dart';
 import 'package:readr/controller/rootPageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/followableItem.dart';
 
 class FollowableItemController extends GetxController {
@@ -43,12 +47,77 @@ class FollowableItemController extends GetxController {
               item.type == FollowableItemType.publisher) {
             Get.find<ChoosePublisherController>().followedCount.value++;
           }
+
+          //update target member personal file if exists
+          if (item.type == FollowableItemType.member &&
+              Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
+            Get.find<PersonalFilePageController>(tag: item.id)
+                .followerCount
+                .value++;
+          }
+
+          //update own personal file if exists
+          if (Get.isRegistered<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)) {
+            Get.find<PersonalFilePageController>(
+                    tag: Get.find<UserService>().currentUser.memberId)
+                .followingCount
+                .value++;
+          }
+
+          //update target publisher count if exists
+          if (item.type == FollowableItemType.publisher &&
+              Get.isRegistered<PublisherPageController>(tag: item.id)) {
+            Get.find<PublisherPageController>(tag: item.id)
+                .followerCount
+                .value++;
+          }
         } else {
           //update follow publisher count when onbroad
           if (Get.isRegistered<ChoosePublisherController>() &&
               Get.find<ChoosePublisherController>().followedCount.value > 0 &&
               item.type == FollowableItemType.publisher) {
             Get.find<ChoosePublisherController>().followedCount.value--;
+          }
+
+          //update target member personal file if exists
+          if (item.type == FollowableItemType.member &&
+              Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
+            Get.find<PersonalFilePageController>(tag: item.id)
+                .followerCount
+                .value--;
+          }
+
+          //update own personal file if exists
+          if (Get.isRegistered<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)) {
+            Get.find<PersonalFilePageController>(
+                    tag: Get.find<UserService>().currentUser.memberId)
+                .followingCount
+                .value--;
+          }
+
+          //update target publisher count if exists
+          if (item.type == FollowableItemType.publisher &&
+              Get.isRegistered<PublisherPageController>(tag: item.id)) {
+            Get.find<PublisherPageController>(tag: item.id)
+                .followerCount
+                .value--;
+          }
+
+          //update own followingList when unfollow
+          if (Get.isRegistered<FollowingListController>(
+              tag: Get.find<UserService>().currentUser.memberId)) {
+            final ownFollowingController = Get.find<FollowingListController>(
+                tag: Get.find<UserService>().currentUser.memberId);
+            if (item.type == FollowableItemType.publisher) {
+              ownFollowingController.followingPublisherList
+                  .removeWhere((element) => element.id == item.id);
+            } else {
+              ownFollowingController.followingMemberList
+                  .removeWhere((element) => element.memberId == item.id);
+              ownFollowingController.followingMemberCount.value--;
+            }
           }
         }
       },
@@ -78,9 +147,15 @@ class FollowableItemController extends GetxController {
   void _updatePages() {
     _updateTargetPersonalFile();
     if (item.type == FollowableItemType.member) {
-      Get.find<RootPageController>().followingMemberUpdate.value = true;
+      EasyDebounce.debounce('followingMemberUpdate', const Duration(seconds: 5),
+          () {
+        Get.find<RootPageController>().updateMemberRelatedPages();
+      });
     } else {
-      Get.find<RootPageController>().followingPublisherUpdate.value = true;
+      EasyDebounce.debounce(
+          'followingPublisherUpdate', const Duration(seconds: 5), () {
+        Get.find<RootPageController>().updatePublisherRelatedPages();
+      });
     }
   }
 

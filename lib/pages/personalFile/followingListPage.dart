@@ -106,9 +106,13 @@ class FollowingListPage extends GetView<FollowingListController> {
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
-        if (controller.followingPublisherList.isNotEmpty) ...[
-          SliverToBoxAdapter(
-            child: GestureDetector(
+        SliverToBoxAdapter(
+          child: Obx(() {
+            if (controller.followingMemberList.isEmpty) {
+              return Container();
+            }
+
+            return GestureDetector(
               onTap: () {
                 controller.isExpanded.toggle();
               },
@@ -118,12 +122,14 @@ class FollowingListPage extends GetView<FollowingListController> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        '媒體  (${controller.followingPublisherList.length})',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: readrBlack87,
-                          fontWeight: FontWeight.w500,
+                      child: Obx(
+                        () => Text(
+                          '媒體  (${controller.followingPublisherList.length})',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: readrBlack87,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
@@ -138,20 +144,21 @@ class FollowingListPage extends GetView<FollowingListController> {
                   ],
                 ),
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Obx(
-              () {
-                if (controller.isExpanded.isFalse) {
-                  return Container();
-                }
+            );
+          }),
+        ),
+        SliverToBoxAdapter(
+          child: Obx(
+            () {
+              if (controller.isExpanded.isFalse ||
+                  controller.followingMemberList.isEmpty) {
+                return Container();
+              }
 
-                return _buildPublisherList();
-              },
-            ),
+              return _buildPublisherList();
+            },
           ),
-        ],
+        ),
         SliverToBoxAdapter(
           child: Obx(() {
             if (controller.followingMemberList.isEmpty) {
@@ -161,12 +168,14 @@ class FollowingListPage extends GetView<FollowingListController> {
             return Container(
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
-              child: Text(
-                '人物  (${controller.followingMemberCount})',
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: readrBlack87,
-                  fontWeight: FontWeight.w500,
+              child: Obx(
+                () => Text(
+                  '人物  (${controller.followingMemberCount.value})',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: readrBlack87,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             );
