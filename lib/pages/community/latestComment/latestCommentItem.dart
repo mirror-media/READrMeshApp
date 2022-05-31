@@ -14,22 +14,12 @@ import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
-class LatestCommentItem extends StatefulWidget {
+class LatestCommentItem extends StatelessWidget {
   final NewsListItem news;
-  const LatestCommentItem(this.news);
-
-  @override
-  State<LatestCommentItem> createState() => _LatestCommentItemState();
-}
-
-class _LatestCommentItemState extends State<LatestCommentItem> {
-  late MemberFollowableItem memberFollowableItem;
-
-  @override
-  void initState() {
-    super.initState();
+  late final MemberFollowableItem memberFollowableItem;
+  LatestCommentItem(this.news) {
     memberFollowableItem = MemberFollowableItem(
-      widget.news.showComment!.member,
+      news.showComment!.member,
     );
   }
 
@@ -50,7 +40,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             onTap: () {
               Get.to(
                 () => StoryPage(
-                  news: widget.news,
+                  news: news,
                 ),
                 fullscreenDialog: true,
               );
@@ -58,9 +48,9 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.news.heroImageUrl != null)
+                if (news.heroImageUrl != null)
                   CachedNetworkImage(
-                    imageUrl: widget.news.heroImageUrl!,
+                    imageUrl: news.heroImageUrl!,
                     placeholder: (context, url) => SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.width / 2,
@@ -87,7 +77,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
                   child: ExtendedText(
-                    widget.news.source.title,
+                    news.source.title,
                     joinZeroWidthSpace: true,
                     style: const TextStyle(color: readrBlack50, fontSize: 14),
                   ),
@@ -96,7 +86,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                   padding: const EdgeInsets.only(
                       top: 4, left: 12, right: 12, bottom: 8),
                   child: ExtendedText(
-                    widget.news.title,
+                    news.title,
                     joinZeroWidthSpace: true,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -110,7 +100,7 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 12, right: 12, bottom: 16),
-                  child: NewsInfo(widget.news),
+                  child: NewsInfo(news),
                 ),
               ],
             ),
@@ -126,13 +116,13 @@ class _LatestCommentItemState extends State<LatestCommentItem> {
             onTap: () async {
               await CommentBottomSheet.showCommentBottomSheet(
                 context: context,
-                clickComment: widget.news.showComment!,
+                clickComment: news.showComment!,
                 objective: PickObjective.story,
-                id: widget.news.id,
-                controllerTag: widget.news.controllerTag,
+                id: news.id,
+                controllerTag: news.controllerTag,
               );
             },
-            child: _commentsWidget(context, widget.news.showComment!),
+            child: _commentsWidget(context, news.showComment!),
           ),
         ],
       ),
