@@ -87,6 +87,9 @@ class EditorChoiceService implements EditorChoiceRepos {
           url:{
             contains: \$urlFilter
           }
+          is_active:{
+            equals: true
+          }
           OR:[
             {
               content:{

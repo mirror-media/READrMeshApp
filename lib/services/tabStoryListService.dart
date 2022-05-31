@@ -231,6 +231,9 @@ class TabStoryListServices implements TabStoryListRepos {
           url:{
             contains: \$urlFilter
           }
+          is_active:{
+            equals: true
+          }
         }
         orderBy:{
           published_date: desc
