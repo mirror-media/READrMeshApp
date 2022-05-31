@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/services/memberService.dart';
@@ -153,5 +154,6 @@ class SettingPageController extends GetxController {
         print('Disconnect goolge failed: $e');
       }
     }
+    Get.find<HiveService>().deleteLocalMember();
   }
 }

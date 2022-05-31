@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/settingPageController.dart';
+import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
@@ -252,10 +253,6 @@ class SettingPage extends GetView<SettingPageController> {
               ),
             ),
             onTap: () async {
-              if (controller.loginType.value == 'google') {
-                GoogleSignIn googleSignIn = GoogleSignIn();
-                await googleSignIn.disconnect();
-              }
               await FirebaseAuth.instance.signOut();
               if (Get.isRegistered<PersonalFilePageController>(
                   tag: Get.find<UserService>().currentUser.memberId)) {
@@ -263,6 +260,11 @@ class SettingPage extends GetView<SettingPageController> {
                     tag: Get.find<UserService>().currentUser.memberId,
                     force: true);
               }
+              if (controller.loginType.value == 'google' &&
+                  GetPlatform.isAndroid) {
+                GoogleSignIn().disconnect();
+              }
+              Get.find<HiveService>().deleteLocalMember();
               await Get.find<UserService>().fetchUserData();
             },
           ),
