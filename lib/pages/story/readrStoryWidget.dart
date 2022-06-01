@@ -126,6 +126,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             },
             child: CachedNetworkImage(
               width: width,
+              height: height,
               imageUrl: story.heroImage!,
               placeholder: (context, url) => Container(
                 height: height,

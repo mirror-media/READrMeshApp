@@ -79,7 +79,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
 
   Widget _buildHeroWidget() {
     double width = Get.width;
-    double height = width / 16 * 9;
+    double height = width / 2;
 
     if (controller.newsListItem.heroImageUrl == null) {
       return Container();
@@ -87,6 +87,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
 
     return CachedNetworkImage(
       width: width,
+      height: height,
       imageUrl: controller.newsListItem.heroImageUrl!,
       placeholder: (context, url) => Container(
         height: height,
