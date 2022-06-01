@@ -23,6 +23,7 @@ class ReadrPageController extends GetxController
   dynamic error;
 
   late TabController tabController;
+  bool _initializedTabController = false;
   final List<Tab> tabs = [];
   final List<Widget> tabWidgets = [];
 
@@ -34,7 +35,7 @@ class ReadrPageController extends GetxController
 
   @override
   void onClose() {
-    tabController.dispose();
+    if (_initializedTabController) tabController.dispose();
     super.onClose();
   }
 
@@ -93,5 +94,6 @@ class ReadrPageController extends GetxController
       vsync: this,
       length: categoryList.length,
     );
+    _initializedTabController = true;
   }
 }
