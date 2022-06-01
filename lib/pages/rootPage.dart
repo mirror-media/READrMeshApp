@@ -137,7 +137,10 @@ class RootPage extends GetView<RootPageController> {
                       );
                     } else {
                       return ProfilePhotoWidget(
-                          Get.find<UserService>().currentUser, 11);
+                        Get.find<UserService>().currentUser,
+                        11,
+                        hideBorder: true,
+                      );
                     }
                   },
                 ),

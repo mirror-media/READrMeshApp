@@ -7,8 +7,14 @@ class ProfilePhotoWidget extends StatelessWidget {
   final Member member;
   final double radius;
   final double? textSize;
-  const ProfilePhotoWidget(this.member, this.radius, {this.textSize, Key? key})
-      : super(key: key);
+  final bool hideBorder;
+  const ProfilePhotoWidget(
+    this.member,
+    this.radius, {
+    this.textSize,
+    Key? key,
+    this.hideBorder = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +39,15 @@ class ProfilePhotoWidget extends StatelessWidget {
 
     if (member.avatar != null) {
       return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            width: 1,
-            color: Colors.white,
-          ),
-        ),
+        decoration: hideBorder
+            ? null
+            : BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 1,
+                  color: Colors.white,
+                ),
+              ),
         child: CircleAvatar(
           key: UniqueKey(),
           foregroundImage: NetworkImage(member.avatar!),
@@ -50,13 +58,15 @@ class ProfilePhotoWidget extends StatelessWidget {
       );
     }
     return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          width: 1,
-          color: Colors.white,
-        ),
-      ),
+      decoration: hideBorder
+          ? null
+          : BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                width: 1,
+                color: Colors.white,
+              ),
+            ),
       child: CircleAvatar(
         key: UniqueKey(),
         backgroundColor: randomColor,
