@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
-import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
@@ -24,7 +23,6 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
   final ItemScrollController _itemScrollController = ItemScrollController();
-  late final ParagraphFormat paragraphFormat;
 
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
@@ -46,7 +44,6 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
         if (!controller.isLoading) {
           Story story = controller.readrStory;
-          paragraphFormat = ParagraphFormat(story.imageUrlList);
 
           return Stack(
             fit: StackFit.expand,
@@ -364,7 +361,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child: paragraphFormat.parseTheParagraph(
+                  child: controller.paragraphFormat.parseTheParagraph(
                     paragraph,
                     context,
                     16,
@@ -427,7 +424,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
               !_isNullOrEmpty(paragraph.contents![0].data)) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
-              child: paragraphFormat.parseTheParagraph(
+              child: controller.paragraphFormat.parseTheParagraph(
                 paragraph,
                 context,
                 _textSize,
@@ -580,7 +577,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         ),
                         Padding(
                           padding: padding,
-                          child: paragraphFormat.parseTheParagraph(
+                          child: controller.paragraphFormat.parseTheParagraph(
                             paragraph,
                             context,
                             15,
@@ -598,7 +595,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                 }
                 return Padding(
                   padding: padding,
-                  child: paragraphFormat.parseTheParagraph(
+                  child: controller.paragraphFormat.parseTheParagraph(
                     paragraph,
                     context,
                     15,

@@ -4,6 +4,7 @@ import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
+import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/story.dart';
@@ -31,6 +32,7 @@ class StoryPageController extends GetxController {
   final webviewLoading = true.obs;
   late NewsStoryItem newsStoryItem;
   late Story readrStory;
+  late ParagraphFormat paragraphFormat;
   String? _bookmarkId;
   String inputText = '';
 
@@ -70,6 +72,7 @@ class StoryPageController extends GetxController {
         } else {
           readrStory =
               await storyRepos.fetchPublishedStoryById(newsStoryItem.content!);
+          paragraphFormat = ParagraphFormat(readrStory.imageUrlList);
         }
       }
 
