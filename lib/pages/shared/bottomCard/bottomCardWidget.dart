@@ -73,141 +73,138 @@ class BottomCardWidget extends StatelessWidget {
       BottomCardWidgetController(),
       tag: hashCode.toString(),
     );
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: DraggableScrollableSheet(
-        snap: true,
-        initialChildSize: 0.13,
-        minChildSize: 0.13,
-        controller: bottomCardWidgetController.draggableScrollableController,
-        builder: (context, scrollController) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: readrBlack10,
-                        offset: Offset(0, -8),
-                        blurRadius: 10,
-                        spreadRadius: 5,
-                      ),
-                    ],
+    return DraggableScrollableSheet(
+      snap: true,
+      initialChildSize: 0.13,
+      minChildSize: 0.13,
+      controller: bottomCardWidgetController.draggableScrollableController,
+      builder: (context, scrollController) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Obx(() {
-                    List<Widget> slivers = [];
-                    if (bottomCardWidgetController.isCollapsed.isTrue) {
-                      slivers.assign(SliverToBoxAdapter(
-                        child: _collapseWidget(context),
-                      ));
-                    } else {
-                      slivers.assignAll([
-                        SliverAppBar(
-                          centerTitle: true,
-                          automaticallyImplyLeading: false,
-                          pinned: true,
-                          elevation: 0,
-                          titleSpacing: 0,
-                          backgroundColor: Colors.white,
-                          title: Container(
-                            height: kToolbarHeight,
-                            width: double.infinity,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: const Icon(
-                              Icons.expand_more_outlined,
-                              color: readrBlack30,
-                              size: 32,
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: _titleAndPickBar(),
-                        ),
-                        _popularCommentList(context),
-                        SliverAppBar(
-                          backgroundColor: Colors.white,
-                          title: Container(
-                            color: Colors.white,
-                            padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                            child: Obx(
-                              () => Text(
-                                '所有留言 (${commentController.allComments.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: readrBlack87,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          centerTitle: false,
-                          pinned: true,
-                          automaticallyImplyLeading: false,
-                          titleSpacing: 0,
-                          elevation: 0.5,
-                        ),
-                        _allCommentList(context),
-                      ]);
-                    }
-                    return CustomScrollView(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      slivers: slivers,
-                    );
-                  }),
-                ),
-              ),
-              Obx(
-                () => Visibility(
-                  visible: bottomCardWidgetController.isCollapsed.isFalse,
-                  child: Container(
-                    color: Colors.white,
-                    //padding: const EdgeInsets.only(top: 16),
-                    child: const Divider(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
                       color: readrBlack10,
-                      thickness: 0.5,
-                      height: 1,
+                      offset: Offset(0, -8),
+                      blurRadius: 10,
+                      spreadRadius: 5,
                     ),
+                  ],
+                ),
+                child: Obx(() {
+                  List<Widget> slivers = [];
+                  if (bottomCardWidgetController.isCollapsed.isTrue) {
+                    slivers.assign(SliverToBoxAdapter(
+                      child: _collapseWidget(context),
+                    ));
+                  } else {
+                    slivers.assignAll([
+                      SliverAppBar(
+                        centerTitle: true,
+                        automaticallyImplyLeading: false,
+                        pinned: true,
+                        elevation: 0,
+                        titleSpacing: 0,
+                        backgroundColor: Colors.white,
+                        title: Container(
+                          height: kToolbarHeight,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: const Icon(
+                            Icons.expand_more_outlined,
+                            color: readrBlack30,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: _titleAndPickBar(),
+                      ),
+                      _popularCommentList(context),
+                      SliverAppBar(
+                        backgroundColor: Colors.white,
+                        title: Container(
+                          color: Colors.white,
+                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                          child: Obx(
+                            () => Text(
+                              '所有留言 (${commentController.allComments.length})',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: readrBlack87,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        centerTitle: false,
+                        pinned: true,
+                        automaticallyImplyLeading: false,
+                        titleSpacing: 0,
+                        elevation: 0.5,
+                      ),
+                      _allCommentList(context),
+                    ]);
+                  }
+                  return CustomScrollView(
+                    controller: scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    slivers: slivers,
+                  );
+                }),
+              ),
+            ),
+            Obx(
+              () => Visibility(
+                visible: bottomCardWidgetController.isCollapsed.isFalse,
+                child: Container(
+                  color: Colors.white,
+                  //padding: const EdgeInsets.only(top: 16),
+                  child: const Divider(
+                    color: readrBlack10,
+                    thickness: 0.5,
+                    height: 1,
                   ),
                 ),
               ),
-              Obx(
-                () => Visibility(
-                  visible: bottomCardWidgetController.isCollapsed.isFalse,
-                  child: Obx(
-                    () => CommentInputBox(
-                      onPressed: (text) async {
-                        bool result = await commentController.addComment(text);
-                        if (result) {
-                          _textController.clear();
-                        }
-                      },
-                      isSending: commentController.isSending.value,
-                      onTextChanged: (text) => onTextChanged(text),
-                      textController: _textController,
-                      isCollapsed: bottomCardWidgetController.isCollapsed.value,
-                    ),
+            ),
+            Obx(
+              () => Visibility(
+                visible: bottomCardWidgetController.isCollapsed.isFalse,
+                child: Obx(
+                  () => CommentInputBox(
+                    onPressed: (text) async {
+                      bool result = await commentController.addComment(text);
+                      if (result) {
+                        _textController.clear();
+                      }
+                    },
+                    isSending: commentController.isSending.value,
+                    onTextChanged: (text) => onTextChanged(text),
+                    textController: _textController,
+                    isCollapsed: bottomCardWidgetController.isCollapsed.value,
                   ),
                 ),
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -49,10 +49,7 @@ class StoryPageController extends GetxController {
     );
   }
 
-  void fetchNewsData({NewsListItem? newNewsListItem}) async {
-    if (newNewsListItem != null) {
-      newsListItem = newNewsListItem;
-    }
+  void fetchNewsData() async {
     isLoading = true;
     isError = false;
     bool isFullContent = newsListItem.fullContent;
@@ -86,6 +83,37 @@ class StoryPageController extends GetxController {
       isError = true;
     }
     isLoading = false;
+    update();
+  }
+
+  void updateNewsData(NewsListItem newNewsListItem) async {
+    newsListItem = newNewsListItem;
+    bool isFullContent = newsListItem.fullContent;
+    await Get.find<UserService>().fetchUserData();
+    try {
+      newsStoryItem = await newsStoryRepos.fetchNewsData(newsListItem.id);
+
+      //if publisher is readr and not project, fetch story from readr CMS
+      if (newsListItem.source.id ==
+              Get.find<EnvironmentService>().config.readrPublisherId &&
+          isFullContent) {
+        if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
+          error = determineException('No content error');
+          isError = true;
+        } else {
+          readrStory =
+              await storyRepos.fetchPublishedStoryById(newsStoryItem.content!);
+          paragraphFormat = ParagraphFormat(readrStory.imageUrlList);
+        }
+      }
+
+      if (newsStoryItem.bookmarkId != null) {
+        isBookmarked(true);
+        _bookmarkId = newsStoryItem.bookmarkId;
+      }
+    } catch (e) {
+      print('UpdateStoryPageError: ${error.message}');
+    }
     update();
   }
 

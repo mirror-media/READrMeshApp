@@ -53,7 +53,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
                 popularComments: controller.newsStoryItem.popularComments,
-                key: Key(controller.newsStoryItem.controllerTag),
+                key: UniqueKey(),
               ),
             ],
           );

@@ -21,15 +21,20 @@ class StoryPage extends GetView<StoryPageController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(
-      StoryPageController(
-        newsStoryRepos: NewsStoryService(),
-        storyRepos: StoryServices(),
-        pickRepos: PickService(),
-        newsListItem: news,
-      ),
-      tag: news.id,
-    );
+    if (Get.isRegistered<StoryPageController>(tag: news.id)) {
+      Get.find<StoryPageController>(tag: news.id).updateNewsData(news);
+    } else {
+      Get.put(
+        StoryPageController(
+          newsStoryRepos: NewsStoryService(),
+          storyRepos: StoryServices(),
+          pickRepos: PickService(),
+          newsListItem: news,
+        ),
+        tag: news.id,
+      );
+    }
+
     Widget child;
     if (!news.fullContent) {
       child = NewsWebviewWidget(news.id);
