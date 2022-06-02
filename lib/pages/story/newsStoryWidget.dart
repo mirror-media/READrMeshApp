@@ -13,9 +13,16 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsStoryWidget extends GetView<StoryPageController> {
+  final String newsId;
+  const NewsStoryWidget(this.newsId);
+
+  @override
+  String get tag => newsId;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoryPageController>(
+      tag: newsId,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -31,7 +38,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(),
+                  StoryAppBar(newsId),
                   Expanded(
                     child: _buildContent(context),
                   ),
@@ -46,12 +53,13 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
                 popularComments: controller.newsStoryItem.popularComments,
+                key: Key(controller.newsStoryItem.controllerTag),
               ),
             ],
           );
         }
 
-        return StorySkeletonScreen();
+        return StorySkeletonScreen(newsId);
       },
     );
   }

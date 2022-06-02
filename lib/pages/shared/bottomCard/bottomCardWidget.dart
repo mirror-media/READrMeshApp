@@ -34,27 +34,44 @@ class BottomCardWidget extends StatelessWidget {
     required this.id,
     required this.allComments,
     required this.popularComments,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    commentController = Get.put<CommentController>(
-      CommentController(
-        commentRepos: CommentService(),
-        objective: objective,
-        id: id,
-        controllerTag: controllerTag,
-        allComments: allComments,
-        popularComments: popularComments,
-      ),
-      tag: controllerTag,
-    );
+    if (Get.isRegistered<CommentController>(tag: controllerTag)) {
+      Get.replace<CommentController>(
+        CommentController(
+          commentRepos: CommentService(),
+          objective: objective,
+          id: id,
+          controllerTag: controllerTag,
+          allComments: allComments,
+          popularComments: popularComments,
+        ),
+        tag: controllerTag,
+      );
+      commentController = Get.find<CommentController>(tag: controllerTag);
+    } else {
+      commentController = Get.put<CommentController>(
+        CommentController(
+          commentRepos: CommentService(),
+          objective: objective,
+          id: id,
+          controllerTag: controllerTag,
+          allComments: allComments,
+          popularComments: popularComments,
+        ),
+        tag: controllerTag,
+      );
+    }
+
     pickableItemController =
         Get.find<PickableItemController>(tag: controllerTag);
 
     bottomCardWidgetController = Get.put(
       BottomCardWidgetController(),
-      tag: controllerTag,
+      tag: hashCode.toString(),
     );
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

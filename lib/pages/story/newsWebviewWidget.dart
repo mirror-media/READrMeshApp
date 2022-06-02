@@ -10,9 +10,16 @@ import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 
 class NewsWebviewWidget extends GetView<StoryPageController> {
+  final String newsId;
+  const NewsWebviewWidget(this.newsId);
+
+  @override
+  String get tag => newsId;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoryPageController>(
+      tag: newsId,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -26,7 +33,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           return _webViewWidget(context);
         }
 
-        return StorySkeletonScreen();
+        return StorySkeletonScreen(newsId);
       },
     );
   }
@@ -50,7 +57,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
       children: [
         Column(
           children: [
-            StoryAppBar(),
+            StoryAppBar(newsId),
             Expanded(
               child: InAppWebView(
                 initialOptions: options,
@@ -119,11 +126,12 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           objective: PickObjective.story,
           allComments: controller.newsStoryItem.allComments,
           popularComments: controller.newsStoryItem.popularComments,
+          key: Key(controller.newsStoryItem.controllerTag),
         ),
         Obx(
           () {
             if (controller.webviewLoading.isTrue) {
-              return StorySkeletonScreen();
+              return StorySkeletonScreen(newsId);
             }
 
             return Container();

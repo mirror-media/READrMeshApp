@@ -12,6 +12,12 @@ import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class StoryAppBar extends GetView<StoryPageController> {
+  final String newsId;
+  const StoryAppBar(this.newsId);
+
+  @override
+  String get tag => newsId;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -30,6 +36,7 @@ class StoryAppBar extends GetView<StoryPageController> {
       ),
       actions: <Widget>[
         GetBuilder<StoryPageController>(
+          tag: newsId,
           builder: (controller) {
             if (controller.isLoading || controller.isError) {
               return Container();
@@ -74,6 +81,7 @@ class StoryAppBar extends GetView<StoryPageController> {
           },
         ),
         GetBuilder<StoryPageController>(
+          tag: newsId,
           builder: (controller) {
             if (controller.isLoading || controller.isError) {
               return Container();

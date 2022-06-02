@@ -17,21 +17,27 @@ class StoryPage extends GetView<StoryPageController> {
   });
 
   @override
+  String get tag => news.id;
+
+  @override
   Widget build(BuildContext context) {
-    Get.put(StoryPageController(
-      newsStoryRepos: NewsStoryService(),
-      storyRepos: StoryServices(),
-      pickRepos: PickService(),
-      newsListItem: news,
-    ));
+    Get.put(
+      StoryPageController(
+        newsStoryRepos: NewsStoryService(),
+        storyRepos: StoryServices(),
+        pickRepos: PickService(),
+        newsListItem: news,
+      ),
+      tag: news.id,
+    );
     Widget child;
     if (!news.fullContent) {
-      child = NewsWebviewWidget();
+      child = NewsWebviewWidget(news.id);
     } else if (news.source.id ==
         Get.find<EnvironmentService>().config.readrPublisherId) {
-      child = ReadrStoryWidget();
+      child = ReadrStoryWidget(news.id);
     } else {
-      child = NewsStoryWidget();
+      child = NewsStoryWidget(news.id);
     }
     return Scaffold(
       appBar: AppBar(

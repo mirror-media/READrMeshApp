@@ -23,6 +23,8 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
   final ItemScrollController _itemScrollController = ItemScrollController();
+  final String newsId;
+  ReadrStoryWidget(this.newsId);
 
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
@@ -33,6 +35,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     var width = MediaQuery.of(context).size.width;
 
     return GetBuilder<StoryPageController>(
+      tag: newsId,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -50,7 +53,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(),
+                  StoryAppBar(newsId),
                   Expanded(
                     child: _storyContent(width, story),
                   ),
@@ -65,13 +68,14 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
                 popularComments: controller.newsStoryItem.popularComments,
+                key: Key(controller.newsStoryItem.controllerTag),
               ),
             ],
           );
         }
 
         // state is Init, loading, or other
-        return StorySkeletonScreen();
+        return StorySkeletonScreen(newsId);
       },
     );
   }
