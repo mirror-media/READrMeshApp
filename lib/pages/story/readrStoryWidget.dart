@@ -26,6 +26,9 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   final String newsId;
   ReadrStoryWidget(this.newsId);
 
+  @override
+  String get tag => newsId;
+
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
   }
