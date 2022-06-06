@@ -11,7 +11,7 @@ import 'package:readr/models/publisher.dart';
 
 abstract class PersonalFileRepos {
   Future<Member> fetchMemberData(Member member);
-  Future<Map<String, dynamic>> fetchPickData(Member targetMember,
+  Future<List<Pick>> fetchStoryPicks(Member targetMember,
       {DateTime? pickFilterTime});
   Future<List<Pick>> fetchBookmark({DateTime? pickFilterTime});
   Future<List<Member>> fetchFollowerList(Member viewMember, {int skip = 0});
@@ -165,209 +165,211 @@ class PersonalFileService implements PersonalFileRepos {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchPickData(Member targetMember,
+  Future<List<Pick>> fetchStoryPicks(Member targetMember,
       {DateTime? pickFilterTime}) async {
     const String query = """
-    query(
-      \$myId: ID
-      \$followingMembers: [ID!]
-      \$pickFilterTime: DateTime
-      \$viewMemberId: ID
-    ){
-      member(
+query(
+  \$myId: ID
+  \$followingMembers: [ID!]
+  \$pickFilterTime: DateTime
+  \$viewMemberId: ID
+){
+  picks(
+    where:{
+      is_active:{
+        equals: true
+      }
+      kind:{
+        equals: "read"
+      }
+      objective:{
+        equals: "story"
+      }
+      picked_date:{
+        lt: \$pickFilterTime
+      }
+      story:{
+        is_active:{
+          equals: true
+        }
+      }
+      member:{
+        id:{
+          equals: \$viewMemberId
+        }
+      }
+    }
+    orderBy:{
+      picked_date: desc
+    }
+    take: 20
+  ){
+    id
+    member{
+      id
+      nickname
+      avatar
+    }
+    objective
+    picked_date
+    story{
+      id
+      title
+      url
+      published_date
+      og_image
+      full_content
+      full_screen_ad
+      paywall
+      source{
+        id
+        title
+      }
+      followingPicks: pick(
         where:{
-          id: \$viewMemberId
+          member:{
+            id:{
+              in: \$followingMembers
+            }
+          }
+          state:{
+            equals: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        member{
+          id
+          nickname
+          avatar
+        }
+      }
+      otherPicks:pick(
+        where:{
+          member:{
+            id:{
+              notIn: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+          }
+          state:{
+            in: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        member{
+          id
+          nickname
+          avatar
+        }
+      }
+      pickCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      commentCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: pick(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
         }
       ){
-        storyPick: pick(
+        id
+        pick_comment(
           where:{
             is_active:{
               equals: true
             }
-            kind:{
-              equals: "read"
-            }
-            objective:{
-              equals: "story"
-            }
-            picked_date:{
-              lt: \$pickFilterTime
-            }
           }
-          orderBy:{
-            picked_date: desc
-          }
-          take: 10
         ){
           id
-          member{
-            id
-            nickname
-            avatar
-          }
-          objective
-          picked_date
-          story{
-            id
-            title
-            url
-            published_date
-            og_image
-            full_content
-            full_screen_ad
-            paywall
-            source{
-              id
-              title
-              full_content
-              full_screen_ad
-            }
-            followingPicks: pick(
-              where:{
-                member:{
-                  id:{
-                    in: \$followingMembers
-                  }
-                }
-                state:{
-                  equals: "public"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-              orderBy:{
-                picked_date: desc
-              }
-              take: 4
-            ){
-              member{
-                id
-                nickname
-                avatar
-              }
-            }
-            otherPicks:pick(
-              where:{
-                member:{
-                  id:{
-                    notIn: \$followingMembers
-                    not:{
-                      equals: \$myId
-                    }
-                  }
-                }
-                state:{
-                  in: "public"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-              orderBy:{
-                picked_date: desc
-              }
-              take: 4
-            ){
-              member{
-                id
-                nickname
-                avatar
-              }
-            }
-            pickCount(
-              where:{
-                state:{
-                  in: "public"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            commentCount(
-              where:{
-                state:{
-                  in: "public"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            myPickId: pick(
-              where:{
-                member:{
-                  id:{
-                    equals: \$myId
-                  }
-                }
-                state:{
-                  notIn: "private"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-              pick_comment(
-                where:{
-                  is_active:{
-                    equals: true
-                  }
-                }
-              ){
-                id
-              }
-            }
-          }
-          pick_comment(
-            where:{
-              is_active:{
-                equals: true
-              }
-            }
-            take: 1
-            orderBy:{
-              published_date: desc
-            }
-          ){
-            id
-            member{
-              id
-              nickname
-              avatar
-              email
-            }
-            content
-            state
-            published_date
-            likeCount
-            is_edited
-            isLiked:likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-                id:{
-                  equals: \$myId
-                }
-              }
-            )
-          }
         }
       }
     }
+    pick_comment(
+      where:{
+        is_active:{
+          equals: true
+        }
+      }
+      take: 1
+      orderBy:{
+        published_date: desc
+      }
+    ){
+      id
+      member{
+        id
+        nickname
+        avatar
+        email
+      }
+      content
+      state
+      published_date
+      likeCount
+      is_edited
+      isLiked:likeCount(
+        where:{
+          is_active:{
+            equals: true
+          }
+          id:{
+            equals: \$myId
+          }
+        }
+      )
+    }
+  }
+}
     """;
 
     List<String> followingMemberIds = [];
@@ -397,17 +399,13 @@ class PersonalFileService implements PersonalFileRepos {
     );
 
     List<Pick> storyPickList = [];
-    if (jsonResponse['data']['member']['storyPick'].isNotEmpty) {
-      for (var pick in jsonResponse['data']['member']['storyPick']) {
+    if (jsonResponse['data']['picks'].isNotEmpty) {
+      for (var pick in jsonResponse['data']['picks']) {
         storyPickList.add(Pick.fromJson(pick));
       }
     }
 
-    Map<String, dynamic> returnData = {
-      'storyPickList': storyPickList,
-    };
-
-    return returnData;
+    return storyPickList;
   }
 
   @override

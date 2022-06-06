@@ -36,9 +36,9 @@ class PickTabController extends GetxController {
 
   Future<void> fetchPickList() async {
     try {
-      var result = await personalFileRepos.fetchPickData(viewMember);
-      storyPickList.assignAll(result['storyPickList']);
-      if (storyPickList.length < 10) {
+      storyPickList
+          .assignAll(await personalFileRepos.fetchStoryPicks(viewMember));
+      if (storyPickList.length < 20) {
         isNoMore.value = true;
       }
     } catch (e) {
@@ -53,10 +53,10 @@ class PickTabController extends GetxController {
   void fetchMoreStoryPick() async {
     isLoadingMore.value = true;
     try {
-      var result = await personalFileRepos.fetchPickData(viewMember,
+      var newStoryPicks = await personalFileRepos.fetchStoryPicks(viewMember,
           pickFilterTime: storyPickList.last.pickedDate);
-      storyPickList.addAll(result['storyPickList']);
-      if (result['storyPickList'].length < 10) {
+      storyPickList.addAll(newStoryPicks);
+      if (newStoryPicks.length < 20) {
         isNoMore.value = true;
       }
     } catch (e) {
