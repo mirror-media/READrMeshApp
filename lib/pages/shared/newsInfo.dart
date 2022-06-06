@@ -19,27 +19,27 @@ class NewsInfo extends StatelessWidget {
         int displayCommentCount = controller.commentCount.value;
 
         if (displayCommentCount != 0) {
-          children.add(SizedBox(
-            height: 17,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const ImageIcon(
-                  AssetImage(commentIconPng),
-                  size: 17,
+          children.add(Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ImageIcon(
+                AssetImage(commentIconPng),
+                size: 17,
+                color: readrBlack50,
+              ),
+              const SizedBox(width: 3),
+              Text(
+                displayCommentCount.toString(),
+                strutStyle: const StrutStyle(
+                  forceStrutHeight: true,
+                  leading: 0.5,
+                ),
+                style: const TextStyle(
+                  fontSize: 12,
                   color: readrBlack50,
                 ),
-                const SizedBox(width: 3),
-                Text(
-                  displayCommentCount.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: readrBlack50,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ));
           children.add(Container(
             width: 2,
@@ -68,8 +68,12 @@ class NewsInfo extends StatelessWidget {
           ));
           children.add(const Text(
             '付費文章',
+            strutStyle: StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 12,
               color: readrBlack50,
             ),
           ));
@@ -88,8 +92,12 @@ class NewsInfo extends StatelessWidget {
           ));
           children.add(const Text(
             '蓋板廣告',
+            strutStyle: StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 12,
               color: readrBlack50,
             ),
           ));

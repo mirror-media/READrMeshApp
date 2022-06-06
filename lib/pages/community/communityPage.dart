@@ -360,6 +360,10 @@ class CommunityPage extends GetView<CommunityPageController> {
           child: ExtendedText(
             firstTwoMember[0].nickname,
             joinZeroWidthSpace: true,
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
             style: const TextStyle(fontSize: 14, color: readrBlack87),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -369,6 +373,10 @@ class CommunityPage extends GetView<CommunityPageController> {
       children.add(const Text(
         '精選了這篇',
         style: TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: StrutStyle(
+          forceStrutHeight: true,
+          leading: 0.5,
+        ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ));
@@ -382,6 +390,10 @@ class CommunityPage extends GetView<CommunityPageController> {
             firstTwoMember[0].nickname,
             joinZeroWidthSpace: true,
             style: const TextStyle(fontSize: 14, color: readrBlack87),
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -390,6 +402,10 @@ class CommunityPage extends GetView<CommunityPageController> {
       children.add(const Text(
         '及',
         style: TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: StrutStyle(
+          forceStrutHeight: true,
+          leading: 0.5,
+        ),
         maxLines: 1,
       ));
       children.add(Flexible(
@@ -401,6 +417,10 @@ class CommunityPage extends GetView<CommunityPageController> {
             firstTwoMember[1].nickname,
             joinZeroWidthSpace: true,
             style: const TextStyle(fontSize: 14, color: readrBlack87),
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -409,6 +429,10 @@ class CommunityPage extends GetView<CommunityPageController> {
       children.add(const Text(
         '都精選了這篇',
         style: TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: StrutStyle(
+          forceStrutHeight: true,
+          leading: 0.5,
+        ),
         maxLines: 1,
       ));
     }

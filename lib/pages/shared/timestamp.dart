@@ -74,6 +74,10 @@ class _TimestampState extends State<Timestamp> {
     return Text(
       text,
       softWrap: true,
+      strutStyle: const StrutStyle(
+        forceStrutHeight: true,
+        leading: 0.5,
+      ),
       style: TextStyle(
         fontSize: fontSize,
         color: widget.textColor,
