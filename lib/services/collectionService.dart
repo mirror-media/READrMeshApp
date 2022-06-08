@@ -196,6 +196,7 @@ class CollectionService implements CollectionRepos {
       \$creatorId: ID
       \$public: String
       \$format: String
+      \$heroImageUrl: String
     ){
       createCollection(
         data:{
@@ -203,9 +204,16 @@ class CollectionService implements CollectionRepos {
           slug: \$slug,
           public: \$public,
           format: \$format,
+          status: "publish",
           creator:{
             connect:{
               id: \$creatorId
+            }
+          }
+          heroImage:{
+            create:{
+              name: \$slug
+              urlOriginal: \$heroImageUrl
             }
           }
         }
