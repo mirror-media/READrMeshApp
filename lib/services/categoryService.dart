@@ -27,7 +27,13 @@ class CategoryServices implements CategoryRepos {
         id
         name
         slug
-        relatedPost(sortBy: [ publishTime_DESC ], first: 1){
+        relatedPost(
+          where:{
+            state: published
+          }
+          sortBy: [ publishTime_DESC ], 
+          first: 1
+        ){
           publishTime
         }
       }
