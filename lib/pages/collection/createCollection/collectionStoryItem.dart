@@ -14,9 +14,9 @@ class CollectionStoryItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (story.heroImageUrl == null)
+        if (story.news!.heroImageUrl == null)
           Text(
-            story.title,
+            story.news!.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -25,15 +25,15 @@ class CollectionStoryItem extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-        if (story.heroImageUrl != null)
+        if (story.news!.heroImageUrl != null)
           CachedNetworkImage(
-            imageUrl: story.heroImageUrl!,
+            imageUrl: story.news!.heroImageUrl!,
             placeholder: (context, url) => Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Text(
-                    story.title,
+                    story.news!.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -63,7 +63,7 @@ class CollectionStoryItem extends StatelessWidget {
               ],
             ),
             errorWidget: (context, url, error) => Text(
-              story.title,
+              story.news!.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -78,7 +78,7 @@ class CollectionStoryItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      story.title,
+                      story.news!.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -112,7 +112,7 @@ class CollectionStoryItem extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                story.source.title,
+                story.news!.source.title,
                 style: const TextStyle(color: readrBlack50, fontSize: 12),
               ),
               Container(
@@ -126,7 +126,7 @@ class CollectionStoryItem extends StatelessWidget {
                 ),
               ),
               Timestamp(
-                story.publishedDate,
+                story.news!.publishedDate,
               ),
             ],
           ),

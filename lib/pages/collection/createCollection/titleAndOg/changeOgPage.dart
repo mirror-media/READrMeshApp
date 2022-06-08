@@ -10,8 +10,8 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
   Widget build(BuildContext context) {
     List<String> imageUrlList = [];
     for (var item in controller.selectedList) {
-      if (item.heroImageUrl != null) {
-        imageUrlList.add(item.heroImageUrl!);
+      if (item.news!.heroImageUrl != null) {
+        imageUrlList.add(item.news!.heroImageUrl!);
       }
     }
     return Scaffold(
@@ -30,7 +30,7 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          '選擇封面照片',
+          '更換封面照片',
           style: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 18,
@@ -41,12 +41,12 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
         ),
       ),
       body: GridView.builder(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 5.0,
-          mainAxisSpacing: 5.0,
+          childAspectRatio: 2.0,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0,
         ),
         itemBuilder: (context, index) => InkWell(
           child: CachedNetworkImage(
@@ -69,8 +69,9 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
           ),
           onTap: () {
             controller.collectionOgUrl.value = controller.selectedList
-                .firstWhere(
-                    (element) => element.heroImageUrl == imageUrlList[index])
+                .firstWhere((element) =>
+                    element.news!.heroImageUrl == imageUrlList[index])
+                .news!
                 .heroImageUrl!;
             Get.back();
           },

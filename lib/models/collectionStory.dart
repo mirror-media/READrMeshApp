@@ -1,29 +1,26 @@
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/publisher.dart';
+import 'package:readr/models/member.dart';
+import 'package:readr/models/newsListItem.dart';
 
 class CollectionStory {
-  int? order;
+  int sortOrder;
   final String id;
-  final String title;
-  final Publisher source;
-  final DateTime publishedDate;
-  final String url;
-  final String? heroImageUrl;
+  final DateTime pickedDate;
   final List<PickKind>? pickKinds;
+  final NewsListItem? news;
+  final Member? creator;
 
   CollectionStory({
-    this.order,
+    this.sortOrder = 0,
     required this.id,
-    required this.title,
-    required this.source,
-    required this.url,
-    required this.publishedDate,
-    this.heroImageUrl,
+    required this.pickedDate,
     this.pickKinds,
+    this.news,
+    this.creator,
   });
 
-  factory CollectionStory.fromJson(Map<String, dynamic> json) {
+  factory CollectionStory.fromStory(Map<String, dynamic> json) {
     List<PickKind>? pickKinds;
     if (BaseModel.checkJsonKeys(json, ['pick'])) {
       pickKinds = [];
@@ -37,17 +34,21 @@ class CollectionStory {
       }
     }
 
-    int? order;
-
     return CollectionStory(
-      order: order,
-      id: json['id'],
-      title: json['title'],
-      source: Publisher.fromJson(json['source']),
-      url: json['url'],
-      heroImageUrl: json['og_image'],
-      publishedDate: DateTime.parse(json["published_date"]).toLocal(),
+      id: '-1',
+      pickedDate: DateTime.now(),
       pickKinds: pickKinds,
+      news: NewsListItem.fromJson(json),
+    );
+  }
+
+  factory CollectionStory.fromJson(Map<String, dynamic> json) {
+    return CollectionStory(
+      sortOrder: json['sort_order'],
+      id: json['id'],
+      pickedDate: DateTime.parse(json["picked_date"]).toLocal(),
+      news: NewsListItem.fromJson(json['story']),
+      creator: Member.fromJson(json['creator']),
     );
   }
 }

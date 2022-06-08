@@ -77,3 +77,14 @@ enum CommentTransparency {
   friend,
   private,
 }
+
+enum CollectionFormat {
+  folder,
+  timeline,
+}
+
+enum CollectionPublic {
+  private,
+  publis,
+  wiki,
+}

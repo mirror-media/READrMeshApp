@@ -54,12 +54,7 @@ class InputTitlePage extends GetView<CreateCollectionController> {
                     color: Colors.blue,
                   ),
                 ),
-                onPressed: () {
-                  controller.selectedList.sort(
-                    (a, b) => b.publishedDate.compareTo(a.publishedDate),
-                  );
-                  Get.to(() => SortStoryPage());
-                },
+                onPressed: () => Get.to(() => SortStoryPage()),
               );
             }
             return Container();
@@ -79,51 +74,43 @@ class InputTitlePage extends GetView<CreateCollectionController> {
   }
 
   Widget _ogImage() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(97.5, 20, 97.5, 32),
-      child: GestureDetector(
-        onTap: () => Get.to(() => ChangeOgPage()),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: SizedBox(
-                width: Get.width - 195,
-                height: (Get.width - 195) / 2,
-                child: Obx(
-                  () => CachedNetworkImage(
-                    imageUrl: controller.collectionOgUrl.value,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: readrBlack66,
-                      child: const Icon(
-                        Icons.image_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: readrBlack66,
-                      child: const Icon(
-                        Icons.image_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+    return GestureDetector(
+      onTap: () => Get.to(() => ChangeOgPage()),
+      child: Column(
+        children: [
+          Obx(
+            () => CachedNetworkImage(
+              width: Get.width,
+              height: Get.width / 2,
+              imageUrl: controller.collectionOgUrl.value,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                color: readrBlack66,
+                child: const Icon(
+                  Icons.image_outlined,
+                  color: Colors.white,
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: readrBlack66,
+                child: const Icon(
+                  Icons.image_outlined,
+                  color: Colors.white,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 12,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          const Text(
+            '更換封面照片',
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 16,
             ),
-            const Text(
-              '更換封面照片',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -131,7 +118,7 @@ class InputTitlePage extends GetView<CreateCollectionController> {
   Widget _title() {
     return Container(
       width: double.maxFinite,
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 32, 20, 0),
       child: Obx(
         () => TextField(
           style: const TextStyle(color: readrBlack87),

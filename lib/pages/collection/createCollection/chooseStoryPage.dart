@@ -86,10 +86,12 @@ class ChooseStoryPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+                  controller.selectedList.sort((a, b) =>
+                      b.news!.publishedDate.compareTo(a.news!.publishedDate));
                   for (var selectedItem in controller.selectedList) {
-                    if (selectedItem.heroImageUrl != null) {
+                    if (selectedItem.news!.heroImageUrl != null) {
                       controller.collectionOgUrl.value =
-                          selectedItem.heroImageUrl!;
+                          selectedItem.news!.heroImageUrl!;
                       break;
                     }
                   }
@@ -179,23 +181,24 @@ class ChooseStoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(CollectionStory story) {
+  Widget _buildListItem(CollectionStory collectionStory) {
     return Obx(
       () => CheckboxListTile(
-        value: controller.selectedList.any((element) => element.id == story.id),
+        value: controller.selectedList
+            .any((element) => element.news!.id == collectionStory.news!.id),
         dense: true,
         onChanged: (value) {
           if (value != null && value) {
-            controller.selectedList.add(story);
+            controller.selectedList.add(collectionStory);
           } else {
-            controller.selectedList
-                .removeWhere((element) => element.id == story.id);
+            controller.selectedList.removeWhere(
+                (element) => element.news!.id == collectionStory.news!.id);
           }
         },
         activeColor: readrBlack87,
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
-        title: CollectionStoryItem(story),
+        title: CollectionStoryItem(collectionStory),
       ),
     );
   }
