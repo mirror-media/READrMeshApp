@@ -18,27 +18,28 @@ class CollectionInfo extends GetView<PickableItemController> {
       () {
         List<Widget> children = [];
         if (controller.commentCount.value > 0) {
-          children.add(SizedBox(
-            height: 17,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const ImageIcon(
-                  AssetImage(commentIconPng),
-                  size: 17,
+          children.add(Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ImageIcon(
+                AssetImage(commentIconPng),
+                size: 17,
+                color: readrBlack50,
+              ),
+              const SizedBox(width: 3),
+              Text(
+                controller.commentCount.value.toString(),
+                strutStyle: const StrutStyle(
+                  forceStrutHeight: true,
+                  leading: 0.5,
+                ),
+                style: const TextStyle(
+                  fontSize: 12,
                   color: readrBlack50,
+                  height: 1.4,
                 ),
-                const SizedBox(width: 3),
-                Text(
-                  controller.commentCount.value.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: readrBlack50,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ));
           children.add(Container(
             width: 2,
