@@ -1,15 +1,16 @@
 import 'package:get/get.dart';
+import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/services/collectionService.dart';
+import 'package:readr/services/collectionPageService.dart';
 
 class CollectionPageController extends GetxController {
   final Collection collection;
-  final CollectionRepos collectionRepos;
+  final CollectionPageRepos collectionPageRepos;
   CollectionPageController({
     required this.collection,
-    required this.collectionRepos,
+    required this.collectionPageRepos,
   });
 
   final isLoading = true.obs;
@@ -24,7 +25,7 @@ class CollectionPageController extends GetxController {
   @override
   void onInit() {
     if (collection.collectionPicks == null) {
-      fetchCollectionPicks();
+      fetchCollectionData();
     } else {
       for (var item in collection.collectionPicks!) {
         if (item.news != null) {
@@ -38,5 +39,17 @@ class CollectionPageController extends GetxController {
     super.onInit();
   }
 
-  void fetchCollectionPicks() {}
+  void fetchCollectionData() async {
+    try {
+      var result = await collectionPageRepos.fetchCollectionData(collection.id);
+      allComments.assignAll(result['allComments']);
+      popularComments.assignAll(result['popularComments']);
+      collectionPicks.assignAll(result['collectionPicks']);
+    } catch (e) {
+      print('Fetch collection data failed: $e');
+      error = determineException(e);
+      isError.value = true;
+    }
+    isLoading(false);
+  }
 }
