@@ -79,6 +79,7 @@ class EditCollectionController extends GetxController {
             () => CollectionPageController(
               collection: newCollection,
               collectionPageRepos: CollectionPageService(),
+              collectionRepos: CollectionService(),
             ),
             tag: newCollection.id,
           );

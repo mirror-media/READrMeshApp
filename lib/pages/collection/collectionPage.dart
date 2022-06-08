@@ -5,6 +5,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/folderCollectionWidget.dart';
 import 'package:readr/services/collectionPageService.dart';
+import 'package:readr/services/collectionService.dart';
 
 class CollectionPage extends GetView<CollectionPageController> {
   final Collection collection;
@@ -21,6 +22,7 @@ class CollectionPage extends GetView<CollectionPageController> {
         CollectionPageController(
           collection: collection,
           collectionPageRepos: CollectionPageService(),
+          collectionRepos: CollectionService(),
           isNewCollection: isNewCollection,
         ),
         tag: collection.id,

@@ -38,6 +38,7 @@ abstract class CollectionRepos {
   });
   Future<void> removeCollectionPicks(
       {required List<CollectionStory> collectionStory});
+  Future<bool> deleteCollection(String collectionId);
 }
 
 class CollectionService implements CollectionRepos {
@@ -1006,5 +1007,44 @@ mutation(
     if (jsonResponse.containsKey('errors')) {
       throw Exception('Update collection pick order error');
     }
+  }
+
+  @override
+  Future<bool> deleteCollection(String collectionId) async {
+    const String mutation = """
+mutation(
+  \$collectionId: ID
+){
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      status: "delete"
+    }
+  ){
+    status
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: true),
+    );
+
+    return !jsonResponse.containsKey('errors');
   }
 }
