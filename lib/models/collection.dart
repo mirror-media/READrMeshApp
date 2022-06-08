@@ -132,4 +132,75 @@ class Collection {
       ogImageId: json['heroImage']['id'],
     );
   }
+
+  factory Collection.fromPickTabJson(Map<String, dynamic> json) {
+    String imageUrl;
+    if (json['heroImage']['file'] != null) {
+      imageUrl = json['heroImage']['file']['url'];
+    } else {
+      imageUrl = json['heroImage']['urlOriginal'];
+    }
+
+    CollectionFormat format;
+    switch (json['format']) {
+      case 'timeline':
+        format = CollectionFormat.timeline;
+        break;
+      default:
+        format = CollectionFormat.folder;
+        break;
+    }
+
+    String? myPickId;
+    String? myPickCommentId;
+    if (json['myPickId'].isNotEmpty) {
+      var myPickItem = json['myPickId'][0];
+      myPickId = myPickItem['id'];
+      if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
+          myPickItem['pick_comment'].isNotEmpty) {
+        myPickCommentId = myPickItem['pick_comment'][0]['id'];
+      }
+    }
+
+    int pickCount = json['picksCount'];
+
+    if (Get.isRegistered<PickableItemController>(
+            tag: 'Collection${json['id']}') ||
+        Get.isPrepared<PickableItemController>(
+            tag: 'Collection${json['id']}')) {
+      final controller =
+          Get.find<PickableItemController>(tag: 'Collection${json['id']}');
+      if (controller.isLoading.isFalse) {
+        controller.myPickId.value = myPickId;
+        controller.myPickCommentId.value = myPickCommentId;
+      }
+      controller.pickCount.value = pickCount;
+    } else {
+      Get.lazyPut<PickableItemController>(
+        () => PickableItemController(
+          targetId: json["id"],
+          pickRepos: PickService(),
+          objective: PickObjective.collection,
+          myPickId: myPickId,
+          myPickCommentId: myPickCommentId,
+          pickCount: pickCount,
+          controllerTag: 'Collection${json['id']}',
+        ),
+        tag: 'Collection${json['id']}',
+        fenix: true,
+      );
+    }
+
+    return Collection(
+      id: json['id'],
+      title: json['title'],
+      slug: json['slug'],
+      creator: Member.fromJson(json['creator']),
+      ogImageUrl: imageUrl,
+      publishedTime: DateTime.parse(json['createdAt']),
+      format: format,
+      ogImageId: json['heroImage']['id'],
+      controllerTag: 'Collection${json['id']}',
+    );
+  }
 }

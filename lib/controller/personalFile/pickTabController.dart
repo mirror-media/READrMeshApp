@@ -15,10 +15,13 @@ class PickTabController extends GetxController {
   PickTabController(this.personalFileRepos, this.commentRepos, this.viewMember);
 
   bool isLoading = true;
-  final isLoadingMore = false.obs;
-  final isNoMore = false.obs;
+  final isLoadingMoreStoryPick = false.obs;
+  final isLoadingMoreCollectionPick = false.obs;
+  final noMoreStoryPick = false.obs;
+  final noMoreCollectionPick = false.obs;
   bool isError = false;
   final storyPickList = <Pick>[].obs;
+  final collecionPickList = <Pick>[].obs;
   dynamic error;
 
   @override
@@ -36,10 +39,25 @@ class PickTabController extends GetxController {
 
   Future<void> fetchPickList() async {
     try {
-      storyPickList
-          .assignAll(await personalFileRepos.fetchStoryPicks(viewMember));
+      await Future.wait([
+        personalFileRepos
+            .fetchStoryPicks(viewMember)
+            .then((value) => storyPickList.assignAll(value)),
+        personalFileRepos
+            .fetchCollectionPicks(viewMember)
+            .then((value) => collecionPickList.assignAll(value))
+      ]);
+
       if (storyPickList.length < 20) {
-        isNoMore.value = true;
+        noMoreStoryPick.value = true;
+      } else {
+        noMoreStoryPick.value = false;
+      }
+
+      if (collecionPickList.length < 20) {
+        noMoreCollectionPick.value = true;
+      } else {
+        noMoreCollectionPick.value = false;
       }
     } catch (e) {
       print('Fetch Pick Tab Error: $e');
@@ -51,16 +69,19 @@ class PickTabController extends GetxController {
   }
 
   void fetchMoreStoryPick() async {
-    isLoadingMore.value = true;
+    isLoadingMoreStoryPick.value = true;
     try {
-      var newStoryPicks = await personalFileRepos.fetchStoryPicks(viewMember,
-          pickFilterTime: storyPickList.last.pickedDate);
-      storyPickList.addAll(newStoryPicks);
-      if (newStoryPicks.length < 20) {
-        isNoMore.value = true;
-      }
+      await personalFileRepos
+          .fetchStoryPicks(viewMember,
+              pickFilterTime: storyPickList.last.pickedDate)
+          .then((value) {
+        storyPickList.addAll(value);
+        if (value.length < 20) {
+          noMoreStoryPick.value = true;
+        }
+      });
     } catch (e) {
-      print('Fetch More Pick Tab Error: $e');
+      print('Fetch more story picks error: $e');
       Fluttertoast.showToast(
         msg: "載入失敗",
         toastLength: Toast.LENGTH_SHORT,
@@ -71,7 +92,34 @@ class PickTabController extends GetxController {
         fontSize: 16.0,
       );
     }
-    isLoadingMore.value = false;
+    isLoadingMoreStoryPick.value = false;
+  }
+
+  void fetchMoreCollectionPick() async {
+    isLoadingMoreCollectionPick.value = true;
+    try {
+      await personalFileRepos
+          .fetchCollectionPicks(viewMember,
+              pickFilterTime: collecionPickList.last.pickedDate)
+          .then((value) {
+        collecionPickList.addAll(value);
+        if (value.length < 20) {
+          noMoreCollectionPick.value = true;
+        }
+      });
+    } catch (e) {
+      print('Fetch more collection picks error: $e');
+      Fluttertoast.showToast(
+        msg: "載入失敗",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    isLoadingMoreCollectionPick.value = false;
   }
 
   void deletePickComment(String commentId, String controllerTag) async {
@@ -91,5 +139,6 @@ class PickTabController extends GetxController {
 
   void unPick(String pickId) async {
     storyPickList.removeWhere((element) => element.id == pickId);
+    collecionPickList.removeWhere((element) => element.id == pickId);
   }
 }

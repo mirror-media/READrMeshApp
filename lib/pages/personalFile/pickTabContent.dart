@@ -5,6 +5,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/personalFile/pickCollectionItem.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/services/commentService.dart';
@@ -84,17 +85,46 @@ class PickTabContent extends GetView<PickTabController> {
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       children: [
-        Container(
-          color: Colors.white,
-          padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
-          child: const Text(
-            '精選文章',
-            style: TextStyle(
-              color: readrBlack87,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+        Obx(
+          () {
+            if (controller.collecionPickList.isEmpty) {
+              return Container();
+            }
+
+            return Container(
+              color: Colors.white,
+              padding: const EdgeInsets.fromLTRB(20, 16, 16, 0),
+              child: const Text(
+                '精選集錦',
+                style: TextStyle(
+                  color: readrBlack87,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          },
+        ),
+        _buildPickCollectionList(),
+        Obx(
+          () {
+            if (controller.storyPickList.isEmpty) {
+              return Container();
+            }
+
+            return Container(
+              color: Colors.white,
+              padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
+              child: const Text(
+                '精選文章',
+                style: TextStyle(
+                  color: readrBlack87,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          },
         ),
         _buildPickStoryList(),
       ],
@@ -109,7 +139,7 @@ class PickTabContent extends GetView<PickTabController> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         itemBuilder: (context, index) {
           if (index == controller.storyPickList.length) {
-            if (controller.isNoMore.isTrue) {
+            if (controller.noMoreStoryPick.isTrue) {
               return Container();
             }
 
@@ -118,7 +148,7 @@ class PickTabContent extends GetView<PickTabController> {
               onVisibilityChanged: (visibilityInfo) {
                 var visiblePercentage = visibilityInfo.visibleFraction * 100;
                 if (visiblePercentage > 50 &&
-                    controller.isLoadingMore.isFalse) {
+                    controller.isLoadingMoreStoryPick.isFalse) {
                   controller.fetchMoreStoryPick();
                 }
               },
@@ -171,6 +201,52 @@ class PickTabContent extends GetView<PickTabController> {
         },
         itemCount: controller.storyPickList.length + 1,
       ),
+    );
+  }
+
+  Widget _buildPickCollectionList() {
+    return Obx(
+      () {
+        if (controller.collecionPickList.isEmpty) {
+          return Container();
+        }
+
+        return SizedBox(
+          height: 280,
+          child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            itemBuilder: (context, index) {
+              if (index == controller.collecionPickList.length) {
+                if (controller.noMoreCollectionPick.isTrue) {
+                  return Container();
+                }
+
+                return VisibilityDetector(
+                  key: Key('pickTabCollecion${viewMember.memberId}'),
+                  onVisibilityChanged: (visibilityInfo) {
+                    var visiblePercentage =
+                        visibilityInfo.visibleFraction * 100;
+                    if (visiblePercentage > 50 &&
+                        controller.isLoadingMoreCollectionPick.isFalse) {
+                      controller.fetchMoreCollectionPick();
+                    }
+                  },
+                  child: const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
+                );
+              }
+
+              return PickCollectionItem(
+                  controller.collecionPickList[index].collection!);
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 12),
+            itemCount: controller.collecionPickList.length + 1,
+          ),
+        );
+      },
     );
   }
 }

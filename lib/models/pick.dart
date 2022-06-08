@@ -1,4 +1,5 @@
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -11,6 +12,7 @@ class Pick {
   final Comment? comment;
   Comment? pickComment;
   final DateTime pickedDate;
+  final Collection? collection;
 
   Pick({
     required this.id,
@@ -20,6 +22,7 @@ class Pick {
     this.comment,
     this.pickComment,
     required this.pickedDate,
+    this.collection,
   });
 
   factory Pick.fromJson(Map<String, dynamic> json) {
@@ -27,6 +30,7 @@ class Pick {
     Comment? comment;
     Comment? pickComment;
     PickObjective pickObjective = PickObjective.story;
+    Collection? collection;
     if (json['objective'] == 'comment') {
       pickObjective = PickObjective.comment;
     } else if (json['objective'] == 'collection') {
@@ -37,6 +41,8 @@ class Pick {
       story = NewsListItem.fromJson(json["story"]);
     } else if (pickObjective == PickObjective.comment) {
       comment = Comment.fromJson(json["comment"]);
+    } else {
+      collection = Collection.fromPickTabJson(json['collection']);
     }
 
     if (json["pick_comment"] != null && json["pick_comment"].isNotEmpty) {
@@ -51,6 +57,7 @@ class Pick {
       pickedDate: DateTime.parse(json["picked_date"]).toLocal(),
       objective: pickObjective,
       pickComment: pickComment,
+      collection: collection,
     );
   }
 }

@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class CollectionTag extends StatelessWidget {
-  const CollectionTag({Key? key}) : super(key: key);
+  final bool smallTag;
+  const CollectionTag({this.smallTag = false, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,8 @@ class CollectionTag extends StatelessWidget {
           Radius.circular(6),
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
+      padding: EdgeInsets.symmetric(
+          horizontal: smallTag ? 4 : 6, vertical: smallTag ? 2.5 : 3.5),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -25,10 +27,10 @@ class CollectionTag extends StatelessWidget {
           const SizedBox(
             width: 5,
           ),
-          const Text(
+          Text(
             '集錦',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: smallTag ? 11 : 12,
               fontWeight: FontWeight.w400,
               color: Colors.white,
             ),

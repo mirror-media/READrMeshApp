@@ -28,6 +28,8 @@ abstract class PersonalFileRepos {
     Member viewMember,
     List<String> fetchedCollectionIds,
   );
+  Future<List<Pick>> fetchCollectionPicks(Member targetMember,
+      {DateTime? pickFilterTime});
 }
 
 class PersonalFileService implements PersonalFileRepos {
@@ -1068,5 +1070,146 @@ query(
   ) async {
     return await fetchCollectionList(viewMember,
         fetchedCollectionIds: fetchedCollectionIds);
+  }
+
+  @override
+  Future<List<Pick>> fetchCollectionPicks(Member targetMember,
+      {DateTime? pickFilterTime}) async {
+    const String query = """
+query(
+  \$viewMemberId: ID
+  \$pickFilterTime: DateTime
+  \$myId: ID
+){
+  picks(
+    where:{
+      is_active:{
+        equals: true
+      }
+      kind:{
+        equals: "read"
+      }
+      objective:{
+        equals: "collection"
+      }
+      picked_date:{
+        lt: \$pickFilterTime
+      }
+      collection:{
+        status:{
+          equals: "publish"
+        }
+      }
+      member:{
+        id:{
+          equals: \$viewMemberId
+        }
+      }
+    }
+    orderBy:{
+      picked_date: desc
+    }
+    take: 20
+  ){
+    id
+    member{
+      id
+      nickname
+      avatar
+    }
+    objective
+    picked_date
+    collection{
+      id
+      title
+      slug
+      status
+      creator{
+        id
+        nickname
+        avatar
+        customId
+      }
+      heroImage{
+        id
+        urlOriginal
+        file{
+          url
+        }
+      }
+      format
+      createdAt
+      picksCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: picks(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
+          DateTime.now().toUtc().toIso8601String(),
+      "viewMemberId": targetMember.memberId
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<Pick> collectionPickList = [];
+    if (jsonResponse['data']['picks'].isNotEmpty) {
+      for (var pick in jsonResponse['data']['picks']) {
+        collectionPickList.add(Pick.fromJson(pick));
+      }
+    }
+
+    return collectionPickList;
   }
 }
