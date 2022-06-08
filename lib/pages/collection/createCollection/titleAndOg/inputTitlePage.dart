@@ -23,7 +23,7 @@ class InputTitlePage extends GetView<CreateCollectionController> {
       backgroundColor: Colors.white,
       elevation: 0.5,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      centerTitle: true,
+      centerTitle: GetPlatform.isIOS,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new_outlined,
