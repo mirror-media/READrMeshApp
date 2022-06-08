@@ -61,8 +61,9 @@ class CommentController extends GetxController {
   Future<bool> addComment(String commentContent) async {
     commentSending(commentContent);
     List<Comment>? newAllComments = await commentRepos.createComment(
-      storyId: id,
+      targetId: id,
       content: commentContent,
+      objective: objective,
       state: CommentTransparency.public,
     );
 

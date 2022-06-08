@@ -10,7 +10,8 @@ import 'package:readr/models/graphqlBody.dart';
 
 abstract class CommentRepos {
   Future<List<Comment>?> createComment({
-    required String storyId,
+    required String targetId,
+    required PickObjective objective,
     required String content,
     required CommentTransparency state,
   });
@@ -88,14 +89,15 @@ class CommentService implements CommentRepos {
 
   @override
   Future<List<Comment>?> createComment({
-    required String storyId,
+    required String targetId,
+    required PickObjective objective,
     required String content,
     required CommentTransparency state,
   }) async {
-    String mutation = """
+    const String storyMutation = """
       mutation(
         \$myId: ID
-        \$storyId: ID
+        \$targetId: ID
         \$content: String
         \$published_date: DateTime
         \$state: String
@@ -109,7 +111,7 @@ class CommentService implements CommentRepos {
             }
             story:{
               connect:{
-                id: \$storyId
+                id: \$targetId
               }
             }
             content: \$content
@@ -160,13 +162,93 @@ class CommentService implements CommentRepos {
       }
     """;
 
+    const String collectionMutation = """
+      mutation(
+        \$myId: ID
+        \$targetId: ID
+        \$content: String
+        \$published_date: DateTime
+        \$state: String
+      ){
+        createComment(
+          data:{
+            member:{
+              connect:{
+                id: \$myId
+              }
+            }
+            collection:{
+              connect:{
+                id: \$targetId
+              }
+            }
+            content: \$content
+            published_date: \$published_date
+            is_active: true
+            state: \$state
+          }
+        ){
+          collection{
+            comment(
+              where:{
+                is_active:{
+                  equals: true
+                }
+                state:{
+                  equals: "public"
+                }
+              }
+              orderBy:{
+                published_date: desc
+              }
+            ){
+              id
+              member{
+                id
+                nickname
+                email
+                avatar
+              }
+              content
+              state
+              published_date
+              likeCount
+              is_edited
+              isLiked:likeCount(
+                where:{
+                  is_active:{
+                    equals: true
+                  }
+                  id:{
+                    equals: \$myId
+                  }
+                }
+              )
+            }
+          }
+        }
+      }
+    """;
+
     Map<String, dynamic> variables = {
       "myId": Get.find<UserService>().currentUser.memberId,
-      "storyId": storyId,
+      "targetId": targetId,
       "content": content,
       "published_date": DateTime.now().toUtc().toIso8601String(),
       "state": state.toString().split('.').last,
     };
+
+    String mutation;
+    switch (objective) {
+      case PickObjective.story:
+        mutation = storyMutation;
+        break;
+      case PickObjective.comment:
+        return null;
+      case PickObjective.collection:
+        mutation = collectionMutation;
+        break;
+    }
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
@@ -185,8 +267,18 @@ class CommentService implements CommentRepos {
       }
 
       List<Comment> allComments = [];
-      for (var item in jsonResponse['data']['createComment']['story']
-          ['comment']) {
+      Map commentResponse;
+      switch (objective) {
+        case PickObjective.story:
+          commentResponse = jsonResponse['data']['createComment']['story'];
+          break;
+        case PickObjective.comment:
+          return null;
+        case PickObjective.collection:
+          commentResponse = jsonResponse['data']['createComment']['collection'];
+          break;
+      }
+      for (var item in commentResponse['comment']) {
         allComments.add(Comment.fromJson(item));
       }
 
