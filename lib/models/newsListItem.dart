@@ -55,7 +55,8 @@ class NewsListItem {
     required this.controllerTag,
   });
 
-  factory NewsListItem.fromJson(Map<String, dynamic> json) {
+  factory NewsListItem.fromJson(Map<String, dynamic> json,
+      {bool updateController = true}) {
     late Publisher source;
     Category? category;
     bool payWall = false;
@@ -160,33 +161,35 @@ class NewsListItem {
     List<Member> allPickedMember = [];
     allPickedMember.addAll(followingPickMembers);
     allPickedMember.addAll(otherPickMembers);
-    if (Get.isRegistered<PickableItemController>(tag: 'News${json['id']}') ||
-        Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
-      final controller =
-          Get.find<PickableItemController>(tag: 'News${json['id']}');
-      if (controller.isLoading.isFalse) {
-        controller.myPickId.value = myPickId;
-        controller.myPickCommentId.value = myPickCommentId;
+    if (updateController) {
+      if (Get.isRegistered<PickableItemController>(tag: 'News${json['id']}') ||
+          Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
+        final controller =
+            Get.find<PickableItemController>(tag: 'News${json['id']}');
+        if (controller.isLoading.isFalse) {
+          controller.myPickId.value = myPickId;
+          controller.myPickCommentId.value = myPickCommentId;
+        }
+        controller.pickCount.value = pickCount;
+        controller.commentCount.value = commentCount;
+        controller.pickedMembers.assignAll(allPickedMember);
+      } else {
+        Get.lazyPut<PickableItemController>(
+          () => PickableItemController(
+            targetId: json["id"],
+            pickRepos: PickService(),
+            objective: PickObjective.story,
+            myPickId: myPickId,
+            myPickCommentId: myPickCommentId,
+            pickCount: pickCount,
+            commentCount: commentCount,
+            pickedMembers: allPickedMember,
+            controllerTag: 'News${json['id']}',
+          ),
+          tag: 'News${json['id']}',
+          fenix: true,
+        );
       }
-      controller.pickCount.value = pickCount;
-      controller.commentCount.value = commentCount;
-      controller.pickedMembers.assignAll(allPickedMember);
-    } else {
-      Get.lazyPut<PickableItemController>(
-        () => PickableItemController(
-          targetId: json["id"],
-          pickRepos: PickService(),
-          objective: PickObjective.story,
-          myPickId: myPickId,
-          myPickCommentId: myPickCommentId,
-          pickCount: pickCount,
-          commentCount: commentCount,
-          pickedMembers: allPickedMember,
-          controllerTag: 'News${json['id']}',
-        ),
-        tag: 'News${json['id']}',
-        fenix: true,
-      );
     }
 
     return NewsListItem(
