@@ -9,7 +9,7 @@ import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/services/personalFileService.dart';
 
 class PersonalFilePageController extends GetxController
-    with GetTickerProviderStateMixin {
+    with GetSingleTickerProviderStateMixin {
   final PersonalFileRepos personalFileRepos;
   Member viewMember;
   PersonalFilePageController({
@@ -40,6 +40,17 @@ class PersonalFilePageController extends GetxController
     super.onInit();
   }
 
+  // @override
+  // void onReady() {
+  //   if (tabs.isNotEmpty) {
+  //     tabController = TabController(
+  //       vsync: this,
+  //       length: tabs.length,
+  //     );
+  //   }
+  //   super.onReady();
+  // }
+
   @override
   void onClose() {
     tabController.dispose();
@@ -51,6 +62,7 @@ class PersonalFilePageController extends GetxController
     isError.value = false;
     try {
       await fetchMemberData();
+      _initializeTabController();
       isLoading.value = false;
     } catch (e) {
       print('Fetch personal file error: $e');
@@ -74,7 +86,6 @@ class PersonalFilePageController extends GetxController
         viewMemberData.value.followingPublisherCount ?? 0;
     followingCount.value = followingMemberCount + followingPublisherCount;
     bookmarkCount.value = viewMemberData.value.bookmarkCount ?? 0;
-    _initializeTabController();
   }
 
   void _initializeTabController() {
