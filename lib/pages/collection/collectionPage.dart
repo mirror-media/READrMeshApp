@@ -4,7 +4,7 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/folderCollectionWidget.dart';
-import 'package:readr/services/collectionService.dart';
+import 'package:readr/services/collectionPageService.dart';
 
 class CollectionPage extends GetView<CollectionPageController> {
   final Collection collection;
@@ -12,12 +12,19 @@ class CollectionPage extends GetView<CollectionPageController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(
-      CollectionPageController(
-        collection: collection,
-        collectionRepos: CollectionService(),
-      ),
-    );
+    if (Get.isRegistered<CollectionPageController>(tag: collection.id)) {
+      Get.find<CollectionPageController>(tag: collection.id)
+          .fetchCollectionData();
+    } else {
+      Get.put(
+        CollectionPageController(
+          collection: collection,
+          collectionPageRepos: CollectionPageService(),
+        ),
+        tag: collection.id,
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
