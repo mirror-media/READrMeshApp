@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/services/collectionService.dart';
+import 'package:readr/services/personalFileService.dart';
 
 class CollectionTabController extends GetxController {
-  final CollectionRepos collectionRepos;
+  final PersonalFileRepos personalFileRepos;
   final Member viewMember;
   CollectionTabController({
-    required this.collectionRepos,
+    required this.personalFileRepos,
     required this.viewMember,
   });
 
@@ -36,7 +36,7 @@ class CollectionTabController extends GetxController {
 
   Future<void> fetchCollecitionList() async {
     try {
-      var result = await collectionRepos.fetchCollectionList(viewMember);
+      var result = await personalFileRepos.fetchCollectionList(viewMember);
       collectionList.assignAll(result);
       if (collectionList.length < 20) {
         isNoMore.value = true;
@@ -53,7 +53,7 @@ class CollectionTabController extends GetxController {
   void fetchMoreCollection() async {
     isLoadingMore.value = true;
     try {
-      var result = await collectionRepos.fetchMoreCollectionList(viewMember,
+      var result = await personalFileRepos.fetchMoreCollectionList(viewMember,
           List<String>.from(collectionList.map((element) => element.id)));
       collectionList.addAll(result);
       if (result.length < 20) {

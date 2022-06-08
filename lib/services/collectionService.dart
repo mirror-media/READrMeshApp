@@ -9,7 +9,6 @@ import 'package:readr/models/collection.dart';
 
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/graphqlBody.dart';
-import 'package:readr/models/member.dart';
 
 abstract class CollectionRepos {
   Future<List<CollectionStory>> fetchPickAndBookmark({
@@ -26,14 +25,6 @@ abstract class CollectionRepos {
     required Collection collection,
     required List<CollectionStory> collectionStory,
   });
-  Future<List<Collection>> fetchCollectionList(
-    Member viewMember, {
-    List<String>? fetchedCollectionIds,
-  });
-  Future<List<Collection>> fetchMoreCollectionList(
-    Member viewMember,
-    List<String> fetchedCollectionIds,
-  );
 }
 
 class CollectionService implements CollectionRepos {
@@ -472,89 +463,5 @@ class CollectionService implements CollectionRepos {
 
     collection.collectionPicks = collectionPicks;
     return collection;
-  }
-
-  @override
-  Future<List<Collection>> fetchCollectionList(
-    Member viewMember, {
-    List<String>? fetchedCollectionIds,
-  }) async {
-    const String query = """
-    query(
-      \$viewMemberId: ID
-      \$fetchedCollectionIds: [ID!]
-    ){
-      collections(
-        where:{
-          id:{
-            notIn: \$fetchedCollectionIds
-          }
-          status:{
-            equals: "publish"
-          }
-          creator:{
-            id:{
-              equals: \$viewMemberId
-            }
-          }
-        }
-        take: 20
-        orderBy:{
-          createdAt: desc
-        }
-      ){
-        id
-        title
-        slug
-        public
-        status
-        heroImage{
-          urlOriginal
-          file{
-            url
-          }
-        }
-        format
-        createdAt
-        commentCount(
-          where:{
-            is_active:{
-              equals: true
-            }
-          }
-        )
-      }
-    }
-    """;
-
-    Map<String, dynamic> variables = {
-      "viewMemberId": viewMember.memberId,
-      "fetchedCollectionIds": fetchedCollectionIds ?? [],
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    return List<Collection>.from(jsonResponse['data']['collections'].map(
-        (element) => Collection.fromFetchCollectionList(element, viewMember)));
-  }
-
-  @override
-  Future<List<Collection>> fetchMoreCollectionList(
-    Member viewMember,
-    List<String> fetchedCollectionIds,
-  ) async {
-    return await fetchCollectionList(viewMember,
-        fetchedCollectionIds: fetchedCollectionIds);
   }
 }

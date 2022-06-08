@@ -13,7 +13,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/collectionInfo.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
-import 'package:readr/services/collectionService.dart';
+import 'package:readr/services/personalFileService.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -33,7 +33,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
     } else {
       Get.put(
         CollectionTabController(
-          collectionRepos: CollectionService(),
+          personalFileRepos: PersonalFileService(),
           viewMember: viewMember,
         ),
         tag: viewMember.memberId,
