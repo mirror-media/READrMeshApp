@@ -17,6 +17,7 @@ abstract class CollectionRepos {
   Future<Collection> createCollection({
     required String title,
     required String ogImageUrl,
+    required List<CollectionStory> collectionStory,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
@@ -253,53 +254,211 @@ class CollectionService implements CollectionRepos {
   Future<Collection> createCollection({
     required String title,
     required String ogImageUrl,
+    required List<CollectionStory> collectionStory,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
   }) async {
     const String mutation = """
     mutation(
-      \$title: String
-      \$slug: String
-      \$creatorId: ID
-      \$public: String
-      \$format: String
-      \$heroImageUrl: String
-    ){
-      createCollection(
-        data:{
-          title: \$title,
-          slug: \$slug,
-          public: \$public,
-          format: \$format,
-          status: "publish",
-          creator:{
-            connect:{
-              id: \$creatorId
-            }
-          }
-          heroImage:{
-            create:{
-              name: \$slug
-              urlOriginal: \$heroImageUrl
-            }
-          }
+  \$title: String
+  \$slug: String
+  \$myId: ID
+  \$public: String
+  \$format: String
+  \$heroImageUrl: String
+  \$collectionpicks: [CollectionPickCreateInput!]
+  \$followingMembers: [ID!]
+){
+  createCollection(
+    data:{
+      title: \$title,
+      slug: \$slug,
+      public: \$public,
+      format: \$format,
+      status: "publish"
+      creator:{
+      	connect:{
+          id: \$myId
         }
-      ){
-        id
-        slug
-        createdAt
+      }
+      heroImage:{
+        create:{
+          name: \$slug
+          urlOriginal: \$heroImageUrl
+        }
+      }
+      collectionpicks:{
+        create: \$collectionpicks
       }
     }
+  ){
+    id
+    slug
+    createdAt
+    collectionpicks{
+      id
+      sort_order
+      picked_date
+      creator{
+        id
+        nickname
+        avatar
+        customId
+      }
+      story{
+        id
+        title
+        url
+        source{
+          id
+          title
+        }
+        full_content
+        full_screen_ad
+        paywall
+        published_date
+        og_image
+        followingPicks: pick(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        otherPicks:pick(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        pickCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        commentCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: pick(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
+        }
+      }
+    }
+  }
+}
     """;
 
-    Map<String, String> variables = {
+    List<Map<String, dynamic>> collectionStoryList = [];
+    for (var item in collectionStory) {
+      Map<String, dynamic> createInput = {
+        "story": {
+          "connect": {"id": item.news!.id}
+        },
+        "sort_order": item.sortOrder,
+        "creator": {
+          "connect": {"id": Get.find<UserService>().currentUser.memberId}
+        },
+        "picked_date": DateTime.now().toUtc().toIso8601String()
+      };
+      collectionStoryList.add(createInput);
+    }
+
+    Map<String, dynamic> variables = {
       "title": title,
       "slug": slug ?? '${DateTime.now()}_$hashCode',
       "public": public.toString().split('.').last,
       "format": format.toString().split('.').last,
-      "creatorId": Get.find<UserService>().currentUser.memberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
       "heroImageUrl": ogImageUrl,
+      "collectionpicks": collectionStoryList,
+      "followingMembers": Get.find<UserService>().followingMemberIds,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -315,6 +474,12 @@ class CollectionService implements CollectionRepos {
       headers: await _getHeaders(needAuth: true),
     );
 
+    List<CollectionStory> collectionPicks = [];
+    for (var result in jsonResponse['data']['createCollection']
+        ['collectionpicks']) {
+      collectionPicks.add(CollectionStory.fromJson(result));
+    }
+
     return Collection(
       id: jsonResponse['data']['createCollection']['id'],
       title: title,
@@ -328,6 +493,7 @@ class CollectionService implements CollectionRepos {
       publishedTime: DateTime.tryParse(
               jsonResponse['data']['createCollection']['createdAt']) ??
           DateTime.now(),
+      collectionPicks: collectionPicks,
     );
   }
 

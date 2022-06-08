@@ -64,15 +64,8 @@ class CreateCollectionController extends GetxController {
           .createCollection(
             title: collectionTitle.value,
             ogImageUrl: collectionOgUrl.value,
+            collectionStory: selectedList,
           )
-          .timeout(
-            const Duration(minutes: 1),
-            onTimeout: () => throw Exception(),
-          );
-
-      newCollection = await service
-          .createCollectionPicks(
-              collection: newCollection, collectionStory: selectedList)
           .timeout(
             const Duration(minutes: 1),
             onTimeout: () => throw Exception(),
