@@ -16,13 +16,16 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
   const FolderCollectionWidget(this.collection);
 
   @override
+  String get tag => collection.id;
+
+  @override
   Widget build(BuildContext context) {
     return Obx(
       () {
         if (controller.isError.isTrue) {
           return ErrorPage(
             error: controller.error,
-            onPressed: () => controller.fetchCollectionPicks(),
+            onPressed: () => controller.fetchCollectionData(),
             hideAppbar: true,
           );
         }
@@ -56,8 +59,34 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
           );
         }
 
-        return const Center(
-          child: CircularProgressIndicator.adaptive(),
+        return Column(
+          children: [
+            AppBar(
+              centerTitle: GetPlatform.isIOS,
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: readrBlack,
+                ),
+                onPressed: () => Get.back(),
+              ),
+              title: const Text(
+                '集錦',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: readrBlack,
+                ),
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
+          ],
         );
       },
     );
