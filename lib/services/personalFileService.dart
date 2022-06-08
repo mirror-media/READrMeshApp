@@ -877,6 +877,8 @@ query(
     query(
       \$viewMemberId: ID
       \$fetchedCollectionIds: [ID!]
+      \$followingMembers: [ID!]
+      \$myId: ID
     ){
       collections(
         where:{
@@ -915,15 +917,130 @@ query(
             is_active:{
               equals: true
             }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
           }
         )
+        followingPicks: picks(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        otherPicks:picks(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        picksCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: picks(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
+        }
       }
     }
     """;
 
+    List<String> followingMemberIds = [];
+    for (var memberId in Get.find<UserService>().currentUser.following) {
+      followingMemberIds.add(memberId.memberId);
+    }
+
     Map<String, dynamic> variables = {
       "viewMemberId": viewMember.memberId,
       "fetchedCollectionIds": fetchedCollectionIds ?? [],
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "followingMembers": followingMemberIds,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(

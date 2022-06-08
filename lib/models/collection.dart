@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/services/pickService.dart';
@@ -57,30 +58,58 @@ class Collection {
         break;
     }
 
+    String? myPickId;
+    String? myPickCommentId;
+    if (json['myPickId'].isNotEmpty) {
+      var myPickItem = json['myPickId'][0];
+      myPickId = myPickItem['id'];
+      if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
+          myPickItem['pick_comment'].isNotEmpty) {
+        myPickCommentId = myPickItem['pick_comment'][0]['id'];
+      }
+    }
+
+    int pickCount = json['picksCount'];
+
+    List<Member> allPickedMember = [];
+    if (BaseModel.checkJsonKeys(json, ['followingPicks']) &&
+        json['followingPicks'].isNotEmpty) {
+      for (var pick in json['followingPicks']) {
+        allPickedMember.add(Member.fromJson(pick['member']));
+      }
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['otherPicks']) &&
+        json['otherPicks'].isNotEmpty) {
+      for (var pick in json['otherPicks']) {
+        allPickedMember.add(Member.fromJson(pick['member']));
+      }
+    }
+
     if (Get.isRegistered<PickableItemController>(
             tag: 'Collection${json['id']}') ||
         Get.isPrepared<PickableItemController>(
             tag: 'Collection${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'Collection${json['id']}');
-      // if (controller.isLoading.isFalse) {
-      //   controller.myPickId.value = myPickId;
-      //   controller.myPickCommentId.value = myPickCommentId;
-      // }
-      // controller.pickCount.value = pickCount;
+      if (controller.isLoading.isFalse) {
+        controller.myPickId.value = myPickId;
+        controller.myPickCommentId.value = myPickCommentId;
+      }
+      controller.pickCount.value = pickCount;
       controller.commentCount.value = json['commentCount'];
-      // controller.pickedMembers.assignAll(allPickedMember);
+      controller.pickedMembers.assignAll(allPickedMember);
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: json["id"],
           pickRepos: PickService(),
           objective: PickObjective.collection,
-          // myPickId: myPickId,
-          // myPickCommentId: myPickCommentId,
-          // pickCount: pickCount,
+          myPickId: myPickId,
+          myPickCommentId: myPickCommentId,
+          pickCount: pickCount,
           commentCount: json['commentCount'],
-          // pickedMembers: allPickedMember,
+          pickedMembers: allPickedMember,
           controllerTag: 'Collection${json['id']}',
         ),
         tag: 'Collection${json['id']}',
