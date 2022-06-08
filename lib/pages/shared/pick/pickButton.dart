@@ -11,12 +11,12 @@ import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
 
 class PickButton extends StatelessWidget {
-  final String contorllerTag;
+  final String controllerTag;
   final bool expanded;
   final double textSize;
   final bool isInMyPersonalFile;
   const PickButton(
-    this.contorllerTag, {
+    this.controllerTag, {
     this.expanded = false,
     this.textSize = 14,
     this.isInMyPersonalFile = false,
@@ -35,7 +35,7 @@ class PickButton extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context) {
-    final controller = Get.find<PickableItemController>(tag: contorllerTag);
+    final controller = Get.find<PickableItemController>(tag: controllerTag);
     return Obx(
       () => OutlinedButton(
         onPressed: () async {
