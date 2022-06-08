@@ -26,6 +26,12 @@ abstract class CollectionRepos {
     required Collection collection,
     required List<CollectionStory> collectionStory,
   });
+  Future<Collection> updateTitleAndOg({
+    required String collectionId,
+    required String heroImageId,
+    required String newTitle,
+    required String newOgUrl,
+  });
 }
 
 class CollectionService implements CollectionRepos {
@@ -296,6 +302,9 @@ class CollectionService implements CollectionRepos {
     id
     slug
     createdAt
+    heroImage{
+      id
+    }
     collectionpicks{
       id
       sort_order
@@ -494,6 +503,7 @@ class CollectionService implements CollectionRepos {
               jsonResponse['data']['createCollection']['createdAt']) ??
           DateTime.now(),
       collectionPicks: collectionPicks,
+      ogImageId: jsonResponse['data']['createCollection']['heroImage']['id'],
     );
   }
 
@@ -697,5 +707,199 @@ class CollectionService implements CollectionRepos {
 
     collection.collectionPicks = collectionPicks;
     return collection;
+  }
+
+  @override
+  Future<Collection> updateTitleAndOg({
+    required String collectionId,
+    required String heroImageId,
+    required String newTitle,
+    required String newOgUrl,
+  }) async {
+    const String mutation = """
+mutation(
+  \$collectionId: ID
+  \$heroImageId: ID
+  \$newTitle: String
+  \$newOgUrl: String
+  \$followingMembers: [ID!]
+  \$myId: ID
+){
+  updatePhoto(
+    where:{
+      id: \$heroImageId
+    }
+    data:{
+      urlOriginal: \$newOgUrl
+    }
+  ){
+    urlOriginal
+  }
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      title: \$newTitle
+    }
+  ){
+    id
+    title
+    slug
+    public
+    status
+    heroImage{
+      id
+      urlOriginal
+      file{
+        url
+      }
+    }
+    format
+    createdAt
+    commentCount(
+      where:{
+        is_active:{
+          equals: true
+        }
+        state:{
+          equals: "public"
+        }
+        member:{
+          is_active:{
+            equals: true
+          }
+        }
+      }
+    )
+    followingPicks: picks(
+      where:{
+        member:{
+          id:{
+            in: \$followingMembers
+          }
+        }
+        state:{
+          equals: "public"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+      orderBy:{
+        picked_date: desc
+      }
+      take: 4
+    ){
+      member{
+        id
+        nickname
+        avatar
+        customId
+      }
+    }
+    otherPicks:picks(
+      where:{
+        member:{
+          id:{
+            notIn: \$followingMembers
+            not:{
+              equals: \$myId
+            }
+          }
+        }
+        state:{
+          in: "public"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+      orderBy:{
+        picked_date: desc
+      }
+      take: 4
+    ){
+      member{
+        id
+        nickname
+        avatar
+        customId
+      }
+    }
+    picksCount(
+      where:{
+        state:{
+          in: "public"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+    )
+    myPickId: picks(
+      where:{
+        member:{
+          id:{
+            equals: \$myId
+          }
+        }
+        state:{
+          notIn: "private"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+      pick_comment(
+        where:{
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+      }
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+      "heroImageId": heroImageId,
+      "newTitle": newTitle,
+      "newOgUrl": newOgUrl,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "followingMembers": Get.find<UserService>().followingMemberIds,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: true),
+    );
+
+    return Collection.fromFetchCollectionList(
+        jsonResponse['data']['updateCollection'],
+        Get.find<UserService>().currentUser);
   }
 }

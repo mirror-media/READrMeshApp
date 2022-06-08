@@ -905,6 +905,7 @@ query(
         public
         status
         heroImage{
+          id
           urlOriginal
           file{
             url

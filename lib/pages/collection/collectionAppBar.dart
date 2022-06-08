@@ -5,6 +5,7 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/pages/collection/editCollection/titleAndOg/editTitlePage.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController> {
   final Collection collection;
@@ -16,6 +17,7 @@ class CollectionAppBar extends GetView<CollectionPageController> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      key: UniqueKey(),
       centerTitle: GetPlatform.isIOS,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
@@ -121,9 +123,10 @@ class CollectionAppBar extends GetView<CollectionPageController> {
             if (Get.find<UserService>().isMember.isTrue &&
                 collection.creator.memberId ==
                     Get.find<UserService>().currentUser.memberId) {
-              return const Padding(
-                padding: EdgeInsets.only(right: 14),
-                child: Icon(
+              return IconButton(
+                onPressed: () async =>
+                    await _showEditCollectionBottomSheet(context),
+                icon: const Icon(
                   Icons.more_horiz_outlined,
                   color: readrBlack87,
                   size: 26,
@@ -135,5 +138,112 @@ class CollectionAppBar extends GetView<CollectionPageController> {
         )
       ],
     );
+  }
+
+  Future<void> _showEditCollectionBottomSheet(BuildContext context) async {
+    String? result = await showCupertinoModalPopup<String>(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('title'),
+            child: const Text(
+              '修改標題',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('edit'),
+            child: const Text(
+              '編輯內容',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('delete'),
+            child: const Text(
+              '刪除集錦',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+                color: Color.fromRGBO(255, 59, 48, 1),
+              ),
+            ),
+          )
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(context).pop('cancel'),
+          child: const Text(
+            '取消',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+    if (result == 'title') {
+      Get.to(
+        () => EditTitlePage(
+          collection: collection,
+        ),
+        fullscreenDialog: true,
+      );
+    } else if (result == 'edit') {
+    } else if (result == 'delete') {
+      await showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: const Text(
+            '確認刪除集錦？',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: const Text(
+            '此動作無法復原',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Get.back();
+              },
+              child: const Text(
+                '刪除',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                '取消',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

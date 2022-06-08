@@ -16,6 +16,7 @@ class Collection {
   List<CollectionStory>? collectionPicks;
   final String controllerTag;
   String ogImageUrl;
+  String ogImageId;
   final DateTime publishedTime;
   final int commentCount;
   final int pickCount;
@@ -30,6 +31,7 @@ class Collection {
     required this.controllerTag,
     required this.ogImageUrl,
     required this.publishedTime,
+    required this.ogImageId,
     this.format = CollectionFormat.folder,
     this.public = CollectionPublic.public,
     this.collectionPicks,
@@ -127,6 +129,7 @@ class Collection {
       ogImageUrl: imageUrl,
       controllerTag: 'Collection${json['id']}',
       format: format,
+      ogImageId: json['heroImage']['id'],
     );
   }
 }

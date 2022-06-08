@@ -21,9 +21,11 @@ class CollectionPageController extends GetxController {
   final List<Comment> allComments = [];
   final List<Comment> popularComments = [];
   final collectionPicks = <CollectionStory>[].obs;
+  late final Rx<Collection> collectionData;
 
   @override
   void onInit() {
+    collectionData = collection.obs;
     if (collection.collectionPicks == null) {
       fetchCollectionData();
     } else {
@@ -45,6 +47,7 @@ class CollectionPageController extends GetxController {
       allComments.assignAll(result['allComments']);
       popularComments.assignAll(result['popularComments']);
       collectionPicks.assignAll(result['collectionPicks']);
+      collection.collectionPicks = result['collectionPicks'];
     } catch (e) {
       print('Fetch collection data failed: $e');
       error = determineException(e);
