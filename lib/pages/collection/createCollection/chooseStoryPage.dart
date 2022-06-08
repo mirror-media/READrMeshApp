@@ -95,81 +95,79 @@ class ChooseStoryPage extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 12),
-              child: GestureDetector(
-                onTap: () async {
-                  await _showFilterBottomSheet(context);
-                },
-                child: Row(
-                  children: [
-                    Obx(
-                      () {
-                        String text = '精選文章及書籤';
-                        if (controller.showPicked.isFalse) {
-                          text = '書籤';
-                        } else if (controller.showBookmark.isFalse) {
-                          text = '精選文章';
-                        }
-                        return Text(
-                          text,
-                          style: const TextStyle(
-                            color: readrBlack87,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(width: 6),
-                    const Icon(
-                      Icons.expand_more_outlined,
-                      color: readrBlack30,
-                      size: 30,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Obx(
-                () {
-                  List<CollectionStory> showList;
-                  if (controller.showPicked.isTrue &&
-                      controller.showBookmark.isTrue) {
-                    showList = controller.pickAndBookmarkList;
-                  } else if (controller.showPicked.isTrue) {
-                    showList = controller.pickedList;
-                  } else {
-                    showList = controller.bookmarkList;
-                  }
-                  return ListView.separated(
-                    itemBuilder: (context, index) {
-                      return _buildListItem(showList[index]);
-                    },
-                    separatorBuilder: (context, index) {
-                      return const Padding(
-                        padding: EdgeInsets.only(top: 16, bottom: 20),
-                        child: Divider(
-                          color: readrBlack10,
-                          thickness: 1,
-                          height: 1,
-                          indent: 44,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 12),
+            child: GestureDetector(
+              onTap: () async {
+                await _showFilterBottomSheet(context);
+              },
+              child: Row(
+                children: [
+                  Obx(
+                    () {
+                      String text = '精選文章及書籤';
+                      if (controller.showPicked.isFalse) {
+                        text = '書籤';
+                      } else if (controller.showBookmark.isFalse) {
+                        text = '精選文章';
+                      }
+                      return Text(
+                        text,
+                        style: const TextStyle(
+                          color: readrBlack87,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
                         ),
                       );
                     },
-                    itemCount: showList.length,
-                  );
-                },
+                  ),
+                  const SizedBox(width: 6),
+                  const Icon(
+                    Icons.expand_more_outlined,
+                    color: readrBlack30,
+                    size: 30,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: Obx(
+              () {
+                List<CollectionStory> showList;
+                if (controller.showPicked.isTrue &&
+                    controller.showBookmark.isTrue) {
+                  showList = controller.pickAndBookmarkList;
+                } else if (controller.showPicked.isTrue) {
+                  showList = controller.pickedList;
+                } else {
+                  showList = controller.bookmarkList;
+                }
+                return ListView.separated(
+                  itemBuilder: (context, index) {
+                    return _buildListItem(showList[index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 16, bottom: 20),
+                      child: Divider(
+                        color: readrBlack10,
+                        thickness: 1,
+                        height: 1,
+                        indent: 44,
+                      ),
+                    );
+                  },
+                  itemCount: showList.length,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -206,120 +204,118 @@ class ChooseStoryPage extends StatelessWidget {
         builder: (context, setState) {
           return Material(
             color: Colors.white,
-            child: SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: 4,
-                    width: 48,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 4,
+                  width: 48,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    color: Colors.white,
+                  ),
+                  margin: const EdgeInsets.only(top: 16),
+                  child: Container(
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      color: Colors.white,
-                    ),
-                    margin: const EdgeInsets.only(top: 16),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: readrBlack20,
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: readrBlack20,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-                    alignment: Alignment.centerLeft,
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    '新聞來源',
+                    style: TextStyle(
+                      color: readrBlack50,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                CheckboxListTile(
+                  value: showPicked,
+                  dense: true,
+                  onChanged: (value) {
+                    setState(() {
+                      showPicked = value!;
+                    });
+                  },
+                  activeColor: readrBlack87,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: const EdgeInsets.only(left: 12),
+                  title: const Text(
+                    '精選文章',
+                    style: TextStyle(
+                      color: readrBlack87,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                CheckboxListTile(
+                  value: showBookmark,
+                  dense: true,
+                  onChanged: (value) {
+                    setState(() {
+                      showBookmark = value!;
+                    });
+                  },
+                  activeColor: readrBlack87,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: const EdgeInsets.only(left: 12),
+                  title: const Text(
+                    '書籤',
+                    style: TextStyle(
+                      color: readrBlack87,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Divider(
+                  color: readrBlack10,
+                  height: 0.5,
+                  thickness: 0.5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+                  child: ElevatedButton(
+                    onPressed: !showPicked && !showBookmark
+                        ? null
+                        : () {
+                            controller.showPicked.value = showPicked;
+                            controller.showBookmark.value = showBookmark;
+                            Navigator.pop(context);
+                          },
+                    style: ElevatedButton.styleFrom(
+                      primary: readrBlack87,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      minimumSize: const Size.fromHeight(48),
+                    ),
                     child: const Text(
-                      '新聞來源',
+                      '篩選',
                       style: TextStyle(
-                        color: readrBlack50,
-                        fontSize: 13,
+                        fontSize: 16,
                         fontWeight: FontWeight.w400,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  CheckboxListTile(
-                    value: showPicked,
-                    dense: true,
-                    onChanged: (value) {
-                      setState(() {
-                        showPicked = value!;
-                      });
-                    },
-                    activeColor: readrBlack87,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: const EdgeInsets.only(left: 12),
-                    title: const Text(
-                      '精選文章',
-                      style: TextStyle(
-                        color: readrBlack87,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  CheckboxListTile(
-                    value: showBookmark,
-                    dense: true,
-                    onChanged: (value) {
-                      setState(() {
-                        showBookmark = value!;
-                      });
-                    },
-                    activeColor: readrBlack87,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: const EdgeInsets.only(left: 12),
-                    title: const Text(
-                      '書籤',
-                      style: TextStyle(
-                        color: readrBlack87,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const Divider(
-                    color: readrBlack10,
-                    height: 0.5,
-                    thickness: 0.5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
-                    child: ElevatedButton(
-                      onPressed: !showPicked && !showBookmark
-                          ? null
-                          : () {
-                              controller.showPicked.value = showPicked;
-                              controller.showBookmark.value = showBookmark;
-                              Navigator.pop(context);
-                            },
-                      style: ElevatedButton.styleFrom(
-                        primary: readrBlack87,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        minimumSize: const Size.fromHeight(48),
-                      ),
-                      child: const Text(
-                        '篩選',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
