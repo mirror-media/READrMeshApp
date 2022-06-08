@@ -282,7 +282,21 @@ class PickService implements PickRepos {
         });
       }
     } else {
-      return null;
+      variables['data']!.addAll({
+        "pick_comment": {
+          "create": {
+            "member": {
+              "connect": {"id": Get.find<UserService>().currentUser.memberId}
+            },
+            "collection": {
+              "connect": {"id": targetId}
+            },
+            "content": commentContent,
+            "state": state.toString().split('.').last,
+            "published_date": DateTime.now().toUtc().toIso8601String()
+          }
+        }
+      });
     }
 
     GraphqlBody graphqlBody = GraphqlBody(
