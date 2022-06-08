@@ -142,4 +142,12 @@ class UserService extends GetxService {
 
     await fetchUserData();
   }
+
+  List<String> get followingMemberIds {
+    return List<String>.from(currentUser.following.map((e) => e.memberId));
+  }
+
+  List<String> get followingPublisherIds {
+    return List<String>.from(currentUser.followingPublisher.map((e) => e.id));
+  }
 }
