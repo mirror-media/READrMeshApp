@@ -302,7 +302,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
-                  child: CollectionInfo(collection),
+                  child: CollectionInfo(collection, key: Key(collection.id)),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
