@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/collection/createCollection/collectionStoryItem.dart';
+import 'package:readr/pages/collection/collectionStoryItem.dart';
 
 class SortStoryPage extends GetView<CreateCollectionController> {
   @override
