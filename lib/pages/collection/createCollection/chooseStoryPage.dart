@@ -6,6 +6,7 @@ import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/collection/createCollection/collectionStoryItem.dart';
+import 'package:readr/pages/collection/createCollection/titleAndOg/inputTitlePage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -84,7 +85,16 @@ class ChooseStoryPage extends StatelessWidget {
                     color: Colors.blue,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  for (var selectedItem in controller.selectedList) {
+                    if (selectedItem.heroImageUrl != null) {
+                      controller.collectionOgUrl.value =
+                          selectedItem.heroImageUrl!;
+                      break;
+                    }
+                  }
+                  Get.to(() => InputTitlePage());
+                },
               );
             }
             return Container();

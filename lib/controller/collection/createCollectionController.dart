@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
@@ -8,6 +9,7 @@ class CreateCollectionController extends GetxController {
   final CollectionRepos service;
   CreateCollectionController(this.service);
 
+  //chooseStoryPage
   List<CollectionStory> pickAndBookmarkList = [];
   List<CollectionStory> pickedList = [];
   List<CollectionStory> bookmarkList = [];
@@ -17,6 +19,11 @@ class CreateCollectionController extends GetxController {
   var isError = false.obs;
   var isLoading = true.obs;
   dynamic error;
+
+  //inputTitlePage
+  final collectionTitle = ''.obs;
+  final collectionOgUrl = ''.obs;
+  final TextEditingController titleTextController = TextEditingController();
 
   @override
   void onInit() {
