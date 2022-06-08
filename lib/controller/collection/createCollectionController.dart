@@ -43,14 +43,11 @@ class CreateCollectionController extends GetxController {
     isLoading(true);
     isError(false);
     try {
-      pickAndBookmarkList.addAll(await service.fetchPickAndBookmark());
-      for (var item in pickAndBookmarkList) {
-        if (item.pickKinds!.contains(PickKind.read)) {
-          pickedList.add(item);
-        } else if (item.pickKinds!.contains(PickKind.bookmark)) {
-          bookmarkList.add(item);
-        }
-      }
+      var result = await service.fetchPickAndBookmark();
+      pickAndBookmarkList.assignAll(result['pickAndBookmarkList']!);
+      pickedList.assignAll(result['pickList']!);
+      bookmarkList.assignAll(result['bookmarkList']!);
+      selectedList.clear();
     } catch (e) {
       print('FetchPickAndBookmarkError: $e');
       isError.value = true;

@@ -1,5 +1,4 @@
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 
@@ -20,25 +19,12 @@ class CollectionStory {
     this.creator,
   });
 
-  factory CollectionStory.fromStory(Map<String, dynamic> json) {
-    List<PickKind>? pickKinds;
-    if (BaseModel.checkJsonKeys(json, ['pick'])) {
-      pickKinds = [];
-      for (var pick in json['pick']) {
-        if (pick['kind'] == 'read' && !pickKinds.contains(PickKind.read)) {
-          pickKinds.add(PickKind.read);
-        } else if (pick['kind'] == 'bookmark' &&
-            !pickKinds.contains(PickKind.bookmark)) {
-          pickKinds.add(PickKind.bookmark);
-        }
-      }
-    }
-
+  factory CollectionStory.fromPick(Map<String, dynamic> json) {
     return CollectionStory(
       id: '-1',
       pickedDate: DateTime.now(),
-      pickKinds: pickKinds,
-      news: NewsListItem.fromJson(json),
+      pickKinds: [],
+      news: NewsListItem.fromJson(json['story'], updateController: false),
     );
   }
 

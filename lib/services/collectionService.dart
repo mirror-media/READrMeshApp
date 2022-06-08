@@ -11,8 +11,8 @@ import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/graphqlBody.dart';
 
 abstract class CollectionRepos {
-  Future<List<CollectionStory>> fetchPickAndBookmark({
-    List<String>? fetchedIds,
+  Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
+    List<String>? fetchedStoryIds,
   });
   Future<Collection> createCollection({
     required String title,
@@ -89,71 +89,98 @@ class CollectionService implements CollectionRepos {
   }
 
   @override
-  Future<List<CollectionStory>> fetchPickAndBookmark({
-    List<String>? fetchedIds,
+  Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
+    List<String>? fetchedStoryIds,
   }) async {
     const String query = """
     query(
       \$myId: ID
-      \$fetchedIds: [ID!]
+      \$fetchedStoryIds: [ID!]
     ){
-      stories(
+      bookmarks: picks(
         where:{
-          is_active:{
-            equals: true
-          }
-          id:{
-            notIn: \$fetchedIds
-          }
-          pick:{
-            some:{
-              member:{
-                id:{
-                  equals:\$myId
-                }
-              }
-              objective:{
-                equals: "story"
-              }
-              kind:{
-                in:["read","bookmark"]
-              }
-              is_active:{
-                equals: true
-              }
+          member:{
+            id:{
+              equals: \$myId
             }
           }
-        }
-        take: 50
-        orderBy:{
-          published_date: desc
-        }
-      ){
-        id
-        title
-        url
-        published_date
-        og_image
-        source{
-          id
-          title
-        }
-        pick(
-          where:{
-            member:{
-              id:{
-                equals: \$myId
-              }
-            }
+          story:{
             is_active:{
               equals: true
             }
-            kind:{
-              in:["read","bookmark"]
+            id:{
+              notIn: \$fetchedStoryIds
             }
           }
-        ){
-          kind
+          is_active:{
+            equals: true
+          }
+          objective:{
+            equals: "story"
+          }
+          kind:{
+            equals: "bookmark"
+          }
+        }
+        take: 100
+        orderBy:{
+          picked_date: desc
+        }
+      ){
+        picked_date
+        story{
+          id
+          title
+          url
+          published_date
+          og_image
+          source{
+            id
+            title
+          }
+        }
+      }
+      picks: picks(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          story:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              notIn: \$fetchedStoryIds
+            }
+          }
+          is_active:{
+            equals: true
+          }
+          objective:{
+            equals: "story"
+          }
+          kind:{
+            equals: "read"
+          }
+        }
+        take: 100
+        orderBy:{
+          picked_date: desc
+        }
+      ){
+        picked_date
+        story{
+          id
+          title
+          url
+          published_date
+          og_image
+          source{
+            id
+            title
+          }
         }
       }
     }
@@ -161,7 +188,7 @@ class CollectionService implements CollectionRepos {
 
     Map<String, dynamic> variables = {
       "myId": Get.find<UserService>().currentUser.memberId,
-      "fetchedIds": fetchedIds ?? [],
+      "fetchedStoryIds": fetchedStoryIds ?? [],
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -177,8 +204,49 @@ class CollectionService implements CollectionRepos {
       headers: await _getHeaders(),
     );
 
-    return List<CollectionStory>.from(jsonResponse['data']['stories']
-        .map((story) => CollectionStory.fromStory(story)));
+    List<CollectionStory> pickAndBookmarkList = [];
+    List<CollectionStory> pickList = [];
+    List<CollectionStory> bookmarkList = [];
+    Map<String, DateTime> pickTime = {};
+    for (var bookmark in jsonResponse['data']['bookmarks']) {
+      CollectionStory collectionStory = CollectionStory.fromPick(bookmark);
+      pickAndBookmarkList.add(collectionStory);
+      bookmarkList.add(collectionStory);
+      pickTime.putIfAbsent(collectionStory.news!.id,
+          () => DateTime.parse(bookmark['picked_date']));
+    }
+    for (var pick in jsonResponse['data']['picks']) {
+      CollectionStory collectionStory = CollectionStory.fromPick(pick);
+      pickList.add(collectionStory);
+      int index = pickAndBookmarkList.indexWhere(
+          (element) => element.news!.id == collectionStory.news!.id);
+      if (index != -1) {
+        pickAndBookmarkList[index]
+            .pickKinds!
+            .add(collectionStory.pickKinds!.first);
+      } else {
+        pickAndBookmarkList.add(collectionStory);
+      }
+      pickTime.update(
+        collectionStory.news!.id,
+        (value) {
+          if (value.isAfter(pick['picked_date'])) {
+            return value;
+          }
+          return DateTime.parse(pick['picked_date']);
+        },
+        ifAbsent: () => DateTime.parse(pick['picked_date']),
+      );
+    }
+
+    pickAndBookmarkList
+        .sort((a, b) => pickTime[b.news!.id]!.compareTo(pickTime[a.news!.id]!));
+
+    return {
+      'pickAndBookmarkList': pickAndBookmarkList,
+      'pickList': pickList,
+      'bookmarkList': bookmarkList,
+    };
   }
 
   @override
