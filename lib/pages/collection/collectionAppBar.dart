@@ -5,6 +5,7 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/pages/collection/editCollection/reorderPage.dart';
 import 'package:readr/pages/collection/editCollection/titleAndOg/editTitlePage.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController> {
@@ -197,6 +198,12 @@ class CollectionAppBar extends GetView<CollectionPageController> {
         fullscreenDialog: true,
       );
     } else if (result == 'edit') {
+      Get.to(
+        () => ReorderPage(
+          collection: collection,
+        ),
+        fullscreenDialog: true,
+      );
     } else if (result == 'delete') {
       await showCupertinoDialog(
         context: context,

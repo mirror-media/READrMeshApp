@@ -32,6 +32,12 @@ abstract class CollectionRepos {
     required String newTitle,
     required String newOgUrl,
   });
+  Future<void> updateCollectionPicksOrder({
+    required String collectionId,
+    required List<CollectionStory> collectionStory,
+  });
+  Future<void> removeCollectionPicks(
+      {required List<CollectionStory> collectionStory});
 }
 
 class CollectionService implements CollectionRepos {
@@ -901,5 +907,104 @@ mutation(
     return Collection.fromFetchCollectionList(
         jsonResponse['data']['updateCollection'],
         Get.find<UserService>().currentUser);
+  }
+
+  @override
+  Future<void> updateCollectionPicksOrder({
+    required String collectionId,
+    required List<CollectionStory> collectionStory,
+  }) async {
+    const String mutation = """
+mutation(
+  \$data: [CollectionPickUpdateArgs!]!
+){
+  updateCollectionPicks(
+    data: \$data
+  ){
+    id
+  }
+}
+    """;
+
+    List<Map> dataList = [];
+
+    for (var item in collectionStory) {
+      dataList.add({
+        "where": {"id": item.id},
+        "data": {
+          "sort_order": item.sortOrder,
+          "updated_date": DateTime.now().toUtc().toIso8601String(),
+        }
+      });
+    }
+
+    Map<String, dynamic> variables = {
+      "data": dataList,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: true),
+    );
+
+    if (jsonResponse.containsKey('errors')) {
+      throw Exception('Update collection pick order error');
+    }
+  }
+
+  @override
+  Future<void> removeCollectionPicks(
+      {required List<CollectionStory> collectionStory}) async {
+    const String mutation = """
+mutation(
+  \$data: [CollectionPickUpdateArgs!]!
+){
+  updateCollectionPicks(
+    data: \$data
+  ){
+    id
+  }
+}
+    """;
+
+    List<Map> dataList = [];
+
+    for (var item in collectionStory) {
+      dataList.add({
+        "where": {"id": item.id},
+        "data": {
+          "collection": {"disconnect": true}
+        }
+      });
+    }
+
+    Map<String, dynamic> variables = {
+      "data": dataList,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: mutation,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: true),
+    );
+
+    if (jsonResponse.containsKey('errors')) {
+      throw Exception('Update collection pick order error');
+    }
   }
 }
