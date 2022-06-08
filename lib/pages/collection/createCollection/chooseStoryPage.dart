@@ -152,14 +152,11 @@ class ChooseStoryPage extends StatelessWidget {
                     return _buildListItem(showList[index]);
                   },
                   separatorBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(top: 16, bottom: 20),
-                      child: Divider(
-                        color: readrBlack10,
-                        thickness: 1,
-                        height: 1,
-                        indent: 44,
-                      ),
+                    return const Divider(
+                      color: readrBlack10,
+                      thickness: 1,
+                      height: 1,
+                      indent: 44,
                     );
                   },
                   itemCount: showList.length,
@@ -187,7 +184,7 @@ class ChooseStoryPage extends StatelessWidget {
         },
         activeColor: readrBlack87,
         controlAffinity: ListTileControlAffinity.leading,
-        contentPadding: const EdgeInsets.only(left: 0),
+        contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
         title: CollectionStoryItem(story),
       ),
     );
