@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -19,6 +21,15 @@ class BookmarkTabController extends GetxController {
   @override
   void onInit() {
     fetchBookmark();
+    ever<List<Pick>>(bookmarkList, (callback) {
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .bookmarkCount
+            .value = callback.length;
+      }
+    });
     super.onInit();
   }
 

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/bookmarkTabController.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -128,8 +129,19 @@ class StoryPageController extends GetxController {
       PickToast.showBookmarkToast(_bookmarkId != null, true);
       if (_bookmarkId == null) {
         isBookmarked(false);
-      } else if (Get.isRegistered<BookmarkTabController>()) {
-        Get.find<BookmarkTabController>().fetchBookmark();
+      } else {
+        if (Get.isRegistered<BookmarkTabController>()) {
+          Get.find<BookmarkTabController>().fetchBookmark();
+        }
+
+        if (Get.isRegistered<PersonalFilePageController>(
+            tag: Get.find<UserService>().currentUser.memberId)) {
+          final ownPersonalFileController =
+              Get.find<PersonalFilePageController>(
+                  tag: Get.find<UserService>().currentUser.memberId);
+
+          ownPersonalFileController.bookmarkCount.value++;
+        }
       }
     } else if (isBookmarked.isFalse && _bookmarkId != null) {
       bool isDelete = await pickRepos.deletePick(_bookmarkId!);
@@ -141,6 +153,17 @@ class StoryPageController extends GetxController {
           Get.find<BookmarkTabController>()
               .bookmarkList
               .removeWhere((element) => element.id == _bookmarkId);
+        }
+
+        if (Get.isRegistered<PersonalFilePageController>(
+            tag: Get.find<UserService>().currentUser.memberId)) {
+          final ownPersonalFileController =
+              Get.find<PersonalFilePageController>(
+                  tag: Get.find<UserService>().currentUser.memberId);
+
+          ownPersonalFileController.bookmarkCount.value > 0
+              ? ownPersonalFileController.bookmarkCount.value--
+              : ownPersonalFileController.bookmarkCount.value = 0;
         }
         _bookmarkId = null;
       }
