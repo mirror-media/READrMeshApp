@@ -8,6 +8,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/editPersonalFilePage.dart';
 import 'package:readr/pages/personalFile/followerListPage.dart';
@@ -117,6 +118,26 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       centerTitle: GetPlatform.isIOS,
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
+      actions: [
+        Obx(
+          () {
+            if (Get.find<UserService>().isMember.isFalse ||
+                controllerTag != Get.find<UserService>().currentUser.memberId ||
+                controller.pickCount.value + controller.bookmarkCount.value <=
+                    0) {
+              return Container();
+            }
+
+            return IconButton(
+              icon: const Icon(
+                Icons.add_outlined,
+                color: readrBlack87,
+              ),
+              onPressed: () => Get.to(() => ChooseStoryPage()),
+            );
+          },
+        ),
+      ],
     );
   }
 
