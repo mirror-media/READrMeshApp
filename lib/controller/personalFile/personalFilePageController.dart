@@ -4,6 +4,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
+import 'package:readr/pages/personalFile/collectionTabContent.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/services/personalFileService.dart';
 
@@ -22,6 +23,7 @@ class PersonalFilePageController extends GetxController
   final pickCount = 0.obs;
   final followerCount = 0.obs;
   final followingCount = 0.obs;
+  final bookmarkCount = 0.obs;
 
   final isLoading = true.obs;
   final isError = false.obs;
@@ -34,7 +36,6 @@ class PersonalFilePageController extends GetxController
   @override
   void onInit() {
     viewMemberData = Rx<Member>(viewMember);
-    _initializeTabController();
     initPage();
     super.onInit();
   }
@@ -72,6 +73,8 @@ class PersonalFilePageController extends GetxController
     int followingPublisherCount =
         viewMemberData.value.followingPublisherCount ?? 0;
     followingCount.value = followingMemberCount + followingPublisherCount;
+    bookmarkCount.value = viewMemberData.value.bookmarkCount ?? 0;
+    _initializeTabController();
   }
 
   void _initializeTabController() {
@@ -93,23 +96,26 @@ class PersonalFilePageController extends GetxController
       viewMember: viewMemberData.value,
     ));
 
-    // if (!widget.isMine || _pickCount != 0 || controller.viewMemberData.value.bookmarkCount != 0) {
-    //   _tabs.add(
-    //     const Tab(
-    //       child: Text(
-    //         '集錦',
-    //         style: TextStyle(
-    //           fontSize: 16,
-    //         ),
-    //       ),
-    //     ),
-    //   );
+    if (viewMemberData.value.memberId !=
+            Get.find<UserService>().currentUser.memberId ||
+        bookmarkCount.value + pickCount.value > 0) {
+      tabs.add(
+        const Tab(
+          child: Text(
+            '集錦',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ),
+      );
 
-    //   _tabWidgets.add(CollectionTabContent(
-    //     viewMember: widget.viewMember,
-    //     isMine: widget.isMine,
-    //   ));
-    // }
+      tabWidgets.add(CollectionTabContent(
+        viewMember: viewMemberData.value,
+        isMine: viewMemberData.value.memberId ==
+            Get.find<UserService>().currentUser.memberId,
+      ));
+    }
 
     if (viewMemberData.value.memberId ==
         Get.find<UserService>().currentUser.memberId) {
