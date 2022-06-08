@@ -18,7 +18,7 @@ abstract class CollectionRepos {
     required String title,
     required String ogImageUrl,
     CollectionFormat format = CollectionFormat.folder,
-    CollectionPublic public = CollectionPublic.publis,
+    CollectionPublic public = CollectionPublic.public,
     String? slug,
   });
   Future<Collection> createCollectionPicks({
@@ -186,7 +186,7 @@ class CollectionService implements CollectionRepos {
     required String title,
     required String ogImageUrl,
     CollectionFormat format = CollectionFormat.folder,
-    CollectionPublic public = CollectionPublic.publis,
+    CollectionPublic public = CollectionPublic.public,
     String? slug,
   }) async {
     const String mutation = """

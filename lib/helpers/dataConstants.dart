@@ -85,6 +85,6 @@ enum CollectionFormat {
 
 enum CollectionPublic {
   private,
-  publis,
+  public,
   wiki,
 }

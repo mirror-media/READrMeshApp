@@ -23,7 +23,7 @@ class Collection {
     required this.ogImageUrl,
     required this.publishedTime,
     this.format = CollectionFormat.folder,
-    this.public = CollectionPublic.publis,
+    this.public = CollectionPublic.public,
     this.collectionPicks,
   });
 }
