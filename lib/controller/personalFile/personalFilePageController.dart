@@ -112,8 +112,6 @@ class PersonalFilePageController extends GetxController
 
       tabWidgets.add(CollectionTabContent(
         viewMember: viewMemberData.value,
-        isMine: viewMemberData.value.memberId ==
-            Get.find<UserService>().currentUser.memberId,
       ));
     }
 

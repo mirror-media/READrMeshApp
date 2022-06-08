@@ -114,7 +114,7 @@ class PickTabContent extends GetView<PickTabController> {
             }
 
             return VisibilityDetector(
-              key: const Key('pickTab'),
+              key: Key('pickTab${viewMember.memberId}'),
               onVisibilityChanged: (visibilityInfo) {
                 var visiblePercentage = visibilityInfo.visibleFraction * 100;
                 if (visiblePercentage > 50 &&

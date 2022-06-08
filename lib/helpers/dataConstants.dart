@@ -29,6 +29,7 @@ const String invitationCodeSvg = 'assets/icon/invitationCode.svg';
 const String newInvitationCodeSvg = 'assets/icon/newInvitationCode.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
+const String collectionTagSvg = 'assets/icon/collectionTag.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
