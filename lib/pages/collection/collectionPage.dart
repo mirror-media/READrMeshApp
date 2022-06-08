@@ -8,7 +8,8 @@ import 'package:readr/services/collectionPageService.dart';
 
 class CollectionPage extends GetView<CollectionPageController> {
   final Collection collection;
-  const CollectionPage(this.collection);
+  final bool isNewCollection;
+  const CollectionPage(this.collection, {this.isNewCollection = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class CollectionPage extends GetView<CollectionPageController> {
         CollectionPageController(
           collection: collection,
           collectionPageRepos: CollectionPageService(),
+          isNewCollection: isNewCollection,
         ),
         tag: collection.id,
       );
