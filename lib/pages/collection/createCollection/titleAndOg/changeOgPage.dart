@@ -68,11 +68,7 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
             ),
           ),
           onTap: () {
-            controller.collectionOgUrl.value = controller.selectedList
-                .firstWhere((element) =>
-                    element.news!.heroImageUrl == imageUrlList[index])
-                .news!
-                .heroImageUrl!;
+            controller.collectionOgUrl.value = imageUrlList[index];
             Get.back();
           },
         ),
