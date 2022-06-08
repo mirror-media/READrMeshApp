@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/pages/collection/createCollection/sortStoryPage.dart';
 import 'package:readr/pages/collection/createCollection/titleAndOg/changeOgPage.dart';
 
 class InputTitlePage extends GetView<CreateCollectionController> {
@@ -53,7 +54,12 @@ class InputTitlePage extends GetView<CreateCollectionController> {
                     color: Colors.blue,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  controller.selectedList.sort(
+                    (a, b) => b.publishedDate.compareTo(a.publishedDate),
+                  );
+                  Get.to(() => SortStoryPage());
+                },
               );
             }
             return Container();
