@@ -88,3 +88,9 @@ enum CollectionPublic {
   public,
   wiki,
 }
+
+enum CollectionStatus {
+  publish,
+  draft,
+  delete,
+}
