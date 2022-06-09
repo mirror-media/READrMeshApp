@@ -32,18 +32,23 @@ class RecommendFollowPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: Obx(
-        () => GridView.builder(
-          padding: const EdgeInsets.all(20),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.72,
-          ),
-          itemBuilder: (context, index) =>
-              RecommendFollowItem(controller.recommendItems[index]),
-          itemCount: controller.recommendItems.length,
-        ),
+        () {
+          if (controller.recommendItems.isEmpty) {
+            Get.back();
+          }
+          return GridView.builder(
+            padding: const EdgeInsets.all(20),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.72,
+            ),
+            itemBuilder: (context, index) =>
+                RecommendFollowItem(controller.recommendItems[index]),
+            itemCount: controller.recommendItems.length,
+          );
+        },
       ),
     );
   }
