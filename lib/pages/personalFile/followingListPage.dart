@@ -108,7 +108,7 @@ class FollowingListPage extends GetView<FollowingListController> {
       slivers: [
         SliverToBoxAdapter(
           child: Obx(() {
-            if (controller.followingMemberList.isEmpty) {
+            if (controller.followingPublisherList.isEmpty) {
               return Container();
             }
 
@@ -151,7 +151,7 @@ class FollowingListPage extends GetView<FollowingListController> {
           child: Obx(
             () {
               if (controller.isExpanded.isFalse ||
-                  controller.followingMemberList.isEmpty) {
+                  controller.followingPublisherList.isEmpty) {
                 return Container();
               }
 
