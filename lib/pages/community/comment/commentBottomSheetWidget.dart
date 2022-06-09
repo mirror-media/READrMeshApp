@@ -15,14 +15,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class CommentBottomSheetWidget extends GetView<CommentController> {
   final Comment clickComment;
   final String controllerTag;
-  final ValueChanged<String> onTextChanged;
   final String? oldContent;
-  late final TextEditingController _textController;
   final ItemScrollController _itemScrollController = ItemScrollController();
 
   CommentBottomSheetWidget({
     required this.clickComment,
-    required this.onTextChanged,
     required this.controllerTag,
     this.oldContent,
   });
@@ -32,8 +29,6 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
 
   @override
   Widget build(BuildContext context) {
-    _textController = TextEditingController(text: oldContent);
-    controller.fetchComments();
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -153,26 +148,12 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
               thickness: 0.5,
               height: 0.5,
             ),
-            AnimatedPadding(
-              duration: const Duration(milliseconds: 50),
-              curve: Curves.easeOut,
+            Padding(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Obx(
-                () => CommentInputBox(
-                  isSending: controller.isSending.value,
-                  onPressed: (text) async {
-                    bool success = await controller.addComment(text);
-                    if (success) {
-                      _itemScrollController.scrollTo(
-                          index: 0,
-                          duration: const Duration(milliseconds: 500));
-                      _textController.clear();
-                    }
-                  },
-                  onTextChanged: onTextChanged,
-                  textController: _textController,
-                ),
+              child: CommentInputBox(
+                commentControllerTag: controllerTag,
+                oldContent: oldContent,
               ),
             ),
           ],

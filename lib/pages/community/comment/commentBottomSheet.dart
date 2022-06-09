@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/comment/commentController.dart';
+import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
@@ -20,7 +21,6 @@ class CommentBottomSheet {
     required String controllerTag,
     String? oldContent,
   }) async {
-    String? inputContent;
     if (!Get.isRegistered<CommentController>(tag: controllerTag)) {
       Get.put<CommentController>(
         CommentController(
@@ -31,26 +31,30 @@ class CommentBottomSheet {
         ),
         tag: controllerTag,
       );
+      Get.find<CommentController>(tag: controllerTag).fetchComments();
     }
 
     await showCupertinoModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
-      builder: (context) => SafeArea(
-        bottom: false,
-        child: Material(
+      builder: (context) => Material(
+        child: SafeArea(
+          bottom: false,
           child: CommentBottomSheetWidget(
             clickComment: clickComment,
-            onTextChanged: (text) => inputContent = text,
             oldContent: oldContent,
             controllerTag: controllerTag,
           ),
         ),
       ),
-    ).whenComplete(() {
+    ).whenComplete(() async {
+      bool deleteController = true;
       // when there has text, show hint
-      if (inputContent != null && inputContent!.trim().isNotEmpty) {
+      if (Get.find<CommentInputBoxController>(tag: controllerTag)
+          .hasInput
+          .isTrue) {
+        deleteController = false;
         Widget dialogTitle = const Text(
           '確定要刪除留言？',
           style: TextStyle(
@@ -69,7 +73,10 @@ class CommentBottomSheet {
         );
         List<Widget> dialogActions = [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              deleteController = true;
+              Navigator.pop(context);
+            },
             child: const Text(
               '刪除留言',
               style: TextStyle(
@@ -86,7 +93,10 @@ class CommentBottomSheet {
                 context: context,
                 clickComment: clickComment,
                 objective: objective,
-                oldContent: inputContent,
+                oldContent:
+                    Get.find<CommentInputBoxController>(tag: controllerTag)
+                        .textController
+                        .text,
                 id: id,
                 controllerTag: controllerTag,
               );
@@ -102,7 +112,7 @@ class CommentBottomSheet {
           )
         ];
         if (!Platform.isIOS) {
-          showDialog(
+          await showDialog(
             context: context,
             builder: (context) => AlertDialog(
               title: dialogTitle,
@@ -112,7 +122,7 @@ class CommentBottomSheet {
             ),
           );
         } else {
-          showCupertinoDialog(
+          await showCupertinoDialog(
             context: context,
             builder: (context) => CupertinoAlertDialog(
               title: dialogTitle,
@@ -123,12 +133,15 @@ class CommentBottomSheet {
         }
       }
 
-      for (var item
-          in Get.find<CommentController>(tag: controllerTag).allComments) {
-        Get.delete<CommentItemController>(tag: 'Comment${item.id}');
-      }
+      if (deleteController) {
+        for (var item
+            in Get.find<CommentController>(tag: controllerTag).allComments) {
+          Get.delete<CommentItemController>(tag: 'Comment${item.id}');
+        }
 
-      Get.delete<CommentController>(tag: controllerTag);
+        Get.delete<CommentController>(tag: controllerTag);
+        Get.delete<CommentInputBoxController>(tag: controllerTag);
+      }
     });
   }
 }
