@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/story/storyPage.dart';
@@ -34,10 +35,15 @@ class NewsListItemWidget extends StatelessWidget {
           if (!hidePublisher)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: ExtendedText(
-                news.source.title,
-                joinZeroWidthSpace: true,
-                style: const TextStyle(color: readrBlack50, fontSize: 12),
+              child: GestureDetector(
+                onTap: () => Get.to(() => PublisherPage(
+                      news.source,
+                    )),
+                child: ExtendedText(
+                  news.source.title,
+                  joinZeroWidthSpace: true,
+                  style: const TextStyle(color: readrBlack50, fontSize: 12),
+                ),
               ),
             ),
           if (news.heroImageUrl == null)
