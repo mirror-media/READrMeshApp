@@ -14,17 +14,23 @@ class InternetCheckService extends GetxService {
     } else {
       timeout = const Duration(seconds: 1);
     }
-    List<AddressCheckOptions> addresses = [];
+    List<AddressCheckOptions>? addresses;
 
-    await InternetAddress.lookup(
-            Get.find<EnvironmentService>().config.meshConnectCheckAddress)
-        .then(
-      (value) {
-        for (var internetAddress in value) {
-          addresses.add(AddressCheckOptions(internetAddress, port: 443));
-        }
-      },
-    ).timeout(timeout);
+    try {
+      await InternetAddress.lookup(
+              Get.find<EnvironmentService>().config.meshConnectCheckAddress)
+          .then(
+        (value) {
+          addresses = [];
+          for (var internetAddress in value) {
+            addresses!.add(AddressCheckOptions(internetAddress, port: 443));
+          }
+        },
+      ).timeout(const Duration(seconds: 5));
+    } catch (e) {
+      print('Fetch mesh api ip error: $e');
+    }
+
     meshCheckInstance = InternetConnectionChecker.createInstance(
       checkTimeout: timeout, // Custom check timeout
       addresses: addresses,
