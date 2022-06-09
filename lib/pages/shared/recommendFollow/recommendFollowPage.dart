@@ -33,16 +33,25 @@ class RecommendFollowPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Obx(
         () {
+          double ratio = (context.width - 40 - 12) / 460;
           if (controller.recommendItems.isEmpty) {
-            Get.back();
+            return const Center(
+              child: Text(
+                '暫無推薦追蹤',
+                style: TextStyle(
+                  color: readrBlack,
+                  fontSize: 20,
+                ),
+              ),
+            );
           }
           return GridView.builder(
             padding: const EdgeInsets.all(20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 0.72,
+              childAspectRatio: ratio,
             ),
             itemBuilder: (context, index) =>
                 RecommendFollowItem(controller.recommendItems[index]),
