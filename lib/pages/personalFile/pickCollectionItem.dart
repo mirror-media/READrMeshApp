@@ -3,9 +3,11 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 import 'package:shimmer/shimmer.dart';
@@ -35,25 +37,31 @@ class PickCollectionItem extends StatelessWidget {
               Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: collection.ogImageUrl,
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 75,
-                    placeholder: (context, url) => SizedBox(
-                      height: 75,
+                  Obx(
+                    () => CachedNetworkImage(
+                      imageUrl: Get.find<PickableItemController>(
+                                  tag: collection.controllerTag)
+                              .collectionHeroImageUrl
+                              .value ??
+                          collection.ogImageUrl,
+                      fit: BoxFit.cover,
                       width: 150,
-                      child: Shimmer.fromColors(
-                        baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                        highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                        child: Container(
-                          height: 75,
-                          width: 150,
-                          color: Colors.white,
+                      height: 75,
+                      placeholder: (context, url) => SizedBox(
+                        height: 75,
+                        width: 150,
+                        child: Shimmer.fromColors(
+                          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                          child: Container(
+                            height: 75,
+                            width: 150,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
+                      errorWidget: (context, url, error) => Container(),
                     ),
-                    errorWidget: (context, url, error) => Container(),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 4, right: 4),
@@ -67,32 +75,51 @@ class PickCollectionItem extends StatelessWidget {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ExtendedText(
-                  collection.creator.customId,
-                  maxLines: 1,
-                  joinZeroWidthSpace: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: readrBlack50,
-                    fontWeight: FontWeight.w400,
-                  ),
+                child: GestureDetector(
+                  onTap: () => Get.to(
+                      () => PersonalFilePage(viewMember: collection.creator)),
+                  child: Obx(() {
+                    String authorText = '@${collection.creator.customId}';
+                    if (Get.find<UserService>().isMember.isTrue &&
+                        collection.creator.memberId ==
+                            Get.find<UserService>().currentUser.memberId) {
+                      authorText =
+                          '@${Get.find<UserService>().currentUser.customId}';
+                    }
+                    return ExtendedText(
+                      authorText,
+                      maxLines: 1,
+                      joinZeroWidthSpace: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: readrBlack50,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    );
+                  }),
                 ),
               ),
               const SizedBox(height: 2),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ExtendedText(
-                  collection.title,
-                  joinZeroWidthSpace: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w500,
+                child: Obx(
+                  () => ExtendedText(
+                    Get.find<PickableItemController>(
+                                tag: collection.controllerTag)
+                            .collectionTitle
+                            .value ??
+                        collection.title,
+                    joinZeroWidthSpace: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 2,
                   ),
-                  maxLines: 2,
                 ),
               ),
               const Spacer(),

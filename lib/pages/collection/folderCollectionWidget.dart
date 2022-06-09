@@ -3,10 +3,13 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
+import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/collectionAppBar.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -48,7 +51,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
               BottomCardWidget(
                 controllerTag: collection.controllerTag,
                 title: controller.collection.title,
-                author: 'by ${collection.creator.customId}',
+                author: collection.creator,
                 id: collection.id,
                 objective: PickObjective.collection,
                 allComments: controller.allComments,
@@ -133,38 +136,61 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CachedNetworkImage(
-          imageUrl: collection.ogImageUrl,
-          width: Get.width,
-          height: Get.width / 2,
-          placeholder: (context, url) => Container(
-            height: Get.width / 2,
+        Obx(
+          () => CachedNetworkImage(
+            imageUrl:
+                Get.find<PickableItemController>(tag: collection.controllerTag)
+                        .collectionHeroImageUrl
+                        .value ??
+                    collection.ogImageUrl,
             width: Get.width,
-            color: Colors.grey,
+            height: Get.width / 2,
+            placeholder: (context, url) => Container(
+              height: Get.width / 2,
+              width: Get.width,
+              color: Colors.grey,
+            ),
+            errorWidget: (context, url, error) => Container(),
+            fit: BoxFit.cover,
           ),
-          errorWidget: (context, url, error) => Container(),
-          fit: BoxFit.cover,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-          child: ExtendedText(
-            collection.creator.customId,
-            joinZeroWidthSpace: true,
-            style: const TextStyle(
-              fontSize: 14,
-              color: readrBlack50,
-            ),
+          child: GestureDetector(
+            onTap: () =>
+                Get.to(() => PersonalFilePage(viewMember: collection.creator)),
+            child: Obx(() {
+              String authorCustomId = collection.creator.customId;
+              if (Get.find<UserService>().isMember.isTrue &&
+                  Get.find<UserService>().currentUser.memberId ==
+                      collection.creator.memberId) {
+                authorCustomId = Get.find<UserService>().currentUser.customId;
+              }
+              return ExtendedText(
+                '@$authorCustomId',
+                joinZeroWidthSpace: true,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: readrBlack50,
+                ),
+              );
+            }),
           ),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-          child: ExtendedText(
-            collection.title,
-            joinZeroWidthSpace: true,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: readrBlack87,
+          child: Obx(
+            () => ExtendedText(
+              Get.find<PickableItemController>(tag: collection.controllerTag)
+                      .collectionTitle
+                      .value ??
+                  collection.title,
+              joinZeroWidthSpace: true,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: readrBlack87,
+              ),
             ),
           ),
         ),

@@ -1,10 +1,16 @@
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/bottomCardWidgetController.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/member.dart';
+import 'package:readr/models/publisher.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/collapsePickBar.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
@@ -17,16 +23,18 @@ class BottomCardWidget extends StatelessWidget {
   late final PickableItemController pickableItemController;
   late final BottomCardWidgetController bottomCardWidgetController;
   final String title;
-  final String author;
   final PickObjective objective;
   final String id;
   final List<Comment> allComments;
   final List<Comment> popularComments;
+  final Publisher? publisher;
+  final Member? author;
 
   BottomCardWidget({
     required this.controllerTag,
     required this.title,
-    required this.author,
+    this.author,
+    this.publisher,
     required this.objective,
     required this.id,
     required this.allComments,
@@ -248,24 +256,73 @@ class BottomCardWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            maxLines: 2,
-            style: const TextStyle(
-              color: readrBlack87,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          Obx(
+            () => ExtendedText(
+              pickableItemController.collectionTitle.value ?? title,
+              maxLines: 2,
+              joinZeroWidthSpace: true,
+              strutStyle: const StrutStyle(
+                forceStrutHeight: true,
+                leading: 0.5,
+              ),
+              style: const TextStyle(
+                color: readrBlack87,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            author,
-            maxLines: 1,
-            style: const TextStyle(
-              color: readrBlack50,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
+          GestureDetector(
+            onTap: () {
+              if (objective == PickObjective.story && publisher != null) {
+                Get.to(() => PublisherPage(publisher!));
+              } else if (author != null) {
+                Get.to(() => PersonalFilePage(viewMember: author!));
+              }
+            },
+            child: objective == PickObjective.story
+                ? ExtendedText(
+                    publisher?.title ?? '',
+                    maxLines: 1,
+                    joinZeroWidthSpace: true,
+                    strutStyle: const StrutStyle(
+                      forceStrutHeight: true,
+                      leading: 0.5,
+                    ),
+                    style: const TextStyle(
+                      color: readrBlack50,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                : Obx(
+                    () {
+                      String authorText = '';
+                      if (Get.find<UserService>().isMember.isTrue &&
+                          author?.memberId ==
+                              Get.find<UserService>().currentUser.memberId) {
+                        authorText =
+                            'by @${Get.find<UserService>().currentUser.customId}';
+                      } else if (author != null) {
+                        authorText = 'by @${author!.customId}';
+                      }
+                      return ExtendedText(
+                        authorText,
+                        maxLines: 1,
+                        joinZeroWidthSpace: true,
+                        strutStyle: const StrutStyle(
+                          forceStrutHeight: true,
+                          leading: 0.5,
+                        ),
+                        style: const TextStyle(
+                          color: readrBlack50,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    },
+                  ),
           ),
           const SizedBox(height: 18),
           PickBar(controllerTag),

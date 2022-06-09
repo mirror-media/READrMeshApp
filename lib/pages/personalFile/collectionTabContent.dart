@@ -3,6 +3,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
@@ -257,30 +258,36 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: collection.ogImageUrl,
-                      placeholder: (context, url) => SizedBox(
-                        width: width,
-                        height: width / 2,
-                        child: Shimmer.fromColors(
-                          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                          child: Container(
-                            width: width,
-                            height: width / 2,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(),
-                      imageBuilder: (context, imageProvider) {
-                        return Image(
-                          image: imageProvider,
+                    Obx(
+                      () => CachedNetworkImage(
+                        imageUrl: Get.find<PickableItemController>(
+                                    tag: collection.controllerTag)
+                                .collectionHeroImageUrl
+                                .value ??
+                            collection.ogImageUrl,
+                        placeholder: (context, url) => SizedBox(
                           width: width,
                           height: width / 2,
-                          fit: BoxFit.cover,
-                        );
-                      },
+                          child: Shimmer.fromColors(
+                            baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                            highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                            child: Container(
+                              width: width,
+                              height: width / 2,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(),
+                        imageBuilder: (context, imageProvider) {
+                          return Image(
+                            image: imageProvider,
+                            width: width,
+                            height: width / 2,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 8, right: 8),
@@ -290,13 +297,19 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                  child: ExtendedText(
-                    collection.title,
-                    joinZeroWidthSpace: true,
-                    style: const TextStyle(
-                      color: readrBlack87,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                  child: Obx(
+                    () => ExtendedText(
+                      Get.find<PickableItemController>(
+                                  tag: collection.controllerTag)
+                              .collectionTitle
+                              .value ??
+                          collection.title,
+                      joinZeroWidthSpace: true,
+                      style: const TextStyle(
+                        color: readrBlack87,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

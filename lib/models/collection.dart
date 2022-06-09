@@ -108,6 +108,8 @@ class Collection {
       controller.pickCount.value = pickCount;
       controller.commentCount.value = json['commentCount'];
       controller.pickedMembers.assignAll(allPickedMember);
+      controller.collectionTitle.value = json['title'];
+      controller.collectionHeroImageUrl.value = imageUrl;
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
@@ -120,6 +122,8 @@ class Collection {
           commentCount: json['commentCount'],
           pickedMembers: allPickedMember,
           controllerTag: 'Collection${json['id']}',
+          collectionHeroImageUrl: imageUrl,
+          collectionTitle: json['title'],
         ),
         tag: 'Collection${json['id']}',
         fenix: true,
@@ -182,6 +186,8 @@ class Collection {
         controller.myPickCommentId.value = myPickCommentId;
       }
       controller.pickCount.value = pickCount;
+      controller.collectionTitle.value = json['title'];
+      controller.collectionHeroImageUrl.value = imageUrl;
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
@@ -192,6 +198,8 @@ class Collection {
           myPickCommentId: myPickCommentId,
           pickCount: pickCount,
           controllerTag: 'Collection${json['id']}',
+          collectionHeroImageUrl: imageUrl,
+          collectionTitle: json['title'],
         ),
         tag: 'Collection${json['id']}',
         fenix: true,

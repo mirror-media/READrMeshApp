@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
@@ -47,7 +48,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
               BottomCardWidget(
                 controllerTag: controller.newsStoryItem.controllerTag,
                 title: controller.newsStoryItem.title,
-                author: controller.newsStoryItem.source.title,
+                publisher: controller.newsStoryItem.source,
                 id: controller.newsStoryItem.id,
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
@@ -113,7 +114,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
 
   Widget _buildPublisher() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Get.to(() => PublisherPage(controller.newsListItem.source)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Text(

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,7 +20,6 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/pages/shared/timestamp.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CommunityPage extends GetView<CommunityPageController> {
@@ -216,31 +214,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: item.heroImageUrl,
-                      placeholder: (context, url) => SizedBox(
-                        width: Get.width,
-                        height: Get.width / 2,
-                        child: Shimmer.fromColors(
-                          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                          child: Container(
-                            width: Get.width,
-                            height: Get.width / 2,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(),
-                      imageBuilder: (context, imageProvider) {
-                        return Image(
-                          image: imageProvider,
-                          width: Get.width,
-                          height: Get.width / 2,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    ),
+                    item.heroImageWidget,
                     if (item.type == CommunityListItemType.pickCollection ||
                         item.type == CommunityListItemType.commentCollection)
                       const Padding(
@@ -253,27 +227,13 @@ class CommunityPage extends GetView<CommunityPageController> {
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                   child: GestureDetector(
                     onTap: item.tapAuthor,
-                    child: ExtendedText(
-                      item.authorText,
-                      joinZeroWidthSpace: true,
-                      style: const TextStyle(color: readrBlack50, fontSize: 14),
-                    ),
+                    child: item.authorTextWidget,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 20, right: 20, bottom: 8),
-                  child: ExtendedText(
-                    item.title,
-                    joinZeroWidthSpace: true,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: readrBlack87,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: item.titleWidget,
                 ),
                 Padding(
                   padding:

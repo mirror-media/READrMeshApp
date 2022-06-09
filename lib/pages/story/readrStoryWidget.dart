@@ -65,7 +65,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
               BottomCardWidget(
                 controllerTag: controller.newsStoryItem.controllerTag,
                 title: controller.newsStoryItem.title,
-                author: controller.newsStoryItem.source.title,
+                publisher: controller.newsStoryItem.source,
                 id: controller.newsStoryItem.id,
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,

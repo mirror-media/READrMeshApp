@@ -7,8 +7,6 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
-import 'package:readr/pages/collection/collectionPage.dart';
-import 'package:readr/services/collectionPageService.dart';
 import 'package:readr/services/collectionService.dart';
 
 class EditCollectionController extends GetxController {
@@ -55,7 +53,7 @@ class EditCollectionController extends GetxController {
     isUpdating.value = true;
 
     try {
-      Collection newCollection = await collectionRepos.updateTitleAndOg(
+      await collectionRepos.updateTitleAndOg(
         collectionId: collection.id,
         heroImageId: collection.ogImageId,
         newTitle: title.value,
@@ -69,22 +67,6 @@ class EditCollectionController extends GetxController {
                 tag: Get.find<UserService>().currentUser.memberId)
             .fetchCollecitionList();
       }
-      Get.off(
-        () => CollectionPage(
-          newCollection,
-        ),
-        preventDuplicates: false,
-        binding: BindingsBuilder(() {
-          Get.lazyPut<CollectionPageController>(
-            () => CollectionPageController(
-              collection: newCollection,
-              collectionPageRepos: CollectionPageService(),
-              collectionRepos: CollectionService(),
-            ),
-            tag: newCollection.id,
-          );
-        }),
-      );
     } catch (e) {
       print('Update collection title and og error: $e');
       _errorToast();

@@ -13,14 +13,18 @@ class PickableItemController extends GetxController {
   final PickRepos pickRepos;
   final PickObjective objective;
   final String targetId;
-  late final RxnString myPickId;
-  late final RxnString myPickCommentId;
-  late final RxInt pickCount;
-  late final RxInt commentCount;
-  late final RxBool isPicked;
+  final RxnString myPickId = RxnString();
+  final RxnString myPickCommentId = RxnString();
+  final RxInt pickCount = 0.obs;
+  final RxInt commentCount = 0.obs;
+  final RxBool isPicked = false.obs;
   final pickedMembers = <Member>[].obs;
   final isLoading = false.obs;
   final String controllerTag;
+
+  //just for collection
+  final RxnString collectionTitle = RxnString();
+  final RxnString collectionHeroImageUrl = RxnString();
 
   PickableItemController({
     required this.pickRepos,
@@ -32,20 +36,23 @@ class PickableItemController extends GetxController {
     int pickCount = 0,
     int commentCount = 0,
     List<Member>? pickedMembers,
+    String? collectionTitle,
+    String? collectionHeroImageUrl,
   }) {
-    this.pickCount = pickCount.obs;
-    this.commentCount = commentCount.obs;
-    this.myPickId = RxnString(myPickId);
-    this.myPickCommentId = RxnString(myPickCommentId);
+    this.pickCount.value = pickCount;
+    this.commentCount.value = commentCount;
+    this.myPickId.value = myPickId;
+    this.myPickCommentId.value = myPickCommentId;
     if (myPickId != null) {
-      isPicked = true.obs;
-    } else {
-      isPicked = false.obs;
+      isPicked.value = true;
     }
 
     if (pickedMembers != null) {
       this.pickedMembers.assignAll(pickedMembers);
     }
+
+    this.collectionTitle.value = collectionTitle;
+    this.collectionHeroImageUrl.value = collectionHeroImageUrl;
   }
 
   @override
