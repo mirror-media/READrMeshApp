@@ -17,6 +17,7 @@ abstract class CommentRepos {
   });
   Future<bool> deleteComment(String commentId);
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId);
+  Future<List<Comment>> fetchCommentsByCollectionId(String collectionId);
   Future<int?> addLike({
     required String commentId,
   });
@@ -415,6 +416,87 @@ class CommentService implements CommentRepos {
     } catch (e) {
       return null;
     }
+  }
+
+  @override
+  Future<List<Comment>> fetchCommentsByCollectionId(String collectionId) async {
+    String query = """
+      query(
+        \$collectionId: ID
+        \$myId: ID
+      ){
+        comments(
+          orderBy:{
+            published_date: desc
+          }
+          where:{
+            collection:{
+              id:{
+                equals: \$collectionId
+              }
+            }
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        ){
+          id
+          member{
+            id
+            nickname
+            email
+            avatar
+          }
+          content
+          state
+          published_date
+          likeCount
+          is_edited
+          isLiked:likeCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                equals: \$myId
+              }
+            }
+          )
+        }
+      }
+      """;
+
+    Map<String, String> variables = {
+      "collectionId": collectionId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    final jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: false),
+    );
+
+    List<Comment> allComments = [];
+    for (var item in jsonResponse['data']['comments']) {
+      allComments.add(Comment.fromJson(item));
+    }
+
+    return allComments;
   }
 
   @override

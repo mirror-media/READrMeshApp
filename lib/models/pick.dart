@@ -42,7 +42,7 @@ class Pick {
     } else if (pickObjective == PickObjective.comment) {
       comment = Comment.fromJson(json["comment"]);
     } else {
-      collection = Collection.fromPickTabJson(json['collection']);
+      collection = Collection.fromJson(json['collection']);
     }
 
     if (json["pick_comment"] != null && json["pick_comment"].isNotEmpty) {

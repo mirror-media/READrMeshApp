@@ -26,9 +26,9 @@ class NewsListItem {
   final List<Member> followingPickMembers;
   final List<Member> otherPickMembers;
   final Comment? showComment;
+  final List<Member>? commentMembers;
   String? myPickId;
   String? myPickCommentId;
-  final DateTime? latestPickTime;
   final String controllerTag;
 
   NewsListItem({
@@ -49,9 +49,9 @@ class NewsListItem {
     required this.followingPickMembers,
     required this.otherPickMembers,
     this.showComment,
+    this.commentMembers,
     this.myPickId,
     this.myPickCommentId,
-    this.latestPickTime,
     required this.controllerTag,
   });
 
@@ -69,9 +69,9 @@ class NewsListItem {
     Comment? showComment;
     List<Comment> allComments = [];
     String? myPickId;
-    DateTime? latestPickTime;
     String? content;
     String? myPickCommentId;
+    List<Member>? commentMembers;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -102,10 +102,6 @@ class NewsListItem {
       for (var pick in json['followingPicks']) {
         followingPickMembers.add(Member.fromJson(pick['member']));
       }
-      if (json["followingPicks"][0]['picked_date'] != null) {
-        latestPickTime =
-            DateTime.parse(json["followingPicks"][0]['picked_date']).toLocal();
-      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['otherPicks']) &&
@@ -124,9 +120,13 @@ class NewsListItem {
       }
     }
 
-    if (BaseModel.checkJsonKeys(json, ['notFollowingComment']) &&
-        json['notFollowingComment'].isNotEmpty) {
-      showComment = Comment.fromJson(json['notFollowingComment'][0]);
+    if (BaseModel.checkJsonKeys(json, ['comment']) &&
+        json['comment'].isNotEmpty) {
+      commentMembers = [];
+      for (var commentItem in json['comment']) {
+        commentMembers.add(Comment.fromJson(commentItem).member);
+      }
+      showComment = Comment.fromJson(json['comment'][0]);
     }
 
     if (BaseModel.checkJsonKeys(json, ['allComments']) &&
@@ -210,9 +210,9 @@ class NewsListItem {
       showComment: showComment,
       myPickId: myPickId,
       fullContent: fullContent,
-      latestPickTime: latestPickTime,
       content: content,
       myPickCommentId: myPickCommentId,
+      commentMembers: commentMembers,
     );
   }
 }

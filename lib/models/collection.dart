@@ -3,6 +3,7 @@ import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/services/pickService.dart';
 
@@ -20,8 +21,11 @@ class Collection {
   final DateTime publishedTime;
   final int commentCount;
   final int pickCount;
-  final List<Member>? pickedMemberList;
+  final List<Member>? followingPickMembers;
+  final List<Member>? otherPickMembers;
+  final List<Member>? commentMembers;
   CollectionStatus status;
+  final Comment? showComment;
 
   Collection({
     required this.id,
@@ -37,8 +41,11 @@ class Collection {
     this.collectionPicks,
     this.commentCount = 0,
     this.pickCount = 0,
-    this.pickedMemberList,
     this.status = CollectionStatus.publish,
+    this.showComment,
+    this.followingPickMembers,
+    this.otherPickMembers,
+    this.commentMembers,
   });
 
   factory Collection.fromFetchCollectionList(
@@ -133,7 +140,7 @@ class Collection {
     );
   }
 
-  factory Collection.fromPickTabJson(Map<String, dynamic> json) {
+  factory Collection.fromJson(Map<String, dynamic> json) {
     String imageUrl;
     if (json['heroImage']['file'] != null) {
       imageUrl = json['heroImage']['file']['url'];
@@ -191,6 +198,42 @@ class Collection {
       );
     }
 
+    Comment? showComment;
+    List<Member>? commentMembers;
+    if (BaseModel.checkJsonKeys(json, ['followingPickComment']) &&
+        json['followingPickComment'].isNotEmpty) {
+      var pickComment = json['followingPickComment'][0];
+      if (BaseModel.checkJsonKeys(pickComment, ['pick_comment']) &&
+          pickComment['pick_comment'].isNotEmpty) {
+        showComment = Comment.fromJson(pickComment['pick_comment'][0]);
+      }
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['comment']) &&
+        json['comment'].isNotEmpty) {
+      commentMembers = [];
+      for (var commentItem in json['comment']) {
+        commentMembers.add(Comment.fromJson(commentItem).member);
+      }
+      showComment = Comment.fromJson(json['comment'][0]);
+    }
+
+    List<Member> followingPickMembers = [];
+    List<Member> otherPickMembers = [];
+    if (BaseModel.checkJsonKeys(json, ['followingPicks']) &&
+        json['followingPicks'].isNotEmpty) {
+      for (var pick in json['followingPicks']) {
+        followingPickMembers.add(Member.fromJson(pick['member']));
+      }
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['otherPicks']) &&
+        json['otherPicks'].isNotEmpty) {
+      for (var pick in json['otherPicks']) {
+        otherPickMembers.add(Member.fromJson(pick['member']));
+      }
+    }
+
     return Collection(
       id: json['id'],
       title: json['title'],
@@ -201,6 +244,10 @@ class Collection {
       format: format,
       ogImageId: json['heroImage']['id'],
       controllerTag: 'Collection${json['id']}',
+      showComment: showComment,
+      followingPickMembers: followingPickMembers,
+      otherPickMembers: otherPickMembers,
+      commentMembers: commentMembers,
     );
   }
 }

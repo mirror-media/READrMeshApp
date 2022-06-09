@@ -8,21 +8,19 @@ import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/community/comment/commentBottomSheet.dart';
-import 'package:readr/pages/community/latestComment/latestCommentsBlock.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
-import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/pages/shared/timestamp.dart';
-import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -81,17 +79,17 @@ class CommunityPage extends GetView<CommunityPageController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.followingPickedNews.isEmpty) {
+                if (controller.communityList.isEmpty) {
                   return _emptyWidget();
                 }
 
                 int end = 3;
-                if (controller.followingPickedNews.length < 3) {
-                  end = controller.followingPickedNews.length;
+                if (controller.communityList.length < 3) {
+                  end = controller.communityList.length;
                 }
 
-                return _buildPickedNewsList(
-                    context, controller.followingPickedNews.sublist(0, end));
+                return _buildList(
+                    context, controller.communityList.sublist(0, end));
               },
             ),
           ),
@@ -104,7 +102,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 if (Get.find<RecommendMemberBlockController>()
                         .recommendMembers
                         .isEmpty ||
-                    controller.followingPickedNews.isEmpty) {
+                    controller.communityList.isEmpty) {
                   return Container();
                 }
 
@@ -120,35 +118,11 @@ class CommunityPage extends GetView<CommunityPageController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.followingPickedNews.length < 3) {
+                if (controller.communityList.length < 3) {
                   return Container();
                 }
 
-                int end = 6;
-                if (controller.followingPickedNews.length < 6) {
-                  end = controller.followingPickedNews.length;
-                }
-
-                return _buildPickedNewsList(
-                    context, controller.followingPickedNews.sublist(3, end));
-              },
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: LatestCommentsBlock(),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Obx(
-              () {
-                if (controller.followingPickedNews.length < 6) {
-                  return Container();
-                }
-
-                return _buildPickedNewsList(
-                    context, controller.followingPickedNews.sublist(6));
+                return _buildList(context, controller.communityList.sublist(3));
               },
             ),
           ),
@@ -214,71 +188,76 @@ class CommunityPage extends GetView<CommunityPageController> {
     );
   }
 
-  Widget _buildPickedNewsList(
-      BuildContext context, List<NewsListItem> newsList) {
+  Widget _buildList(
+      BuildContext context, List<CommunityListItem> communityList) {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       itemBuilder: (context, index) =>
-          _followingItem(context, newsList[index], Get.width / 2),
+          _buildItem(context, communityList[index]),
       separatorBuilder: (context, index) => const SizedBox(height: 8),
-      itemCount: newsList.length,
+      itemCount: communityList.length,
     );
   }
 
-  Widget _followingItem(
-      BuildContext context, NewsListItem item, double height) {
+  Widget _buildItem(BuildContext context, CommunityListItem item) {
     return Container(
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _pickBar(context, item.followingPickMembers),
+          _itemBar(context, item),
           InkWell(
-            onTap: () {
-              Get.to(
-                () => StoryPage(
-                  news: item,
-                ),
-                fullscreenDialog: true,
-              );
-            },
+            onTap: item.tapItem,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (item.heroImageUrl != null)
-                  CachedNetworkImage(
-                    imageUrl: item.heroImageUrl!,
-                    placeholder: (context, url) => SizedBox(
-                      width: double.infinity,
-                      height: height,
-                      child: Shimmer.fromColors(
-                        baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                        highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                        child: Container(
-                          width: double.infinity,
-                          height: height,
-                          color: Colors.white,
+                Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: item.heroImageUrl,
+                      placeholder: (context, url) => SizedBox(
+                        width: Get.width,
+                        height: Get.width / 2,
+                        child: Shimmer.fromColors(
+                          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
+                          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                          child: Container(
+                            width: Get.width,
+                            height: Get.width / 2,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
+                      errorWidget: (context, url, error) => Container(),
+                      imageBuilder: (context, imageProvider) {
+                        return Image(
+                          image: imageProvider,
+                          width: Get.width,
+                          height: Get.width / 2,
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
-                    errorWidget: (context, url, error) => Container(),
-                    imageBuilder: (context, imageProvider) {
-                      return Image(
-                        image: imageProvider,
-                        width: double.infinity,
-                        height: height,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
+                    if (item.type == CommunityListItemType.pickCollection ||
+                        item.type == CommunityListItemType.commentCollection)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8, right: 8),
+                        child: CollectionTag(),
+                      ),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                  child: ExtendedText(
-                    item.source.title,
-                    joinZeroWidthSpace: true,
-                    style: const TextStyle(color: readrBlack50, fontSize: 14),
+                  child: GestureDetector(
+                    onTap: item.tapAuthor,
+                    child: ExtendedText(
+                      item.authorText,
+                      joinZeroWidthSpace: true,
+                      style: const TextStyle(color: readrBlack50, fontSize: 14),
+                    ),
                   ),
                 ),
                 Padding(
@@ -299,7 +278,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 16),
-                  child: NewsInfo(item),
+                  child: item.infoWidget,
                 ),
               ],
             ),
@@ -318,11 +297,22 @@ class CommunityPage extends GetView<CommunityPageController> {
             ),
             InkWell(
               onTap: () async {
+                PickObjective objective;
+                switch (item.type) {
+                  case CommunityListItemType.commentStory:
+                  case CommunityListItemType.pickStory:
+                    objective = PickObjective.story;
+                    break;
+                  case CommunityListItemType.pickCollection:
+                  case CommunityListItemType.commentCollection:
+                    objective = PickObjective.collection;
+                    break;
+                }
                 await CommentBottomSheet.showCommentBottomSheet(
                   context: context,
                   clickComment: item.showComment!,
-                  objective: PickObjective.story,
-                  id: item.id,
+                  objective: objective,
+                  id: item.itemId,
                   controllerTag: item.controllerTag,
                 );
               },
@@ -334,13 +324,13 @@ class CommunityPage extends GetView<CommunityPageController> {
     );
   }
 
-  Widget _pickBar(BuildContext context, List<Member> members) {
-    if (members.isEmpty) {
+  Widget _itemBar(BuildContext context, CommunityListItem item) {
+    if (item.itemBarMember.isEmpty) {
       return Container();
     }
     List<Member> firstTwoMember = [];
-    for (int i = 0; i < members.length && i < 2; i++) {
-      firstTwoMember.add(members[i]);
+    for (int i = 0; i < item.itemBarMember.length && i < 2; i++) {
+      firstTwoMember.add(item.itemBarMember[i]);
     }
 
     List<Widget> children = [
@@ -351,6 +341,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       ),
       const SizedBox(width: 8),
     ];
+
     if (firstTwoMember.length == 1) {
       children.add(Flexible(
         child: GestureDetector(
@@ -370,10 +361,10 @@ class CommunityPage extends GetView<CommunityPageController> {
           ),
         ),
       ));
-      children.add(const Text(
-        '精選了這篇',
-        style: TextStyle(fontSize: 14, color: readrBlack50),
-        strutStyle: StrutStyle(
+      children.add(Text(
+        item.itemBarText,
+        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
         ),
@@ -426,10 +417,10 @@ class CommunityPage extends GetView<CommunityPageController> {
           ),
         ),
       ));
-      children.add(const Text(
-        '都精選了這篇',
-        style: TextStyle(fontSize: 14, color: readrBlack50),
-        strutStyle: StrutStyle(
+      children.add(Text(
+        '都${item.itemBarText}',
+        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
         ),
@@ -460,6 +451,7 @@ class CommunityPage extends GetView<CommunityPageController> {
             child: ProfilePhotoWidget(
               comment.member,
               22,
+              textSize: 22,
             ),
           ),
           const SizedBox(width: 8),
@@ -468,7 +460,7 @@ class CommunityPage extends GetView<CommunityPageController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Flexible(
                       child: GestureDetector(
@@ -487,13 +479,17 @@ class CommunityPage extends GetView<CommunityPageController> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
+                          strutStyle: const StrutStyle(
+                            forceStrutHeight: true,
+                            leading: 0.5,
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       width: 2,
                       height: 2,
-                      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                      margin: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 10.0),
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -513,10 +509,18 @@ class CommunityPage extends GetView<CommunityPageController> {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
+                    strutStyle: const StrutStyle(
+                      forceStrutHeight: true,
+                      leading: 0.5,
+                    ),
                     joinZeroWidthSpace: true,
                     overflowWidget: TextOverflowWidget(
                       position: TextOverflowPosition.end,
                       child: RichText(
+                        strutStyle: const StrutStyle(
+                          forceStrutHeight: true,
+                          leading: 0.5,
+                        ),
                         text: const TextSpan(
                           text: '... ',
                           style: TextStyle(

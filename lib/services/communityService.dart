@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
+import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/newsListItem.dart';
 
 abstract class CommunityRepos {
-  Future<List<NewsListItem>> fetchFollowingPickedNews(
-      {List<String>? alreadyFetchStoryIds});
-  Future<List<NewsListItem>> fetchMoreFollowingPickedNews(
-      List<String> alreadyFetchStoryIds);
-  Future<List<NewsListItem>> fetchLatestCommentNews(
-      {List<String>? alreadyFetchStoryIds, int needAmount = 3});
+  Future<List<CommunityListItem>> fetchFollowingPicked(
+      {List<String>? alreadyFetchStoryIds,
+      List<String>? alreadyFetchCollectionIds});
+  Future<List<CommunityListItem>> fetchFollowingComment(
+      {List<String>? alreadyFetchStoryIds,
+      List<String>? alreadyFetchCollectionIds});
   Future<List<Member>> fetchRecommendMembers();
 }
 
@@ -23,27 +23,656 @@ class CommunityService implements CommunityRepos {
   final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
 
   @override
-  Future<List<NewsListItem>> fetchFollowingPickedNews(
-      {List<String>? alreadyFetchStoryIds}) async {
+  Future<List<CommunityListItem>> fetchFollowingPicked(
+      {List<String>? alreadyFetchStoryIds,
+      List<String>? alreadyFetchCollectionIds}) async {
     const String query = """
-    query(
-      \$followingMembers: [ID!]
-      \$myId: ID
-      \$alreadyFetchStoryIds: [ID!]
-    ){
-      picks(
-        orderBy: [{picked_date: desc}],
-        take: 20,
+query(
+  \$followingMembers: [ID!]
+  \$myId: ID
+  \$alreadyFetchStoryIds: [ID!]
+  \$alreadyFetchCollectionIds: [ID!]
+){
+  storyPicks: picks(
+    orderBy: [{picked_date: desc}],
+    take: 20,
+    where:{
+      is_active:{
+        equals: true
+      },
+      state:{
+        equals: "public"
+      },
+      kind:{
+        equals: "read"
+      },
+      member:{
+        id:{
+          in: \$followingMembers
+          not:{
+            equals: \$myId
+          }
+        }
+      },
+      story:{
+        id:{
+          notIn: \$alreadyFetchStoryIds
+        }
+        is_active:{
+          equals: true
+        }
+      }
+    }
+  ){
+    picked_date
+    story{
+      id
+      title
+      url
+      source{
+        id
+        title
+      }
+      full_content
+      full_screen_ad
+      paywall
+      published_date
+      og_image
+      commentCount(
         where:{
           is_active:{
             equals: true
-          },
+          }
           state:{
             equals: "public"
-          },
+          }
+          member:{
+            is_active:{
+              equals: true
+            }
+          }
+        }
+      )
+      followingPickComment: pick(
+        where:{
+          is_active:{
+            equals: true
+          }
+          member:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              in: \$followingMembers
+            }
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+      ){
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+          }
+          orderBy:{
+            published_date: desc
+          }
+          take: 1
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+          content
+          published_date
+        }
+      }
+      followingPicks: pick(
+        where:{
+        	member:{
+            id:{
+              in: \$followingMembers
+            }
+          }
+          state:{
+            equals: "public"
+          }
           kind:{
             equals: "read"
-          },
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        picked_date
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      otherPicks:pick(
+        where:{
+          member:{
+            id:{
+              notIn: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+          }
+          state:{
+            in: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      pickCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: pick(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+          	equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+    }
+  }
+  collectionPicks: picks(
+    orderBy: [{picked_date: desc}],
+    take: 20,
+    where:{
+      is_active:{
+        equals: true
+      },
+      state:{
+        equals: "public"
+      },
+      kind:{
+        equals: "read"
+      },
+      member:{
+        id:{
+          in: \$followingMembers
+          not:{
+            equals: \$myId
+          }
+        }
+      },
+      collection:{
+        status:{
+          equals: "publish"
+        }
+        id:{
+          notIn: \$alreadyFetchCollectionIds
+        }
+      }
+    }
+  ){
+    picked_date
+    collection{
+      id
+      title
+      slug
+      status
+      creator{
+        id
+        nickname
+        avatar
+        customId
+      }
+      heroImage{
+        id
+        urlOriginal
+        file{
+          url
+        }
+      }
+      format
+      createdAt
+      picksCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: picks(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+      commentCount(
+        where:{
+          is_active:{
+            equals: true
+          }
+          state:{
+            equals: "public"
+          }
+          member:{
+            is_active:{
+              equals: true
+            }
+          }
+        }
+      )
+      followingPickComment: picks(
+        where:{
+          is_active:{
+            equals: true
+          }
+          member:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              in: \$followingMembers
+            }
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+      ){
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+          }
+          orderBy:{
+            published_date: desc
+          }
+          take: 1
+        ){
+          id
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+          content
+          published_date
+        }
+      }
+      followingPicks: picks(
+        where:{
+        	member:{
+            id:{
+              in: \$followingMembers
+            }
+          }
+          state:{
+            equals: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        picked_date
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      otherPicks:picks(
+        where:{
+          member:{
+            id:{
+              notIn: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+          }
+          state:{
+            in: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "followingMembers": Get.find<UserService>().followingMemberIds,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "alreadyFetchStoryIds": alreadyFetchStoryIds ?? [],
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    List<CommunityListItem> followingPicked = [];
+    for (var item in jsonResponse['data']['storyPicks']) {
+      CommunityListItem pickItem = CommunityListItem.fromJson(item);
+      followingPicked.addIf(
+        !followingPicked.any(
+            (element) => element.newsListItem?.id == pickItem.newsListItem!.id),
+        pickItem,
+      );
+    }
+    for (var item in jsonResponse['data']['collectionPicks']) {
+      CommunityListItem pickItem = CommunityListItem.fromJson(item);
+      followingPicked.addIf(
+        !followingPicked.any(
+            (element) => element.collection?.id == pickItem.collection!.id),
+        pickItem,
+      );
+    }
+
+    return followingPicked;
+  }
+
+  @override
+  Future<List<CommunityListItem>> fetchFollowingComment(
+      {List<String>? alreadyFetchStoryIds,
+      List<String>? alreadyFetchCollectionIds}) async {
+    const String query = """
+query(
+  \$followingMembers: [ID!]
+  \$myId: ID
+  \$alreadyFetchStoryIds: [ID!]
+  \$alreadyFetchCollectionIds: [ID!]
+){
+  storyComments: comments(
+    orderBy: [{published_date: desc}],
+    take: 20,
+    where:{
+      is_active:{
+        equals: true
+      },
+      state:{
+        equals: "public"
+      },
+      member:{
+        id:{
+          in: \$followingMembers
+          not:{
+            equals: \$myId
+          }
+        }
+      },
+      story:{
+        id:{
+          notIn: \$alreadyFetchStoryIds
+        }
+        is_active:{
+          equals: true
+      	}
+      }
+    }
+  ){
+    published_date
+    story{
+      id
+      title
+      url
+      source{
+        id
+        title
+      }
+      full_content
+      full_screen_ad
+      paywall
+      published_date
+      og_image
+      commentCount(
+        where:{
+          is_active:{
+            equals: true
+          }
+          state:{
+            equals: "public"
+          }
+          member:{
+            is_active:{
+              equals: true
+            }
+          }
+        }
+      )
+      followingPicks: pick(
+        where:{
+        	member:{
+            id:{
+              in: \$followingMembers
+            }
+          }
+          state:{
+            equals: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        picked_date
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      otherPicks:pick(
+        where:{
+          member:{
+            id:{
+              notIn: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+          }
+          state:{
+            in: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      pickCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: pick(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+          	equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+      comment(
+        where:{
+          is_active:{
+            equals: true
+          }
+          state:{
+            equals: "public"
+          }
           member:{
             id:{
               in: \$followingMembers
@@ -51,384 +680,268 @@ class CommunityService implements CommunityRepos {
                 equals: \$myId
               }
             }
-          },
-          story:{
-            id:{
-              notIn: \$alreadyFetchStoryIds
+          }
+        }
+        orderBy:{
+          published_date: desc
+        }
+        take: 2
+      ){
+        id
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+        content
+      	state
+        published_date
+        likeCount(
+          where:{
+            is_active:{
+              equals: true
             }
+          }
+        )
+        isLiked:likeCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              equals: \$myId
+            }
+          }
+        )
+      }
+    }
+  }
+  collectionComments: comments(
+    orderBy: [{published_date: desc}],
+    take: 20,
+    where:{
+      is_active:{
+        equals: true
+      },
+      state:{
+        equals: "public"
+      },
+      member:{
+        id:{
+          in: \$followingMembers
+          not:{
+            equals: \$myId
+          }
+        }
+      },
+      collection:{
+        status:{
+          equals: "publish"
+        }
+        id:{
+        	notIn: \$alreadyFetchCollectionIds
+        }
+      }
+    }
+  ){
+    published_date
+    collection{
+      id
+      title
+      slug
+      status
+      creator{
+        id
+        nickname
+        avatar
+        customId
+      }
+      heroImage{
+        id
+        urlOriginal
+        file{
+          url
+        }
+      }
+      format
+      createdAt
+      picksCount(
+        where:{
+          state:{
+            in: "public"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      )
+      myPickId: picks(
+        where:{
+          member:{
+            id:{
+              equals: \$myId
+            }
+          }
+          state:{
+            notIn: "private"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+        pick_comment(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+      }
+      commentCount(
+        where:{
+          is_active:{
+            equals: true
+          }
+          state:{
+            equals: "public"
+          }
+          member:{
             is_active:{
               equals: true
             }
           }
         }
-      ){
-        story{
-          id
-          title
-          url
-          source{
-            id
-            title
-          }
-          full_content
-          full_screen_ad
-          paywall
-          published_date
-          og_image
-          commentCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              state:{
-                equals: "public"
-              }
-              member:{
-                is_active:{
-                  equals: true
-                }
-              }
-            }
-          )
-          followingPickComment: pick(
-            where:{
-              is_active:{
-                equals: true
-              }
-              member:{
-                is_active:{
-                  equals: true
-                }
-                id:{
-                  in: \$followingMembers
-                }
-              }
-            }
-            orderBy:{
-              picked_date: desc
-            }
-          ){
-            pick_comment(
-              where:{
-                is_active:{
-                  equals: true
-                }
-                state:{
-                  equals: "public"
-                }
-              }
-              orderBy:{
-                published_date: desc
-              }
-              take: 1
-            ){
-              id
-              member{
-                id
-                nickname
-                avatar
-                customId
-              }
-              content
-              published_date
-            }
-          }
-          followingPicks: pick(
-            where:{
-              member:{
-                id:{
-                  in: \$followingMembers
-                }
-              }
-              state:{
-                equals: "public"
-              }
-              kind:{
-                equals: "read"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-            orderBy:{
-              picked_date: desc
-            }
-            take: 4
-          ){
-            picked_date
-            member{
-              id
-              nickname
-              avatar
-              customId
-            }
-          }
-          otherPicks:pick(
-            where:{
-              member:{
-                id:{
-                  notIn: \$followingMembers
-                  not:{
-                    equals: \$myId
-                  }
-                }
-              }
-              state:{
-                in: "public"
-              }
-              kind:{
-                equals: "read"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-            orderBy:{
-              picked_date: desc
-            }
-            take: 4
-          ){
-            member{
-              id
-              nickname
-              avatar
-              customId
-            }
-          }
-          pickCount(
-            where:{
-              state:{
-                in: "public"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-          )
-          myPickId: pick(
-            where:{
-              member:{
-                id:{
-                  equals: \$myId
-                }
-              }
-              state:{
-                notIn: "private"
-              }
-              kind:{
-                equals: "read"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-          ){
-            id
-            pick_comment(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-            }
-          }
-        }
-      }
-    }
-    """;
-
-    List<String> followingMemberIds = [];
-    for (var memberId in Get.find<UserService>().currentUser.following) {
-      followingMemberIds.add(memberId.memberId);
-    }
-
-    Map<String, dynamic> variables = {
-      "followingMembers": followingMemberIds,
-      "myId": Get.find<UserService>().currentUser.memberId,
-      "alreadyFetchStoryIds": alreadyFetchStoryIds ?? [],
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    List<NewsListItem> followingPickedNews = [];
-    for (var item in jsonResponse['data']['picks']) {
-      NewsListItem newsListItem = NewsListItem.fromJson(item['story']);
-      followingPickedNews.addIf(
-          !followingPickedNews.any((element) => element.id == newsListItem.id),
-          newsListItem);
-    }
-
-    if (followingPickedNews.length < 10 && followingPickedNews.isNotEmpty) {
-      List<String> fetchedStoryIds = List<String>.from(followingPickedNews.map(
-        (e) => e.id,
-      ));
-      if (alreadyFetchStoryIds != null) {
-        fetchedStoryIds.addAll(alreadyFetchStoryIds);
-      }
-      followingPickedNews
-          .addAll(await fetchMoreFollowingPickedNews(fetchedStoryIds));
-    }
-
-    return followingPickedNews;
-  }
-
-  @override
-  Future<List<NewsListItem>> fetchMoreFollowingPickedNews(
-      List<String> alreadyFetchStoryIds) async {
-    return await fetchFollowingPickedNews(
-        alreadyFetchStoryIds: alreadyFetchStoryIds);
-  }
-
-  @override
-  Future<List<NewsListItem>> fetchLatestCommentNews(
-      {List<String>? alreadyFetchStoryIds, int needAmount = 3}) async {
-    const String query = """
-    query(
-      \$followingMembers: [ID!]
-      \$myId: ID
-      \$alreadyFetchStoryIds: [ID!]
-      \$followingPublisherIds: [ID!]
-    ){
-      comments(
-        take: 10
-        orderBy: [{published_date: desc}],
+      )
+      followingPicks: picks(
         where:{
-          is_active:{
-            equals: true
-          },
+        	member:{
+            id:{
+              in: \$followingMembers
+            }
+          }
           state:{
             equals: "public"
-          },
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
+          }
+        }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
+      ){
+        picked_date
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+      }
+      otherPicks:picks(
+        where:{
           member:{
             id:{
-              notIn: \$followingMembers,
+              notIn: \$followingMembers
               not:{
                 equals: \$myId
               }
             }
-          },
-          story:{
-            id:{
-              notIn: \$alreadyFetchStoryIds
-            },
-            is_active:{
-              equals: true
-            },
-            source:{
-              id:{
-                in: \$followingPublisherIds
-              }
-            }
+          }
+          state:{
+            in: "public"
+          }
+          kind:{
+            equals: "read"
+          }
+          is_active:{
+            equals: true
           }
         }
+        orderBy:{
+          picked_date: desc
+        }
+        take: 4
       ){
-        story{
+        member{
           id
-          title
-          url
-          source{
-            id
-            title
-          }
-          full_content
-          full_screen_ad
-          paywall
-          published_date
-          og_image
-          commentCount(
-            where:{
-              is_active:{
-                equals: true
-              }
-              state:{
-                equals: "public"
-              }
-            }
-          )
-          notFollowingComment:comment(
-            take: 1
-            orderBy:{
-              published_date: desc
-            }
-            where:{
-              is_active:{
-                equals: true
-              }
-              state:{
-                equals: "public"
-              }
-              member:{
-                id:{
-                  notIn: \$followingMembers
-                  not:{
-                    equals: \$myId
-                  }
-                }
-              }
-            }
-          ){
-            id
-            member{
-              id
-              nickname
-              avatar
-              customId
-            }
-            content
-            state
-            published_date
-            likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            isLiked:likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-                id:{
-                  equals: \$myId
-                }
-              }
-            )
-          }
+          nickname
+          avatar
+          customId
         }
       }
+      comment(
+        where:{
+          is_active:{
+            equals: true
+          }
+          state:{
+            equals: "public"
+          }
+          member:{
+            id:{
+              in: \$followingMembers
+              not:{
+                equals: \$myId
+              }
+            }
+          }
+        }
+        orderBy:{
+          published_date: desc
+        }
+        take: 2
+      ){
+        id
+        member{
+          id
+          nickname
+          avatar
+          customId
+        }
+        content
+      	state
+        published_date
+        likeCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        isLiked:likeCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              equals: \$myId
+            }
+          }
+        )
+      }
     }
+  }
+}
     """;
 
-    List<String> followingMemberIds = [];
-    for (var memberId in Get.find<UserService>().currentUser.following) {
-      followingMemberIds.add(memberId.memberId);
-    }
-
-    List<String> followingPublisherIds = [];
-    for (var publisher
-        in Get.find<UserService>().currentUser.followingPublisher) {
-      followingPublisherIds.add(publisher.id);
-    }
-
     Map<String, dynamic> variables = {
-      "followingMembers": followingMemberIds,
+      "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
       "alreadyFetchStoryIds": alreadyFetchStoryIds ?? [],
-      "followingPublisherIds": followingPublisherIds,
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -444,31 +957,25 @@ class CommunityService implements CommunityRepos {
       headers: {"Content-Type": "application/json"},
     );
 
-    List<NewsListItem> latestCommentNews = [];
-    for (var item in jsonResponse['data']['comments']) {
-      NewsListItem newsListItem = NewsListItem.fromJson(item['story']);
-      latestCommentNews.addIf(
-          !latestCommentNews.any((element) => element.id == newsListItem.id),
-          newsListItem);
-      if (latestCommentNews.length == needAmount) {
-        break;
-      }
+    List<CommunityListItem> followingComment = [];
+    for (var item in jsonResponse['data']['storyComments']) {
+      CommunityListItem commentItem = CommunityListItem.fromJson(item);
+      followingComment.addIf(
+        !followingComment.any((element) =>
+            element.newsListItem?.id == commentItem.newsListItem!.id),
+        commentItem,
+      );
+    }
+    for (var item in jsonResponse['data']['collectionComments']) {
+      CommunityListItem commentItem = CommunityListItem.fromJson(item);
+      followingComment.addIf(
+        !followingComment.any(
+            (element) => element.collection?.id == commentItem.collection!.id),
+        commentItem,
+      );
     }
 
-    if (latestCommentNews.length < needAmount && latestCommentNews.isNotEmpty) {
-      List<String> fetchedStoryIds = List<String>.from(latestCommentNews.map(
-        (e) => e.id,
-      ));
-      if (alreadyFetchStoryIds != null) {
-        fetchedStoryIds.addAll(alreadyFetchStoryIds);
-      }
-      latestCommentNews.addAll(await fetchLatestCommentNews(
-        alreadyFetchStoryIds: fetchedStoryIds,
-        needAmount: needAmount - latestCommentNews.length,
-      ));
-    }
-
-    return latestCommentNews;
+    return followingComment;
   }
 
   @override

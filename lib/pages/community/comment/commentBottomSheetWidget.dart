@@ -95,7 +95,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                           fontSize: 16.0,
                         );
                         Get.find<CommunityPageController>()
-                            .fetchFollowingPickedNews();
+                            .fetchFollowingPickedAndComment();
                       }
                       timer.cancel();
                     }
@@ -154,7 +154,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
               height: 0.5,
             ),
             AnimatedPadding(
-              duration: const Duration(milliseconds: 150),
+              duration: const Duration(milliseconds: 50),
               curve: Curves.easeOut,
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),

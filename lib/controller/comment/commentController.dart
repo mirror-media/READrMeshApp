@@ -46,15 +46,31 @@ class CommentController extends GetxController {
   void fetchComments() async {
     isLoading.value = true;
     List<Comment>? allFetchComments;
-    if (objective == PickObjective.story) {
-      allFetchComments = await commentRepos.fetchCommentsByStoryId(id);
-    }
+    try {
+      if (objective == PickObjective.story) {
+        allFetchComments = await commentRepos.fetchCommentsByStoryId(id);
+      } else {
+        allFetchComments = await commentRepos.fetchCommentsByCollectionId(id);
+      }
 
-    if (allFetchComments != null) {
-      allComments.assignAll(allFetchComments);
-      isLoading.value = false;
-    } else {
-      fetchComments();
+      if (allFetchComments != null) {
+        allComments.assignAll(allFetchComments);
+        isLoading.value = false;
+      } else {
+        throw Exception('Server return error');
+      }
+    } catch (e) {
+      print('Fetch comments error: $e');
+      Fluttertoast.showToast(
+        msg: "發生錯誤 請稍後再試一次",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Get.back();
     }
   }
 

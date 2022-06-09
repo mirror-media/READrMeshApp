@@ -1,7 +1,6 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
-import 'package:readr/controller/community/latestCommentBlockController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
@@ -80,7 +79,6 @@ class RootPageController extends GetxController {
     if (tabIndex.value == 1) {
       Get.find<LatestPageController>().updateLatestNewsPage();
     } else if (tabIndex.value == 0) {
-      Get.find<LatestCommentBlockController>().fetchLatestCommentNews();
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
     }
   }
