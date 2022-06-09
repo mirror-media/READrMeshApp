@@ -24,7 +24,7 @@ class InternetCheckService extends GetxService {
           addresses.add(AddressCheckOptions(internetAddress, port: 443));
         }
       },
-    ).timeout(const Duration(minutes: 3));
+    ).timeout(timeout);
     meshCheckInstance = InternetConnectionChecker.createInstance(
       checkTimeout: timeout, // Custom check timeout
       addresses: addresses,
