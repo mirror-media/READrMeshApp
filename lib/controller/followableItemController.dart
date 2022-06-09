@@ -147,13 +147,13 @@ class FollowableItemController extends GetxController {
   void _updatePages() {
     _updateTargetPersonalFile();
     if (item.type == FollowableItemType.member) {
-      EasyDebounce.debounce('followingMemberUpdate', const Duration(seconds: 5),
-          () {
+      EasyDebounce.debounce(
+          'followingMemberUpdate', const Duration(milliseconds: 300), () {
         Get.find<RootPageController>().updateMemberRelatedPages();
       });
     } else {
       EasyDebounce.debounce(
-          'followingPublisherUpdate', const Duration(seconds: 5), () {
+          'followingPublisherUpdate', const Duration(milliseconds: 300), () {
         Get.find<RootPageController>().updatePublisherRelatedPages();
       });
     }
