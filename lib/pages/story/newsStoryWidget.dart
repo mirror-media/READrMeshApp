@@ -46,7 +46,6 @@ class NewsStoryWidget extends GetView<StoryPageController> {
               ),
               BottomCardWidget(
                 controllerTag: controller.newsStoryItem.controllerTag,
-                onTextChanged: (value) => controller.inputText = value,
                 title: controller.newsStoryItem.title,
                 author: controller.newsStoryItem.source.title,
                 id: controller.newsStoryItem.id,

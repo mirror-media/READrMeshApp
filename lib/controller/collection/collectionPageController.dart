@@ -26,7 +26,6 @@ class CollectionPageController extends GetxController {
   final isError = false.obs;
   dynamic error;
 
-  String inputText = '';
   final List<Comment> allComments = [];
   final List<Comment> popularComments = [];
   final collectionPicks = <CollectionStory>[].obs;

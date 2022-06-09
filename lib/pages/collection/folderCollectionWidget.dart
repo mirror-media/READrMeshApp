@@ -47,7 +47,6 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
               ),
               BottomCardWidget(
                 controllerTag: collection.controllerTag,
-                onTextChanged: (value) => controller.inputText = value,
                 title: controller.collection.title,
                 author: 'by ${collection.creator.customId}',
                 id: collection.id,

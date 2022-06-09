@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
+import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -31,7 +32,11 @@ class CollectionAppBar extends GetView<CollectionPageController> {
           color: readrBlack,
         ),
         onPressed: () async {
-          if (controller.inputText.trim().isNotEmpty) {
+          if (Get.isRegistered<CommentInputBoxController>(
+                  tag: collection.controllerTag) &&
+              Get.find<CommentInputBoxController>(tag: collection.controllerTag)
+                  .hasInput
+                  .isTrue) {
             Widget dialogTitle = const Text(
               '確定要刪除留言？',
               style: TextStyle(

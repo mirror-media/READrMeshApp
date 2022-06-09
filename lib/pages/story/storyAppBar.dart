@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -110,7 +111,11 @@ class StoryAppBar extends GetView<StoryPageController> {
           ),
           tooltip: '回前頁',
           onPressed: () async {
-            if (controller.inputText.trim().isNotEmpty) {
+            if (Get.isRegistered<CommentInputBoxController>(
+                    tag: 'News$newsId') &&
+                Get.find<CommentInputBoxController>(tag: 'News$newsId')
+                    .hasInput
+                    .isTrue) {
               Widget dialogTitle = const Text(
                 '確定要刪除留言？',
                 style: TextStyle(

@@ -35,7 +35,6 @@ class StoryPageController extends GetxController {
   late Story readrStory;
   late ParagraphFormat paragraphFormat;
   String? _bookmarkId;
-  String inputText = '';
 
   @override
   void onInit() {

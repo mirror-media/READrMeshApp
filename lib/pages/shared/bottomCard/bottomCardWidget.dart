@@ -13,11 +13,9 @@ import 'package:readr/services/commentService.dart';
 
 class BottomCardWidget extends StatelessWidget {
   final String controllerTag;
-  final ValueChanged<String> onTextChanged;
   late final CommentController commentController;
   late final PickableItemController pickableItemController;
   late final BottomCardWidgetController bottomCardWidgetController;
-  final TextEditingController _textController = TextEditingController();
   final String title;
   final String author;
   final PickObjective objective;
@@ -27,7 +25,6 @@ class BottomCardWidget extends StatelessWidget {
 
   BottomCardWidget({
     required this.controllerTag,
-    required this.onTextChanged,
     required this.title,
     required this.author,
     required this.objective,
@@ -35,10 +32,7 @@ class BottomCardWidget extends StatelessWidget {
     required this.allComments,
     required this.popularComments,
     Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  }) : super(key: key) {
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
       Get.replace<CommentController>(
         CommentController(
@@ -73,6 +67,10 @@ class BottomCardWidget extends StatelessWidget {
       BottomCardWidgetController(),
       tag: hashCode.toString(),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       snap: true,
       initialChildSize: 0.13,
@@ -186,19 +184,8 @@ class BottomCardWidget extends StatelessWidget {
             Obx(
               () => Visibility(
                 visible: bottomCardWidgetController.isCollapsed.isFalse,
-                child: Obx(
-                  () => CommentInputBox(
-                    onPressed: (text) async {
-                      bool result = await commentController.addComment(text);
-                      if (result) {
-                        _textController.clear();
-                      }
-                    },
-                    isSending: commentController.isSending.value,
-                    onTextChanged: (text) => onTextChanged(text),
-                    textController: _textController,
-                    isCollapsed: bottomCardWidgetController.isCollapsed.value,
-                  ),
+                child: CommentInputBox(
+                  commentControllerTag: controllerTag,
                 ),
               ),
             ),

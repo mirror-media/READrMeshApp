@@ -1,75 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/comment/commentController.dart';
+import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 
-class CommentInputBox extends StatefulWidget {
-  final void Function(String text) onPressed;
-  final bool isSending;
+class CommentInputBox extends GetView<CommentInputBoxController> {
   final String? oldContent;
-  final ValueChanged<String> onTextChanged;
-  final TextEditingController? textController;
-  final bool isCollapsed;
+  final String commentControllerTag;
   const CommentInputBox({
-    required this.onPressed,
-    this.isSending = false,
+    required this.commentControllerTag,
     this.oldContent,
-    required this.onTextChanged,
-    this.textController,
-    this.isCollapsed = true,
   });
 
   @override
-  State<CommentInputBox> createState() => _CommentInputBoxState();
-}
-
-class _CommentInputBoxState extends State<CommentInputBox> {
-  bool _hasInput = false;
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.textController != null) {
-      _controller = widget.textController!;
-    } else {
-      _controller = TextEditingController(text: widget.oldContent);
-    }
-
-    if (_controller.text.trim().isNotEmpty) {
-      _hasInput = true;
-      widget.onTextChanged(_controller.text);
-    }
-    _controller.addListener(() {
-      // pass value back to showPickBottomSheet
-      widget.onTextChanged(_controller.text);
-
-      if (mounted) {
-        // check value whether is only space
-        if (_controller.text.trim().isNotEmpty) {
-          setState(() {
-            _hasInput = true;
-          });
-        } else {
-          setState(() {
-            _hasInput = false;
-          });
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.removeListener(() {});
-  }
+  String get tag => commentControllerTag;
 
   @override
   Widget build(BuildContext context) {
+    if (!Get.isRegistered<CommentInputBoxController>(
+        tag: commentControllerTag)) {
+      Get.put(
+        CommentInputBoxController(
+          oldContent: oldContent,
+          commentControllerTag: commentControllerTag,
+        ),
+        tag: commentControllerTag,
+      );
+    }
+
     return Obx(() {
       if (Get.find<UserService>().isMember.isFalse) {
         return Container(
@@ -97,9 +59,9 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                 ),
                 minimumSize: const Size.fromHeight(48),
               ),
-              child: Text(
-                widget.isCollapsed ? '建立帳號' : '註冊以參與討論',
-                style: const TextStyle(
+              child: const Text(
+                '註冊以參與討論',
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
@@ -108,16 +70,6 @@ class _CommentInputBoxState extends State<CommentInputBox> {
             ),
           ),
         );
-      }
-      Color sendTextColor;
-      Color textFieldTextColor = readrBlack;
-      if (!_hasInput) {
-        sendTextColor = Colors.white;
-      } else if (widget.isSending) {
-        sendTextColor = readrBlack20;
-        textFieldTextColor = readrBlack20;
-      } else {
-        sendTextColor = Colors.blue;
       }
 
       return Container(
@@ -134,29 +86,55 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                 children: [
                   const SizedBox(width: 52),
                   Expanded(
-                    child: TextField(
-                      minLines: 1,
-                      maxLines: 4,
-                      readOnly: widget.isSending,
-                      style: TextStyle(color: textFieldTextColor),
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '在這裡輸入留言...',
-                        hintStyle: TextStyle(color: readrBlack30),
-                      ),
-                    ),
+                    child: Obx(() {
+                      Color textFieldTextColor = readrBlack;
+                      if (Get.find<CommentController>(tag: commentControllerTag)
+                          .isSending
+                          .isTrue) {
+                        textFieldTextColor = readrBlack20;
+                      }
+                      return TextField(
+                        minLines: 1,
+                        maxLines: 4,
+                        readOnly: Get.find<CommentController>(
+                                tag: commentControllerTag)
+                            .isSending
+                            .value,
+                        style: TextStyle(color: textFieldTextColor),
+                        controller: controller.textController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '在這裡輸入留言...',
+                          hintStyle: TextStyle(color: readrBlack30),
+                        ),
+                      );
+                    }),
                   ),
-                  TextButton(
-                    onPressed:
-                        (_hasInput && !widget.isSending) ? _sendComment : null,
-                    child: Text(
-                      '發佈',
-                      style: TextStyle(
-                        color: sendTextColor,
-                      ),
-                    ),
-                  ),
+                  Obx(() {
+                    if (controller.hasInput.isFalse) {
+                      return Container();
+                    }
+                    return TextButton(
+                      onPressed: _sendComment,
+                      child: Obx(() {
+                        Color sendTextColor = Colors.blue;
+                        if (controller.hasInput.isFalse) {
+                          sendTextColor = Colors.white;
+                        } else if (Get.find<CommentController>(
+                                tag: commentControllerTag)
+                            .isSending
+                            .isTrue) {
+                          sendTextColor = readrBlack20;
+                        }
+                        return Text(
+                          '發佈',
+                          style: TextStyle(
+                            color: sendTextColor,
+                          ),
+                        );
+                      }),
+                    );
+                  }),
                 ],
               ),
             ],
@@ -166,8 +144,12 @@ class _CommentInputBoxState extends State<CommentInputBox> {
     });
   }
 
-  void _sendComment() {
-    widget.onPressed(_controller.text);
+  void _sendComment() async {
     FocusManager.instance.primaryFocus?.unfocus();
+    bool result = await Get.find<CommentController>(tag: commentControllerTag)
+        .addComment(controller.textController.text);
+    if (result) {
+      controller.textController.clear();
+    }
   }
 }
