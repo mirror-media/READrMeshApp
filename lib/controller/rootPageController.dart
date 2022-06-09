@@ -1,11 +1,8 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
-import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
-import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/pages/welcomePage.dart';
 
 class RootPageController extends GetxController {
@@ -48,38 +45,6 @@ class RootPageController extends GetxController {
       Get.find<CommunityPageController>().scrollToTopAndRefresh();
     } else if (index == 1) {
       Get.find<LatestPageController>().scrollToTopAndRefresh();
-    }
-  }
-
-  void updateMemberRelatedPages() {
-    //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(
-        tag: Get.find<UserService>().currentUser.memberId)) {
-      Get.find<PersonalFilePageController>(
-              tag: Get.find<UserService>().currentUser.memberId)
-          .fetchMemberData();
-    }
-
-    //update community page if current tab is 0
-    if (tabIndex.value == 0) {
-      Get.find<CommunityPageController>().updateCommunityPage();
-    }
-  }
-
-  void updatePublisherRelatedPages() {
-    //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(
-        tag: Get.find<UserService>().currentUser.memberId)) {
-      Get.find<PersonalFilePageController>(
-              tag: Get.find<UserService>().currentUser.memberId)
-          .fetchMemberData();
-    }
-
-    //update latest page if current tab is 1
-    if (tabIndex.value == 1) {
-      Get.find<LatestPageController>().updateLatestNewsPage();
-    } else if (tabIndex.value == 0) {
-      Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
     }
   }
 }

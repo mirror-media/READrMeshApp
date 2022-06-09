@@ -1,6 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/controller/personalFile/followerListController.dart';
@@ -146,15 +148,31 @@ class FollowableItemController extends GetxController {
 
   void _updatePages() {
     _updateTargetPersonalFile();
-    if (item.type == FollowableItemType.member) {
+    _updateOwnPersonalFile();
+    if (item.type == FollowableItemType.member &&
+        Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce(
-          'followingMemberUpdate', const Duration(milliseconds: 300), () {
-        Get.find<RootPageController>().updateMemberRelatedPages();
+          'updateCommunityPage', const Duration(milliseconds: 300), () {
+        Get.find<CommunityPageController>().fetchFollowingPickedAndComment();
       });
-    } else {
+      EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
+          () {
+        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
+      });
+    } else if (Get.find<RootPageController>().tabIndex.value == 1) {
       EasyDebounce.debounce(
-          'followingPublisherUpdate', const Duration(milliseconds: 300), () {
-        Get.find<RootPageController>().updatePublisherRelatedPages();
+          'updateLatestPage', const Duration(milliseconds: 300), () {
+        Get.find<LatestPageController>().fetchLatestNews();
+      });
+      EasyDebounce.debounce(
+          'updateRecommendPublisher', const Duration(seconds: 2), () {
+        Get.find<RecommendPublisherBlockController>()
+            .fetchRecommendPublishers();
+      });
+    } else if (Get.find<RootPageController>().tabIndex.value == 0) {
+      EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
+          () {
+        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
       });
     }
   }
@@ -170,6 +188,15 @@ class FollowableItemController extends GetxController {
     if (item.type == FollowableItemType.member &&
         Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
       Get.find<PersonalFilePageController>(tag: item.id).fetchMemberData();
+    }
+  }
+
+  void _updateOwnPersonalFile() {
+    if (Get.isRegistered<PersonalFilePageController>(
+        tag: Get.find<UserService>().currentUser.memberId)) {
+      Get.find<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)
+          .fetchMemberData();
     }
   }
 
