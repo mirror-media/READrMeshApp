@@ -159,7 +159,9 @@ class CommunityListItem {
           itemBarMember.assignAll(newsListItem.commentMembers!);
           itemBarText = '在這篇留言';
         } else {
-          itemBarMember.assignAll(newsListItem.followingPickMembers);
+          itemBarMember.assignAll(
+              Get.find<PickableItemController>(tag: newsListItem.controllerTag)
+                  .pickedMembers);
           itemBarText = '精選了這篇';
         }
         break;

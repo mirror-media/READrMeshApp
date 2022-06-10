@@ -18,17 +18,11 @@ class NewsListItem {
   final Category? category;
   final DateTime publishedDate;
   final String? heroImageUrl;
-  int pickCount;
-  int commentCount;
   final bool payWall;
   final bool fullScreenAd;
   final bool fullContent;
-  final List<Member> followingPickMembers;
-  final List<Member> otherPickMembers;
   final Comment? showComment;
   final List<Member>? commentMembers;
-  String? myPickId;
-  String? myPickCommentId;
   final String controllerTag;
 
   NewsListItem({
@@ -43,15 +37,9 @@ class NewsListItem {
     required this.heroImageUrl,
     this.payWall = false,
     this.fullScreenAd = false,
-    this.pickCount = 0,
-    this.commentCount = 0,
     this.fullContent = false,
-    required this.followingPickMembers,
-    required this.otherPickMembers,
     this.showComment,
     this.commentMembers,
-    this.myPickId,
-    this.myPickCommentId,
     required this.controllerTag,
   });
 
@@ -203,15 +191,9 @@ class NewsListItem {
       heroImageUrl: json["og_image"],
       payWall: payWall,
       fullScreenAd: fullScreenAd,
-      pickCount: pickCount,
-      commentCount: commentCount,
-      followingPickMembers: followingPickMembers,
-      otherPickMembers: otherPickMembers,
       showComment: showComment,
-      myPickId: myPickId,
       fullContent: fullContent,
       content: content,
-      myPickCommentId: myPickCommentId,
       commentMembers: commentMembers,
     );
   }
