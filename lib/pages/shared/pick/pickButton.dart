@@ -145,32 +145,28 @@ class PickButton extends StatelessWidget {
           side: const BorderSide(color: readrBlack87, width: 1),
           backgroundColor:
               controller.isPicked.value ? readrBlack87 : Colors.white,
-          padding: const EdgeInsets.fromLTRB(11, 3, 12, 4),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         ),
-        child: RichText(
-          text: TextSpan(
-            children: [
-              WidgetSpan(
-                child: Icon(
-                  controller.isPicked.value
-                      ? Icons.done_outlined
-                      : Icons.add_outlined,
-                  size: textSize + 4,
-                  color:
-                      controller.isPicked.value ? Colors.white : readrBlack87,
-                ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              controller.isPicked.value
+                  ? Icons.done_outlined
+                  : Icons.add_outlined,
+              size: textSize + 4,
+              color: controller.isPicked.value ? Colors.white : readrBlack87,
+            ),
+            const SizedBox(width: 3),
+            Text(
+              controller.isPicked.value ? '已精選' : '精選',
+              style: TextStyle(
+                fontSize: textSize,
+                color: controller.isPicked.value ? Colors.white : readrBlack87,
               ),
-              TextSpan(
-                text: controller.isPicked.value ? '已精選' : '精選',
-                style: TextStyle(
-                  fontSize: textSize,
-                  height: 1.9,
-                  color:
-                      controller.isPicked.value ? Colors.white : readrBlack87,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
