@@ -47,7 +47,8 @@ class PickTabContent extends GetView<PickTabController> {
         }
 
         if (!controller.isLoading) {
-          if (controller.storyPickList.isEmpty) {
+          if (controller.storyPickList.isEmpty &&
+              controller.collecionPickList.isEmpty) {
             return _emptyWidget();
           }
           return _buildContent();
