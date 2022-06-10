@@ -40,17 +40,6 @@ class PersonalFilePageController extends GetxController
     super.onInit();
   }
 
-  // @override
-  // void onReady() {
-  //   if (tabs.isNotEmpty) {
-  //     tabController = TabController(
-  //       vsync: this,
-  //       length: tabs.length,
-  //     );
-  //   }
-  //   super.onReady();
-  // }
-
   @override
   void onClose() {
     tabController.dispose();
@@ -107,24 +96,20 @@ class PersonalFilePageController extends GetxController
       viewMember: viewMemberData.value,
     ));
 
-    if (viewMemberData.value.memberId !=
-            Get.find<UserService>().currentUser.memberId ||
-        bookmarkCount.value + pickCount.value > 0) {
-      tabs.add(
-        const Tab(
-          child: Text(
-            '集錦',
-            style: TextStyle(
-              fontSize: 16,
-            ),
+    tabs.add(
+      const Tab(
+        child: Text(
+          '集錦',
+          style: TextStyle(
+            fontSize: 16,
           ),
         ),
-      );
+      ),
+    );
 
-      tabWidgets.add(CollectionTabContent(
-        viewMember: viewMemberData.value,
-      ));
-    }
+    tabWidgets.add(CollectionTabContent(
+      viewMember: viewMemberData.value,
+    ));
 
     if (viewMemberData.value.memberId ==
         Get.find<UserService>().currentUser.memberId) {
