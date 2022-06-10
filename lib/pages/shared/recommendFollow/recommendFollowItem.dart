@@ -2,7 +2,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
-import 'package:readr/pages/shared/followButton.dart';
+import 'package:readr/pages/shared/follow/followButton.dart';
 
 class RecommendFollowItem extends StatelessWidget {
   final FollowableItem recommendItem;

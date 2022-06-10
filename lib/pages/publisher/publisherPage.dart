@@ -7,7 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/followButton.dart';
+import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 import 'package:readr/services/publisherService.dart';

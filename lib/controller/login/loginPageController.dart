@@ -6,7 +6,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/followingSyncToast.dart';
+import 'package:readr/pages/shared/follow/followingSyncToast.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';

@@ -5,7 +5,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
-import 'package:readr/pages/shared/followButton.dart';
+import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
 
 class PublisherListItemWidget extends GetView<FollowableItemController> {

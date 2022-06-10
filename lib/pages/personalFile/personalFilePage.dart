@@ -16,7 +16,7 @@ import 'package:readr/pages/personalFile/followingListPage.dart';
 import 'package:readr/pages/personalFile/personalFileSkeletonScreen.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
-import 'package:readr/pages/shared/followButton.dart';
+import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:validated/validated.dart' as validate;
 

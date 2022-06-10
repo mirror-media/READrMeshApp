@@ -7,7 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
-import 'package:readr/pages/shared/followButton.dart';
+import 'package:readr/pages/shared/follow/followButton.dart';
 
 class MemberListItemWidget extends StatelessWidget {
   final Member viewMember;
