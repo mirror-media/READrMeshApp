@@ -212,7 +212,7 @@ class PickTabContent extends GetView<PickTabController> {
         }
 
         return SizedBox(
-          height: 280,
+          height: 282,
           child: ListView.separated(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

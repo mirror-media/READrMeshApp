@@ -30,6 +30,7 @@ class PickCollectionItem extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: SizedBox(
           width: 150,
+          height: 236,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +73,6 @@ class PickCollectionItem extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
@@ -101,8 +101,8 @@ class PickCollectionItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 2),
-              const Spacer(),
-              Padding(
+              Container(
+                height: 36,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Obx(
                   () => ExtendedText(
@@ -122,7 +122,6 @@ class PickCollectionItem extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -162,7 +161,6 @@ class PickCollectionItem extends StatelessWidget {
                   },
                 ),
               ),
-              const Spacer(),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
