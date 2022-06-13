@@ -1,4 +1,5 @@
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
@@ -388,11 +390,44 @@ class CommunityPage extends GetView<CommunityPageController> {
       ));
     }
 
+    PickObjective objective;
+    String? url;
+
+    if (item.type == CommunityListItemType.pickStory ||
+        item.type == CommunityListItemType.commentStory) {
+      objective = PickObjective.story;
+      url = item.newsListItem!.url;
+    } else {
+      objective = PickObjective.collection;
+    }
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Row(
-        children: children,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Row(
+              children: children,
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () async => await MoreActionBottomSheet.showMoreActionSheet(
+              context: context,
+              objective: objective,
+              id: item.itemId,
+              controllerTag: item.controllerTag,
+              url: url,
+            ),
+            child: const Icon(
+              CupertinoIcons.ellipsis,
+              color: readrBlack66,
+              size: 15,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
+import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/story/storyPage.dart';
@@ -35,15 +37,37 @@ class NewsListItemWidget extends StatelessWidget {
           if (!hidePublisher)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
-              child: GestureDetector(
-                onTap: () => Get.to(() => PublisherPage(
-                      news.source,
-                    )),
-                child: ExtendedText(
-                  news.source.title,
-                  joinZeroWidthSpace: true,
-                  style: const TextStyle(color: readrBlack50, fontSize: 12),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.to(() => PublisherPage(
+                          news.source,
+                        )),
+                    child: ExtendedText(
+                      news.source.title,
+                      joinZeroWidthSpace: true,
+                      style: const TextStyle(color: readrBlack50, fontSize: 12),
+                    ),
+                  ),
+                  IconButton(
+                    padding: const EdgeInsets.all(0),
+                    alignment: Alignment.centerRight,
+                    onPressed: () async =>
+                        await MoreActionBottomSheet.showMoreActionSheet(
+                      context: context,
+                      objective: PickObjective.story,
+                      id: news.id,
+                      controllerTag: news.controllerTag,
+                      url: news.url,
+                    ),
+                    icon: const Icon(
+                      CupertinoIcons.ellipsis,
+                      color: readrBlack66,
+                      size: 15,
+                    ),
+                  ),
+                ],
               ),
             ),
           if (news.heroImageUrl == null)
