@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
@@ -49,11 +50,15 @@ class CollectionPageController extends GetxController {
 
   Future<void> fetchCollectionData() async {
     try {
-      var result = await collectionPageRepos.fetchCollectionData(collection.id);
-      allComments.assignAll(result['allComments']);
-      popularComments.assignAll(result['popularComments']);
-      collectionPicks.assignAll(result['collectionPicks']);
-      collection.collectionPicks = result['collectionPicks'];
+      await collectionPageRepos
+          .fetchCollectionData(collection.id)
+          .then((value) {
+        allComments.assignAll(value['allComments']);
+        popularComments.assignAll(value['popularComments']);
+        collectionPicks.assignAll(value['collectionPicks']);
+        collection.collectionPicks = value['collectionPicks'];
+      });
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch collection data failed: $e');
       error = determineException(e);

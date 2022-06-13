@@ -56,9 +56,7 @@ class NewsListItem {
     List<Member> otherPickMembers = [];
     Comment? showComment;
     List<Comment> allComments = [];
-    String? myPickId;
     String? content;
-    String? myPickCommentId;
     List<Member>? commentMembers;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
@@ -124,17 +122,6 @@ class NewsListItem {
       }
     }
 
-    if (BaseModel.checkJsonKeys(json, ['myPickId'])) {
-      if (json['myPickId'].isNotEmpty) {
-        var myPickItem = json['myPickId'][0];
-        myPickId = myPickItem['id'];
-        if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
-            myPickItem['pick_comment'].isNotEmpty) {
-          myPickCommentId = myPickItem['pick_comment'][0]['id'];
-        }
-      }
-    }
-
     if (BaseModel.checkJsonKeys(json, ['full_screen_ad'])) {
       if (json['full_screen_ad'] == 'all' ||
           json['full_screen_ad'] == 'mobile') {
@@ -154,10 +141,6 @@ class NewsListItem {
           Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
         final controller =
             Get.find<PickableItemController>(tag: 'News${json['id']}');
-        if (controller.isLoading.isFalse) {
-          controller.myPickId.value = myPickId;
-          controller.myPickCommentId.value = myPickCommentId;
-        }
         controller.pickCount.value = pickCount;
         controller.commentCount.value = commentCount;
         controller.pickedMembers.assignAll(allPickedMember);
@@ -167,8 +150,6 @@ class NewsListItem {
             targetId: json["id"],
             pickRepos: PickService(),
             objective: PickObjective.story,
-            myPickId: myPickId,
-            myPickCommentId: myPickCommentId,
             pickCount: pickCount,
             commentCount: commentCount,
             pickedMembers: allPickedMember,

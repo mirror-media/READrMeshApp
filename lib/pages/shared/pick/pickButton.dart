@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -62,7 +63,10 @@ class PickButton extends StatelessWidget {
                   title: const Text(
                     '確認移除精選？',
                   ),
-                  content: controller.myPickCommentId.value != null
+                  content: Get.find<PickAndBookmarkService>().pickList.any(
+                          (element) =>
+                              element.targetId == controller.targetId &&
+                              element.objective == controller.objective)
                       ? const Text(
                           '移除精選文章，將會一併移除您的留言',
                         )
@@ -119,9 +123,16 @@ class PickButton extends StatelessWidget {
                 ),
               );
               if (result != null && result) {
-                String pickId = controller.myPickId.value!;
+                String? pickId = Get.find<PickAndBookmarkService>()
+                    .pickList
+                    .firstWhereOrNull(
+                      (element) =>
+                          element.targetId == controller.targetId &&
+                          element.objective == controller.objective,
+                    )
+                    ?.myPickId;
                 controller.deletePick();
-                if (isInMyPersonalFile) {
+                if (isInMyPersonalFile && pickId != null) {
                   await Future.delayed(const Duration(milliseconds: 50));
                   Get.find<PickTabController>(
                           tag: Get.find<UserService>().currentUser.memberId)

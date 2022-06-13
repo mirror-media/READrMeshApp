@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/pickIdItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,7 @@ abstract class MemberRepos {
   Future<List<Publisher>?> addFollowPublisher(String publisherId);
   Future<List<Publisher>?> removeFollowPublisher(String publisherId);
   Future<bool?> updateMember(Member member);
+  Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
 }
 
 class MemberService implements MemberRepos {
@@ -611,5 +614,121 @@ class MemberService implements MemberRepos {
     } catch (e) {
       return null;
     }
+  }
+
+  @override
+  Future<List<PickIdItem>> fetchAllPicksAndBookmarks() async {
+    const String query = """
+query(
+  \$memberId: ID
+){
+  member(
+    where:{
+      id: \$memberId
+    }
+  ){
+    storyPicks: pick(
+      where:{
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+        story:{
+          is_active:{
+            equals: true
+          }
+        }
+      }
+    ){
+      id
+      pick_comment{
+        id
+      }
+      story{
+        id
+      }
+    }
+    collectionPicks: pick(
+      where:{
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+        collection:{
+          status:{
+            equals: "publish"
+          }
+        }
+      }
+    ){
+      id
+      pick_comment{
+        id
+      }
+      collection{
+        id
+      }
+    }
+    bookmarks: pick(
+      where:{
+        kind:{
+          equals: "bookmark"
+        }
+        is_active:{
+          equals: true
+        }
+        story:{
+          is_active:{
+            equals: true
+          }
+        }
+      }
+    ){
+      id
+      story{
+        id
+      }
+    }
+  }
+}
+    """;
+
+    Map<String, String> variables = {
+      "memberId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    final jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    List<PickIdItem> pickIdList = [];
+    for (var item in jsonResponse['data']['member']['storyPicks']) {
+      pickIdList
+          .add(PickIdItem.fromJson(item, PickObjective.story, PickKind.read));
+    }
+
+    for (var item in jsonResponse['data']['member']['collectionPicks']) {
+      pickIdList.add(
+          PickIdItem.fromJson(item, PickObjective.collection, PickKind.read));
+    }
+
+    for (var item in jsonResponse['data']['member']['bookmarks']) {
+      pickIdList.add(
+          PickIdItem.fromJson(item, PickObjective.story, PickKind.bookmark));
+    }
+
+    return pickIdList;
   }
 }

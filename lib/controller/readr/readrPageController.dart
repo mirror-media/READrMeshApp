@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/category.dart';
 import 'package:readr/models/editorChoiceItem.dart';
@@ -43,9 +44,13 @@ class ReadrPageController extends GetxController
     isLoading = true;
     isError = false;
     update();
+    await Get.find<PickAndBookmarkService>().fetchPickIds();
     try {
-      editorChoiceList
-          .assignAll(await editorChoiceRepo.fetchNewsListItemList());
+      await editorChoiceRepo
+          .fetchNewsListItemList()
+          .then((value) => editorChoiceList.assignAll(value));
+
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch READr editorChoice error: $e');
       editorChoiceList.clear();

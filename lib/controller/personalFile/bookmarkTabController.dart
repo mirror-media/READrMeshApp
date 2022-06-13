@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/pick.dart';
@@ -40,7 +41,11 @@ class BookmarkTabController extends GetxController {
     isNoMore.value = false;
     update();
     try {
-      bookmarkList.assignAll(await personalFileRepos.fetchBookmark());
+      await personalFileRepos
+          .fetchBookmark()
+          .then((value) => bookmarkList.assignAll(value));
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
+
       if (bookmarkList.length < 10) {
         isNoMore.value = true;
       }
@@ -62,6 +67,7 @@ class BookmarkTabController extends GetxController {
       if (newBookmarkList.length < 10) {
         isNoMore.value = true;
       }
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       bookmarkList.addAll(newBookmarkList);
     } catch (e) {
       print('Fetch more bookmarkList error: $e');

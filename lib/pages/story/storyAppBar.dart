@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
+import 'package:readr/controller/pickableItemController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -47,13 +49,19 @@ class StoryAppBar extends GetView<StoryPageController> {
               () {
                 return IconButton(
                   icon: Icon(
-                    controller.isBookmarked.value
+                    Get.find<PickableItemController>(tag: 'News$newsId')
+                            .isBookmarked
+                            .value
                         ? Icons.bookmark_outlined
                         : Icons.bookmark_border_outlined,
                     color: readrBlack87,
                     size: 26,
                   ),
-                  tooltip: controller.isBookmarked.value ? '移出書籤' : '加入書籤',
+                  tooltip: Get.find<PickableItemController>(tag: 'News$newsId')
+                          .isBookmarked
+                          .value
+                      ? '移出書籤'
+                      : '加入書籤',
                   onPressed: () async {
                     if (Get.find<UserService>().isMember.isFalse) {
                       Get.to(
@@ -63,7 +71,16 @@ class StoryAppBar extends GetView<StoryPageController> {
                     } else if (await Get.find<InternetCheckService>()
                         .meshCheckInstance
                         .hasConnection) {
-                      controller.isBookmarked.toggle();
+                      Get.find<PickableItemController>(tag: 'News$newsId')
+                          .isBookmarked
+                          .toggle();
+                      EasyDebounce.debounce(
+                        'UpdateBookmark$newsId',
+                        const Duration(milliseconds: 500),
+                        () =>
+                            Get.find<PickableItemController>(tag: 'News$newsId')
+                                .updateBookmark(),
+                      );
                     } else {
                       Fluttertoast.showToast(
                         msg: "伺服器連接失敗 請稍後再試",

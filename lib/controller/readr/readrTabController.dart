@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/readrListItem.dart';
@@ -45,6 +46,7 @@ class ReadrTabController extends GetxController {
         result =
             await tabStoryListRepos.fetchStoryListByCategorySlug(categorySlug);
       }
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       readrMixedList.assignAll(_mixTwoList(
         storyList: result['story']!,
         projectList: result['project']!,
@@ -79,6 +81,7 @@ class ReadrTabController extends GetxController {
           storyFirst: 12,
         );
       }
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
 
       if (result['story']!.isEmpty && result['project']!.isEmpty) {
         noMore.value = true;

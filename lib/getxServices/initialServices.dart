@@ -10,6 +10,7 @@ import 'package:readr/getxServices/firebaseAnalyticsService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -36,6 +37,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => HiveService().init());
   await Get.putAsync(() => InternetCheckService().init());
   await Get.putAsync(() => UserService().init());
+  await Get.putAsync(() => PickAndBookmarkService().init());
 
   print('All services started...');
 }

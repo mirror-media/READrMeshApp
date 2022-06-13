@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
@@ -36,8 +37,11 @@ class CollectionTabController extends GetxController {
 
   Future<void> fetchCollecitionList() async {
     try {
-      var result = await personalFileRepos.fetchCollectionList(viewMember);
-      collectionList.assignAll(result);
+      await personalFileRepos
+          .fetchCollectionList(viewMember)
+          .then((value) => collectionList.assignAll(value));
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
+
       if (collectionList.length < 20) {
         isNoMore.value = true;
       }
@@ -55,6 +59,7 @@ class CollectionTabController extends GetxController {
     try {
       var result = await personalFileRepos.fetchMoreCollectionList(viewMember,
           List<String>.from(collectionList.map((element) => element.id)));
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       collectionList.addAll(result);
       if (result.length < 20) {
         isNoMore.value = true;

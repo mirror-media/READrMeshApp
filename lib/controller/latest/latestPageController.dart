@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/controller/rootPageController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
@@ -76,7 +77,11 @@ class LatestPageController extends GetxController {
 
   Future<bool> fetchLatestNews() async {
     try {
-      _allLatestNews.assignAll(await repository.fetchLatestNews());
+      await repository
+          .fetchLatestNews()
+          .then((value) => _allLatestNews.assignAll(value));
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
+
       showLatestNews.assignAll(_generateFilterList(_allLatestNews));
       if (_allLatestNews.length < 60) {
         isNoMore.value = true;
@@ -103,6 +108,7 @@ class LatestPageController extends GetxController {
       if (showLatestNews.length == showLength.value) {
         List<NewsListItem> moreLatestNews =
             await repository.fetchMoreLatestNews();
+        await Get.find<PickAndBookmarkService>().fetchPickIds();
         if (moreLatestNews.length < 60) {
           isNoMore.value = true;
         } else {

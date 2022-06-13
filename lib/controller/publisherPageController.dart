@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -36,6 +37,7 @@ class PublisherPageController extends GetxController {
         publisherRepos.fetchPublisherNews(publisher.id, DateTime.now()),
         publisherRepos.fetchPublisherFollowerCount(publisher.id),
       ]);
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       followerCount.value = futureList[1] as int;
       publisherNewsList.assignAll(futureList[0] as List<NewsListItem>);
       if (publisherNewsList.length < 20) {
@@ -66,6 +68,7 @@ class PublisherPageController extends GetxController {
             .fetchPublisherFollowerCount(publisher.id)
             .then((value) => followerCount.value = value),
       ]);
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch more publisher news list error: $e');
     }

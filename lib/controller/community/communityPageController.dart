@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/rootPageController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/communityListItem.dart';
@@ -81,6 +82,7 @@ class CommunityPageController extends GetxController {
       communityList.assignAll(pickedList);
       isNoMore.value = _noMorePicked && _noMoreComment;
       _updateIdList(commentList);
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       return true;
     } catch (e) {
       print('Fetch following picked news error: $e');
@@ -146,6 +148,7 @@ class CommunityPageController extends GetxController {
       if (newCommentList.length < 20) {
         _noMoreComment = true;
       }
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
       newPickedList.addAll(newCommentList);
       newPickedList
           .sort((a, b) => b.pickOrCommentTime.compareTo(a.pickOrCommentTime));

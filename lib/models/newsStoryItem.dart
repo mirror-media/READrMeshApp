@@ -120,10 +120,6 @@ class NewsStoryItem {
         Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'News${json['id']}');
-      if (controller.isLoading.isFalse) {
-        controller.myPickId.value = myPickId;
-        controller.myPickCommentId.value = myPickCommentId;
-      }
       controller.pickCount.value = pickCount;
       controller.commentCount.value = allComments.length;
       controller.pickedMembers.assignAll(allPickedMember);
@@ -133,8 +129,6 @@ class NewsStoryItem {
           targetId: json["id"],
           pickRepos: PickService(),
           objective: PickObjective.story,
-          myPickId: myPickId,
-          myPickCommentId: myPickCommentId,
           pickCount: pickCount,
           commentCount: allComments.length,
           pickedMembers: allPickedMember,

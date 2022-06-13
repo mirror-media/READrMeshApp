@@ -367,17 +367,6 @@ query(
           .map((element) => CollectionStory.fromJson(element)));
     }
 
-    String? myPickId;
-    String? myPickCommentId;
-    if (collection['myPickId'].isNotEmpty) {
-      var myPickItem = collection['myPickId'][0];
-      myPickId = myPickItem['id'];
-      if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
-          myPickItem['pick_comment'].isNotEmpty) {
-        myPickCommentId = myPickItem['pick_comment'][0]['id'];
-      }
-    }
-
     int pickCount = collection['picksCount'];
 
     List<Member> allPickedMember = [];
@@ -401,10 +390,6 @@ query(
             tag: 'Collection$collectionId')) {
       final controller =
           Get.find<PickableItemController>(tag: 'Collection$collectionId');
-      if (controller.isLoading.isFalse) {
-        controller.myPickId.value = myPickId;
-        controller.myPickCommentId.value = myPickCommentId;
-      }
       controller.pickCount.value = pickCount;
       controller.commentCount.value = allComments.length;
       controller.pickedMembers.assignAll(allPickedMember);
@@ -414,8 +399,6 @@ query(
           targetId: collectionId,
           pickRepos: PickService(),
           objective: PickObjective.collection,
-          myPickId: myPickId,
-          myPickCommentId: myPickCommentId,
           pickCount: pickCount,
           commentCount: allComments.length,
           pickedMembers: allPickedMember,

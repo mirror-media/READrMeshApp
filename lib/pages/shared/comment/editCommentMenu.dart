@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/editCommentWidget.dart';
@@ -70,10 +70,9 @@ class EditCommentMenu {
     } else if (result == 'delete') {
       Widget? dialogContent;
 
-      final pickableItemController =
-          Get.find<PickableItemController>(tag: controllerTag);
-      if (pickableItemController.myPickId.value != null &&
-          pickableItemController.myPickCommentId.value == comment.id) {
+      final pickAndBookmarkService = Get.find<PickAndBookmarkService>();
+      if (pickAndBookmarkService.pickList
+          .any((element) => element.myPickCommentId == comment.id)) {
         dialogContent = const Text(
           '系統仍會保留您的精選記錄',
           style: TextStyle(

@@ -67,17 +67,6 @@ class Collection {
         break;
     }
 
-    String? myPickId;
-    String? myPickCommentId;
-    if (json['myPickId'].isNotEmpty) {
-      var myPickItem = json['myPickId'][0];
-      myPickId = myPickItem['id'];
-      if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
-          myPickItem['pick_comment'].isNotEmpty) {
-        myPickCommentId = myPickItem['pick_comment'][0]['id'];
-      }
-    }
-
     int pickCount = json['picksCount'];
 
     List<Member> allPickedMember = [];
@@ -101,10 +90,6 @@ class Collection {
             tag: 'Collection${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'Collection${json['id']}');
-      if (controller.isLoading.isFalse) {
-        controller.myPickId.value = myPickId;
-        controller.myPickCommentId.value = myPickCommentId;
-      }
       controller.pickCount.value = pickCount;
       controller.commentCount.value = json['commentCount'];
       controller.pickedMembers.assignAll(allPickedMember);
@@ -116,8 +101,6 @@ class Collection {
           targetId: json["id"],
           pickRepos: PickService(),
           objective: PickObjective.collection,
-          myPickId: myPickId,
-          myPickCommentId: myPickCommentId,
           pickCount: pickCount,
           commentCount: json['commentCount'],
           pickedMembers: allPickedMember,
@@ -162,17 +145,6 @@ class Collection {
         break;
     }
 
-    String? myPickId;
-    String? myPickCommentId;
-    if (json['myPickId'].isNotEmpty) {
-      var myPickItem = json['myPickId'][0];
-      myPickId = myPickItem['id'];
-      if (BaseModel.checkJsonKeys(myPickItem, ['pick_comment']) &&
-          myPickItem['pick_comment'].isNotEmpty) {
-        myPickCommentId = myPickItem['pick_comment'][0]['id'];
-      }
-    }
-
     int pickCount = json['picksCount'];
 
     if (Get.isRegistered<PickableItemController>(
@@ -181,10 +153,6 @@ class Collection {
             tag: 'Collection${json['id']}')) {
       final controller =
           Get.find<PickableItemController>(tag: 'Collection${json['id']}');
-      if (controller.isLoading.isFalse) {
-        controller.myPickId.value = myPickId;
-        controller.myPickCommentId.value = myPickCommentId;
-      }
       controller.pickCount.value = pickCount;
       controller.collectionTitle.value = json['title'];
       controller.collectionHeroImageUrl.value = imageUrl;
@@ -194,8 +162,6 @@ class Collection {
           targetId: json["id"],
           pickRepos: PickService(),
           objective: PickObjective.collection,
-          myPickId: myPickId,
-          myPickCommentId: myPickCommentId,
           pickCount: pickCount,
           controllerTag: 'Collection${json['id']}',
           collectionHeroImageUrl: imageUrl,
