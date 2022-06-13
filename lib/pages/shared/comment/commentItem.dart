@@ -14,6 +14,7 @@ import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class CommentItem extends GetView<CommentItemController> {
   final Comment comment;
@@ -38,32 +39,44 @@ class CommentItem extends GetView<CommentItemController> {
         tag: 'Comment${comment.id}',
       );
     }
+    bool isVisible = false;
 
     return Obx(
       () {
         if (controller.isMyNewComment.isTrue) {
           Timer(const Duration(seconds: 5), () async {
-            _fadeController.fadeIn();
+            if (isVisible) {
+              _fadeController.fadeIn();
+            }
+
             await Future.delayed(const Duration(milliseconds: 255));
             controller.isMyNewComment(false);
             controller.isExpanded(false);
           });
-          return Container(
-            color: const Color.fromRGBO(255, 245, 245, 1),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: FadeIn(
-                    controller: _fadeController,
-                    child: Container(
-                      color: Colors.white,
+          return VisibilityDetector(
+              key: Key(comment.id),
+              onVisibilityChanged: (visibilityInfo) {
+                var visiblePercentage = visibilityInfo.visibleFraction * 100;
+                if (visiblePercentage > 80) {
+                  isVisible = true;
+                }
+              },
+              child: Container(
+                color: const Color.fromRGBO(255, 245, 245, 1),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: FadeIn(
+                        controller: _fadeController,
+                        child: Container(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    _commentItemContent(context),
+                  ],
                 ),
-                _commentItemContent(context),
-              ],
-            ),
-          );
+              ));
         } else {
           return _commentItemContent(context);
         }
