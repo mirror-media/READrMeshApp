@@ -47,15 +47,10 @@ class PickButton extends StatelessWidget {
             );
           } else if (controller.isLoading.isFalse) {
             if (controller.isPicked.isFalse) {
-              var result = await PickBottomSheet.showPickBottomSheet(
+              await PickBottomSheet.showPickBottomSheet(
                 context: context,
+                controller: controller,
               );
-
-              if (result is String) {
-                controller.addPickAndComment(result);
-              } else if (result is bool && result) {
-                controller.addPick();
-              }
             } else {
               bool? result = await showDialog<bool>(
                 context: context,
