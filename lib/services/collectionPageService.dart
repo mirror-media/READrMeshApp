@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';

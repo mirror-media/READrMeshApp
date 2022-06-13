@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';

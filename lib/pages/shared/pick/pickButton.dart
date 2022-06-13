@@ -3,7 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';

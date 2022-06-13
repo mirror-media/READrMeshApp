@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/collectionStory.dart';

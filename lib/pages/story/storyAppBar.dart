@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
-import 'package:readr/controller/pickableItemController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
