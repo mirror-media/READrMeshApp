@@ -12,24 +12,16 @@ const String noInternetSvg = 'assets/image/noInternet.svg';
 const String defaultImageSvg = 'assets/image/defaultImage.svg';
 const String tabNoContentPng = 'assets/image/tabNoContent.png';
 const String googleLogoSvg = 'assets/icon/googleLogo.svg';
-const String authorDefaultPng = 'assets/image/authorDefaultImage.png';
-const String commentIconPng = 'assets/icon/commentIcon.png';
 const String noFollowingSvg = 'assets/image/noFollowing.svg';
 const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
-const String visitorAvatarPng = 'assets/icon/visitorAvatar.png';
 const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
 const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
-const String communityPageActiveSvg = 'assets/icon/communityPageActive.svg';
-const String communityPageDefaultSvg = 'assets/icon/communityPageDefault.svg';
 const String readrPageActiveSvg = 'assets/icon/readrPageActive.svg';
 const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
 const String invitationCodeSvg = 'assets/icon/invitationCode.svg';
 const String newInvitationCodeSvg = 'assets/icon/newInvitationCode.svg';
-const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
-const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
-const String collectionTagSvg = 'assets/icon/collectionTag.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);

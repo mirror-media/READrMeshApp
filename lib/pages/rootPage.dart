@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -79,33 +80,29 @@ class RootPage extends GetView<RootPageController> {
           unselectedItemColor: bottomNavigationBarUnselectedColor,
           type: BottomNavigationBarType.fixed,
           items: [
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  communityPageDefaultSvg,
-                ),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                CupertinoIcons.bubble_left_bubble_right,
+                size: 20,
+                color: readrBlack87,
               ),
-              activeIcon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  communityPageActiveSvg,
-                ),
+              activeIcon: Icon(
+                CupertinoIcons.bubble_left_bubble_right_fill,
+                size: 20,
+                color: readrBlack87,
               ),
               label: '社群',
             ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  latestPageDefaultSvg,
-                ),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                CupertinoIcons.news,
+                size: 20,
+                color: readrBlack87,
               ),
-              activeIcon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  latestPageActiveSvg,
-                ),
+              activeIcon: Icon(
+                CupertinoIcons.news_solid,
+                size: 20,
+                color: readrBlack87,
               ),
               label: '最新',
             ),
@@ -132,8 +129,10 @@ class RootPage extends GetView<RootPageController> {
                 child: Obx(
                   () {
                     if (Get.find<UserService>().isMember.isFalse) {
-                      return Image.asset(
-                        visitorAvatarPng,
+                      return const Icon(
+                        CupertinoIcons.person_solid,
+                        size: 20,
+                        color: readrBlack87,
                       );
                     } else {
                       return ProfilePhotoWidget(

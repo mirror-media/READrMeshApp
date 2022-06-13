@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -21,8 +21,8 @@ class CollectionInfo extends GetView<PickableItemController> {
           children.add(Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const ImageIcon(
-                AssetImage(commentIconPng),
+              const Icon(
+                CupertinoIcons.bubble_left,
                 size: 17,
                 color: readrBlack50,
               ),

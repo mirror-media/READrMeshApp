@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,10 +11,10 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 20),
-        Image.asset(
-          visitorAvatarPng,
-          width: 80,
-          height: 80,
+        const Icon(
+          CupertinoIcons.person_crop_circle_fill,
+          color: Color.fromRGBO(224, 224, 224, 1),
+          size: 80,
         ),
         const SizedBox(height: 12),
         Shimmer.fromColors(

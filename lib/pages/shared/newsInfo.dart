@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -22,9 +22,9 @@ class NewsInfo extends StatelessWidget {
           children.add(Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const ImageIcon(
-                AssetImage(commentIconPng),
-                size: 17,
+              const Icon(
+                CupertinoIcons.bubble_left,
+                size: 11,
                 color: readrBlack50,
               ),
               const SizedBox(width: 3),

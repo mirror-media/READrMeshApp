@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class CollectionTag extends StatelessWidget {
@@ -20,9 +20,10 @@ class CollectionTag extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            collectionTagSvg,
+          Icon(
+            CupertinoIcons.rectangle_on_rectangle_angled,
             color: Colors.white,
+            size: smallTag ? 11 : 12,
           ),
           const SizedBox(
             width: 5,

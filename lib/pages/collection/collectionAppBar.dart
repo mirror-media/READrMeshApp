@@ -135,7 +135,7 @@ class CollectionAppBar extends GetView<CollectionPageController> {
                 onPressed: () async =>
                     await _showEditCollectionBottomSheet(context),
                 icon: const Icon(
-                  Icons.more_horiz_outlined,
+                  CupertinoIcons.ellipsis,
                   color: readrBlack87,
                   size: 26,
                 ),
