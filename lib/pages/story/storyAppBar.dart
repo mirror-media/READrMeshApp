@@ -60,7 +60,7 @@ class StoryAppBar extends GetView<StoryPageController> {
                   tooltip: Get.find<PickableItemController>(tag: 'News$newsId')
                           .isBookmarked
                           .value
-                      ? '移出書籤'
+                      ? '移除書籤'
                       : '加入書籤',
                   onPressed: () async {
                     if (Get.find<UserService>().isMember.isFalse) {
