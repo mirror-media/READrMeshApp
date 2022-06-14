@@ -1,9 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheetWidget.dart';
 
 class PickBottomSheet {
@@ -28,75 +25,55 @@ class PickBottomSheet {
           ),
         );
       },
-    ).then((result) {
+    ).then((result) async {
       if (result != true && content != null && content!.trim().isNotEmpty) {
-        Widget dialogTitle = const Text(
-          '確定要刪除留言？',
-          style: TextStyle(
-            color: readrBlack,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        );
-        Widget dialogContent = const Text(
-          '系統將不會儲存您剛剛輸入的內容',
-          style: TextStyle(
-            color: readrBlack,
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-          ),
-        );
-        List<Widget> dialogActions = [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              '刪除留言',
+        await showPlatformDialog(
+          context: context,
+          builder: (_) => PlatformAlertDialog(
+            title: const Text(
+              '確定要刪除留言？',
               style: TextStyle(
-                color: Colors.red,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await showPickBottomSheet(
-                context: context,
-                oldContent: content,
-                controller: controller,
-              );
-            },
-            child: const Text(
-              '繼續輸入',
+            content: const Text(
+              '系統將不會儲存您剛剛輸入的內容',
               style: TextStyle(
-                color: Colors.blue,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 13,
               ),
             ),
-          )
-        ];
-        if (!Platform.isIOS) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: dialogTitle,
-              content: dialogContent,
-              buttonPadding: const EdgeInsets.only(left: 32, right: 8),
-              actions: dialogActions,
-            ),
-          );
-        } else {
-          showCupertinoDialog(
-            context: context,
-            builder: (context) => CupertinoAlertDialog(
-              title: dialogTitle,
-              content: dialogContent,
-              actions: dialogActions,
-            ),
-          );
-        }
+            actions: [
+              PlatformDialogAction(
+                onPressed: () => Navigator.pop(context),
+                child: PlatformText(
+                  '刪除留言',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              PlatformDialogAction(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await showPickBottomSheet(
+                    context: context,
+                    oldContent: content,
+                    controller: controller,
+                  );
+                },
+                child: PlatformText(
+                  '繼續輸入',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       } else if (result == true) {
         // return content when not empty or only space
         if (content != null && content!.trim().isNotEmpty) {

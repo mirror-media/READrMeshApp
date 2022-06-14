@@ -1,7 +1,5 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/comment/commentController.dart';
@@ -55,82 +53,62 @@ class CommentBottomSheet {
           .hasInput
           .isTrue) {
         deleteController = false;
-        Widget dialogTitle = const Text(
-          '確定要刪除留言？',
-          style: TextStyle(
-            color: readrBlack,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        );
-        Widget dialogContent = const Text(
-          '系統將不會儲存您剛剛輸入的內容',
-          style: TextStyle(
-            color: readrBlack,
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-          ),
-        );
-        List<Widget> dialogActions = [
-          TextButton(
-            onPressed: () {
-              deleteController = true;
-              Navigator.pop(context);
-            },
-            child: const Text(
-              '刪除留言',
+        await showPlatformDialog(
+          context: context,
+          builder: (_) => PlatformAlertDialog(
+            title: const Text(
+              '確定要刪除留言？',
               style: TextStyle(
-                color: Colors.red,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await showCommentBottomSheet(
-                context: context,
-                clickComment: clickComment,
-                objective: objective,
-                oldContent:
-                    Get.find<CommentInputBoxController>(tag: controllerTag)
-                        .textController
-                        .text,
-                id: id,
-                controllerTag: controllerTag,
-              );
-            },
-            child: const Text(
-              '繼續輸入',
+            content: const Text(
+              '系統將不會儲存您剛剛輸入的內容',
               style: TextStyle(
-                color: Colors.blue,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 13,
               ),
             ),
-          )
-        ];
-        if (!Platform.isIOS) {
-          await showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: dialogTitle,
-              content: dialogContent,
-              buttonPadding: const EdgeInsets.only(left: 32, right: 8),
-              actions: dialogActions,
-            ),
-          );
-        } else {
-          await showCupertinoDialog(
-            context: context,
-            builder: (context) => CupertinoAlertDialog(
-              title: dialogTitle,
-              content: dialogContent,
-              actions: dialogActions,
-            ),
-          );
-        }
+            actions: [
+              PlatformDialogAction(
+                onPressed: () {
+                  deleteController = true;
+                  Navigator.pop(context);
+                },
+                child: PlatformText(
+                  '刪除留言',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              PlatformDialogAction(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await showCommentBottomSheet(
+                    context: context,
+                    clickComment: clickComment,
+                    objective: objective,
+                    oldContent:
+                        Get.find<CommentInputBoxController>(tag: controllerTag)
+                            .textController
+                            .text,
+                    id: id,
+                    controllerTag: controllerTag,
+                  );
+                },
+                child: PlatformText(
+                  '繼續輸入',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       }
 
       if (deleteController) {

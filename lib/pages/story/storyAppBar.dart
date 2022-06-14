@@ -1,8 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:extended_text/extended_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
@@ -133,69 +133,46 @@ class StoryAppBar extends GetView<StoryPageController> {
                 Get.find<CommentInputBoxController>(tag: 'News$newsId')
                     .hasInput
                     .isTrue) {
-              Widget dialogTitle = const Text(
-                '確定要刪除留言？',
-                style: TextStyle(
-                  color: readrBlack,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                ),
-              );
-              Widget dialogContent = const Text(
-                '系統將不會儲存您剛剛輸入的內容',
-                style: TextStyle(
-                  color: readrBlack,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-              );
-              List<Widget> dialogActions = [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    '刪除留言',
+              await showPlatformDialog(
+                context: context,
+                builder: (_) => PlatformAlertDialog(
+                  title: const Text(
+                    '確定要刪除留言？',
                     style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text(
-                    '繼續輸入',
+                  content: const Text(
+                    '系統將不會儲存您剛剛輸入的內容',
                     style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
                     ),
                   ),
-                )
-              ];
-              if (!GetPlatform.isIOS) {
-                await showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: dialogTitle,
-                    content: dialogContent,
-                    buttonPadding: const EdgeInsets.only(left: 32, right: 8),
-                    actions: dialogActions,
-                  ),
-                );
-              } else {
-                await showDialog(
-                  context: context,
-                  builder: (context) => CupertinoAlertDialog(
-                    title: dialogTitle,
-                    content: dialogContent,
-                    actions: dialogActions,
-                  ),
-                );
-              }
+                  actions: [
+                    PlatformDialogAction(
+                      onPressed: () => Get.back(closeOverlays: true),
+                      child: PlatformText(
+                        '刪除留言',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    PlatformDialogAction(
+                      onPressed: () => Get.back(),
+                      child: PlatformText(
+                        '繼續輸入',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             } else {
               Get.back();
             }
