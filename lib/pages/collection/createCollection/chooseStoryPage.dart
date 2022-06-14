@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/collection/createCollectionController.dart';
@@ -15,32 +16,40 @@ class ChooseStoryPage extends StatelessWidget {
       Get.put(CreateCollectionController(CollectionService()));
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _buildBar(),
-      body: Obx(
-        () {
-          if (controller.isError.isTrue) {
-            return ErrorPage(
-              error: controller.error,
-              onPressed: () => controller.fetchPickAndBookmark(),
-              hideAppbar: true,
+    return WillPopScope(
+      onWillPop: () async {
+        if (controller.selectedList.isNotEmpty) {
+          await _showLeaveAlertDialog(context);
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: _buildBar(context),
+        body: Obx(
+          () {
+            if (controller.isError.isTrue) {
+              return ErrorPage(
+                error: controller.error,
+                onPressed: () => controller.fetchPickAndBookmark(),
+                hideAppbar: true,
+              );
+            }
+
+            if (controller.isLoading.isFalse) {
+              return _buildContent(context);
+            }
+
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
             );
-          }
-
-          if (controller.isLoading.isFalse) {
-            return _buildContent(context);
-          }
-
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        },
+          },
+        ),
       ),
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
@@ -52,7 +61,12 @@ class ChooseStoryPage extends StatelessWidget {
           Icons.arrow_back_ios_new_outlined,
           color: readrBlack87,
         ),
-        onPressed: () => Get.back(),
+        onPressed: () async {
+          if (controller.selectedList.isNotEmpty) {
+            await _showLeaveAlertDialog(context);
+          }
+          Get.back();
+        },
       ),
       title: Obx(
         () {
@@ -103,6 +117,49 @@ class ChooseStoryPage extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  Future<void> _showLeaveAlertDialog(BuildContext context) async {
+    await showPlatformDialog(
+      context: context,
+      builder: (_) => PlatformAlertDialog(
+        title: const Text(
+          '確認要退出編輯？',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: const Text(
+          '系統不會儲存您所做的變更',
+          style: TextStyle(
+            fontSize: 13,
+          ),
+        ),
+        actions: [
+          PlatformDialogAction(
+            onPressed: () => Get.back(closeOverlays: true),
+            child: PlatformText(
+              '退出',
+              style: const TextStyle(
+                fontSize: 17,
+                color: Colors.red,
+              ),
+            ),
+          ),
+          PlatformDialogAction(
+            onPressed: () => Get.back(),
+            child: PlatformText(
+              '繼續編輯',
+              style: const TextStyle(
+                fontSize: 17,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
