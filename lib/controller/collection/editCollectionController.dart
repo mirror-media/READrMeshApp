@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
@@ -25,6 +28,7 @@ class EditCollectionController extends GetxController {
   //reorder page
   final List<CollectionStory> originalList = [];
   final newList = <CollectionStory>[].obs;
+  bool isFirstTime = true;
 
   //add story page
   List<CollectionStory> pickAndBookmarkList = [];
@@ -46,7 +50,19 @@ class EditCollectionController extends GetxController {
     titleTextController = TextEditingController(text: collection.title);
     originalList.assignAll(collection.collectionPicks!);
     newList.assignAll(originalList);
+    isFirstTime = Get.find<SharedPreferencesService>()
+            .prefs
+            .getBool('firstTimeEditCollection') ??
+        true;
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    if (isFirstTime) {
+      _showDeleteHint();
+    }
+    super.onReady();
   }
 
   void updateTitleAndOg() async {
@@ -169,6 +185,62 @@ class EditCollectionController extends GetxController {
       backgroundColor: Colors.grey,
       textColor: Colors.white,
       fontSize: 16.0,
+    );
+  }
+
+  void _showDeleteHint() async {
+    await showGeneralDialog(
+      context: Get.overlayContext!,
+      pageBuilder: (_, __, ___) {
+        return Material(
+          color: Colors.black.withOpacity(0.6),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                collectionDeleteHintSvg,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              const Text(
+                '向左滑可以刪除文章',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.find<SharedPreferencesService>()
+                      .prefs
+                      .setBool('firstTimeEditCollection', false);
+                  Get.back();
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 20,
+                  ),
+                  primary: Colors.white,
+                ),
+                child: const Text(
+                  '我知道了',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: readrBlack87,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
