@@ -113,8 +113,8 @@ class MoreActionBottomSheet {
                     Clipboard.setData(ClipboardData(text: url));
                     _showCopiedToast(context);
                   },
-                  icon: const Icon(
-                    CupertinoIcons.link,
+                  icon: Icon(
+                    GetPlatform.isAndroid ? Icons.link : CupertinoIcons.link,
                     size: 19,
                     color: readrBlack87,
                   ),
