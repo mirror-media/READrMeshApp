@@ -3,7 +3,9 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
@@ -72,15 +74,27 @@ class CollectionTabContent extends GetView<CollectionTabController> {
         if (Get.find<UserService>().isMember.isTrue &&
             Get.find<UserService>().currentUser.memberId ==
                 viewMember.memberId) {
+          int pickCount =
+              Get.find<PersonalFilePageController>(tag: viewMember.memberId)
+                  .pickCount
+                  .value;
+          int bookmarkCount =
+              Get.find<PersonalFilePageController>(tag: viewMember.memberId)
+                  .bookmarkCount
+                  .value;
+          bool hasPickOrBookmark = pickCount + bookmarkCount > 0;
+
           return Container(
             color: homeScreenBackgroundColor,
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    '從精選新聞或書籤中\n將數篇新聞打包成集錦',
-                    style: TextStyle(
+                  Text(
+                    hasPickOrBookmark
+                        ? '從精選新聞或書籤中\n將數篇新聞打包成集錦'
+                        : '要先將喜愛的新聞加入精選\n才能建立集錦喔',
+                    style: const TextStyle(
                       color: readrBlack30,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -91,7 +105,14 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     height: 16,
                   ),
                   ElevatedButton(
-                    onPressed: () => Get.to(() => ChooseStoryPage()),
+                    onPressed: () {
+                      if (hasPickOrBookmark) {
+                        Get.to(() => ChooseStoryPage());
+                      } else {
+                        Get.until((route) => Get.currentRoute == '/');
+                        Get.find<RootPageController>().tabIndex.value = 1;
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       primary: readrBlack87,
@@ -101,9 +122,9 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                     ),
-                    child: const Text(
-                      '立即嘗試',
-                      style: TextStyle(
+                    child: Text(
+                      hasPickOrBookmark ? '立即嘗試' : '去精選文章',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
