@@ -23,7 +23,7 @@ class CollectionInfo extends GetView<PickableItemController> {
             children: [
               const Icon(
                 CupertinoIcons.bubble_left,
-                size: 17,
+                size: 11,
                 color: readrBlack50,
               ),
               const SizedBox(width: 3),
