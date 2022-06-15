@@ -14,8 +14,6 @@ class MainAppBarController extends GetxController {
   @override
   void onInit() {
     checkInvitationCode();
-    timer = Timer.periodic(
-        const Duration(minutes: 30), (timer) => checkInvitationCode());
     super.onInit();
   }
 
