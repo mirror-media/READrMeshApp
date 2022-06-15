@@ -39,6 +39,7 @@ abstract class CollectionRepos {
   Future<void> removeCollectionPicks(
       {required List<CollectionStory> collectionStory});
   Future<bool> deleteCollection(String collectionId);
+  Future<Collection?> fetchCollectionById(String id);
 }
 
 class CollectionService implements CollectionRepos {
@@ -221,40 +222,23 @@ class CollectionService implements CollectionRepos {
     List<CollectionStory> pickAndBookmarkList = [];
     List<CollectionStory> pickList = [];
     List<CollectionStory> bookmarkList = [];
-    Map<String, DateTime> pickTime = {};
+
     for (var bookmark in jsonResponse['data']['bookmarks']) {
       CollectionStory collectionStory = CollectionStory.fromPick(bookmark);
       pickAndBookmarkList.add(collectionStory);
       bookmarkList.add(collectionStory);
-      pickTime.putIfAbsent(collectionStory.news!.id,
-          () => DateTime.parse(bookmark['picked_date']));
     }
     for (var pick in jsonResponse['data']['picks']) {
       CollectionStory collectionStory = CollectionStory.fromPick(pick);
       pickList.add(collectionStory);
       int index = pickAndBookmarkList.indexWhere(
           (element) => element.news!.id == collectionStory.news!.id);
-      if (index != -1) {
-        pickAndBookmarkList[index]
-            .pickKinds!
-            .add(collectionStory.pickKinds!.first);
-      } else {
+      if (index == -1) {
         pickAndBookmarkList.add(collectionStory);
       }
-      pickTime.update(
-        collectionStory.news!.id,
-        (value) {
-          if (value.isAfter(pick['picked_date'])) {
-            return value;
-          }
-          return DateTime.parse(pick['picked_date']);
-        },
-        ifAbsent: () => DateTime.parse(pick['picked_date']),
-      );
     }
 
-    pickAndBookmarkList
-        .sort((a, b) => pickTime[b.news!.id]!.compareTo(pickTime[a.news!.id]!));
+    pickAndBookmarkList.sort((a, b) => b.pickedDate.compareTo(a.pickedDate));
 
     return {
       'pickAndBookmarkList': pickAndBookmarkList,
@@ -1046,5 +1030,183 @@ mutation(
     );
 
     return !jsonResponse.containsKey('errors');
+  }
+
+  @override
+  Future<Collection?> fetchCollectionById(String id) async {
+    const String query = """
+    query(
+      \$collectionId: ID
+      \$followingMembers: [ID!]
+      \$myId: ID
+    ){
+      collection(
+        where:{
+          id: \$collectionId
+        }
+      ){
+        id
+        title
+        slug
+        public
+        status
+        creator{
+          id
+          nickname
+          avatar
+          customId
+        }
+        heroImage{
+          id
+          urlOriginal
+          file{
+            url
+          }
+        }
+        format
+        createdAt
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            state:{
+              equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+            }
+          }
+        )
+        followingPicks: picks(
+          where:{
+            member:{
+              id:{
+                in: \$followingMembers
+              }
+            }
+            state:{
+              equals: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        otherPicks:picks(
+          where:{
+            member:{
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
+            }
+            state:{
+              in: "public"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+          orderBy:{
+            picked_date: desc
+          }
+          take: 4
+        ){
+          member{
+            id
+            nickname
+            avatar
+            customId
+          }
+        }
+        picksCount(
+          where:{
+            state:{
+              in: "public"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        myPickId: picks(
+          where:{
+            member:{
+              id:{
+                equals: \$myId
+              }
+            }
+            state:{
+              notIn: "private"
+            }
+            kind:{
+              equals: "read"
+            }
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          pick_comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+          }
+        }
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "collectionId": id,
+      "followingMembers": Get.find<UserService>().followingMemberIds,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
+
+    if (jsonResponse['data']['collection'] != null) {
+      return Collection.fromJson(jsonResponse['data']['collection']);
+    }
+
+    return null;
   }
 }
