@@ -23,8 +23,8 @@ class CollectionPageController extends GetxController {
     this.isNewCollection = false,
   });
 
-  final isLoading = true.obs;
-  final isError = false.obs;
+  bool isLoading = true;
+  bool isError = false;
   dynamic error;
 
   final List<Comment> allComments = [];
@@ -32,7 +32,7 @@ class CollectionPageController extends GetxController {
   final collectionPicks = <CollectionStory>[].obs;
 
   @override
-  void onInit() {
+  void onReady() {
     if (!isNewCollection) {
       fetchCollectionData();
     } else {
@@ -42,10 +42,11 @@ class CollectionPageController extends GetxController {
         }
       }
 
-      isLoading(false);
-      isError.value = false;
+      isLoading = false;
+      isError = false;
+      update();
     }
-    super.onInit();
+    super.onReady();
   }
 
   Future<void> fetchCollectionData() async {
@@ -62,9 +63,10 @@ class CollectionPageController extends GetxController {
     } catch (e) {
       print('Fetch collection data failed: $e');
       error = determineException(e);
-      isError.value = true;
+      isError = true;
     }
-    isLoading(false);
+    isLoading = false;
+    update();
   }
 
   void deleteCollection() async {
