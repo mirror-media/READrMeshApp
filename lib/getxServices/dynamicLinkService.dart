@@ -1,12 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/collection.dart';
+import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/rootPage.dart';
 import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/services/collectionService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,11 +21,7 @@ class DynamicLinkService extends GetxService {
   final _auth = FirebaseAuth.instance;
   Future<DynamicLinkService> initDynamicLinks() async {
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      final Uri deepLink = dynamicLink.link;
-
-      if (_auth.isSignInWithEmailLink(deepLink.toString())) {
-        _loginWithEmailLink(deepLink.toString());
-      }
+      _checkLink(dynamicLink);
     }).onError((e) async {
       print('onLinkError');
       print(e.message);
@@ -27,15 +29,21 @@ class DynamicLinkService extends GetxService {
 
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
+    _checkLink(data);
+
+    return this;
+  }
+
+  void _checkLink(PendingDynamicLinkData? data) {
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
       if (_auth.isSignInWithEmailLink(deepLink.toString())) {
         _loginWithEmailLink(deepLink.toString());
+      } else if (deepLink.toString().contains('collection?=')) {
+        _openCollectionLink(data!);
       }
     }
-
-    return this;
   }
 
   _loginWithEmailLink(String emailLink) async {
@@ -129,5 +137,76 @@ class DynamicLinkService extends GetxService {
       publisherTitleList.add(publisher.title);
     }
     return publisherTitleList;
+  }
+
+  void _openCollectionLink(PendingDynamicLinkData dynamicLinkData) async {
+    // check app verison first
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    bool versionCheck = true;
+    if (GetPlatform.isIOS && dynamicLinkData.ios != null) {
+      versionCheck = _isVersionGreaterThan(
+          packageInfo.version, dynamicLinkData.ios!.minimumVersion ?? '1.2.0');
+    }
+
+    Collection? collection;
+    try {
+      if (versionCheck) {
+        String link = dynamicLinkData.link.toString();
+        int startIndex = link.indexOf('=') + 1;
+        int endIndex = link.indexOf('&');
+        String collectionId = link.substring(startIndex, endIndex);
+        collection =
+            await CollectionService().fetchCollectionById(collectionId);
+      } else {
+        Fluttertoast.showToast(
+          msg: "請更新APP",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print('Open collection link error: $e');
+    }
+
+    if (collection != null && collection.status != CollectionStatus.delete) {
+      Get.to(
+        () => CollectionPage(collection!),
+      );
+    } else if (collection != null) {
+      Fluttertoast.showToast(
+        msg: "該集錦已被刪除",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "開啟連結失敗",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  bool _isVersionGreaterThan(String currentVersion, String minVersion) {
+    List<String> minV = minVersion.split(".");
+    List<String> nowV = currentVersion.split(".");
+    bool a = false;
+    for (var i = 0; i <= 2; i++) {
+      a = int.parse(nowV[i]) > int.parse(minV[i]);
+      if (int.parse(nowV[i]) != int.parse(minV[i])) break;
+    }
+    return a;
   }
 }
