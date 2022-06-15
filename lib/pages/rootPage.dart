@@ -84,12 +84,10 @@ class RootPage extends GetView<RootPageController> {
               icon: Icon(
                 CupertinoIcons.bubble_left_bubble_right,
                 size: 20,
-                color: readrBlack87,
               ),
               activeIcon: Icon(
                 CupertinoIcons.bubble_left_bubble_right_fill,
                 size: 20,
-                color: readrBlack87,
               ),
               label: '社群',
             ),
@@ -97,12 +95,10 @@ class RootPage extends GetView<RootPageController> {
               icon: Icon(
                 CupertinoIcons.news,
                 size: 20,
-                color: readrBlack87,
               ),
               activeIcon: Icon(
                 CupertinoIcons.news_solid,
                 size: 20,
-                color: readrBlack87,
               ),
               label: '最新',
             ),
