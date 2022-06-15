@@ -23,9 +23,10 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        if (controller.isError.isTrue) {
+    return GetBuilder<CollectionPageController>(
+      tag: collection.id,
+      builder: (controller) {
+        if (controller.isError) {
           return ErrorPage(
             error: controller.error,
             onPressed: () => controller.fetchCollectionData(),
@@ -33,7 +34,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
           );
         }
 
-        if (controller.isLoading.isFalse) {
+        if (!controller.isLoading) {
           return Stack(
             fit: StackFit.expand,
             children: [
@@ -56,6 +57,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
                 objective: PickObjective.collection,
                 allComments: controller.allComments,
                 popularComments: controller.popularComments,
+                key: UniqueKey(),
               ),
             ],
           );
