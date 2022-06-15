@@ -113,6 +113,20 @@ class Collection {
       );
     }
 
+    CollectionStatus status = CollectionStatus.publish;
+    if (BaseModel.checkJsonKeys(json, ['status'])) {
+      switch (json['status'] as String) {
+        case 'delete':
+          status = CollectionStatus.delete;
+          break;
+        case 'draft':
+          status = CollectionStatus.draft;
+          break;
+        default:
+          status = CollectionStatus.publish;
+      }
+    }
+
     return Collection(
       id: json['id'],
       title: json['title'],
@@ -124,6 +138,7 @@ class Collection {
       controllerTag: 'Collection${json['id']}',
       format: format,
       ogImageId: json['heroImage']['id'],
+      status: status,
     );
   }
 
@@ -208,6 +223,20 @@ class Collection {
       }
     }
 
+    CollectionStatus status = CollectionStatus.publish;
+    if (BaseModel.checkJsonKeys(json, ['status'])) {
+      switch (json['status'] as String) {
+        case 'delete':
+          status = CollectionStatus.delete;
+          break;
+        case 'draft':
+          status = CollectionStatus.draft;
+          break;
+        default:
+          status = CollectionStatus.publish;
+      }
+    }
+
     return Collection(
       id: json['id'],
       title: json['title'],
@@ -222,6 +251,7 @@ class Collection {
       followingPickMembers: followingPickMembers,
       otherPickMembers: otherPickMembers,
       commentMembers: commentMembers,
+      status: status,
     );
   }
 }
