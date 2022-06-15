@@ -7,4 +7,6 @@ abstract class BaseConfig {
   String get appHelperEmail;
   String get appHelperPassword;
   String get meshConnectCheckAddress;
+  String get dynamicLinkDomain;
+  String get readrMeshWebsite;
 }
