@@ -23,6 +23,7 @@ abstract class MemberRepos {
   Future<List<Publisher>?> removeFollowPublisher(String publisherId);
   Future<bool?> updateMember(Member member);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
+  Future<Member?> fetchMemberDataById(String id);
 }
 
 class MemberService implements MemberRepos {
@@ -730,5 +731,51 @@ query(
     }
 
     return pickIdList;
+  }
+
+  @override
+  Future<Member?> fetchMemberDataById(String id) async {
+    const String query = """
+        query(
+      \$memberId: ID
+    ){
+      member(
+        where:{
+          id: \$memberId
+        }
+      ){
+        id
+        nickname
+        email
+        avatar
+        customId
+        is_active
+      }
+    }
+    """;
+
+    Map<String, dynamic> variables = {
+      "memberId": id,
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(needAuth: false),
+    );
+
+    if (jsonResponse['data']['member'] != null &&
+        jsonResponse['data']['member']['is_active']) {
+      return Member.fromJson(jsonResponse['data']['member']);
+    } else {
+      return null;
+    }
   }
 }

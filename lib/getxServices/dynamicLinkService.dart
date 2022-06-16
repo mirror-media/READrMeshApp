@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +10,10 @@ import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
+import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/rootPage.dart';
 import 'package:readr/pages/shared/follow/followingSyncToast.dart';
 import 'package:readr/services/collectionService.dart';
@@ -42,6 +46,8 @@ class DynamicLinkService extends GetxService {
         _loginWithEmailLink(deepLink.toString());
       } else if (deepLink.toString().contains('collection?=')) {
         _openCollectionLink(data!);
+      } else if (deepLink.toString().contains('member?=')) {
+        _openPersonalFileLink(data!);
       }
     }
   }
@@ -153,8 +159,7 @@ class DynamicLinkService extends GetxService {
       if (versionCheck) {
         String link = dynamicLinkData.link.toString();
         int startIndex = link.indexOf('=') + 1;
-        int endIndex = link.indexOf('&');
-        String collectionId = link.substring(startIndex, endIndex);
+        String collectionId = link.substring(startIndex);
         collection =
             await CollectionService().fetchCollectionById(collectionId);
       } else {
@@ -189,6 +194,56 @@ class DynamicLinkService extends GetxService {
     } else {
       Fluttertoast.showToast(
         msg: "開啟連結失敗",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  void _openPersonalFileLink(PendingDynamicLinkData dynamicLinkData) async {
+    // check app verison first
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    bool versionCheck = true;
+    if (GetPlatform.isIOS && dynamicLinkData.ios != null) {
+      versionCheck = _isVersionGreaterThan(
+          packageInfo.version, dynamicLinkData.ios!.minimumVersion ?? '1.2.0');
+    }
+
+    Member? member;
+    try {
+      if (versionCheck) {
+        String link = dynamicLinkData.link.toString();
+        int startIndex = link.indexOf('=') + 1;
+        String memberId = link.substring(startIndex);
+        member = await MemberService().fetchMemberDataById(memberId);
+      } else {
+        Fluttertoast.showToast(
+          msg: "請更新APP",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print('Open collection link error: $e');
+    }
+
+    if (member != null) {
+      Get.to(
+        () => PersonalFilePage(
+          viewMember: member!,
+        ),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "該用戶不存在",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

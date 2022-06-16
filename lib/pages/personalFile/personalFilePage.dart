@@ -1,12 +1,16 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
@@ -19,6 +23,7 @@ import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/services/personalFileService.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:validated/validated.dart' as validate;
 
 class PersonalFilePage extends GetView<PersonalFilePageController> {
@@ -120,26 +125,115 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       actions: [
-        Obx(
-          () {
-            if (Get.find<UserService>().isMember.isFalse ||
-                controllerTag != Get.find<UserService>().currentUser.memberId ||
-                controller.pickCount.value + controller.bookmarkCount.value <=
-                    0) {
-              return Container();
-            }
-
-            return IconButton(
-              icon: const Icon(
-                Icons.add_outlined,
-                color: readrBlack87,
-              ),
-              onPressed: () => Get.to(() => ChooseStoryPage()),
-            );
-          },
+        IconButton(
+          icon: Icon(
+            PlatformIcons(context).ellipsis,
+            color: readrBlack87,
+          ),
+          onPressed: () async => await _showShareBottomSheet(context),
         ),
       ],
     );
+  }
+
+  Future<void> _showShareBottomSheet(BuildContext context) async {
+    String shareButtonText = '分享這個個人檔案';
+    if (controllerTag == Get.find<UserService>().currentUser.memberId) {
+      shareButtonText = '分享我的個人檔案';
+    }
+    String? result = await showCupertinoModalPopup<String>(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('copy'),
+            child: const Text(
+              '複製個人檔案連結',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('share'),
+            child: Text(
+              shareButtonText,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(context).pop('cancel'),
+          child: const Text(
+            '取消',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    String url = '';
+    if (result != null && result != 'cancel') {
+      if (controller.isLoading.isTrue) {
+        url = await DynamicLinkHelper.createPersonalFileLink(viewMember);
+      } else {
+        url = await DynamicLinkHelper.createPersonalFileLink(
+            controller.viewMemberData.value);
+      }
+    }
+
+    if (result == 'copy') {
+      Clipboard.setData(ClipboardData(text: url));
+      showToastWidget(
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.0),
+            color: const Color.fromRGBO(0, 9, 40, 0.66),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Icon(
+                Icons.check_circle,
+                size: 16,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 6.0,
+              ),
+              Text(
+                '已複製連結',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
+        context: context,
+        animation: StyledToastAnimation.slideFromTop,
+        reverseAnimation: StyledToastAnimation.slideToTop,
+        position: StyledToastPosition.top,
+        startOffset: const Offset(0.0, -3.0),
+        reverseEndOffset: const Offset(0.0, -3.0),
+        duration: const Duration(seconds: 3),
+        //Animation duration   animDuration * 2 <= duration
+        animDuration: const Duration(milliseconds: 250),
+        curve: Curves.linear,
+        reverseCurve: Curves.linear,
+      );
+    } else if (result == 'share') {
+      Share.share(url);
+    }
   }
 
   Widget _buildBody() {
