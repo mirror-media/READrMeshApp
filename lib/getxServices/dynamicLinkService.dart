@@ -11,6 +11,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -182,15 +183,7 @@ class DynamicLinkService extends GetxService {
         () => CollectionPage(collection!),
       );
     } else if (collection != null) {
-      Fluttertoast.showToast(
-        msg: "集錦不存在",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      Get.to(() => const CollectionDeletedPage());
     } else {
       Fluttertoast.showToast(
         msg: "開啟連結失敗",
