@@ -13,7 +13,6 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/editPersonalFilePage.dart';
 import 'package:readr/pages/personalFile/followerListPage.dart';
