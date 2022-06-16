@@ -8,9 +8,11 @@ import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/editCollection/reorderPage.dart';
 import 'package:readr/pages/collection/editCollection/titleAndOg/editTitlePage.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController> {
   final Collection collection;
@@ -91,19 +93,19 @@ class CollectionAppBar extends GetView<CollectionPageController> {
         ),
       ),
       actions: [
-        // IconButton(
-        //   icon: Icon(
-        //     GetPlatform.isAndroid
-        //         ? Icons.share_outlined
-        //         : Icons.ios_share_outlined,
-        //     color: readrBlack87,
-        //     size: 26,
-        //   ),
-        //   tooltip: '分享',
-        //   onPressed: () {
-        //     Share.share();
-        //   },
-        // )
+        IconButton(
+          icon: Icon(
+            PlatformIcons(context).share,
+            color: readrBlack87,
+            size: 26,
+          ),
+          tooltip: '分享',
+          onPressed: () async {
+            String shareLink =
+                await DynamicLinkHelper.createCollectionLink(collection);
+            Share.share(shareLink);
+          },
+        ),
         Obx(
           () {
             if (Get.find<UserService>().isMember.isTrue &&
@@ -112,8 +114,8 @@ class CollectionAppBar extends GetView<CollectionPageController> {
               return IconButton(
                 onPressed: () async =>
                     await _showEditCollectionBottomSheet(context),
-                icon: const Icon(
-                  CupertinoIcons.ellipsis,
+                icon: Icon(
+                  PlatformIcons(context).ellipsis,
                   color: readrBlack87,
                   size: 26,
                 ),
