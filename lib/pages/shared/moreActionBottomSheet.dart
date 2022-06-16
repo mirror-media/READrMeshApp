@@ -107,7 +107,7 @@ class MoreActionBottomSheet {
                     alignment: Alignment.centerLeft,
                   ),
                 ),
-              if (objective != PickObjective.story || url != null)
+              if (url != null)
                 TextButton.icon(
                   onPressed: () async {
                     Navigator.pop(context);
@@ -132,11 +132,10 @@ class MoreActionBottomSheet {
                     alignment: Alignment.centerLeft,
                   ),
                 ),
-              if (objective != PickObjective.story || url != null)
+              if (url != null)
                 TextButton.icon(
                   onPressed: () async {
-                    String shareUrl = url ?? '';
-                    Share.share(shareUrl);
+                    Share.share(url);
                     Navigator.pop(context);
                   },
                   icon: Icon(
