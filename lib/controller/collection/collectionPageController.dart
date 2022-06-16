@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/comment.dart';
+import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/services/collectionPageService.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -54,10 +56,14 @@ class CollectionPageController extends GetxController {
       await collectionPageRepos
           .fetchCollectionData(collection.id)
           .then((value) {
-        allComments.assignAll(value['allComments']);
-        popularComments.assignAll(value['popularComments']);
-        collectionPicks.assignAll(value['collectionPicks']);
-        collection.collectionPicks = value['collectionPicks'];
+        if (value['status'] == CollectionStatus.delete) {
+          Get.off(() => const CollectionDeletedPage());
+        } else {
+          allComments.assignAll(value['allComments']);
+          popularComments.assignAll(value['popularComments']);
+          collectionPicks.assignAll(value['collectionPicks']);
+          collection.collectionPicks = value['collectionPicks'];
+        }
       });
       await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {

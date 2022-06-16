@@ -23,6 +23,7 @@ const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
 const String invitationCodeSvg = 'assets/icon/invitationCode.svg';
 const String newInvitationCodeSvg = 'assets/icon/newInvitationCode.svg';
 const String collectionDeleteHintSvg = 'assets/image/collectionDeleteHint.svg';
+const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);

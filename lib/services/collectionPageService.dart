@@ -34,6 +34,7 @@ query(
       id: \$collectionId
     }
   ){
+    status
     followingPickMembers: picks(
       where:{
         member:{
@@ -409,10 +410,18 @@ query(
       );
     }
 
+    CollectionStatus status = CollectionStatus.publish;
+    if (collection['status'] == 'delete') {
+      status = CollectionStatus.delete;
+    } else if (collection['status'] == 'draft') {
+      status = CollectionStatus.draft;
+    }
+
     return {
       'allComments': allComments,
       'popularComments': popularComments,
       'collectionPicks': collectionPicks,
+      'status': status,
     };
   }
 }
