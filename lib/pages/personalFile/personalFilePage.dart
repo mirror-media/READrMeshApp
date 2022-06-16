@@ -1,6 +1,7 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
@@ -52,7 +53,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildBar(),
+      appBar: _buildBar(context),
       body: Obx(
         () {
           if (controller.isError.isTrue) {
@@ -73,13 +74,13 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       elevation: 0,
       leading: isFromBottomTab
           ? IconButton(
-              icon: const Icon(
-                Icons.settings,
+              icon: Icon(
+                PlatformIcons(context).gearSolid,
                 color: readrBlack,
               ),
               onPressed: () {

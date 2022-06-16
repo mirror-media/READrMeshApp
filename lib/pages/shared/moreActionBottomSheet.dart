@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -84,8 +85,8 @@ class MoreActionBottomSheet {
                     Get.find<PickableItemController>(tag: controllerTag)
                             .isBookmarked
                             .value
-                        ? CupertinoIcons.bookmark_solid
-                        : CupertinoIcons.bookmark,
+                        ? PlatformIcons(context).bookmarkSolid
+                        : PlatformIcons(context).bookmarkOutline,
                     color: readrBlack87,
                     size: 18,
                   ),
@@ -139,9 +140,7 @@ class MoreActionBottomSheet {
                     Navigator.pop(context);
                   },
                   icon: Icon(
-                    GetPlatform.isAndroid
-                        ? Icons.share_outlined
-                        : Icons.ios_share_outlined,
+                    PlatformIcons(context).share,
                     color: readrBlack87,
                     size: 18,
                   ),

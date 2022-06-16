@@ -52,8 +52,8 @@ class StoryAppBar extends GetView<StoryPageController> {
                     Get.find<PickableItemController>(tag: 'News$newsId')
                             .isBookmarked
                             .value
-                        ? Icons.bookmark_outlined
-                        : Icons.bookmark_border_outlined,
+                        ? PlatformIcons(context).bookmarkSolid
+                        : PlatformIcons(context).bookmarkOutline,
                     color: readrBlack87,
                     size: 26,
                   ),
@@ -107,9 +107,7 @@ class StoryAppBar extends GetView<StoryPageController> {
 
             return IconButton(
               icon: Icon(
-                GetPlatform.isAndroid
-                    ? Icons.share_outlined
-                    : Icons.ios_share_outlined,
+                PlatformIcons(context).share,
                 color: readrBlack87,
                 size: 26,
               ),
@@ -121,8 +119,8 @@ class StoryAppBar extends GetView<StoryPageController> {
           },
         ),
         IconButton(
-          icon: const Icon(
-            Icons.close_outlined,
+          icon: Icon(
+            PlatformIcons(context).clear,
             color: readrBlack87,
             size: 26,
           ),
