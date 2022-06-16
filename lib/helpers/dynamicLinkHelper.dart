@@ -7,7 +7,7 @@ import 'package:readr/models/collection.dart';
 class DynamicLinkHelper {
   static Future<String> createCollectionLink(Collection collection) async {
     String url =
-        '${Get.find<EnvironmentService>().config.readrMeshWebsite}/collection?=${collection.id}&ofl=${Get.find<EnvironmentService>().config.readrWebsiteLink}';
+        '${Get.find<EnvironmentService>().config.readrMeshWebsite}/mesh/collection?=${collection.id}&ofl=${Get.find<EnvironmentService>().config.readrWebsiteLink}';
 
     return _buildDynamicLink(
       url: url,
