@@ -183,7 +183,7 @@ class DynamicLinkService extends GetxService {
       );
     } else if (collection != null) {
       Fluttertoast.showToast(
-        msg: "該集錦已被刪除",
+        msg: "集錦不存在",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -243,7 +243,7 @@ class DynamicLinkService extends GetxService {
       );
     } else {
       Fluttertoast.showToast(
-        msg: "該用戶不存在",
+        msg: "用戶不存在",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
