@@ -292,8 +292,14 @@ class CommunityPage extends GetView<CommunityPageController> {
       return Container();
     }
     List<Member> firstTwoMember = [];
-    for (int i = 0; i < item.itemBarMember.length && i < 2; i++) {
-      firstTwoMember.add(item.itemBarMember[i]);
+    for (int i = 0; i < item.itemBarMember.length; i++) {
+      firstTwoMember.addIf(
+          !firstTwoMember.any(
+              (element) => element.memberId == item.itemBarMember[i].memberId),
+          item.itemBarMember[i]);
+      if (firstTwoMember.length == 2) {
+        break;
+      }
     }
 
     List<Widget> children = [
