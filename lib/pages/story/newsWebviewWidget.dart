@@ -72,7 +72,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                     }
                   },
                   onLoadStop: (inAppWerViewController, uri) {
-                    if (controller.newsListItem.source.id ==
+                    if (controller.newsListItem.source?.id ==
                         Get.find<EnvironmentService>()
                             .config
                             .readrPublisherId) {

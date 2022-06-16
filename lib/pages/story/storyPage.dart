@@ -40,7 +40,7 @@ class StoryPage extends GetView<StoryPageController> {
     Widget child;
     if (!news.fullContent) {
       child = NewsWebviewWidget(news.id);
-    } else if (news.source.id ==
+    } else if (news.source?.id ==
         Get.find<EnvironmentService>().config.readrPublisherId) {
       child = ReadrStoryWidget(news.id);
     } else {

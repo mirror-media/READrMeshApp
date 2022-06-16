@@ -40,16 +40,18 @@ class NewsListItemWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => Get.to(() => PublisherPage(
-                          news.source,
-                        )),
-                    child: ExtendedText(
-                      news.source.title,
-                      joinZeroWidthSpace: true,
-                      style: const TextStyle(color: readrBlack50, fontSize: 12),
+                  if (news.source != null)
+                    GestureDetector(
+                      onTap: () => Get.to(() => PublisherPage(
+                            news.source!,
+                          )),
+                      child: ExtendedText(
+                        news.source!.title,
+                        joinZeroWidthSpace: true,
+                        style:
+                            const TextStyle(color: readrBlack50, fontSize: 12),
+                      ),
                     ),
-                  ),
                   IconButton(
                     padding: const EdgeInsets.all(0),
                     alignment: Alignment.centerRight,

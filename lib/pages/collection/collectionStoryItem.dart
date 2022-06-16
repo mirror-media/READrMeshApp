@@ -111,20 +111,22 @@ class CollectionStoryItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              Text(
-                story.news!.source.title,
-                style: const TextStyle(color: readrBlack50, fontSize: 12),
-              ),
-              Container(
-                width: 2,
-                height: 2,
-                margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: readrBlack20,
+              if (story.news!.source != null) ...[
+                Text(
+                  story.news!.source!.title,
+                  style: const TextStyle(color: readrBlack50, fontSize: 12),
                 ),
-              ),
+                Container(
+                  width: 2,
+                  height: 2,
+                  margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: readrBlack20,
+                  ),
+                ),
+              ],
               Timestamp(
                 story.news!.publishedDate,
               ),

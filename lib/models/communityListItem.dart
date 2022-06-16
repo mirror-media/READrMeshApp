@@ -130,14 +130,21 @@ class CommunityListItem {
               () => StoryPage(news: newsListItem!),
               fullscreenDialog: true,
             );
-        authorTextWidget = ExtendedText(
-          newsListItem.source.title,
-          joinZeroWidthSpace: true,
-          style: const TextStyle(color: readrBlack50, fontSize: 14),
-        );
-        tapAuthor = () => Get.to(() => PublisherPage(
-              newsListItem!.source,
-            ));
+
+        authorTextWidget = newsListItem.source != null
+            ? ExtendedText(
+                newsListItem.source!.title,
+                joinZeroWidthSpace: true,
+                style: const TextStyle(color: readrBlack50, fontSize: 14),
+              )
+            : Container();
+        tapAuthor = () {
+          if (newsListItem!.source != null) {
+            Get.to(() => PublisherPage(
+                  newsListItem!.source!,
+                ));
+          }
+        };
         titleWidget = ExtendedText(
           newsListItem.title,
           joinZeroWidthSpace: true,

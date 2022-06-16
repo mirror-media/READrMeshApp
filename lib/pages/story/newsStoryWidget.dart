@@ -113,12 +113,15 @@ class NewsStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildPublisher() {
+    if (controller.newsListItem.source == null) {
+      return Container();
+    }
     return GestureDetector(
-      onTap: () => Get.to(() => PublisherPage(controller.newsListItem.source)),
+      onTap: () => Get.to(() => PublisherPage(controller.newsListItem.source!)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Text(
-          controller.newsListItem.source.title,
+          controller.newsListItem.source!.title,
           style: const TextStyle(
             color: readrBlack50,
             fontSize: 14,
@@ -217,7 +220,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildContact() {
-    if (controller.newsListItem.source.title != '鏡週刊') {
+    if (controller.newsListItem.source?.title != '鏡週刊') {
       return Container();
     }
     return Column(

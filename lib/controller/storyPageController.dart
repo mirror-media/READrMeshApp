@@ -55,7 +55,7 @@ class StoryPageController extends GetxController {
       ]);
 
       //if publisher is readr and not project, fetch story from readr CMS
-      if (newsListItem.source.id ==
+      if (newsListItem.source?.id ==
               Get.find<EnvironmentService>().config.readrPublisherId &&
           isFullContent) {
         if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {
@@ -84,7 +84,7 @@ class StoryPageController extends GetxController {
       newsStoryItem = await newsStoryRepos.fetchNewsData(newsListItem.id);
 
       //if publisher is readr and not project, fetch story from readr CMS
-      if (newsListItem.source.id ==
+      if (newsListItem.source?.id ==
               Get.find<EnvironmentService>().config.readrPublisherId &&
           isFullContent) {
         if (newsStoryItem.content == null || newsStoryItem.content!.isEmpty) {

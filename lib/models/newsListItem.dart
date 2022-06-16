@@ -14,7 +14,7 @@ class NewsListItem {
   final String url;
   final String? summary;
   final String? content;
-  final Publisher source;
+  final Publisher? source;
   final Category? category;
   final DateTime publishedDate;
   final String? heroImageUrl;
@@ -45,7 +45,7 @@ class NewsListItem {
 
   factory NewsListItem.fromJson(Map<String, dynamic> json,
       {bool updateController = true}) {
-    late Publisher source;
+    Publisher? source;
     Category? category;
     bool payWall = false;
     bool fullContent = false;
