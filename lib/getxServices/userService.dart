@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
@@ -63,6 +64,7 @@ class UserService extends GetxService {
     }
     isMember.value = _isMember;
     Get.find<HiveService>().updateLocalMember(currentUser);
+    AnalyticsHelper.setUserId(currentUser.memberId);
   }
 
   bool isFollowingMember(Member member) {

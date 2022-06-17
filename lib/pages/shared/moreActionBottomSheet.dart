@@ -9,6 +9,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:share_plus/share_plus.dart';
@@ -135,7 +136,14 @@ class MoreActionBottomSheet {
               if (url != null)
                 TextButton.icon(
                   onPressed: () async {
-                    Share.share(url);
+                    Share.shareWithResult(url).then((value) {
+                      if (value.status == ShareResultStatus.success) {
+                        AnalyticsHelper.logShare(
+                            objective.toString().split('.').last,
+                            id,
+                            value.raw);
+                      }
+                    });
                     Navigator.pop(context);
                   },
                   icon: Icon(

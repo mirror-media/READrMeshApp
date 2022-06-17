@@ -7,6 +7,7 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
@@ -103,7 +104,12 @@ class CollectionAppBar extends GetView<CollectionPageController> {
           onPressed: () async {
             String shareLink =
                 await DynamicLinkHelper.createCollectionLink(collection);
-            Share.share(shareLink);
+            Share.shareWithResult(shareLink).then((value) {
+              if (value.status == ShareResultStatus.success) {
+                AnalyticsHelper.logShare(
+                    'collection', collection.id, value.raw);
+              }
+            });
           },
         ),
         Obx(

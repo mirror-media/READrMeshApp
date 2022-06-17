@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/pages/welcomePage.dart';
 
 class RootPageController extends GetxController {
@@ -46,5 +47,6 @@ class RootPageController extends GetxController {
     } else if (index == 1) {
       Get.find<LatestPageController>().scrollToTopAndRefresh();
     }
+    AnalyticsHelper.logClickTab(index);
   }
 }

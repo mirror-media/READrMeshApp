@@ -10,6 +10,7 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:share_plus/share_plus.dart';
@@ -113,7 +114,13 @@ class StoryAppBar extends GetView<StoryPageController> {
               ),
               tooltip: '分享',
               onPressed: () {
-                Share.share(controller.newsListItem.url);
+                Share.shareWithResult(controller.newsListItem.url)
+                    .then((value) {
+                  if (value.status == ShareResultStatus.success) {
+                    AnalyticsHelper.logShare(
+                        'story', controller.newsListItem.id, value.raw);
+                  }
+                });
               },
             );
           },

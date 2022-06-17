@@ -7,6 +7,7 @@ import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/services/memberService.dart';
 
 class SettingPageController extends GetxController {
@@ -123,6 +124,7 @@ class SettingPageController extends GetxController {
 
     try {
       await memberRepos.deleteMember().then((value) => deleteSuccess = value);
+      AnalyticsHelper.logDeleteAccount();
       if (deleteSuccess) {
         await FirebaseAuth.instance.currentUser!.delete();
         if (Get.isRegistered<PersonalFilePageController>(

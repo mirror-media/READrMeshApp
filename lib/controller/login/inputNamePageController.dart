@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/pages/loginMember/chooseMemberPage.dart';
 import 'package:readr/pages/loginMember/choosePublisherPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
@@ -41,6 +42,7 @@ class InputNamePageController extends GetxController {
       } else {
         Get.off(() => ChoosePublisherPage());
       }
+      AnalyticsHelper.logSignUp();
     } catch (e) {
       Fluttertoast.showToast(
         msg: "發生錯誤，請稍後再試",

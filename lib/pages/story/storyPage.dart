@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
@@ -36,6 +37,8 @@ class StoryPage extends GetView<StoryPageController> {
         tag: news.id,
       );
     }
+
+    AnalyticsHelper.logOpenStory(source: news.source?.title);
 
     Widget child;
     if (!news.fullContent) {

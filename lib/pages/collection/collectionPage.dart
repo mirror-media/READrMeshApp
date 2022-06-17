@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/folderCollectionWidget.dart';
@@ -28,6 +29,8 @@ class CollectionPage extends GetView<CollectionPageController> {
         tag: collection.id,
       );
     }
+
+    AnalyticsHelper.logViewCollection(collection);
 
     return Scaffold(
       backgroundColor: Colors.white,

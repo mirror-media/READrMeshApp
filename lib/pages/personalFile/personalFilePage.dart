@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
@@ -231,7 +232,11 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         reverseCurve: Curves.linear,
       );
     } else if (result == 'share') {
-      Share.share(url);
+      Share.shareWithResult(url).then((value) {
+        if (value.status == ShareResultStatus.success) {
+          AnalyticsHelper.logShare('member', viewMember.memberId, value.raw);
+        }
+      });
     }
   }
 
