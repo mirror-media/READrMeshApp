@@ -23,10 +23,9 @@ class StoryPageController extends GetxController {
     required this.newsListItem,
   });
 
-  bool isLoading = true;
+  final isLoading = true.obs;
   bool isError = false;
   dynamic error;
-  final webviewLoading = true.obs;
   late NewsStoryItem newsStoryItem;
   late Story readrStory;
   late ParagraphFormat paragraphFormat;
@@ -38,7 +37,7 @@ class StoryPageController extends GetxController {
   }
 
   void fetchNewsData() async {
-    isLoading = true;
+    isLoading.value = true;
     isError = false;
     bool isFullContent = newsListItem.fullContent;
     print('Fetch news data id=${newsListItem.id}');
@@ -72,7 +71,7 @@ class StoryPageController extends GetxController {
       print('StoryPageError: ${error.message}');
       isError = true;
     }
-    isLoading = false;
+    isLoading.value = false;
     update();
   }
 

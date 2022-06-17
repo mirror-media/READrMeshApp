@@ -48,7 +48,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           );
         }
 
-        if (!controller.isLoading) {
+        if (controller.isLoading.isFalse) {
           Story story = controller.readrStory;
 
           return Stack(

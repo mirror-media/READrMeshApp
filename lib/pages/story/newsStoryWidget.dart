@@ -33,7 +33,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           );
         }
 
-        if (!controller.isLoading) {
+        if (controller.isLoading.isFalse) {
           return Stack(
             fit: StackFit.expand,
             children: [
