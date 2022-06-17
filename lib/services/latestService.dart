@@ -264,7 +264,6 @@ class LatestService implements LatestRepos {
             }
           }
         }
-        take: 20
       ){
         id
         title
