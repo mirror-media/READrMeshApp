@@ -23,6 +23,7 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/pages/shared/timestamp.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CommunityPage extends GetView<CommunityPageController> {
@@ -52,7 +53,11 @@ class CommunityPage extends GetView<CommunityPageController> {
           }
 
           if (controller.isInitialized) {
-            return _buildBody(context);
+            return ScrollsToTop(
+              onScrollsToTop: (event) async =>
+                  controller.scrollToTopAndRefresh(),
+              child: _buildBody(context),
+            );
           }
 
           return CustomScrollView(

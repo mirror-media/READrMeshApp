@@ -13,6 +13,7 @@ import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class LatestPage extends GetView<LatestPageController> {
@@ -42,7 +43,11 @@ class LatestPage extends GetView<LatestPageController> {
           }
 
           if (controller.isInitialized) {
-            return _buildBody(context);
+            return ScrollsToTop(
+              onScrollsToTop: (event) async =>
+                  controller.scrollToTopAndRefresh(),
+              child: _buildBody(context),
+            );
           }
 
           return CustomScrollView(
