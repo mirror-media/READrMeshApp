@@ -208,6 +208,10 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
                     fontSize: 13,
                     color: readrBlack50,
                   ),
+                  strutStyle: const StrutStyle(
+                    forceStrutHeight: true,
+                    leading: 0.5,
+                  ),
                 ),
               ),
               Container(
