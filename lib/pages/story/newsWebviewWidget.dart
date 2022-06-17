@@ -29,11 +29,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           );
         }
 
-        if (!controller.isLoading) {
-          return _webViewWidget(context);
-        }
-
-        return StorySkeletonScreen(newsId);
+        return _webViewWidget(context);
       },
     );
   }
@@ -65,12 +61,6 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                   initialOptions: options,
                   initialUrlRequest:
                       URLRequest(url: Uri.parse(controller.newsListItem.url)),
-                  onLoadStart: (inAppWerViewController, uri) async {
-                    await Future.delayed(const Duration(seconds: 2));
-                    if (Get.isRegistered<StoryPageController>()) {
-                      controller.webviewLoading.value = false;
-                    }
-                  },
                   onLoadStop: (inAppWerViewController, uri) {
                     if (controller.newsListItem.source?.id ==
                         Get.find<EnvironmentService>()
@@ -113,27 +103,33 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                           source:
                               "document.getElementsByTagName('readr-donate-link')[0].style.display = 'none';");
                     }
-
-                    controller.webviewLoading.value = false;
                   },
                 ),
               ),
             ),
           ],
         ),
-        BottomCardWidget(
-          controllerTag: controller.newsStoryItem.controllerTag,
-          title: controller.newsStoryItem.title,
-          publisher: controller.newsStoryItem.source,
-          id: controller.newsStoryItem.id,
-          objective: PickObjective.story,
-          allComments: controller.newsStoryItem.allComments,
-          popularComments: controller.newsStoryItem.popularComments,
-          key: UniqueKey(),
+        Obx(
+          () {
+            if (controller.isLoading.isTrue) {
+              return Container();
+            }
+
+            return BottomCardWidget(
+              controllerTag: controller.newsStoryItem.controllerTag,
+              title: controller.newsStoryItem.title,
+              publisher: controller.newsStoryItem.source,
+              id: controller.newsStoryItem.id,
+              objective: PickObjective.story,
+              allComments: controller.newsStoryItem.allComments,
+              popularComments: controller.newsStoryItem.popularComments,
+              key: UniqueKey(),
+            );
+          },
         ),
         Obx(
           () {
-            if (controller.webviewLoading.isTrue) {
+            if (controller.isLoading.isTrue) {
               return StorySkeletonScreen(newsId);
             }
 
