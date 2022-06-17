@@ -90,7 +90,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                           fontSize: 16.0,
                         );
                         Get.find<CommunityPageController>()
-                            .fetchFollowingPickedAndComment();
+                            .fetchFollowingStoryAndCollection();
                       }
                       timer.cancel();
                     }

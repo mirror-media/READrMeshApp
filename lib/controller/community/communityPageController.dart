@@ -18,6 +18,7 @@ class CommunityPageController extends GetxController {
   final isNoMore = false.obs;
   bool _noMorePicked = false;
   bool _noMoreComment = false;
+  bool _noMoreNewCollection = false;
   final List<String> fetchedStoryIds = [];
   final List<String> fetchedCollectionIds = [];
 
@@ -41,14 +42,14 @@ class CommunityPageController extends GetxController {
     isError = false;
     update();
     await Future.wait([
-      fetchFollowingPickedAndComment().then((value) => isError = !value),
+      fetchFollowingStoryAndCollection().then((value) => isError = !value),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
     isInitialized = true;
     update();
   }
 
-  Future<bool> fetchFollowingPickedAndComment() async {
+  Future<bool> fetchFollowingStoryAndCollection() async {
     try {
       List<CommunityListItem> pickedList =
           await repository.fetchFollowingPicked();
@@ -68,21 +69,36 @@ class CommunityPageController extends GetxController {
         _noMorePicked = true;
       }
 
-      List<CommunityListItem> commentList =
-          await repository.fetchFollowingComment(
-        alreadyFetchCollectionIds: fetchedCollectionIds,
-        alreadyFetchStoryIds: fetchedStoryIds,
-      );
-      if (commentList.length < 20) {
-        _noMoreComment = true;
-      }
-      pickedList.addAll(commentList);
-      pickedList
-          .sort((a, b) => b.pickOrCommentTime.compareTo(a.pickOrCommentTime));
+      List<CommunityListItem> commentList = [];
+      List<CommunityListItem> newCollectionList = [];
+
+      await Future.wait([
+        repository
+            .fetchFollowingComment(
+          alreadyFetchCollectionIds: fetchedCollectionIds,
+          alreadyFetchStoryIds: fetchedStoryIds,
+        )
+            .then((value) {
+          commentList = value;
+          if (commentList.length < 20) {
+            _noMoreComment = true;
+          }
+          pickedList.addAll(commentList);
+        }),
+        repository.fetchNewCollection().then((value) {
+          newCollectionList = value;
+          if (newCollectionList.length < 20) {
+            _noMoreNewCollection = true;
+          }
+          pickedList.addAll(newCollectionList);
+        }),
+        Get.find<PickAndBookmarkService>().fetchPickIds(),
+      ]);
+
+      pickedList.sort((a, b) => b.orderByTime.compareTo(a.orderByTime));
       communityList.assignAll(pickedList);
-      isNoMore.value = _noMorePicked && _noMoreComment;
+      isNoMore.value = _noMorePicked && _noMoreComment && _noMoreNewCollection;
       _updateIdList(commentList);
-      await Get.find<PickAndBookmarkService>().fetchPickIds();
       return true;
     } catch (e) {
       print('Fetch following picked news error: $e');
@@ -107,7 +123,7 @@ class CommunityPageController extends GetxController {
 
   Future<void> updateCommunityPage() async {
     await Future.wait([
-      fetchFollowingPickedAndComment(),
+      fetchFollowingStoryAndCollection(),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
   }
@@ -140,20 +156,35 @@ class CommunityPageController extends GetxController {
         _noMorePicked = true;
       }
 
-      List<CommunityListItem> newCommentList =
-          await repository.fetchFollowingComment(
-        alreadyFetchCollectionIds: fetchedCollectionIds,
-        alreadyFetchStoryIds: fetchedStoryIds,
-      );
-      if (newCommentList.length < 20) {
-        _noMoreComment = true;
-      }
-      await Get.find<PickAndBookmarkService>().fetchPickIds();
+      List<CommunityListItem> newCommentList = [];
+      List<CommunityListItem> newCollectionList = [];
+
+      await Future.wait([
+        repository
+            .fetchFollowingComment(
+          alreadyFetchCollectionIds: fetchedCollectionIds,
+          alreadyFetchStoryIds: fetchedStoryIds,
+        )
+            .then((value) {
+          newCommentList = value;
+          if (newCommentList.length < 20) {
+            _noMoreComment = true;
+          }
+        }),
+        repository.fetchNewCollection().then((value) {
+          newCollectionList = value;
+          if (newCollectionList.length < 20) {
+            _noMoreNewCollection = true;
+          }
+        }),
+        Get.find<PickAndBookmarkService>().fetchPickIds(),
+      ]);
+
       newPickedList.addAll(newCommentList);
-      newPickedList
-          .sort((a, b) => b.pickOrCommentTime.compareTo(a.pickOrCommentTime));
+      newPickedList.addAll(newCollectionList);
+      newPickedList.sort((a, b) => b.orderByTime.compareTo(a.orderByTime));
       communityList.addAll(newPickedList);
-      isNoMore.value = _noMorePicked && _noMoreComment;
+      isNoMore.value = _noMorePicked && _noMoreComment && _noMoreNewCollection;
       _updateIdList(newCommentList);
     } catch (e) {
       print('Fetch more following picked news error: $e');

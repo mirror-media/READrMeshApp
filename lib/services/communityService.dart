@@ -16,6 +16,8 @@ abstract class CommunityRepos {
       {List<String>? alreadyFetchStoryIds,
       List<String>? alreadyFetchCollectionIds});
   Future<List<Member>> fetchRecommendMembers();
+  Future<List<CommunityListItem>> fetchNewCollection(
+      {List<String>? alreadyFetchCollectionIds});
 }
 
 class CommunityService implements CommunityRepos {
@@ -1254,5 +1256,202 @@ query(
     }
 
     return recommendMembers;
+  }
+
+  @override
+  Future<List<CommunityListItem>> fetchNewCollection(
+      {List<String>? alreadyFetchCollectionIds}) async {
+    const String query = """
+query(
+  \$myId: ID
+  \$followingMembers: [ID!]
+  \$alreadyFetchCollectionIds: [ID!]
+){
+  collections(
+    where:{
+			status:{
+        equals: "publish"
+      }
+      id:{
+        notIn: \$alreadyFetchCollectionIds
+      }
+      creator:{
+        id:{
+          in: \$followingMembers
+        }
+      }
+    }
+    orderBy:[{createdAt: desc}]
+    take:20
+  ){
+    id
+    title
+    slug
+    status
+    creator{
+      id
+      nickname
+      avatar
+      customId
+    }
+    heroImage{
+      id
+      urlOriginal
+      file{
+        url
+      }
+    }
+    format
+    createdAt
+    picksCount(
+      where:{
+        state:{
+          in: "public"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+    )
+    myPickId: picks(
+      where:{
+        member:{
+          id:{
+            equals: \$myId
+          }
+        }
+        state:{
+          notIn: "private"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+      pick_comment(
+        where:{
+          is_active:{
+            equals: true
+          }
+        }
+      ){
+        id
+      }
+    }
+    commentCount(
+      where:{
+        is_active:{
+          equals: true
+        }
+        state:{
+          equals: "public"
+        }
+        member:{
+          is_active:{
+            equals: true
+          }
+        }
+      }
+    )
+    followingPicks: picks(
+      where:{
+        member:{
+          id:{
+            in: \$followingMembers
+          }
+        }
+        state:{
+          equals: "public"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+      orderBy:{
+        picked_date: desc
+      }
+      take: 4
+    ){
+      picked_date
+      member{
+        id
+        nickname
+        avatar
+        customId
+      }
+    }
+    otherPicks:picks(
+      where:{
+        member:{
+          id:{
+            notIn: \$followingMembers
+            not:{
+              equals: \$myId
+            }
+          }
+        }
+        state:{
+          in: "public"
+        }
+        kind:{
+          equals: "read"
+        }
+        is_active:{
+          equals: true
+        }
+      }
+      orderBy:{
+        picked_date: desc
+      }
+      take: 4
+    ){
+      member{
+        id
+        nickname
+        avatar
+        customId
+      }
+    }
+  }
+}
+""";
+
+    Map<String, dynamic> variables = {
+      "followingMembers": Get.find<UserService>().followingMemberIds,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
+    };
+
+    GraphqlBody graphqlBody = GraphqlBody(
+      operationName: null,
+      query: query,
+      variables: variables,
+    );
+
+    late final dynamic jsonResponse;
+    jsonResponse = await _helper.postByUrl(
+      _api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    List<CommunityListItem> newCollection = [];
+    for (var item in jsonResponse['data']['collections']) {
+      CommunityListItem commentItem = CommunityListItem.fromJson(item);
+      newCollection.addIf(
+        !newCollection.any(
+            (element) => element.collection?.id == commentItem.collection!.id),
+        commentItem,
+      );
+    }
+
+    return newCollection;
   }
 }

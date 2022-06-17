@@ -22,11 +22,12 @@ enum CommunityListItemType {
   pickCollection,
   commentStory,
   commentCollection,
+  createCollection,
 }
 
 class CommunityListItem {
   final CommunityListItemType type;
-  final DateTime pickOrCommentTime;
+  final DateTime orderByTime;
   final Widget titleWidget;
   final String controllerTag;
   final Widget heroImageWidget;
@@ -42,7 +43,7 @@ class CommunityListItem {
   final String itemBarText;
 
   const CommunityListItem({
-    required this.pickOrCommentTime,
+    required this.orderByTime,
     required this.type,
     required this.titleWidget,
     required this.controllerTag,
@@ -68,22 +69,26 @@ class CommunityListItem {
       newsListItem = NewsListItem.fromJson(json['story']);
     } else if (json.containsKey('collection') && json['collection'] != null) {
       collection = Collection.fromJson(json['collection']);
+    } else {
+      collection = Collection.fromJson(json);
     }
 
-    DateTime pickOrCommentTime =
-        DateTime.now().subtract(const Duration(days: 30));
+    DateTime orderByTime = DateTime.now().subtract(const Duration(days: 30));
     if (json.containsKey('picked_date')) {
-      pickOrCommentTime = DateTime.parse(json['picked_date']);
+      orderByTime = DateTime.parse(json['picked_date']);
       if (collection != null) {
         type = CommunityListItemType.pickCollection;
       }
     } else if (json.containsKey('published_date')) {
-      pickOrCommentTime = DateTime.parse(json['published_date']);
+      orderByTime = DateTime.parse(json['published_date']);
       if (newsListItem != null) {
         type = CommunityListItemType.commentStory;
       } else {
         type = CommunityListItemType.commentCollection;
       }
+    } else {
+      type = CommunityListItemType.createCollection;
+      orderByTime = collection!.publishedTime;
     }
 
     Widget heroImageWidget;
@@ -174,6 +179,7 @@ class CommunityListItem {
         break;
       case CommunityListItemType.pickCollection:
       case CommunityListItemType.commentCollection:
+      case CommunityListItemType.createCollection:
         heroImageWidget = Obx(
           () => CachedNetworkImage(
             imageUrl:
@@ -245,7 +251,10 @@ class CommunityListItem {
         controllerTag = collection.controllerTag;
         showComment = collection.showComment;
         itemId = collection.id;
-        if (collection.commentMembers != null &&
+        if (type == CommunityListItemType.createCollection) {
+          itemBarMember.assign(collection.creator);
+          itemBarText = '建立了一個新的集錦';
+        } else if (collection.commentMembers != null &&
             collection.commentMembers!.isNotEmpty) {
           itemBarMember.assignAll(collection.commentMembers!);
           itemBarText = '在這個集錦留言';
@@ -257,7 +266,7 @@ class CommunityListItem {
     }
 
     return CommunityListItem(
-      pickOrCommentTime: pickOrCommentTime,
+      orderByTime: orderByTime,
       newsListItem: newsListItem,
       collection: collection,
       type: type,

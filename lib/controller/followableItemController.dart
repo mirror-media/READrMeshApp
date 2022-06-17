@@ -153,7 +153,7 @@ class FollowableItemController extends GetxController {
         Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce(
           'updateCommunityPage', const Duration(milliseconds: 300), () {
-        Get.find<CommunityPageController>().fetchFollowingPickedAndComment();
+        Get.find<CommunityPageController>().fetchFollowingStoryAndCollection();
       });
       EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
           () {
