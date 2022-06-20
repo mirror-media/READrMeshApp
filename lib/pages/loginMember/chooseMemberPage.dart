@@ -41,102 +41,104 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
               )
             : null,
       ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(20),
-            child: const Text(
-              '根據您的喜好，我們推薦您追蹤這些人物',
-              style: TextStyle(
-                color: readrBlack87,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Expanded(
-            child: GetBuilder<ChooseMemberController>(
-              init: ChooseMemberController(RecommendService()),
-              builder: (controller) {
-                if (controller.isError) {
-                  return ErrorPage(
-                    error: controller.error,
-                    onPressed: () => controller.fetchRecommendMember(),
-                    hideAppbar: true,
-                  );
-                }
-
-                if (!controller.isLoading) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    itemBuilder: (context, index) => MemberListItemWidget(
-                      viewMember: controller.recommendedMembers[index],
-                    ),
-                    separatorBuilder: (context, index) => const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Divider(
-                        color: readrBlack10,
-                        thickness: 1,
-                        height: 1,
-                      ),
-                    ),
-                    itemCount: controller.recommendedMembers.length,
-                  );
-                }
-
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
-            width: double.infinity,
-            decoration: const BoxDecoration(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
               color: Colors.white,
-              border: Border(
-                top: BorderSide(
-                  color: readrBlack20,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: ElevatedButton(
-              onPressed: () async {
-                final prefs = Get.find<SharedPreferencesService>().prefs;
-                final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-                if (isFirstTime) {
-                  Get.offAll(RootPage());
-                  await prefs.setBool('isFirstTime', false);
-                } else {
-                  Get.until((route) => Get.currentRoute == '/LoginPage');
-                  Get.back();
-                  if (!isFromPublisher) {
-                    showFollowingSyncToast();
-                  }
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                primary: readrBlack87,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 24,
-                ),
-              ),
+              padding: const EdgeInsets.all(20),
               child: const Text(
-                '完成',
+                '根據您的喜好，我們推薦您追蹤這些人物',
                 style: TextStyle(
+                  color: readrBlack87,
                   fontSize: 16,
-                  color: Colors.white,
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: GetBuilder<ChooseMemberController>(
+                init: ChooseMemberController(RecommendService()),
+                builder: (controller) {
+                  if (controller.isError) {
+                    return ErrorPage(
+                      error: controller.error,
+                      onPressed: () => controller.fetchRecommendMember(),
+                      hideAppbar: true,
+                    );
+                  }
+
+                  if (!controller.isLoading) {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      itemBuilder: (context, index) => MemberListItemWidget(
+                        viewMember: controller.recommendedMembers[index],
+                      ),
+                      separatorBuilder: (context, index) => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Divider(
+                          color: readrBlack10,
+                          thickness: 1,
+                          height: 1,
+                        ),
+                      ),
+                      itemCount: controller.recommendedMembers.length,
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    color: readrBlack20,
+                    width: 0.5,
+                  ),
+                ),
+              ),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final prefs = Get.find<SharedPreferencesService>().prefs;
+                  final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+                  if (isFirstTime) {
+                    Get.offAll(RootPage());
+                    await prefs.setBool('isFirstTime', false);
+                  } else {
+                    Get.until((route) => Get.currentRoute == '/LoginPage');
+                    Get.back();
+                    if (!isFromPublisher) {
+                      showFollowingSyncToast();
+                    }
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  primary: readrBlack87,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 24,
+                  ),
+                ),
+                child: const Text(
+                  '完成',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -60,7 +60,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
           child: _buildContent(context),
         ),
         Container(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 17),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           width: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.white,
