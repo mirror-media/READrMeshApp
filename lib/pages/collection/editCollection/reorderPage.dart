@@ -19,6 +19,7 @@ class ReorderPage extends GetView<EditCollectionController> {
     Get.put(EditCollectionController(
       collection: collection,
       collectionRepos: CollectionService(),
+      isReorderPage: true,
     ));
     return Obx(
       () {

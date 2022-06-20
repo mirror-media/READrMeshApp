@@ -15,9 +15,11 @@ import 'package:readr/services/collectionService.dart';
 class EditCollectionController extends GetxController {
   final CollectionRepos collectionRepos;
   final Collection collection;
+  final bool isReorderPage;
   EditCollectionController({
     required this.collectionRepos,
     required this.collection,
+    this.isReorderPage = false,
   });
 
   //edit title and heroImage page
@@ -59,7 +61,7 @@ class EditCollectionController extends GetxController {
 
   @override
   void onReady() {
-    if (isFirstTime) {
+    if (isFirstTime && isReorderPage) {
       _showDeleteHint();
     }
     super.onReady();
