@@ -80,25 +80,33 @@ class RootPage extends GetView<RootPageController> {
           unselectedItemColor: bottomNavigationBarUnselectedColor,
           type: BottomNavigationBarType.fixed,
           items: [
-            const BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.bubble_left_bubble_right,
-                size: 20,
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  communityPageDefaultSvg,
+                ),
               ),
-              activeIcon: Icon(
-                CupertinoIcons.bubble_left_bubble_right_fill,
-                size: 20,
+              activeIcon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  communityPageActiveSvg,
+                ),
               ),
               label: '社群',
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.news,
-                size: 20,
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  latestPageDefaultSvg,
+                ),
               ),
-              activeIcon: Icon(
-                CupertinoIcons.news_solid,
-                size: 20,
+              activeIcon: SizedBox(
+                height: 20,
+                child: SvgPicture.asset(
+                  latestPageActiveSvg,
+                ),
               ),
               label: '最新',
             ),
