@@ -48,7 +48,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           );
         }
 
-        if (controller.isLoading.isFalse) {
+        if (!controller.isLoading) {
           Story story = controller.readrStory;
 
           return Stack(
@@ -70,7 +70,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
                 popularComments: controller.newsStoryItem.popularComments,
-                key: UniqueKey(),
+                key: Key(newsId),
               ),
             ],
           );

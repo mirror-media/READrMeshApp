@@ -23,7 +23,7 @@ class StoryPageController extends GetxController {
     required this.newsListItem,
   });
 
-  final isLoading = true.obs;
+  bool isLoading = true;
   bool isError = false;
   dynamic error;
   late NewsStoryItem newsStoryItem;
@@ -37,7 +37,7 @@ class StoryPageController extends GetxController {
   }
 
   void fetchNewsData() async {
-    isLoading.value = true;
+    isLoading = true;
     isError = false;
     bool isFullContent = newsListItem.fullContent;
     print('Fetch news data id=${newsListItem.id}');
@@ -71,7 +71,7 @@ class StoryPageController extends GetxController {
       print('StoryPageError: ${error.message}');
       isError = true;
     }
-    isLoading.value = false;
+    isLoading = false;
     update();
   }
 

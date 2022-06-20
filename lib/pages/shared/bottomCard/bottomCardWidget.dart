@@ -42,17 +42,6 @@ class BottomCardWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key) {
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
-      Get.replace<CommentController>(
-        CommentController(
-          commentRepos: CommentService(),
-          objective: objective,
-          id: id,
-          controllerTag: controllerTag,
-          allComments: allComments,
-          popularComments: popularComments,
-        ),
-        tag: controllerTag,
-      );
       commentController = Get.find<CommentController>(tag: controllerTag);
     } else {
       commentController = Get.put<CommentController>(
@@ -71,10 +60,15 @@ class BottomCardWidget extends StatelessWidget {
     pickableItemController =
         Get.find<PickableItemController>(tag: controllerTag);
 
-    bottomCardWidgetController = Get.put(
-      BottomCardWidgetController(),
-      tag: hashCode.toString(),
-    );
+    if (Get.isRegistered<BottomCardWidgetController>(tag: controllerTag)) {
+      bottomCardWidgetController =
+          Get.find<BottomCardWidgetController>(tag: controllerTag);
+    } else {
+      bottomCardWidgetController = Get.put(
+        BottomCardWidgetController(),
+        tag: controllerTag,
+      );
+    }
   }
 
   @override

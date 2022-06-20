@@ -42,7 +42,7 @@ class StoryAppBar extends GetView<StoryPageController> {
         GetBuilder<StoryPageController>(
           tag: newsId,
           builder: (controller) {
-            if (controller.isLoading.value || controller.isError) {
+            if (controller.isLoading || controller.isError) {
               return Container();
             }
 
@@ -102,7 +102,7 @@ class StoryAppBar extends GetView<StoryPageController> {
         GetBuilder<StoryPageController>(
           tag: newsId,
           builder: (controller) {
-            if (controller.isLoading.value || controller.isError) {
+            if (controller.isLoading || controller.isError) {
               return Container();
             }
 

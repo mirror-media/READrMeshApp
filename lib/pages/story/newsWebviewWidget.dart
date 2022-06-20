@@ -109,9 +109,10 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
             ),
           ],
         ),
-        Obx(
-          () {
-            if (controller.isLoading.isTrue) {
+        GetBuilder<StoryPageController>(
+          tag: newsId,
+          builder: (controller) {
+            if (controller.isLoading) {
               return Container();
             }
 
@@ -123,13 +124,14 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
               objective: PickObjective.story,
               allComments: controller.newsStoryItem.allComments,
               popularComments: controller.newsStoryItem.popularComments,
-              key: UniqueKey(),
+              key: Key(newsId),
             );
           },
         ),
-        Obx(
-          () {
-            if (controller.isLoading.isTrue) {
+        GetBuilder<StoryPageController>(
+          tag: newsId,
+          builder: (controller) {
+            if (controller.isLoading) {
               return StorySkeletonScreen(newsId);
             }
 

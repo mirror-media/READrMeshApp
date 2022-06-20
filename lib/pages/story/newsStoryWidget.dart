@@ -33,7 +33,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           );
         }
 
-        if (controller.isLoading.isFalse) {
+        if (!controller.isLoading) {
           return Stack(
             fit: StackFit.expand,
             children: [
@@ -53,7 +53,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 objective: PickObjective.story,
                 allComments: controller.newsStoryItem.allComments,
                 popularComments: controller.newsStoryItem.popularComments,
-                key: UniqueKey(),
+                key: Key(newsId),
               ),
             ],
           );
