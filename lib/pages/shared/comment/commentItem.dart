@@ -50,8 +50,11 @@ class CommentItem extends GetView<CommentItemController> {
             }
 
             await Future.delayed(const Duration(milliseconds: 255));
-            controller.isMyNewComment(false);
-            controller.isExpanded(false);
+            if (Get.isRegistered<CommentItemController>(
+                tag: 'Comment${comment.id}')) {
+              controller.isMyNewComment(false);
+              controller.isExpanded(false);
+            }
           });
           return VisibilityDetector(
               key: Key(comment.id),
