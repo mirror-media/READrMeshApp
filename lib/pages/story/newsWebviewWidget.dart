@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
@@ -8,6 +7,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebviewWidget extends GetView<StoryPageController> {
   final String newsId;
@@ -35,19 +35,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
   }
 
   Widget _webViewWidget(BuildContext context) {
-    InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-        crossPlatform: InAppWebViewOptions(
-          mediaPlaybackRequiresUserGesture: false,
-          disableContextMenu: true,
-        ),
-        android: AndroidInAppWebViewOptions(
-          useHybridComposition: true,
-        ),
-        ios: IOSInAppWebViewOptions(
-          allowsInlineMediaPlayback: true,
-          allowsLinkPreview: false,
-          disableLongPressContextMenuOnLinks: true,
-        ));
+    late WebViewController webViewController;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -57,51 +45,41 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(bottom: context.height * 0.12),
-                child: InAppWebView(
-                  initialOptions: options,
-                  initialUrlRequest:
-                      URLRequest(url: Uri.parse(controller.newsListItem.url)),
-                  onLoadStop: (inAppWerViewController, uri) {
+                child: WebView(
+                  initialUrl: controller.newsListItem.url,
+                  backgroundColor: Colors.white,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (newWebViewController) =>
+                      webViewController = newWebViewController,
+                  onPageFinished: (url) {
                     if (controller.newsListItem.source?.id ==
                         Get.find<EnvironmentService>()
                             .config
                             .readrPublisherId) {
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('header')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('footer')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('footer')[1].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('frame__donate')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('frame__tag-list-wrapper')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('news-letter')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('frame__related-list-wrapper')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByClassName('latest-coverages')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('readr-header')[0].style.display = 'none';");
-                      inAppWerViewController.evaluateJavascript(
-                          source:
-                              "document.getElementsByTagName('readr-donate-link')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('header')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('footer')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('footer')[1].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('frame__donate')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('frame__tag-list-wrapper')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('news-letter')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('frame__related-list-wrapper')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByClassName('latest-coverages')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('readr-header')[0].style.display = 'none';");
+                      webViewController.runJavascript(
+                          "document.getElementsByTagName('readr-donate-link')[0].style.display = 'none';");
                     }
                   },
                 ),
