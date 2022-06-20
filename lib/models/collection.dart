@@ -162,31 +162,6 @@ class Collection {
 
     int pickCount = json['picksCount'];
 
-    if (Get.isRegistered<PickableItemController>(
-            tag: 'Collection${json['id']}') ||
-        Get.isPrepared<PickableItemController>(
-            tag: 'Collection${json['id']}')) {
-      final controller =
-          Get.find<PickableItemController>(tag: 'Collection${json['id']}');
-      controller.pickCount.value = pickCount;
-      controller.collectionTitle.value = json['title'];
-      controller.collectionHeroImageUrl.value = imageUrl;
-    } else {
-      Get.lazyPut<PickableItemController>(
-        () => PickableItemController(
-          targetId: json["id"],
-          pickRepos: PickService(),
-          objective: PickObjective.collection,
-          pickCount: pickCount,
-          controllerTag: 'Collection${json['id']}',
-          collectionHeroImageUrl: imageUrl,
-          collectionTitle: json['title'],
-        ),
-        tag: 'Collection${json['id']}',
-        fenix: true,
-      );
-    }
-
     Comment? showComment;
     List<Member>? commentMembers;
     if (BaseModel.checkJsonKeys(json, ['followingPickComment']) &&
@@ -207,6 +182,7 @@ class Collection {
       showComment = Comment.fromJson(json['comment'][0]);
     }
 
+    List<Member> allPickedMember = [];
     List<Member> followingPickMembers = [];
     List<Member> otherPickMembers = [];
     if (BaseModel.checkJsonKeys(json, ['followingPicks']) &&
@@ -214,6 +190,7 @@ class Collection {
       for (var pick in json['followingPicks']) {
         followingPickMembers.add(Member.fromJson(pick['member']));
       }
+      allPickedMember.assignAll(followingPickMembers);
     }
 
     if (BaseModel.checkJsonKeys(json, ['otherPicks']) &&
@@ -221,6 +198,7 @@ class Collection {
       for (var pick in json['otherPicks']) {
         otherPickMembers.add(Member.fromJson(pick['member']));
       }
+      allPickedMember.addAll(otherPickMembers);
     }
 
     CollectionStatus status = CollectionStatus.publish;
@@ -235,6 +213,35 @@ class Collection {
         default:
           status = CollectionStatus.publish;
       }
+    }
+
+    if (Get.isRegistered<PickableItemController>(
+            tag: 'Collection${json['id']}') ||
+        Get.isPrepared<PickableItemController>(
+            tag: 'Collection${json['id']}')) {
+      final controller =
+          Get.find<PickableItemController>(tag: 'Collection${json['id']}');
+      controller.pickCount.value = pickCount;
+      controller.collectionTitle.value = json['title'];
+      controller.collectionHeroImageUrl.value = imageUrl;
+      controller.pickedMembers.assignAll(allPickedMember);
+      controller.commentCount.value = json['commentCount'];
+    } else {
+      Get.lazyPut<PickableItemController>(
+        () => PickableItemController(
+          targetId: json["id"],
+          pickRepos: PickService(),
+          objective: PickObjective.collection,
+          pickCount: pickCount,
+          controllerTag: 'Collection${json['id']}',
+          collectionHeroImageUrl: imageUrl,
+          collectionTitle: json['title'],
+          pickedMembers: allPickedMember,
+          commentCount: json['commentCount'],
+        ),
+        tag: 'Collection${json['id']}',
+        fenix: true,
+      );
     }
 
     return Collection(
