@@ -225,7 +225,9 @@ class Collection {
       controller.collectionTitle.value = json['title'];
       controller.collectionHeroImageUrl.value = imageUrl;
       controller.pickedMembers.assignAll(allPickedMember);
-      controller.commentCount.value = json['commentCount'];
+      if (BaseModel.checkJsonKeys(json, ['commentCount'])) {
+        controller.commentCount.value = json['commentCount'];
+      }
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
@@ -237,7 +239,7 @@ class Collection {
           collectionHeroImageUrl: imageUrl,
           collectionTitle: json['title'],
           pickedMembers: allPickedMember,
-          commentCount: json['commentCount'],
+          commentCount: json['commentCount'] ?? 0,
         ),
         tag: 'Collection${json['id']}',
         fenix: true,
