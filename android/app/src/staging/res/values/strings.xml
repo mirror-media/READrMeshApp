@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">READr Mesh Staging</string>
     <string name="dynamiclink_host">readrstaging.page.link</string>
-    <string name="facebook_app_id">2138298816406811</string>
-    <string name="fb_login_protocol_scheme">fb2138298816406811</string>
-    <string name="facebook_client_token">832e761fef78441a976e5dcf649538a7</string>
+    <string name="facebook_app_id">714865839813075</string>
+    <string name="facebook_client_token">8fae9c51431dc2ed5c3443362c3d8e1b</string>
 </resources>

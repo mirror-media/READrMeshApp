@@ -36,7 +36,7 @@
 					<string>com.readr.news</string>
 					<string>com.readr.news.staging</string>
 					<string>com.readr.news.dev</string>
-					<string>fb2138298816406811</string>
+					<string>fb714865839813075</string>
 					<string>com.googleusercontent.apps.611179505112-65uo53fvr2qfp8n1ttc7ep46s1d3l98e</string>
 					<string>com.googleusercontent.apps.593370764604-5g4od5mo26s4nkuu144metvb9n2mgr72</string>
 					<string>com.googleusercontent.apps.40777440099-904v5qlp53sj0rat93s00rbsm3eg7ho9</string>
@@ -46,9 +46,9 @@
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>FacebookAppID</key>
-		<string>2138298816406811</string>
+		<string>714865839813075</string>
 		<key>FacebookClientToken</key>
-		<string>daf271c3447854bf8258b232068aa89e</string>
+		<string>8fae9c51431dc2ed5c3443362c3d8e1b</string>
 		<key>FacebookDisplayName</key>
 		<string>READr</string>
 		<key>ITSAppUsesNonExemptEncryption</key>
