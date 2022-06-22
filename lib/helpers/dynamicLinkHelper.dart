@@ -25,7 +25,7 @@ class DynamicLinkHelper {
       url: url,
       socialMediaTitle: '${member.nickname}的精選的新聞和集錦',
       socialMediaDescription:
-          '快來看看${member.nickname}在READr MESH 挑選了哪些新聞和集錦？加入READr MESH建立專屬的個人頁面。',
+          '快來看看${member.nickname}在READr MESH 挑選了哪些新聞和集錦？做自己的新聞編輯台，加入READr MESH建立專屬的個人頁面。',
     );
   }
 
