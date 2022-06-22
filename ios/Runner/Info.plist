@@ -111,6 +111,10 @@
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-</dict>
+		<true/>
+		<key>FirebaseDynamicLinksCustomDomains</key>
+		<array>
+  			<string>https://mesh-app.readr.tw</string>
+		</array>
+	</dict>
 </plist>
