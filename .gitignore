@@ -57,3 +57,6 @@ android/dev/dev.properties
 android/dev/dev_key.jks
 android/staging/staging.properties
 android/staging/staging_key.jks
+
+#gcp credentials
+assets/json/ServiceAccountCredentials.json
