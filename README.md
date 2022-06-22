@@ -22,5 +22,5 @@ A new Flutter app about [READr](https://www.readr.tw/).
  - flutter build ios --flavor staging lib/main_staging.dart
 
 ### generate prod release archive
- - flutter build appbundle --flavor prod lib/main_prod.dart
- - flutter build ios --flavor prod lib/main_prod.dart
+ - flutter build appbundle --obfuscate --split-debug-info=debug-info --flavor prod lib/main_prod.dart
+ - flutter build ios --obfuscate --split-debug-info=debug-info --flavor prod lib/main_prod.dart
