@@ -44,13 +44,17 @@ class DynamicLinkHelper {
       ),
       iosParameters: IOSParameters(
         bundleId: packageInfo.packageName,
-        appStoreId: '1596246729',
+        appStoreId:
+            Get.find<EnvironmentService>().flavor == BuildFlavor.production
+                ? '1596246729'
+                : null,
         minimumVersion: '1.2.0',
       ),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: socialMediaTitle,
         description: socialMediaDescription,
-        //imageUrl: Uri.parse("https://example.com/image.png"),
+        imageUrl: Uri.parse(
+            "https://storage.googleapis.com/static-readr-tw-prod/READr_MESH_Logo.jpg"),
       ),
     );
     final Uri longLink =
