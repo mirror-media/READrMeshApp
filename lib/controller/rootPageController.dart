@@ -47,6 +47,6 @@ class RootPageController extends GetxController {
     } else if (index == 1) {
       Get.find<LatestPageController>().scrollToTopAndRefresh();
     }
-    AnalyticsHelper.logClickTab(index);
+    logClickTab(index);
   }
 }

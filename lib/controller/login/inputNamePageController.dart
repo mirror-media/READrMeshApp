@@ -42,7 +42,7 @@ class InputNamePageController extends GetxController {
       } else {
         Get.off(() => ChoosePublisherPage());
       }
-      AnalyticsHelper.logSignUp();
+      logSignUp();
     } catch (e) {
       Fluttertoast.showToast(
         msg: "發生錯誤，請稍後再試",

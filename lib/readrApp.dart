@@ -8,7 +8,7 @@ import 'package:readr/pages/rootPage.dart';
 class ReadrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AnalyticsHelper.logAppOpen();
+    logAppOpen();
     return GetMaterialApp(
       title: 'READr Mesh',
       theme: ThemeData(

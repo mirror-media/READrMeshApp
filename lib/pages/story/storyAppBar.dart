@@ -117,8 +117,7 @@ class StoryAppBar extends GetView<StoryPageController> {
                 Share.shareWithResult(controller.newsListItem.url)
                     .then((value) {
                   if (value.status == ShareResultStatus.success) {
-                    AnalyticsHelper.logShare(
-                        'story', controller.newsListItem.id, value.raw);
+                    logShare('story', controller.newsListItem.id, value.raw);
                   }
                 });
               },

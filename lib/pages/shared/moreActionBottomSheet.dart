@@ -138,9 +138,7 @@ class MoreActionBottomSheet {
                   onPressed: () async {
                     Share.shareWithResult(url).then((value) {
                       if (value.status == ShareResultStatus.success) {
-                        AnalyticsHelper.logShare(
-                            objective.toString().split('.').last,
-                            id,
+                        logShare(objective.toString().split('.').last, id,
                             value.raw);
                       }
                     });

@@ -106,8 +106,7 @@ class CollectionAppBar extends GetView<CollectionPageController> {
                 await DynamicLinkHelper.createCollectionLink(collection);
             Share.shareWithResult(shareLink).then((value) {
               if (value.status == ShareResultStatus.success) {
-                AnalyticsHelper.logShare(
-                    'collection', collection.id, value.raw);
+                logShare('collection', collection.id, value.raw);
               }
             });
           },

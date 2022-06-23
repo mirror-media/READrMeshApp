@@ -234,7 +234,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     } else if (result == 'share') {
       Share.shareWithResult(url).then((value) {
         if (value.status == ShareResultStatus.success) {
-          AnalyticsHelper.logShare('member', viewMember.memberId, value.raw);
+          logShare('member', viewMember.memberId, value.raw);
         }
       });
     }

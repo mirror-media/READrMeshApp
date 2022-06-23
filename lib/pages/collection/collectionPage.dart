@@ -30,7 +30,7 @@ class CollectionPage extends GetView<CollectionPageController> {
       );
     }
 
-    AnalyticsHelper.logViewCollection(collection);
+    logViewCollection(collection);
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -124,7 +124,7 @@ class SettingPageController extends GetxController {
 
     try {
       await memberRepos.deleteMember().then((value) => deleteSuccess = value);
-      AnalyticsHelper.logDeleteAccount();
+      logDeleteAccount();
       if (deleteSuccess) {
         await FirebaseAuth.instance.currentUser!.delete();
         if (Get.isRegistered<PersonalFilePageController>(

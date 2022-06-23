@@ -38,7 +38,7 @@ class StoryPage extends GetView<StoryPageController> {
       );
     }
 
-    AnalyticsHelper.logOpenStory(source: news.source?.title);
+    logOpenStory(source: news.source?.title);
 
     Widget child;
     if (!news.fullContent) {
