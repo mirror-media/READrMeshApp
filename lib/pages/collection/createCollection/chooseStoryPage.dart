@@ -19,9 +19,10 @@ class ChooseStoryPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         if (controller.selectedList.isNotEmpty) {
-          await _showLeaveAlertDialog(context);
+          return await _showLeaveAlertDialog(context) ?? false;
+        } else {
+          return true;
         }
-        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -63,9 +64,12 @@ class ChooseStoryPage extends StatelessWidget {
         ),
         onPressed: () async {
           if (controller.selectedList.isNotEmpty) {
-            await _showLeaveAlertDialog(context);
+            if (await _showLeaveAlertDialog(context) ?? false) {
+              Get.back();
+            }
+          } else {
+            Get.back();
           }
-          Get.back();
         },
       ),
       title: Obx(
@@ -120,8 +124,8 @@ class ChooseStoryPage extends StatelessWidget {
     );
   }
 
-  Future<void> _showLeaveAlertDialog(BuildContext context) async {
-    await showPlatformDialog(
+  Future<bool?> _showLeaveAlertDialog(BuildContext context) async {
+    return await showPlatformDialog<bool>(
       context: context,
       builder: (_) => PlatformAlertDialog(
         title: const Text(
@@ -139,7 +143,7 @@ class ChooseStoryPage extends StatelessWidget {
         ),
         actions: [
           PlatformDialogAction(
-            onPressed: () => Get.back(closeOverlays: true),
+            onPressed: () => Get.back<bool>(result: true),
             child: PlatformText(
               '退出',
               style: const TextStyle(
@@ -149,7 +153,7 @@ class ChooseStoryPage extends StatelessWidget {
             ),
           ),
           PlatformDialogAction(
-            onPressed: () => Get.back(),
+            onPressed: () => Get.back<bool>(result: false),
             child: PlatformText(
               '繼續編輯',
               style: const TextStyle(
