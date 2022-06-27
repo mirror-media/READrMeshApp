@@ -64,7 +64,7 @@ class UserService extends GetxService {
     }
     isMember.value = _isMember;
     Get.find<HiveService>().updateLocalMember(currentUser);
-    AnalyticsHelper.setUserId(currentUser.memberId);
+    setUserId(currentUser.memberId);
   }
 
   bool isFollowingMember(Member member) {
