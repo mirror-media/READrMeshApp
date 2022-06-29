@@ -1240,17 +1240,12 @@ query(
       }
     }
 
-    if (recommendMembers.length < 20 &&
-        jsonResponse['data']['otherMembers'].isNotEmpty) {
+    if (jsonResponse['data']['otherMembers'].isNotEmpty) {
       for (var item in jsonResponse['data']['otherMembers']) {
         Member member = Member.otherRecommend(item);
         if (!recommendMembers
             .any((element) => element.memberId == member.memberId)) {
           recommendMembers.add(member);
-        }
-
-        if (recommendMembers.length >= 20) {
-          break;
         }
       }
     }
