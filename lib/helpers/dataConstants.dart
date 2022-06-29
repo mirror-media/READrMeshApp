@@ -29,6 +29,10 @@ const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 
+//json
+const serviceAccountCredentialsJson =
+    'assets/json/serviceAccountCredentials.json';
+
 /// color
 const Color themeColor = Color(0xffFFFFFF);
 const Color appBarColor = Color(0xffFFFFFF);
@@ -92,4 +96,10 @@ enum CollectionStatus {
   publish,
   draft,
   delete,
+}
+
+enum FollowObjective {
+  member,
+  publisher,
+  collection,
 }

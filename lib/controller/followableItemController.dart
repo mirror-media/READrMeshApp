@@ -121,34 +121,32 @@ class FollowableItemController extends GetxController {
               ownFollowingController.followingMemberCount.value--;
             }
           }
+
+          //update unfollow member's followerList if isRegistered
+          if (item.type == FollowableItemType.member &&
+              Get.isRegistered<FollowerListController>(tag: item.id)) {
+            Get.find<FollowerListController>(tag: item.id)
+                .followerList
+                .removeWhere((element) =>
+                    element.memberId ==
+                    Get.find<UserService>().currentUser.memberId);
+          }
         }
       },
     );
   }
 
-  void addFollow() async {
-    bool result = await item.addFollow();
-    if (!result) {
-      isFollowed(false);
-      _isError = true;
-    } else {
-      _updatePages();
-    }
+  void addFollow() {
+    item.addFollow();
+    _updatePages();
   }
 
-  void removeFollow() async {
-    bool result = await item.removeFollow();
-    if (!result) {
-      isFollowed(true);
-      _isError = true;
-    } else {
-      _updatePages();
-    }
+  void removeFollow() {
+    item.removeFollow();
+    _updatePages();
   }
 
   void _updatePages() {
-    _updateTargetPersonalFile();
-    _updateOwnPersonalFile();
     if (item.type == FollowableItemType.member &&
         Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce(
@@ -174,29 +172,6 @@ class FollowableItemController extends GetxController {
           () {
         Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
       });
-    }
-  }
-
-  void _updateTargetPersonalFile() {
-    //update target member followerList if isRegistered
-    if (item.type == FollowableItemType.member &&
-        Get.isRegistered<FollowerListController>(tag: item.id)) {
-      Get.find<FollowerListController>(tag: item.id).fetchFollowerList();
-    }
-
-    //update target member personal file if exists
-    if (item.type == FollowableItemType.member &&
-        Get.isRegistered<PersonalFilePageController>(tag: item.id)) {
-      Get.find<PersonalFilePageController>(tag: item.id).fetchMemberData();
-    }
-  }
-
-  void _updateOwnPersonalFile() {
-    if (Get.isRegistered<PersonalFilePageController>(
-        tag: Get.find<UserService>().currentUser.memberId)) {
-      Get.find<PersonalFilePageController>(
-              tag: Get.find<UserService>().currentUser.memberId)
-          .fetchMemberData();
     }
   }
 

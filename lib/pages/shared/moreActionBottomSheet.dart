@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -62,24 +60,12 @@ class MoreActionBottomSheet {
                         () => const LoginPage(),
                         fullscreenDialog: true,
                       );
-                    } else if (await Get.find<InternetCheckService>()
-                        .meshCheckInstance
-                        .hasConnection) {
+                    } else {
                       Get.find<PickableItemController>(tag: controllerTag)
                           .isBookmarked
                           .toggle();
                       Get.find<PickableItemController>(tag: controllerTag)
                           .updateBookmark();
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "伺服器連接失敗 請稍後再試",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
                     }
                   },
                   icon: Icon(

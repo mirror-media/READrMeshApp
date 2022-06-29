@@ -46,6 +46,7 @@ class LatestPageController extends GetxController {
     isInitialized = false;
     isError = false;
     update();
+    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchLatestNews().then((value) => isError = !value),
       Get.find<RecommendPublisherBlockController>().fetchRecommendPublishers(),
@@ -69,6 +70,7 @@ class LatestPageController extends GetxController {
   }
 
   Future<void> updateLatestNewsPage() async {
+    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchLatestNews(),
       Get.find<RecommendPublisherBlockController>().fetchRecommendPublishers(),
@@ -80,7 +82,6 @@ class LatestPageController extends GetxController {
       await repository
           .fetchLatestNews()
           .then((value) => _allLatestNews.assignAll(value));
-      await Get.find<PickAndBookmarkService>().fetchPickIds();
 
       showLatestNews.assignAll(_generateFilterList(_allLatestNews));
       if (_allLatestNews.length < 60) {

@@ -3,12 +3,10 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/controller/storyPageController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -69,9 +67,7 @@ class StoryAppBar extends GetView<StoryPageController> {
                         () => const LoginPage(),
                         fullscreenDialog: true,
                       );
-                    } else if (await Get.find<InternetCheckService>()
-                        .meshCheckInstance
-                        .hasConnection) {
+                    } else {
                       Get.find<PickableItemController>(tag: 'News$newsId')
                           .isBookmarked
                           .toggle();
@@ -81,16 +77,6 @@ class StoryAppBar extends GetView<StoryPageController> {
                         () =>
                             Get.find<PickableItemController>(tag: 'News$newsId')
                                 .updateBookmark(),
-                      );
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "伺服器連接失敗 請稍後再試",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
                       );
                     }
                   },
@@ -155,7 +141,7 @@ class StoryAppBar extends GetView<StoryPageController> {
                   ),
                   actions: [
                     PlatformDialogAction(
-                      onPressed: () => Get.back(closeOverlays: true),
+                      onPressed: () => Get.close(2),
                       child: PlatformText(
                         '刪除留言',
                         style: const TextStyle(

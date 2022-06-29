@@ -10,7 +10,6 @@ import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/services/collectionService.dart';
-import 'package:readr/services/pickService.dart';
 
 class CreateCollectionController extends GetxController {
   final CollectionRepos service;
@@ -76,7 +75,6 @@ class CreateCollectionController extends GetxController {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: newCollection.id,
-          pickRepos: PickService(),
           objective: PickObjective.collection,
           controllerTag: newCollection.controllerTag,
         ),

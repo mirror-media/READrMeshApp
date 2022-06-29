@@ -29,14 +29,14 @@ class CommentItem extends GetView<CommentItemController> {
   }) : super(key: key);
 
   @override
-  String? get tag => 'Comment${comment.id}';
+  String? get tag => comment.id;
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<CommentItemController>(tag: 'Comment${comment.id}')) {
+    if (!Get.isRegistered<CommentItemController>(tag: comment.id)) {
       Get.put(
         CommentItemController(commentRepos: CommentService(), comment: comment),
-        tag: 'Comment${comment.id}',
+        tag: comment.id,
       );
     }
     bool isVisible = false;
@@ -50,8 +50,7 @@ class CommentItem extends GetView<CommentItemController> {
             }
 
             await Future.delayed(const Duration(milliseconds: 255));
-            if (Get.isRegistered<CommentItemController>(
-                tag: 'Comment${comment.id}')) {
+            if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
               controller.isMyNewComment(false);
               controller.isExpanded(false);
             }

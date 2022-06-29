@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/settingPageController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/rootPage.dart';
@@ -182,21 +180,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
               alignment: Alignment.center,
               child: GestureDetector(
                 onTap: () async {
-                  if (await Get.find<InternetCheckService>()
-                      .meshCheckInstance
-                      .hasConnection) {
-                    controller.deleteMember();
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: "伺服器連接失敗 請稍後再試",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                  }
+                  controller.deleteMember();
                 },
                 child: const Text(
                   '確認刪除',

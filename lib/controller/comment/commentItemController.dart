@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/services/commentService.dart';
 
@@ -41,24 +43,22 @@ class CommentItemController extends GetxController {
   }
 
   void addLike() async {
-    int? newLikeCount = await commentRepos.addLike(
-      commentId: commentId,
+    bool result = await Get.find<PubsubService>().addLike(
+      commentId: comment.id,
+      memberId: Get.find<UserService>().currentUser.memberId,
     );
-    if (newLikeCount != null) {
-      likeCount.value = newLikeCount;
-    } else {
+    if (!result) {
       isLiked(false);
       likeCount.value--;
     }
   }
 
   void removeLike() async {
-    int? newLikeCount = await commentRepos.removeLike(
-      commentId: commentId,
+    bool result = await Get.find<PubsubService>().removeLike(
+      commentId: comment.id,
+      memberId: Get.find<UserService>().currentUser.memberId,
     );
-    if (newLikeCount != null) {
-      likeCount.value = newLikeCount;
-    } else {
+    if (!result) {
       isLiked(true);
       likeCount.value++;
     }
@@ -68,20 +68,13 @@ class CommentItemController extends GetxController {
     String oldContent = commentContent.value;
     commentContent.value = newComment.content;
     isEdited.value = true;
-    bool result = await commentRepos.editComment(newComment);
+    bool result = await Get.find<PubsubService>()
+        .editComment(commentId: newComment.id, newContent: newComment.content);
     if (!result) {
       commentContent.value = oldContent;
       isEdited.value = comment.isEdited;
     } else {
       comment = newComment;
     }
-  }
-
-  void updateComment(Comment newComment) {
-    comment = newComment;
-    commentContent(comment.content);
-    isLiked(comment.isLiked);
-    likeCount(comment.likedCount);
-    isEdited(comment.isEdited);
   }
 }

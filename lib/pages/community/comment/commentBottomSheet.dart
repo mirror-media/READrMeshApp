@@ -114,7 +114,7 @@ class CommentBottomSheet {
       if (deleteController) {
         for (var item
             in Get.find<CommentController>(tag: controllerTag).allComments) {
-          Get.delete<CommentItemController>(tag: 'Comment${item.id}');
+          Get.delete<CommentItemController>(tag: item.id);
         }
 
         Get.delete<CommentController>(tag: controllerTag);

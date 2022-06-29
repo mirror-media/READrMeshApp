@@ -11,7 +11,6 @@ import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/services/pickService.dart';
 
 abstract class CollectionPageRepos {
   Future<Map<String, dynamic>> fetchCollectionData(String collectionId);
@@ -398,7 +397,6 @@ query(
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: collectionId,
-          pickRepos: PickService(),
           objective: PickObjective.collection,
           pickCount: pickCount,
           commentCount: allComments.length,

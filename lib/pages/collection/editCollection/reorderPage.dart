@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/editCollectionController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/collectionStoryItem.dart';
@@ -86,11 +85,7 @@ class ReorderPage extends GetView<EditCollectionController> {
                   ),
                 ),
                 onPressed: () async {
-                  if (await Get.find<InternetCheckService>()
-                      .meshCheckInstance
-                      .hasConnection) {
-                    controller.updateCollectionPicks();
-                  }
+                  controller.updateCollectionPicks();
                 },
               ),
             ],

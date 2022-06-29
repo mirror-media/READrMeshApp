@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -31,8 +33,8 @@ abstract class FollowableItem {
     this.tag,
   );
 
-  Future<bool> addFollow();
-  Future<bool> removeFollow();
+  void addFollow();
+  void removeFollow();
   Future<void> onTap();
   Widget defaultProfilePhotoWidget();
   Widget profilePhotoWidget();
@@ -75,12 +77,24 @@ class MemberFollowableItem implements FollowableItem {
   String get tag => 'member${member.memberId}';
 
   @override
-  Future<bool> addFollow() async =>
-      await Get.find<UserService>().addFollowingMember(member.memberId);
+  void addFollow() {
+    Get.find<UserService>().addFollowingMember(member);
+    Get.find<PubsubService>().addFollow(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: member.memberId,
+      objective: FollowObjective.member,
+    );
+  }
 
   @override
-  Future<bool> removeFollow() async =>
-      await Get.find<UserService>().removeFollowingMember(member.memberId);
+  void removeFollow() {
+    Get.find<UserService>().removeFollowingMember(member.memberId);
+    Get.find<PubsubService>().removeFollow(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: member.memberId,
+      objective: FollowObjective.member,
+    );
+  }
 
   @override
   Future<void> onTap() async {
@@ -138,12 +152,24 @@ class PublisherFollowableItem implements FollowableItem {
       Get.find<UserService>().isFollowingPublisher(publisher);
 
   @override
-  Future<bool> addFollow() async =>
-      await Get.find<UserService>().addFollowPublisher(publisher.id);
+  void addFollow() {
+    Get.find<UserService>().addFollowPublisher(publisher);
+    Get.find<PubsubService>().addFollow(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: publisher.id,
+      objective: FollowObjective.publisher,
+    );
+  }
 
   @override
-  Future<bool> removeFollow() async =>
-      await Get.find<UserService>().removeFollowPublisher(publisher.id);
+  void removeFollow() {
+    Get.find<UserService>().removeFollowingMember(publisher.id);
+    Get.find<PubsubService>().removeFollow(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: publisher.id,
+      objective: FollowObjective.publisher,
+    );
+  }
 
   @override
   String get lookmoreText => '探索更多為你推薦的媒體';

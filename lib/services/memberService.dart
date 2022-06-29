@@ -17,10 +17,7 @@ abstract class MemberRepos {
   Future<Member?> fetchMemberData();
   Future<Member?> createMember(String nickname, {int? tryTimes});
   Future<bool> deleteMember();
-  Future<List<Member>?> addFollowingMember(String targetMemberId);
-  Future<List<Member>?> removeFollowingMember(String targetMemberId);
   Future<List<Publisher>?> addFollowPublisher(String publisherId);
-  Future<List<Publisher>?> removeFollowPublisher(String publisherId);
   Future<bool?> updateMember(Member member);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
   Future<Member?> fetchMemberDataById(String id);
@@ -45,7 +42,6 @@ class MemberService implements MemberRepos {
   }
 
   // Get READr CMS User token for authorization
-  // TODO: Delete when verify firebase token is finished
   Future<String> _fetchCMSUserToken() async {
     String mutation = """
     mutation(
@@ -322,126 +318,6 @@ class MemberService implements MemberRepos {
   }
 
   @override
-  Future<List<Member>?> addFollowingMember(String targetMemberId) async {
-    String mutation = """
-    mutation(
-      \$memberId: ID
-      \$targetMemberId: ID
-    ){
-      updateMember(
-        where:{
-          id: \$memberId
-        }
-        data:{
-          following:{
-            connect:{
-              id: \$targetMemberId
-            } 
-          }
-        }
-      ){
-        following{
-          id
-          nickname
-          avatar
-          customId
-        }
-      }
-    }
-    """;
-    Map<String, String> variables = {
-      "memberId": Get.find<UserService>().currentUser.memberId,
-      "targetMemberId": targetMemberId
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
-      );
-
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
-      List<Member> followingMembers = [];
-      for (var member in jsonResponse['data']['updateMember']['following']) {
-        followingMembers.add(Member.fromJson(member));
-      }
-
-      return followingMembers;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  @override
-  Future<List<Member>?> removeFollowingMember(String targetMemberId) async {
-    String mutation = """
-    mutation(
-      \$memberId: ID
-      \$targetMemberId: ID
-    ){
-      updateMember(
-        where:{
-          id: \$memberId
-        }
-        data:{
-          following:{
-            disconnect:{
-              id: \$targetMemberId
-            } 
-          }
-        }
-      ){
-        following{
-          id
-          nickname
-          avatar
-          customId
-        }
-      }
-    }
-    """;
-    Map<String, String> variables = {
-      "memberId": Get.find<UserService>().currentUser.memberId,
-      "targetMemberId": targetMemberId
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
-      );
-
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
-      List<Member> followingMembers = [];
-      for (var member in jsonResponse['data']['updateMember']['following']) {
-        followingMembers.add(Member.fromJson(member));
-      }
-
-      return followingMembers;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  @override
   Future<List<Publisher>?> addFollowPublisher(String publisherId) async {
     String mutation = """
     mutation(
@@ -455,66 +331,6 @@ class MemberService implements MemberRepos {
         data:{
           follow_publisher:{
             connect:{
-              id: \$publisherId
-            }
-          }
-        }
-      ){
-        follow_publisher{
-          id
-          title
-          logo
-        }
-      }
-    }
-    """;
-    Map<String, String> variables = {
-      "memberId": Get.find<UserService>().currentUser.memberId,
-      "publisherId": publisherId
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
-      );
-
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
-      List<Publisher> followPublisher = [];
-      for (var publisher in jsonResponse['data']['updateMember']
-          ['follow_publisher']) {
-        followPublisher.add(Publisher.fromJson(publisher));
-      }
-
-      return followPublisher;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  @override
-  Future<List<Publisher>?> removeFollowPublisher(String publisherId) async {
-    String mutation = """
-    mutation(
-      \$memberId: ID
-      \$publisherId: ID
-    ){
-      updateMember(
-        where:{
-          id: \$memberId
-        }
-        data:{
-          follow_publisher:{
-            disconnect:{
               id: \$publisherId
             }
           }
@@ -643,7 +459,6 @@ query(
         }
       }
     ){
-      id
       pick_comment{
         id
       }
@@ -666,7 +481,6 @@ query(
         }
       }
     ){
-      id
       pick_comment{
         id
       }
@@ -689,7 +503,6 @@ query(
         }
       }
     ){
-      id
       story{
         id
       }

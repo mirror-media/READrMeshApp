@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -104,21 +102,7 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
                   ),
                 ),
                 onPressed: () async {
-                  if (await Get.find<InternetCheckService>()
-                      .meshCheckInstance
-                      .hasConnection) {
-                    Navigator.pop(context, true);
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: "伺服器連接失敗 請稍後再試",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                  }
+                  Navigator.pop(context, true);
                 },
               ),
             ),

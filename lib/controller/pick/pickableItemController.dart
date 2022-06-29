@@ -1,18 +1,19 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/bookmarkTabController.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/pickIdItem.dart';
 import 'package:readr/pages/shared/pick/pickToast.dart';
-import 'package:readr/services/pickService.dart';
 
 //controller for pickBar and pickButton
 class PickableItemController extends GetxController {
-  final PickRepos pickRepos;
   final PickObjective objective;
   final String targetId;
   final RxInt pickCount = 0.obs;
@@ -22,15 +23,14 @@ class PickableItemController extends GetxController {
   final isLoading = false.obs;
   final String controllerTag;
 
-  //just for news
+  //only for news
   final isBookmarked = false.obs;
 
-  //just for collection
+  //only for collection
   final RxnString collectionTitle = RxnString();
   final RxnString collectionHeroImageUrl = RxnString();
 
   PickableItemController({
-    required this.pickRepos,
     required this.objective,
     required this.targetId,
     required this.controllerTag,
@@ -51,31 +51,54 @@ class PickableItemController extends GetxController {
     this.collectionHeroImageUrl.value = collectionHeroImageUrl;
   }
 
+  @override
+  void onReady() {
+    isPicked.value = Get.find<PickAndBookmarkService>().pickList.any(
+        (element) =>
+            element.objective == objective && element.targetId == targetId);
+    isBookmarked.value = Get.find<PickAndBookmarkService>().bookmarkList.any(
+        (element) =>
+            element.objective == objective && element.targetId == targetId);
+    super.onReady();
+  }
+
   void addPick() async {
     isLoading(true);
     isPicked.value = true;
     pickCount.value++;
 
-    await pickRepos
-        .createPick(
-          targetId: targetId,
-          objective: objective,
-          state: PickState.public,
-          kind: PickKind.read,
-        )
-        .timeout(
-          const Duration(seconds: 90),
-          onTimeout: () => null,
-        );
+    bool result = await Get.find<PubsubService>().addPick(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: targetId,
+      objective: objective,
+    );
 
-    await _updatePagesAndData();
+    PickToast.showPickToast(result, true);
 
-    PickToast.showPickToast(true, true);
+    if (result) {
+      Get.find<PickAndBookmarkService>().pickList.add(PickIdItem(
+            objective: objective,
+            kind: PickKind.read,
+            targetId: targetId,
+          ));
+
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .pickCount
+            .value++;
+      }
+      _updateOwnPickTab();
+    } else {
+      isPicked.value = false;
+      pickCount.value--;
+    }
 
     isLoading(false);
   }
 
-  void addPickAndComment(String comment) async {
+  void addPickAndComment(String commentContent) async {
     isLoading(true);
     isPicked.value = true;
     pickCount.value++;
@@ -83,34 +106,43 @@ class PickableItemController extends GetxController {
 
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
       final commentController = Get.find<CommentController>(tag: controllerTag);
-      commentController.commentSending(comment);
+      commentController.commentSending(commentContent);
     }
 
-    var result = await pickRepos
-        .createPickAndComment(
-          targetId: targetId,
-          objective: objective,
-          state: PickState.public,
-          kind: PickKind.read,
-          commentContent: comment,
-        )
-        .timeout(
-          const Duration(seconds: 90),
-          onTimeout: () => null,
-        );
+    bool result = await Get.find<PubsubService>().pickAndComment(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: targetId,
+      objective: objective,
+      commentContent: commentContent,
+    );
 
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
       final commentController = Get.find<CommentController>(tag: controllerTag);
-      if (result != null) {
-        commentController.commentSendSuccess(result['pickComment']);
+      if (result) {
+        result = await commentController
+            .commentSendFinish(commentController.sendingComment!);
       } else {
         commentController.commentSendFailed();
       }
     }
 
-    await _updatePagesAndData();
-    PickToast.showPickToast(true, true);
+    PickToast.showPickToast(result, true);
 
+    if (result) {
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .pickCount
+            .value++;
+      }
+      _updateOwnPickTab();
+      await Future.delayed(const Duration(seconds: 5));
+      Get.find<PickAndBookmarkService>().fetchPickIds();
+    } else {
+      isPicked.value = false;
+      pickCount.value--;
+    }
     isLoading(false);
   }
 
@@ -119,31 +151,20 @@ class PickableItemController extends GetxController {
     isPicked.value = false;
     pickCount.value--;
 
-    bool isSuccess = false;
-    String? myPickId = Get.find<PickAndBookmarkService>()
-        .pickList
-        .firstWhereOrNull((element) =>
-            element.objective == objective && element.targetId == targetId)
-        ?.myPickId;
     String? myPickCommentId = Get.find<PickAndBookmarkService>()
         .pickList
         .firstWhereOrNull((element) =>
             element.objective == objective && element.targetId == targetId)
         ?.myPickCommentId;
-    if (myPickId != null && myPickCommentId != null) {
+    if (myPickCommentId != null) {
       commentCount.value--;
-      isSuccess = await pickRepos
-          .deletePickAndComment(myPickId, myPickCommentId)
-          .timeout(
-            const Duration(seconds: 90),
-            onTimeout: () => false,
-          );
-    } else if (myPickId != null) {
-      isSuccess = await pickRepos.deletePick(myPickId).timeout(
-            const Duration(seconds: 90),
-            onTimeout: () => false,
-          );
     }
+
+    bool isSuccess = await Get.find<PubsubService>().unPick(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      targetId: targetId,
+      objective: objective,
+    );
 
     if (isSuccess) {
       if (Get.isRegistered<CommentController>(tag: controllerTag) &&
@@ -151,6 +172,16 @@ class PickableItemController extends GetxController {
         Get.find<CommentController>(tag: controllerTag)
             .deletePickComment(myPickCommentId);
       }
+      Get.find<PickAndBookmarkService>().pickList.removeWhere((element) =>
+          element.objective == objective && element.targetId == targetId);
+      if (Get.isRegistered<PersonalFilePageController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<PersonalFilePageController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .pickCount
+            .value--;
+      }
+      _updateOwnPickTab();
     } else {
       pickCount.value++;
       if (myPickCommentId != null) {
@@ -158,54 +189,38 @@ class PickableItemController extends GetxController {
       }
       isPicked.value = true;
     }
-    await Future.delayed(const Duration(seconds: 2));
-    await _updatePagesAndData();
     PickToast.showPickToast(isSuccess, false);
 
     isLoading(false);
   }
 
-  Future<void> _updatePagesAndData() async {
-    await Future.delayed(const Duration(seconds: 2));
-    await Get.find<PickAndBookmarkService>().fetchPickIds();
-    //update own personal file if exists
-    if (Get.isRegistered<PersonalFilePageController>(
-        tag: Get.find<UserService>().currentUser.memberId)) {
-      Get.find<PersonalFilePageController>(
-              tag: Get.find<UserService>().currentUser.memberId)
-          .fetchMemberData();
-    }
-
+  Future<void> _updateOwnPickTab() async {
     //update own personal file pick tab if exists
     if (Get.isRegistered<PickTabController>(
         tag: Get.find<UserService>().currentUser.memberId)) {
-      Get.find<PickTabController>(
-              tag: Get.find<UserService>().currentUser.memberId)
-          .fetchPickList();
+      EasyDebounce.debounce(
+        '_updateOwnPickTab',
+        const Duration(seconds: 2),
+        () {
+          Get.find<PickTabController>(
+                  tag: Get.find<UserService>().currentUser.memberId)
+              .fetchPickList();
+        },
+      );
     }
   }
 
   Future<void> updateBookmark() async {
-    String? bookmarkId = Get.find<PickAndBookmarkService>()
-        .bookmarkList
-        .firstWhereOrNull((element) =>
-            element.objective == objective && element.targetId == targetId)
-        ?.myBookmarkId;
-    if (isBookmarked.isTrue && bookmarkId == null) {
-      bookmarkId = await pickRepos.createPick(
-        targetId: targetId,
-        objective: PickObjective.story,
-        state: PickState.private,
-        kind: PickKind.bookmark,
+    bool result = false;
+    if (isBookmarked.isTrue) {
+      result = await Get.find<PubsubService>().addBookmark(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        storyId: targetId,
       );
-      PickToast.showBookmarkToast(bookmarkId != null, true);
-      if (bookmarkId == null) {
+      PickToast.showBookmarkToast(result, true);
+      if (!result) {
         isBookmarked(false);
       } else {
-        if (Get.isRegistered<BookmarkTabController>()) {
-          Get.find<BookmarkTabController>().fetchBookmark();
-        }
-
         if (Get.isRegistered<PersonalFilePageController>(
             tag: Get.find<UserService>().currentUser.memberId)) {
           final ownPersonalFileController =
@@ -214,17 +229,31 @@ class PickableItemController extends GetxController {
 
           ownPersonalFileController.bookmarkCount.value++;
         }
+
+        Get.find<PickAndBookmarkService>().bookmarkList.add(PickIdItem(
+              objective: objective,
+              kind: PickKind.bookmark,
+              targetId: targetId,
+            ));
+
+        if (Get.isRegistered<BookmarkTabController>()) {
+          await Future.delayed(const Duration(seconds: 2));
+          Get.find<BookmarkTabController>().fetchBookmark();
+        }
       }
-    } else if (isBookmarked.isFalse && bookmarkId != null) {
-      bool isDelete = await pickRepos.deletePick(bookmarkId);
-      PickToast.showBookmarkToast(isDelete, false);
-      if (!isDelete) {
+    } else {
+      result = await Get.find<PubsubService>().removeBookmark(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        storyId: targetId,
+      );
+      PickToast.showBookmarkToast(result, false);
+      if (!result) {
         isBookmarked(true);
       } else {
         if (Get.isRegistered<BookmarkTabController>()) {
           Get.find<BookmarkTabController>()
               .bookmarkList
-              .removeWhere((element) => element.id == bookmarkId);
+              .removeWhere((element) => element.story?.id == targetId);
         }
 
         if (Get.isRegistered<PersonalFilePageController>(
@@ -237,10 +266,10 @@ class PickableItemController extends GetxController {
               ? ownPersonalFileController.bookmarkCount.value--
               : ownPersonalFileController.bookmarkCount.value = 0;
         }
-        bookmarkId = null;
+
+        Get.find<PickAndBookmarkService>().bookmarkList.removeWhere((element) =>
+            element.objective == objective && element.targetId == targetId);
       }
     }
-    await Future.delayed(const Duration(seconds: 2));
-    await Get.find<PickAndBookmarkService>().fetchPickIds();
   }
 }

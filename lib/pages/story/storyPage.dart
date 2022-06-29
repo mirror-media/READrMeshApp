@@ -10,7 +10,6 @@ import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
 import 'package:readr/pages/story/readrStoryWidget.dart';
 import 'package:readr/services/newsStoryService.dart';
-import 'package:readr/services/pickService.dart';
 import 'package:readr/services/storyService.dart';
 
 class StoryPage extends GetView<StoryPageController> {
@@ -31,7 +30,6 @@ class StoryPage extends GetView<StoryPageController> {
         StoryPageController(
           newsStoryRepos: NewsStoryService(),
           storyRepos: StoryServices(),
-          pickRepos: PickService(),
           newsListItem: news,
         ),
         tag: news.id,
@@ -83,7 +81,7 @@ class StoryPage extends GetView<StoryPageController> {
               ),
               actions: [
                 PlatformDialogAction(
-                  onPressed: () => Get.back(closeOverlays: true),
+                  onPressed: () => Get.close(2),
                   child: PlatformText(
                     '刪除留言',
                     style: const TextStyle(

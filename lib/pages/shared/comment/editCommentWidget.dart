@@ -95,8 +95,7 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                     Comment newComment =
                         Comment.editComment(_controller.text, widget.comment);
 
-                    Get.find<CommentItemController>(
-                            tag: 'Comment${widget.comment.id}')
+                    Get.find<CommentItemController>(tag: widget.comment.id)
                         .editComment(newComment);
                   }
                   Navigator.pop(context);

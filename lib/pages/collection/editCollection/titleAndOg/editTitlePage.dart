@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/editCollectionController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/editCollection/titleAndOg/editOgPage.dart';
@@ -96,11 +95,7 @@ class EditTitlePage extends GetView<EditCollectionController> {
                   ),
                 ),
                 onPressed: () async {
-                  if (await Get.find<InternetCheckService>()
-                      .meshCheckInstance
-                      .hasConnection) {
-                    controller.updateTitleAndOg();
-                  }
+                  controller.updateTitleAndOg();
                 },
               );
             }

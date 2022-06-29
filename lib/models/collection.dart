@@ -5,7 +5,6 @@ import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/services/pickService.dart';
 
 class Collection {
   final String id;
@@ -99,7 +98,6 @@ class Collection {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: json["id"],
-          pickRepos: PickService(),
           objective: PickObjective.collection,
           pickCount: pickCount,
           commentCount: json['commentCount'],
@@ -232,7 +230,6 @@ class Collection {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: json["id"],
-          pickRepos: PickService(),
           objective: PickObjective.collection,
           pickCount: pickCount,
           controllerTag: 'Collection${json['id']}',

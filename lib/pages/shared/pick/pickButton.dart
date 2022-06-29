@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -73,21 +72,7 @@ class PickButton extends StatelessWidget {
                         style: TextStyle(color: Colors.red),
                       ),
                       onPressed: () async {
-                        if (await Get.find<InternetCheckService>()
-                            .meshCheckInstance
-                            .hasConnection) {
-                          Navigator.pop<bool>(context, true);
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: "伺服器連接失敗 請稍後再試",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.grey,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
+                        Navigator.pop<bool>(context, true);
                       },
                     ),
                     PlatformDialogAction(
@@ -118,20 +103,12 @@ class PickButton extends StatelessWidget {
                 ),
               );
               if (result != null && result) {
-                String? pickId = Get.find<PickAndBookmarkService>()
-                    .pickList
-                    .firstWhereOrNull(
-                      (element) =>
-                          element.targetId == controller.targetId &&
-                          element.objective == controller.objective,
-                    )
-                    ?.myPickId;
                 controller.deletePick();
-                if (isInMyPersonalFile && pickId != null) {
+                if (isInMyPersonalFile) {
                   await Future.delayed(const Duration(milliseconds: 50));
                   Get.find<PickTabController>(
                           tag: Get.find<UserService>().currentUser.memberId)
-                      .unPick(pickId);
+                      .unPick(controller.objective, controller.targetId);
                 }
               }
             }

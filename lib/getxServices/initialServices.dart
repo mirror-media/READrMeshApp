@@ -8,9 +8,8 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
 import 'package:readr/getxServices/hiveService.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
-
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/dynamicLinkService.dart';
@@ -33,9 +32,9 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => DynamicLinkService().initDynamicLinks());
   await Get.putAsync(() => FirebaseMessagingService().init());
   await Get.putAsync(() => HiveService().init());
-  await Get.putAsync(() => InternetCheckService().init());
   await Get.putAsync(() => UserService().init());
   await Get.putAsync(() => PickAndBookmarkService().init());
+  await Get.putAsync(() => PubsubService().init());
 
   print('All services started...');
 }

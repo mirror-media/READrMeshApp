@@ -22,12 +22,12 @@ class PickCommentItem extends StatefulWidget {
     required this.pickControllerTag,
     this.isExpanded = false,
   }) {
-    if (Get.isRegistered<CommentItemController>(tag: 'Comment${comment.id}')) {
-      controller = Get.find<CommentItemController>(tag: 'Comment${comment.id}');
+    if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
+      controller = Get.find<CommentItemController>(tag: comment.id);
     } else {
       controller = Get.put(
         CommentItemController(commentRepos: CommentService(), comment: comment),
-        tag: 'Comment${comment.id}',
+        tag: comment.id,
       );
     }
   }

@@ -76,8 +76,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                             duration: const Duration(
                               microseconds: 1,
                             ));
-                        Get.find<CommentItemController>(
-                                tag: 'Comment${clickComment.id}')
+                        Get.find<CommentItemController>(tag: clickComment.id)
                             .isExpanded(true);
                       } else {
                         Fluttertoast.showToast(

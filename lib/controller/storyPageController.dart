@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
@@ -8,18 +7,15 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/services/newsStoryService.dart';
-import 'package:readr/services/pickService.dart';
 import 'package:readr/services/storyService.dart';
 
 class StoryPageController extends GetxController {
   final NewsStoryRepos newsStoryRepos;
   final StoryRepos storyRepos;
-  final PickRepos pickRepos;
   NewsListItem newsListItem;
   StoryPageController({
     required this.newsStoryRepos,
     required this.storyRepos,
-    required this.pickRepos,
     required this.newsListItem,
   });
 
@@ -43,15 +39,10 @@ class StoryPageController extends GetxController {
     print('Fetch news data id=${newsListItem.id}');
     update();
     await Get.find<UserService>().fetchUserData();
-    await Get.find<PickAndBookmarkService>().fetchPickIds();
     try {
-      await Future.wait([
-        Get.find<UserService>().fetchUserData(),
-        Get.find<PickAndBookmarkService>().fetchPickIds(),
-        newsStoryRepos
-            .fetchNewsData(newsListItem.id)
-            .then((value) => newsStoryItem = value),
-      ]);
+      await newsStoryRepos
+          .fetchNewsData(newsListItem.id)
+          .then((value) => newsStoryItem = value);
 
       //if publisher is readr and not project, fetch story from readr CMS
       if (newsListItem.source?.id ==

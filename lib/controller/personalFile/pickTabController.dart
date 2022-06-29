@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
@@ -125,7 +127,8 @@ class PickTabController extends GetxController {
   }
 
   void deletePickComment(String commentId, String controllerTag) async {
-    bool result = await commentRepos.deleteComment(commentId);
+    bool result =
+        await Get.find<PubsubService>().removeComment(commentId: commentId);
     if (result) {
       int index = storyPickList
           .indexWhere((element) => element.pickComment?.id == commentId);
@@ -139,7 +142,7 @@ class PickTabController extends GetxController {
     }
   }
 
-  void unPick(String pickId) async {
+  void unPick(PickObjective objective, String pickId) async {
     storyPickList.removeWhere((element) => element.id == pickId);
     collecionPickList.removeWhere((element) => element.id == pickId);
   }

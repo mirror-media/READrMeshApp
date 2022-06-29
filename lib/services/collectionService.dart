@@ -61,7 +61,6 @@ class CollectionService implements CollectionRepos {
   }
 
   // Get READr CMS User token for authorization
-  // TODO: Delete when verify firebase token is finished
   Future<String> _fetchCMSUserToken() async {
     String mutation = """
     mutation(

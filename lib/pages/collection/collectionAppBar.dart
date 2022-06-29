@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
-import 'package:readr/getxServices/internetCheckService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -217,22 +215,7 @@ class CollectionAppBar extends GetView<CollectionPageController> {
           actions: [
             TextButton(
               onPressed: () async {
-                if (await Get.find<InternetCheckService>()
-                    .meshCheckInstance
-                    .hasConnection) {
-                  controller.deleteCollection();
-                } else {
-                  Fluttertoast.showToast(
-                    msg: "連線失敗 請稍後再試",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.grey,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                }
-
+                controller.deleteCollection();
                 Get.back();
               },
               child: const Text(

@@ -154,6 +154,9 @@ dependencies:
   hive_flutter: ^1.1.0
   #scroll to top
   scrolls_to_top: ^1.1.1
+  #google apis
+  googleapis: ^9.1.0
+  googleapis_auth: ^1.3.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -198,6 +201,7 @@ flutter:
   assets:
     - assets/image/
     - assets/icon/
+    - assets/json/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

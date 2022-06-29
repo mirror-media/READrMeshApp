@@ -41,6 +41,7 @@ class CommunityPageController extends GetxController {
     isInitialized = false;
     isError = false;
     update();
+    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchFollowingStoryAndCollection().then((value) => isError = !value),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
@@ -92,7 +93,6 @@ class CommunityPageController extends GetxController {
           }
           pickedList.addAll(newCollectionList);
         }),
-        Get.find<PickAndBookmarkService>().fetchPickIds(),
       ]);
 
       pickedList.sort((a, b) => b.orderByTime.compareTo(a.orderByTime));
@@ -122,6 +122,7 @@ class CommunityPageController extends GetxController {
   }
 
   Future<void> updateCommunityPage() async {
+    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchFollowingStoryAndCollection(),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),

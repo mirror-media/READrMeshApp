@@ -5,7 +5,6 @@ import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
-import 'package:readr/services/pickService.dart';
 
 class NewsStoryItem {
   final String id;
@@ -127,7 +126,6 @@ class NewsStoryItem {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
           targetId: json["id"],
-          pickRepos: PickService(),
           objective: PickObjective.story,
           pickCount: pickCount,
           commentCount: allComments.length,

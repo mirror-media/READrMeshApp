@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -27,7 +28,8 @@ class UserService extends GetxService {
   }
 
   Future<UserService> init() async {
-    await fetchUserData();
+    currentUser = Get.find<HiveService>().localMember;
+    isMember.value = _isMember;
     return this;
   }
 
@@ -35,21 +37,23 @@ class UserService extends GetxService {
     if (member != null) {
       currentUser = member;
     } else if (_isMember) {
-      var memberData =
-          await _memberService.fetchMemberData().catchError((error) {
-        print('Fetch user data failed: $error');
-        return Get.find<HiveService>().localMember;
-      }).timeout(
-        _timeout,
-        onTimeout: () {
-          print('Fetch user data timeout');
-          return Get.find<HiveService>().localMember;
-        },
-      );
-
-      if (memberData != null) {
-        currentUser = memberData;
-      }
+      await Future.wait([
+        _memberService.fetchMemberData().then((memberData) {
+          if (memberData != null) {
+            currentUser = memberData;
+          }
+        }).catchError((error) {
+          print('Fetch user data failed: $error');
+          currentUser = Get.find<HiveService>().localMember;
+        }).timeout(
+          _timeout,
+          onTimeout: () {
+            print('Fetch user data timeout');
+            currentUser = Get.find<HiveService>().localMember;
+          },
+        ),
+        Get.find<PickAndBookmarkService>().fetchPickIds(),
+      ]);
     } else {
       currentUser = await _visitorService.fetchMemberData().catchError((error) {
         print('Fetch visitor data failed: $error');
@@ -72,28 +76,16 @@ class UserService extends GetxService {
         .any((element) => element.memberId == member.memberId);
   }
 
-  Future<bool> addFollowingMember(String memberId) async {
-    List<Member>? newFollowingList =
-        await _memberService.addFollowingMember(memberId);
-
-    if (newFollowingList != null) {
-      currentUser.following = newFollowingList;
-      return true;
-    } else {
-      return false;
-    }
+  void addFollowingMember(Member member) {
+    currentUser.following.addIf(
+        !currentUser.following
+            .any((element) => element.memberId == member.memberId),
+        member);
   }
 
-  Future<bool> removeFollowingMember(String memberId) async {
-    List<Member>? newFollowingList =
-        await _memberService.removeFollowingMember(memberId);
-
-    if (newFollowingList != null) {
-      currentUser.following = newFollowingList;
-      return true;
-    } else {
-      return false;
-    }
+  void removeFollowingMember(String memberId) {
+    currentUser.following
+        .removeWhere((element) => element.memberId == memberId);
   }
 
   bool isFollowingPublisher(Publisher publisher) {
@@ -101,38 +93,16 @@ class UserService extends GetxService {
         .any((element) => element.id == publisher.id);
   }
 
-  Future<bool> addFollowPublisher(String publisherId) async {
-    List<Publisher>? newFollowingList;
-    if (_isMember) {
-      newFollowingList = await _memberService.addFollowPublisher(publisherId);
-    } else {
-      newFollowingList = await _visitorService.addFollowPublisher(publisherId);
-    }
-
-    if (newFollowingList != null) {
-      currentUser.followingPublisher = newFollowingList;
-      return true;
-    } else {
-      return false;
-    }
+  void addFollowPublisher(Publisher publisher) {
+    currentUser.followingPublisher.addIf(
+        !currentUser.followingPublisher
+            .any((element) => element.id == publisher.id),
+        publisher);
   }
 
-  Future<bool> removeFollowPublisher(String publisherId) async {
-    List<Publisher>? newFollowingList;
-    if (_isMember) {
-      newFollowingList =
-          await _memberService.removeFollowPublisher(publisherId);
-    } else {
-      newFollowingList =
-          await _visitorService.removeFollowPublisher(publisherId);
-    }
-
-    if (newFollowingList != null) {
-      currentUser.followingPublisher = newFollowingList;
-      return true;
-    } else {
-      return false;
-    }
+  void removeFollowPublisher(String publisherId) {
+    currentUser.followingPublisher
+        .removeWhere((element) => element.id == publisherId);
   }
 
   Future<void> addVisitorFollowing(List<String> followingPublisherIds) async {

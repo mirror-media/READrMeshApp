@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
@@ -15,12 +16,12 @@ class CommentController extends GetxController {
   final String id;
   final allComments = <Comment>[].obs;
   final popularComments = <Comment>[].obs;
-  final sendingComment = Rxn<Comment>();
   final isLoading = false.obs;
   final isSending = false.obs;
   final String controllerTag;
   late final PickableItemController pickableItemController;
   final bool isPickTab;
+  Comment? sendingComment;
 
   CommentController({
     required this.commentRepos,
@@ -45,22 +46,11 @@ class CommentController extends GetxController {
 
   void fetchComments() async {
     isLoading.value = true;
-    List<Comment>? allFetchComments;
-    try {
-      if (objective == PickObjective.story) {
-        allFetchComments = await commentRepos.fetchCommentsByStoryId(id);
-      } else {
-        allFetchComments = await commentRepos.fetchCommentsByCollectionId(id);
-      }
-
-      if (allFetchComments != null) {
-        allComments.assignAll(allFetchComments);
-        isLoading.value = false;
-      } else {
-        throw Exception('Server return error');
-      }
-    } catch (e) {
-      print('Fetch comments error: $e');
+    List<Comment>? allFetchComments = await _fetchCommentsById();
+    if (allFetchComments != null) {
+      allComments.assignAll(allFetchComments);
+      isLoading.value = false;
+    } else {
       Fluttertoast.showToast(
         msg: "發生錯誤 請稍後再試一次",
         toastLength: Toast.LENGTH_SHORT,
@@ -76,91 +66,101 @@ class CommentController extends GetxController {
 
   Future<bool> addComment(String commentContent) async {
     commentSending(commentContent);
-    List<Comment>? newAllComments = await commentRepos.createComment(
+    return await Get.find<PubsubService>()
+        .addComment(
+      memberId: Get.find<UserService>().currentUser.memberId,
       targetId: id,
-      content: commentContent,
       objective: objective,
-      state: CommentTransparency.public,
-    );
-
-    if (newAllComments != null) {
-      // check new comment is first
-      if (newAllComments.first.member.memberId !=
-              Get.find<UserService>().currentUser.memberId &&
-          newAllComments.first.content != commentContent) {
-        int index = newAllComments.indexWhere((element) =>
-            element.member.memberId ==
-                Get.find<UserService>().currentUser.memberId &&
-            element.content == commentContent);
-        if (index == -1) {
-          newAllComments = null;
-        } else {
-          Comment myNewComment = newAllComments[index];
-          newAllComments.removeAt(index);
-          newAllComments.insert(0, myNewComment);
-        }
+      commentContent: commentContent,
+    )
+        .then((value) async {
+      bool isSuccess = value;
+      if (value) {
+        isSuccess = await commentSendFinish(sendingComment!);
+      } else {
+        commentSendFailed();
       }
-    }
 
-    if (newAllComments == null) {
-      Fluttertoast.showToast(
-        msg: "留言失敗，請稍後再試一次",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      commentSendFailed();
-    } else {
-      commentSendSuccess(newAllComments.first);
-      allComments.assignAll(newAllComments);
-      pickableItemController.commentCount.value = allComments.length;
-      _updatePopularCommentList();
-    }
+      if (isSuccess) {
+        pickableItemController.commentCount.value = allComments.length;
+        _updatePopularCommentList();
+      } else {
+        Fluttertoast.showToast(
+          msg: "留言失敗，請稍後再試一次",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
 
-    return newAllComments != null;
+      return isSuccess;
+    });
   }
 
   void commentSending(String commentContent) {
     isSending.value = true;
-    sendingComment(Comment(
-      id: 'Sending',
+    sendingComment = Comment(
+      id: DateTime.now().toString(),
       member: Get.find<UserService>().currentUser,
       content: commentContent,
       state: "public",
       publishDate: DateTime.now(),
-    ));
+    );
     final tempCommentItemController = Get.put(
       CommentItemController(
-          commentRepos: CommentService(), comment: sendingComment.value!),
-      tag: 'CommentSending',
+          commentRepos: CommentService(), comment: sendingComment!),
+      tag: sendingComment?.id,
     );
     tempCommentItemController.isSending(true);
-    allComments.insert(0, sendingComment.value!);
+    allComments.insert(0, sendingComment!);
   }
 
-  void commentSendSuccess(Comment newComment) {
-    final commentItemController = Get.put(
-      CommentItemController(
-          commentRepos: CommentService(), comment: newComment),
-      tag: 'Comment${newComment.id}',
-    );
-    commentItemController.isSending(false);
-    commentItemController.isMyNewComment(true);
-    allComments.removeAt(0);
-    allComments.insert(0, newComment);
-    isSending.value = false;
-    sendingComment.value = null;
-    Get.delete<CommentItemController>(tag: 'CommentSending');
+  Future<bool> commentSendFinish(Comment newSendingComment) async {
+    int retryCount = 0;
+    do {
+      await Future.delayed(Duration(seconds: 1 + retryCount));
+      List<Comment>? allFetchComments = await _fetchCommentsById();
+      if (allFetchComments != null) {
+        Comment? newFetchComment = allFetchComments.firstWhereOrNull(
+            (element) =>
+                element.content == newSendingComment.content &&
+                element.member.memberId == newSendingComment.member.memberId);
+
+        if (newFetchComment != null) {
+          final commentItemController = Get.put(
+            CommentItemController(
+                commentRepos: CommentService(), comment: newFetchComment),
+            tag: newFetchComment.id,
+          );
+          allComments.assignAll(allFetchComments);
+          commentItemController.isSending(false);
+          commentItemController.isMyNewComment(true);
+          Get.delete<CommentItemController>(tag: newSendingComment.id);
+          isSending.value = false;
+          sendingComment = null;
+          break;
+        }
+      }
+      retryCount++;
+    } while (retryCount < 5);
+
+    if (retryCount >= 5) {
+      commentSendFailed();
+      return false;
+    } else {
+      return true;
+    }
   }
 
   void commentSendFailed() {
-    sendingComment.value = null;
+    String sendingCommentId = allComments[0].id;
     allComments.removeAt(0);
     isSending.value = false;
-    Get.delete<CommentItemController>(tag: 'CommentSending');
+    Get.delete<CommentItemController>(tag: sendingCommentId);
+    sendingComment = null;
   }
 
   void deletePickComment(String commentId) {
@@ -181,14 +181,32 @@ class CommentController extends GetxController {
       _updatePopularCommentList();
     }
 
-    bool result = await commentRepos.deleteComment(commentId);
-
-    if (!result) {
-      allComments.insert(allCommentIndex, backupComment);
-      if (popularCommentIndex != -1) {
+    bool result = false;
+    if (int.tryParse(commentId) != null) {
+      result =
+          await Get.find<PubsubService>().removeComment(commentId: commentId);
+      if (!result) {
+        allComments.insert(allCommentIndex, backupComment);
+        if (popularCommentIndex != -1) {
+          _updatePopularCommentList();
+        }
+        pickableItemController.commentCount.value = allComments.length;
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: "發生錯誤 請稍後再試",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      List<Comment>? allFetchComments = await _fetchCommentsById();
+      if (allFetchComments != null) {
+        allComments.assignAll(allFetchComments);
         _updatePopularCommentList();
       }
-      pickableItemController.commentCount.value = allComments.length;
     }
   }
 
@@ -202,6 +220,19 @@ class CommentController extends GetxController {
       if (tempList[i].likedCount > 0) {
         popularComments.add(tempList[i]);
       }
+    }
+  }
+
+  Future<List<Comment>?> _fetchCommentsById() async {
+    try {
+      if (objective == PickObjective.story) {
+        return await commentRepos.fetchCommentsByStoryId(id);
+      } else {
+        return await commentRepos.fetchCommentsByCollectionId(id);
+      }
+    } catch (e) {
+      print('Fetch comments error: $e');
+      return null;
     }
   }
 }

@@ -9,4 +9,5 @@ abstract class BaseConfig {
   String get meshConnectCheckAddress;
   String get dynamicLinkDomain;
   String get readrMeshWebsite;
+  String get pubSubTopic;
 }
