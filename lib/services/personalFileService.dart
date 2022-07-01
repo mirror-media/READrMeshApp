@@ -227,6 +227,7 @@ query(
       title
       url
       published_date
+      createdAt
       og_image
       full_content
       full_screen_ad
@@ -461,6 +462,7 @@ query(
             title
             url
             published_date
+            createdAt
             og_image
             full_content
             full_screen_ad

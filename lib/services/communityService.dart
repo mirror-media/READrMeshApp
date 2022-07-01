@@ -79,6 +79,7 @@ query(
       full_screen_ad
       paywall
       published_date
+      createdAt
       og_image
       commentCount(
         where:{
@@ -550,6 +551,7 @@ query(
       full_screen_ad
       paywall
       published_date
+      createdAt
       og_image
       commentCount(
         where:{

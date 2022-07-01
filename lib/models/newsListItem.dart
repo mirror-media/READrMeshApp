@@ -159,6 +159,13 @@ class NewsListItem {
       }
     }
 
+    DateTime publishDate = DateTime.now();
+    if (BaseModel.checkJsonKeys(json, ['createdAt'])) {
+      publishDate = DateTime.parse(json["createdAt"]).toLocal();
+    } else {
+      publishDate = DateTime.parse(json["published_date"]).toLocal();
+    }
+
     return NewsListItem(
       id: json["id"],
       title: json["title"],
@@ -166,7 +173,7 @@ class NewsListItem {
       controllerTag: 'News${json['id']}',
       source: source,
       category: category,
-      publishedDate: DateTime.parse(json["published_date"]).toLocal(),
+      publishedDate: publishDate,
       heroImageUrl: json["og_image"],
       payWall: payWall,
       fullScreenAd: fullScreenAd,

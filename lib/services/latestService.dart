@@ -34,7 +34,7 @@ class LatestService implements LatestRepos {
       stories(
         take: 60
         orderBy:{
-          published_date: desc
+          createdAt: desc
         }
         where:{
           is_active:{
@@ -45,7 +45,7 @@ class LatestService implements LatestRepos {
               in: \$followingPublisherIds
             }
           }
-          published_date:{
+          createdAt:{
             lt: \$lastNewsPublishTime
             gte: \$timeFilter
           }
@@ -62,6 +62,7 @@ class LatestService implements LatestRepos {
         full_screen_ad
         paywall
         published_date
+        createdAt
         og_image
         followingPicks: pick(
           where:{
