@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
@@ -71,6 +72,11 @@ class CreateCollectionController extends GetxController {
             const Duration(minutes: 1),
             onTimeout: () => throw Exception(),
           );
+
+      Get.find<PubsubService>().addCollection(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        collectionId: newCollection.id,
+      );
 
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(

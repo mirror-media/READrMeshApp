@@ -171,6 +171,28 @@ class PubsubService extends GetxService {
     });
   }
 
+  Future<bool> addCollection({
+    required String memberId,
+    required String collectionId,
+  }) async {
+    return await _publishRequest({
+      "'action'": "'add_collection'",
+      "'memberId'": "'$memberId'",
+      "'commentId'": "'$collectionId'",
+    });
+  }
+
+  Future<bool> removeCollection({
+    required String memberId,
+    required String collectionId,
+  }) async {
+    return await _publishRequest({
+      "'action'": "'remove_collection'",
+      "'memberId'": "'$memberId'",
+      "'commentId'": "'$collectionId'",
+    });
+  }
+
   Future<void> logReadStory({
     required String memberId,
     required String storyId,
