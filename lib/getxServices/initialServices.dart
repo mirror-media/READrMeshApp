@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
@@ -32,6 +33,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => DynamicLinkService().initDynamicLinks());
   await Get.putAsync(() => FirebaseMessagingService().init());
   await Get.putAsync(() => HiveService().init());
+  await Get.putAsync(() => GraphQLService().init());
   await Get.putAsync(() => UserService().init());
   await Get.putAsync(() => PickAndBookmarkService().init());
   await Get.putAsync(() => PubsubService().init());

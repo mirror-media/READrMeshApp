@@ -158,7 +158,10 @@ class Collection {
         break;
     }
 
-    int pickCount = json['picksCount'];
+    int pickCount = 0;
+    if (BaseModel.checkJsonKeys(json, ['picksCount'])) {
+      pickCount = json['picksCount'];
+    }
 
     Comment? showComment;
     List<Member>? commentMembers;

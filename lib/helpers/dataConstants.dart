@@ -103,3 +103,12 @@ enum FollowObjective {
   publisher,
   collection,
 }
+
+enum NotifyType {
+  comment,
+  follow,
+  like,
+  pickCollection,
+  commentCollection,
+  createCollection,
+}
