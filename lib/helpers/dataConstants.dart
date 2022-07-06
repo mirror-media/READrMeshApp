@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+part 'dataConstants.g.dart';
 
 /// url link
 const readrMail = 'readr@readr.tw';
@@ -104,11 +107,23 @@ enum FollowObjective {
   collection,
 }
 
+@HiveType(typeId: 3)
 enum NotifyType {
+  @HiveField(0)
   comment,
+
+  @HiveField(1)
   follow,
+
+  @HiveField(2)
   like,
+
+  @HiveField(3)
   pickCollection,
+
+  @HiveField(4)
   commentCollection,
+
+  @HiveField(5)
   createCollection,
 }
