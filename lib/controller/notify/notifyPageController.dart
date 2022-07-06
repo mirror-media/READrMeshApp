@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:readr/controller/notify/notifyItemController.dart';
+import 'package:readr/getxServices/hiveService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/announcement.dart';
 import 'package:readr/models/notify.dart';
@@ -13,11 +17,30 @@ class NotifyPageController extends GetxController {
   final announcementList = <Announcement>[].obs;
   final unReadNotifyList = <NotifyPageItem>[].obs;
   final readNotifyList = <NotifyPageItem>[].obs;
+  final List<Notify> _allNotifies = [];
+  late final Timer _notifyTimer;
 
   @override
   void onInit() {
     fetchNotifies();
+    _notifyTimer =
+        Timer.periodic(const Duration(minutes: 30), (timer) => fetchNotifies());
+    ever<bool>(Get.find<UserService>().isMember, (callback) {
+      if (callback) {
+        fetchNotifies();
+      } else {
+        unReadNotifyList.clear();
+        readNotifyList.clear();
+        Get.find<HiveService>().deleteNotifyList();
+      }
+    });
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    _notifyTimer.cancel();
+    super.onClose();
   }
 
   void readAll() {
@@ -27,20 +50,27 @@ class NotifyPageController extends GetxController {
     }
     readNotifyList.insertAll(0, unReadNotifyList);
     unReadNotifyList.clear();
+    for (var notify in _allNotifies) {
+      notify.isRead = true;
+    }
+    Get.find<HiveService>().updateNotifyList(_allNotifies);
   }
 
   Future<void> fetchNotifies() async {
-    List<Notify> localNotifies = [];
+    List<Notify> localNotifies = Get.find<HiveService>().localNotifies;
+    localNotifies.removeWhere((element) => element.actionTime
+        .isBefore(DateTime.now().subtract(const Duration(days: 7))));
     List<Notify> newNotifies = await notifyRepos
         .fetchNotifies(
           alreadyFetchNotifyIds:
               List<String>.from(localNotifies.map((e) => e.id)),
         )
         .timeout(const Duration(seconds: 10), onTimeout: () => []);
-    newNotifies.addAll(localNotifies);
+    _allNotifies.assignAll(newNotifies);
+    _allNotifies.addAll(localNotifies);
+    Get.find<HiveService>().updateNotifyList(_allNotifies);
     List<NotifyPageItem> allPageItems =
-        _generatePageItemFromNotifies(newNotifies);
-    allPageItems.sort((a, b) => b.actionTime.compareTo(a.actionTime));
+        _generatePageItemFromNotifies(_allNotifies);
     allPageItems = await notifyRepos.fetchNotifyRelatedItems(allPageItems);
     unReadNotifyList.clear();
     readNotifyList.clear();
@@ -81,6 +111,7 @@ class NotifyPageController extends GetxController {
         }
       }
     }
+    pageItemList.sort((a, b) => b.actionTime.compareTo(a.actionTime));
 
     return pageItemList;
   }
@@ -88,6 +119,14 @@ class NotifyPageController extends GetxController {
   void readItem(String id) {
     int itemIndex = unReadNotifyList.indexWhere((element) => element.id == id);
     if (itemIndex != -1) {
+      List<Notify> relatedNotifies =
+          unReadNotifyList[itemIndex].relatedNotifies;
+      for (var notify in relatedNotifies) {
+        _allNotifies
+            .firstWhereOrNull((element) => element.id == notify.id)
+            ?.isRead = true;
+      }
+      Get.find<HiveService>().updateNotifyList(_allNotifies);
       readNotifyList.add(unReadNotifyList[itemIndex]);
       readNotifyList.sort((a, b) => b.actionTime.compareTo(a.actionTime));
       unReadNotifyList.removeAt(itemIndex);
