@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
@@ -109,6 +110,10 @@ class CollectionPageController extends GetxController {
         backgroundColor: Colors.grey,
         textColor: Colors.white,
         fontSize: 16.0,
+      );
+      Get.find<PubsubService>().removeCollection(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        collectionId: collection.id,
       );
     }
   }
