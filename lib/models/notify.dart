@@ -1,14 +1,24 @@
+import 'package:hive/hive.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/member.dart';
 
+part 'notify.g.dart';
+
+@HiveType(typeId: 2)
 class Notify {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final Member sender;
+  @HiveField(2)
   final NotifyType type;
+  @HiveField(3)
   final String objectId;
+  @HiveField(4)
   final DateTime actionTime;
-  final bool isRead;
+  @HiveField(5)
+  bool isRead;
 
   Notify({
     required this.id,
