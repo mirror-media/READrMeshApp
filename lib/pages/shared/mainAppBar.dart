@@ -34,7 +34,7 @@ class MainAppBar extends GetView<MainAppBarController> {
                   GetPlatform.isAndroid
                       ? Icons.notifications_none_outlined
                       : CupertinoIcons.bell,
-                  color: readrBlack,
+                  color: readrBlack87,
                   size: 26,
                 ),
                 Obx(
@@ -75,12 +75,40 @@ class MainAppBar extends GetView<MainAppBarController> {
                   fullscreenDialog: true,
                 );
               },
-              icon: Obx(
-                () => SvgPicture.asset(
-                  controller.hasInvitationCode.value
-                      ? newInvitationCodeSvg
-                      : invitationCodeSvg,
-                  fit: BoxFit.cover,
+              icon: SizedBox(
+                width: 30,
+                height: 30,
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 2, right: 4),
+                      child: Icon(
+                        CupertinoIcons.envelope,
+                        color: readrBlack87,
+                        size: 26,
+                      ),
+                    ),
+                    Obx(
+                      () {
+                        if (controller.hasInvitationCode.isTrue) {
+                          return Container(
+                            width: 12,
+                            height: 12,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
                 ),
               ),
             );
