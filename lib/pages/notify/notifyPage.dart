@@ -48,16 +48,32 @@ class NotifyPage extends GetView<NotifyPageController> {
           () {
             if (controller.unReadNotifyList.isEmpty &&
                 controller.readNotifyList.isEmpty) {
-              return Container(
-                padding: const EdgeInsets.all(20),
-                alignment: Alignment.center,
-                child: const Text(
-                  '無通知',
-                  style: TextStyle(
-                    color: readrBlack87,
-                    fontSize: 20,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(20, 16, 16, 12),
+                    child: Text(
+                      '新通知',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: readrBlack87,
+                        fontFamily: 'PingFang TC',
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text(
+                      '目前沒有新通知...',
+                      style: TextStyle(
+                        color: readrBlack66,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               );
             }
             return Container();
