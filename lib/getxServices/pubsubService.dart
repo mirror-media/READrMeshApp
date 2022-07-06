@@ -42,7 +42,7 @@ class PubsubService extends GetxService {
     PickState state = PickState.public,
   }) async {
     return await _publishRequest({
-      "'action'": "'pick_and_comment'",
+      "'action'": "'add_pick_and_comment'",
       "'memberId'": "'$memberId'",
       "'objective'": "'${objective.toString().split('.').last}'",
       "'targetId'": "'$targetId'",
@@ -57,7 +57,7 @@ class PubsubService extends GetxService {
     required PickObjective objective,
   }) async {
     return await _publishRequest({
-      "'action'": "'unpick'",
+      "'action'": "'remove_pick'",
       "'memberId'": "'$memberId'",
       "'objective'": "'${objective.toString().split('.').last}'",
       "'targetId'": "'$targetId'",
