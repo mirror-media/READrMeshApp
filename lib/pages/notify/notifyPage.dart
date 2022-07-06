@@ -104,15 +104,28 @@ class NotifyPage extends GetView<NotifyPageController> {
   }
 
   Widget _announcementItem(Announcement announcement) {
+    String title;
+    Color backgroundColor;
+    switch (announcement.type) {
+      case AnnouncementType.maintain:
+        title = '系統維修公告';
+        backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
+        break;
+      case AnnouncementType.newFeature:
+        title = '新功能上線囉～';
+        backgroundColor = const Color.fromRGBO(242, 253, 255, 1);
+        break;
+    }
+
     return Container(
-      color: const Color.fromRGBO(255, 245, 245, 1),
+      color: backgroundColor,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            announcement.title,
+            title,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
@@ -120,6 +133,7 @@ class NotifyPage extends GetView<NotifyPageController> {
               fontFamily: 'PingFang TC',
             ),
           ),
+          const SizedBox(height: 4),
           Text(
             announcement.content,
             style: const TextStyle(

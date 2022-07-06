@@ -23,8 +23,11 @@ class NotifyPageController extends GetxController {
   @override
   void onInit() {
     fetchNotifies();
-    _notifyTimer =
-        Timer.periodic(const Duration(minutes: 30), (timer) => fetchNotifies());
+    fetchAnnouncements();
+    _notifyTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
+      fetchNotifies();
+      fetchAnnouncements();
+    });
     ever<bool>(Get.find<UserService>().isMember, (callback) {
       if (callback) {
         fetchNotifies();
@@ -131,5 +134,9 @@ class NotifyPageController extends GetxController {
       readNotifyList.sort((a, b) => b.actionTime.compareTo(a.actionTime));
       unReadNotifyList.removeAt(itemIndex);
     }
+  }
+
+  Future<void> fetchAnnouncements() async {
+    announcementList.assignAll(await notifyRepos.fetchAnnouncements());
   }
 }

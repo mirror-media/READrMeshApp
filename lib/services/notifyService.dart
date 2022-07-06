@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/announcement.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
@@ -16,6 +18,7 @@ abstract class NotifyRepos {
   Future<List<Notify>> fetchNotifies({List<String>? alreadyFetchNotifyIds});
   Future<List<NotifyPageItem>> fetchNotifyRelatedItems(
       List<NotifyPageItem> pageItemList);
+  Future<List<Announcement>> fetchAnnouncements();
 }
 
 class NotifyService implements NotifyRepos {
@@ -99,6 +102,42 @@ query(
     }
 
     return notifications;
+  }
+
+  @override
+  Future<List<Announcement>> fetchAnnouncements() async {
+    const String query = """
+query{
+  announcements(
+    orderBy:{
+      createdAt: desc
+    }
+    where:{
+      status:{
+        equals: "published"
+      }
+    }
+  ){
+    name
+  }
+}
+    """;
+    List<Announcement> announcements = [];
+
+    try {
+      final jsonResponse = await Get.find<GraphQLService>()
+          .query(api: Api.mesh, queryBody: query);
+
+      if (!jsonResponse.hasException) {
+        for (var item in jsonResponse.data?['announcements']) {
+          announcements.add(Announcement.fromJson(item));
+        }
+      }
+    } catch (e) {
+      print('Fetch announcements error: $e');
+    }
+
+    return announcements;
   }
 
   @override
