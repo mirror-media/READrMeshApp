@@ -194,6 +194,7 @@ class NotifyPage extends GetView<NotifyPageController> {
             return NotifyItem(
               controller.unReadNotifyList[index - 1],
               isRead: false,
+              key: Key(controller.unReadNotifyList[index - 1].id),
             );
           },
           separatorBuilder: (context, index) {
@@ -244,6 +245,7 @@ class NotifyPage extends GetView<NotifyPageController> {
 
             return NotifyItem(
               controller.readNotifyList[index - 1],
+              key: Key(controller.readNotifyList[index - 1].id),
             );
           },
           separatorBuilder: (context, index) {
