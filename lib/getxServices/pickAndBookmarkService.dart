@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/pickIdItem.dart';
@@ -13,12 +14,18 @@ class PickAndBookmarkService extends GetxService {
     return this;
   }
 
+  Duration get _timeout {
+    if (Get.find<EnvironmentService>().flavor == BuildFlavor.development) {
+      return const Duration(minutes: 3);
+    }
+    return const Duration(seconds: 5);
+  }
+
   Future<void> fetchPickIds() async {
     if (Get.find<UserService>().isMember.isTrue) {
       try {
-        List<PickIdItem> newPickIdList = await _memberService
-            .fetchAllPicksAndBookmarks()
-            .timeout(const Duration(seconds: 5));
+        List<PickIdItem> newPickIdList =
+            await _memberService.fetchAllPicksAndBookmarks().timeout(_timeout);
         pickList.clear();
         bookmarkList.clear();
         for (var item in newPickIdList) {
