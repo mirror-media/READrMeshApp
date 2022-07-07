@@ -78,7 +78,8 @@ class CollectionPageController extends GetxController {
   void deleteCollection() async {
     bool result;
     try {
-      result = await collectionRepos.deleteCollection(collection.id);
+      result = await collectionRepos.deleteCollection(
+          collection.id, collection.ogImageId);
     } catch (e) {
       print('Delete collection failed: $e');
       result = false;

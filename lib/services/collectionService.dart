@@ -38,7 +38,7 @@ abstract class CollectionRepos {
   });
   Future<void> removeCollectionPicks(
       {required List<CollectionStory> collectionStory});
-  Future<bool> deleteCollection(String collectionId);
+  Future<bool> deleteCollection(String collectionId, String ogImageId);
   Future<Collection?> fetchCollectionById(String id);
 }
 
@@ -993,10 +993,11 @@ mutation(
   }
 
   @override
-  Future<bool> deleteCollection(String collectionId) async {
+  Future<bool> deleteCollection(String collectionId, String ogImageId) async {
     const String mutation = """
 mutation(
   \$collectionId: ID
+  \$heroImageId: ID
 ){
   updateCollection(
     where:{
@@ -1004,15 +1005,26 @@ mutation(
     }
     data:{
       status: "delete"
+      heroImage:{
+        disconnect: true
+      }
     }
   ){
     status
+  }
+  deletePhoto(
+    where:{
+      id: \$heroImageId
+    }
+  ){
+    id
   }
 }
     """;
 
     Map<String, dynamic> variables = {
       "collectionId": collectionId,
+      "heroImageId": ogImageId,
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
