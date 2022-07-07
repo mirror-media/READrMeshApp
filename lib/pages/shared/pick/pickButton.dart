@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
@@ -44,84 +43,72 @@ class PickButton extends StatelessWidget {
               () => const LoginPage(),
               fullscreenDialog: true,
             );
-          } else if (controller.isLoading.isFalse) {
-            if (controller.isPicked.isFalse) {
-              await PickBottomSheet.showPickBottomSheet(
-                context: context,
-                controller: controller,
-              );
-            } else {
-              bool? result = await showDialog<bool>(
-                context: context,
-                builder: (context) => PlatformAlertDialog(
-                  title: const Text(
-                    '確認移除精選？',
+          } else if (controller.isPicked.isFalse) {
+            await PickBottomSheet.showPickBottomSheet(
+              context: context,
+              controller: controller,
+            );
+          } else {
+            bool? result = await showDialog<bool>(
+              context: context,
+              builder: (context) => PlatformAlertDialog(
+                title: const Text(
+                  '確認移除精選？',
+                ),
+                content: Get.find<PickAndBookmarkService>().pickList.any(
+                        (element) =>
+                            element.targetId == controller.targetId &&
+                            element.objective == controller.objective)
+                    ? const Text(
+                        '移除精選文章，將會一併移除您的留言',
+                      )
+                    : null,
+                actions: [
+                  PlatformDialogAction(
+                    child: const Text(
+                      '移除',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop<bool>(context, true);
+                    },
                   ),
-                  content: Get.find<PickAndBookmarkService>().pickList.any(
-                          (element) =>
-                              element.targetId == controller.targetId &&
-                              element.objective == controller.objective)
-                      ? const Text(
-                          '移除精選文章，將會一併移除您的留言',
-                        )
-                      : null,
-                  actions: [
-                    PlatformDialogAction(
-                      child: const Text(
-                        '移除',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () async {
-                        Navigator.pop<bool>(context, true);
-                      },
+                  PlatformDialogAction(
+                    child: const Text(
+                      '取消',
+                      style: TextStyle(color: Colors.blue),
                     ),
-                    PlatformDialogAction(
-                      child: const Text(
-                        '取消',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      onPressed: () => Navigator.pop<bool>(context, false),
-                    )
-                  ],
-                  material: (context, target) => MaterialAlertDialogData(
-                    titleTextStyle: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                    contentTextStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(109, 120, 133, 1),
-                    ),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12.0),
-                      ),
+                    onPressed: () => Navigator.pop<bool>(context, false),
+                  )
+                ],
+                material: (context, target) => MaterialAlertDialogData(
+                  titleTextStyle: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                  contentTextStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(109, 120, 133, 1),
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12.0),
                     ),
                   ),
                 ),
-              );
-              if (result != null && result) {
-                controller.deletePick();
-                if (isInMyPersonalFile) {
-                  await Future.delayed(const Duration(milliseconds: 50));
-                  Get.find<PickTabController>(
-                          tag: Get.find<UserService>().currentUser.memberId)
-                      .unPick(controller.objective, controller.targetId);
-                }
+              ),
+            );
+            if (result != null && result) {
+              controller.deletePick();
+              if (isInMyPersonalFile) {
+                await Future.delayed(const Duration(milliseconds: 50));
+                Get.find<PickTabController>(
+                        tag: Get.find<UserService>().currentUser.memberId)
+                    .unPick(controller.objective, controller.targetId);
               }
             }
-          } else if (controller.isLoading.isTrue) {
-            Fluttertoast.showToast(
-              msg: "更新伺服器中 請稍候",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
           }
         },
         style: OutlinedButton.styleFrom(

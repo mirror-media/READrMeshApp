@@ -20,7 +20,6 @@ class PickableItemController extends GetxController {
   final RxInt commentCount = 0.obs;
   final RxBool isPicked = false.obs;
   final pickedMembers = <Member>[].obs;
-  final isLoading = false.obs;
   final String controllerTag;
 
   //only for news
@@ -63,7 +62,6 @@ class PickableItemController extends GetxController {
   }
 
   void addPick() async {
-    isLoading(true);
     isPicked.value = true;
     pickCount.value++;
 
@@ -94,12 +92,9 @@ class PickableItemController extends GetxController {
       isPicked.value = false;
       pickCount.value--;
     }
-
-    isLoading(false);
   }
 
   void addPickAndComment(String commentContent) async {
-    isLoading(true);
     isPicked.value = true;
     pickCount.value++;
     commentCount.value++;
@@ -143,11 +138,9 @@ class PickableItemController extends GetxController {
       isPicked.value = false;
       pickCount.value--;
     }
-    isLoading(false);
   }
 
   void deletePick() async {
-    isLoading(true);
     isPicked.value = false;
     pickCount.value--;
 
@@ -190,8 +183,6 @@ class PickableItemController extends GetxController {
       isPicked.value = true;
     }
     PickToast.showPickToast(isSuccess, false);
-
-    isLoading(false);
   }
 
   Future<void> _updateOwnPickTab() async {
