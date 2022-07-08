@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -27,9 +28,15 @@ class UserService extends GetxService {
     return const Duration(minutes: 1);
   }
 
+  // for tooltip
+  bool showPickTooltip = false;
+
   Future<UserService> init() async {
     currentUser = Get.find<HiveService>().localMember;
     isMember.value = _isMember;
+    showPickTooltip =
+        Get.find<SharedPreferencesService>().prefs.getBool('showPickTooltip') ??
+            true;
     return this;
   }
 
