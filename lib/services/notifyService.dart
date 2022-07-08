@@ -119,6 +119,7 @@ query{
     }
   ){
     name
+    type
   }
 }
     """;
