@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -120,6 +121,7 @@ class LoginPageController extends GetxController {
       }
     } catch (e) {
       print('Login Error: $e');
+      await FirebaseAuth.instance.signOut();
       Fluttertoast.showToast(
         msg: '登入失敗',
         toastLength: Toast.LENGTH_SHORT,
