@@ -7,6 +7,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
@@ -249,11 +250,38 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           SliverToBoxAdapter(
             child: _memberDataWidget(),
           ),
-          const SliverToBoxAdapter(
-            child: Divider(
-              color: readrBlack10,
-              thickness: 0.5,
-              height: 0.5,
+          SliverToBoxAdapter(
+            child: JustTheTooltip(
+              content: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                child: Text(
+                  '將喜歡的新聞打包成集錦',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              backgroundColor: const Color(0xFF007AFF),
+              preferredDirection: AxisDirection.up,
+              tailLength: 8,
+              tailBaseWidth: 12,
+              tailBuilder: (tip, point2, point3) => Path()
+                ..moveTo(tip.dx, tip.dy)
+                ..lineTo(point2.dx, point2.dy)
+                ..lineTo(point3.dx, point3.dy)
+                ..close(),
+              controller: controller.tooltipController,
+              offset: 4,
+              shadow: const Shadow(color: Color.fromRGBO(0, 122, 255, 0.2)),
+              barrierDismissible: false,
+              triggerMode: TooltipTriggerMode.manual,
+              isModal: true,
+              child: const Divider(
+                color: readrBlack10,
+                thickness: 0.5,
+                height: 0.5,
+              ),
             ),
           ),
           SliverAppBar(

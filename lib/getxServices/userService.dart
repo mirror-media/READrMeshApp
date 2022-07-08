@@ -30,6 +30,7 @@ class UserService extends GetxService {
 
   // for tooltip
   bool showPickTooltip = false;
+  bool showCollectionTooltip = false;
 
   Future<UserService> init() async {
     currentUser = Get.find<HiveService>().localMember;
@@ -37,6 +38,10 @@ class UserService extends GetxService {
     showPickTooltip =
         Get.find<SharedPreferencesService>().prefs.getBool('showPickTooltip') ??
             true;
+    showCollectionTooltip = Get.find<SharedPreferencesService>()
+            .prefs
+            .getBool('showCollectionTooltip') ??
+        true;
     return this;
   }
 

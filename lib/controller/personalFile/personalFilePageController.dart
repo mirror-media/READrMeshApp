@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
@@ -32,6 +34,8 @@ class PersonalFilePageController extends GetxController
   late TabController tabController;
   final List<Tab> tabs = [];
   final List<Widget> tabWidgets = [];
+
+  final JustTheController tooltipController = JustTheController();
 
   @override
   void onInit() {
@@ -96,6 +100,18 @@ class PersonalFilePageController extends GetxController
       viewMember: viewMemberData.value,
     ));
 
+    if (Get.find<UserService>().showCollectionTooltip &&
+        viewMemberData.value.memberId ==
+            Get.find<UserService>().currentUser.memberId) {
+      Future.delayed(const Duration(seconds: 1), () {
+        try {
+          tooltipController.showTooltip();
+        } catch (e) {
+          // Ignore controller not been attached error.
+        }
+      });
+    }
+
     tabs.add(
       const Tab(
         child: Text(
@@ -132,5 +148,15 @@ class PersonalFilePageController extends GetxController
       vsync: this,
       length: tabs.length,
     );
+
+    tabController.addListener(() {
+      if (tabController.index == 1) {
+        tooltipController.hideTooltip();
+        Get.find<UserService>().showCollectionTooltip = false;
+        Get.find<SharedPreferencesService>()
+            .prefs
+            .setBool('showCollectionTooltip', false);
+      }
+    });
   }
 }
