@@ -9,6 +9,7 @@ import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/publisherLogoWidget.dart';
+import 'package:readr/services/visitorService.dart';
 
 enum FollowableItemType {
   member,
@@ -154,21 +155,29 @@ class PublisherFollowableItem implements FollowableItem {
   @override
   void addFollow() {
     Get.find<UserService>().addFollowPublisher(publisher);
-    Get.find<PubsubService>().addFollow(
-      memberId: Get.find<UserService>().currentUser.memberId,
-      targetId: publisher.id,
-      objective: FollowObjective.publisher,
-    );
+    if (Get.find<UserService>().isMember.isTrue) {
+      Get.find<PubsubService>().addFollow(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        targetId: publisher.id,
+        objective: FollowObjective.publisher,
+      );
+    } else {
+      VisitorService().addFollowPublisher(publisher.id);
+    }
   }
 
   @override
   void removeFollow() {
     Get.find<UserService>().removeFollowingMember(publisher.id);
-    Get.find<PubsubService>().removeFollow(
-      memberId: Get.find<UserService>().currentUser.memberId,
-      targetId: publisher.id,
-      objective: FollowObjective.publisher,
-    );
+    if (Get.find<UserService>().isMember.isTrue) {
+      Get.find<PubsubService>().removeFollow(
+        memberId: Get.find<UserService>().currentUser.memberId,
+        targetId: publisher.id,
+        objective: FollowObjective.publisher,
+      );
+    } else {
+      VisitorService().removeFollowPublisher(publisher.id);
+    }
   }
 
   @override
