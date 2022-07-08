@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
-import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
@@ -153,9 +153,7 @@ class PersonalFilePageController extends GetxController
       if (tabController.index == 1) {
         tooltipController.hideTooltip();
         Get.find<UserService>().showCollectionTooltip = false;
-        Get.find<SharedPreferencesService>()
-            .prefs
-            .setBool('showCollectionTooltip', false);
+        Get.find<HiveService>().tooltipBox.put('showCollectionTooltip', false);
       }
     });
   }

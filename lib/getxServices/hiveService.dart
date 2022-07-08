@@ -8,6 +8,7 @@ import 'package:readr/models/publisher.dart';
 class HiveService extends GetxService {
   late final Box<Member> _memberBox;
   late final Box _notifyBox;
+  late final Box<bool> tooltipBox;
 
   Future<HiveService> init() async {
     await Hive.initFlutter();
@@ -17,6 +18,7 @@ class HiveService extends GetxService {
     Hive.registerAdapter(NotifyTypeAdapter());
     _memberBox = await Hive.openBox<Member>('memberBox');
     _notifyBox = await Hive.openBox('notifyBox');
+    tooltipBox = await Hive.openBox<bool>('tooltipBox');
     return this;
   }
 

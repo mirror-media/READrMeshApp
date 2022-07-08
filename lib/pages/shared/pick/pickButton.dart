@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
-import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -81,9 +81,7 @@ class PickButton extends GetView<PickableItemController> {
       shadow: const Shadow(color: Color.fromRGBO(0, 122, 255, 0.2)),
       onDismiss: () {
         Get.find<UserService>().showPickTooltip = false;
-        Get.find<SharedPreferencesService>()
-            .prefs
-            .setBool('showPickTooltip', false);
+        Get.find<HiveService>().tooltipBox.put('showPickTooltip', false);
       },
       child: button,
     );

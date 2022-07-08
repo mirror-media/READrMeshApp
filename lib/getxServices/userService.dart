@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
-import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -36,12 +35,9 @@ class UserService extends GetxService {
     currentUser = Get.find<HiveService>().localMember;
     isMember.value = _isMember;
     showPickTooltip =
-        Get.find<SharedPreferencesService>().prefs.getBool('showPickTooltip') ??
-            true;
-    showCollectionTooltip = Get.find<SharedPreferencesService>()
-            .prefs
-            .getBool('showCollectionTooltip') ??
-        true;
+        Get.find<HiveService>().tooltipBox.get('showPickTooltip') ?? true;
+    showCollectionTooltip =
+        Get.find<HiveService>().tooltipBox.get('showCollectionTooltip') ?? true;
     return this;
   }
 
