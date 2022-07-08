@@ -10,9 +10,11 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 class PickBar extends StatelessWidget {
   final String contorllerTag;
   final bool isInMyPersonalFile;
+  final bool showPickTooltip;
   const PickBar(
     this.contorllerTag, {
     this.isInMyPersonalFile = false,
+    this.showPickTooltip = false,
   });
 
   @override
@@ -70,6 +72,7 @@ class PickBar extends StatelessWidget {
           PickButton(
             contorllerTag,
             isInMyPersonalFile: isInMyPersonalFile,
+            showPickTooltip: showPickTooltip,
           ),
         ]);
 

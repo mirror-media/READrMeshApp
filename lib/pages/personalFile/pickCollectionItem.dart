@@ -14,7 +14,8 @@ import 'package:shimmer/shimmer.dart';
 
 class PickCollectionItem extends StatelessWidget {
   final Collection collection;
-  const PickCollectionItem(this.collection);
+  final bool showPickTooltip;
+  const PickCollectionItem(this.collection, {this.showPickTooltip = false});
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +169,7 @@ class PickCollectionItem extends StatelessWidget {
                   collection.controllerTag,
                   expanded: true,
                   textSize: 16,
+                  showPickTooltip: showPickTooltip,
                 ),
               ),
               const SizedBox(height: 16),

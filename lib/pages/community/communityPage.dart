@@ -224,7 +224,8 @@ class CommunityPage extends GetView<CommunityPageController> {
                   children: [
                     item.heroImageWidget,
                     if (item.type == CommunityListItemType.pickCollection ||
-                        item.type == CommunityListItemType.commentCollection)
+                        item.type == CommunityListItemType.commentCollection ||
+                        item.type == CommunityListItemType.createCollection)
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
@@ -253,7 +254,11 @@ class CommunityPage extends GetView<CommunityPageController> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            child: PickBar(item.controllerTag),
+            child: PickBar(
+              item.controllerTag,
+              showPickTooltip:
+                  item.itemId == controller.communityList.first.itemId,
+            ),
           ),
           if (item.showComment != null) ...[
             const Divider(

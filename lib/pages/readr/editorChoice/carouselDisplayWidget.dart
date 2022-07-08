@@ -27,7 +27,10 @@ class CarouselDisplayWidget extends StatelessWidget {
             const SizedBox(height: 8),
             NewsInfo(editorChoiceItem.newsListItem!),
             const SizedBox(height: 18),
-            PickBar(editorChoiceItem.newsListItem!.controllerTag),
+            PickBar(
+              editorChoiceItem.newsListItem!.controllerTag,
+              showPickTooltip: true,
+            ),
           ],
         ),
       ),

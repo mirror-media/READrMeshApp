@@ -168,6 +168,8 @@ class PickTabContent extends GetView<PickTabController> {
                   pick.story!,
                   isInMyPersonalFile: viewMember.memberId ==
                       Get.find<UserService>().currentUser.memberId,
+                  showPickTooltip:
+                      index == 0 && controller.collecionPickList.isEmpty,
                 ),
                 const SizedBox(
                   height: 12,
@@ -183,6 +185,7 @@ class PickTabContent extends GetView<PickTabController> {
             pick.story!,
             isInMyPersonalFile: viewMember.memberId ==
                 Get.find<UserService>().currentUser.memberId,
+            showPickTooltip: index == 0 && controller.collecionPickList.isEmpty,
           );
         },
         separatorBuilder: (context, index) {
@@ -241,7 +244,9 @@ class PickTabContent extends GetView<PickTabController> {
               }
 
               return PickCollectionItem(
-                  controller.collecionPickList[index].collection!);
+                controller.collecionPickList[index].collection!,
+                showPickTooltip: index == 0,
+              );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemCount: controller.collecionPickList.length + 1,

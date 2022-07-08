@@ -16,10 +16,12 @@ class NewsListItemWidget extends StatelessWidget {
   final NewsListItem news;
   final bool hidePublisher;
   final bool isInMyPersonalFile;
+  final bool showPickTooltip;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
     this.isInMyPersonalFile = false,
+    this.showPickTooltip = false,
   });
 
   @override
@@ -175,6 +177,7 @@ class NewsListItemWidget extends StatelessWidget {
           PickBar(
             'News${news.id}',
             isInMyPersonalFile: isInMyPersonalFile,
+            showPickTooltip: showPickTooltip,
           ),
         ],
       ),

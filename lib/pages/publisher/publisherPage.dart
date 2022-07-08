@@ -168,6 +168,7 @@ class PublisherPage extends GetView<PublisherPageController> {
           }
           return NewsListItemWidget(
             controller.publisherNewsList[index],
+            showPickTooltip: index == 0,
           );
         },
         separatorBuilder: (context, index) {
