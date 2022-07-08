@@ -13,6 +13,7 @@ class NotifyPage extends GetView<NotifyPageController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
         title: const Text(
           '通知',
           style: TextStyle(
