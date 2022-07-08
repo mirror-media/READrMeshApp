@@ -80,56 +80,60 @@ class RootPage extends GetView<RootPageController> {
           unselectedItemColor: bottomNavigationBarUnselectedColor,
           type: BottomNavigationBarType.fixed,
           items: [
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  communityPageDefaultSvg,
-                ),
+                height: 24,
+                child: Icon(CupertinoIcons.bubble_left_bubble_right),
               ),
               activeIcon: SizedBox(
-                height: 20,
-                child: SvgPicture.asset(
-                  communityPageActiveSvg,
-                ),
+                height: 24,
+                child: Icon(CupertinoIcons.bubble_left_bubble_right_fill),
               ),
               label: '社群',
             ),
             BottomNavigationBarItem(
               icon: SizedBox(
-                height: 20,
+                height: 24,
                 child: SvgPicture.asset(
                   latestPageDefaultSvg,
+                  width: 23,
+                  height: 20,
                 ),
               ),
               activeIcon: SizedBox(
-                height: 20,
+                height: 24,
                 child: SvgPicture.asset(
                   latestPageActiveSvg,
+                  width: 23,
+                  height: 20,
                 ),
               ),
               label: '最新',
             ),
             BottomNavigationBarItem(
               icon: Container(
-                height: 20,
+                height: 24,
                 margin: const EdgeInsets.only(bottom: 1.5),
                 child: SvgPicture.asset(
                   readrPageDefaultSvg,
+                  width: 22,
+                  height: 22,
                 ),
               ),
               activeIcon: Container(
-                height: 20,
+                height: 24,
                 margin: const EdgeInsets.only(bottom: 1.5),
                 child: SvgPicture.asset(
                   readrPageActiveSvg,
+                  width: 22,
+                  height: 22,
                 ),
               ),
               label: 'READr',
             ),
             BottomNavigationBarItem(
               icon: SizedBox(
-                height: 20,
+                height: 24,
                 child: Obx(
                   () {
                     if (Get.find<UserService>().isMember.isFalse) {
@@ -139,10 +143,38 @@ class RootPage extends GetView<RootPageController> {
                         color: readrBlack87,
                       );
                     } else {
-                      return ProfilePhotoWidget(
-                        Get.find<UserService>().currentUser,
-                        11,
-                        hideBorder: true,
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ProfilePhotoWidget(
+                            Get.find<UserService>().currentUser,
+                            11,
+                            hideBorder: true,
+                          ),
+                          Obx(
+                            () {
+                              if (controller.haveNewFeature.isTrue) {
+                                return Container(
+                                  width: 12,
+                                  height: 12,
+                                  margin: const EdgeInsets.only(
+                                    left: 14,
+                                    bottom: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                );
+                              }
+                              return Container();
+                            },
+                          ),
+                        ],
                       );
                     }
                   },
