@@ -1,40 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
 
-class PickButton extends StatelessWidget {
+class PickButton extends GetView<PickableItemController> {
   final String controllerTag;
   final bool expanded;
   final double textSize;
   final bool isInMyPersonalFile;
+  final bool showPickTooltip;
+
   const PickButton(
     this.controllerTag, {
     this.expanded = false,
     this.textSize = 14,
     this.isInMyPersonalFile = false,
+    this.showPickTooltip = false,
   });
 
   @override
+  String get tag => controllerTag;
+
+  @override
   Widget build(BuildContext context) {
+    Widget button;
+    double xOffset;
+
     if (expanded) {
-      return SizedBox(
+      button = SizedBox(
         width: double.maxFinite,
         child: _buildButton(context),
       );
+      xOffset = -40;
+    } else {
+      button = _buildButton(context);
+      xOffset = 18;
     }
 
-    return _buildButton(context);
+    final JustTheController tooltipController = JustTheController();
+    if (showPickTooltip && Get.find<UserService>().showPickTooltip) {
+      Future.delayed(const Duration(seconds: 1), () {
+        try {
+          tooltipController.showTooltip();
+        } catch (e) {
+          // Ignore controller not been attached error.
+        }
+      });
+    }
+
+    return JustTheTooltip(
+      content: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        child: Text(
+          '精選喜歡的報導',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+          ),
+        ),
+      ),
+      backgroundColor: const Color(0xFF007AFF),
+      preferredDirection: AxisDirection.up,
+      margin: const EdgeInsets.only(left: 20),
+      tailLength: 8,
+      tailBaseWidth: 12,
+      tailBuilder: (tip, point2, point3) => Path()
+        ..moveTo(tip.dx + xOffset, tip.dy)
+        ..lineTo(point2.dx + xOffset, point2.dy)
+        ..lineTo(point3.dx + xOffset, point3.dy)
+        ..close(),
+      controller: tooltipController,
+      shadow: const Shadow(color: Color.fromRGBO(0, 122, 255, 0.2)),
+      onDismiss: () {
+        Get.find<UserService>().showPickTooltip = false;
+        Get.find<SharedPreferencesService>()
+            .prefs
+            .setBool('showPickTooltip', false);
+      },
+      child: button,
+    );
   }
 
   Widget _buildButton(BuildContext context) {
-    final controller = Get.find<PickableItemController>(tag: controllerTag);
     return Obx(
       () => OutlinedButton(
         onPressed: () async {
