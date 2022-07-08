@@ -64,13 +64,16 @@ class NotifyPageController extends GetxController {
     localNotifies.removeWhere((element) => element.actionTime
         .isBefore(DateTime.now().subtract(const Duration(days: 7))));
     List<Notify> newNotifies = await notifyRepos
-        .fetchNotifies(
-          alreadyFetchNotifyIds:
-              List<String>.from(localNotifies.map((e) => e.id)),
-        )
+        .fetchNotifies()
         .timeout(const Duration(seconds: 10), onTimeout: () => []);
+
     _allNotifies.assignAll(newNotifies);
-    _allNotifies.addAll(localNotifies);
+    for (var notify in localNotifies) {
+      int index = _allNotifies.indexWhere((element) => element.id == notify.id);
+      if (index != -1) {
+        _allNotifies[index] = notify;
+      }
+    }
     Get.find<HiveService>().updateNotifyList(_allNotifies);
     List<NotifyPageItem> allPageItems =
         _generatePageItemFromNotifies(_allNotifies);
