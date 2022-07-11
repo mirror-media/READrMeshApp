@@ -84,6 +84,10 @@
 		<true/>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>This application needs to access your microphone</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This application needs to access your photo library</string>
+		<key>NSCameraUsageDescription</key>
+		<string>This application needs to access your camera</string>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
