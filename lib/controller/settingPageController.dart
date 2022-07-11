@@ -121,12 +121,15 @@ class SettingPageController extends GetxController {
     isDeleting.value = true;
     isInitial = false;
     update();
+    String memberId = Get.find<UserService>().currentUser.memberId;
 
     try {
-      await memberRepos.deleteMember().then((value) => deleteSuccess = value);
+      await FirebaseAuth.instance.currentUser!.delete();
+      await memberRepos
+          .deleteMember(memberId)
+          .then((value) => deleteSuccess = value);
       logDeleteAccount();
       if (deleteSuccess) {
-        await FirebaseAuth.instance.currentUser!.delete();
         if (Get.isRegistered<PersonalFilePageController>(
             tag: Get.find<UserService>().currentUser.memberId)) {
           Get.delete<PersonalFilePageController>(
