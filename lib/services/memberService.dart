@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class MemberRepos {
   Future<Member?> fetchMemberData();
   Future<Member?> createMember(String nickname, {int? tryTimes});
-  Future<bool> deleteMember();
+  Future<bool> deleteMember(String memberId);
   Future<List<Publisher>?> addFollowPublisher(String publisherId);
   Future<bool?> updateMember(Member member);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
@@ -104,6 +104,11 @@ class MemberService implements MemberRepos {
         firebaseId
         email
         avatar
+        avatar_image{
+          resized{
+            original
+          }
+        }
         verified
         customId
         intro
@@ -117,6 +122,11 @@ class MemberService implements MemberRepos {
           id
           nickname
           avatar
+          avatar_image{
+            resized{
+              original
+            }
+          }
         }
         following_category{
           id
@@ -277,7 +287,7 @@ class MemberService implements MemberRepos {
   }
 
   @override
-  Future<bool> deleteMember() async {
+  Future<bool> deleteMember(String memberId) async {
     String mutation = """
     mutation(
       \$id: ID
@@ -294,9 +304,7 @@ class MemberService implements MemberRepos {
       }
     }
     """;
-    Map<String, String> variables = {
-      "id": Get.find<UserService>().currentUser.memberId
-    };
+    Map<String, String> variables = {"id": memberId};
 
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
