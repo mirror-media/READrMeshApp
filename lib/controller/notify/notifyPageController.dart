@@ -47,16 +47,19 @@ class NotifyPageController extends GetxController {
   }
 
   void readAll() {
-    for (var notifyPageItem in unReadNotifyList) {
-      Get.find<NotifyItemController>(tag: notifyPageItem.id).alreadyRead.value =
-          true;
+    if (unReadNotifyList.isNotEmpty) {
+      for (var notifyPageItem in unReadNotifyList) {
+        Get.find<NotifyItemController>(tag: notifyPageItem.id)
+            .alreadyRead
+            .value = true;
+      }
+      readNotifyList.insertAll(0, unReadNotifyList);
+      unReadNotifyList.clear();
+      for (var notify in _allNotifies) {
+        notify.isRead = true;
+      }
+      Get.find<HiveService>().updateNotifyList(_allNotifies);
     }
-    readNotifyList.insertAll(0, unReadNotifyList);
-    unReadNotifyList.clear();
-    for (var notify in _allNotifies) {
-      notify.isRead = true;
-    }
-    Get.find<HiveService>().updateNotifyList(_allNotifies);
   }
 
   Future<void> fetchNotifies() async {

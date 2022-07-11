@@ -9,33 +9,42 @@ import 'package:readr/pages/notify/notifyItem.dart';
 class NotifyPage extends GetView<NotifyPageController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          '通知',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            color: readrBlack,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              PlatformIcons(context).clear,
-              color: readrBlack87,
-              size: 26,
+    return WillPopScope(
+      onWillPop: () async {
+        controller.readAll();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            '通知',
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              color: readrBlack,
+              fontSize: 18,
             ),
-            tooltip: '關閉',
-            onPressed: () => Get.back(),
           ),
-        ],
+          actions: [
+            IconButton(
+              icon: Icon(
+                PlatformIcons(context).clear,
+                color: readrBlack87,
+                size: 26,
+              ),
+              tooltip: '關閉',
+              onPressed: () {
+                controller.readAll();
+                Get.back();
+              },
+            ),
+          ],
+        ),
+        body: _buildBody(context),
+        backgroundColor: Colors.white,
       ),
-      body: _buildBody(context),
-      backgroundColor: Colors.white,
     );
   }
 
