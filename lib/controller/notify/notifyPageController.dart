@@ -24,7 +24,7 @@ class NotifyPageController extends GetxController {
   void onInit() {
     fetchNotifies();
     fetchAnnouncements();
-    _notifyTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
+    _notifyTimer = Timer.periodic(const Duration(minutes: 10), (timer) {
       fetchNotifies();
       fetchAnnouncements();
     });
