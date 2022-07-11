@@ -161,6 +161,10 @@ dependencies:
   graphql: ^5.1.1
   # tooltip
   just_the_tooltip: ^0.0.12
+  # pick user image
+  image_picker: ^0.8.5+3
+  # crop user image
+  image_cropper: ^2.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
