@@ -183,8 +183,10 @@ class CommentController extends GetxController {
 
     bool result = false;
     if (int.tryParse(commentId) != null) {
-      result =
-          await Get.find<PubsubService>().removeComment(commentId: commentId);
+      result = await Get.find<PubsubService>().removeComment(
+        commentId: commentId,
+        memberId: Get.find<UserService>().currentUser.memberId,
+      );
       if (!result) {
         allComments.insert(allCommentIndex, backupComment);
         if (popularCommentIndex != -1) {

@@ -119,11 +119,13 @@ class PubsubService extends GetxService {
   }
 
   Future<bool> removeComment({
+    required String memberId,
     required String commentId,
   }) async {
     return await _publishRequest({
       "'action'": "'remove_comment'",
       "'commentId'": "'$commentId'",
+      "'memberId'": "'$memberId'",
     });
   }
 

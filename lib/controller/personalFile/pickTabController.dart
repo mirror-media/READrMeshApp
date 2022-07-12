@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
@@ -127,8 +128,10 @@ class PickTabController extends GetxController {
   }
 
   void deletePickComment(String commentId, String controllerTag) async {
-    bool result =
-        await Get.find<PubsubService>().removeComment(commentId: commentId);
+    bool result = await Get.find<PubsubService>().removeComment(
+      commentId: commentId,
+      memberId: Get.find<UserService>().currentUser.memberId,
+    );
     if (result) {
       int index = storyPickList
           .indexWhere((element) => element.pickComment?.id == commentId);
