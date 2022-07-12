@@ -557,10 +557,10 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: cea1ff4f9849e0ba1d017c1b4fecd355b996e259
-      url: "git://github.com/mirror-media/flutter_embedded_webview.git"
+      resolved-ref: "20b6f691dfe3e5b03335aaa51d0e20f5108faa74"
+      url: "https://github.com/mirror-media/flutter_embedded_webview.git"
     source: git
-    version: "0.2.1"
+    version: "0.3.1"
   flutter_facebook_auth:
     dependency: transitive
     description:

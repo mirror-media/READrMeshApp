@@ -84,7 +84,7 @@ dependencies:
   # embedded code
   flutter_embedded_webview:
     git:
-      url: git://github.com/mirror-media/flutter_embedded_webview.git
+      url: https://github.com/mirror-media/flutter_embedded_webview.git
       ref: master
       version: ^0.2.0
   # skeleton screen effect
