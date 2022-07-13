@@ -442,10 +442,14 @@ class CommunityPage extends GetView<CommunityPageController> {
                 url: url,
               );
             },
-            child: Icon(
-              PlatformIcons(context).ellipsis,
-              color: readrBlack66,
-              size: 15,
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: Icon(
+                PlatformIcons(context).ellipsis,
+                color: readrBlack66,
+                size: 15,
+              ),
             ),
           ),
         ],

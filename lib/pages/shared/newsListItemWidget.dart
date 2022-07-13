@@ -55,7 +55,7 @@ class NewsListItemWidget extends StatelessWidget {
                       ),
                     ),
                   IconButton(
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(9),
                     alignment: Alignment.centerRight,
                     onPressed: () async =>
                         await MoreActionBottomSheet.showMoreActionSheet(
