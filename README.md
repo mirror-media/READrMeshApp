@@ -1,5 +1,5 @@
-# readr app
-A new Flutter app about [READr](https://www.readr.tw/).
+# READr Mesh app
+A Flutter app about [READr](https://www.readr.tw/)'s new product.
 
 ## Running cli
 
