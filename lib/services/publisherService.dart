@@ -32,7 +32,7 @@ class PublisherService implements PublisherRepos {
     stories(
         take: 20
         orderBy:{
-          published_date: desc
+          createdAt: desc
         }
         where:{
           is_active:{
@@ -43,7 +43,7 @@ class PublisherService implements PublisherRepos {
               equals: \$publisherId
             }
           }
-          published_date:{
+          createdAt:{
             lt: \$timeFilter
           }
         }
@@ -65,6 +65,7 @@ class PublisherService implements PublisherRepos {
         full_content
         full_screen_ad
         paywall
+        createdAt
         published_date
         og_image
         followingPicks: pick(
