@@ -143,11 +143,6 @@ class NewsStoryService implements NewsStoryRepos {
             state:{
               equals: "public"
             }
-            member:{
-              is_active:{
-                equals: true
-              }
-            }
           }
           orderBy:{
             published_date: desc
