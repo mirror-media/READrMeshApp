@@ -17,11 +17,10 @@ import 'package:readr/pages/shared/comment/commentItem.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/services/commentService.dart';
 
-class BottomCardWidget extends StatelessWidget {
+class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
   final String controllerTag;
   late final CommentController commentController;
   late final PickableItemController pickableItemController;
-  late final BottomCardWidgetController bottomCardWidgetController;
   final String title;
   final PickObjective objective;
   final String id;
@@ -39,7 +38,7 @@ class BottomCardWidget extends StatelessWidget {
     required this.id,
     required this.allComments,
     required this.popularComments,
-  }) : super(key: UniqueKey()) {
+  }) : super(key: Key(controllerTag.hashCode.toString())) {
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
       commentController = Get.find<CommentController>(tag: controllerTag);
     } else {
@@ -58,19 +57,24 @@ class BottomCardWidget extends StatelessWidget {
 
     pickableItemController =
         Get.find<PickableItemController>(tag: controllerTag);
+
+    Get.create(
+      () => BottomCardWidgetController(),
+      tag: key.toString(),
+      permanent: false,
+    );
   }
 
   @override
+  String get tag => key.toString();
+
+  @override
   Widget build(BuildContext context) {
-    bottomCardWidgetController = Get.put(
-      BottomCardWidgetController(),
-      tag: hashCode.toString(),
-    );
     return DraggableScrollableSheet(
       snap: true,
       initialChildSize: 0.13,
       minChildSize: 0.13,
-      controller: bottomCardWidgetController.draggableScrollableController,
+      controller: controller.draggableScrollableController,
       builder: (context, scrollController) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -94,7 +98,7 @@ class BottomCardWidget extends StatelessWidget {
                 ),
                 child: Obx(() {
                   List<Widget> slivers = [];
-                  if (bottomCardWidgetController.isCollapsed.isTrue) {
+                  if (controller.isCollapsed.isTrue) {
                     slivers.assign(SliverToBoxAdapter(
                       child: _collapseWidget(context),
                     ));
@@ -164,7 +168,7 @@ class BottomCardWidget extends StatelessWidget {
             ),
             Obx(
               () => Visibility(
-                visible: bottomCardWidgetController.isCollapsed.isFalse,
+                visible: controller.isCollapsed.isFalse,
                 child: Container(
                   color: Colors.white,
                   //padding: const EdgeInsets.only(top: 16),
@@ -178,7 +182,7 @@ class BottomCardWidget extends StatelessWidget {
             ),
             Obx(
               () => Visibility(
-                visible: bottomCardWidgetController.isCollapsed.isFalse,
+                visible: controller.isCollapsed.isFalse,
                 child: CommentInputBox(
                   commentControllerTag: controllerTag,
                 ),
@@ -216,10 +220,9 @@ class BottomCardWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: GestureDetector(
             onTap: () {
-              bottomCardWidgetController.draggableScrollableController
-                  .animateTo(1,
-                      duration: const Duration(milliseconds: 450),
-                      curve: Curves.linear);
+              controller.draggableScrollableController.animateTo(1,
+                  duration: const Duration(milliseconds: 450),
+                  curve: Curves.linear);
             },
             child: CollapsePickBar(controllerTag),
           ),
