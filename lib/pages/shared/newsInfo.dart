@@ -7,7 +7,7 @@ import 'package:readr/pages/shared/timestamp.dart';
 
 class NewsInfo extends StatelessWidget {
   final NewsListItem newsListItem;
-  const NewsInfo(this.newsListItem);
+  const NewsInfo(this.newsListItem, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,10 @@ class NewsInfo extends StatelessWidget {
           ));
         }
 
-        children.add(Timestamp(newsListItem.publishedDate));
+        children.add(Timestamp(
+          newsListItem.publishedDate,
+          key: Key(newsListItem.controllerTag),
+        ));
 
         if (newsListItem.payWall) {
           children.add(Container(

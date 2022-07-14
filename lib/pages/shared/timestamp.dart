@@ -14,7 +14,8 @@ class Timestamp extends StatefulWidget {
     this.textSize = 12.0,
     this.textColor = readrBlack50,
     this.isEdited = false,
-  });
+    required Key key,
+  }) : super(key: key);
 
   @override
   State<Timestamp> createState() => _TimestampState();

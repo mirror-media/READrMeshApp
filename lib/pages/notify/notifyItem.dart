@@ -73,7 +73,10 @@ class NotifyItem extends GetView<NotifyItemController> {
                     const SizedBox(
                       height: 4,
                     ),
-                    Timestamp(notify.actionTime),
+                    Timestamp(
+                      notify.actionTime,
+                      key: Key(notify.id),
+                    ),
                   ],
                 ),
               ),

@@ -22,7 +22,8 @@ class NewsListItemWidget extends StatelessWidget {
     this.hidePublisher = false,
     this.isInMyPersonalFile = false,
     this.showPickTooltip = false,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +173,7 @@ class NewsListItemWidget extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           const SizedBox(height: 8),
-          NewsInfo(news),
+          NewsInfo(news, key: Key(news.id)),
           const SizedBox(height: 16),
           PickBar(
             'News${news.id}',

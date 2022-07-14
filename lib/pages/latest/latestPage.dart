@@ -303,6 +303,7 @@ class LatestPage extends GetView<LatestPageController> {
           return NewsListItemWidget(
             newsList[index],
             showPickTooltip: index == 0,
+            key: Key(newsList[index].id),
           );
         },
         separatorBuilder: (context, index) {

@@ -177,6 +177,7 @@ class PickTabContent extends GetView<PickTabController> {
                 PickCommentItem(
                   comment: pick.pickComment!,
                   pickControllerTag: pick.story!.controllerTag,
+                  key: Key(pick.pickComment!.id),
                 ),
               ],
             );
@@ -186,6 +187,7 @@ class PickTabContent extends GetView<PickTabController> {
             isInMyPersonalFile: viewMember.memberId ==
                 Get.find<UserService>().currentUser.memberId,
             showPickTooltip: index == 0 && controller.collecionPickList.isEmpty,
+            key: Key(pick.story!.id),
           );
         },
         separatorBuilder: (context, index) {

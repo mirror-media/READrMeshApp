@@ -53,7 +53,10 @@ class CollectionInfo extends GetView<PickableItemController> {
           ));
         }
 
-        children.add(Timestamp(collection.publishedTime));
+        children.add(Timestamp(
+          collection.publishedTime,
+          key: Key(collection.controllerTag),
+        ));
 
         return SizedBox(
           height: 17,

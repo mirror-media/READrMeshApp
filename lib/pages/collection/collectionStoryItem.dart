@@ -129,6 +129,7 @@ class CollectionStoryItem extends StatelessWidget {
               ],
               Timestamp(
                 story.news!.publishedDate,
+                key: Key(story.news!.controllerTag),
               ),
             ],
           ),

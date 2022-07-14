@@ -57,7 +57,6 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
                 objective: PickObjective.collection,
                 allComments: controller.allComments,
                 popularComments: controller.popularComments,
-                key: UniqueKey(),
               ),
             ],
           );
@@ -227,6 +226,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
               Timestamp(
                 collection.publishedTime,
                 textSize: 13,
+                key: Key(collection.id),
               ),
             ],
           ),

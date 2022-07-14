@@ -108,6 +108,7 @@ class ReadrTabContent extends GetView<ReadrTabController> {
               child: NewsListItemWidget(
                 controller.readrMixedList[index].newsListItem,
                 hidePublisher: true,
+                key: Key(controller.readrMixedList[index].newsListItem.id),
               ),
             );
           },

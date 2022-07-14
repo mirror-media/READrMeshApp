@@ -39,8 +39,7 @@ class BottomCardWidget extends StatelessWidget {
     required this.id,
     required this.allComments,
     required this.popularComments,
-    Key? key,
-  }) : super(key: key) {
+  }) : super(key: UniqueKey()) {
     if (Get.isRegistered<CommentController>(tag: controllerTag)) {
       commentController = Get.find<CommentController>(tag: controllerTag);
     } else {
@@ -59,20 +58,14 @@ class BottomCardWidget extends StatelessWidget {
 
     pickableItemController =
         Get.find<PickableItemController>(tag: controllerTag);
-
-    if (Get.isRegistered<BottomCardWidgetController>(tag: controllerTag)) {
-      bottomCardWidgetController =
-          Get.find<BottomCardWidgetController>(tag: controllerTag);
-    } else {
-      bottomCardWidgetController = Get.put(
-        BottomCardWidgetController(),
-        tag: controllerTag,
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    bottomCardWidgetController = Get.put(
+      BottomCardWidgetController(),
+      tag: hashCode.toString(),
+    );
     return DraggableScrollableSheet(
       snap: true,
       initialChildSize: 0.13,

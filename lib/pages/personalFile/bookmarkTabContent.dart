@@ -78,6 +78,7 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
           }
           return NewsListItemWidget(
             controller.bookmarkList[index].story!,
+            key: Key(controller.bookmarkList[index].story!.id),
           );
         },
         separatorBuilder: (context, index) {

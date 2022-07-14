@@ -23,7 +23,6 @@ class CollectionAppBar extends GetView<CollectionPageController> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      key: UniqueKey(),
       centerTitle: GetPlatform.isIOS,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,

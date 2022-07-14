@@ -42,7 +42,11 @@ class PickBar extends StatelessWidget {
             style: TextStyle(fontSize: 13, color: readrBlack50),
           ));
         } else {
-          bottom.add(ProfilePhotoStack(pickedMemberList, 14));
+          bottom.add(ProfilePhotoStack(
+            pickedMemberList,
+            14,
+            key: ObjectKey(pickedMemberList),
+          ));
           bottom.add(const SizedBox(width: 8));
           bottom.add(RichText(
             maxLines: 1,

@@ -216,6 +216,7 @@ class CommentItem extends GetView<CommentItemController> {
                       return Timestamp(
                         comment.publishDate,
                         isEdited: controller.isEdited.value,
+                        key: Key(comment.id),
                       );
                     }),
                     Obx(

@@ -21,7 +21,8 @@ class PickCommentItem extends StatefulWidget {
     required this.comment,
     required this.pickControllerTag,
     this.isExpanded = false,
-  }) {
+    Key? key,
+  }) : super(key: key) {
     if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
       controller = Get.find<CommentItemController>(tag: comment.id);
     } else {
@@ -78,6 +79,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
             widget.comment.publishDate,
             textSize: 13,
             isEdited: widget.controller.isEdited.value,
+            key: Key(widget.comment.id),
           ),
         ),
         Obx(

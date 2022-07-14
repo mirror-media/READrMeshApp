@@ -317,7 +317,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       ProfilePhotoStack(
         firstTwoMember,
         14,
-        key: UniqueKey(),
+        key: ObjectKey(firstTwoMember),
       ),
       const SizedBox(width: 8),
     ];
@@ -516,7 +516,10 @@ class CommunityPage extends GetView<CommunityPageController> {
                         color: readrBlack20,
                       ),
                     ),
-                    Timestamp(comment.publishDate),
+                    Timestamp(
+                      comment.publishDate,
+                      key: ObjectKey(comment),
+                    ),
                   ],
                 ),
                 Padding(

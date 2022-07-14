@@ -12,7 +12,7 @@ import 'package:shimmer/shimmer.dart';
 
 class ReadrProjectItemWidget extends StatelessWidget {
   final NewsListItem projectItem;
-  const ReadrProjectItemWidget(this.projectItem);
+  const ReadrProjectItemWidget(this.projectItem, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
             ),
             _displayTitle(),
             const SizedBox(height: 8),
-            NewsInfo(projectItem),
+            NewsInfo(projectItem, key: key),
             const SizedBox(height: 18),
             PickBar(projectItem.controllerTag),
           ],
