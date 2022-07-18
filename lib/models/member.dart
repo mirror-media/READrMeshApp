@@ -38,6 +38,9 @@ class Member {
   @HiveField(5)
   String customId;
 
+  @HiveField(6)
+  String? avatarImageId;
+
   int? followingCount;
   int? followingPublisherCount;
   int? bookmarkCount;
@@ -63,6 +66,7 @@ class Member {
     this.bookmarkCount,
     required this.customId,
     this.isFollowing = false,
+    this.avatarImageId,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -84,6 +88,7 @@ class Member {
     String? intro;
     String customId = '';
     bool isFollowing = false;
+    String? avatarImageId;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -101,7 +106,10 @@ class Member {
       verified = json['verified'];
     }
 
-    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+    if (BaseModel.hasKey(json, 'avatar_image')) {
+      avatarImageId = json['avatar_image']['id'];
+      avatar = json['avatar_image']['resized']?['original'];
+    } else if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
       avatar = json['avatar'];
     }
 
@@ -188,15 +196,19 @@ class Member {
       customId: customId,
       intro: intro,
       isFollowing: isFollowing,
+      avatarImageId: avatarImageId,
     );
   }
 
   factory Member.followedFollowing(Map<String, dynamic> json) {
     String? avatar;
     String customId = '';
-    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+    if (BaseModel.hasKey(json, 'avatar_image')) {
+      avatar = json['avatar_image']?['resized']?['original'];
+    } else if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
       avatar = json['avatar'];
     }
+
     if (BaseModel.hasKey(json, 'customId')) {
       customId = json['customId'];
     }
@@ -236,9 +248,12 @@ class Member {
       ];
     }
     String? avatar;
-    if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
+    if (BaseModel.hasKey(json, 'avatar_image')) {
+      avatar = json['avatar_image']?['resized']?['original'];
+    } else if (BaseModel.hasKey(json, 'avatar') && json['avatar'] != "") {
       avatar = json['avatar'];
     }
+
     String customId = '';
     if (BaseModel.hasKey(json, 'customId')) {
       customId = json['customId'];
