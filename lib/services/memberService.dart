@@ -1,12 +1,15 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
+import 'package:http_parser/http_parser.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pickIdItem.dart';
@@ -18,7 +21,21 @@ abstract class MemberRepos {
   Future<Member?> createMember(String nickname, {int? tryTimes});
   Future<bool> deleteMember(String memberId);
   Future<List<Publisher>?> addFollowPublisher(String publisherId);
-  Future<bool?> updateMember(Member member);
+  Future<bool> updateMember({
+    required String memberId,
+    required String nickname,
+    required String customId,
+    String? intro,
+  });
+  Future<bool> updateMemberAndAvatar({
+    required String memberId,
+    required String nickname,
+    required String customId,
+    String? intro,
+    required String imagePath,
+  });
+  Future<bool> deleteAvatarPhoto(String imageId);
+  Future<bool> deleteAvatarUrl(String memberId);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
   Future<Member?> fetchMemberDataById(String id);
 }
@@ -105,6 +122,7 @@ class MemberService implements MemberRepos {
         email
         avatar
         avatar_image{
+          id
           resized{
             original
           }
@@ -386,7 +404,12 @@ class MemberService implements MemberRepos {
   }
 
   @override
-  Future<bool?> updateMember(Member member) async {
+  Future<bool> updateMember({
+    required String memberId,
+    required String nickname,
+    required String customId,
+    String? intro,
+  }) async {
     String mutation = """
     mutation(
       \$id: ID
@@ -409,10 +432,10 @@ class MemberService implements MemberRepos {
     }
     """;
     Map<String, String> variables = {
-      "id": member.memberId,
-      "nickname": member.nickname,
-      "customId": member.customId,
-      "intro": member.intro ?? '',
+      "id": memberId,
+      "nickname": nickname,
+      "customId": customId,
+      "intro": intro ?? '',
     };
 
     GraphqlBody graphqlBody = GraphqlBody(
@@ -421,24 +444,135 @@ class MemberService implements MemberRepos {
       variables: variables,
     );
 
-    try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
-      );
+    final jsonResponse = await _helper.postByUrl(
+      api,
+      jsonEncode(graphqlBody.toJson()),
+      headers: await _getHeaders(),
+    );
 
-      // true mean success, false mean customId error, null mean other error.
-      if (!jsonResponse.containsKey('errors')) {
-        return true;
-      } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
-        return false;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
+    return !jsonResponse.containsKey('errors');
+  }
+
+  @override
+  Future<bool> updateMemberAndAvatar({
+    required String memberId,
+    required String nickname,
+    required String customId,
+    String? intro,
+    required String imagePath,
+  }) async {
+    String mutation = """
+mutation(
+  \$image: Upload
+  \$memberId: ID
+  \$nickname: String
+  \$customId: String
+  \$intro: String
+  \$imageName: String
+){
+  updateMember(
+    where:{
+      id: \$memberId
     }
+    data:{
+      nickname: \$nickname
+      customId: \$customId
+      intro: \$intro
+      avatar: ""
+      avatar_image:{
+        create:{
+          name: \$imageName
+          file:{
+            upload: \$image
+          }
+        }
+      }
+    }
+  ){
+    id
+  }
+}
+    """;
+
+    var multipartFile = await http.MultipartFile.fromPath(
+      '',
+      imagePath,
+      contentType:
+          MediaType("image", p.extension(imagePath).replaceFirst('.', '')),
+    );
+
+    Map<String, dynamic> variables = {
+      "memberId": memberId,
+      "image": multipartFile,
+      "nickname": nickname,
+      "customId": customId,
+      "intro": intro ?? '',
+      "imageName": 'Member${memberId}_avatar',
+    };
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    return !result.hasException;
+  }
+
+  @override
+  Future<bool> deleteAvatarPhoto(String imageId) async {
+    String mutation = """
+mutation(
+  \$imageId: ID
+){
+  deletePhoto(
+    where:{
+      id: \$imageId
+    }
+  ){
+    id
+  }
+}
+    """;
+    Map<String, dynamic> variables = {
+      "imageId": imageId,
+    };
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    return !result.hasException;
+  }
+
+  @override
+  Future<bool> deleteAvatarUrl(String memberId) async {
+    String mutation = """
+mutation(
+  \$memberId: ID
+){
+  updateMember(
+    where:{
+      id: \$memberId
+    }
+    data:{
+      avatar: ""
+    }
+  ){
+    id
+  }
+}
+    """;
+    Map<String, dynamic> variables = {
+      "memberId": memberId,
+    };
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    return !result.hasException;
   }
 
   @override
