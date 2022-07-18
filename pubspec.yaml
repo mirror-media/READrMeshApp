@@ -165,6 +165,10 @@ dependencies:
   image_picker: ^0.8.5+3
   # crop user image
   image_cropper: ^2.0.3
+  # parse http format
+  http_parser: ^4.0.1
+  # path
+  path: ^1.8.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
