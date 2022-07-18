@@ -104,6 +104,12 @@ class InvitationCodeService implements InvitationCodeRepos {
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
     }

@@ -31,9 +31,14 @@ class PublisherService implements PublisherRepos {
     ){
     stories(
         take: 20
-        orderBy:{
-          createdAt: desc
-        }
+        orderBy:[
+          {
+            createdAt: desc
+          },
+          {
+            published_date: desc
+          },
+        ]
         where:{
           is_active:{
             equals: true
@@ -95,6 +100,12 @@ class PublisherService implements PublisherRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -127,6 +138,12 @@ class PublisherService implements PublisherRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(

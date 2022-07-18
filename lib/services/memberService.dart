@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -210,6 +209,12 @@ class MemberService implements MemberRepos {
         firebaseId
         email
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         verified
         customId
         intro
@@ -705,6 +710,12 @@ query(
         avatar
         customId
         is_active
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     """;

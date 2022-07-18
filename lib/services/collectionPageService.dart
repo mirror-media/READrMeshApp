@@ -57,6 +57,12 @@ query(
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     otherPickMembers: picks(
@@ -82,6 +88,12 @@ query(
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     picksCount(
@@ -155,6 +167,12 @@ query(
         nickname
         email
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       content
       state
@@ -193,6 +211,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     story{
       id
@@ -206,6 +230,7 @@ query(
       full_screen_ad
       paywall
       published_date
+      createdAt
       og_image
       followingPicks: pick(
         where:{
@@ -234,6 +259,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:pick(
@@ -266,6 +297,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       pickCount(

@@ -63,6 +63,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     type
     objective
@@ -200,6 +206,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
   }
   comments(
@@ -218,6 +230,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     content
     published_date

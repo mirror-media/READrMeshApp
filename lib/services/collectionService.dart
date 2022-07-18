@@ -147,6 +147,7 @@ class CollectionService implements CollectionRepos {
           title
           url
           published_date
+          createdAt
           og_image
           source{
             id
@@ -190,6 +191,7 @@ class CollectionService implements CollectionRepos {
           title
           url
           published_date
+          createdAt
           og_image
           source{
             id
@@ -304,6 +306,12 @@ class CollectionService implements CollectionRepos {
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       story{
         id
@@ -317,6 +325,7 @@ class CollectionService implements CollectionRepos {
         full_screen_ad
         paywall
         published_date
+        createdAt
         og_image
         followingPicks: pick(
           where:{
@@ -345,6 +354,12 @@ class CollectionService implements CollectionRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -377,6 +392,12 @@ class CollectionService implements CollectionRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(
@@ -519,6 +540,12 @@ class CollectionService implements CollectionRepos {
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         story{
           id
@@ -532,6 +559,7 @@ class CollectionService implements CollectionRepos {
             full_screen_ad
             paywall
             published_date
+            createdAt
             og_image
             followingPicks: pick(
               where:{
@@ -560,6 +588,12 @@ class CollectionService implements CollectionRepos {
                 nickname
                 avatar
                 customId
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             otherPicks:pick(
@@ -592,6 +626,12 @@ class CollectionService implements CollectionRepos {
                 nickname
                 avatar
                 customId
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             pickCount(
@@ -789,6 +829,12 @@ mutation(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     otherPicks:picks(
@@ -821,6 +867,12 @@ mutation(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     picksCount(
@@ -1066,6 +1118,12 @@ mutation(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         heroImage{
           id
@@ -1118,6 +1176,12 @@ mutation(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:picks(
@@ -1150,6 +1214,12 @@ mutation(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         picksCount(

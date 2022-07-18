@@ -107,6 +107,12 @@ class CommentService implements CommentRepos {
             nickname
             email
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           content
           state
@@ -196,6 +202,12 @@ class CommentService implements CommentRepos {
             nickname
             email
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           content
           state

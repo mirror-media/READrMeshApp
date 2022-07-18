@@ -134,6 +134,12 @@ query(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           content
           published_date
@@ -167,6 +173,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:pick(
@@ -199,6 +211,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       pickCount(
@@ -284,6 +302,12 @@ query(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       heroImage{
         id
@@ -386,6 +410,12 @@ query(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           content
           published_date
@@ -419,6 +449,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:picks(
@@ -451,6 +487,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
     }
@@ -596,6 +638,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:pick(
@@ -628,6 +676,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       pickCount(
@@ -697,6 +751,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         content
       	state
@@ -760,6 +820,12 @@ query(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       heroImage{
         id
@@ -852,6 +918,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:picks(
@@ -884,6 +956,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       comment(
@@ -914,6 +992,12 @@ query(
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         content
       	state
@@ -1018,6 +1102,12 @@ query(
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         customId
         followerCount(
           where:{
@@ -1066,6 +1156,12 @@ query(
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         customId
         followerCount(
           where:{
@@ -1125,6 +1221,12 @@ query(
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         customId
         followerCount(
           where:{
@@ -1290,6 +1392,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     heroImage{
       id
@@ -1382,6 +1490,12 @@ query(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     otherPicks:picks(
@@ -1414,6 +1528,12 @@ query(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
   }
