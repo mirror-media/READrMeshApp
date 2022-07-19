@@ -11,7 +11,7 @@ import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/editCollection/editDescriptionPage.dart';
 import 'package:readr/pages/collection/editCollection/reorderPage.dart';
-import 'package:readr/pages/collection/editCollection/titleAndOg/editTitlePage.dart';
+import 'package:readr/pages/collection/editCollection/editTitlePage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController> {

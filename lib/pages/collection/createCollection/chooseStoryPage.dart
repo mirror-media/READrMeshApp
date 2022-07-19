@@ -7,7 +7,7 @@ import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/collection/collectionStoryItem.dart';
-import 'package:readr/pages/collection/createCollection/titleAndOg/inputTitlePage.dart';
+import 'package:readr/pages/collection/createCollection/inputTitlePage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
 
