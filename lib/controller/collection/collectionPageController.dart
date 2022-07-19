@@ -33,6 +33,9 @@ class CollectionPageController extends GetxController {
   final List<Comment> popularComments = [];
   final collectionPicks = <CollectionStory>[].obs;
 
+  final collectionDescription = ''.obs;
+  final expandDescription = false.obs;
+
   @override
   void onReady() {
     if (!isNewCollection) {
@@ -64,6 +67,7 @@ class CollectionPageController extends GetxController {
           popularComments.assignAll(value['popularComments']);
           collectionPicks.assignAll(value['collectionPicks']);
           collection.collectionPicks = value['collectionPicks'];
+          collectionDescription(value['description']);
         }
       });
     } catch (e) {

@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/graphqlBody.dart';
 
@@ -14,24 +16,26 @@ abstract class CollectionRepos {
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
     List<String>? fetchedStoryIds,
   });
+  Future<String> createOgPhoto({required String ogImageUrlOrPath});
   Future<Collection> createCollection({
     required String title,
-    required String ogImageUrl,
+    required String ogImageId,
     required List<CollectionStory> collectionStory,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
+    required String description,
   });
   Future<Collection> createCollectionPicks({
     required Collection collection,
     required List<CollectionStory> collectionStory,
   });
-  Future<Collection> updateTitleAndOg({
+  Future<Collection> updateTitle({
     required String collectionId,
-    required String heroImageId,
     required String newTitle,
-    required String newOgUrl,
   });
+  Future<void> updateOgPhoto(
+      {required String photoId, required String ogImageUrlOrPath});
   Future<void> updateCollectionPicksOrder({
     required String collectionId,
     required List<CollectionStory> collectionStory,
@@ -40,6 +44,10 @@ abstract class CollectionRepos {
       {required List<CollectionStory> collectionStory});
   Future<bool> deleteCollection(String collectionId, String ogImageId);
   Future<Collection?> fetchCollectionById(String id);
+  Future<void> updateDescription({
+    required String collectionId,
+    required String description,
+  });
 }
 
 class CollectionService implements CollectionRepos {
@@ -147,6 +155,7 @@ class CollectionService implements CollectionRepos {
           title
           url
           published_date
+          createdAt
           og_image
           source{
             id
@@ -190,6 +199,7 @@ class CollectionService implements CollectionRepos {
           title
           url
           published_date
+          createdAt
           og_image
           source{
             id
@@ -247,13 +257,84 @@ class CollectionService implements CollectionRepos {
   }
 
   @override
+  Future<String> createOgPhoto({required String ogImageUrlOrPath}) async {
+    const String urlMutation = """
+mutation(
+  \$photoName: String
+  \$imageUrl: String
+){
+  createPhoto(
+    data:{
+      name: \$photoName
+      urlOriginal: \$imageUrl
+    }
+  ){
+    id
+  }
+}
+""";
+
+    const String photoMutation = """
+mutation(
+  \$photoName: String
+  \$imageFile: Upload
+){
+  createPhoto(
+    data:{
+      name: \$photoName
+     	file:{
+        upload: \$imageFile
+      }
+    }
+  ){
+    id
+  }
+}
+""";
+
+    String mutation;
+    Map<String, dynamic> variables;
+
+    if (ogImageUrlOrPath.contains('http')) {
+      mutation = urlMutation;
+      variables = {
+        'photoName': 'CollectionOg_${DateTime.now()}_$hashCode',
+        'imageUrl': ogImageUrlOrPath,
+      };
+    } else {
+      final multipartFile = await http.MultipartFile.fromPath(
+        '',
+        ogImageUrlOrPath,
+        contentType: MediaType("image", 'jpg'),
+      );
+      mutation = photoMutation;
+      variables = {
+        'photoName': 'CollectionOg_${DateTime.now()}',
+        'imageFile': multipartFile,
+      };
+    }
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
+
+    return result.data!['createPhoto']['id'];
+  }
+
+  @override
   Future<Collection> createCollection({
     required String title,
-    required String ogImageUrl,
+    required String ogImageId,
     required List<CollectionStory> collectionStory,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
+    required String description,
   }) async {
     const String mutation = """
     mutation(
@@ -262,9 +343,10 @@ class CollectionService implements CollectionRepos {
   \$myId: ID
   \$public: String
   \$format: String
-  \$heroImageUrl: String
+  \$photoId: ID
   \$collectionpicks: [CollectionPickCreateInput!]
   \$followingMembers: [ID!]
+  \$description: String
 ){
   createCollection(
     data:{
@@ -273,15 +355,15 @@ class CollectionService implements CollectionRepos {
       public: \$public,
       format: \$format,
       status: "publish"
+      summary: \$description,
       creator:{
       	connect:{
           id: \$myId
         }
       }
       heroImage:{
-        create:{
-          name: \$slug
-          urlOriginal: \$heroImageUrl
+        connect:{
+          id: \$photoId
         }
       }
       collectionpicks:{
@@ -294,6 +376,9 @@ class CollectionService implements CollectionRepos {
     createdAt
     heroImage{
       id
+      resized{
+        original
+      }
     }
     collectionpicks{
       id
@@ -304,6 +389,12 @@ class CollectionService implements CollectionRepos {
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       story{
         id
@@ -317,6 +408,7 @@ class CollectionService implements CollectionRepos {
         full_screen_ad
         paywall
         published_date
+        createdAt
         og_image
         followingPicks: pick(
           where:{
@@ -345,6 +437,12 @@ class CollectionService implements CollectionRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -377,6 +475,12 @@ class CollectionService implements CollectionRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(
@@ -455,45 +559,43 @@ class CollectionService implements CollectionRepos {
       "public": public.toString().split('.').last,
       "format": format.toString().split('.').last,
       "myId": Get.find<UserService>().currentUser.memberId,
-      "heroImageUrl": ogImageUrl,
+      "photoId": ogImageId,
       "collectionpicks": collectionStoryList,
       "followingMembers": Get.find<UserService>().followingMemberIds,
+      "description": description,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
+    if (result.hasException || result.data == null) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
+
+    final jsonResponse = result.data;
 
     List<CollectionStory> collectionPicks = [];
-    for (var result in jsonResponse['data']['createCollection']
-        ['collectionpicks']) {
+    for (var result in jsonResponse!['createCollection']['collectionpicks']) {
       collectionPicks.add(CollectionStory.fromJson(result));
     }
 
     return Collection(
-      id: jsonResponse['data']['createCollection']['id'],
+      id: jsonResponse['createCollection']['id'],
       title: title,
-      slug: jsonResponse['data']['createCollection']['slug'],
+      slug: jsonResponse['createCollection']['slug'],
       creator: Get.find<UserService>().currentUser,
       format: format,
       public: public,
-      controllerTag:
-          'Collection${jsonResponse['data']['createCollection']['id']}',
-      ogImageUrl: ogImageUrl,
-      publishedTime: DateTime.tryParse(
-              jsonResponse['data']['createCollection']['createdAt']) ??
-          DateTime.now(),
+      controllerTag: 'Collection${jsonResponse['createCollection']['id']}',
+      ogImageUrl: jsonResponse['createCollection']['heroImage']['resized']
+          ['original'],
+      publishedTime:
+          DateTime.tryParse(jsonResponse['createCollection']['createdAt']) ??
+              DateTime.now(),
       collectionPicks: collectionPicks,
-      ogImageId: jsonResponse['data']['createCollection']['heroImage']['id'],
+      ogImageId: jsonResponse['createCollection']['heroImage']['id'],
     );
   }
 
@@ -519,6 +621,12 @@ class CollectionService implements CollectionRepos {
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         story{
           id
@@ -532,6 +640,7 @@ class CollectionService implements CollectionRepos {
             full_screen_ad
             paywall
             published_date
+            createdAt
             og_image
             followingPicks: pick(
               where:{
@@ -560,6 +669,12 @@ class CollectionService implements CollectionRepos {
                 nickname
                 avatar
                 customId
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             otherPicks:pick(
@@ -592,6 +707,12 @@ class CollectionService implements CollectionRepos {
                 nickname
                 avatar
                 customId
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             pickCount(
@@ -700,31 +821,85 @@ class CollectionService implements CollectionRepos {
   }
 
   @override
-  Future<Collection> updateTitleAndOg({
+  Future<void> updateOgPhoto(
+      {required String photoId, required String ogImageUrlOrPath}) async {
+    const String urlMutation = """
+mutation(
+  \$photoId: ID
+  \$newPhotoUrl: String
+){
+ updatePhoto(
+    where:{
+      id: \$photoId
+    }
+    data:{
+      urlOriginal: \$newPhotoUrl
+    }
+  ){
+    id
+  }
+}
+""";
+
+    const String photoMutation = """
+mutation(
+  \$photoId: ID
+  \$image: Upload
+){
+ updatePhoto(
+    where:{
+      id: \$photoId
+    }
+    data:{
+      urlOriginal: ""
+      file:{
+        upload: \$image
+      }
+    }
+  ){
+    id
+  }
+}
+""";
+
+    String mutation;
+    final Map<String, dynamic> variables = {'photoId': photoId};
+
+    if (ogImageUrlOrPath.contains('http')) {
+      mutation = urlMutation;
+      variables['newPhotoUrl'] = ogImageUrlOrPath;
+    } else {
+      final multipartFile = await http.MultipartFile.fromPath(
+        '',
+        ogImageUrlOrPath,
+        contentType: MediaType("image", 'jpg'),
+      );
+      mutation = photoMutation;
+      variables['image'] = multipartFile;
+    }
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
+  }
+
+  @override
+  Future<Collection> updateTitle({
     required String collectionId,
-    required String heroImageId,
     required String newTitle,
-    required String newOgUrl,
   }) async {
     const String mutation = """
 mutation(
   \$collectionId: ID
-  \$heroImageId: ID
   \$newTitle: String
-  \$newOgUrl: String
   \$followingMembers: [ID!]
   \$myId: ID
 ){
-  updatePhoto(
-    where:{
-      id: \$heroImageId
-    }
-    data:{
-      urlOriginal: \$newOgUrl
-    }
-  ){
-    urlOriginal
-  }
   updateCollection(
     where:{
       id: \$collectionId
@@ -738,11 +913,11 @@ mutation(
     slug
     public
     status
+    summary
     heroImage{
       id
-      urlOriginal
-      file{
-        url
+      resized{
+        original
       }
     }
     format
@@ -789,6 +964,12 @@ mutation(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     otherPicks:picks(
@@ -821,6 +1002,12 @@ mutation(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     picksCount(
@@ -868,9 +1055,7 @@ mutation(
 
     Map<String, dynamic> variables = {
       "collectionId": collectionId,
-      "heroImageId": heroImageId,
       "newTitle": newTitle,
-      "newOgUrl": newOgUrl,
       "myId": Get.find<UserService>().currentUser.memberId,
       "followingMembers": Get.find<UserService>().followingMemberIds,
     };
@@ -1061,11 +1246,18 @@ mutation(
         slug
         public
         status
+        summary
         creator{
           id
           nickname
           avatar
           customId
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
         heroImage{
           id
@@ -1118,6 +1310,12 @@ mutation(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:picks(
@@ -1150,6 +1348,12 @@ mutation(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         picksCount(
@@ -1219,5 +1423,43 @@ mutation(
     }
 
     return null;
+  }
+
+  @override
+  Future<void> updateDescription({
+    required String collectionId,
+    required String description,
+  }) async {
+    const String mutation = """
+mutation(
+  \$collectionId: ID
+  \$description: String
+){
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      summary: \$description
+    }
+  ){
+    id
+  }
+}
+""";
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+      "description": description,
+    };
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
   }
 }

@@ -29,8 +29,11 @@ class CreateCollectionController extends GetxController {
 
   //inputTitlePage
   final collectionTitle = ''.obs;
-  final collectionOgUrl = ''.obs;
+  final collectionOgUrlOrPath = ''.obs;
   final TextEditingController titleTextController = TextEditingController();
+
+  //descriptionPage
+  final collectionDescription = ''.obs;
 
   //create collection
   final isCreating = false.obs;
@@ -62,15 +65,20 @@ class CreateCollectionController extends GetxController {
     isCreating.value = true;
 
     try {
+      String imageId = await service
+          .createOgPhoto(ogImageUrlOrPath: collectionOgUrlOrPath.value)
+          .timeout(
+            const Duration(minutes: 1),
+          );
       Collection newCollection = await service
           .createCollection(
             title: collectionTitle.value,
-            ogImageUrl: collectionOgUrl.value,
+            ogImageId: imageId,
             collectionStory: selectedList,
+            description: collectionDescription.value,
           )
           .timeout(
             const Duration(minutes: 1),
-            onTimeout: () => throw Exception(),
           );
 
       Get.find<PubsubService>().addCollection(

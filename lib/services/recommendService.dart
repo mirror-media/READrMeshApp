@@ -112,6 +112,12 @@ class RecommendService implements RecommendRepos {
         nickname
         customId
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       otherMember: members(
         where:{
@@ -130,6 +136,12 @@ class RecommendService implements RecommendRepos {
         nickname
         customId
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
     }
     """;

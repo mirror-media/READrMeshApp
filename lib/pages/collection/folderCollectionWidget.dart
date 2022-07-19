@@ -196,6 +196,51 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
           ),
         ),
         Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+          child: Obx(
+            () => GestureDetector(
+              onTap: () {
+                if (controller.expandDescription.isFalse) {
+                  controller.expandDescription.value = true;
+                }
+              },
+              child: ExtendedText(
+                controller.collectionDescription.value,
+                maxLines: controller.expandDescription.value ? null : 3,
+                style: const TextStyle(
+                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                joinZeroWidthSpace: true,
+                overflowWidget: TextOverflowWidget(
+                  position: TextOverflowPosition.end,
+                  child: RichText(
+                    text: const TextSpan(
+                      text: '.... ',
+                      style: TextStyle(
+                        color: Color.fromRGBO(0, 9, 40, 0.66),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '展開更多',
+                          style: TextStyle(
+                            color: readrBlack50,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Row(
             children: [

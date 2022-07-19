@@ -103,9 +103,14 @@ class EditorChoiceService implements EditorChoiceRepos {
             }
           ]
         }
-        orderBy:{
-          published_date: desc
-        }
+        orderBy:[
+          {
+            createdAt: desc
+          },
+          {
+            published_date: desc
+          },
+        ]
       ){
         id
         title
@@ -121,6 +126,7 @@ class EditorChoiceService implements EditorChoiceRepos {
         full_screen_ad
         paywall
         published_date
+        createdAt
         og_image
         followingPicks: pick(
           where:{
@@ -149,6 +155,12 @@ class EditorChoiceService implements EditorChoiceRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -181,6 +193,12 @@ class EditorChoiceService implements EditorChoiceRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(

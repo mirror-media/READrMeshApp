@@ -106,6 +106,12 @@ class PersonalFileService implements PersonalFileRepos {
         id
         nickname
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         email
         verified
         customId
@@ -219,6 +225,12 @@ query(
       id
       nickname
       avatar
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     objective
     picked_date
@@ -262,6 +274,12 @@ query(
           id
           nickname
           avatar
+          avatar_image{
+            id
+            resized{
+              original
+            }
+          }
         }
       }
       otherPicks:pick(
@@ -362,6 +380,12 @@ query(
         nickname
         avatar
         email
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       content
       state
@@ -454,6 +478,12 @@ query(
             id
             nickname
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           objective
           picked_date
@@ -499,6 +529,12 @@ query(
                 id
                 nickname
                 avatar
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             otherPicks:pick(
@@ -530,6 +566,12 @@ query(
                 id
                 nickname
                 avatar
+                avatar_image{
+                  id
+                  resized{
+                    original
+                  }
+                }
               }
             }
             pickCount(
@@ -654,6 +696,12 @@ query(
         nickname
         customId
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         isFollowing: follower(
           where:{
             id:{
@@ -727,6 +775,12 @@ query(
         nickname
         customId
         avatar
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
         isFollowing: follower(
           where:{
             id:{
@@ -909,9 +963,8 @@ query(
         status
         heroImage{
           id
-          urlOriginal
-          file{
-            url
+          resized{
+            original
           }
         }
         format
@@ -958,6 +1011,12 @@ query(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:picks(
@@ -990,6 +1049,12 @@ query(
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         picksCount(
@@ -1117,6 +1182,12 @@ query(
       id
       nickname
       avatar
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     objective
     picked_date
@@ -1130,12 +1201,17 @@ query(
         nickname
         avatar
         customId
+        avatar_image{
+          id
+          resized{
+            original
+          }
+        }
       }
       heroImage{
         id
-        urlOriginal
-        file{
-          url
+        resized{
+          original
         }
       }
       format

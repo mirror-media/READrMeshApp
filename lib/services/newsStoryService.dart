@@ -61,6 +61,12 @@ class NewsStoryService implements NewsStoryRepos {
             id
             nickname
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPickMembers: pick(
@@ -86,6 +92,12 @@ class NewsStoryService implements NewsStoryRepos {
             id
             nickname
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(
@@ -154,6 +166,12 @@ class NewsStoryService implements NewsStoryRepos {
             nickname
             email
             avatar
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
           content
           state

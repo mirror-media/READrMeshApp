@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:readr/controller/personalFile/editPersonalFilePageController.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/memberService.dart';
@@ -31,7 +38,19 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 }
 
                 if (!controller.isLoading) {
-                  return _buildForm(context);
+                  return Column(
+                    children: [
+                      _buildAvatar(context),
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: Colors.black12,
+                      ),
+                      Expanded(
+                        child: _buildForm(context),
+                      ),
+                    ],
+                  );
                 }
 
                 return const Center(
@@ -316,5 +335,161 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
         ),
       ),
     );
+  }
+
+  Widget _buildAvatar(BuildContext context) {
+    Color randomColor = Colors.primaries[
+        int.parse(Get.find<UserService>().currentUser.memberId) %
+            Colors.primaries.length];
+    Color textColor =
+        randomColor.computeLuminance() > 0.5 ? readrBlack : Colors.white;
+    List<String> splitNickname =
+        Get.find<UserService>().currentUser.nickname.split('');
+    String firstLetter = '';
+    for (int i = 0; i < splitNickname.length; i++) {
+      if (splitNickname[i] != " ") {
+        firstLetter = splitNickname[i];
+        break;
+      }
+    }
+
+    Widget child = AutoSizeText(
+      firstLetter,
+      style: TextStyle(color: textColor, fontSize: 40),
+      minFontSize: 5,
+    );
+
+    return GestureDetector(
+      onTap: () async => await _showAvatarBottomSheet(context),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        alignment: Alignment.center,
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Obx(
+              () {
+                ImageProvider? image;
+                if (controller.avatarImagePath.isNotEmpty) {
+                  image = FileImage(File(controller.avatarImagePath.value));
+                } else if (controller.avatarImageUrl.isNotEmpty) {
+                  image = NetworkImage(controller.avatarImageUrl.value);
+                }
+
+                return CircleAvatar(
+                  backgroundColor: randomColor,
+                  foregroundImage: image,
+                  radius: 40,
+                  child: child,
+                );
+              },
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const Text(
+              '更換大頭貼照',
+              style: TextStyle(color: Colors.blue, fontSize: 16),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showAvatarBottomSheet(BuildContext context) async {
+    String? result = await showCupertinoModalPopup<String>(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('camera'),
+            child: const Text(
+              '開啟相機',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('photo'),
+            child: const Text(
+              '選擇照片',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          if (controller.avatarImageUrl.isNotEmpty ||
+              controller.avatarImagePath.isNotEmpty)
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pop('delete'),
+              child: const Text(
+                '刪除目前的大頭貼照',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(context).pop('cancel'),
+          child: const Text(
+            '取消',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    try {
+      if (result == 'photo' || result == 'camera') {
+        final XFile? image = await ImagePicker().pickImage(
+            source:
+                result == 'photo' ? ImageSource.gallery : ImageSource.camera);
+        if (image != null) {
+          CroppedFile? croppedFile = await ImageCropper().cropImage(
+            sourcePath: image.path,
+            cropStyle: CropStyle.circle,
+            uiSettings: [
+              AndroidUiSettings(
+                toolbarTitle: '裁切',
+                toolbarColor: Colors.white,
+                toolbarWidgetColor: readrBlack87,
+                statusBarColor: readrBlack87,
+                initAspectRatio: CropAspectRatioPreset.original,
+                backgroundColor: Colors.white,
+                activeControlsWidgetColor: Colors.blue,
+                lockAspectRatio: false,
+              ),
+              IOSUiSettings(
+                title: '裁切',
+                doneButtonTitle: '完成',
+                cancelButtonTitle: '取消',
+              ),
+            ],
+          );
+
+          if (croppedFile != null) {
+            controller.avatarImagePath.value = croppedFile.path;
+            controller.isEdited.value = true;
+          }
+        }
+      } else if (result == 'delete') {
+        controller.avatarImagePath.value = '';
+        controller.avatarImageUrl.value = '';
+      }
+      controller.checkIsEdited();
+    } catch (e) {
+      print('Pick photo error: $e');
+    }
   }
 }

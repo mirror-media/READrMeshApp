@@ -235,9 +235,14 @@ class TabStoryListServices implements TabStoryListRepos {
             equals: true
           }
         }
-        orderBy:{
-          published_date: desc
-        }
+        orderBy:[
+          {
+            createdAt: desc
+          },
+          {
+            published_date: desc
+          },
+        ]
       ){
         id
         title
@@ -253,6 +258,7 @@ class TabStoryListServices implements TabStoryListRepos {
         full_screen_ad
         paywall
         published_date
+        createdAt
         og_image
         followingPicks: pick(
           where:{
@@ -281,6 +287,12 @@ class TabStoryListServices implements TabStoryListRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -313,6 +325,12 @@ class TabStoryListServices implements TabStoryListRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(

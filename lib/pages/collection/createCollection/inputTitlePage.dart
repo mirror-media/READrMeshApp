@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/collection/createCollection/sortStoryPage.dart';
-import 'package:readr/pages/collection/createCollection/titleAndOg/changeOgPage.dart';
+import 'package:readr/pages/collection/createCollection/descriptionPage.dart';
+import 'package:readr/pages/collection/shared/changeOgPage.dart';
 
 class InputTitlePage extends GetView<CreateCollectionController> {
   @override
@@ -54,7 +56,10 @@ class InputTitlePage extends GetView<CreateCollectionController> {
                     color: Colors.blue,
                   ),
                 ),
-                onPressed: () => Get.to(() => SortStoryPage()),
+                onPressed: () {
+                  controller.collectionDescription.value = '';
+                  Get.to(() => DescriptionPage());
+                },
               );
             }
             return Container();
@@ -75,30 +80,50 @@ class InputTitlePage extends GetView<CreateCollectionController> {
 
   Widget _ogImage() {
     return GestureDetector(
-      onTap: () => Get.to(() => ChangeOgPage()),
+      onTap: () async {
+        List<String> imageUrlList = [];
+        for (var item in controller.selectedList) {
+          if (item.news!.heroImageUrl != null) {
+            imageUrlList.add(item.news!.heroImageUrl!);
+          }
+        }
+        controller.collectionOgUrlOrPath.value =
+            await Get.to(() => ChangeOgPage(imageUrlList));
+      },
       child: Column(
         children: [
           Obx(
-            () => CachedNetworkImage(
-              width: Get.width,
-              height: Get.width / 2,
-              imageUrl: controller.collectionOgUrl.value,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: readrBlack66,
-                child: const Icon(
-                  Icons.image_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: readrBlack66,
-                child: const Icon(
-                  Icons.image_outlined,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            () {
+              if (controller.collectionOgUrlOrPath.value.contains('http')) {
+                return CachedNetworkImage(
+                  width: Get.width,
+                  height: Get.width / 2,
+                  imageUrl: controller.collectionOgUrlOrPath.value,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    color: readrBlack66,
+                    child: const Icon(
+                      Icons.image_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: readrBlack66,
+                    child: const Icon(
+                      Icons.image_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }
+
+              return Image.file(
+                File(controller.collectionOgUrlOrPath.value),
+                width: Get.width,
+                height: Get.width / 2,
+                fit: BoxFit.cover,
+              );
+            },
           ),
           const SizedBox(
             height: 12,

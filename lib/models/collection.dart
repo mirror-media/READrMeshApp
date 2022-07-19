@@ -49,11 +49,9 @@ class Collection {
 
   factory Collection.fromFetchCollectionList(
       Map<String, dynamic> json, Member viewMember) {
-    String imageUrl;
-    if (json['heroImage']['file'] != null) {
-      imageUrl = json['heroImage']['file']['url'];
-    } else {
-      imageUrl = json['heroImage']['urlOriginal'];
+    String imageUrl = '';
+    if (json['heroImage'] != null) {
+      imageUrl = json['heroImage']['resized']['original'];
     }
 
     CollectionFormat format;
@@ -141,11 +139,9 @@ class Collection {
   }
 
   factory Collection.fromJson(Map<String, dynamic> json) {
-    String imageUrl;
-    if (json['heroImage']['file'] != null) {
-      imageUrl = json['heroImage']['file']['url'];
-    } else {
-      imageUrl = json['heroImage']['urlOriginal'];
+    String imageUrl = '';
+    if (json['heroImage'] != null) {
+      imageUrl = json['heroImage']['resized']['original'];
     }
 
     CollectionFormat format;

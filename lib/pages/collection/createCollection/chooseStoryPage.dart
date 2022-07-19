@@ -7,7 +7,7 @@ import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/collection/collectionStoryItem.dart';
-import 'package:readr/pages/collection/createCollection/titleAndOg/inputTitlePage.dart';
+import 'package:readr/pages/collection/createCollection/inputTitlePage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -108,7 +108,7 @@ class ChooseStoryPage extends StatelessWidget {
                       b.news!.publishedDate.compareTo(a.news!.publishedDate));
                   for (var selectedItem in controller.selectedList) {
                     if (selectedItem.news!.heroImageUrl != null) {
-                      controller.collectionOgUrl.value =
+                      controller.collectionOgUrlOrPath.value =
                           selectedItem.news!.heroImageUrl!;
                       break;
                     }

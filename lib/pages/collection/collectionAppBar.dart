@@ -9,8 +9,9 @@ import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/pages/collection/editCollection/editDescriptionPage.dart';
 import 'package:readr/pages/collection/editCollection/reorderPage.dart';
-import 'package:readr/pages/collection/editCollection/titleAndOg/editTitlePage.dart';
+import 'package:readr/pages/collection/editCollection/editTitlePage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController> {
@@ -146,6 +147,16 @@ class CollectionAppBar extends GetView<CollectionPageController> {
             ),
           ),
           CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('description'),
+            child: const Text(
+              '修改敘述',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          CupertinoActionSheetAction(
             onPressed: () => Navigator.of(context).pop('edit'),
             child: const Text(
               '編輯內容',
@@ -185,6 +196,13 @@ class CollectionAppBar extends GetView<CollectionPageController> {
           collection: collection,
         ),
         fullscreenDialog: true,
+      );
+    } else if (result == 'description') {
+      Get.to(
+        () => EditDescriptionPage(
+          collection: collection,
+          description: controller.collectionDescription.value,
+        ),
       );
     } else if (result == 'edit') {
       Get.to(

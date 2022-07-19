@@ -33,9 +33,14 @@ class LatestService implements LatestRepos {
     ){
       stories(
         take: 60
-        orderBy:{
-          createdAt: desc
-        }
+        orderBy:[
+          {
+            createdAt: desc
+          },
+          {
+            published_date: desc
+          },
+        ]
         where:{
           is_active:{
             equals: true
@@ -91,6 +96,12 @@ class LatestService implements LatestRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         otherPicks:pick(
@@ -123,6 +134,12 @@ class LatestService implements LatestRepos {
             nickname
             avatar
             customId
+            avatar_image{
+              id
+              resized{
+                original
+              }
+            }
           }
         }
         pickCount(

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -31,6 +30,8 @@ class EditPersonalFilePageController extends GetxController {
   final isEdited = false.obs;
   final introLength = 0.obs;
   final formKey = GlobalKey<FormState>();
+  final avatarImageUrl = ''.obs;
+  final avatarImagePath = ''.obs;
 
   bool isLoading = true;
   bool isError = false;
@@ -87,6 +88,7 @@ class EditPersonalFilePageController extends GetxController {
           text: Get.find<UserService>().currentUser.intro);
       introLength.value =
           Get.find<UserService>().currentUser.intro?.length ?? 0;
+      avatarImageUrl.value = Get.find<UserService>().currentUser.avatar ?? '';
     } catch (e) {
       print('EditPersonalFilePage error: $e');
       error = determineException(e);
@@ -97,16 +99,6 @@ class EditPersonalFilePageController extends GetxController {
   }
 
   void savePersonalFile() async {
-    Member member = Member(
-      memberId: Get.find<UserService>().currentUser.memberId,
-      nickname: nicknameController.text,
-      customId: customIdController.text,
-      avatar: Get.find<UserService>().currentUser.avatar,
-      intro: introController.text,
-      followingPublisher:
-          Get.find<UserService>().currentUser.followingPublisher,
-      following: Get.find<UserService>().currentUser.following,
-    );
     nicknameError.value = false;
     customIdError.value = false;
     alreadyShowError.value = false;
@@ -115,31 +107,45 @@ class EditPersonalFilePageController extends GetxController {
     try {
       List<Publisher> publisherList =
           await personalFileRepos.fetchAllPublishers();
-      bool checkResult = _validateNicknameAndId(publisherList, member);
+      bool checkResult =
+          _validateNickname(publisherList, nicknameController.text);
       if (!checkResult) {
         nicknameError.value = true;
         isSaving.value = false;
         formKey.currentState!.validate();
       } else {
-        bool? result = await memberRepos
-            .updateMember(member)
-            .timeout(const Duration(seconds: 90), onTimeout: () => null);
-        if (result == null) {
-          Fluttertoast.showToast(
-            msg: "儲存失敗 請稍後再試一次",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-          saveError.value = true;
-          isSaving.value = false;
-        } else if (result) {
+        bool result;
+        if (avatarImagePath.isNotEmpty) {
+          await _deleteOldAvatar();
+          result = await memberRepos
+              .updateMemberAndAvatar(
+                memberId: Get.find<UserService>().currentUser.memberId,
+                nickname: nicknameController.text,
+                customId: customIdController.text,
+                intro: introController.text,
+                imagePath: avatarImagePath.value,
+              )
+              .timeout(const Duration(seconds: 90));
+        } else {
+          if (avatarImageUrl.isEmpty) {
+            await _deleteOldAvatar();
+          }
+          result = await memberRepos
+              .updateMember(
+                memberId: Get.find<UserService>().currentUser.memberId,
+                nickname: nicknameController.text,
+                customId: customIdController.text,
+                intro: introController.text,
+              )
+              .timeout(const Duration(seconds: 90));
+        }
+
+        if (result) {
           await Get.find<PersonalFilePageController>(
                   tag: Get.find<UserService>().currentUser.memberId)
               .fetchMemberData();
+          // refresh to trigger bottom navigation bar icon update
+          Get.find<UserService>().isMember.refresh();
           Fluttertoast.showToast(
             msg: "更新完成",
             toastLength: Toast.LENGTH_SHORT,
@@ -172,9 +178,9 @@ class EditPersonalFilePageController extends GetxController {
     }
   }
 
-  bool _validateNicknameAndId(List<Publisher> publisherList, Member member) {
+  bool _validateNickname(List<Publisher> publisherList, String nickname) {
     for (var publisher in publisherList) {
-      if (_equalsIgnoreCase(publisher.title, member.nickname)) {
+      if (_equalsIgnoreCase(publisher.title, nickname)) {
         return false;
       }
     }
@@ -185,17 +191,33 @@ class EditPersonalFilePageController extends GetxController {
     return string1.toLowerCase() == string2.toLowerCase();
   }
 
+  Future<void> _deleteOldAvatar() async {
+    bool deleteImageResult;
+    if (Get.find<UserService>().currentUser.avatarImageId != null) {
+      deleteImageResult = await memberRepos
+          .deleteAvatarPhoto(Get.find<UserService>().currentUser.avatarImageId!)
+          .timeout(const Duration(seconds: 90));
+    } else {
+      deleteImageResult = await memberRepos
+          .deleteAvatarUrl(Get.find<UserService>().currentUser.memberId)
+          .timeout(const Duration(seconds: 90));
+    }
+
+    if (!deleteImageResult) {
+      throw Exception('Delete old avatar image failed');
+    }
+  }
+
   void checkIsEdited() {
     if (nicknameController.text.isEmpty || customIdController.text.isEmpty) {
       isEdited.value = false;
     } else if (nicknameController.text !=
-        Get.find<UserService>().currentUser.nickname) {
-      isEdited.value = true;
-    } else if (customIdController.text !=
-        Get.find<UserService>().currentUser.customId) {
-      isEdited.value = true;
-    } else if (introController.text !=
-        Get.find<UserService>().currentUser.intro) {
+            Get.find<UserService>().currentUser.nickname ||
+        customIdController.text !=
+            Get.find<UserService>().currentUser.customId ||
+        introController.text != Get.find<UserService>().currentUser.intro ||
+        avatarImageUrl.isEmpty ||
+        avatarImagePath.isNotEmpty) {
       isEdited.value = true;
     } else {
       isEdited.value = false;

@@ -63,6 +63,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     type
     objective
@@ -189,9 +195,8 @@ query(
     public
     heroImage{
       id
-      urlOriginal
-      file{
-        url
+      resized{
+        original
       }
     }
     format
@@ -200,6 +205,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
   }
   comments(
@@ -218,6 +229,12 @@ query(
       nickname
       avatar
       customId
+      avatar_image{
+        id
+        resized{
+          original
+        }
+      }
     }
     content
     published_date
@@ -244,10 +261,9 @@ query(
     	public
     	heroImage{
       	id
-      	urlOriginal
-      	file{
-        	url
-      	}
+      	resized{
+          original
+        }
     	}
     	format
     }

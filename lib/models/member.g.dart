@@ -23,13 +23,14 @@ class MemberAdapter extends TypeAdapter<Member> {
       followingPublisher: (fields[3] as List).cast<Publisher>(),
       following: (fields[4] as List).cast<Member>(),
       customId: fields[5] as String,
+      avatarImageId: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Member obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.memberId)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class MemberAdapter extends TypeAdapter<Member> {
       ..writeByte(4)
       ..write(obj.following)
       ..writeByte(5)
-      ..write(obj.customId);
+      ..write(obj.customId)
+      ..writeByte(6)
+      ..write(obj.avatarImageId);
   }
 
   @override
