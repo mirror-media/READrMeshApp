@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/editCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/createCollection/sortStoryPage.dart';
 import 'package:readr/services/collectionService.dart';
 
 class EditDescriptionPage extends GetView<EditCollectionController> {
