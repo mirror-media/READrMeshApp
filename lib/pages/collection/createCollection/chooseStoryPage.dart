@@ -108,7 +108,7 @@ class ChooseStoryPage extends StatelessWidget {
                       b.news!.publishedDate.compareTo(a.news!.publishedDate));
                   for (var selectedItem in controller.selectedList) {
                     if (selectedItem.news!.heroImageUrl != null) {
-                      controller.collectionOgUrl.value =
+                      controller.collectionOgUrlOrPath.value =
                           selectedItem.news!.heroImageUrl!;
                       break;
                     }
