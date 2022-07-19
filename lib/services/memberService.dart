@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as p;
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -502,8 +501,7 @@ mutation(
     var multipartFile = await http.MultipartFile.fromPath(
       '',
       imagePath,
-      contentType:
-          MediaType("image", p.extension(imagePath).replaceFirst('.', '')),
+      contentType: MediaType('image', 'jpg'),
     );
 
     Map<String, dynamic> variables = {
