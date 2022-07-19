@@ -5,18 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
-class ChangeOgPage extends GetView<CreateCollectionController> {
+class ChangeOgPage extends StatelessWidget {
+  final List<String> imageUrlList;
+  const ChangeOgPage(this.imageUrlList);
+
   @override
   Widget build(BuildContext context) {
-    List<String> imageUrlList = [];
-    for (var item in controller.selectedList) {
-      if (item.news!.heroImageUrl != null) {
-        imageUrlList.add(item.news!.heroImageUrl!);
-      }
-    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -85,10 +81,7 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
                 ),
               ),
             ),
-            onTap: () {
-              controller.collectionOgUrlOrPath.value = imageUrlList[index - 1];
-              Get.back();
-            },
+            onTap: () => Get.back<String>(result: imageUrlList[index - 1]),
           );
         },
         itemCount: imageUrlList.length + 1,
@@ -164,8 +157,7 @@ class ChangeOgPage extends GetView<CreateCollectionController> {
           );
 
           if (croppedFile != null) {
-            controller.collectionOgUrlOrPath.value = croppedFile.path;
-            Get.back();
+            Get.back<String>(result: croppedFile.path);
           }
         }
       }
