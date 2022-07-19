@@ -195,9 +195,8 @@ query(
     public
     heroImage{
       id
-      urlOriginal
-      file{
-        url
+      resized{
+        original
       }
     }
     format
@@ -262,10 +261,9 @@ query(
     	public
     	heroImage{
       	id
-      	urlOriginal
-      	file{
-        	url
-      	}
+      	resized{
+          original
+        }
     	}
     	format
     }

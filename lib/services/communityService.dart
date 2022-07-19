@@ -311,9 +311,8 @@ query(
       }
       heroImage{
         id
-        urlOriginal
-        file{
-          url
+        resized{
+          original
         }
       }
       format
@@ -829,9 +828,8 @@ query(
       }
       heroImage{
         id
-        urlOriginal
-        file{
-          url
+        resized{
+          original
         }
       }
       format
@@ -1401,9 +1399,8 @@ query(
     }
     heroImage{
       id
-      urlOriginal
-      file{
-        url
+      resized{
+        original
       }
     }
     format
