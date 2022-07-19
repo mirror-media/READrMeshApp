@@ -30,12 +30,12 @@ abstract class CollectionRepos {
     required Collection collection,
     required List<CollectionStory> collectionStory,
   });
-  Future<Collection> updateTitleAndOg({
+  Future<Collection> updateTitle({
     required String collectionId,
-    required String heroImageId,
     required String newTitle,
-    required String newOgUrl,
   });
+  Future<void> updateOgPhoto(
+      {required String photoId, required String ogImageUrlOrPath});
   Future<void> updateCollectionPicksOrder({
     required String collectionId,
     required List<CollectionStory> collectionStory,
@@ -821,31 +821,85 @@ mutation(
   }
 
   @override
-  Future<Collection> updateTitleAndOg({
+  Future<void> updateOgPhoto(
+      {required String photoId, required String ogImageUrlOrPath}) async {
+    const String urlMutation = """
+mutation(
+  \$photoId: ID
+  \$newPhotoUrl: String
+){
+ updatePhoto(
+    where:{
+      id: \$photoId
+    }
+    data:{
+      urlOriginal: \$newPhotoUrl
+    }
+  ){
+    id
+  }
+}
+""";
+
+    const String photoMutation = """
+mutation(
+  \$photoId: ID
+  \$image: Upload
+){
+ updatePhoto(
+    where:{
+      id: \$photoId
+    }
+    data:{
+      urlOriginal: ""
+      file:{
+        upload: \$image
+      }
+    }
+  ){
+    id
+  }
+}
+""";
+
+    String mutation;
+    final Map<String, dynamic> variables = {'photoId': photoId};
+
+    if (ogImageUrlOrPath.contains('http')) {
+      mutation = urlMutation;
+      variables['newPhotoUrl'] = ogImageUrlOrPath;
+    } else {
+      final multipartFile = await http.MultipartFile.fromPath(
+        '',
+        ogImageUrlOrPath,
+        contentType: MediaType("image", 'jpg'),
+      );
+      mutation = photoMutation;
+      variables['image'] = multipartFile;
+    }
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
+  }
+
+  @override
+  Future<Collection> updateTitle({
     required String collectionId,
-    required String heroImageId,
     required String newTitle,
-    required String newOgUrl,
   }) async {
     const String mutation = """
 mutation(
   \$collectionId: ID
-  \$heroImageId: ID
   \$newTitle: String
-  \$newOgUrl: String
   \$followingMembers: [ID!]
   \$myId: ID
 ){
-  updatePhoto(
-    where:{
-      id: \$heroImageId
-    }
-    data:{
-      urlOriginal: \$newOgUrl
-    }
-  ){
-    urlOriginal
-  }
   updateCollection(
     where:{
       id: \$collectionId
@@ -1001,9 +1055,7 @@ mutation(
 
     Map<String, dynamic> variables = {
       "collectionId": collectionId,
-      "heroImageId": heroImageId,
       "newTitle": newTitle,
-      "newOgUrl": newOgUrl,
       "myId": Get.find<UserService>().currentUser.memberId,
       "followingMembers": Get.find<UserService>().followingMemberIds,
     };

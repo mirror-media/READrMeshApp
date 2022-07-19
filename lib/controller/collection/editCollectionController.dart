@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -26,7 +27,7 @@ class EditCollectionController extends GetxController {
 
   //edit title and heroImage page
   late final RxString title;
-  late final RxString heroImageUrl;
+  late final RxString collectionOgUrlOrPath;
   late final TextEditingController titleTextController;
 
   //reorder page
@@ -52,9 +53,16 @@ class EditCollectionController extends GetxController {
 
   @override
   void onInit() {
-    title = collection.title.obs;
-    heroImageUrl = collection.ogImageUrl.obs;
-    titleTextController = TextEditingController(text: collection.title);
+    title = Get.find<PickableItemController>(tag: collection.controllerTag)
+        .collectionTitle
+        .value!
+        .obs;
+    collectionOgUrlOrPath =
+        Get.find<PickableItemController>(tag: collection.controllerTag)
+            .collectionHeroImageUrl
+            .value!
+            .obs;
+    titleTextController = TextEditingController(text: title.value);
     originalList.assignAll(collection.collectionPicks!);
     newList.assignAll(originalList);
     isFirstTime = Get.find<SharedPreferencesService>()
@@ -77,12 +85,17 @@ class EditCollectionController extends GetxController {
     isUpdating.value = true;
 
     try {
-      await collectionRepos.updateTitleAndOg(
-        collectionId: collection.id,
-        heroImageId: collection.ogImageId,
-        newTitle: title.value,
-        newOgUrl: heroImageUrl.value,
-      );
+      await collectionRepos
+          .updateOgPhoto(
+              photoId: collection.ogImageId,
+              ogImageUrlOrPath: collectionOgUrlOrPath.value)
+          .timeout(const Duration(minutes: 1));
+      await collectionRepos
+          .updateTitle(
+            collectionId: collection.id,
+            newTitle: title.value,
+          )
+          .timeout(const Duration(minutes: 1));
 
       Get.back();
       if (Get.isRegistered<CollectionTabController>(
