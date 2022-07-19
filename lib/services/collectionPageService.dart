@@ -33,6 +33,7 @@ query(
       id: \$collectionId
     }
   ){
+    summary
     status
     followingPickMembers: picks(
       where:{
@@ -457,6 +458,7 @@ query(
       'popularComments': popularComments,
       'collectionPicks': collectionPicks,
       'status': status,
+      'description': collection['summary'],
     };
   }
 }
