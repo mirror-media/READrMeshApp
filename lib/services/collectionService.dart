@@ -44,6 +44,10 @@ abstract class CollectionRepos {
       {required List<CollectionStory> collectionStory});
   Future<bool> deleteCollection(String collectionId, String ogImageId);
   Future<Collection?> fetchCollectionById(String id);
+  Future<void> updateDescription({
+    required String collectionId,
+    required String description,
+  });
 }
 
 class CollectionService implements CollectionRepos {
@@ -1367,5 +1371,43 @@ mutation(
     }
 
     return null;
+  }
+
+  @override
+  Future<void> updateDescription({
+    required String collectionId,
+    required String description,
+  }) async {
+    const String mutation = """
+mutation(
+  \$collectionId: ID
+  \$description: String
+){
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      summary: \$description
+    }
+  ){
+    id
+  }
+}
+""";
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+      "description": description,
+    };
+
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.toString());
+    }
   }
 }

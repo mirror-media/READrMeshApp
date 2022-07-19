@@ -16,10 +16,12 @@ class EditCollectionController extends GetxController {
   final CollectionRepos collectionRepos;
   final Collection collection;
   final bool isReorderPage;
+  final String description;
   EditCollectionController({
     required this.collectionRepos,
     required this.collection,
     this.isReorderPage = false,
+    this.description = '',
   });
 
   //edit title and heroImage page
@@ -43,6 +45,9 @@ class EditCollectionController extends GetxController {
   var isLoading = true.obs;
   dynamic error;
 
+  //editDescriptionPage
+  final collectionDescription = ''.obs;
+
   final isUpdating = false.obs;
 
   @override
@@ -56,6 +61,7 @@ class EditCollectionController extends GetxController {
             .prefs
             .getBool('firstTimeEditCollection') ??
         true;
+    collectionDescription.value = description;
     super.onInit();
   }
 
@@ -244,5 +250,26 @@ class EditCollectionController extends GetxController {
         );
       },
     );
+  }
+
+  void updateDescription() async {
+    isUpdating.value = true;
+
+    try {
+      await collectionRepos.updateDescription(
+        collectionId: collection.id,
+        description: collectionDescription.value,
+      );
+
+      Get.find<CollectionPageController>(tag: collection.id)
+          .collectionDescription
+          .value = collectionDescription.value;
+
+      Get.back();
+    } catch (e) {
+      print('Update collection description error: $e');
+      _errorToast();
+      isUpdating.value = false;
+    }
   }
 }
