@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/createCollectionController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/collection/createCollection/descriptionPage.dart';
-import 'package:readr/pages/collection/createCollection/titleAndOg/changeOgPage.dart';
+import 'package:readr/pages/collection/shared/changeOgPage.dart';
 
 class InputTitlePage extends GetView<CreateCollectionController> {
   @override
@@ -80,7 +80,16 @@ class InputTitlePage extends GetView<CreateCollectionController> {
 
   Widget _ogImage() {
     return GestureDetector(
-      onTap: () => Get.to(() => ChangeOgPage()),
+      onTap: () async {
+        List<String> imageUrlList = [];
+        for (var item in controller.selectedList) {
+          if (item.news!.heroImageUrl != null) {
+            imageUrlList.add(item.news!.heroImageUrl!);
+          }
+        }
+        controller.collectionOgUrlOrPath.value =
+            await Get.to(() => ChangeOgPage(imageUrlList));
+      },
       child: Column(
         children: [
           Obx(
