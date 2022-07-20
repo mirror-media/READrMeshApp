@@ -472,8 +472,6 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
               ),
               IOSUiSettings(
                 title: '裁切',
-                doneButtonTitle: '完成',
-                cancelButtonTitle: '取消',
               ),
             ],
           );
