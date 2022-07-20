@@ -14,12 +14,16 @@ import 'package:readr/pages/collection/editCollection/reorderPage.dart';
 import 'package:readr/pages/collection/editCollection/editTitlePage.dart';
 import 'package:share_plus/share_plus.dart';
 
-class CollectionAppBar extends GetView<CollectionPageController> {
+class CollectionAppBar extends GetView<CollectionPageController>
+    implements PreferredSizeWidget {
   final Collection collection;
   const CollectionAppBar(this.collection);
 
   @override
   String get tag => collection.id;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -92,41 +96,59 @@ class CollectionAppBar extends GetView<CollectionPageController> {
         ),
       ),
       actions: [
-        IconButton(
-          icon: Icon(
-            PlatformIcons(context).share,
-            color: readrBlack87,
-            size: 26,
-          ),
-          tooltip: '分享',
-          onPressed: () async {
-            String shareLink =
-                await DynamicLinkHelper.createCollectionLink(collection);
-            Share.shareWithResult(shareLink).then((value) {
-              if (value.status == ShareResultStatus.success) {
-                logShare('collection', collection.id, value.raw);
-              }
-            });
-          },
-        ),
-        Obx(
-          () {
-            if (Get.find<UserService>().isMember.isTrue &&
-                collection.creator.memberId ==
-                    Get.find<UserService>().currentUser.memberId) {
+        GetBuilder<CollectionPageController>(
+          tag: collection.id,
+          builder: (controller) {
+            if (!controller.isError && !controller.isLoading) {
               return IconButton(
-                onPressed: () async =>
-                    await _showEditCollectionBottomSheet(context),
                 icon: Icon(
-                  PlatformIcons(context).ellipsis,
+                  PlatformIcons(context).share,
                   color: readrBlack87,
                   size: 26,
                 ),
+                tooltip: '分享',
+                onPressed: () async {
+                  String shareLink =
+                      await DynamicLinkHelper.createCollectionLink(collection);
+                  Share.shareWithResult(shareLink).then((value) {
+                    if (value.status == ShareResultStatus.success) {
+                      logShare('collection', collection.id, value.raw);
+                    }
+                  });
+                },
               );
             }
+
             return Container();
           },
-        )
+        ),
+        GetBuilder<CollectionPageController>(
+          tag: collection.id,
+          builder: (controller) {
+            if (!controller.isError && !controller.isLoading) {
+              return Obx(
+                () {
+                  if (Get.find<UserService>().isMember.isTrue &&
+                      collection.creator.memberId ==
+                          Get.find<UserService>().currentUser.memberId) {
+                    return IconButton(
+                      onPressed: () async =>
+                          await _showEditCollectionBottomSheet(context),
+                      icon: Icon(
+                        PlatformIcons(context).ellipsis,
+                        color: readrBlack87,
+                        size: 26,
+                      ),
+                    );
+                  }
+                  return Container();
+                },
+              );
+            }
+
+            return Container();
+          },
+        ),
       ],
     );
   }

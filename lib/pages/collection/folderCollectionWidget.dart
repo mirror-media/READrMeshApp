@@ -40,7 +40,6 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
             children: [
               Column(
                 children: [
-                  CollectionAppBar(collection),
                   Expanded(
                     child: _buildContent(),
                   ),
@@ -62,34 +61,8 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
           );
         }
 
-        return Column(
-          children: [
-            AppBar(
-              centerTitle: GetPlatform.isIOS,
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: readrBlack,
-                ),
-                onPressed: () => Get.back(),
-              ),
-              title: const Text(
-                '集錦',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: readrBlack,
-                ),
-              ),
-            ),
-            const Expanded(
-              child: Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
-            ),
-          ],
+        return const Center(
+          child: CircularProgressIndicator.adaptive(),
         );
       },
     );
