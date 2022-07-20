@@ -19,6 +19,8 @@ class ReadrApp extends StatelessWidget {
       ),
       initialBinding: InitControllerBinding(),
       home: RootPage(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale('en', 'US'),
     );
   }
 }
