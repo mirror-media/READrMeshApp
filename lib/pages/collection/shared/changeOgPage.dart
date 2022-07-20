@@ -150,8 +150,8 @@ class ChangeOgPage extends StatelessWidget {
               ),
               IOSUiSettings(
                 title: '裁切',
-                doneButtonTitle: '完成',
-                cancelButtonTitle: '取消',
+                aspectRatioLockEnabled: true,
+                rotateButtonsHidden: true,
               ),
             ],
           );
