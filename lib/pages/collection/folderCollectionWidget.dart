@@ -7,7 +7,6 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/collectionAppBar.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
