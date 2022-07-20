@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:readr/models/collectionStory.dart';
-import 'package:readr/models/graphqlBody.dart';
 
 abstract class CollectionRepos {
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
@@ -51,65 +46,6 @@ abstract class CollectionRepos {
 }
 
 class CollectionService implements CollectionRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders({bool needAuth = false}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (needAuth) {
-      // TODO: Change back to firebase token when verify firebase token is finished
-      String token = await _fetchCMSUserToken();
-      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
-  // Get READr CMS User token for authorization
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": Get.find<EnvironmentService>().config.appHelperEmail,
-      "password": Get.find<EnvironmentService>().config.appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        _api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   @override
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
     List<String>? fetchedStoryIds,
@@ -215,29 +151,22 @@ class CollectionService implements CollectionRepos {
       "fetchedStoryIds": fetchedStoryIds ?? [],
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
     );
 
     List<CollectionStory> pickAndBookmarkList = [];
     List<CollectionStory> pickList = [];
     List<CollectionStory> bookmarkList = [];
 
-    for (var bookmark in jsonResponse['data']['bookmarks']) {
+    for (var bookmark in jsonResponse.data!['bookmarks']) {
       CollectionStory collectionStory = CollectionStory.fromPick(bookmark);
       pickAndBookmarkList.add(collectionStory);
       bookmarkList.add(collectionStory);
     }
-    for (var pick in jsonResponse['data']['picks']) {
+    for (var pick in jsonResponse.data!['picks']) {
       CollectionStory collectionStory = CollectionStory.fromPick(pick);
       pickList.add(collectionStory);
       int index = pickAndBookmarkList.indexWhere(
@@ -798,21 +727,13 @@ mutation(
       "data": dataList,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    final jsonResponse = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
-
     List<CollectionStory> collectionPicks = [];
-    for (var result in jsonResponse['data']['createCollectionPicks']) {
+    for (var result in jsonResponse.data!['createCollectionPicks']) {
       collectionPicks.add(CollectionStory.fromJson(result));
     }
 
@@ -878,14 +799,10 @@ mutation(
       variables['image'] = multipartFile;
     }
 
-    final result = await Get.find<GraphQLService>().mutation(
+    await Get.find<GraphQLService>().mutation(
       mutationBody: mutation,
       variables: variables,
     );
-
-    if (result.hasException) {
-      throw Exception(result.exception?.graphqlErrors.toString());
-    }
   }
 
   @override
@@ -1060,21 +977,13 @@ mutation(
       "followingMembers": Get.find<UserService>().followingMemberIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    final jsonResponse = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
-
     return Collection.fromFetchCollectionList(
-        jsonResponse['data']['updateCollection'],
+        jsonResponse.data!['updateCollection'],
         Get.find<UserService>().currentUser);
   }
 
@@ -1111,22 +1020,10 @@ mutation(
       "data": dataList,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
-
-    if (jsonResponse.containsKey('errors')) {
-      throw Exception('Update collection pick order error');
-    }
   }
 
   @override
@@ -1159,22 +1056,10 @@ mutation(
       "data": dataList,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
-
-    if (jsonResponse.containsKey('errors')) {
-      throw Exception('Update collection pick order error');
-    }
   }
 
   @override
@@ -1212,20 +1097,12 @@ mutation(
       "heroImageId": ogImageId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: true),
-    );
-
-    return !jsonResponse.containsKey('errors');
+    return true;
   }
 
   @override
@@ -1405,21 +1282,14 @@ mutation(
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    if (jsonResponse['data']['collection'] != null) {
-      return Collection.fromJson(jsonResponse['data']['collection']);
+    if (jsonResponse.data!['collection'] != null) {
+      return Collection.fromJson(jsonResponse.data!['collection']);
     }
 
     return null;

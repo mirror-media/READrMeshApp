@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pickIdItem.dart';
 import 'package:readr/models/publisher.dart';
@@ -39,65 +35,6 @@ abstract class MemberRepos {
 }
 
 class MemberService implements MemberRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (needAuth) {
-      // TODO: Change back to firebase token when verify firebase token is finished
-      String token = await _fetchCMSUserToken();
-      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
-  // Get READr CMS User token for authorization
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": Get.find<EnvironmentService>().config.appHelperEmail,
-      "password": Get.find<EnvironmentService>().config.appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   @override
   Future<Member?> fetchMemberData() async {
     const String query = """
@@ -161,24 +98,17 @@ class MemberService implements MemberRepos {
       "firebaseId": FirebaseAuth.instance.currentUser!.uid,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: false),
-    );
-
     // create new member when firebase is signed in but member is not created
-    if (jsonResponse['data']['members'].isEmpty) {
+    if (jsonResponse.data!['members'].isEmpty) {
       return null;
     } else {
-      return Member.fromJson(jsonResponse['data']['members'][0]);
+      return Member.fromJson(jsonResponse.data!['members'][0]);
     }
   }
 
@@ -269,19 +199,13 @@ class MemberService implements MemberRepos {
       "customId": customId
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    final jsonResponse = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
+      throwException: false,
     );
 
-    final jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    if (!jsonResponse.containsKey('errors')) {
+    if (!jsonResponse.hasException) {
       final prefs = await SharedPreferences.getInstance();
       final List<String> followingPublisherIds =
           prefs.getStringList('followingPublisherIds') ?? [];
@@ -294,7 +218,9 @@ class MemberService implements MemberRepos {
       }
       await Get.find<UserService>().fetchUserData();
       return Get.find<UserService>().currentUser;
-    } else if (jsonResponse['errors'][0]['message'].contains('customId')) {
+    } else if (jsonResponse.exception?.graphqlErrors
+            .any((element) => element.message.contains('customId')) ??
+        false) {
       int times;
       if (tryTimes != null) {
         times = tryTimes + 1;
@@ -328,20 +254,13 @@ class MemberService implements MemberRepos {
     """;
     Map<String, String> variables = {"id": memberId};
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
     try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
+      await Get.find<GraphQLService>().mutation(
+        mutationBody: mutation,
+        variables: variables,
       );
 
-      return !jsonResponse.containsKey('errors');
+      return true;
     } catch (e) {
       return false;
     }
@@ -379,24 +298,14 @@ class MemberService implements MemberRepos {
       "publisherId": publisherId
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
     try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(),
+      final jsonResponse = await Get.find<GraphQLService>().mutation(
+        mutationBody: mutation,
+        variables: variables,
       );
 
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
       List<Publisher> followPublisher = [];
-      for (var publisher in jsonResponse['data']['updateMember']
+      for (var publisher in jsonResponse.data!['updateMember']
           ['follow_publisher']) {
         followPublisher.add(Publisher.fromJson(publisher));
       }
@@ -442,19 +351,13 @@ class MemberService implements MemberRepos {
       "intro": intro ?? '',
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
+    final result = await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
       variables: variables,
+      throwException: false,
     );
 
-    final jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    return !jsonResponse.containsKey('errors');
+    return !result.hasException;
   }
 
   @override
@@ -660,30 +563,24 @@ query(
       "memberId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    final jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<PickIdItem> pickIdList = [];
-    for (var item in jsonResponse['data']['member']['storyPicks']) {
+    for (var item in jsonResponse.data!['member']['storyPicks']) {
       pickIdList
           .add(PickIdItem.fromJson(item, PickObjective.story, PickKind.read));
     }
 
-    for (var item in jsonResponse['data']['member']['collectionPicks']) {
+    for (var item in jsonResponse.data!['member']['collectionPicks']) {
       pickIdList.add(
           PickIdItem.fromJson(item, PickObjective.collection, PickKind.read));
     }
 
-    for (var item in jsonResponse['data']['member']['bookmarks']) {
+    for (var item in jsonResponse.data!['member']['bookmarks']) {
       pickIdList.add(
           PickIdItem.fromJson(item, PickObjective.story, PickKind.bookmark));
     }
@@ -722,22 +619,15 @@ query(
       "memberId": id,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: false),
-    );
-
-    if (jsonResponse['data']['member'] != null &&
-        jsonResponse['data']['member']['is_active']) {
-      return Member.fromJson(jsonResponse['data']['member']);
+    if (jsonResponse.data!['member'] != null &&
+        jsonResponse.data!['member']['is_active']) {
+      return Member.fromJson(jsonResponse.data!['member']);
     } else {
       return null;
     }

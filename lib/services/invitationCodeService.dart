@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
-
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,65 +19,6 @@ abstract class InvitationCodeRepos {
 }
 
 class InvitationCodeService implements InvitationCodeRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (needAuth) {
-      // TODO: Change back to firebase token when verify firebase token is finished
-      String token = await _fetchCMSUserToken();
-      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
-  // Get READr CMS User token for authorization
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": Get.find<EnvironmentService>().config.appHelperEmail,
-      "password": Get.find<EnvironmentService>().config.appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   @override
   Future<List<InvitationCode>> fetchMyInvitationCode() async {
     const String query = '''
@@ -119,21 +55,14 @@ class InvitationCodeService implements InvitationCodeRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: false),
-    );
-
     List<InvitationCode> allInvitationCode = [];
-    for (var item in jsonResponse['data']['invitationCodes']) {
+    for (var item in jsonResponse.data!['invitationCodes']) {
       allInvitationCode.add(InvitationCode.fromJson(item));
     }
     return allInvitationCode;
@@ -164,21 +93,14 @@ class InvitationCodeService implements InvitationCodeRepos {
       "myId": memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
     try {
-      late final dynamic jsonResponse;
-      jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(needAuth: false),
+      final jsonResponse = await Get.find<GraphQLService>().query(
+        api: Api.mesh,
+        queryBody: query,
+        variables: variables,
       );
 
-      if (jsonResponse['data']['invitationCodesCount'] != 0) {
+      if (jsonResponse.data!['invitationCodesCount'] != 0) {
         return true;
       } else {
         return false;
@@ -218,29 +140,21 @@ class InvitationCodeService implements InvitationCodeRepos {
       "code": code,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
     try {
-      late final dynamic jsonResponse;
-      jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(needAuth: false),
+      final jsonResponse = await Get.find<GraphQLService>().query(
+        api: Api.mesh,
+        queryBody: query,
+        variables: variables,
       );
 
-      if (jsonResponse['data']['invitationCodes'].isEmpty) {
+      if (jsonResponse.data!['invitationCodes'].isEmpty) {
         return InvitationCodeStatus.invalid;
-      } else if (jsonResponse['data']['invitationCodes'][0]['receive'] !=
-          null) {
+      } else if (jsonResponse.data!['invitationCodes'][0]['receive'] != null) {
         return InvitationCodeStatus.activated;
       } else {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('invitationCodeId',
-            jsonResponse['data']['invitationCodes'][0]['id']);
+        await prefs.setString(
+            'invitationCodeId', jsonResponse.data!['invitationCodes'][0]['id']);
         return InvitationCodeStatus.valid;
       }
     } catch (e) {
@@ -279,16 +193,9 @@ class InvitationCodeService implements InvitationCodeRepos {
         "myId": Get.find<UserService>().currentUser.memberId,
       };
 
-      GraphqlBody graphqlBody = GraphqlBody(
-        operationName: null,
-        query: mutation,
+      await Get.find<GraphQLService>().mutation(
+        mutationBody: mutation,
         variables: variables,
-      );
-
-      await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(needAuth: false),
       );
     }
 

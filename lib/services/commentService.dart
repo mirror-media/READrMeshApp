@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/graphqlBody.dart';
 
 abstract class CommentRepos {
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId);
@@ -12,65 +9,6 @@ abstract class CommentRepos {
 }
 
 class CommentService implements CommentRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders({bool needAuth = true}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (needAuth) {
-      String token = await _fetchCMSUserToken();
-      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
-  // Get READr CMS User token for authorization
-  // TODO: Delete when verify firebase token is finished
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": Get.find<EnvironmentService>().config.appHelperEmail,
-      "password": Get.find<EnvironmentService>().config.appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   @override
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId) async {
     String query = """
@@ -138,25 +76,15 @@ class CommentService implements CommentRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
     try {
-      final jsonResponse = await _helper.postByUrl(
-        api,
-        jsonEncode(graphqlBody.toJson()),
-        headers: await _getHeaders(needAuth: false),
+      final jsonResponse = await Get.find<GraphQLService>().query(
+        api: Api.mesh,
+        queryBody: query,
+        variables: variables,
       );
 
-      if (jsonResponse.containsKey('errors')) {
-        return null;
-      }
-
       List<Comment> allComments = [];
-      for (var item in jsonResponse['data']['comments']) {
+      for (var item in jsonResponse.data!['comments']) {
         allComments.add(Comment.fromJson(item));
       }
 
@@ -233,20 +161,14 @@ class CommentService implements CommentRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    final jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(needAuth: false),
-    );
-
     List<Comment> allComments = [];
-    for (var item in jsonResponse['data']['comments']) {
+    for (var item in jsonResponse.data!['comments']) {
       allComments.add(Comment.fromJson(item));
     }
 

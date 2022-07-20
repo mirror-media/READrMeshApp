@@ -1,11 +1,7 @@
-import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/models/collection.dart';
-
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pick.dart';
 import 'package:readr/models/publisher.dart';
@@ -33,65 +29,6 @@ abstract class PersonalFileRepos {
 }
 
 class PersonalFileService implements PersonalFileRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders({bool needAuth = false}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-    if (needAuth) {
-      // TODO: Change back to firebase token when verify firebase token is finished
-      String token = await _fetchCMSUserToken();
-      //String token = await FirebaseAuth.instance.currentUser!.getIdToken();
-      headers.addAll({"Authorization": "Bearer $token"});
-    }
-
-    return headers;
-  }
-
-  // Get READr CMS User token for authorization
-  Future<String> _fetchCMSUserToken() async {
-    String mutation = """
-    mutation(
-	    \$email: String!,
-	    \$password: String!
-    ){
-	    authenticateUserWithPassword(
-		    email: \$email
-		    password: \$password
-      ){
-        ... on UserAuthenticationWithPasswordSuccess{
-        	sessionToken
-      	}
-        ... on UserAuthenticationWithPasswordFailure{
-          message
-      	}
-      }
-    }
-    """;
-
-    Map<String, String> variables = {
-      "email": Get.find<EnvironmentService>().config.appHelperEmail,
-      "password": Get.find<EnvironmentService>().config.appHelperPassword,
-    };
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: mutation,
-      variables: variables,
-    );
-
-    final jsonResponse = await _helper.postByUrl(
-        api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    String token =
-        jsonResponse['data']['authenticateUserWithPassword']['sessionToken'];
-
-    return token;
-  }
-
   @override
   Future<Member> fetchMemberData(Member member) async {
     const String query = """
@@ -164,20 +101,13 @@ class PersonalFileService implements PersonalFileRepos {
 
     Map<String, dynamic> variables = {"memberId": member.memberId};
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    return Member.fromJson(jsonResponse['data']['member']);
+    return Member.fromJson(jsonResponse.data!['member']);
   }
 
   @override
@@ -420,22 +350,15 @@ query(
       "viewMemberId": targetMember.memberId
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Pick> storyPickList = [];
-    if (jsonResponse['data']['picks'].isNotEmpty) {
-      for (var pick in jsonResponse['data']['picks']) {
+    if (jsonResponse.data!['picks'].isNotEmpty) {
+      for (var pick in jsonResponse.data!['picks']) {
         storyPickList.add(Pick.fromJson(pick));
       }
     }
@@ -641,22 +564,15 @@ query(
           DateTime.now().toUtc().toIso8601String(),
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Pick> bookmarkList = [];
-    if (jsonResponse['data']['member']['bookmark'].isNotEmpty) {
-      for (var pick in jsonResponse['data']['member']['bookmark']) {
+    if (jsonResponse.data!['member']['bookmark'].isNotEmpty) {
+      for (var pick in jsonResponse.data!['member']['bookmark']) {
         bookmarkList.add(Pick.fromJson(pick));
       }
     }
@@ -721,21 +637,14 @@ query(
       "skip": skip,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Member> followerList = [];
-    for (var member in jsonResponse['data']['members']) {
+    for (var member in jsonResponse.data!['members']) {
       Member follower = Member.fromJson(member);
       followerList.add(follower);
     }
@@ -814,28 +723,21 @@ query(
       "skip": skip,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Member> followingList = [];
-    for (var member in jsonResponse['data']['members']) {
+    for (var member in jsonResponse.data!['members']) {
       Member followingMember = Member.fromJson(member);
       followingList.add(followingMember);
     }
 
     return {
       'followingList': followingList,
-      'followingMemberCount': jsonResponse['data']['membersCount'],
+      'followingMemberCount': jsonResponse.data!['membersCount'],
     };
   }
 
@@ -869,21 +771,14 @@ query(
 
     Map<String, dynamic> variables = {"viewMemberId": viewMember.memberId};
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Publisher> followPublisherList = [];
-    for (var publisher in jsonResponse['data']['member']['follow_publisher']) {
+    for (var publisher in jsonResponse.data!['member']['follow_publisher']) {
       followPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -902,23 +797,13 @@ query(
     }
     """;
 
-    Map<String, dynamic> variables = {};
-
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
-      variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
     );
 
     List<Publisher> allPublisherList = [];
-    for (var publisher in jsonResponse['data']['publishers']) {
+    for (var publisher in jsonResponse.data!['publishers']) {
       allPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -1112,20 +997,13 @@ query(
       "followingMembers": followingMemberIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
-    return List<Collection>.from(jsonResponse['data']['collections'].map(
+    return List<Collection>.from(jsonResponse.data!['collections'].map(
         (element) => Collection.fromFetchCollectionList(element, viewMember)));
   }
 
@@ -1267,22 +1145,15 @@ query(
       "viewMemberId": targetMember.memberId
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Pick> collectionPickList = [];
-    if (jsonResponse['data']['picks'].isNotEmpty) {
-      for (var pick in jsonResponse['data']['picks']) {
+    if (jsonResponse.data!['picks'].isNotEmpty) {
+      for (var pick in jsonResponse.data!['picks']) {
         collectionPickList.add(Pick.fromJson(pick));
       }
     }
