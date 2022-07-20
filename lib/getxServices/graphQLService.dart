@@ -85,10 +85,12 @@ class GraphQLService extends GetxService {
     required Api api,
     required String queryBody,
     Map<String, dynamic>? variables,
+    bool throwException = true,
   }) async {
     final QueryOptions options = QueryOptions(
       document: gql(queryBody),
       variables: variables ?? {},
+      fetchPolicy: FetchPolicy.noCache,
     );
 
     final GraphQLClient client;
@@ -103,9 +105,8 @@ class GraphQLService extends GetxService {
 
     final QueryResult result = await client.query(options);
 
-    if (result.hasException) {
-      print('Query error');
-      print(result.exception.toString());
+    if (result.hasException && throwException) {
+      throw Exception('Query error: ${result.exception.toString()}');
     }
 
     return result;
@@ -115,6 +116,7 @@ class GraphQLService extends GetxService {
   Future<QueryResult> mutation({
     required String mutationBody,
     Map<String, dynamic>? variables,
+    bool throwException = true,
   }) async {
     final MutationOptions options = MutationOptions(
       document: gql(mutationBody),
@@ -123,9 +125,8 @@ class GraphQLService extends GetxService {
 
     final QueryResult result = await _meshClient.mutate(options);
 
-    if (result.hasException) {
-      print('Mutation error');
-      print(result.exception.toString());
+    if (result.hasException && throwException) {
+      throw Exception('Mutation error: ${result.exception.toString()}');
     }
 
     return result;
