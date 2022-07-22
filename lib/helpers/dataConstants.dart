@@ -27,6 +27,7 @@ const String collectionDeleteHintSvg = 'assets/image/collectionDeleteHint.svg';
 const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
+const String threeStarSvg = 'assets/image/threeStar.svg';
 
 //json
 const serviceAccountCredentialsJson =
