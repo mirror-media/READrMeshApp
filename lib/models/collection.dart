@@ -123,13 +123,20 @@ class Collection {
       }
     }
 
+    DateTime updateTime;
+    if (json['updatedAt'] != null) {
+      updateTime = DateTime.parse(json['updatedAt']);
+    } else {
+      updateTime = DateTime.parse(json['createdAt']);
+    }
+
     return Collection(
       id: json['id'],
       title: json['title'],
       slug: json['slug'],
       creator: viewMember,
       commentCount: json['commentCount'],
-      updateTime: DateTime.parse(json['createdAt']),
+      updateTime: updateTime,
       ogImageUrl: imageUrl,
       controllerTag: 'Collection${json['id']}',
       format: format,
@@ -242,13 +249,20 @@ class Collection {
       );
     }
 
+    DateTime updateTime;
+    if (json['updatedAt'] != null) {
+      updateTime = DateTime.parse(json['updatedAt']);
+    } else {
+      updateTime = DateTime.parse(json['createdAt']);
+    }
+
     return Collection(
       id: json['id'],
       title: json['title'],
       slug: json['slug'],
       creator: Member.fromJson(json['creator']),
       ogImageUrl: imageUrl,
-      updateTime: DateTime.parse(json['createdAt']),
+      updateTime: updateTime,
       format: format,
       ogImageId: json['heroImage']['id'],
       controllerTag: 'Collection${json['id']}',
