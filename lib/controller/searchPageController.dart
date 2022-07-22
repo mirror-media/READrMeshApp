@@ -76,7 +76,7 @@ class SearchPageController extends GetxController {
 
       if (result.hits?.isNotEmpty ?? false) {
         List<int> newsIdList = [];
-        List<int> collectionIdList = [15, 16, 18, 19, 20, 21];
+        List<int> collectionIdList = [];
         for (var item in result.hits!) {
           newsIdList.addIf(item['type'] == 'story', item['id']);
           collectionIdList.addIf(item['type'] == 'collection', item['id']);
