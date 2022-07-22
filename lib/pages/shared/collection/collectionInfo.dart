@@ -53,9 +53,13 @@ class CollectionInfo extends GetView<PickableItemController> {
           ));
         }
 
-        children.add(CollectionTimestamp(
-          collection.updateTime,
-          key: Key(collection.controllerTag),
+        children.add(Obx(
+          () => CollectionTimestamp(
+            Get.find<PickableItemController>(tag: collection.controllerTag)
+                .collectionUpdatetime
+                .value,
+            key: UniqueKey(),
+          ),
         ));
 
         return SizedBox(

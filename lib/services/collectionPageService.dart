@@ -35,6 +35,7 @@ query(
   ){
     summary
     status
+    updatedAt
     followingPickMembers: picks(
       where:{
         member:{
@@ -422,28 +423,14 @@ query(
       }
     }
 
-    if (Get.isRegistered<PickableItemController>(
-            tag: 'Collection$collectionId') ||
-        Get.isPrepared<PickableItemController>(
-            tag: 'Collection$collectionId')) {
-      final controller =
-          Get.find<PickableItemController>(tag: 'Collection$collectionId');
-      controller.pickCount.value = pickCount;
-      controller.commentCount.value = allComments.length;
-      controller.pickedMembers.assignAll(allPickedMember);
-    } else {
-      Get.lazyPut<PickableItemController>(
-        () => PickableItemController(
-          targetId: collectionId,
-          objective: PickObjective.collection,
-          pickCount: pickCount,
-          commentCount: allComments.length,
-          pickedMembers: allPickedMember,
-          controllerTag: 'Collection$collectionId',
-        ),
-        tag: 'Collection$collectionId',
-        fenix: true,
-      );
+    final controller =
+        Get.find<PickableItemController>(tag: 'Collection$collectionId');
+    controller.pickCount.value = pickCount;
+    controller.commentCount.value = allComments.length;
+    controller.pickedMembers.assignAll(allPickedMember);
+    if (collection['updatedAt'] != null) {
+      controller.collectionUpdatetime.value =
+          DateTime.parse(collection['updatedAt']);
     }
 
     CollectionStatus status = CollectionStatus.publish;

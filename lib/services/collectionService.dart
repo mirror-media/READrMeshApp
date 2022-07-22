@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -839,6 +840,7 @@ mutation(
     }
     format
     createdAt
+    updatedAt
     commentCount(
       where:{
         is_active:{
@@ -995,11 +997,23 @@ mutation(
     const String mutation = """
 mutation(
   \$data: [CollectionPickUpdateArgs!]!
+  \$updateTime: DateTime
+  \$collectionId: ID
 ){
   updateCollectionPicks(
     data: \$data
   ){
     id
+  }
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      updatedAt:\$updateTime
+    }
+  ){
+    updatedAt
   }
 }
     """;
@@ -1018,6 +1032,8 @@ mutation(
 
     Map<String, dynamic> variables = {
       "data": dataList,
+      "collectionId": collectionId,
+      "updateTime": DateTime.now().toUtc().toIso8601String()
     };
 
     await Get.find<GraphQLService>().mutation(
@@ -1145,6 +1161,7 @@ mutation(
         }
         format
         createdAt
+        updatedAt
         commentCount(
           where:{
             is_active:{
@@ -1314,6 +1331,7 @@ mutation(
     }
   ){
     id
+    updatedAt
   }
 }
 """;
@@ -1330,6 +1348,12 @@ mutation(
 
     if (result.hasException) {
       throw Exception(result.exception?.graphqlErrors.toString());
+    } else {
+      Get.find<PickableItemController>(tag: 'Collection$collectionId')
+              .collectionUpdatetime
+              .value =
+          DateTime.tryParse(result.data!['updateCollection']['updatedAt']) ??
+              DateTime.now();
     }
   }
 }

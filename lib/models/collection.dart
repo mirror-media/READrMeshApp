@@ -81,6 +81,13 @@ class Collection {
       }
     }
 
+    DateTime updateTime;
+    if (json['updatedAt'] != null) {
+      updateTime = DateTime.parse(json['updatedAt']);
+    } else {
+      updateTime = DateTime.parse(json['createdAt']);
+    }
+
     if (Get.isRegistered<PickableItemController>(
             tag: 'Collection${json['id']}') ||
         Get.isPrepared<PickableItemController>(
@@ -92,6 +99,7 @@ class Collection {
       controller.pickedMembers.assignAll(allPickedMember);
       controller.collectionTitle.value = json['title'];
       controller.collectionHeroImageUrl.value = imageUrl;
+      controller.collectionUpdatetime.value = updateTime;
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
@@ -103,6 +111,7 @@ class Collection {
           controllerTag: 'Collection${json['id']}',
           collectionHeroImageUrl: imageUrl,
           collectionTitle: json['title'],
+          collectionUpdatetime: updateTime,
         ),
         tag: 'Collection${json['id']}',
         fenix: true,
@@ -121,13 +130,6 @@ class Collection {
         default:
           status = CollectionStatus.publish;
       }
-    }
-
-    DateTime updateTime;
-    if (json['updatedAt'] != null) {
-      updateTime = DateTime.parse(json['updatedAt']);
-    } else {
-      updateTime = DateTime.parse(json['createdAt']);
     }
 
     return Collection(
@@ -219,6 +221,13 @@ class Collection {
       }
     }
 
+    DateTime updateTime;
+    if (json['updatedAt'] != null) {
+      updateTime = DateTime.parse(json['updatedAt']);
+    } else {
+      updateTime = DateTime.parse(json['createdAt']);
+    }
+
     if (Get.isRegistered<PickableItemController>(
             tag: 'Collection${json['id']}') ||
         Get.isPrepared<PickableItemController>(
@@ -232,6 +241,7 @@ class Collection {
       if (BaseModel.checkJsonKeys(json, ['commentCount'])) {
         controller.commentCount.value = json['commentCount'];
       }
+      controller.collectionUpdatetime.value = updateTime;
     } else {
       Get.lazyPut<PickableItemController>(
         () => PickableItemController(
@@ -243,17 +253,11 @@ class Collection {
           collectionTitle: json['title'],
           pickedMembers: allPickedMember,
           commentCount: json['commentCount'] ?? 0,
+          collectionUpdatetime: updateTime,
         ),
         tag: 'Collection${json['id']}',
         fenix: true,
       );
-    }
-
-    DateTime updateTime;
-    if (json['updatedAt'] != null) {
-      updateTime = DateTime.parse(json['updatedAt']);
-    } else {
-      updateTime = DateTime.parse(json['createdAt']);
     }
 
     return Collection(

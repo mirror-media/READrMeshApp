@@ -278,6 +278,13 @@ class EditCollectionController extends GetxController {
           .collectionDescription
           .value = collectionDescription.value;
 
+      if (Get.isRegistered<CollectionTabController>(
+          tag: Get.find<UserService>().currentUser.memberId)) {
+        Get.find<CollectionTabController>(
+                tag: Get.find<UserService>().currentUser.memberId)
+            .fetchCollecitionList();
+      }
+
       Get.back();
     } catch (e) {
       print('Update collection description error: $e');

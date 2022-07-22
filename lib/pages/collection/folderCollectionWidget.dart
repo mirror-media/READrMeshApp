@@ -246,10 +246,15 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
                   color: readrBlack20,
                 ),
               ),
-              CollectionTimestamp(
-                collection.updateTime,
-                textSize: 13,
-                key: Key(collection.id),
+              Obx(
+                () => CollectionTimestamp(
+                  Get.find<PickableItemController>(
+                          tag: collection.controllerTag)
+                      .collectionUpdatetime
+                      .value,
+                  textSize: 13,
+                  key: UniqueKey(),
+                ),
               ),
             ],
           ),

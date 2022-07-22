@@ -28,6 +28,7 @@ class PickableItemController extends GetxController {
   //only for collection
   final RxnString collectionTitle = RxnString();
   final RxnString collectionHeroImageUrl = RxnString();
+  final Rx<DateTime> collectionUpdatetime = Rx<DateTime>(DateTime.now());
 
   PickableItemController({
     required this.objective,
@@ -38,6 +39,7 @@ class PickableItemController extends GetxController {
     List<Member>? pickedMembers,
     String? collectionTitle,
     String? collectionHeroImageUrl,
+    DateTime? collectionUpdatetime,
   }) {
     this.pickCount.value = pickCount;
     this.commentCount.value = commentCount;
@@ -48,6 +50,10 @@ class PickableItemController extends GetxController {
 
     this.collectionTitle.value = collectionTitle;
     this.collectionHeroImageUrl.value = collectionHeroImageUrl;
+
+    if (collectionUpdatetime != null) {
+      this.collectionUpdatetime.value = collectionUpdatetime;
+    }
   }
 
   @override
