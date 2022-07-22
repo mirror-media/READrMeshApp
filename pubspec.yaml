@@ -169,6 +169,8 @@ dependencies:
   http_parser: ^4.0.1
   # path
   path: ^1.8.1
+  # search engine
+  meilisearch: ^0.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

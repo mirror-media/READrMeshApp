@@ -302,6 +302,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   easy_debounce:
     dependency: "direct main"
     description:
@@ -1103,6 +1110,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  meilisearch:
+    dependency: "direct main"
+    description:
+      name: meilisearch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   meta:
     dependency: transitive
     description:
