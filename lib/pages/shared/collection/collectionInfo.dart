@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/shared/timestamp.dart';
+import 'package:readr/pages/shared/collection/collectionTimestamp.dart';
 
 class CollectionInfo extends GetView<PickableItemController> {
   final Collection collection;
@@ -53,7 +53,7 @@ class CollectionInfo extends GetView<PickableItemController> {
           ));
         }
 
-        children.add(Timestamp(
+        children.add(CollectionTimestamp(
           collection.publishedTime,
           key: Key(collection.controllerTag),
         ));
