@@ -10,4 +10,6 @@ abstract class BaseConfig {
   String get dynamicLinkDomain;
   String get readrMeshWebsite;
   String get pubSubTopic;
+  String get searchSeverUrl;
+  String? get meiliMasterKey;
 }
