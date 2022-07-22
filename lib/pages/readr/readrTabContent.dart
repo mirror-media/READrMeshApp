@@ -5,7 +5,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 import 'package:readr/services/tabStoryListService.dart';
 

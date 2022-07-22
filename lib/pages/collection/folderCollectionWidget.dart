@@ -10,7 +10,7 @@ import 'package:readr/models/collection.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 
 class FolderCollectionWidget extends GetView<CollectionPageController> {

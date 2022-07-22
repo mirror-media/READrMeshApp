@@ -11,7 +11,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:visibility_detector/visibility_detector.dart';

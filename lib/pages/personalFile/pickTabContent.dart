@@ -7,7 +7,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/commentService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:visibility_detector/visibility_detector.dart';

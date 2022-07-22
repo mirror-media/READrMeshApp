@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/bookmarkTabController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/personalFileService.dart';
 
 class BookmarkTabContent extends GetView<BookmarkTabController> {

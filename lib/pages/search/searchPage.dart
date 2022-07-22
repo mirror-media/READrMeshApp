@@ -7,7 +7,7 @@ import 'package:readr/controller/searchPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/search/allCollectionResultPage.dart';
-import 'package:readr/pages/shared/newsListItemWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/searchService.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 

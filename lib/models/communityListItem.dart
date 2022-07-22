@@ -13,7 +13,7 @@ import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/collection/collectionInfo.dart';
-import 'package:readr/pages/shared/newsInfo.dart';
+import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:shimmer/shimmer.dart';
 
