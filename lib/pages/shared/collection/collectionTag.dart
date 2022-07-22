@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class CollectionTag extends StatelessWidget {
@@ -21,7 +22,7 @@ class CollectionTag extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            CupertinoIcons.rectangle_on_rectangle_angled,
+            PlatformIcons(context).folderOpen,
             color: Colors.white,
             size: smallTag ? 11 : 12,
           ),
