@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/searchPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/personalFile/pickCollectionItem.dart';
+import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 
 class AllCollectionResultPage extends GetView<SearchPageController> {
   @override
@@ -66,7 +66,7 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
               // controller.loadMoreCollection();
               print('load more collection');
             }
-            return PickCollectionItem(
+            return SmallCollectionItem(
               controller.collectionResultList[index],
             );
           },

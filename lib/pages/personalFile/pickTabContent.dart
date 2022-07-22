@@ -5,7 +5,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
-import 'package:readr/pages/personalFile/pickCollectionItem.dart';
+import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/personalFile/pickCommentItem.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/services/commentService.dart';
@@ -245,7 +245,7 @@ class PickTabContent extends GetView<PickTabController> {
                 );
               }
 
-              return PickCollectionItem(
+              return SmallCollectionItem(
                 controller.collecionPickList[index].collection!,
                 showPickTooltip: index == 0,
               );

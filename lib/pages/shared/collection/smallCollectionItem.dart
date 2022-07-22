@@ -12,10 +12,10 @@ import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 import 'package:shimmer/shimmer.dart';
 
-class PickCollectionItem extends StatelessWidget {
+class SmallCollectionItem extends StatelessWidget {
   final Collection collection;
   final bool showPickTooltip;
-  const PickCollectionItem(this.collection, {this.showPickTooltip = false});
+  const SmallCollectionItem(this.collection, {this.showPickTooltip = false});
 
   @override
   Widget build(BuildContext context) {

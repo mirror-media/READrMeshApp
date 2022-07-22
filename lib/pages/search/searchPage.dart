@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/searchPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/personalFile/pickCollectionItem.dart';
+import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/search/allCollectionResultPage.dart';
 import 'package:readr/pages/shared/newsListItemWidget.dart';
 import 'package:readr/services/searchService.dart';
@@ -446,7 +446,7 @@ class SearchPage extends GetView<SearchPageController> {
                 );
               }
 
-              return PickCollectionItem(
+              return SmallCollectionItem(
                 controller.collectionResultList[index],
               );
             },
