@@ -837,9 +837,7 @@ query(
           }
         }
         take: 20
-        orderBy:{
-          createdAt: desc
-        }
+        orderBy:[{updatedAt: desc},{createdAt: desc}]
       ){
         id
         title
@@ -854,6 +852,7 @@ query(
         }
         format
         createdAt
+        updatedAt
         commentCount(
           where:{
             is_active:{
@@ -1003,8 +1002,13 @@ query(
       variables: variables,
     );
 
-    return List<Collection>.from(jsonResponse.data!['collections'].map(
-        (element) => Collection.fromFetchCollectionList(element, viewMember)));
+    List<Collection> collectionList = List<Collection>.from(
+        jsonResponse.data!['collections'].map((element) =>
+            Collection.fromFetchCollectionList(element, viewMember)));
+
+    collectionList.sort((a, b) => b.updateTime.compareTo(a.updateTime));
+
+    return collectionList;
   }
 
   @override
@@ -1094,6 +1098,7 @@ query(
       }
       format
       createdAt
+      updatedAt
       picksCount(
         where:{
           state:{

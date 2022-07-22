@@ -317,6 +317,7 @@ query(
       }
       format
       createdAt
+      updatedAt
       picksCount(
         where:{
           state:{
@@ -834,6 +835,7 @@ query(
       }
       format
       createdAt
+      updatedAt
       picksCount(
         where:{
           state:{
@@ -1378,7 +1380,7 @@ query(
         }
       }
     }
-    orderBy:[{createdAt: desc}]
+    orderBy:[{updatedAt: desc},{createdAt: desc}]
     take:20
   ){
     id
@@ -1405,6 +1407,7 @@ query(
     }
     format
     createdAt
+    updatedAt
     picksCount(
       where:{
         state:{
