@@ -47,7 +47,7 @@ class PickCollectionItem extends StatelessWidget {
                               .value ??
                           collection.ogImageUrl,
                       fit: BoxFit.cover,
-                      width: 150,
+                      width: context.width,
                       height: 75,
                       placeholder: (context, url) => SizedBox(
                         height: 75,
