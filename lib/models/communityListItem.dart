@@ -88,7 +88,7 @@ class CommunityListItem {
       }
     } else {
       type = CommunityListItemType.createCollection;
-      orderByTime = collection!.publishedTime;
+      orderByTime = collection!.updateTime;
     }
 
     Widget heroImageWidget;

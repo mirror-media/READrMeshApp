@@ -247,7 +247,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
                 ),
               ),
               CollectionTimestamp(
-                collection.publishedTime,
+                collection.updateTime,
                 textSize: 13,
                 key: Key(collection.id),
               ),

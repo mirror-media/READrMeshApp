@@ -17,7 +17,7 @@ class Collection {
   final String controllerTag;
   String ogImageUrl;
   String ogImageId;
-  final DateTime publishedTime;
+  final DateTime updateTime;
   final int commentCount;
   final int pickCount;
   final List<Member>? followingPickMembers;
@@ -33,7 +33,7 @@ class Collection {
     required this.creator,
     required this.controllerTag,
     required this.ogImageUrl,
-    required this.publishedTime,
+    required this.updateTime,
     required this.ogImageId,
     this.format = CollectionFormat.folder,
     this.public = CollectionPublic.public,
@@ -129,7 +129,7 @@ class Collection {
       slug: json['slug'],
       creator: viewMember,
       commentCount: json['commentCount'],
-      publishedTime: DateTime.parse(json['createdAt']),
+      updateTime: DateTime.parse(json['createdAt']),
       ogImageUrl: imageUrl,
       controllerTag: 'Collection${json['id']}',
       format: format,
@@ -248,7 +248,7 @@ class Collection {
       slug: json['slug'],
       creator: Member.fromJson(json['creator']),
       ogImageUrl: imageUrl,
-      publishedTime: DateTime.parse(json['createdAt']),
+      updateTime: DateTime.parse(json['createdAt']),
       format: format,
       ogImageId: json['heroImage']['id'],
       controllerTag: 'Collection${json['id']}',

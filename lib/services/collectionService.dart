@@ -520,7 +520,7 @@ mutation(
       controllerTag: 'Collection${jsonResponse['createCollection']['id']}',
       ogImageUrl: jsonResponse['createCollection']['heroImage']['resized']
           ['original'],
-      publishedTime:
+      updateTime:
           DateTime.tryParse(jsonResponse['createCollection']['createdAt']) ??
               DateTime.now(),
       collectionPicks: collectionPicks,

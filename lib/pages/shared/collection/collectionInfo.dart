@@ -54,7 +54,7 @@ class CollectionInfo extends GetView<PickableItemController> {
         }
 
         children.add(CollectionTimestamp(
-          collection.publishedTime,
+          collection.updateTime,
           key: Key(collection.controllerTag),
         ));
 
