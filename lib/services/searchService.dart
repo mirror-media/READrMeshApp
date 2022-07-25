@@ -394,7 +394,13 @@ class SearchService implements SearchRepos {
       variables: variables,
     );
 
-    return List<Collection>.from(jsonResponse.data!['collections']
+    List<Collection> allCollectionResult = List<Collection>.from(jsonResponse
+        .data!['collections']
         .map((element) => Collection.fromJson(element)));
+    allCollectionResult.sort((a, b) => idList
+        .indexWhere((element) => element.toString() == a.id)
+        .compareTo(idList.indexWhere((element) => element.toString() == b.id)));
+
+    return allCollectionResult;
   }
 }
