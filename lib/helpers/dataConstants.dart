@@ -28,6 +28,11 @@ const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
+//onboard svgs
+const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
+const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
+const String onboard3Svg = 'assets/image/onboard/onboard3.svg';
+const String onboard4Svg = 'assets/image/onboard/onboard4.svg';
 
 //json
 const serviceAccountCredentialsJson =
