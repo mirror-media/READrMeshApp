@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/shared/timestamp.dart';
@@ -19,10 +20,10 @@ class CollectionStoryItem extends StatelessWidget {
             story.news!.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               color: readrBlack87,
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
           ),
         if (story.news!.heroImageUrl != null)
@@ -36,10 +37,11 @@ class CollectionStoryItem extends StatelessWidget {
                     story.news!.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: readrBlack87,
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                     ),
                   ),
                 ),
@@ -66,10 +68,11 @@ class CollectionStoryItem extends StatelessWidget {
               story.news!.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 color: readrBlack87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
             ),
             imageBuilder: (context, imageProvider) {
@@ -81,10 +84,12 @@ class CollectionStoryItem extends StatelessWidget {
                       story.news!.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: readrBlack87,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                       ),
                     ),
                   ),

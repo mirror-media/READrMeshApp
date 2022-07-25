@@ -116,10 +116,11 @@ class SearchPage extends GetView<SearchPageController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     '搜尋歷史',
                     style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                       fontSize: 18,
                       color: readrBlack87,
                       fontFamily: 'PingFang TC',
@@ -235,10 +236,11 @@ class SearchPage extends GetView<SearchPageController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     '所有集錦',
                     style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                       fontSize: 18,
                       color: readrBlack87,
                       fontFamily: 'PingFang TC',
@@ -270,12 +272,13 @@ class SearchPage extends GetView<SearchPageController> {
             return Container(
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
-              child: const Text(
+              child: Text(
                 '所有新聞',
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   fontFamily: 'PingFang TC',
                 ),
               ),

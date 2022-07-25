@@ -82,11 +82,11 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           '可用的邀請碼',
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w500,
+            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             color: readrBlack87,
           ),
         ),
@@ -128,9 +128,9 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         children: [
           Text(
             invitationCode.code,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               color: readrBlack87,
             ),
           ),
@@ -169,11 +169,11 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           '已使用',
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w500,
+            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             color: readrBlack87,
           ),
         ),
@@ -204,9 +204,9 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         children: [
           Text(
             invitationCode.code,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               color: readrBlack30,
             ),
           ),

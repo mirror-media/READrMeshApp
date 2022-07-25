@@ -272,16 +272,17 @@ class LatestPage extends GetView<LatestPageController> {
           await _showFilterBottomSheet(context);
         },
         child: Row(
-          children: const [
+          children: [
             Text(
               '所有最新文章',
               style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500),
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600),
             ),
-            SizedBox(width: 6),
-            Icon(
+            const SizedBox(width: 6),
+            const Icon(
               Icons.expand_more_outlined,
               color: readrBlack30,
               size: 30,

@@ -81,10 +81,11 @@ class NewsListItemWidget extends StatelessWidget {
               joinZeroWidthSpace: true,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 color: readrBlack87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
             ),
           if (news.heroImageUrl != null)
@@ -99,10 +100,12 @@ class NewsListItemWidget extends StatelessWidget {
                       joinZeroWidthSpace: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: readrBlack87,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                       ),
                     ),
                   ),
@@ -130,10 +133,11 @@ class NewsListItemWidget extends StatelessWidget {
                 joinZeroWidthSpace: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   color: readrBlack87,
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
               imageBuilder: (context, imageProvider) {
@@ -146,10 +150,12 @@ class NewsListItemWidget extends StatelessWidget {
                         joinZeroWidthSpace: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: readrBlack87,
                           fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: GetPlatform.isIOS
+                              ? FontWeight.w500
+                              : FontWeight.w600,
                         ),
                       ),
                     ),

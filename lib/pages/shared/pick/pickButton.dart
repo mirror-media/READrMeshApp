@@ -135,9 +135,10 @@ class PickButton extends GetView<PickableItemController> {
                   )
                 ],
                 material: (context, target) => MaterialAlertDialogData(
-                  titleTextStyle: const TextStyle(
+                  titleTextStyle: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                     color: Colors.black,
                   ),
                   contentTextStyle: const TextStyle(

@@ -61,12 +61,14 @@ class NotifyPage extends GetView<NotifyPageController> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 16, 16, 12),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                     child: Text(
                       '新通知',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                         fontSize: 18,
                         color: readrBlack87,
                         fontFamily: 'PingFang TC',
@@ -136,8 +138,8 @@ class NotifyPage extends GetView<NotifyPageController> {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
+            style: TextStyle(
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               fontSize: 14,
               color: readrBlack87,
               fontFamily: 'PingFang TC',
@@ -176,10 +178,12 @@ class NotifyPage extends GetView<NotifyPageController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       '新通知',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                         fontSize: 18,
                         color: readrBlack87,
                         fontFamily: 'PingFang TC',
@@ -241,10 +245,11 @@ class NotifyPage extends GetView<NotifyPageController> {
               return Container(
                 color: Colors.white,
                 padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
-                child: const Text(
+                child: Text(
                   '之前的通知',
                   style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                     fontSize: 18,
                     color: readrBlack87,
                     fontFamily: 'PingFang TC',

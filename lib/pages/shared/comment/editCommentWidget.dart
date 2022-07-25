@@ -63,10 +63,11 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                     Get.find<UserService>().currentUser.nickname,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: readrBlack87,
                       fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                     ),
                   ),
                 ),

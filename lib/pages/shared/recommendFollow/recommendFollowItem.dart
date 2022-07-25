@@ -1,5 +1,6 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
@@ -37,10 +38,11 @@ class RecommendFollowItem extends StatelessWidget {
                 maxLines: 1,
                 joinZeroWidthSpace: true,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   color: readrBlack87,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 4),

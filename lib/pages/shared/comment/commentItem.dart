@@ -156,10 +156,11 @@ class CommentItem extends GetView<CommentItemController> {
               builder: (ctx, constraints) {
                 var span = TextSpan(
                   text: comment.member.nickname,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: readrBlack87,
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   ),
                 );
                 final innerTextSpan = joinChar(

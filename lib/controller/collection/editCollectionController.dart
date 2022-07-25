@@ -224,11 +224,12 @@ class EditCollectionController extends GetxController {
               const SizedBox(
                 height: 4,
               ),
-              const Text(
+              Text(
                 '向左滑可以刪除文章',
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color: Colors.white,
                 ),
               ),

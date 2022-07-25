@@ -326,10 +326,12 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                               .value ??
                           collection.title,
                       joinZeroWidthSpace: true,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: readrBlack87,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                       ),
                     ),
                   ),

@@ -125,10 +125,12 @@ class FollowingListPage extends GetView<FollowingListController> {
                       child: Obx(
                         () => Text(
                           '媒體  (${controller.followingPublisherList.length})',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             color: readrBlack87,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: GetPlatform.isIOS
+                                ? FontWeight.w500
+                                : FontWeight.w600,
                           ),
                         ),
                       ),
@@ -171,10 +173,11 @@ class FollowingListPage extends GetView<FollowingListController> {
               child: Obx(
                 () => Text(
                   '人物  (${controller.followingMemberCount.value})',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     color: readrBlack87,
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   ),
                 ),
               ),

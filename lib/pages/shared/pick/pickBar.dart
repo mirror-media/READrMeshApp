@@ -53,10 +53,11 @@ class PickBar extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
               text: pickCountData.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 color: readrBlack,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
               children: const [
                 TextSpan(

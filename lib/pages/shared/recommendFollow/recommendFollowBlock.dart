@@ -28,12 +28,14 @@ class RecommendFollowBlock extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       '推薦追蹤',
                       style: TextStyle(
                         fontSize: 18,
                         color: readrBlack87,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                       ),
                     ),
                     TextButton(

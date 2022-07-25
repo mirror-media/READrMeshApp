@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 
@@ -159,7 +160,9 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: _textSize - 4,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: GetPlatform.isIOS
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                         color: readrBlack87,
                       ),
                     ),

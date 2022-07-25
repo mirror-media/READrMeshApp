@@ -190,10 +190,12 @@ class ChooseStoryPage extends StatelessWidget {
                       }
                       return Text(
                         text,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: readrBlack87,
                           fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: GetPlatform.isIOS
+                              ? FontWeight.w500
+                              : FontWeight.w600,
                         ),
                       );
                     },

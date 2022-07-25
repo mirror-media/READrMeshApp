@@ -95,12 +95,13 @@ class PickTabContent extends GetView<PickTabController> {
             return Container(
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 0),
-              child: const Text(
+              child: Text(
                 '精選集錦',
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
             );
@@ -116,12 +117,13 @@ class PickTabContent extends GetView<PickTabController> {
             return Container(
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
-              child: const Text(
+              child: Text(
                 '精選文章',
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
             );

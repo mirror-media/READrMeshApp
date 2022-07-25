@@ -37,9 +37,10 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
             children: [
               Text(
                 publisher.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color: readrBlack87,
                 ),
               ),

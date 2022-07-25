@@ -535,12 +535,12 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             ),
           ),
           padding: const EdgeInsets.only(left: 24.0),
-          child: const Text(
+          child: Text(
             '引用數據',
             style: TextStyle(
               color: readrBlack87,
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
           ),
         ));

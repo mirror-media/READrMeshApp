@@ -494,10 +494,12 @@ class CommunityPage extends GetView<CommunityPageController> {
                           maxLines: 1,
                           joinZeroWidthSpace: true,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: readrBlack87,
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: GetPlatform.isIOS
+                                ? FontWeight.w500
+                                : FontWeight.w600,
                           ),
                           strutStyle: const StrutStyle(
                             forceStrutHeight: true,

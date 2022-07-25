@@ -18,9 +18,10 @@ class CollapsePickBar extends StatelessWidget {
           () => AutoSizeText.rich(
             TextSpan(
               text: controller.commentCount.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: readrBlack87,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
               children: const [
                 TextSpan(
@@ -49,9 +50,10 @@ class CollapsePickBar extends StatelessWidget {
           () => AutoSizeText.rich(
             TextSpan(
               text: controller.pickCount.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: readrBlack87,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
               children: const [
                 TextSpan(

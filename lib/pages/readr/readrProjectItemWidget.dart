@@ -104,10 +104,10 @@ class ReadrProjectItemWidget extends StatelessWidget {
         joinZeroWidthSpace: true,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
-        style: const TextStyle(
+        style: TextStyle(
           color: readrBlack87,
           fontSize: 20.0,
-          fontWeight: FontWeight.w500,
+          fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
         ),
       ),
     );

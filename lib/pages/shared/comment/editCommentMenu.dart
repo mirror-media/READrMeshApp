@@ -105,23 +105,25 @@ class EditCommentMenu {
                 }
                 Navigator.pop(context);
               },
-              child: const Text(
+              child: Text(
                 '刪除留言',
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
+              child: Text(
                 '取消',
                 style: TextStyle(
                   color: Colors.blue,
                   fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                 ),
               ),
             ),

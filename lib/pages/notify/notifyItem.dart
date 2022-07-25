@@ -111,8 +111,8 @@ class NotifyItem extends GetView<NotifyItemController> {
         ));
         textChildren.add(TextSpan(
           text: notify.newsListItem!.source?.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
+          style: TextStyle(
+            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             color: readrBlack,
           ),
         ));
@@ -193,8 +193,8 @@ class NotifyItem extends GetView<NotifyItemController> {
     return ExtendedText.rich(
       TextSpan(
         text: mainText,
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
+        style: TextStyle(
+          fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
           color: readrBlack,
         ),
         children: textChildren,

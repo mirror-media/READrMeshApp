@@ -140,10 +140,12 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                           child: Obx(
                             () => Text(
                               '所有留言 (${commentController.allComments.length})',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 color: readrBlack87,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: GetPlatform.isIOS
+                                    ? FontWeight.w500
+                                    : FontWeight.w600,
                               ),
                             ),
                           ),
@@ -255,10 +257,11 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                 forceStrutHeight: true,
                 leading: 0.5,
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 color: readrBlack87,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
             ),
           ),
@@ -337,12 +340,13 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                 return Container(
                   color: Colors.white,
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                  child: const Text(
+                  child: Text(
                     '熱門留言',
                     style: TextStyle(
                       fontSize: 18,
                       color: readrBlack87,
-                      fontWeight: FontWeight.w500,
+                      fontWeight:
+                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                     ),
                   ),
                 );
