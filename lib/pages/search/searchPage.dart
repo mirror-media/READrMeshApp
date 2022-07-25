@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/searchPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/search/allCollectionResultPage.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
@@ -38,7 +39,13 @@ class SearchPage extends GetView<SearchPageController> {
         ),
         body: GetBuilder<SearchPageController>(
           builder: (controller) {
-            if (controller.isLoading.isTrue) {
+            if (controller.error != null) {
+              return ErrorPage(
+                error: controller.error,
+                onPressed: () => controller.search(controller.keyWord),
+                hideAppbar: true,
+              );
+            } else if (controller.isLoading.isTrue) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
