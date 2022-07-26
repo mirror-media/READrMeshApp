@@ -79,6 +79,7 @@ class SearchPageController extends GetxController {
           keyWord,
           attributesToRetrieve: ['id', 'type'],
           filter: ['type = story'],
+          sort: ['lastUpdated:desc'],
         ).then((value) async {
           if (value.hits?.isNotEmpty ?? false) {
             List<int> newsIdList =
@@ -92,6 +93,7 @@ class SearchPageController extends GetxController {
           keyWord,
           attributesToRetrieve: ['id', 'type'],
           filter: ['type = collection'],
+          sort: ['lastUpdated:desc'],
         ).then((value) async {
           if (value.hits?.isNotEmpty ?? false) {
             List<int> collectionIdList =
@@ -131,6 +133,7 @@ class SearchPageController extends GetxController {
         attributesToRetrieve: ['id', 'type'],
         offset: newsResultList.length,
         filter: ['type = story'],
+        sort: ['lastUpdated:desc'],
       );
 
       if (result.hits?.isNotEmpty ?? false) {
@@ -168,6 +171,7 @@ class SearchPageController extends GetxController {
         attributesToRetrieve: ['id', 'type'],
         offset: collectionResultList.length,
         filter: ['type = collection'],
+        sort: ['lastUpdated:desc'],
       );
 
       if (result.hits?.isNotEmpty ?? false) {
