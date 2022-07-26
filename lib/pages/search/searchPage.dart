@@ -76,7 +76,7 @@ class SearchPage extends GetView<SearchPageController> {
             color: readrBlack30,
           ),
           contentPadding: EdgeInsets.fromLTRB(5.5, 8, 12, 8),
-          hintText: '搜尋所有新聞...',
+          hintText: '搜尋所有新聞與集錦...',
           hintStyle: TextStyle(
             color: readrBlack30,
             fontSize: 14,
@@ -204,7 +204,7 @@ class SearchPage extends GetView<SearchPageController> {
               ),
             ),
             const TextSpan(
-              text: '」的新聞，請換個關鍵字，再試一次。',
+              text: '」的新聞或集錦，請換個關鍵字，再試一次。',
               style: TextStyle(
                 color: readrBlack50,
               ),
