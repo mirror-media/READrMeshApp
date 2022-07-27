@@ -72,7 +72,6 @@ class SearchPageController extends GetxController {
     collectionResultList.clear();
     noResult = false;
     error = null;
-    update();
     try {
       await Future.wait([
         _index.search(
