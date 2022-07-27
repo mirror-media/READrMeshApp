@@ -10,7 +10,9 @@ import 'package:readr/models/collectionStory.dart';
 
 abstract class CollectionRepos {
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
-    List<String>? fetchedStoryIds,
+    List<String>? fetchedBookmarkStoryIds,
+    List<String>? fetchedPickStoryIds,
+    String? keyWord,
   });
   Future<String> createOgPhoto({required String ogImageUrlOrPath});
   Future<Collection> createCollection({
@@ -49,12 +51,16 @@ abstract class CollectionRepos {
 class CollectionService implements CollectionRepos {
   @override
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
-    List<String>? fetchedStoryIds,
+    List<String>? fetchedBookmarkStoryIds,
+    List<String>? fetchedPickStoryIds,
+    String? keyWord,
   }) async {
     const String query = """
     query(
       \$myId: ID
-      \$fetchedStoryIds: [ID!]
+      \$fetchedBookmarkStoryIds: [ID!]
+      \$fetchedPickStoryIds: [ID!]
+      \$keyWord: String
     ){
       bookmarks: picks(
         where:{
@@ -68,7 +74,10 @@ class CollectionService implements CollectionRepos {
               equals: true
             }
             id:{
-              notIn: \$fetchedStoryIds
+              notIn: \$fetchedBookmarkStoryIds
+            }
+            title:{
+              contains: \$keyWord
             }
           }
           is_active:{
@@ -81,7 +90,7 @@ class CollectionService implements CollectionRepos {
             equals: "bookmark"
           }
         }
-        take: 100
+        take: 50
         orderBy:{
           picked_date: desc
         }
@@ -112,7 +121,10 @@ class CollectionService implements CollectionRepos {
               equals: true
             }
             id:{
-              notIn: \$fetchedStoryIds
+              notIn: \$fetchedPickStoryIds
+            }
+            title:{
+              contains: \$keyWord
             }
           }
           is_active:{
@@ -125,7 +137,7 @@ class CollectionService implements CollectionRepos {
             equals: "read"
           }
         }
-        take: 100
+        take: 50
         orderBy:{
           picked_date: desc
         }
@@ -149,7 +161,9 @@ class CollectionService implements CollectionRepos {
 
     Map<String, dynamic> variables = {
       "myId": Get.find<UserService>().currentUser.memberId,
-      "fetchedStoryIds": fetchedStoryIds ?? [],
+      "fetchedBookmarkStoryIds": fetchedBookmarkStoryIds ?? [],
+      "fetchedPickStoryIds": fetchedPickStoryIds ?? [],
+      "keyWord": keyWord ?? '',
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
