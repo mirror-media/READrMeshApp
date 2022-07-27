@@ -33,4 +33,12 @@ class CollectionStory {
       creator: Member.fromJson(json['creator']),
     );
   }
+
+  factory CollectionStory.fromNewsListItem(NewsListItem news) {
+    return CollectionStory(
+      id: '-1',
+      pickedDate: DateTime.now(),
+      news: news,
+    );
+  }
 }
