@@ -46,8 +46,9 @@ class SearchPage extends GetView<SearchPageController> {
                 hideAppbar: true,
               );
             } else if (controller.isLoading.isTrue) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [CircularProgressIndicator.adaptive()],
               );
             } else if (controller.newsResultList.isNotEmpty) {
               return _searchResult();
@@ -357,7 +358,7 @@ class SearchPage extends GetView<SearchPageController> {
         }
 
         return SizedBox(
-          height: 250,
+          height: 270,
           child: ListView.separated(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

@@ -57,13 +57,13 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
             crossAxisCount: 2,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: (context.width - 40 - 12) / 500,
+            childAspectRatio: (context.width - 40 - 12) / 530,
           ),
           itemBuilder: (context, index) {
             if (index == controller.collectionResultList.length - 1 &&
                 !controller.isLoadingMoreCollection &&
                 !controller.noMoreCollection) {
-              // controller.loadMoreCollection();
+              controller.loadMoreCollection();
               print('load more collection');
             }
             return SmallCollectionItem(

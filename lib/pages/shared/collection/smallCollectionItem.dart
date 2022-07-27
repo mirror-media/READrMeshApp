@@ -31,9 +31,7 @@ class SmallCollectionItem extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: SizedBox(
           width: 150,
-          height: 236,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
@@ -74,7 +72,8 @@ class SmallCollectionItem extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Padding(
+              Container(
+                height: 17,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GestureDetector(
                   onTap: () => Get.to(
@@ -103,7 +102,6 @@ class SmallCollectionItem extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Container(
-                height: 36,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Obx(
                   () => ExtendedText(
@@ -124,6 +122,7 @@ class SmallCollectionItem extends StatelessWidget {
                   ),
                 ),
               ),
+              const Spacer(),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
