@@ -116,7 +116,9 @@ class EditCollectionController extends GetxController {
     isError.value = false;
     try {
       var result = await collectionRepos.fetchPickAndBookmark(
-        fetchedStoryIds:
+        fetchedBookmarkStoryIds:
+            List<String>.from(newList.map((element) => element.news!.id)),
+        fetchedPickStoryIds:
             List<String>.from(newList.map((element) => element.news!.id)),
       );
       pickAndBookmarkList.assignAll(result['pickAndBookmarkList']!);
