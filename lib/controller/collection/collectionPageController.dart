@@ -42,9 +42,7 @@ class CollectionPageController extends GetxController {
       fetchCollectionData();
     } else {
       for (var item in collection.collectionPicks!) {
-        if (item.news != null) {
-          collectionPicks.add(item);
-        }
+        collectionPicks.add(item);
       }
 
       isLoading = false;

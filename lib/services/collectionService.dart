@@ -184,8 +184,8 @@ class CollectionService implements CollectionRepos {
     for (var pick in jsonResponse.data!['picks']) {
       CollectionStory collectionStory = CollectionStory.fromPick(pick);
       pickList.add(collectionStory);
-      int index = pickAndBookmarkList.indexWhere(
-          (element) => element.news!.id == collectionStory.news!.id);
+      int index = pickAndBookmarkList
+          .indexWhere((element) => element.news.id == collectionStory.news.id);
       if (index == -1) {
         pickAndBookmarkList.add(collectionStory);
       }
@@ -486,7 +486,7 @@ mutation(
     for (var item in collectionStory) {
       Map<String, dynamic> createInput = {
         "story": {
-          "connect": {"id": item.news!.id}
+          "connect": {"id": item.news.id}
         },
         "sort_order": item.sortOrder,
         "creator": {
@@ -722,7 +722,7 @@ mutation(
     for (var item in collectionStory) {
       Map<String, dynamic> createInput = {
         "story": {
-          "connect": {"id": item.news!.id}
+          "connect": {"id": item.news.id}
         },
         "collection": {
           "connect": {"id": collection.id}

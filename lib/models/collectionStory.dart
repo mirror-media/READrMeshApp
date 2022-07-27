@@ -5,14 +5,14 @@ class CollectionStory {
   int sortOrder;
   final String id;
   final DateTime pickedDate;
-  final NewsListItem? news;
+  final NewsListItem news;
   final Member? creator;
 
   CollectionStory({
     this.sortOrder = 0,
     required this.id,
     required this.pickedDate,
-    this.news,
+    required this.news,
     this.creator,
   });
 

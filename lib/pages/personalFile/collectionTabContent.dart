@@ -11,7 +11,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
-import 'package:readr/pages/collection/createCollection/chooseStoryPage.dart';
+import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/collectionInfo.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
@@ -107,7 +107,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                   ElevatedButton(
                     onPressed: () {
                       if (hasPickOrBookmark) {
-                        Get.to(() => ChooseStoryPage());
+                        Get.to(() => const ChooseStoryPage());
                       } else {
                         Get.until((route) => Get.currentRoute == '/');
                         Get.find<RootPageController>().tabIndex.value = 1;
@@ -210,7 +210,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
           ),
           const Spacer(),
           GestureDetector(
-            onTap: () => Get.to(() => ChooseStoryPage()),
+            onTap: () => Get.to(() => const ChooseStoryPage()),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: const [

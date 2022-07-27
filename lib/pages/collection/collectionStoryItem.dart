@@ -15,9 +15,9 @@ class CollectionStoryItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (story.news!.heroImageUrl == null)
+        if (story.news.heroImageUrl == null)
           Text(
-            story.news!.title,
+            story.news.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -26,15 +26,15 @@ class CollectionStoryItem extends StatelessWidget {
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
           ),
-        if (story.news!.heroImageUrl != null)
+        if (story.news.heroImageUrl != null)
           CachedNetworkImage(
-            imageUrl: story.news!.heroImageUrl!,
+            imageUrl: story.news.heroImageUrl!,
             placeholder: (context, url) => Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Text(
-                    story.news!.title,
+                    story.news.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -65,7 +65,7 @@ class CollectionStoryItem extends StatelessWidget {
               ],
             ),
             errorWidget: (context, url, error) => Text(
-              story.news!.title,
+              story.news.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -81,7 +81,7 @@ class CollectionStoryItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      story.news!.title,
+                      story.news.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -116,9 +116,9 @@ class CollectionStoryItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              if (story.news!.source != null) ...[
+              if (story.news.source != null) ...[
                 Text(
-                  story.news!.source!.title,
+                  story.news.source!.title,
                   style: const TextStyle(color: readrBlack50, fontSize: 12),
                 ),
                 Container(
@@ -133,8 +133,8 @@ class CollectionStoryItem extends StatelessWidget {
                 ),
               ],
               Timestamp(
-                story.news!.publishedDate,
-                key: Key(story.news!.controllerTag),
+                story.news.publishedDate,
+                key: Key(story.news.controllerTag),
               ),
             ],
           ),

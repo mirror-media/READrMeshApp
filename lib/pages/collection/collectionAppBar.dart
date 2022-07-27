@@ -4,14 +4,15 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/editCollection/editDescriptionPage.dart';
-import 'package:readr/pages/collection/editCollection/reorderPage.dart';
-import 'package:readr/pages/collection/editCollection/editTitlePage.dart';
+import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/inputTitlePage.dart';
+import 'package:readr/pages/collection/createAndEdit/sortStoryPage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController>
@@ -214,22 +215,39 @@ class CollectionAppBar extends GetView<CollectionPageController>
     );
     if (result == 'title') {
       Get.to(
-        () => EditTitlePage(
+        () => InputTitlePage(
+          Get.find<PickableItemController>(tag: collection.controllerTag)
+                  .collectionTitle
+                  .value ??
+              collection.title,
+          Get.find<PickableItemController>(tag: collection.controllerTag)
+                  .collectionHeroImageUrl
+                  .value ??
+              collection.ogImageUrl,
+          List<String>.from(controller.collectionPicks.map((element) {
+            if (element.news.heroImageUrl != null) {
+              return element.news.heroImageUrl;
+            }
+          })),
           collection: collection,
+          isEdit: true,
         ),
         fullscreenDialog: true,
       );
     } else if (result == 'description') {
       Get.to(
-        () => EditDescriptionPage(
+        () => DescriptionPage(
           collection: collection,
           description: controller.collectionDescription.value,
+          isEdit: true,
         ),
       );
     } else if (result == 'edit') {
       Get.to(
-        () => ReorderPage(
+        () => SortStoryPage(
+          controller.collectionPicks,
           collection: collection,
+          isEdit: true,
         ),
         fullscreenDialog: true,
       );

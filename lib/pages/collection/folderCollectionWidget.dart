@@ -79,7 +79,7 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
           return Padding(
             padding: const EdgeInsets.all(20),
             child:
-                NewsListItemWidget(controller.collectionPicks[index - 1].news!),
+                NewsListItemWidget(controller.collectionPicks[index - 1].news),
           );
         },
         separatorBuilder: (context, index) {

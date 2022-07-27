@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/collection/editCollectionController.dart';
+import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
+import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/pages/collection/createAndEdit/sortStoryPage.dart';
 import 'package:readr/services/collectionService.dart';
 
-class EditDescriptionPage extends GetView<EditCollectionController> {
-  final Collection collection;
-  final String description;
-  const EditDescriptionPage(
-      {required this.collection, required this.description});
+class DescriptionPage extends GetView<DescriptionPageController> {
+  final String? description;
+  final Collection? collection;
+  final bool isEdit;
+  const DescriptionPage({
+    this.description,
+    this.collection,
+    this.isEdit = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Get.put(EditCollectionController(
-      collectionRepos: CollectionService(),
-      collection: collection,
+    Get.put(DescriptionPageController(
+      CollectionService(),
       description: description,
+      collection: collection,
     ));
     return Obx(
       () {
@@ -79,19 +85,32 @@ class EditDescriptionPage extends GetView<EditCollectionController> {
         overflow: TextOverflow.ellipsis,
       ),
       actions: [
-        TextButton(
-          child: const Text(
-            '儲存',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
-              color: Colors.blue,
-            ),
-          ),
-          onPressed: () {
-            if (controller.collectionDescription.value.length < 3000) {
-              controller.updateDescription();
+        Obx(
+          () {
+            String buttonText = isEdit ? '儲存' : '略過';
+            if (controller.collectionDescription.isNotEmpty && !isEdit) {
+              buttonText = '下一步';
             }
+
+            return TextButton(
+              child: Text(
+                buttonText,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () {
+                if (isEdit) {
+                  controller.updateDescription();
+                } else {
+                  Get.to(() => SortStoryPage(
+                        Get.find<ChooseStoryPageController>().selectedList,
+                      ));
+                }
+              },
+            );
           },
         ),
       ],
@@ -113,7 +132,6 @@ class EditDescriptionPage extends GetView<EditCollectionController> {
                 borderColor = Colors.red;
               }
               return TextFormField(
-                initialValue: description,
                 keyboardType: TextInputType.multiline,
                 autofocus: true,
                 maxLines: null,

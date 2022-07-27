@@ -5,20 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/collection/editCollectionController.dart';
+import 'package:readr/controller/collection/createAndEdit/inputTitlePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/shared/changeOgPage.dart';
+import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/changeOgPage.dart';
 import 'package:readr/services/collectionService.dart';
 
-class EditTitlePage extends GetView<EditCollectionController> {
-  final Collection collection;
-  const EditTitlePage({required this.collection});
+class InputTitlePage extends GetView<InputTitlePageController> {
+  final String? title;
+  final String imageUrl;
+  final bool isEdit;
+  final List<String> ogImageUrlList;
+  final Collection? collection;
+  const InputTitlePage(
+    this.title,
+    this.imageUrl,
+    this.ogImageUrlList, {
+    this.isEdit = false,
+    this.collection,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Get.put(EditCollectionController(
-      collectionRepos: CollectionService(),
+    Get.put(InputTitlePageController(
+      title,
+      imageUrl,
+      CollectionService(),
       collection: collection,
     ));
     return Obx(
@@ -62,20 +75,28 @@ class EditTitlePage extends GetView<EditCollectionController> {
       elevation: 0.5,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
-      leading: TextButton(
-        child: const Text(
-          '取消',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
-            color: readrBlack50,
-          ),
-        ),
-        onPressed: () => Get.back(),
-      ),
-      title: const Text(
-        '修改標題',
-        style: TextStyle(
+      leading: isEdit
+          ? TextButton(
+              child: const Text(
+                '取消',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                  color: readrBlack50,
+                ),
+              ),
+              onPressed: () => Get.back(),
+            )
+          : IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: readrBlack87,
+              ),
+              onPressed: () => Get.back(),
+            ),
+      title: Text(
+        isEdit ? '修改標題' : '標題',
+        style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
           color: readrBlack,
@@ -86,18 +107,22 @@ class EditTitlePage extends GetView<EditCollectionController> {
       actions: [
         Obx(
           () {
-            if (controller.title.isNotEmpty) {
+            if (controller.collectionTitle.isNotEmpty) {
               return TextButton(
-                child: const Text(
-                  '儲存',
-                  style: TextStyle(
+                child: Text(
+                  isEdit ? '儲存' : '下一步',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
                     color: Colors.blue,
                   ),
                 ),
-                onPressed: () async {
-                  controller.updateTitleAndOg();
+                onPressed: () {
+                  if (isEdit) {
+                    controller.updateTitleAndOg();
+                  } else {
+                    Get.to(() => const DescriptionPage());
+                  }
                 },
               );
             }
@@ -120,14 +145,8 @@ class EditTitlePage extends GetView<EditCollectionController> {
   Widget _ogImage() {
     return GestureDetector(
       onTap: () async {
-        List<String> imageUrlList = [];
-        for (var item in controller.collection.collectionPicks!) {
-          if (item.news!.heroImageUrl != null) {
-            imageUrlList.add(item.news!.heroImageUrl!);
-          }
-        }
         controller.collectionOgUrlOrPath.value =
-            await Get.to(() => ChangeOgPage(imageUrlList));
+            await Get.to(() => ChangeOgPage(ogImageUrlList));
       },
       child: Column(
         children: [
@@ -201,12 +220,12 @@ class EditTitlePage extends GetView<EditCollectionController> {
             hintText: '輸入集錦標題',
             hintStyle: const TextStyle(color: readrBlack30),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
-            suffix: (controller.title.value.isEmpty)
+            suffix: (controller.collectionTitle.value.isEmpty)
                 ? null
                 : GestureDetector(
                     onTap: () {
                       controller.titleTextController.clear();
-                      controller.title.value = '';
+                      controller.collectionTitle.value = '';
                     },
                     child: const Icon(
                       Icons.cancel,
@@ -216,7 +235,7 @@ class EditTitlePage extends GetView<EditCollectionController> {
                   ),
           ),
           keyboardType: TextInputType.text,
-          onChanged: (value) => controller.title.value = value,
+          onChanged: (value) => controller.collectionTitle.value = value,
         ),
       ),
     );
