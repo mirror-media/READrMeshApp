@@ -86,7 +86,7 @@ class CommunityPageController extends GetxController {
           }
           pickedList.addAll(commentList);
         }),
-        repository.fetchNewCollection().then((value) {
+        repository.fetchCollections().then((value) {
           newCollectionList = value;
           if (newCollectionList.length < 20) {
             _noMoreNewCollection = true;
@@ -172,7 +172,7 @@ class CommunityPageController extends GetxController {
             _noMoreComment = true;
           }
         }),
-        repository.fetchNewCollection().then((value) {
+        repository.fetchCollections().then((value) {
           newCollectionList = value;
           if (newCollectionList.length < 20) {
             _noMoreNewCollection = true;

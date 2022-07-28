@@ -16,7 +16,7 @@ abstract class CommunityRepos {
       {List<String>? alreadyFetchStoryIds,
       List<String>? alreadyFetchCollectionIds});
   Future<List<Member>> fetchRecommendMembers();
-  Future<List<CommunityListItem>> fetchNewCollection(
+  Future<List<CommunityListItem>> fetchCollections(
       {List<String>? alreadyFetchCollectionIds});
 }
 
@@ -1358,7 +1358,7 @@ query(
   }
 
   @override
-  Future<List<CommunityListItem>> fetchNewCollection(
+  Future<List<CommunityListItem>> fetchCollections(
       {List<String>? alreadyFetchCollectionIds}) async {
     const String query = """
 query(

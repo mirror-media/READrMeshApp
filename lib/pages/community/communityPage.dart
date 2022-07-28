@@ -279,6 +279,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                   case CommunityListItemType.pickCollection:
                   case CommunityListItemType.commentCollection:
                   case CommunityListItemType.createCollection:
+                  case CommunityListItemType.updateCollection:
                     objective = PickObjective.collection;
                     break;
                 }

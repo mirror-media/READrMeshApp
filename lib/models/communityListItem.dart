@@ -23,6 +23,7 @@ enum CommunityListItemType {
   commentStory,
   commentCollection,
   createCollection,
+  updateCollection,
 }
 
 class CommunityListItem {
@@ -87,7 +88,11 @@ class CommunityListItem {
         type = CommunityListItemType.commentCollection;
       }
     } else {
-      type = CommunityListItemType.createCollection;
+      if (json['updatedAt'] != null) {
+        type = CommunityListItemType.updateCollection;
+      } else {
+        type = CommunityListItemType.createCollection;
+      }
       orderByTime = collection!.updateTime;
     }
 
@@ -180,6 +185,7 @@ class CommunityListItem {
       case CommunityListItemType.pickCollection:
       case CommunityListItemType.commentCollection:
       case CommunityListItemType.createCollection:
+      case CommunityListItemType.updateCollection:
         heroImageWidget = Obx(
           () => CachedNetworkImage(
             imageUrl:
@@ -251,7 +257,10 @@ class CommunityListItem {
         controllerTag = collection.controllerTag;
         showComment = collection.showComment;
         itemId = collection.id;
-        if (type == CommunityListItemType.createCollection) {
+        if (type == CommunityListItemType.updateCollection) {
+          itemBarMember.assign(collection.creator);
+          itemBarText = '更新了一個集錦';
+        } else if (type == CommunityListItemType.createCollection) {
           itemBarMember.assign(collection.creator);
           itemBarText = '建立了一個新的集錦';
         } else if (collection.commentMembers != null &&
