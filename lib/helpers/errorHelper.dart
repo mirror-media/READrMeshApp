@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:readr/helpers/apiException.dart';
@@ -10,7 +11,7 @@ dynamic determineException(Object error) {
     return NoServiceFoundException('No Service Found');
   } else if (error is FormatException) {
     return InvalidFormatException('Invalid Response format');
-  } else if (error is FetchDataException) {
+  } else if (error is FetchDataException || error is TimeoutException) {
     return NoInternetException('Error During Communication');
   } else if (error is BadRequestException ||
       error is UnauthorisedException ||
