@@ -414,7 +414,6 @@ class SearchPage extends GetView<SearchPageController> {
                   clipBehavior: Clip.antiAlias,
                   child: Container(
                     width: 150,
-                    height: 236,
                     padding: const EdgeInsets.fromLTRB(12, 31, 12, 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
