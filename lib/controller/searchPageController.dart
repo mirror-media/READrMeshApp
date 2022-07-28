@@ -47,15 +47,19 @@ class SearchPageController extends GetxController {
             .getStringList('searchHistory') ??
         []);
 
+    ever(
+      searchHistoryList,
+      (callback) => Get.find<SharedPreferencesService>()
+          .prefs
+          .setStringList('searchHistory', searchHistoryList),
+    );
+
     super.onInit();
   }
 
   @override
   void onClose() {
     textController.dispose();
-    Get.find<SharedPreferencesService>()
-        .prefs
-        .setStringList('searchHistory', searchHistoryList);
     super.onClose();
   }
 
@@ -72,6 +76,7 @@ class SearchPageController extends GetxController {
     collectionResultList.clear();
     noResult = false;
     error = null;
+    update();
     try {
       await Future.wait([
         _index.search(
