@@ -57,14 +57,12 @@ class ChooseStoryPageController extends GetxController {
     debounce<String>(
       keyWord,
       (callback) {
-        if (callback.isNotEmpty) {
-          if (showPicked.isTrue || showBookmark.isTrue) {
-            fetchPickAndBookmark(keyWord: callback);
-          } else {
-            searchAllNews();
-          }
-          searchWord = callback;
+        if (showPicked.isTrue || showBookmark.isTrue) {
+          fetchPickAndBookmark(keyWord: callback);
+        } else {
+          searchAllNews();
         }
+        searchWord = callback;
       },
       time: 1.seconds,
     );
