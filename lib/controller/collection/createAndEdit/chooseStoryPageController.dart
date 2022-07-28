@@ -59,11 +59,11 @@ class ChooseStoryPageController extends GetxController {
       (callback) {
         if (callback.isNotEmpty) {
           if (showPicked.isTrue || showBookmark.isTrue) {
-            fetchPickAndBookmark(keyWord: searchWord);
+            fetchPickAndBookmark(keyWord: callback);
           } else {
             searchAllNews();
           }
-          searchWord = keyWord.value;
+          searchWord = callback;
         }
       },
       time: 1.seconds,
