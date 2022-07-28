@@ -2,6 +2,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
 
@@ -53,8 +54,7 @@ class DynamicLinkHelper {
       socialMetaTagParameters: SocialMetaTagParameters(
         title: socialMediaTitle,
         description: socialMediaDescription,
-        imageUrl: Uri.parse(
-            "https://storage.googleapis.com/static-readr-tw-prod/READr_MESH_Logo.jpg"),
+        imageUrl: Uri.parse(meshLogoImage),
       ),
     );
     final Uri longLink =

@@ -7,6 +7,8 @@ part 'dataConstants.g.dart';
 const readrMail = 'readr@readr.tw';
 const youtubeLink = 'https://www.youtube.com/';
 const readrProjectLink = 'https://www.readr.tw/';
+const meshLogoImage =
+    'https://storage.googleapis.com/static-readr-tw-prod/READr_MESH_Logo.jpg';
 
 /// assets
 const String error400Svg = 'assets/image/error404.svg';
