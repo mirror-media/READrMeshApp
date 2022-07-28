@@ -13,6 +13,7 @@ import 'package:readr/services/searchService.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SearchPage extends GetView<SearchPageController> {
+  final GlobalKey<AnimatedListState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     Get.put(SearchPageController(SearchService()));
@@ -46,16 +47,15 @@ class SearchPage extends GetView<SearchPageController> {
                 hideAppbar: true,
               );
             } else if (controller.isLoading.isTrue) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [CircularProgressIndicator.adaptive()],
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
               );
             } else if (controller.newsResultList.isNotEmpty) {
               return _searchResult();
             } else if (controller.noResult) {
               return _noResultWidget();
             }
-            return _searchHistory();
+            return _searchHistory(context);
           },
         ),
       ),
@@ -106,7 +106,7 @@ class SearchPage extends GetView<SearchPageController> {
     );
   }
 
-  Widget _searchHistory() {
+  Widget _searchHistory(BuildContext context) {
     return Column(
       children: [
         Obx(() {
@@ -145,47 +145,77 @@ class SearchPage extends GetView<SearchPageController> {
 
           return Container();
         }),
-        Expanded(
-          child: Obx(
-            () => ListView.separated(
+        Obx(() {
+          if (controller.searchHistoryList.isEmpty) {
+            return Container();
+          }
+
+          return Expanded(
+            child: AnimatedList(
+              key: _key,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemBuilder: (context, index) => ListTile(
-                tileColor: Colors.white,
-                textColor: readrBlack87,
-                iconColor: readrBlack30,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                title: Text(
-                  controller.searchHistoryList[index],
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: GestureDetector(
-                  onTap: () {
-                    controller.searchHistoryList.removeAt(index);
-                  },
-                  child: const Icon(
-                    CupertinoIcons.minus_circle,
-                    size: 20,
+              itemBuilder: (context, index, animation) => FadeTransition(
+                opacity: animation,
+                child: ListTile(
+                  tileColor: Colors.white,
+                  textColor: readrBlack87,
+                  iconColor: readrBlack30,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  title: Text(
+                    controller.searchHistoryList[index],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                  trailing: GestureDetector(
+                    onTap: () => _removeItem(
+                        index, context, controller.searchHistoryList[index]),
+                    child: const Icon(
+                      CupertinoIcons.minus_circle,
+                      size: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    controller.textController.text =
+                        controller.searchHistoryList[index];
+                    controller.search(controller.searchHistoryList[index]);
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  shape: const Border(
+                      bottom: BorderSide(width: 0.5, color: Colors.black12)),
                 ),
-                onTap: () {
-                  controller.textController.text =
-                      controller.searchHistoryList[index];
-                  controller.search(controller.searchHistoryList[index]);
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
               ),
-              separatorBuilder: (context, index) => const Divider(
-                height: 0.5,
-                thickness: 0.5,
-                color: Colors.black12,
-              ),
-              itemCount: controller.searchHistoryList.length,
+              initialItemCount: controller.searchHistoryList.length,
             ),
-          ),
-        ),
+          );
+        }),
       ],
     );
+  }
+
+  void _removeItem(int index, BuildContext context, String title) async {
+    AnimatedList.of(context).removeItem(index, (_, animation) {
+      return SizeTransition(
+        sizeFactor: animation,
+        child: FadeTransition(
+          opacity: animation,
+          child: ListTile(
+            tileColor: Colors.white,
+            textColor: readrBlack87,
+            iconColor: readrBlack30,
+            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+            title: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            shape: const Border(
+                bottom: BorderSide(width: 0.5, color: Colors.black12)),
+          ),
+        ),
+      );
+    }, duration: const Duration(milliseconds: 150));
+
+    controller.searchHistoryList.removeAt(index);
   }
 
   Widget _noResultWidget() {
@@ -247,16 +277,24 @@ class SearchPage extends GetView<SearchPageController> {
                       fontFamily: 'PingFang TC',
                     ),
                   ),
-                  TextButton(
-                    onPressed: () => Get.to(() => AllCollectionResultPage()),
-                    child: const Text(
-                      '查看全部',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: readrBlack50,
-                      ),
-                    ),
+                  Obx(
+                    () {
+                      if (controller.collectionResultList.length < 5) {
+                        return Container();
+                      }
+                      return TextButton(
+                        onPressed: () =>
+                            Get.to(() => AllCollectionResultPage()),
+                        child: const Text(
+                          '查看全部',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: readrBlack50,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
