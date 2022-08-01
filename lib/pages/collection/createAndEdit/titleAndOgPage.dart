@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/collection/createAndEdit/inputTitlePageController.dart';
+import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/changeOgPage.dart';
 import 'package:readr/services/collectionService.dart';
 
-class InputTitlePage extends GetView<InputTitlePageController> {
+class TitleAndOgPage extends GetView<TitleAndOgPageController> {
   final String? title;
   final String imageUrl;
   final bool isEdit;
   final List<String> ogImageUrlList;
   final Collection? collection;
-  const InputTitlePage(
+  const TitleAndOgPage(
     this.title,
     this.imageUrl,
     this.ogImageUrlList, {
@@ -28,7 +28,7 @@ class InputTitlePage extends GetView<InputTitlePageController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(InputTitlePageController(
+    Get.put(TitleAndOgPageController(
       title,
       imageUrl,
       CollectionService(),

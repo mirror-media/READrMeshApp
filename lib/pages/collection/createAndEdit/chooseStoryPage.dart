@@ -9,7 +9,7 @@ import 'package:readr/controller/collection/createAndEdit/chooseStoryPageControl
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/pages/collection/collectionStoryItem.dart';
-import 'package:readr/pages/collection/createAndEdit/inputTitlePage.dart';
+import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
 import 'package:readr/services/searchService.dart';
@@ -247,7 +247,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                           collectionStory.news.heroImageUrl != null,
                           collectionStory.news.heroImageUrl!);
                     }
-                    Get.to(() => InputTitlePage(
+                    Get.to(() => TitleAndOgPage(
                           null,
                           ogImageUrlList.first,
                           ogImageUrlList,

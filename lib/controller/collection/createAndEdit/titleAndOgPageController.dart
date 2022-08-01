@@ -6,7 +6,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/services/collectionService.dart';
 
-class InputTitlePageController extends GetxController {
+class TitleAndOgPageController extends GetxController {
   final collectionTitle = ''.obs;
   final collectionOgUrlOrPath = ''.obs;
   late final TextEditingController titleTextController;
@@ -15,7 +15,7 @@ class InputTitlePageController extends GetxController {
   final String imageUrl;
   final isUpdating = false.obs;
   final CollectionRepos collectionRepos;
-  InputTitlePageController(this.title, this.imageUrl, this.collectionRepos,
+  TitleAndOgPageController(this.title, this.imageUrl, this.collectionRepos,
       {this.collection});
 
   @override

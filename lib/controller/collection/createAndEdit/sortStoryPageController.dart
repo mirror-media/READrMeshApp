@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
-import 'package:readr/controller/collection/createAndEdit/inputTitlePageController.dart';
+import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pubsubService.dart';
@@ -72,7 +72,7 @@ class SortStoryPageController extends GetxController {
     try {
       String imageId = await collectionRepos
           .createOgPhoto(
-              ogImageUrlOrPath: Get.find<InputTitlePageController>()
+              ogImageUrlOrPath: Get.find<TitleAndOgPageController>()
                   .collectionOgUrlOrPath
                   .value)
           .timeout(
@@ -80,7 +80,7 @@ class SortStoryPageController extends GetxController {
           );
       Collection newCollection = await collectionRepos
           .createCollection(
-            title: Get.find<InputTitlePageController>().collectionTitle.value,
+            title: Get.find<TitleAndOgPageController>().collectionTitle.value,
             ogImageId: imageId,
             collectionStory: collectionStoryList,
             description: Get.find<DescriptionPageController>()
@@ -169,7 +169,7 @@ class SortStoryPageController extends GetxController {
     futureList.addIf(
       addItemList.isNotEmpty,
       collectionRepos.createCollectionPicks(
-        collection: collection!,
+        collectionId: collection!.id,
         collectionStory: addItemList,
       ),
     );
