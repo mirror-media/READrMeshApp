@@ -69,7 +69,7 @@ class SearchPageController extends GetxController {
     noMoreCollection = false;
     isLoadingMoreNews.value = false;
     isLoadingMoreCollection = false;
-    if (!searchHistoryList.contains(keyWord)) {
+    if (!searchHistoryList.contains(keyWord) && keyWord.isNotEmpty) {
       searchHistoryList.insert(0, keyWord);
     }
     newsResultList.clear();
