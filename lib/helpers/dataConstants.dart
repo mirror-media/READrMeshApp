@@ -25,16 +25,21 @@ const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
 const String readrPageActiveSvg = 'assets/icon/readrPageActive.svg';
 const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
-const String collectionDeleteHintSvg = 'assets/image/collectionDeleteHint.svg';
-const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
-//onboard svgs
+//onboard image
 const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
 const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
 const String onboard3Svg = 'assets/image/onboard/onboard3.svg';
 const String onboard4Svg = 'assets/image/onboard/onboard4.svg';
+// collection image
+const String collectionDeleteHintSvg =
+    'assets/image/collection/collectionDeleteHint.svg';
+const String collectionDeletedSvg =
+    'assets/image/collection/collectionDeleted.svg';
+const String folderIconSvg = 'assets/image/collection/folderIcon.svg';
+const String timelineIconSvg = 'assets/image/collection/timelineIcon.svg';
 
 //json
 const serviceAccountCredentialsJson =
