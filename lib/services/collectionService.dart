@@ -4,6 +4,7 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/addToCollectionItem.dart';
 import 'package:readr/models/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:readr/models/collectionStory.dart';
@@ -24,8 +25,8 @@ abstract class CollectionRepos {
     String? slug,
     required String description,
   });
-  Future<Collection> createCollectionPicks({
-    required Collection collection,
+  Future<List<CollectionStory>> createCollectionPicks({
+    required String collectionId,
     required List<CollectionStory> collectionStory,
   });
   Future<Collection> updateTitle({
@@ -45,6 +46,13 @@ abstract class CollectionRepos {
   Future<void> updateDescription({
     required String collectionId,
     required String description,
+  });
+  Future<Map<String, List<AddToCollectionItem>>> fetchAndCheckOwnCollections(
+      String tapStoryId);
+  Future<void> addSingleStoryToCollection({
+    required String storyId,
+    required String collectionId,
+    required int sortOrder,
   });
 }
 
@@ -544,8 +552,8 @@ mutation(
   }
 
   @override
-  Future<Collection> createCollectionPicks({
-    required Collection collection,
+  Future<List<CollectionStory>> createCollectionPicks({
+    required String collectionId,
     required List<CollectionStory> collectionStory,
   }) async {
     const String mutation = """
@@ -725,7 +733,7 @@ mutation(
           "connect": {"id": item.news.id}
         },
         "collection": {
-          "connect": {"id": collection.id}
+          "connect": {"id": collectionId}
         },
         "sort_order": item.sortOrder,
         "creator": {
@@ -752,8 +760,7 @@ mutation(
       collectionPicks.add(CollectionStory.fromJson(result));
     }
 
-    collection.collectionPicks = collectionPicks;
-    return collection;
+    return collectionPicks;
   }
 
   @override
@@ -1369,5 +1376,158 @@ mutation(
           DateTime.tryParse(result.data!['updateCollection']['updatedAt']) ??
               DateTime.now();
     }
+  }
+
+  @override
+  Future<Map<String, List<AddToCollectionItem>>> fetchAndCheckOwnCollections(
+      String tapStoryId) async {
+    const String query = """
+query(
+  \$myId: ID
+  \$tapStoryId: ID
+){
+  alreadyPickCollections: collections(
+    where:{
+      creator:{
+        id:{
+          equals: \$myId
+        }
+      }
+      status:{
+      	equals: "publish"
+      }
+      collectionpicks:{
+        some:{
+          story:{
+            id:{
+              equals: \$tapStoryId
+            }
+          }
+        }
+      }
+    }
+    orderBy:[
+      {updatedAt: desc},{createdAt: desc}
+    ]
+  ){
+    title
+  }
+  notPickCollections: collections(
+    where:{
+      creator:{
+        id:{
+          equals: \$myId
+        }
+      }
+      status:{
+      	equals: "publish"
+      }
+      collectionpicks:{
+        none:{
+          story:{
+            id:{
+              equals: \$tapStoryId
+            }
+          }
+        }
+      }
+    }
+    orderBy:[
+      {updatedAt: desc},{createdAt: desc}
+    ]
+  ){
+    id
+    title
+    heroImage{
+      resized{
+        original
+      }
+    }
+    collectionpicksCount
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "tapStoryId": tapStoryId,
+    };
+
+    final result = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
+      variables: variables,
+    );
+
+    List<AddToCollectionItem> alreadyPickCollections = [];
+    List<AddToCollectionItem> notPickCollections = [];
+
+    for (var item in result.data!['alreadyPickCollections']) {
+      alreadyPickCollections
+          .add(AddToCollectionItem.fromAlreadyPickedCollection(item));
+    }
+
+    for (var item in result.data!['notPickCollections']) {
+      notPickCollections.add(AddToCollectionItem.fromNotPickedCollection(item));
+    }
+
+    return {
+      'alreadyPickCollections': alreadyPickCollections,
+      'notPickCollections': notPickCollections,
+    };
+  }
+
+  @override
+  Future<void> addSingleStoryToCollection({
+    required String storyId,
+    required String collectionId,
+    required int sortOrder,
+  }) async {
+    const String mutation = """
+mutation(
+  \$sortOrder: Int
+  \$storyId: ID
+  \$collectionId: ID
+  \$myId: ID
+  \$pickedDate: DateTime
+){
+  createCollectionPick(
+    data:{
+      story:{
+        connect:{
+          id: \$storyId
+        }
+      }
+      collection:{
+        connect:{
+          id: \$collectionId
+        }
+      }
+      creator:{
+        connect:{
+          id: \$myId
+        }
+      }
+      picked_date: \$pickedDate
+      sort_order: \$sortOrder
+    }
+  ){
+    id
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+      "sortOrder": sortOrder,
+      "storyId": storyId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+      "pickedDate": DateTime.now().toUtc().toIso8601String(),
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
   }
 }

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/createAndEdit/sortStoryPage.dart';
+import 'package:readr/models/collectionStory.dart';
+import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/services/collectionService.dart';
 
 class DescriptionPage extends GetView<DescriptionPageController> {
@@ -105,9 +107,21 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 if (isEdit) {
                   controller.updateDescription();
                 } else {
-                  Get.to(() => SortStoryPage(
-                        Get.find<ChooseStoryPageController>().selectedList,
-                      ));
+                  List<CollectionStory> chooseStoryList = [];
+                  if (Get.isRegistered<AddToCollectionPageController>()) {
+                    chooseStoryList.add(CollectionStory.fromNewsListItem(
+                        Get.find<AddToCollectionPageController>().news));
+                  } else {
+                    chooseStoryList =
+                        Get.find<ChooseStoryPageController>().selectedList;
+                  }
+                  Get.to(
+                    () => ChooseFormatPage(
+                      chooseStoryList,
+                      isQuickCreate:
+                          Get.isRegistered<AddToCollectionPageController>(),
+                    ),
+                  );
                 }
               },
             );
