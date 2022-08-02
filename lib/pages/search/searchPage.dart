@@ -128,7 +128,10 @@ class SearchPage extends GetView<SearchPageController> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => controller.searchHistoryList.clear(),
+                    onPressed: () {
+                      controller.searchHistoryList.clear();
+                      controller.update();
+                    },
                     child: const Text(
                       '清除所有記錄',
                       style: TextStyle(
@@ -145,49 +148,51 @@ class SearchPage extends GetView<SearchPageController> {
 
           return Container();
         }),
-        Obx(() {
-          if (controller.searchHistoryList.isEmpty) {
-            return Container();
-          }
+        GetBuilder<SearchPageController>(
+          builder: (controller) {
+            if (controller.searchHistoryList.isEmpty) {
+              return Container();
+            }
 
-          return Expanded(
-            child: AnimatedList(
-              key: _key,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemBuilder: (context, index, animation) => FadeTransition(
-                opacity: animation,
-                child: ListTile(
-                  tileColor: Colors.white,
-                  textColor: readrBlack87,
-                  iconColor: readrBlack30,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  title: Text(
-                    controller.searchHistoryList[index],
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: GestureDetector(
-                    onTap: () => _removeItem(
-                        index, context, controller.searchHistoryList[index]),
-                    child: const Icon(
-                      CupertinoIcons.minus_circle,
-                      size: 20,
+            return Expanded(
+              child: AnimatedList(
+                key: _key,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemBuilder: (context, index, animation) => FadeTransition(
+                  opacity: animation,
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    textColor: readrBlack87,
+                    iconColor: readrBlack30,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    title: Text(
+                      controller.searchHistoryList[index],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    trailing: GestureDetector(
+                      onTap: () => _removeItem(
+                          index, context, controller.searchHistoryList[index]),
+                      child: const Icon(
+                        CupertinoIcons.minus_circle,
+                        size: 20,
+                      ),
+                    ),
+                    onTap: () {
+                      controller.textController.text =
+                          controller.searchHistoryList[index];
+                      controller.search(controller.searchHistoryList[index]);
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    shape: const Border(
+                        bottom: BorderSide(width: 0.5, color: Colors.black12)),
                   ),
-                  onTap: () {
-                    controller.textController.text =
-                        controller.searchHistoryList[index];
-                    controller.search(controller.searchHistoryList[index]);
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  shape: const Border(
-                      bottom: BorderSide(width: 0.5, color: Colors.black12)),
                 ),
+                initialItemCount: controller.searchHistoryList.length,
               ),
-              initialItemCount: controller.searchHistoryList.length,
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ],
     );
   }
