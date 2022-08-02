@@ -7,7 +7,7 @@ import 'package:readr/controller/collection/createAndEdit/sortStoryPageControlle
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
-import 'package:readr/pages/collection/collectionStoryItem.dart';
+import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
 import 'package:readr/services/collectionService.dart';
 
