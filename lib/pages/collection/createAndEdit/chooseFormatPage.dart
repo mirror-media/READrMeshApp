@@ -265,11 +265,22 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(6)),
               boxShadow: [
-                BoxShadow(
-                  color: isSelected ? Colors.white : readrBlack20,
-                  blurRadius: 6,
-                  blurStyle: BlurStyle.solid,
-                ),
+                if (isSelected)
+                  const BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 12,
+                  ),
+                if (!isSelected) ...[
+                  const BoxShadow(
+                    color: readrBlack20,
+                    blurRadius: 16,
+                  ),
+                  const BoxShadow(
+                    color: readrBlack30,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ],
               color: isSelected
                   ? Colors.white
