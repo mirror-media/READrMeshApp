@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -10,16 +11,16 @@ import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebviewWidget extends GetView<StoryPageController> {
-  final String newsId;
-  const NewsWebviewWidget(this.newsId);
+  final NewsListItem news;
+  const NewsWebviewWidget(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoryPageController>(
-      tag: newsId,
+      tag: news.id,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -41,7 +42,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
       children: [
         Column(
           children: [
-            StoryAppBar(newsId),
+            StoryAppBar(news),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(bottom: context.height * 0.12),
@@ -88,7 +89,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           ],
         ),
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading) {
               return Container();
@@ -106,10 +107,10 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           },
         ),
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading) {
-              return StorySkeletonScreen(newsId);
+              return StorySkeletonScreen(news);
             }
 
             return Container();

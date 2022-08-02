@@ -10,15 +10,17 @@ import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/newsListItem.dart';
+import 'package:readr/pages/collection/addToCollectionPage.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class StoryAppBar extends GetView<StoryPageController> {
-  final String newsId;
-  const StoryAppBar(this.newsId);
+  final NewsListItem news;
+  const StoryAppBar(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,37 @@ class StoryAppBar extends GetView<StoryPageController> {
       ),
       actions: <Widget>[
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
+          builder: (controller) {
+            if (controller.isLoading || controller.isError) {
+              return Container();
+            }
+
+            return IconButton(
+              icon: Icon(
+                PlatformIcons(context).folderOpen,
+                color: readrBlack87,
+                size: 26,
+              ),
+              tooltip: '加入集錦',
+              onPressed: () {
+                if (Get.find<UserService>().isMember.isFalse) {
+                  Get.to(
+                    () => const LoginPage(),
+                    fullscreenDialog: true,
+                  );
+                } else {
+                  Get.to(
+                    () => AddToCollectionPage(news),
+                    fullscreenDialog: true,
+                  );
+                }
+              },
+            );
+          },
+        ),
+        GetBuilder<StoryPageController>(
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading || controller.isError) {
               return Container();
@@ -48,7 +80,7 @@ class StoryAppBar extends GetView<StoryPageController> {
               () {
                 return IconButton(
                   icon: Icon(
-                    Get.find<PickableItemController>(tag: 'News$newsId')
+                    Get.find<PickableItemController>(tag: news.controllerTag)
                             .isBookmarked
                             .value
                         ? PlatformIcons(context).bookmarkSolid
@@ -56,11 +88,12 @@ class StoryAppBar extends GetView<StoryPageController> {
                     color: readrBlack87,
                     size: 26,
                   ),
-                  tooltip: Get.find<PickableItemController>(tag: 'News$newsId')
-                          .isBookmarked
-                          .value
-                      ? '移除書籤'
-                      : '加入書籤',
+                  tooltip:
+                      Get.find<PickableItemController>(tag: news.controllerTag)
+                              .isBookmarked
+                              .value
+                          ? '移除書籤'
+                          : '加入書籤',
                   onPressed: () async {
                     if (Get.find<UserService>().isMember.isFalse) {
                       Get.to(
@@ -68,15 +101,15 @@ class StoryAppBar extends GetView<StoryPageController> {
                         fullscreenDialog: true,
                       );
                     } else {
-                      Get.find<PickableItemController>(tag: 'News$newsId')
+                      Get.find<PickableItemController>(tag: news.controllerTag)
                           .isBookmarked
                           .toggle();
                       EasyDebounce.debounce(
-                        'UpdateBookmark$newsId',
+                        'UpdateBookmark${news.id}',
                         const Duration(milliseconds: 500),
-                        () =>
-                            Get.find<PickableItemController>(tag: 'News$newsId')
-                                .updateBookmark(),
+                        () => Get.find<PickableItemController>(
+                                tag: news.controllerTag)
+                            .updateBookmark(),
                       );
                     }
                   },
@@ -86,7 +119,7 @@ class StoryAppBar extends GetView<StoryPageController> {
           },
         ),
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading || controller.isError) {
               return Container();
@@ -119,8 +152,8 @@ class StoryAppBar extends GetView<StoryPageController> {
           tooltip: '回前頁',
           onPressed: () async {
             if (Get.isRegistered<CommentInputBoxController>(
-                    tag: 'News$newsId') &&
-                Get.find<CommentInputBoxController>(tag: 'News$newsId')
+                    tag: news.controllerTag) &&
+                Get.find<CommentInputBoxController>(tag: news.controllerTag)
                     .hasInput
                     .isTrue) {
               await showPlatformDialog(

@@ -40,12 +40,12 @@ class StoryPage extends GetView<StoryPageController> {
 
     Widget child;
     if (!news.fullContent) {
-      child = NewsWebviewWidget(news.id);
+      child = NewsWebviewWidget(news);
     } else if (news.source?.id ==
         Get.find<EnvironmentService>().config.readrPublisherId) {
-      child = ReadrStoryWidget(news.id);
+      child = ReadrStoryWidget(news);
     } else {
-      child = NewsStoryWidget(news.id);
+      child = NewsStoryWidget(news);
     }
     return WillPopScope(
       child: Scaffold(

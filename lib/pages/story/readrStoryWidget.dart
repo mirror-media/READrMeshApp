@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
@@ -23,11 +24,11 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
   final ItemScrollController _itemScrollController = ItemScrollController();
-  final String newsId;
-  ReadrStoryWidget(this.newsId);
+  final NewsListItem news;
+  ReadrStoryWidget(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
@@ -38,7 +39,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     var width = MediaQuery.of(context).size.width;
 
     return GetBuilder<StoryPageController>(
-      tag: newsId,
+      tag: news.id,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -56,7 +57,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(newsId),
+                  StoryAppBar(news),
                   Expanded(
                     child: _storyContent(width, story),
                   ),
@@ -76,7 +77,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         }
 
         // state is Init, loading, or other
-        return StorySkeletonScreen(newsId);
+        return StorySkeletonScreen(news);
       },
     );
   }

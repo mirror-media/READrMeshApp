@@ -9,6 +9,8 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/newsListItem.dart';
+import 'package:readr/pages/collection/addToCollectionPage.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -19,6 +21,8 @@ class MoreActionBottomSheet {
     required String id,
     required String controllerTag,
     String? url,
+    String? heroImageUrl,
+    NewsListItem? newsListItem,
   }) async {
     await showCupertinoModalBottomSheet(
       context: context,
@@ -51,6 +55,40 @@ class MoreActionBottomSheet {
                   ),
                 ),
               ),
+              if (objective == PickObjective.story && newsListItem != null)
+                TextButton.icon(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    if (Get.find<UserService>().isMember.isFalse) {
+                      Get.to(
+                        () => const LoginPage(),
+                        fullscreenDialog: true,
+                      );
+                    } else {
+                      Get.to(
+                        () => AddToCollectionPage(newsListItem),
+                        fullscreenDialog: true,
+                      );
+                    }
+                  },
+                  icon: Icon(
+                    PlatformIcons(context).folderOpen,
+                    color: readrBlack87,
+                    size: 18,
+                  ),
+                  label: const Text(
+                    '加入集錦',
+                    style: TextStyle(
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
               if (objective == PickObjective.story)
                 TextButton.icon(
                   onPressed: () async {

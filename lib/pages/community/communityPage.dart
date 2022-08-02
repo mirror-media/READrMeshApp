@@ -441,6 +441,8 @@ class CommunityPage extends GetView<CommunityPageController> {
                 id: item.itemId,
                 controllerTag: item.controllerTag,
                 url: url,
+                heroImageUrl: item.newsListItem?.heroImageUrl,
+                newsListItem: item.newsListItem!,
               );
             },
             child: SizedBox(

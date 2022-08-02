@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StorySkeletonScreen extends StatelessWidget {
-  final String newsId;
-  const StorySkeletonScreen(this.newsId);
+  final NewsListItem news;
+  const StorySkeletonScreen(this.news);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class StorySkeletonScreen extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          StoryAppBar(newsId),
+          StoryAppBar(news),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(0),
