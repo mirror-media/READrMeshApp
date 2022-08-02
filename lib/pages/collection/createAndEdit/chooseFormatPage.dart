@@ -158,12 +158,10 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                     Colors.transparent,
                     Colors.black,
                   ],
+                  stops: [0.5, 0.75],
                 ),
               ),
-              margin: EdgeInsets.only(
-                  top: context.height -
-                      kToolbarHeight -
-                      (context.height * 0.52)),
+              height: 347,
               padding: const EdgeInsets.fromLTRB(20, 120, 20, 40),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
