@@ -69,6 +69,7 @@ class CollectionService implements CollectionRepos {
       \$fetchedBookmarkStoryIds: [ID!]
       \$fetchedPickStoryIds: [ID!]
       \$keyWord: String
+      \$followingMembers: [ID!]
     ){
       bookmarks: picks(
         where:{
@@ -108,12 +109,199 @@ class CollectionService implements CollectionRepos {
           id
           title
           url
-          published_date
-          createdAt
-          og_image
           source{
             id
             title
+          }
+          full_content
+          full_screen_ad
+          paywall
+          published_date
+          createdAt
+          og_image
+          commentCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              state:{
+                equals: "public"
+              }
+              member:{
+                is_active:{
+                  equals: true
+                }
+              }
+            }
+          )
+          followingPicks: pick(
+            where:{
+              member:{
+                id:{
+                  in: \$followingMembers
+                }
+              }
+              state:{
+                equals: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            picked_date
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          otherPicks:pick(
+            where:{
+              member:{
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+              }
+              state:{
+                in: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          pickCount(
+            where:{
+              state:{
+                in: "public"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          myPickId: pick(
+            where:{
+              member:{
+                id:{
+                  equals: \$myId
+                }
+              }
+              state:{
+                notIn: "private"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+            pick_comment(
+              where:{
+                is_active:{
+                  equals: true
+                }
+              }
+            ){
+              id
+            }
+          }
+          comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+              state:{
+                equals: "public"
+              }
+              member:{
+                id:{
+                  in: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+              }
+            }
+            orderBy:{
+              published_date: desc
+            }
+            take: 2
+          ){
+            id
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+            content
+            state
+            published_date
+            likeCount(
+              where:{
+                is_active:{
+                  equals: true
+                }
+              }
+            )
+            isLiked:likeCount(
+              where:{
+                is_active:{
+                  equals: true
+                }
+                id:{
+                  equals: \$myId
+                }
+              }
+            )
           }
         }
       }
@@ -155,12 +343,199 @@ class CollectionService implements CollectionRepos {
           id
           title
           url
-          published_date
-          createdAt
-          og_image
           source{
             id
             title
+          }
+          full_content
+          full_screen_ad
+          paywall
+          published_date
+          createdAt
+          og_image
+          commentCount(
+            where:{
+              is_active:{
+                equals: true
+              }
+              state:{
+                equals: "public"
+              }
+              member:{
+                is_active:{
+                  equals: true
+                }
+              }
+            }
+          )
+          followingPicks: pick(
+            where:{
+              member:{
+                id:{
+                  in: \$followingMembers
+                }
+              }
+              state:{
+                equals: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            picked_date
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          otherPicks:pick(
+            where:{
+              member:{
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+              }
+              state:{
+                in: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          pickCount(
+            where:{
+              state:{
+                in: "public"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+          )
+          myPickId: pick(
+            where:{
+              member:{
+                id:{
+                  equals: \$myId
+                }
+              }
+              state:{
+                notIn: "private"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+          ){
+            id
+            pick_comment(
+              where:{
+                is_active:{
+                  equals: true
+                }
+              }
+            ){
+              id
+            }
+          }
+          comment(
+            where:{
+              is_active:{
+                equals: true
+              }
+              state:{
+                equals: "public"
+              }
+              member:{
+                id:{
+                  in: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
+              }
+            }
+            orderBy:{
+              published_date: desc
+            }
+            take: 2
+          ){
+            id
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+            content
+            state
+            published_date
+            likeCount(
+              where:{
+                is_active:{
+                  equals: true
+                }
+              }
+            )
+            isLiked:likeCount(
+              where:{
+                is_active:{
+                  equals: true
+                }
+                id:{
+                  equals: \$myId
+                }
+              }
+            )
           }
         }
       }
@@ -172,6 +547,7 @@ class CollectionService implements CollectionRepos {
       "fetchedBookmarkStoryIds": fetchedBookmarkStoryIds ?? [],
       "fetchedPickStoryIds": fetchedPickStoryIds ?? [],
       "keyWord": keyWord ?? '',
+      "followingMembers": Get.find<UserService>().followingMemberIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(

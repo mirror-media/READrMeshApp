@@ -20,7 +20,7 @@ class CollectionStory {
     return CollectionStory(
       id: '-1',
       pickedDate: DateTime.parse(json["picked_date"]).toLocal(),
-      news: NewsListItem.fromJson(json['story'], updateController: false),
+      news: NewsListItem.fromJson(json['story']),
     );
   }
 
