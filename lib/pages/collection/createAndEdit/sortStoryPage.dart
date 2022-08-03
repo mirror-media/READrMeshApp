@@ -93,13 +93,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         Icons.arrow_back_ios_new_outlined,
                         color: readrBlack87,
                       ),
-                      onPressed: () async {
-                        if (controller.hasChange) {
-                          await _showLeaveAlertDialog(context);
-                        } else {
-                          Get.back();
-                        }
-                      },
+                      onPressed: () => Get.back(),
                     ),
               title: Text(
                 isEdit ? '編輯排序' : '排序',
