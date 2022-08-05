@@ -12,7 +12,7 @@ import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
-import 'package:readr/pages/collection/createAndEdit/sortStoryPage.dart';
+import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController>
