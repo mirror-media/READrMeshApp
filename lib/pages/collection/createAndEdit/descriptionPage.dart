@@ -92,8 +92,10 @@ class DescriptionPage extends GetView<DescriptionPageController> {
             String buttonText = isEdit ? '儲存' : '略過';
             if (controller.collectionDescription.isNotEmpty && !isEdit) {
               buttonText = '下一步';
+            } else if (controller.collectionDescription.value == description &&
+                isEdit) {
+              return Container();
             }
-
             return TextButton(
               child: Text(
                 buttonText,
@@ -151,6 +153,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 maxLines: null,
                 maxLength: 3000,
                 expands: true,
+                initialValue: description,
                 textAlignVertical: TextAlignVertical.top,
                 onChanged: (value) => controller.collectionDescription(value),
                 style: const TextStyle(
