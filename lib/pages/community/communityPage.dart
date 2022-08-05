@@ -421,8 +421,8 @@ class CommunityPage extends GetView<CommunityPageController> {
             ),
           ),
           const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () async {
+          IconButton(
+            onPressed: () async {
               PickObjective objective;
               String? url;
 
@@ -442,17 +442,20 @@ class CommunityPage extends GetView<CommunityPageController> {
                 controllerTag: item.controllerTag,
                 url: url,
                 heroImageUrl: item.newsListItem?.heroImageUrl,
-                newsListItem: item.newsListItem!,
+                newsListItem: item.newsListItem,
               );
             },
-            child: SizedBox(
-              width: 24,
-              height: 24,
-              child: Icon(
-                PlatformIcons(context).ellipsis,
-                color: readrBlack66,
-                size: 15,
-              ),
+            splashColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            padding: const EdgeInsets.all(0),
+            alignment: Alignment.centerRight,
+            constraints: const BoxConstraints(maxHeight: 18),
+            icon: Icon(
+              PlatformIcons(context).ellipsis,
+              color: readrBlack66,
+              size: 18,
             ),
           ),
         ],
