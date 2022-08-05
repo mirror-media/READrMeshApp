@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/timelineStory.dart';
+import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 
 class TimelineItemWidget extends StatelessWidget {
   final TimelineStory timelineStory;
   final TimelineStory? previousTimelineStory;
+  final bool editMode;
   const TimelineItemWidget(
     this.timelineStory, {
     Key? key,
     this.previousTimelineStory,
+    this.editMode = false,
   }) : super(key: key);
 
   @override
@@ -35,11 +38,16 @@ class TimelineItemWidget extends StatelessWidget {
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: NewsListItemWidget(
-              timelineStory.news,
-              key: Key(timelineStory.news.id),
-              inTimeline: true,
-            ),
+            child: editMode
+                ? CollectionStoryItem(
+                    timelineStory,
+                    inTimeline: true,
+                  )
+                : NewsListItemWidget(
+                    timelineStory.news,
+                    key: Key(timelineStory.news.id),
+                    inTimeline: true,
+                  ),
           ),
         ),
       ],
@@ -55,7 +63,6 @@ class TimelineItemWidget extends StatelessWidget {
 
     switch (_compareTwoStory()) {
       case 4:
-        children = [];
         break;
       case 3:
         if (timelineStory.time != null) {
@@ -66,8 +73,6 @@ class TimelineItemWidget extends StatelessWidget {
               color: readrBlack50,
             ),
           ));
-        } else {
-          children = [];
         }
         break;
       case 2:
@@ -103,7 +108,42 @@ class TimelineItemWidget extends StatelessWidget {
               ),
             ),
           ]);
-        } else {
+        }
+        break;
+      case 1:
+        if (timelineStory.time != null) {
+          children.addAll([
+            Text(
+              '${timelineStory.month!}/${timelineStory.day!}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              DateFormat('HH:mm').format(timelineStory.time!),
+              style: const TextStyle(
+                fontSize: 12,
+                color: readrBlack50,
+              ),
+            ),
+          ]);
+        } else if (timelineStory.day != null) {
+          children.addAll([
+            Text(
+              '${timelineStory.month!}/${timelineStory.day!}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ]);
+        } else if (timelineStory.month != null) {
           children.addAll([
             Text(
               '${timelineStory.month!}月',
@@ -116,13 +156,13 @@ class TimelineItemWidget extends StatelessWidget {
           ]);
         }
         break;
-      case 1:
+
       case 0:
       default:
         if (timelineStory.time != null) {
           children.addAll([
             Text(
-              timelineStory.year,
+              timelineStory.year.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -153,7 +193,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else if (timelineStory.day != null) {
           children.addAll([
             Text(
-              timelineStory.year,
+              timelineStory.year.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -174,7 +214,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else if (timelineStory.month != null) {
           children.addAll([
             Text(
-              timelineStory.year,
+              timelineStory.year.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -195,7 +235,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.addAll([
             Text(
-              timelineStory.year,
+              timelineStory.year.toString(),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -204,6 +244,21 @@ class TimelineItemWidget extends StatelessWidget {
             ),
           ]);
         }
+    }
+
+    if (editMode) {
+      if (children.length > 1) {
+        children.add(const SizedBox(
+          height: 12,
+        ));
+      }
+      children.add(const Text(
+        '編輯',
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.blue,
+        ),
+      ));
     }
 
     return Column(

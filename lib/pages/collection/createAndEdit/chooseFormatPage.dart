@@ -6,6 +6,8 @@ import 'package:readr/controller/collection/createAndEdit/chooseFormatPageContro
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/timelineStory.dart';
+import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
 import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/collectionService.dart';
@@ -96,8 +98,15 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                 ),
               ),
               onPressed: () {
-                if (controller.format.value == CollectionFormat.folder) {
-                  controller.createCollection();
+                switch (controller.format.value) {
+                  case CollectionFormat.folder:
+                    controller.createCollection();
+                    break;
+                  case CollectionFormat.timeline:
+                    Get.to(() => TimeDimensionPage(List<TimelineStory>.from(
+                        chooseStoryList.map(
+                            (e) => TimelineStory.fromCollectionStory(e)))));
+                    break;
                 }
               },
             ),
@@ -122,7 +131,18 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                 fontSize: 18,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              switch (controller.format.value) {
+                case CollectionFormat.folder:
+                  Get.to(() => SortStoryPage(chooseStoryList));
+                  break;
+                case CollectionFormat.timeline:
+                  Get.to(() => TimeDimensionPage(List<TimelineStory>.from(
+                      chooseStoryList
+                          .map((e) => TimelineStory.fromCollectionStory(e)))));
+                  break;
+              }
+            },
           ),
       ],
     );
