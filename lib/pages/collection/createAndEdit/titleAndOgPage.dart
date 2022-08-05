@@ -107,26 +107,31 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
       actions: [
         Obx(
           () {
-            if (controller.collectionTitle.isNotEmpty) {
-              return TextButton(
-                child: Text(
-                  isEdit ? '儲存' : '下一步',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                    color: Colors.blue,
-                  ),
-                ),
-                onPressed: () {
-                  if (isEdit) {
-                    controller.updateTitleAndOg();
-                  } else {
-                    Get.to(() => const DescriptionPage());
-                  }
-                },
-              );
+            if (controller.collectionTitle.isEmpty) {
+              return Container();
+            } else if (isEdit &&
+                controller.collectionTitle.value == title &&
+                controller.collectionOgUrlOrPath.value == imageUrl) {
+              return Container();
             }
-            return Container();
+
+            return TextButton(
+              child: Text(
+                isEdit ? '儲存' : '下一步',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () {
+                if (isEdit) {
+                  controller.updateTitleAndOg();
+                } else {
+                  Get.to(() => const DescriptionPage());
+                }
+              },
+            );
           },
         ),
       ],
