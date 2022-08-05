@@ -167,30 +167,23 @@ class SortStoryPageController extends GetxController {
       deleteItemList.assignAll(originItemList);
     }
 
-    List<Future> futureList = [];
-    futureList.addIf(
-      addItemList.isNotEmpty,
-      collectionRepos.createCollectionPicks(
-        collectionId: collection!.id,
-        collectionStory: addItemList,
-      ),
-    );
-    futureList.addIf(
-      moveItemList.isNotEmpty,
-      collectionRepos.updateCollectionPicksOrder(
-        collectionId: collection!.id,
-        collectionStory: moveItemList,
-      ),
-    );
-    futureList.addIf(
-      deleteItemList.isNotEmpty,
-      collectionRepos.removeCollectionPicks(
-        collectionStory: deleteItemList,
-      ),
-    );
-
     try {
-      await Future.wait(futureList);
+      await Future.wait([
+        if (addItemList.isNotEmpty)
+          collectionRepos.createCollectionPicks(
+            collectionId: collection!.id,
+            collectionStory: addItemList,
+          ),
+        if (moveItemList.isNotEmpty)
+          collectionRepos.updateCollectionPicksOrder(
+            collectionId: collection!.id,
+            collectionStory: moveItemList,
+          ),
+        if (deleteItemList.isNotEmpty)
+          collectionRepos.removeCollectionPicks(
+            collectionStory: deleteItemList,
+          ),
+      ]);
       await Get.find<CollectionPageController>(tag: collection!.id)
           .fetchCollectionData();
       Get.back();
