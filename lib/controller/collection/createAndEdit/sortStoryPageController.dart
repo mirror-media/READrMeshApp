@@ -149,15 +149,17 @@ class SortStoryPageController extends GetxController {
 
     for (int i = 0; i < collectionStoryList.length; i++) {
       collectionStoryList[i].sortOrder = i;
-      int originListIndex = originItemList.indexWhere(
+      int originalListIndex = originalList.indexWhere(
           (element) => element.news.id == collectionStoryList[i].news.id);
-      if (originListIndex == -1) {
+      if (originalListIndex == -1) {
         addItemList.add(collectionStoryList[i]);
-      } else if (i != originListIndex) {
+      } else if (i != originalListIndex) {
         moveItemList.add(collectionStoryList[i]);
-        originItemList.removeAt(originListIndex);
+        originItemList.removeWhere(
+            (element) => element.news.id == collectionStoryList[i].news.id);
       } else {
-        originItemList.removeAt(originListIndex);
+        originItemList.removeWhere(
+            (element) => element.news.id == collectionStoryList[i].news.id);
       }
     }
 
