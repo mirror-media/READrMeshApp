@@ -3,9 +3,9 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 
 class TimelineStory extends CollectionStory {
-  String year;
-  String? month;
-  String? day;
+  int year;
+  int? month;
+  int? day;
   DateTime? time;
 
   TimelineStory({
@@ -31,9 +31,9 @@ class TimelineStory extends CollectionStory {
       id: collectionStory.id,
       pickedDate: collectionStory.pickedDate,
       news: collectionStory.news,
-      year: collectionStory.news.publishedDate.year.toString(),
-      month: collectionStory.news.publishedDate.month.toString(),
-      day: collectionStory.news.publishedDate.day.toString(),
+      year: collectionStory.news.publishedDate.year,
+      month: collectionStory.news.publishedDate.month,
+      day: collectionStory.news.publishedDate.day,
       sortOrder: collectionStory.sortOrder,
       creator: collectionStory.creator,
     );
