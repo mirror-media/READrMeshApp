@@ -24,7 +24,7 @@ class SortStoryPageController extends GetxController {
   final Collection? collection;
   bool isFirstTimeEdit = true;
   final bool isEdit;
-  bool hasChange = false;
+  final hasChange = false.obs;
   SortStoryPageController(
     this.collectionRepos,
     this.originalList,
@@ -53,14 +53,14 @@ class SortStoryPageController extends GetxController {
 
   void _checkHasChange() {
     if (collectionStoryList.length != originalList.length) {
-      hasChange = true;
+      hasChange.value = true;
     } else {
       for (int i = 0; i < collectionStoryList.length; i++) {
         if (collectionStoryList[i].news.id != originalList[i].news.id) {
-          hasChange = true;
+          hasChange.value = true;
           break;
         } else {
-          hasChange = false;
+          hasChange.value = false;
         }
       }
     }

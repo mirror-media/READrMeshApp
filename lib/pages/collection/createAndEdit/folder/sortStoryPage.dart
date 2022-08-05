@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -7,6 +8,7 @@ import 'package:readr/controller/collection/createAndEdit/sortStoryPageControlle
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
+import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
 import 'package:readr/services/collectionService.dart';
@@ -31,7 +33,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
     ));
     return WillPopScope(
       onWillPop: () async {
-        if (controller.hasChange) {
+        if (controller.hasChange.isTrue && isEdit) {
           return await _showLeaveAlertDialog(context) ?? false;
         } else {
           return true;
@@ -81,7 +83,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         ),
                       ),
                       onPressed: () async {
-                        if (controller.hasChange) {
+                        if (controller.hasChange.isTrue) {
                           await _showLeaveAlertDialog(context);
                         } else {
                           Get.back();
@@ -106,21 +108,28 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                 overflow: TextOverflow.ellipsis,
               ),
               actions: [
-                TextButton(
-                  child: Text(
-                    isEdit ? '儲存' : '建立',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 18,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (isEdit) {
-                      controller.updateCollectionPicks();
-                    } else {
-                      controller.createCollection();
+                Obx(
+                  () {
+                    if (isEdit && controller.hasChange.isFalse) {
+                      return Container();
                     }
+                    return TextButton(
+                      child: Text(
+                        isEdit ? '儲存' : '建立',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (isEdit) {
+                          controller.updateCollectionPicks();
+                        } else {
+                          controller.createCollection();
+                        }
+                      },
+                    );
                   },
                 ),
               ],
@@ -175,24 +184,85 @@ class SortStoryPage extends GetView<SortStoryPageController> {
               ),
             ),
             floatingActionButton: isEdit
-                ? FloatingActionButton(
-                    backgroundColor: readrBlack,
-                    foregroundColor: Colors.white,
-                    onPressed: () async {
-                      List<CollectionStory> newCollectionStory =
-                          await Get.to(() => ChooseStoryPage(
-                                    isEdit: isEdit,
-                                    pickedStoryIds: List<String>.from(
-                                      controller.collectionStoryList.map(
-                                        (element) => element.news.id,
-                                      ),
-                                    ),
-                                  )) ??
-                              [];
-                      controller.collectionStoryList
-                          .insertAll(0, newCollectionStory);
-                    },
-                    child: const Icon(Icons.add),
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () => Get.to(
+                            () => ChooseFormatPage(
+                              controller.collectionStoryList,
+                              isEdit: true,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(0xff04295E),
+                            shadowColor: readrBlack30,
+                            padding: const EdgeInsets.all(12),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12.0),
+                              ),
+                            ),
+                            elevation: 6,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.arrow_right_arrow_left,
+                            color: Colors.white,
+                            size: 13,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          List<CollectionStory> newCollectionStory =
+                              await Get.to(() => ChooseStoryPage(
+                                        isEdit: isEdit,
+                                        pickedStoryIds: List<String>.from(
+                                          controller.collectionStoryList.map(
+                                            (element) => element.news.id,
+                                          ),
+                                        ),
+                                      )) ??
+                                  [];
+                          controller.collectionStoryList
+                              .insertAll(0, newCollectionStory);
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: readrBlack,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 16,
+                          ),
+                          shadowColor: readrBlack30,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(16.0),
+                            ),
+                          ),
+                          elevation: 6,
+                        ),
+                        icon: const Icon(
+                          CupertinoIcons.add,
+                          size: 17,
+                          color: Colors.white,
+                        ),
+                        label: const Text(
+                          '新增',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 : null,
           );
