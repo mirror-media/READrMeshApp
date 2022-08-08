@@ -4,7 +4,7 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/collectionAppBar.dart';
+import 'package:readr/pages/collection/shared/collectionAppBar.dart';
 import 'package:readr/pages/collection/folderCollectionWidget.dart';
 import 'package:readr/services/collectionPageService.dart';
 import 'package:readr/services/collectionService.dart';
