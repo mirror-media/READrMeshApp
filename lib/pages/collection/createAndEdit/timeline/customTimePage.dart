@@ -26,7 +26,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
 
     controller.time.value = timelineStory.time;
     return Scaffold(
-      backgroundColor: timelineBackgroundColor,
+      backgroundColor: collectionBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -60,7 +60,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
               ),
             ),
             onPressed: () {
-              int itemIndex = controller.timelineStory.indexWhere(
+              int itemIndex = controller.timelineStoryList.indexWhere(
                   (element) => element.news.id == timelineStory.news.id);
               controller.timelineStory[itemIndex].year = controller.year.value;
               controller.timelineStory[itemIndex].month =
@@ -238,7 +238,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
     switch (level) {
       case TimeLevel.year:
         title = '選擇年份';
-        timeRange = List<int>.generate(1101, (index) => 1900 + index);
+        timeRange = List<int>.generate(1031, (index) => 1970 + index);
         set = () => controller.year.value = timeRange[chooseIndex];
         chooseIndex =
             timeRange.indexWhere((element) => element == controller.year.value);
@@ -247,7 +247,11 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
         title = '選擇月份';
         timeRange = List<int>.generate(12, (index) => 1 + index);
         set = () => controller.month.value = timeRange[chooseIndex];
-        clear = () => controller.month.value = null;
+        clear = () {
+          controller.month.value = null;
+          controller.day.value = null;
+          controller.time.value = null;
+        };
         if (controller.month.value != null) {
           chooseIndex = timeRange
               .indexWhere((element) => element == controller.month.value);
@@ -259,7 +263,10 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
             DateTime(controller.year.value, controller.month.value! + 1, 0).day,
             (index) => 1 + index);
         set = () => controller.day.value = timeRange[chooseIndex];
-        clear = () => controller.day.value = null;
+        clear = () {
+          controller.day.value = null;
+          controller.time.value = null;
+        };
         if (controller.day.value != null) {
           chooseIndex = timeRange
               .indexWhere((element) => element == controller.day.value);
