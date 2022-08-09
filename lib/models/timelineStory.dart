@@ -38,4 +38,18 @@ class TimelineStory extends CollectionStory {
       creator: collectionStory.creator,
     );
   }
+
+  factory TimelineStory.fromJson(Map<String, dynamic> json) {
+    return TimelineStory(
+      sortOrder: json['sort_order'],
+      id: json['id'],
+      pickedDate: DateTime.parse(json["picked_date"]).toLocal(),
+      news: NewsListItem.fromJson(json['story']),
+      creator: Member.fromJson(json['creator']),
+      year: json['custom_year'],
+      month: json['custom_month'],
+      day: json['custom_day'],
+      time: DateTime.tryParse(json['custom_time'] ?? '')?.toLocal(),
+    );
+  }
 }
