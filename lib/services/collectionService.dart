@@ -8,6 +8,7 @@ import 'package:readr/models/addToCollectionItem.dart';
 import 'package:readr/models/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/timelineStory.dart';
 
 abstract class CollectionRepos {
   Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
@@ -25,7 +26,7 @@ abstract class CollectionRepos {
     String? slug,
     required String description,
   });
-  Future<List<CollectionStory>> createCollectionPicks({
+  Future<void> createCollectionPicks({
     required String collectionId,
     required List<CollectionStory> collectionStory,
   });
@@ -36,7 +37,6 @@ abstract class CollectionRepos {
   Future<void> updateOgPhoto(
       {required String photoId, required String ogImageUrlOrPath});
   Future<void> updateCollectionPicksOrder({
-    required String collectionId,
     required List<CollectionStory> collectionStory,
   });
   Future<void> removeCollectionPicks(
@@ -54,6 +54,14 @@ abstract class CollectionRepos {
     required String collectionId,
     required int sortOrder,
   });
+  Future<void> updateCollectionPicks({
+    required String collectionId,
+    required List<CollectionStory> originList,
+    required List<CollectionStory> newList,
+    required CollectionFormat format,
+  });
+  Future<void> updateCollectionFormat(
+      {required String collectionId, required CollectionFormat format});
 }
 
 class CollectionService implements CollectionRepos {
@@ -700,18 +708,28 @@ mutation(
     }
   ){
     id
+    title
     slug
-    createdAt
+    public
+    status
+    summary
     heroImage{
       id
       resized{
         original
       }
     }
+    format
+    createdAt
+    updatedAt
     collectionpicks{
       id
       sort_order
       picked_date
+      custom_year
+      custom_month
+      custom_day
+      custom_time
       creator{
         id
         nickname
@@ -876,7 +894,13 @@ mutation(
         "creator": {
           "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
-        "picked_date": DateTime.now().toUtc().toIso8601String()
+        "picked_date": DateTime.now().toUtc().toIso8601String(),
+        if (item is TimelineStory) ...{
+          "custom_year": item.year,
+          "custom_month": item.month,
+          "custom_day": item.day,
+          "custom_time": item.time?.toUtc().toIso8601String(),
+        },
       };
       collectionStoryList.add(createInput);
     }
@@ -905,194 +929,93 @@ mutation(
     final jsonResponse = result.data;
 
     List<CollectionStory> collectionPicks = [];
-    for (var result in jsonResponse!['createCollection']['collectionpicks']) {
-      collectionPicks.add(CollectionStory.fromJson(result));
+    switch (format) {
+      case CollectionFormat.folder:
+        for (var result in jsonResponse!['createCollection']
+            ['collectionpicks']) {
+          collectionPicks.add(CollectionStory.fromJson(result));
+        }
+        break;
+      case CollectionFormat.timeline:
+        for (var result in jsonResponse!['createCollection']
+            ['collectionpicks']) {
+          collectionPicks.add(TimelineStory.fromJson(result));
+        }
+        break;
     }
 
-    return Collection(
-      id: jsonResponse['createCollection']['id'],
-      title: title,
-      slug: jsonResponse['createCollection']['slug'],
-      creator: Get.find<UserService>().currentUser,
-      format: format,
-      public: public,
-      controllerTag: 'Collection${jsonResponse['createCollection']['id']}',
-      ogImageUrl: jsonResponse['createCollection']['heroImage']['resized']
-          ['original'],
-      updateTime:
-          DateTime.tryParse(jsonResponse['createCollection']['createdAt']) ??
-              DateTime.now(),
-      collectionPicks: collectionPicks,
-      ogImageId: jsonResponse['createCollection']['heroImage']['id'],
-    );
+    Collection collection = Collection.fromJsonWithMember(
+        jsonResponse['createCollection'], Get.find<UserService>().currentUser);
+    collection.collectionPicks = collectionPicks;
+
+    return collection;
   }
 
   @override
-  Future<List<CollectionStory>> createCollectionPicks({
+  Future<void> updateCollectionPicks({
+    required String collectionId,
+    required List<CollectionStory> originList,
+    required List<CollectionStory> newList,
+    required CollectionFormat format,
+  }) async {
+    List<CollectionStory> addItemList = [];
+    List<CollectionStory> moveItemList = [];
+    List<CollectionStory> deleteItemList = [];
+
+    bool isAddToEmpty = originList.isEmpty;
+
+    for (int i = 0; i < newList.length; i++) {
+      newList[i].sortOrder = i;
+      if (!isAddToEmpty) {
+        int originalListIndex = originList
+            .indexWhere((element) => element.news.id == newList[i].news.id);
+        if (originalListIndex == -1) {
+          addItemList.add(newList[i]);
+        } else {
+          moveItemList.add(newList[i]);
+          originList
+              .removeWhere((element) => element.news.id == newList[i].news.id);
+        }
+      } else {
+        addItemList.add(newList[i]);
+      }
+    }
+
+    if (originList.isNotEmpty) {
+      deleteItemList.assignAll(originList);
+    }
+
+    await Future.wait([
+      if (addItemList.isNotEmpty)
+        createCollectionPicks(
+          collectionId: collectionId,
+          collectionStory: addItemList,
+        ),
+      if (moveItemList.isNotEmpty)
+        updateCollectionPicksOrder(
+          collectionStory: moveItemList,
+        ),
+      if (deleteItemList.isNotEmpty)
+        removeCollectionPicks(
+          collectionStory: deleteItemList,
+        ),
+      updateCollectionFormat(collectionId: collectionId, format: format),
+    ]);
+  }
+
+  @override
+  Future<void> createCollectionPicks({
     required String collectionId,
     required List<CollectionStory> collectionStory,
   }) async {
     const String mutation = """
     mutation(
-      \$myId: ID
-      \$followingMembers: [ID!]
       \$data: [CollectionPickCreateInput!]!
     ){
       createCollectionPicks(
         data:\$data
       ){
         id
-        sort_order
-        picked_date
-        creator{
-          id
-          nickname
-          avatar
-          customId
-          avatar_image{
-            id
-            resized{
-              original
-            }
-          }
-        }
-        story{
-          id
-            title
-            url
-            source{
-              id
-              title
-            }
-            full_content
-            full_screen_ad
-            paywall
-            published_date
-            createdAt
-            og_image
-            followingPicks: pick(
-              where:{
-                member:{
-                  id:{
-                    in: \$followingMembers
-                  }
-                }
-                state:{
-                  equals: "public"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-              orderBy:{
-                picked_date: desc
-              }
-              take: 4
-            ){
-              member{
-                id
-                nickname
-                avatar
-                customId
-                avatar_image{
-                  id
-                  resized{
-                    original
-                  }
-                }
-              }
-            }
-            otherPicks:pick(
-              where:{
-                member:{
-                  id:{
-                    notIn: \$followingMembers
-                    not:{
-                      equals: \$myId
-                    }
-                  }
-                }
-                state:{
-                  in: "public"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-              orderBy:{
-                picked_date: desc
-              }
-              take: 4
-            ){
-              member{
-                id
-                nickname
-                avatar
-                customId
-                avatar_image{
-                  id
-                  resized{
-                    original
-                  }
-                }
-              }
-            }
-            pickCount(
-              where:{
-                state:{
-                  in: "public"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            commentCount(
-              where:{
-                state:{
-                  in: "public"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            myPickId: pick(
-              where:{
-                member:{
-                  id:{
-                    equals: \$myId
-                  }
-                }
-                state:{
-                  notIn: "private"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-              pick_comment(
-                where:{
-                  is_active:{
-                    equals: true
-                  }
-                }
-              ){
-                id
-              }
-            }
-        }
       }
     }
     """;
@@ -1104,6 +1027,16 @@ mutation(
 
     List<Map<String, dynamic>> dataList = [];
     for (var item in collectionStory) {
+      int? customYear;
+      int? customMonth;
+      int? customDay;
+      String? customTime;
+      if (item is TimelineStory) {
+        customYear = item.year;
+        customMonth = item.month;
+        customDay = item.day;
+        customTime = item.time?.toUtc().toIso8601String();
+      }
       Map<String, dynamic> createInput = {
         "story": {
           "connect": {"id": item.news.id}
@@ -1115,28 +1048,23 @@ mutation(
         "creator": {
           "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
-        "picked_date": DateTime.now().toUtc().toIso8601String()
+        "picked_date": DateTime.now().toUtc().toIso8601String(),
+        "custom_year": customYear,
+        "custom_month": customMonth,
+        "custom_day": customDay,
+        "custom_time": customTime,
       };
       dataList.add(createInput);
     }
 
     Map<String, dynamic> variables = {
-      "myId": Get.find<UserService>().currentUser.memberId,
-      "followingMembers": followingMemberIds,
       "data": dataList,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().mutation(
+    await Get.find<GraphQLService>().mutation(
       mutationBody: mutation,
       variables: variables,
     );
-
-    List<CollectionStory> collectionPicks = [];
-    for (var result in jsonResponse.data!['createCollectionPicks']) {
-      collectionPicks.add(CollectionStory.fromJson(result));
-    }
-
-    return collectionPicks;
   }
 
   @override
@@ -1381,36 +1309,22 @@ mutation(
       variables: variables,
     );
 
-    return Collection.fromFetchCollectionList(
-        jsonResponse.data!['updateCollection'],
+    return Collection.fromJsonWithMember(jsonResponse.data!['updateCollection'],
         Get.find<UserService>().currentUser);
   }
 
   @override
   Future<void> updateCollectionPicksOrder({
-    required String collectionId,
     required List<CollectionStory> collectionStory,
   }) async {
     const String mutation = """
 mutation(
   \$data: [CollectionPickUpdateArgs!]!
-  \$updateTime: DateTime
-  \$collectionId: ID
 ){
   updateCollectionPicks(
     data: \$data
   ){
     id
-  }
-  updateCollection(
-    where:{
-      id: \$collectionId
-    }
-    data:{
-      updatedAt:\$updateTime
-    }
-  ){
-    updatedAt
   }
 }
     """;
@@ -1418,19 +1332,31 @@ mutation(
     List<Map> dataList = [];
 
     for (var item in collectionStory) {
+      int? customYear;
+      int? customMonth;
+      int? customDay;
+      String? customTime;
+      if (item is TimelineStory) {
+        customYear = item.year;
+        customMonth = item.month;
+        customDay = item.day;
+        customTime = item.time?.toUtc().toIso8601String();
+      }
       dataList.add({
         "where": {"id": item.id},
         "data": {
           "sort_order": item.sortOrder,
           "updated_date": DateTime.now().toUtc().toIso8601String(),
+          "custom_year": customYear,
+          "custom_month": customMonth,
+          "custom_day": customDay,
+          "custom_time": customTime,
         }
       });
     }
 
     Map<String, dynamic> variables = {
       "data": dataList,
-      "collectionId": collectionId,
-      "updateTime": DateTime.now().toUtc().toIso8601String()
     };
 
     await Get.find<GraphQLService>().mutation(
@@ -1444,10 +1370,10 @@ mutation(
       {required List<CollectionStory> collectionStory}) async {
     const String mutation = """
 mutation(
-  \$data: [CollectionPickUpdateArgs!]!
+  \$data: [CollectionPickWhereUniqueInput!]!
 ){
-  updateCollectionPicks(
-    data: \$data
+  deleteCollectionPicks(
+    where: \$data
   ){
     id
   }
@@ -1457,12 +1383,9 @@ mutation(
     List<Map> dataList = [];
 
     for (var item in collectionStory) {
-      dataList.add({
-        "where": {"id": item.id},
-        "data": {
-          "collection": {"disconnect": true}
-        }
-      });
+      dataList.add(
+        {"id": item.id},
+      );
     }
 
     Map<String, dynamic> variables = {
@@ -1899,6 +1822,40 @@ mutation(
       "storyId": storyId,
       "myId": Get.find<UserService>().currentUser.memberId,
       "pickedDate": DateTime.now().toUtc().toIso8601String(),
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+  }
+
+  @override
+  Future<void> updateCollectionFormat({
+    required String collectionId,
+    required CollectionFormat format,
+  }) async {
+    const String mutation = """
+mutation(
+  \$collectionId: ID
+  \$format: String
+){
+  updateCollection(
+    where:{
+      id: \$collectionId
+    }
+    data:{
+      format: \$format
+    }
+  ){
+    format
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "collectionId": collectionId,
+      "format": format.toString().split('.').last,
     };
 
     await Get.find<GraphQLService>().mutation(
