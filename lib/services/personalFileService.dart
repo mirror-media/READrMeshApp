@@ -1002,9 +1002,9 @@ query(
       variables: variables,
     );
 
-    List<Collection> collectionList = List<Collection>.from(
-        jsonResponse.data!['collections'].map((element) =>
-            Collection.fromFetchCollectionList(element, viewMember)));
+    List<Collection> collectionList = List<Collection>.from(jsonResponse
+        .data!['collections']
+        .map((element) => Collection.fromJsonWithMember(element, viewMember)));
 
     collectionList.sort((a, b) => b.updateTime.compareTo(a.updateTime));
 
