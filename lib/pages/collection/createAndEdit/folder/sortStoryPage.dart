@@ -15,12 +15,16 @@ import 'package:readr/services/collectionService.dart';
 
 class SortStoryPage extends GetView<SortStoryPageController> {
   final bool isEdit;
+  final bool isChangeFormat;
   final List<CollectionStory> originalList;
   final Collection? collection;
+  final bool isAddToEmpty;
   const SortStoryPage(
     this.originalList, {
     this.isEdit = false,
     this.collection,
+    this.isChangeFormat = false,
+    this.isAddToEmpty = false,
   });
 
   @override
@@ -31,9 +35,12 @@ class SortStoryPage extends GetView<SortStoryPageController> {
       isEdit,
       collection: collection,
     ));
+    if (isChangeFormat || isAddToEmpty) {
+      controller.hasChange.value = true;
+    }
     return WillPopScope(
       onWillPop: () async {
-        if (controller.hasChange.isTrue && isEdit) {
+        if (controller.hasChange.isTrue) {
           return await _showLeaveAlertDialog(context) ?? false;
         } else {
           return true;
@@ -53,7 +60,9 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Text(
-                      isEdit ? '更新集錦中' : '集錦建立中',
+                      (isEdit || isChangeFormat || isAddToEmpty)
+                          ? '更新集錦中'
+                          : '集錦建立中',
                       style: const TextStyle(
                         fontSize: 20,
                         color: readrBlack,
@@ -72,7 +81,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
               elevation: 0.5,
               systemOverlayStyle: SystemUiOverlayStyle.dark,
               centerTitle: GetPlatform.isIOS,
-              leading: isEdit
+              leading: (isEdit || isChangeFormat || isAddToEmpty)
                   ? TextButton(
                       child: const Text(
                         '取消',
@@ -83,7 +92,9 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         ),
                       ),
                       onPressed: () async {
-                        if (controller.hasChange.isTrue) {
+                        if (controller.hasChange.isTrue ||
+                            isChangeFormat ||
+                            isAddToEmpty) {
                           await _showLeaveAlertDialog(context);
                         } else {
                           Get.back();
@@ -110,21 +121,23 @@ class SortStoryPage extends GetView<SortStoryPageController> {
               actions: [
                 Obx(
                   () {
-                    if (isEdit && controller.hasChange.isFalse) {
+                    if (controller.hasChange.isFalse && isEdit) {
                       return Container();
                     }
                     return TextButton(
                       child: Text(
-                        isEdit ? '儲存' : '建立',
+                        (isEdit || isChangeFormat || isAddToEmpty)
+                            ? '儲存'
+                            : '建立',
                         style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
                           color: Colors.blue,
                         ),
                       ),
-                      onPressed: () async {
-                        if (isEdit) {
-                          controller.updateCollectionPicks();
+                      onPressed: () {
+                        if (isEdit || isAddToEmpty || isChangeFormat) {
+                          controller.updateCollectionPicks(isAddToEmpty);
                         } else {
                           controller.createCollection();
                         }
@@ -183,7 +196,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                 },
               ),
             ),
-            floatingActionButton: isEdit
+            floatingActionButton: (isEdit || isChangeFormat || isAddToEmpty)
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -197,6 +210,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                             () => ChooseFormatPage(
                               controller.collectionStoryList,
                               isEdit: true,
+                              collection: collection,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -224,7 +238,9 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         onPressed: () async {
                           List<CollectionStory> newCollectionStory =
                               await Get.to(() => ChooseStoryPage(
-                                        isEdit: isEdit,
+                                        isEdit: isEdit ||
+                                            isChangeFormat ||
+                                            isAddToEmpty,
                                         pickedStoryIds: List<String>.from(
                                           controller.collectionStoryList.map(
                                             (element) => element.news.id,
