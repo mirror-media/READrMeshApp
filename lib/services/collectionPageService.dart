@@ -11,6 +11,7 @@ import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/timelineStory.dart';
 
 abstract class CollectionPageRepos {
   Future<Map<String, dynamic>> fetchCollectionData(String collectionId);
@@ -33,6 +34,7 @@ query(
       id: \$collectionId
     }
   ){
+    format
     summary
     status
     updatedAt
@@ -208,6 +210,10 @@ query(
     id
     sort_order
     picked_date
+    custom_year
+    custom_month
+    custom_day
+    custom_time
     creator{
       id
       nickname
@@ -399,11 +405,25 @@ query(
       popularComments.removeWhere((element) => element.likedCount == 0);
     }
 
+    CollectionFormat format = CollectionFormat.folder;
+    if (collection['format'] == 'timeline') {
+      format = CollectionFormat.timeline;
+    }
+
     List<CollectionStory> collectionPicks = [];
     if (jsonResponse['data']['collectionPicks'].isNotEmpty) {
-      collectionPicks = List<CollectionStory>.from(jsonResponse['data']
-              ['collectionPicks']
-          .map((element) => CollectionStory.fromJson(element)));
+      switch (format) {
+        case CollectionFormat.folder:
+          collectionPicks = List<CollectionStory>.from(jsonResponse['data']
+                  ['collectionPicks']
+              .map((element) => CollectionStory.fromJson(element)));
+          break;
+        case CollectionFormat.timeline:
+          collectionPicks = List<TimelineStory>.from(jsonResponse['data']
+                  ['collectionPicks']
+              .map((element) => TimelineStory.fromJson(element)));
+          break;
+      }
     }
 
     int pickCount = collection['picksCount'];
@@ -446,6 +466,7 @@ query(
       'collectionPicks': collectionPicks,
       'status': status,
       'description': collection['summary'],
+      'format': format,
     };
   }
 }

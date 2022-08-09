@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/shared/news/newsListItemWidget.dart';
+import 'package:readr/models/timelineStory.dart';
+import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
 
-class FolderCollectionWidget extends GetView<CollectionPageController> {
+class TimelineCollectionWidget extends GetView<CollectionPageController> {
   final Collection collection;
-  const FolderCollectionWidget(this.collection);
+  const TimelineCollectionWidget(this.collection);
 
   @override
   String get tag => collection.id;
@@ -15,18 +16,20 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: collectionBackgroundColor,
       child: Obx(
         () => ListView.separated(
           padding: const EdgeInsets.all(20),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) =>
-              NewsListItemWidget(controller.collectionPicks[index].news),
-          separatorBuilder: (context, index) => const Divider(
-            color: readrBlack10,
-            thickness: 1,
-            height: 36,
+          itemBuilder: (context, index) => TimelineItemWidget(
+            controller.collectionPicks[index] as TimelineStory,
+            previousTimelineStory: index == 0
+                ? null
+                : controller.collectionPicks[index - 1] as TimelineStory,
+          ),
+          separatorBuilder: (context, index) => const SizedBox(
+            height: 8,
           ),
           itemCount: controller.collectionPicks.length,
         ),

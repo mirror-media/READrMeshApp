@@ -10,7 +10,9 @@ import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
+import 'package:readr/models/timelineStory.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
 import 'package:share_plus/share_plus.dart';
@@ -243,14 +245,33 @@ class CollectionAppBar extends GetView<CollectionPageController>
         ),
       );
     } else if (result == 'edit') {
-      Get.to(
-        () => SortStoryPage(
-          controller.collectionPicks,
-          collection: collection,
-          isEdit: true,
-        ),
-        fullscreenDialog: true,
-      );
+      switch (controller.collectionFormat.value) {
+        case CollectionFormat.folder:
+          Get.to(
+            () => SortStoryPage(
+              controller.collectionPicks,
+              collection: collection,
+              isEdit: true,
+            ),
+            fullscreenDialog: true,
+          );
+          break;
+        case CollectionFormat.timeline:
+          List<TimelineStory> timelineStoryList =
+              List<TimelineStory>.from(controller.collectionPicks.map(
+            (element) => element as TimelineStory,
+          ));
+
+          Get.to(
+            () => TimeDimensionPage(
+              timelineStoryList,
+              collection: collection,
+              isEdit: true,
+            ),
+            fullscreenDialog: true,
+          );
+          break;
+      }
     } else if (result == 'delete') {
       await showCupertinoDialog(
         context: context,

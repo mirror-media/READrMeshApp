@@ -36,6 +36,14 @@ class CollectionPageController extends GetxController {
   final collectionDescription = ''.obs;
   final expandDescription = false.obs;
 
+  final collectionFormat = CollectionFormat.folder.obs;
+
+  @override
+  void onInit() {
+    collectionFormat.value = collection.format;
+    super.onInit();
+  }
+
   @override
   void onReady() {
     if (!isNewCollection) {
@@ -66,6 +74,7 @@ class CollectionPageController extends GetxController {
           collectionPicks.assignAll(value['collectionPicks']);
           collection.collectionPicks = value['collectionPicks'];
           collectionDescription(value['description']);
+          collectionFormat(value['format']);
         }
       });
     } catch (e) {
