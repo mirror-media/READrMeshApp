@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseFormatPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
 import 'package:readr/models/timelineStory.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
@@ -17,11 +18,13 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
   final bool isQuickCreate;
   final List<CollectionStory> chooseStoryList;
   final CollectionFormat initFormat;
+  final Collection? collection;
   const ChooseFormatPage(
     this.chooseStoryList, {
     this.isEdit = false,
     this.isQuickCreate = false,
     this.initFormat = CollectionFormat.folder,
+    this.collection,
   });
 
   @override
@@ -112,15 +115,52 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             ),
           ),
         if (isEdit)
-          TextButton(
-            child: const Text(
-              '完成',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 18,
-              ),
-            ),
-            onPressed: () => Get.back(result: controller.format.value),
+          Obx(
+            () {
+              if (controller.format.value != initFormat) {
+                return TextButton(
+                  child: const Text(
+                    '完成',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: () {
+                    chooseStoryList.sort((a, b) =>
+                        b.news.publishedDate.compareTo(a.news.publishedDate));
+                    Get.back();
+                    switch (controller.format.value) {
+                      case CollectionFormat.folder:
+                        Get.off(
+                          () => SortStoryPage(
+                            chooseStoryList,
+                            isChangeFormat: true,
+                            collection: collection,
+                          ),
+                          fullscreenDialog: true,
+                        );
+
+                        break;
+                      case CollectionFormat.timeline:
+                        Get.off(
+                          () => TimeDimensionPage(
+                            List<TimelineStory>.from(chooseStoryList.map(
+                                (e) => TimelineStory.fromCollectionStory(e))),
+                            isChangeFormat: true,
+                            collection: collection,
+                          ),
+                          fullscreenDialog: true,
+                        );
+
+                        break;
+                    }
+                  },
+                );
+              }
+
+              return Container();
+            },
           ),
         if (!isQuickCreate && !isEdit)
           TextButton(
@@ -238,8 +278,12 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
   Widget _timelinePreviewWidget() {
     List<TimelineStory> timelineStoryList = List<TimelineStory>.from(
         chooseStoryList.map((e) => TimelineStory.fromCollectionStory(e)));
+    if (isEdit) {
+      timelineStoryList
+          .sort((a, b) => b.news.publishedDate.compareTo(a.news.publishedDate));
+    }
     return Container(
-      color: timelineBackgroundColor,
+      color: collectionBackgroundColor,
       child: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemBuilder: (context, index) => TimelineItemWidget(
