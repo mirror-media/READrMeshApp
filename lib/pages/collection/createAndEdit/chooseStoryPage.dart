@@ -7,8 +7,12 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/timelineStory.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
+import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
@@ -17,7 +21,14 @@ import 'package:readr/services/searchService.dart';
 class ChooseStoryPage extends GetView<ChooseStoryPageController> {
   final bool isEdit;
   final List<String>? pickedStoryIds;
-  const ChooseStoryPage({this.isEdit = false, this.pickedStoryIds});
+  final bool isAddToEmpty;
+  final Collection? collection;
+  const ChooseStoryPage({
+    this.isEdit = false,
+    this.pickedStoryIds,
+    this.isAddToEmpty = false,
+    this.collection,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +251,31 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       b.news.publishedDate.compareTo(a.news.publishedDate));
                   if (isEdit) {
                     Get.back(result: controller.selectedList);
+                  } else if (isAddToEmpty) {
+                    switch (collection?.format) {
+                      case CollectionFormat.folder:
+                        Get.off(
+                          () => SortStoryPage(
+                            controller.selectedList,
+                            isAddToEmpty: true,
+                            collection: collection,
+                          ),
+                        );
+                        break;
+                      case CollectionFormat.timeline:
+                        Get.off(
+                          () => TimeDimensionPage(
+                            List<TimelineStory>.from(controller.selectedList
+                                .map((e) =>
+                                    TimelineStory.fromCollectionStory(e))),
+                            isAddToEmpty: true,
+                            collection: collection,
+                          ),
+                        );
+                        break;
+                      case null:
+                        break;
+                    }
                   } else {
                     List<String> ogImageUrlList = [];
                     for (var collectionStory in controller.selectedList) {
