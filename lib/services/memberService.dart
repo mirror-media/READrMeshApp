@@ -90,6 +90,33 @@ class MemberService implements MemberRepos {
           id
           title
         }
+        pickCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            kind:{
+              notIn:["bookmark"]
+            }
+          }
+        )
+        bookmarkCount: pickCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            kind:{
+              equals:"bookmark"
+            }
+          }
+        )
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
       }
     }
     """;
