@@ -58,6 +58,7 @@ class NewsListItemWidget extends StatelessWidget {
                             const TextStyle(color: readrBlack50, fontSize: 12),
                       ),
                     ),
+                  const Spacer(),
                   IconButton(
                     padding: const EdgeInsets.only(right: 4, left: 10),
                     alignment: Alignment.centerRight,
