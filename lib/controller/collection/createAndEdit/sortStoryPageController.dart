@@ -6,7 +6,6 @@ import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -96,15 +95,6 @@ class SortStoryPageController extends GetxController {
         collectionId: newCollection.id,
       );
 
-      Get.lazyPut<PickableItemController>(
-        () => PickableItemController(
-          targetId: newCollection.id,
-          objective: PickObjective.collection,
-          controllerTag: newCollection.controllerTag,
-        ),
-        tag: newCollection.controllerTag,
-        fenix: true,
-      );
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
@@ -139,51 +129,16 @@ class SortStoryPageController extends GetxController {
     isUpdating.value = false;
   }
 
-  void updateCollectionPicks() async {
+  void updateCollectionPicks(bool isAddToEmpty) async {
     isUpdating.value = true;
-    List<CollectionStory> originItemList = [];
-    originItemList.assignAll(originalList);
-    List<CollectionStory> addItemList = [];
-    List<CollectionStory> moveItemList = [];
-    List<CollectionStory> deleteItemList = [];
-
-    for (int i = 0; i < collectionStoryList.length; i++) {
-      collectionStoryList[i].sortOrder = i;
-      int originalListIndex = originalList.indexWhere(
-          (element) => element.news.id == collectionStoryList[i].news.id);
-      if (originalListIndex == -1) {
-        addItemList.add(collectionStoryList[i]);
-      } else if (i != originalListIndex) {
-        moveItemList.add(collectionStoryList[i]);
-        originItemList.removeWhere(
-            (element) => element.news.id == collectionStoryList[i].news.id);
-      } else {
-        originItemList.removeWhere(
-            (element) => element.news.id == collectionStoryList[i].news.id);
-      }
-    }
-
-    if (originItemList.isNotEmpty) {
-      deleteItemList.assignAll(originItemList);
-    }
 
     try {
-      await Future.wait([
-        if (addItemList.isNotEmpty)
-          collectionRepos.createCollectionPicks(
-            collectionId: collection!.id,
-            collectionStory: addItemList,
-          ),
-        if (moveItemList.isNotEmpty)
-          collectionRepos.updateCollectionPicksOrder(
-            collectionId: collection!.id,
-            collectionStory: moveItemList,
-          ),
-        if (deleteItemList.isNotEmpty)
-          collectionRepos.removeCollectionPicks(
-            collectionStory: deleteItemList,
-          ),
-      ]);
+      await collectionRepos.updateCollectionPicks(
+        collectionId: collection!.id,
+        originList: isAddToEmpty ? [] : originalList,
+        newList: collectionStoryList,
+        format: CollectionFormat.folder,
+      );
       await Get.find<CollectionPageController>(tag: collection!.id)
           .fetchCollectionData();
       Get.back();
