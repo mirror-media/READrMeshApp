@@ -98,7 +98,7 @@ class TimelineItemWidget extends StatelessWidget {
             ),
           ]);
         } else if (timelineStory.day != null) {
-          children.addAll([
+          children.add(
             Text(
               '${timelineStory.month!}/${timelineStory.day!}',
               style: const TextStyle(
@@ -107,7 +107,18 @@ class TimelineItemWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ]);
+          );
+        } else if (!editMode) {
+          children.add(
+            Text(
+              '${timelineStory.month!}月',
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
         }
         break;
       case 1:
@@ -133,7 +144,7 @@ class TimelineItemWidget extends StatelessWidget {
             ),
           ]);
         } else if (timelineStory.day != null) {
-          children.addAll([
+          children.add(
             Text(
               '${timelineStory.month!}/${timelineStory.day!}',
               style: const TextStyle(
@@ -142,9 +153,9 @@ class TimelineItemWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ]);
+          );
         } else if (timelineStory.month != null) {
-          children.addAll([
+          children.add(
             Text(
               '${timelineStory.month!}月',
               style: const TextStyle(
@@ -153,7 +164,18 @@ class TimelineItemWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ]);
+          );
+        } else {
+          children.add(
+            Text(
+              timelineStory.year.toString(),
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
         }
         break;
 
@@ -233,7 +255,7 @@ class TimelineItemWidget extends StatelessWidget {
             ),
           ]);
         } else {
-          children.addAll([
+          children.add(
             Text(
               timelineStory.year.toString(),
               style: const TextStyle(
@@ -242,7 +264,7 @@ class TimelineItemWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ]);
+          );
         }
     }
 
