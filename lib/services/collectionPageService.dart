@@ -7,11 +7,12 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 
 abstract class CollectionPageRepos {
   Future<Map<String, dynamic>> fetchCollectionData(String collectionId);
@@ -410,18 +411,18 @@ query(
       format = CollectionFormat.timeline;
     }
 
-    List<CollectionStory> collectionPicks = [];
+    List<CollectionPick> collectionPicks = [];
     if (jsonResponse['data']['collectionPicks'].isNotEmpty) {
       switch (format) {
         case CollectionFormat.folder:
-          collectionPicks = List<CollectionStory>.from(jsonResponse['data']
+          collectionPicks = List<FolderCollectionPick>.from(jsonResponse['data']
                   ['collectionPicks']
-              .map((element) => CollectionStory.fromJson(element)));
+              .map((element) => FolderCollectionPick.fromJson(element)));
           break;
         case CollectionFormat.timeline:
-          collectionPicks = List<TimelineStory>.from(jsonResponse['data']
-                  ['collectionPicks']
-              .map((element) => TimelineStory.fromJson(element)));
+          collectionPicks = List<TimelineCollectionPick>.from(
+              jsonResponse['data']['collectionPicks']
+                  .map((element) => TimelineCollectionPick.fromJson(element)));
           break;
       }
     }

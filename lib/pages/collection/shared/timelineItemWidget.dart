@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 
 class TimelineItemWidget extends StatelessWidget {
-  final TimelineStory timelineStory;
-  final TimelineStory? previousTimelineStory;
+  final TimelineCollectionPick timelineStory;
+  final TimelineCollectionPick? previousTimelineStory;
   final bool editMode;
   const TimelineItemWidget(
     this.timelineStory, {
@@ -40,7 +40,7 @@ class TimelineItemWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: editMode
                 ? CollectionStoryItem(
-                    timelineStory,
+                    timelineStory.news,
                     inTimeline: true,
                   )
                 : NewsListItemWidget(
@@ -180,7 +180,6 @@ class TimelineItemWidget extends StatelessWidget {
         break;
 
       case 0:
-      default:
         if (timelineStory.time != null) {
           children.addAll([
             Text(
@@ -291,7 +290,7 @@ class TimelineItemWidget extends StatelessWidget {
 
   int _compareTwoStory() {
     // return 0 if they are all different or previousTimelineStory is null
-    // return 1 if they only year are same
+    // return 1 if their year are same
     // return 2 if their year and month are same
     // return 3 if their year, month, and day are same
     // return 4 if they are all same
@@ -299,13 +298,19 @@ class TimelineItemWidget extends StatelessWidget {
     if (previousTimelineStory != null) {
       if (previousTimelineStory!.year != timelineStory.year) {
         return 0;
-      } else if (previousTimelineStory!.month != timelineStory.month ||
+      }
+
+      if (previousTimelineStory!.month != timelineStory.month ||
           timelineStory.month == null) {
         return 1;
-      } else if (previousTimelineStory!.day != timelineStory.day ||
+      }
+
+      if (previousTimelineStory!.day != timelineStory.day ||
           timelineStory.day == null) {
         return 2;
-      } else if (previousTimelineStory!.time != timelineStory.time ||
+      }
+
+      if (previousTimelineStory!.time != timelineStory.time ||
           timelineStory.time == null) {
         return 3;
       } else {

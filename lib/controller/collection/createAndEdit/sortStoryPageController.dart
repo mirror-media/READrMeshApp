@@ -11,15 +11,15 @@ import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/services/collectionService.dart';
 
 class SortStoryPageController extends GetxController {
   final CollectionRepos collectionRepos;
   final isUpdating = false.obs;
-  final List<CollectionStory> originalList;
-  final collectionStoryList = <CollectionStory>[].obs;
+  final List<FolderCollectionPick> originalList;
+  final collectionStoryList = <FolderCollectionPick>[].obs;
   final Collection? collection;
   bool isFirstTimeEdit = true;
   final bool isEdit;
@@ -81,7 +81,7 @@ class SortStoryPageController extends GetxController {
           .createCollection(
             title: Get.find<TitleAndOgPageController>().collectionTitle.value,
             ogImageId: imageId,
-            collectionStory: collectionStoryList,
+            collectionPicks: collectionStoryList,
             description: Get.find<DescriptionPageController>()
                 .collectionDescription
                 .value,

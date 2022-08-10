@@ -11,7 +11,7 @@ import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -19,7 +19,7 @@ enum TimeDimension { yearAndDate, onlyMonth, onlyYear }
 
 class TimeDimensionPageController extends GetxController {
   final CollectionRepos collectionRepos;
-  final List<TimelineStory> timelineStory;
+  final List<TimelineCollectionPick> timelineStory;
   final Collection? collection;
   TimeDimensionPageController(
     this.collectionRepos,
@@ -31,7 +31,7 @@ class TimeDimensionPageController extends GetxController {
   final hasChange = false.obs;
   bool editItemTime = false;
   final timeDimension = TimeDimension.yearAndDate.obs;
-  final timelineStoryList = <TimelineStory>[].obs;
+  final timelineStoryList = <TimelineCollectionPick>[].obs;
 
   //for CustomTimePage
   final year = 1970.obs;
@@ -69,7 +69,7 @@ class TimeDimensionPageController extends GetxController {
         }
       },
     );
-    ever<List<TimelineStory>>(
+    ever<List<TimelineCollectionPick>>(
       timelineStoryList,
       (callback) {
         if (callback != timelineStory) {
@@ -189,7 +189,7 @@ class TimeDimensionPageController extends GetxController {
           .createCollection(
             title: Get.find<TitleAndOgPageController>().collectionTitle.value,
             ogImageId: imageId,
-            collectionStory: timelineStoryList,
+            collectionPicks: timelineStoryList,
             description: Get.find<DescriptionPageController>()
                 .collectionDescription
                 .value,

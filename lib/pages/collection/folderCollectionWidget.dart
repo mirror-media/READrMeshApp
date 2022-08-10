@@ -14,22 +14,19 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Obx(
-        () => ListView.separated(
-          padding: const EdgeInsets.all(20),
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) =>
-              NewsListItemWidget(controller.collectionPicks[index].news),
-          separatorBuilder: (context, index) => const Divider(
-            color: readrBlack10,
-            thickness: 1,
-            height: 36,
-          ),
-          itemCount: controller.collectionPicks.length,
+    return Obx(
+      () => ListView.separated(
+        padding: const EdgeInsets.all(20),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) =>
+            NewsListItemWidget(controller.collectionPicks[index].newsListItem!),
+        separatorBuilder: (context, index) => const Divider(
+          color: readrBlack10,
+          thickness: 1,
+          height: 36,
         ),
+        itemCount: controller.collectionPicks.length,
       ),
     );
   }

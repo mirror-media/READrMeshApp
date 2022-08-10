@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/timeDimensionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/customTimePage.dart';
@@ -17,7 +17,7 @@ import 'package:readr/services/collectionService.dart';
 class TimeDimensionPage extends GetView<TimeDimensionPageController> {
   final bool isEdit;
   final bool isChangeFormat;
-  final List<TimelineStory> timelineStoryList;
+  final List<TimelineCollectionPick> timelineStoryList;
   final Collection? collection;
   final bool isAddToEmpty;
   const TimeDimensionPage(
@@ -183,7 +183,7 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
                       ),
                       ElevatedButton.icon(
                         onPressed: () async {
-                          List<CollectionStory> newCollectionStory =
+                          List<CollectionPick> newCollectionStory =
                               await Get.to(() => ChooseStoryPage(
                                         isEdit: isEdit || isChangeFormat,
                                         pickedStoryIds: List<String>.from(
@@ -194,9 +194,10 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
                                       )) ??
                                   [];
                           controller.timelineStoryList.addAll(
-                              List<TimelineStory>.from(newCollectionStory.map(
-                                  (e) =>
-                                      TimelineStory.fromCollectionStory(e))));
+                              List<TimelineCollectionPick>.from(
+                                  newCollectionStory.map((e) =>
+                                      TimelineCollectionPick.fromCollectionPick(
+                                          e))));
                           controller.sortListByTime();
                         },
                         style: TextButton.styleFrom(
@@ -327,7 +328,7 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
                   ),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(
-                  height: 20,
+                  height: 8,
                 ),
                 itemCount: controller.timelineStoryList.length,
               ),

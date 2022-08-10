@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseFormatPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
 import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
@@ -16,16 +17,23 @@ import 'package:readr/services/collectionService.dart';
 class ChooseFormatPage extends GetView<ChooseFormatPageController> {
   final bool isEdit;
   final bool isQuickCreate;
-  final List<CollectionStory> chooseStoryList;
+  final List<CollectionPick> chooseStoryList;
   final CollectionFormat initFormat;
   final Collection? collection;
-  const ChooseFormatPage(
+  late final List<TimelineCollectionPick> timelineCollectionPick;
+  late final List<FolderCollectionPick> folderCollectionPick;
+  ChooseFormatPage(
     this.chooseStoryList, {
     this.isEdit = false,
     this.isQuickCreate = false,
     this.initFormat = CollectionFormat.folder,
     this.collection,
-  });
+  }) {
+    timelineCollectionPick = List<TimelineCollectionPick>.from(chooseStoryList
+        .map((e) => TimelineCollectionPick.fromCollectionPick(e)));
+    folderCollectionPick = List<FolderCollectionPick>.from(
+        chooseStoryList.map((e) => FolderCollectionPick.fromCollectionPick(e)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +42,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
       chooseStoryList,
       initFormat,
     ));
+
     return Obx(
       () {
         if (controller.isCreating.isTrue) {
@@ -106,9 +115,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                     controller.createCollection();
                     break;
                   case CollectionFormat.timeline:
-                    Get.to(() => TimeDimensionPage(List<TimelineStory>.from(
-                        chooseStoryList.map(
-                            (e) => TimelineStory.fromCollectionStory(e)))));
+                    Get.to(() => TimeDimensionPage(timelineCollectionPick));
                     break;
                 }
               },
@@ -127,14 +134,14 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                     ),
                   ),
                   onPressed: () {
-                    chooseStoryList.sort((a, b) =>
-                        b.news.publishedDate.compareTo(a.news.publishedDate));
+                    chooseStoryList.sort((a, b) => b.newsListItem!.publishedDate
+                        .compareTo(a.newsListItem!.publishedDate));
                     Get.back();
                     switch (controller.format.value) {
                       case CollectionFormat.folder:
                         Get.off(
                           () => SortStoryPage(
-                            chooseStoryList,
+                            folderCollectionPick,
                             isChangeFormat: true,
                             collection: collection,
                           ),
@@ -145,8 +152,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       case CollectionFormat.timeline:
                         Get.off(
                           () => TimeDimensionPage(
-                            List<TimelineStory>.from(chooseStoryList.map(
-                                (e) => TimelineStory.fromCollectionStory(e))),
+                            timelineCollectionPick,
                             isChangeFormat: true,
                             collection: collection,
                           ),
@@ -174,12 +180,10 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             onPressed: () {
               switch (controller.format.value) {
                 case CollectionFormat.folder:
-                  Get.to(() => SortStoryPage(chooseStoryList));
+                  Get.to(() => SortStoryPage(folderCollectionPick));
                   break;
                 case CollectionFormat.timeline:
-                  Get.to(() => TimeDimensionPage(List<TimelineStory>.from(
-                      chooseStoryList
-                          .map((e) => TimelineStory.fromCollectionStory(e)))));
+                  Get.to(() => TimeDimensionPage(timelineCollectionPick));
                   break;
               }
             },
@@ -263,7 +267,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
     return ListView.separated(
       padding: const EdgeInsets.all(20),
       itemBuilder: (context, index) =>
-          NewsListItemWidget(chooseStoryList[index].news),
+          NewsListItemWidget(folderCollectionPick[index].news),
       separatorBuilder: (context, index) => const Divider(
         color: readrBlack10,
         thickness: 1,
@@ -276,8 +280,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
   }
 
   Widget _timelinePreviewWidget() {
-    List<TimelineStory> timelineStoryList = List<TimelineStory>.from(
-        chooseStoryList.map((e) => TimelineStory.fromCollectionStory(e)));
+    List<TimelineCollectionPick> timelineStoryList = timelineCollectionPick;
     if (isEdit) {
       timelineStoryList
           .sort((a, b) => b.news.publishedDate.compareTo(a.news.publishedDate));
@@ -293,7 +296,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
               index == 0 ? null : timelineStoryList[index - 1],
         ),
         separatorBuilder: (context, index) => const SizedBox(
-          height: 20,
+          height: 8,
         ),
         itemCount: timelineStoryList.length,
       ),

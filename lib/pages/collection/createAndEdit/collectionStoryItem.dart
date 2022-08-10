@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CollectionStoryItem extends StatelessWidget {
-  final CollectionStory story;
+  final NewsListItem story;
   final bool inTimeline;
   final bool inCustomTime;
   const CollectionStoryItem(
@@ -22,9 +22,9 @@ class CollectionStoryItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (story.news.heroImageUrl == null || inCustomTime)
+        if (story.heroImageUrl == null || inCustomTime)
           Text(
-            story.news.title,
+            story.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -33,15 +33,15 @@ class CollectionStoryItem extends StatelessWidget {
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
           ),
-        if (story.news.heroImageUrl != null && !inCustomTime)
+        if (story.heroImageUrl != null && !inCustomTime)
           CachedNetworkImage(
-            imageUrl: story.news.heroImageUrl!,
+            imageUrl: story.heroImageUrl!,
             placeholder: (context, url) => Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Text(
-                    story.news.title,
+                    story.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -70,7 +70,7 @@ class CollectionStoryItem extends StatelessWidget {
               ],
             ),
             errorWidget: (context, url, error) => Text(
-              story.news.title,
+              story.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -86,7 +86,7 @@ class CollectionStoryItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      story.news.title,
+                      story.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -119,9 +119,9 @@ class CollectionStoryItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              if (story.news.source != null) ...[
+              if (story.source != null) ...[
                 Text(
-                  story.news.source!.title,
+                  story.source!.title,
                   style: const TextStyle(color: readrBlack50, fontSize: 12),
                 ),
                 if (!inCustomTime)
@@ -138,8 +138,8 @@ class CollectionStoryItem extends StatelessWidget {
               ],
               if (!inCustomTime)
                 Timestamp(
-                  story.news.publishedDate,
-                  key: Key(story.news.controllerTag),
+                  story.publishedDate,
+                  key: Key(story.controllerTag),
                 ),
             ],
           ),

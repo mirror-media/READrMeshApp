@@ -7,11 +7,12 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/addToCollectionItem.dart';
 import 'package:readr/models/collection.dart';
 import 'package:http/http.dart' as http;
-import 'package:readr/models/collectionStory.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 
 abstract class CollectionRepos {
-  Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
+  Future<Map<String, List<CollectionPick>>> fetchPickAndBookmark({
     List<String>? fetchedBookmarkStoryIds,
     List<String>? fetchedPickStoryIds,
     String? keyWord,
@@ -20,7 +21,7 @@ abstract class CollectionRepos {
   Future<Collection> createCollection({
     required String title,
     required String ogImageId,
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
@@ -28,7 +29,7 @@ abstract class CollectionRepos {
   });
   Future<void> createCollectionPicks({
     required String collectionId,
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
   });
   Future<Collection> updateTitle({
     required String collectionId,
@@ -37,10 +38,10 @@ abstract class CollectionRepos {
   Future<void> updateOgPhoto(
       {required String photoId, required String ogImageUrlOrPath});
   Future<void> updateCollectionPicksOrder({
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
   });
   Future<void> removeCollectionPicks(
-      {required List<CollectionStory> collectionStory});
+      {required List<CollectionPick> collectionPicks});
   Future<bool> deleteCollection(String collectionId, String ogImageId);
   Future<Collection?> fetchCollectionById(String id);
   Future<void> updateDescription({
@@ -56,8 +57,8 @@ abstract class CollectionRepos {
   });
   Future<void> updateCollectionPicks({
     required String collectionId,
-    required List<CollectionStory> originList,
-    required List<CollectionStory> newList,
+    required List<CollectionPick> originList,
+    required List<CollectionPick> newList,
     required CollectionFormat format,
   });
   Future<void> updateCollectionFormat(
@@ -66,7 +67,7 @@ abstract class CollectionRepos {
 
 class CollectionService implements CollectionRepos {
   @override
-  Future<Map<String, List<CollectionStory>>> fetchPickAndBookmark({
+  Future<Map<String, List<CollectionPick>>> fetchPickAndBookmark({
     List<String>? fetchedBookmarkStoryIds,
     List<String>? fetchedPickStoryIds,
     String? keyWord,
@@ -564,26 +565,26 @@ class CollectionService implements CollectionRepos {
       variables: variables,
     );
 
-    List<CollectionStory> pickAndBookmarkList = [];
-    List<CollectionStory> pickList = [];
-    List<CollectionStory> bookmarkList = [];
+    List<CollectionPick> pickAndBookmarkList = [];
+    List<CollectionPick> pickList = [];
+    List<CollectionPick> bookmarkList = [];
 
     for (var bookmark in jsonResponse.data!['bookmarks']) {
-      CollectionStory collectionStory = CollectionStory.fromPick(bookmark);
+      CollectionPick collectionStory = CollectionPick.fromPick(bookmark);
       pickAndBookmarkList.add(collectionStory);
       bookmarkList.add(collectionStory);
     }
     for (var pick in jsonResponse.data!['picks']) {
-      CollectionStory collectionStory = CollectionStory.fromPick(pick);
+      CollectionPick collectionStory = CollectionPick.fromPick(pick);
       pickList.add(collectionStory);
-      int index = pickAndBookmarkList
-          .indexWhere((element) => element.news.id == collectionStory.news.id);
+      int index = pickAndBookmarkList.indexWhere((element) =>
+          element.newsListItem!.id == collectionStory.newsListItem!.id);
       if (index == -1) {
         pickAndBookmarkList.add(collectionStory);
       }
     }
 
-    pickAndBookmarkList.sort((a, b) => b.pickedDate.compareTo(a.pickedDate));
+    pickAndBookmarkList.sort((a, b) => b.pickedDate!.compareTo(a.pickedDate!));
 
     return {
       'pickAndBookmarkList': pickAndBookmarkList,
@@ -666,7 +667,7 @@ mutation(
   Future<Collection> createCollection({
     required String title,
     required String ogImageId,
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
     CollectionFormat format = CollectionFormat.folder,
     CollectionPublic public = CollectionPublic.public,
     String? slug,
@@ -885,17 +886,17 @@ mutation(
     """;
 
     List<Map<String, dynamic>> collectionStoryList = [];
-    for (var item in collectionStory) {
+    for (var item in collectionPicks) {
       Map<String, dynamic> createInput = {
         "story": {
-          "connect": {"id": item.news.id}
+          "connect": {"id": item.pickNewsId}
         },
         "sort_order": item.sortOrder,
         "creator": {
           "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
         "picked_date": DateTime.now().toUtc().toIso8601String(),
-        if (item is TimelineStory) ...{
+        if (item is TimelineCollectionPick) ...{
           "custom_year": item.year,
           "custom_month": item.month,
           "custom_day": item.day,
@@ -928,25 +929,25 @@ mutation(
 
     final jsonResponse = result.data;
 
-    List<CollectionStory> collectionPicks = [];
+    List<CollectionPick> collectionPickList = [];
     switch (format) {
       case CollectionFormat.folder:
         for (var result in jsonResponse!['createCollection']
             ['collectionpicks']) {
-          collectionPicks.add(CollectionStory.fromJson(result));
+          collectionPickList.add(FolderCollectionPick.fromJson(result));
         }
         break;
       case CollectionFormat.timeline:
         for (var result in jsonResponse!['createCollection']
             ['collectionpicks']) {
-          collectionPicks.add(TimelineStory.fromJson(result));
+          collectionPickList.add(TimelineCollectionPick.fromJson(result));
         }
         break;
     }
 
     Collection collection = Collection.fromJsonWithMember(
         jsonResponse['createCollection'], Get.find<UserService>().currentUser);
-    collection.collectionPicks = collectionPicks;
+    collection.collectionPicks = collectionPickList;
 
     return collection;
   }
@@ -954,27 +955,27 @@ mutation(
   @override
   Future<void> updateCollectionPicks({
     required String collectionId,
-    required List<CollectionStory> originList,
-    required List<CollectionStory> newList,
+    required List<CollectionPick> originList,
+    required List<CollectionPick> newList,
     required CollectionFormat format,
   }) async {
-    List<CollectionStory> addItemList = [];
-    List<CollectionStory> moveItemList = [];
-    List<CollectionStory> deleteItemList = [];
+    List<CollectionPick> addItemList = [];
+    List<CollectionPick> moveItemList = [];
+    List<CollectionPick> deleteItemList = [];
 
     bool isAddToEmpty = originList.isEmpty;
 
     for (int i = 0; i < newList.length; i++) {
       newList[i].sortOrder = i;
       if (!isAddToEmpty) {
-        int originalListIndex = originList
-            .indexWhere((element) => element.news.id == newList[i].news.id);
+        int originalListIndex = originList.indexWhere(
+            (element) => element.pickNewsId == newList[i].pickNewsId);
         if (originalListIndex == -1) {
           addItemList.add(newList[i]);
         } else {
           moveItemList.add(newList[i]);
-          originList
-              .removeWhere((element) => element.news.id == newList[i].news.id);
+          originList.removeWhere(
+              (element) => element.pickNewsId == newList[i].pickNewsId);
         }
       } else {
         addItemList.add(newList[i]);
@@ -989,15 +990,15 @@ mutation(
       if (addItemList.isNotEmpty)
         createCollectionPicks(
           collectionId: collectionId,
-          collectionStory: addItemList,
+          collectionPicks: addItemList,
         ),
       if (moveItemList.isNotEmpty)
         updateCollectionPicksOrder(
-          collectionStory: moveItemList,
+          collectionPicks: moveItemList,
         ),
       if (deleteItemList.isNotEmpty)
         removeCollectionPicks(
-          collectionStory: deleteItemList,
+          collectionPicks: deleteItemList,
         ),
       updateCollectionFormat(collectionId: collectionId, format: format),
     ]);
@@ -1006,7 +1007,7 @@ mutation(
   @override
   Future<void> createCollectionPicks({
     required String collectionId,
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
   }) async {
     const String mutation = """
     mutation(
@@ -1026,12 +1027,12 @@ mutation(
     }
 
     List<Map<String, dynamic>> dataList = [];
-    for (var item in collectionStory) {
+    for (var item in collectionPicks) {
       int? customYear;
       int? customMonth;
       int? customDay;
       String? customTime;
-      if (item is TimelineStory) {
+      if (item is TimelineCollectionPick) {
         customYear = item.year;
         customMonth = item.month;
         customDay = item.day;
@@ -1039,7 +1040,7 @@ mutation(
       }
       Map<String, dynamic> createInput = {
         "story": {
-          "connect": {"id": item.news.id}
+          "connect": {"id": item.pickNewsId}
         },
         "collection": {
           "connect": {"id": collectionId}
@@ -1315,7 +1316,7 @@ mutation(
 
   @override
   Future<void> updateCollectionPicksOrder({
-    required List<CollectionStory> collectionStory,
+    required List<CollectionPick> collectionPicks,
   }) async {
     const String mutation = """
 mutation(
@@ -1331,12 +1332,12 @@ mutation(
 
     List<Map> dataList = [];
 
-    for (var item in collectionStory) {
+    for (var item in collectionPicks) {
       int? customYear;
       int? customMonth;
       int? customDay;
       String? customTime;
-      if (item is TimelineStory) {
+      if (item is TimelineCollectionPick) {
         customYear = item.year;
         customMonth = item.month;
         customDay = item.day;
@@ -1367,7 +1368,7 @@ mutation(
 
   @override
   Future<void> removeCollectionPicks(
-      {required List<CollectionStory> collectionStory}) async {
+      {required List<CollectionPick> collectionPicks}) async {
     const String mutation = """
 mutation(
   \$data: [CollectionPickWhereUniqueInput!]!
@@ -1382,7 +1383,7 @@ mutation(
 
     List<Map> dataList = [];
 
-    for (var item in collectionStory) {
+    for (var item in collectionPicks) {
       dataList.add(
         {"id": item.id},
       );

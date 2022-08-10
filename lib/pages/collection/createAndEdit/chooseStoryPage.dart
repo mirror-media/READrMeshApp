@@ -8,8 +8,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
@@ -247,8 +248,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   ),
                 ),
                 onPressed: () {
-                  controller.selectedList.sort((a, b) =>
-                      b.news.publishedDate.compareTo(a.news.publishedDate));
+                  controller.selectedList.sort((a, b) => b
+                      .newsListItem!.publishedDate
+                      .compareTo(a.newsListItem!.publishedDate));
                   if (isEdit) {
                     Get.back(result: controller.selectedList);
                   } else if (isAddToEmpty) {
@@ -256,7 +258,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       case CollectionFormat.folder:
                         Get.off(
                           () => SortStoryPage(
-                            controller.selectedList,
+                            List<FolderCollectionPick>.from(
+                                controller.selectedList.map((element) =>
+                                    FolderCollectionPick.fromCollectionPick(
+                                        element))),
                             isAddToEmpty: true,
                             collection: collection,
                           ),
@@ -265,9 +270,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       case CollectionFormat.timeline:
                         Get.off(
                           () => TimeDimensionPage(
-                            List<TimelineStory>.from(controller.selectedList
-                                .map((e) =>
-                                    TimelineStory.fromCollectionStory(e))),
+                            List<TimelineCollectionPick>.from(
+                                controller.selectedList.map((e) =>
+                                    TimelineCollectionPick.fromCollectionPick(
+                                        e))),
                             isAddToEmpty: true,
                             collection: collection,
                           ),
@@ -280,8 +286,8 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     List<String> ogImageUrlList = [];
                     for (var collectionStory in controller.selectedList) {
                       ogImageUrlList.addIf(
-                          collectionStory.news.heroImageUrl != null,
-                          collectionStory.news.heroImageUrl!);
+                          collectionStory.newsListItem!.heroImageUrl != null,
+                          collectionStory.newsListItem!.heroImageUrl!);
                     }
                     Get.to(() => TitleAndOgPage(
                           null,
@@ -348,7 +354,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
   Widget _buildContent(BuildContext context) {
     return Obx(
       () {
-        List<CollectionStory> showList;
+        List<CollectionPick> showList;
         bool noMore = false;
         if (controller.showPicked.isTrue && controller.showBookmark.isTrue) {
           showList = controller.pickAndBookmarkList;
@@ -443,24 +449,24 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
     );
   }
 
-  Widget _buildListItem(CollectionStory collectionStory) {
+  Widget _buildListItem(CollectionPick collectionStory) {
     return Obx(
       () => CheckboxListTile(
         value: controller.selectedList
-            .any((element) => element.news.id == collectionStory.news.id),
+            .any((element) => element.pickNewsId == collectionStory.pickNewsId),
         dense: true,
         onChanged: (value) {
           if (value != null && value) {
             controller.selectedList.add(collectionStory);
           } else {
             controller.selectedList.removeWhere(
-                (element) => element.news.id == collectionStory.news.id);
+                (element) => element.pickNewsId == collectionStory.pickNewsId);
           }
         },
         activeColor: readrBlack87,
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
-        title: CollectionStoryItem(collectionStory),
+        title: CollectionStoryItem(collectionStory.newsListItem!),
       ),
     );
   }

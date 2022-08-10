@@ -7,7 +7,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/services/collectionPageService.dart';
@@ -31,7 +31,7 @@ class CollectionPageController extends GetxController {
 
   final List<Comment> allComments = [];
   final List<Comment> popularComments = [];
-  final collectionPicks = <CollectionStory>[].obs;
+  final collectionPicks = <CollectionPick>[].obs;
 
   final collectionDescription = ''.obs;
   final expandDescription = false.obs;

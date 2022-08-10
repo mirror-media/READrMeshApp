@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 
@@ -13,7 +13,7 @@ class Collection {
   final Member creator;
   CollectionFormat format;
   CollectionPublic public;
-  List<CollectionStory>? collectionPicks;
+  List<CollectionPick>? collectionPicks;
   final String controllerTag;
   String ogImageUrl;
   String ogImageId;

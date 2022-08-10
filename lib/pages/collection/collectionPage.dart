@@ -126,27 +126,33 @@ class CollectionPage extends GetView<CollectionPageController> {
         }
 
         Widget listWidget;
+        Color background;
         switch (controller.collectionFormat.value) {
           case CollectionFormat.folder:
             listWidget = FolderCollectionWidget(collection);
+            background = Colors.white;
             break;
           case CollectionFormat.timeline:
             listWidget = TimelineCollectionWidget(collection);
+            background = collectionBackgroundColor;
             break;
         }
 
-        return ListView(
-          padding: const EdgeInsets.all(0),
-          children: [
-            CollectionHeader(collection),
-            if (controller.collectionFormat.value == CollectionFormat.folder)
-              const Divider(
-                color: readrBlack10,
-                thickness: 1,
-                height: 1,
-              ),
-            listWidget,
-          ],
+        return Container(
+          color: background,
+          child: ListView(
+            padding: const EdgeInsets.all(0),
+            children: [
+              CollectionHeader(collection),
+              if (controller.collectionFormat.value == CollectionFormat.folder)
+                const Divider(
+                  color: readrBlack10,
+                  thickness: 1,
+                  height: 1,
+                ),
+              listWidget,
+            ],
+          ),
         );
       },
     );

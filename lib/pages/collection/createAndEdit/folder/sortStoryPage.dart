@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/sortStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
@@ -16,7 +17,7 @@ import 'package:readr/services/collectionService.dart';
 class SortStoryPage extends GetView<SortStoryPageController> {
   final bool isEdit;
   final bool isChangeFormat;
-  final List<CollectionStory> originalList;
+  final List<FolderCollectionPick> originalList;
   final Collection? collection;
   final bool isAddToEmpty;
   const SortStoryPage(
@@ -170,7 +171,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ListTile(
                       title: CollectionStoryItem(
-                          controller.collectionStoryList[index]),
+                          controller.collectionStoryList[index].news),
                       contentPadding: const EdgeInsets.symmetric(vertical: 20),
                       minLeadingWidth: 20,
                       leading: const Icon(
@@ -236,7 +237,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                       ),
                       ElevatedButton.icon(
                         onPressed: () async {
-                          List<CollectionStory> newCollectionStory =
+                          List<CollectionPick> newCollectionPicks =
                               await Get.to(() => ChooseStoryPage(
                                         isEdit: isEdit ||
                                             isChangeFormat ||
@@ -248,8 +249,13 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                                         ),
                                       )) ??
                                   [];
+                          List<FolderCollectionPick> newFolderCollectionList =
+                              List<FolderCollectionPick>.from(
+                                  newCollectionPicks.map((e) =>
+                                      FolderCollectionPick.fromCollectionPick(
+                                          e)));
                           controller.collectionStoryList
-                              .insertAll(0, newCollectionStory);
+                              .insertAll(0, newFolderCollectionList);
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: readrBlack,

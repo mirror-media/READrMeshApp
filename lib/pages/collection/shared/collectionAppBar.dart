@@ -10,7 +10,8 @@ import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/folderCollectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
@@ -227,8 +228,8 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   .value ??
               collection.ogImageUrl,
           List<String>.from(controller.collectionPicks.map((element) {
-            if (element.news.heroImageUrl != null) {
-              return element.news.heroImageUrl;
+            if (element.newsListItem!.heroImageUrl != null) {
+              return element.newsListItem!.heroImageUrl;
             }
           })),
           collection: collection,
@@ -247,9 +248,13 @@ class CollectionAppBar extends GetView<CollectionPageController>
     } else if (result == 'edit') {
       switch (controller.collectionFormat.value) {
         case CollectionFormat.folder:
+          List<FolderCollectionPick> folderStoryList =
+              List<FolderCollectionPick>.from(controller.collectionPicks.map(
+            (element) => FolderCollectionPick.fromCollectionPick(element),
+          ));
           Get.to(
             () => SortStoryPage(
-              controller.collectionPicks,
+              folderStoryList,
               collection: collection,
               isEdit: true,
             ),
@@ -257,9 +262,9 @@ class CollectionAppBar extends GetView<CollectionPageController>
           );
           break;
         case CollectionFormat.timeline:
-          List<TimelineStory> timelineStoryList =
-              List<TimelineStory>.from(controller.collectionPicks.map(
-            (element) => element as TimelineStory,
+          List<TimelineCollectionPick> timelineStoryList =
+              List<TimelineCollectionPick>.from(controller.collectionPicks.map(
+            (element) => TimelineCollectionPick.fromCollectionPick(element),
           ));
 
           Get.to(

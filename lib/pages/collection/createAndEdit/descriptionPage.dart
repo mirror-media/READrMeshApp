@@ -7,7 +7,7 @@ import 'package:readr/controller/collection/createAndEdit/chooseStoryPageControl
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -109,9 +109,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 if (isEdit) {
                   controller.updateDescription();
                 } else {
-                  List<CollectionStory> chooseStoryList = [];
+                  List<CollectionPick> chooseStoryList = [];
                   if (Get.isRegistered<AddToCollectionPageController>()) {
-                    chooseStoryList.add(CollectionStory.fromNewsListItem(
+                    chooseStoryList.add(CollectionPick.fromNewsListItem(
                         Get.find<AddToCollectionPageController>().news));
                   } else {
                     chooseStoryList =

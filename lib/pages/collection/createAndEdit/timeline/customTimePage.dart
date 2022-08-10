@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/controller/collection/createAndEdit/timeDimensionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/timelineStory.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 
 enum TimeLevel {
@@ -15,7 +15,7 @@ enum TimeLevel {
 }
 
 class CustomTimePage extends GetView<TimeDimensionPageController> {
-  final TimelineStory timelineStory;
+  final TimelineCollectionPick timelineStory;
   const CustomTimePage(this.timelineStory);
 
   @override
@@ -95,7 +95,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
           Padding(
             padding: const EdgeInsets.all(20),
             child: CollectionStoryItem(
-              timelineStory,
+              timelineStory.news,
               inCustomTime: true,
             ),
           ),

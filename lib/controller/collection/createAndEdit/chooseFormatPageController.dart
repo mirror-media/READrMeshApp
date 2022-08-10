@@ -9,12 +9,12 @@ import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/services/collectionService.dart';
 
 class ChooseFormatPageController extends GetxController {
   final CollectionRepos collectionRepos;
-  final List<CollectionStory> chooseStoryList;
+  final List<CollectionPick> chooseStoryList;
   final CollectionFormat initFormat;
   ChooseFormatPageController(
     this.collectionRepos,
@@ -47,7 +47,7 @@ class ChooseFormatPageController extends GetxController {
           .createCollection(
             title: Get.find<TitleAndOgPageController>().collectionTitle.value,
             ogImageId: imageId,
-            collectionStory: chooseStoryList,
+            collectionPicks: chooseStoryList,
             description: Get.find<DescriptionPageController>()
                 .collectionDescription
                 .value,
