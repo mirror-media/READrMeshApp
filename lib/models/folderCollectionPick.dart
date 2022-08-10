@@ -13,9 +13,6 @@ class FolderCollectionPick extends CollectionPick {
           pickNewsId: news.id,
           sortOrder: sortOrder,
           newsListItem: news,
-          customYear: news.publishedDate.year,
-          customMonth: news.publishedDate.month,
-          customDay: news.publishedDate.day,
         );
 
   factory FolderCollectionPick.fromJson(Map<String, dynamic> json) {

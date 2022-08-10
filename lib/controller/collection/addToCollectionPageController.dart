@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/addToCollectionItem.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -42,11 +44,73 @@ class AddToCollectionPageController extends GetxController {
 
   void addStoryToCollection(AddToCollectionItem addToCollectionItem) async {
     try {
-      await collectionRepos.addSingleStoryToCollection(
-        collectionId: addToCollectionItem.id!,
-        storyId: news.id,
-        sortOrder: addToCollectionItem.collectionpicksCount! - 1,
-      );
+      switch (addToCollectionItem.format) {
+        case CollectionFormat.folder:
+          await collectionRepos.addSingleStoryToCollection(
+            collectionId: addToCollectionItem.id!,
+            storyId: news.id,
+            sortOrder: addToCollectionItem.collectionPicks!.length - 1,
+          );
+          break;
+        case CollectionFormat.timeline:
+          List<CollectionPick> needUpdateList = [];
+          CollectionPick newPick = CollectionPick.fromNewsListItem(news);
+          addToCollectionItem.collectionPicks!.add(newPick);
+          addToCollectionItem.collectionPicks!.sort((a, b) {
+            DateTime aDateTime;
+            if (a.customTime != null) {
+              aDateTime = a.customTime!;
+            } else {
+              aDateTime = DateTime(
+                a.customYear ?? 1970,
+                a.customMonth ?? 1,
+                a.customDay ?? 1,
+              );
+            }
+
+            DateTime bDateTime;
+            if (b.customTime != null) {
+              bDateTime = b.customTime!;
+            } else {
+              bDateTime = DateTime(
+                b.customYear ?? 1970,
+                b.customMonth ?? 1,
+                b.customDay ?? 1,
+              );
+            }
+
+            return bDateTime.compareTo(aDateTime);
+          });
+
+          for (int i = 0;
+              i < addToCollectionItem.collectionPicks!.length;
+              i++) {
+            if (addToCollectionItem.collectionPicks![i].id != newPick.id &&
+                addToCollectionItem.collectionPicks![i].sortOrder != i) {
+              addToCollectionItem.collectionPicks![i].sortOrder = i;
+              needUpdateList.add(addToCollectionItem.collectionPicks![i]);
+            } else if (addToCollectionItem.collectionPicks![i].id ==
+                newPick.id) {
+              newPick.sortOrder = i;
+            }
+          }
+
+          await Future.wait([
+            collectionRepos.addSingleStoryToCollection(
+              collectionId: addToCollectionItem.id!,
+              storyId: news.id,
+              sortOrder: newPick.sortOrder,
+              customYear: newPick.customYear,
+              customMonth: newPick.customMonth,
+              customDay: newPick.customDay,
+            ),
+            if (needUpdateList.isNotEmpty)
+              collectionRepos.updateCollectionPicksOrder(
+                  collectionPicks: needUpdateList),
+          ]);
+          break;
+      }
+
       _showResultToast(true);
     } catch (e) {
       print('Add new story to collection failed: $e');

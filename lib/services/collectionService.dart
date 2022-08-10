@@ -54,6 +54,10 @@ abstract class CollectionRepos {
     required String storyId,
     required String collectionId,
     required int sortOrder,
+    int? customYear,
+    int? customMonth,
+    int? customDay,
+    DateTime? customTime,
   });
   Future<void> updateCollectionPicks({
     required String collectionId,
@@ -1333,25 +1337,15 @@ mutation(
     List<Map> dataList = [];
 
     for (var item in collectionPicks) {
-      int? customYear;
-      int? customMonth;
-      int? customDay;
-      String? customTime;
-      if (item is TimelineCollectionPick) {
-        customYear = item.year;
-        customMonth = item.month;
-        customDay = item.day;
-        customTime = item.time?.toUtc().toIso8601String();
-      }
       dataList.add({
         "where": {"id": item.id},
         "data": {
           "sort_order": item.sortOrder,
           "updated_date": DateTime.now().toUtc().toIso8601String(),
-          "custom_year": customYear,
-          "custom_month": customMonth,
-          "custom_day": customDay,
-          "custom_time": customTime,
+          "custom_year": item.customYear,
+          "custom_month": item.customMonth,
+          "custom_day": item.customDay,
+          "custom_time": item.customTime?.toUtc().toIso8601String(),
         }
       });
     }
@@ -1738,12 +1732,25 @@ query(
   ){
     id
     title
+    format
     heroImage{
       resized{
         original
       }
     }
-    collectionpicksCount
+    collectionpicks(
+      orderBy:[{sort_order: asc}]
+    ){
+      id
+      sort_order
+      custom_year
+      custom_month
+      custom_day
+      custom_time
+      story{
+        id
+      }
+    }
   }
 }
     """;
@@ -1782,35 +1789,29 @@ query(
     required String storyId,
     required String collectionId,
     required int sortOrder,
+    int? customYear,
+    int? customMonth,
+    int? customDay,
+    DateTime? customTime,
   }) async {
     const String mutation = """
 mutation(
-  \$sortOrder: Int
-  \$storyId: ID
+  \$data: CollectionPickCreateInput!
+  \$collectionUpdateTime: DateTime
   \$collectionId: ID
-  \$myId: ID
-  \$pickedDate: DateTime
 ){
-  createCollectionPick(
-    data:{
-      story:{
-        connect:{
-          id: \$storyId
-        }
-      }
-      collection:{
-        connect:{
-          id: \$collectionId
-        }
-      }
-      creator:{
-        connect:{
-          id: \$myId
-        }
-      }
-      picked_date: \$pickedDate
-      sort_order: \$sortOrder
+  updateCollection(
+    where:{
+      id: \$collectionId
     }
+    data:{
+      updatedAt: \$collectionUpdateTime
+    }
+  ){
+    id
+  }
+  createCollectionPick(
+    data: \$data
   ){
     id
   }
@@ -1818,11 +1819,25 @@ mutation(
     """;
 
     Map<String, dynamic> variables = {
+      "data": {
+        "story": {
+          "connect": {"id": storyId},
+        },
+        "collection": {
+          "connect": {"id": collectionId},
+        },
+        "creator": {
+          "connect": {"id": Get.find<UserService>().currentUser.memberId},
+        },
+        "picked_date": DateTime.now().toUtc().toIso8601String(),
+        "sort_order": sortOrder,
+        "custom_year": customYear,
+        "custom_month": customMonth,
+        "custom_day": customDay,
+        "custom_time": customTime?.toUtc().toIso8601String(),
+      },
+      "collectionUpdateTime": DateTime.now().toUtc().toIso8601String(),
       "collectionId": collectionId,
-      "sortOrder": sortOrder,
-      "storyId": storyId,
-      "myId": Get.find<UserService>().currentUser.memberId,
-      "pickedDate": DateTime.now().toUtc().toIso8601String(),
     };
 
     await Get.find<GraphQLService>().mutation(

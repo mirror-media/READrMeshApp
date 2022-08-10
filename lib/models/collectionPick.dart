@@ -41,6 +41,26 @@ class CollectionPick {
       id: '-1',
       newsListItem: news,
       pickNewsId: news.id,
+      customYear: news.publishedDate.year,
+      customMonth: news.publishedDate.month,
+      customDay: news.publishedDate.day,
+    );
+  }
+
+  factory CollectionPick.fromAddToCollection(Map<String, dynamic> json) {
+    DateTime? customTime;
+    if (json['custom_time'] != null) {
+      customTime = DateTime.parse(json['custom_time']);
+    }
+
+    return CollectionPick(
+      id: json["id"],
+      pickNewsId: json["story"]['id'],
+      sortOrder: json["sort_order"],
+      customYear: json["custom_year"],
+      customMonth: json["custom_month"],
+      customDay: json["custom_day"],
+      customTime: customTime,
     );
   }
 }
