@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/helpers/analyticsHelper.dart';
+import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
@@ -36,7 +37,10 @@ class StoryPage extends GetView<StoryPageController> {
       );
     }
 
-    logOpenStory(source: news.source?.title);
+    Get.find<PubsubService>().logReadStory(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      storyId: news.id,
+    );
 
     Widget child;
     if (!news.fullContent) {

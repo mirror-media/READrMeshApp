@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
-import 'package:readr/helpers/analyticsHelper.dart';
+import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/shared/collectionAppBar.dart';
@@ -39,7 +40,10 @@ class CollectionPage extends GetView<CollectionPageController> {
       );
     }
 
-    logViewCollection(collection);
+    Get.find<PubsubService>().logReadCollection(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      collectionId: collection.id,
+    );
 
     return GetBuilder<CollectionPageController>(
       tag: collection.id,
