@@ -42,7 +42,7 @@ class FollowableItemController extends GetxController {
     );
     ever<bool>(
       isFollowed,
-      (callback) {
+      (callback) async {
         if (callback) {
           //update follow publisher count when onbroad
           if (Get.isRegistered<ChoosePublisherController>() &&
@@ -73,6 +73,17 @@ class FollowableItemController extends GetxController {
             Get.find<PublisherPageController>(tag: item.id)
                 .followerCount
                 .value++;
+          }
+
+          //update own followingList if exists
+          if (Get.isRegistered<FollowingListController>(
+              tag: Get.find<UserService>().currentUser.memberId)) {
+            final ownFollowingController = Get.find<FollowingListController>(
+                tag: Get.find<UserService>().currentUser.memberId);
+            EasyDebounce.debounce(
+                'updateOwnFollowingPage', const Duration(seconds: 1), () {
+              ownFollowingController.fetchFollowingList();
+            });
           }
         } else {
           //update follow publisher count when onbroad
@@ -113,11 +124,9 @@ class FollowableItemController extends GetxController {
             final ownFollowingController = Get.find<FollowingListController>(
                 tag: Get.find<UserService>().currentUser.memberId);
             if (item.type == FollowableItemType.publisher) {
-              ownFollowingController.followingPublisherList
-                  .removeWhere((element) => element.id == item.id);
+              ownFollowingController.removePublisherItem(item.id);
             } else {
-              ownFollowingController.followingMemberList
-                  .removeWhere((element) => element.memberId == item.id);
+              ownFollowingController.removeMemberItem(item.id);
               ownFollowingController.followingMemberCount.value--;
             }
           }

@@ -79,7 +79,9 @@ class FollowingListController extends GetxController {
     try {
       var result = await personalFileRepos.fetchFollowingList(viewMember,
           skip: followingMemberList.length);
-      followingMemberList.addAll(result['followingList']);
+      List<Member> newFollowingMember = result['followingList'] as List<Member>;
+      followingMemberList.addAll(newFollowingMember);
+
       if (followingMemberList.length == followingMemberCount.value) {
         isNoMore.value = true;
       } else if (followingMemberList.length > followingMemberCount.value) {
@@ -99,5 +101,13 @@ class FollowingListController extends GetxController {
       );
     }
     isLoadingMore.value = false;
+  }
+
+  void removePublisherItem(String publisherId) {
+    followingPublisherList.removeWhere((element) => element.id == publisherId);
+  }
+
+  void removeMemberItem(String memberId) {
+    followingMemberList.removeWhere((element) => element.memberId == memberId);
   }
 }

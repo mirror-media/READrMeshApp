@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/followSkeletonScreen.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -13,7 +16,6 @@ import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:readr/pages/shared/publisherListItemWidget.dart';
 import 'package:readr/services/personalFileService.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class FollowingListPage extends GetView<FollowingListController> {
   final Member viewMember;
@@ -200,103 +202,71 @@ class FollowingListPage extends GetView<FollowingListController> {
   }
 
   Widget _buildPublisherList() {
-    return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+    return ImplicitlyAnimatedList<Publisher>(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (context, index) {
-        if (index == controller.followingPublisherList.length) {
-          return const Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Divider(
-              color: readrBlack10,
-              thickness: 1,
-              height: 1,
+      items: controller.followingPublisherList,
+      areItemsTheSame: (a, b) => a.id == b.id,
+      itemBuilder: (context, animation, item, index) {
+        return SizeFadeTransition(
+          sizeFraction: 0.7,
+          curve: Curves.easeInOut,
+          animation: animation,
+          child: Container(
+            key: Key(item.id + index.toString()),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 0.5, color: Colors.black12),
+              ),
             ),
-          );
-        }
-        return InkWell(
-          onTap: () {
-            Get.to(() => PublisherPage(
-                  controller.followingPublisherList[index],
-                ));
-          },
-          child: PublisherListItemWidget(
-            publisher: controller.followingPublisherList[index],
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => PublisherPage(item));
+              },
+              child: PublisherListItemWidget(publisher: item),
+            ),
           ),
         );
       },
-      separatorBuilder: (context, index) {
-        if (index == controller.followingPublisherList.length - 1) {
-          return Container();
-        }
-        return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Divider(
-            color: readrBlack10,
-            thickness: 1,
-            height: 1,
-          ),
-        );
-      },
-      itemCount: controller.followingPublisherList.length + 1,
     );
   }
 
   Widget _buildFollowingMemberList() {
-    return Obx(
-      () => ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          if (index == controller.followingMemberList.length) {
-            if (controller.isNoMore.isTrue) {
-              return Container();
-            }
-
-            return VisibilityDetector(
-              key: ValueKey('followerList${viewMember.memberId}'),
-              onVisibilityChanged: (VisibilityInfo info) {
-                var visiblePercentage = info.visibleFraction * 100;
-                if (visiblePercentage > 50 &&
-                    controller.isLoadingMore.isFalse) {
-                  controller.fetchMoreFollowingMember();
-                }
-              },
-              child: const Center(
-                child: CircularProgressIndicator.adaptive(),
+    return ImplicitlyAnimatedList<Member>(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      items: controller.followingMemberList,
+      areItemsTheSame: (a, b) => a.memberId == b.memberId,
+      itemBuilder: (context, animation, item, index) {
+        if (index == controller.followingMemberList.length - 2 &&
+            controller.isNoMore.isFalse &&
+            controller.isLoadingMore.isFalse) {
+          controller.fetchMoreFollowingMember();
+        }
+        return SizeFadeTransition(
+          sizeFraction: 0.7,
+          curve: Curves.easeInOut,
+          animation: animation,
+          child: Container(
+            key: Key(item.memberId + index.toString()),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 0.5, color: Colors.black12),
               ),
-            );
-          }
-          return InkWell(
-            onTap: () {
-              Get.to(() => PersonalFilePage(
-                    viewMember: controller.followingMemberList[index],
-                  ));
-            },
-            child: MemberListItemWidget(
-              viewMember: controller.followingMemberList[index],
             ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          if (index == controller.followingMemberList.length - 1) {
-            return const SizedBox(
-              height: 36,
-            );
-          }
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Divider(
-              color: readrBlack10,
-              thickness: 1,
-              height: 1,
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => PersonalFilePage(viewMember: item));
+              },
+              child: MemberListItemWidget(viewMember: item),
             ),
-          );
-        },
-        itemCount: controller.followingMemberList.length + 1,
-      ),
+          ),
+        );
+      },
     );
   }
 }
