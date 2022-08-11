@@ -1,7 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
-import 'package:readr/models/collection.dart';
 
 final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
@@ -49,25 +48,6 @@ void logClickTab(int tabIndex) {
     name: 'tab_click',
     parameters: {
       'tab_label': tabLabel,
-    },
-  );
-}
-
-void logOpenStory({String? source}) {
-  _analytics.logEvent(
-    name: 'post_click',
-    parameters: {
-      'story_source': source ?? 'Unknown',
-    },
-  );
-}
-
-void logViewCollection(Collection collection) {
-  _analytics.logEvent(
-    name: 'view_collection',
-    parameters: {
-      'collection_id': collection.id,
-      'collection_type': collection.format.toString().split('.')[1],
     },
   );
 }
