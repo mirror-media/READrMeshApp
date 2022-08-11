@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/pubsub/v1.dart';
@@ -9,6 +9,7 @@ import 'package:readr/helpers/dataConstants.dart';
 
 class PubsubService extends GetxService {
   late final PubsubApi _pubSubClient;
+  final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   Future<PubsubService> init() async {
     var jsonText = await rootBundle.loadString(serviceAccountCredentialsJson);
@@ -195,17 +196,56 @@ class PubsubService extends GetxService {
     });
   }
 
-  Future<void> logReadStory({
+  void logReadStory({
     required String memberId,
     required String storyId,
-  }) async {}
+  }) {
+    _publishRequest({
+      "'action'": "'read_story'",
+      "'memberId'": "'$memberId'",
+      "'storyId'": "'$storyId'",
+    });
+  }
 
-  Future<void> logViewCollection({
+  void logReadCollection({
     required String memberId,
     required String collectionId,
-  }) async {}
+  }) {
+    _publishRequest({
+      "'action'": "'read_collection'",
+      "'memberId'": "'$memberId'",
+      "'collectionId'": "'$collectionId'",
+    });
+  }
 
   Future<bool> _publishRequest(Map<String, dynamic> requestJson) async {
+    String uuid;
+    String os;
+    String osVersion;
+    String deviceModel;
+
+    if (GetPlatform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await _deviceInfo.androidInfo;
+      uuid = androidInfo.androidId ?? '';
+      os = 'Android';
+      osVersion =
+          '${androidInfo.version.release ?? ''} (SDK ${androidInfo.version.sdkInt ?? ''})';
+      deviceModel =
+          '${androidInfo.manufacturer ?? ''} ${androidInfo.model ?? ''}';
+    } else {
+      IosDeviceInfo iosInfo = await _deviceInfo.iosInfo;
+      os = iosInfo.systemName ?? 'iOS';
+      uuid = iosInfo.identifierForVendor ?? '';
+      osVersion = iosInfo.systemVersion ?? '';
+      deviceModel = iosInfo.name ?? '';
+    }
+
+    requestJson.addAll({
+      "'UUID'": "'$uuid'",
+      "'os'": "'$os'",
+      "'version'": "'$osVersion'",
+      "'device'": "'$deviceModel'",
+    });
     var messages = {
       'messages': [
         {
