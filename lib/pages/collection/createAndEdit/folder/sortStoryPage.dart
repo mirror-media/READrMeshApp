@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/collection/createAndEdit/sortStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
@@ -206,29 +207,55 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                       SizedBox(
                         width: 40,
                         height: 40,
-                        child: ElevatedButton(
-                          onPressed: () => Get.to(
-                            () => ChooseFormatPage(
-                              controller.collectionStoryList,
-                              isEdit: true,
-                              collection: collection,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xff04295E),
-                            shadowColor: readrBlack30,
-                            padding: const EdgeInsets.all(12),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
+                        child: JustTheTooltip(
+                          content: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
+                            child: Text(
+                              '更換集錦類型',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
                               ),
                             ),
-                            elevation: 6,
                           ),
-                          child: const Icon(
-                            CupertinoIcons.arrow_right_arrow_left,
-                            color: Colors.white,
-                            size: 13,
+                          backgroundColor: const Color(0xFF007AFF),
+                          preferredDirection: AxisDirection.up,
+                          margin: const EdgeInsets.only(left: 20),
+                          tailLength: 8,
+                          tailBaseWidth: 12,
+                          tailBuilder: (tip, point2, point3) => Path()
+                            ..moveTo(tip.dx, tip.dy)
+                            ..lineTo(point2.dx, point2.dy)
+                            ..lineTo(point3.dx, point3.dy)
+                            ..close(),
+                          controller: controller.tooltipController,
+                          shadow: const Shadow(
+                              color: Color.fromRGBO(0, 122, 255, 0.2)),
+                          child: ElevatedButton(
+                            onPressed: () => Get.to(
+                              () => ChooseFormatPage(
+                                controller.collectionStoryList,
+                                isEdit: true,
+                                collection: collection,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(0xff04295E),
+                              shadowColor: readrBlack30,
+                              padding: const EdgeInsets.all(12),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.0),
+                                ),
+                              ),
+                              elevation: 6,
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.arrow_right_arrow_left,
+                              color: Colors.white,
+                              size: 13,
+                            ),
                           ),
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
@@ -21,9 +22,10 @@ class SortStoryPageController extends GetxController {
   final List<FolderCollectionPick> originalList;
   final collectionStoryList = <FolderCollectionPick>[].obs;
   final Collection? collection;
-  bool isFirstTimeEdit = true;
+  bool _isFirstTimeEdit = true;
   final bool isEdit;
   final hasChange = false.obs;
+  final JustTheController tooltipController = JustTheController();
   SortStoryPageController(
     this.collectionRepos,
     this.originalList,
@@ -33,9 +35,9 @@ class SortStoryPageController extends GetxController {
 
   @override
   void onInit() {
-    isFirstTimeEdit = Get.find<SharedPreferencesService>()
+    _isFirstTimeEdit = Get.find<SharedPreferencesService>()
             .prefs
-            .getBool('firstTimeEditCollection') ??
+            .getBool('firstTimeEditFolder') ??
         true;
     ever(collectionStoryList, (callback) => _checkHasChange());
     collectionStoryList.assignAll(originalList);
@@ -44,7 +46,7 @@ class SortStoryPageController extends GetxController {
 
   @override
   void onReady() {
-    if (isFirstTimeEdit && isEdit) {
+    if (_isFirstTimeEdit && isEdit) {
       _showDeleteHint();
     }
     super.onReady();
@@ -188,7 +190,7 @@ class SortStoryPageController extends GetxController {
                 onPressed: () {
                   Get.find<SharedPreferencesService>()
                       .prefs
-                      .setBool('firstTimeEditCollection', false);
+                      .setBool('firstTimeEditFolder', false);
                   Get.back();
                 },
                 style: ElevatedButton.styleFrom(
@@ -212,5 +214,6 @@ class SortStoryPageController extends GetxController {
         );
       },
     );
+    tooltipController.showTooltip();
   }
 }

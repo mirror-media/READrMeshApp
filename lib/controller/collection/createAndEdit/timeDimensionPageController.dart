@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
 import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
@@ -21,6 +23,8 @@ class TimeDimensionPageController extends GetxController {
   final CollectionRepos collectionRepos;
   final List<TimelineCollectionPick> timelineStory;
   final Collection? collection;
+  final JustTheController tooltipController = JustTheController();
+  bool _isFirstTimeEdit = true;
   TimeDimensionPageController(
     this.collectionRepos,
     this.timelineStory, {
@@ -41,6 +45,10 @@ class TimeDimensionPageController extends GetxController {
 
   @override
   void onInit() {
+    _isFirstTimeEdit = Get.find<SharedPreferencesService>()
+            .prefs
+            .getBool('firstTimeEditTimeline') ??
+        true;
     timelineStoryList.assignAll(timelineStory);
     ever<int>(year, (callback) {
       if (month.value != null && day.value != null) {
@@ -80,6 +88,14 @@ class TimeDimensionPageController extends GetxController {
       },
     );
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    if (_isFirstTimeEdit) {
+      tooltipController.showTooltip();
+    }
+    super.onReady();
   }
 
   void updateTimeDimension(TimeDimension timeDimension, bool isEdit) {
