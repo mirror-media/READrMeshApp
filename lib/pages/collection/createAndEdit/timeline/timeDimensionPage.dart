@@ -352,8 +352,6 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
                   ),
                   child: TimelineItemWidget(
                     controller.timelineStoryList[index],
-                    key: Key(controller.timelineStoryList[index].news.id +
-                        index.toString()),
                     previousTimelineStory: index == 0
                         ? null
                         : controller.timelineStoryList[index - 1],
