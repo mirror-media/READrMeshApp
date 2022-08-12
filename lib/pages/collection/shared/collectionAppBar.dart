@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
@@ -135,15 +134,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   if (Get.find<UserService>().isMember.isTrue &&
                       collection.creator.memberId ==
                           Get.find<UserService>().currentUser.memberId) {
-                    return IconButton(
-                      onPressed: () async =>
-                          await _showEditCollectionBottomSheet(context),
-                      icon: Icon(
-                        PlatformIcons(context).ellipsis,
-                        color: readrBlack87,
-                        size: 26,
-                      ),
-                    );
+                    return _editCollectionOptionButton(context);
                   }
                   return Container();
                 },
@@ -157,55 +148,143 @@ class CollectionAppBar extends GetView<CollectionPageController>
     );
   }
 
-  Future<void> _showEditCollectionBottomSheet(BuildContext context) async {
-    String? result = await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('title'),
-            child: const Text(
-              '修改標題',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-              ),
+  Widget _editCollectionOptionButton(BuildContext context) {
+    return PlatformPopupMenu(
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 12, top: 8, left: 10),
+        child: Icon(
+          PlatformIcons(context).ellipsis,
+          color: readrBlack87,
+          size: 26,
+        ),
+      ),
+      options: [
+        PopupMenuOption(
+          label: '修改標題',
+          onTap: (option) => Get.to(
+            () => TitleAndOgPage(
+              Get.find<PickableItemController>(tag: collection.controllerTag)
+                      .collectionTitle
+                      .value ??
+                  collection.title,
+              Get.find<PickableItemController>(tag: collection.controllerTag)
+                      .collectionHeroImageUrl
+                      .value ??
+                  collection.ogImageUrl,
+              List<String>.from(controller.collectionPicks.map((element) {
+                if (element.newsListItem!.heroImageUrl != null) {
+                  return element.newsListItem!.heroImageUrl;
+                }
+              })),
+              collection: collection,
+              isEdit: true,
+            ),
+            fullscreenDialog: true,
+          ),
+        ),
+        PopupMenuOption(
+          label: '修改敘述',
+          onTap: (option) => Get.to(
+            () => DescriptionPage(
+              collection: collection,
+              description: controller.collectionDescription.value,
+              isEdit: true,
             ),
           ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('description'),
-            child: const Text(
-              '修改敘述',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-              ),
-            ),
+        ),
+        PopupMenuOption(
+          label: '編輯內容與排序',
+          onTap: (option) {
+            switch (controller.collectionFormat.value) {
+              case CollectionFormat.folder:
+                List<FolderCollectionPick> folderStoryList =
+                    List<FolderCollectionPick>.from(
+                        controller.collectionPicks.map(
+                  (element) => FolderCollectionPick.fromCollectionPick(element),
+                ));
+                Get.to(
+                  () => SortStoryPage(
+                    folderStoryList,
+                    collection: collection,
+                    isEdit: true,
+                  ),
+                  fullscreenDialog: true,
+                );
+                break;
+              case CollectionFormat.timeline:
+                List<TimelineCollectionPick> timelineStoryList =
+                    List<TimelineCollectionPick>.from(
+                        controller.collectionPicks.map(
+                  (element) =>
+                      TimelineCollectionPick.fromCollectionPick(element),
+                ));
+
+                Get.to(
+                  () => TimeDimensionPage(
+                    timelineStoryList,
+                    collection: collection,
+                    isEdit: true,
+                  ),
+                  fullscreenDialog: true,
+                );
+                break;
+            }
+          },
+        ),
+        PopupMenuOption(
+          label: '刪除集錦',
+          cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+            isDestructiveAction: true,
           ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('edit'),
-            child: const Text(
-              '編輯內容',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('delete'),
+          material: (context, platform) => MaterialPopupMenuOptionData(
             child: const Text(
               '刪除集錦',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-                color: Color.fromRGBO(255, 59, 48, 1),
-              ),
+              style: TextStyle(color: Colors.red),
             ),
-          )
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.of(context).pop('cancel'),
+          ),
+          onTap: (option) async => await showPlatformDialog(
+            context: context,
+            builder: (context) => PlatformAlertDialog(
+              title: const Text(
+                '確認刪除集錦？',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              content: const Text(
+                '此動作無法復原',
+                style: TextStyle(
+                  fontSize: 13,
+                ),
+              ),
+              actions: [
+                PlatformDialogAction(
+                  child: const Text(
+                    '刪除',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    controller.deleteCollection();
+                    Get.back();
+                  },
+                ),
+                PlatformDialogAction(
+                  child: const Text(
+                    '取消',
+                  ),
+                  onPressed: () => Get.back(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      material: (context, platform) => MaterialPopupMenuData(
+        padding: const EdgeInsets.only(right: 12, bottom: 8),
+      ),
+      cupertino: (context, platform) => CupertinoPopupMenuData(
+        cancelButtonData: CupertinoPopupMenuCancelButtonData(
           child: const Text(
             '取消',
             style: TextStyle(
@@ -213,119 +292,9 @@ class CollectionAppBar extends GetView<CollectionPageController>
               fontSize: 20,
             ),
           ),
+          isDefaultAction: true,
         ),
       ),
     );
-    if (result == 'title') {
-      Get.to(
-        () => TitleAndOgPage(
-          Get.find<PickableItemController>(tag: collection.controllerTag)
-                  .collectionTitle
-                  .value ??
-              collection.title,
-          Get.find<PickableItemController>(tag: collection.controllerTag)
-                  .collectionHeroImageUrl
-                  .value ??
-              collection.ogImageUrl,
-          List<String>.from(controller.collectionPicks.map((element) {
-            if (element.newsListItem!.heroImageUrl != null) {
-              return element.newsListItem!.heroImageUrl;
-            }
-          })),
-          collection: collection,
-          isEdit: true,
-        ),
-        fullscreenDialog: true,
-      );
-    } else if (result == 'description') {
-      Get.to(
-        () => DescriptionPage(
-          collection: collection,
-          description: controller.collectionDescription.value,
-          isEdit: true,
-        ),
-      );
-    } else if (result == 'edit') {
-      switch (controller.collectionFormat.value) {
-        case CollectionFormat.folder:
-          List<FolderCollectionPick> folderStoryList =
-              List<FolderCollectionPick>.from(controller.collectionPicks.map(
-            (element) => FolderCollectionPick.fromCollectionPick(element),
-          ));
-          Get.to(
-            () => SortStoryPage(
-              folderStoryList,
-              collection: collection,
-              isEdit: true,
-            ),
-            fullscreenDialog: true,
-          );
-          break;
-        case CollectionFormat.timeline:
-          List<TimelineCollectionPick> timelineStoryList =
-              List<TimelineCollectionPick>.from(controller.collectionPicks.map(
-            (element) => TimelineCollectionPick.fromCollectionPick(element),
-          ));
-
-          Get.to(
-            () => TimeDimensionPage(
-              timelineStoryList,
-              collection: collection,
-              isEdit: true,
-            ),
-            fullscreenDialog: true,
-          );
-          break;
-      }
-    } else if (result == 'delete') {
-      await showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: const Text(
-            '確認刪除集錦？',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          content: const Text(
-            '此動作無法復原',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                controller.deleteCollection();
-                Get.back();
-              },
-              child: Text(
-                '刪除',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 15,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                '取消',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 15,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
   }
 }
