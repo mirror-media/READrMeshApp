@@ -15,8 +15,8 @@ class TimelineCollectionWidget extends GetView<CollectionPageController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ListView.separated(
-        padding: const EdgeInsets.all(20),
+      () => ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => TimelineItemWidget(
@@ -24,9 +24,6 @@ class TimelineCollectionWidget extends GetView<CollectionPageController> {
           previousTimelineStory: index == 0
               ? null
               : controller.collectionPicks[index - 1] as TimelineCollectionPick,
-        ),
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 8,
         ),
         itemCount: controller.collectionPicks.length,
       ),
