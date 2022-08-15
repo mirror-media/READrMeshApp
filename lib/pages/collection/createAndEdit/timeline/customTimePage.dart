@@ -69,7 +69,6 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
               controller.timelineStoryList[itemIndex] = timelineStory;
               controller.sortListByTime();
               controller.timelineStoryList.refresh();
-              controller.editItemTime = true;
 
               Get.back();
             },

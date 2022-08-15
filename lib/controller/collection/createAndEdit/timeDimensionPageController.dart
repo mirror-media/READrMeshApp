@@ -17,8 +17,6 @@ import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/services/collectionService.dart';
 
-enum TimeDimension { yearAndDate, onlyMonth, onlyYear }
-
 class TimeDimensionPageController extends GetxController {
   final CollectionRepos collectionRepos;
   final List<TimelineCollectionPick> timelineStory;
@@ -33,8 +31,6 @@ class TimeDimensionPageController extends GetxController {
 
   final isUpdating = false.obs;
   final hasChange = false.obs;
-  bool editItemTime = false;
-  final timeDimension = TimeDimension.yearAndDate.obs;
   final timelineStoryList = <TimelineCollectionPick>[].obs;
 
   //for CustomTimePage
@@ -96,40 +92,6 @@ class TimeDimensionPageController extends GetxController {
       tooltipController.showTooltip();
     }
     super.onReady();
-  }
-
-  void updateTimeDimension(TimeDimension timeDimension, bool isEdit) {
-    for (var element in timelineStoryList) {
-      switch (timeDimension) {
-        case TimeDimension.yearAndDate:
-          if (isEdit) {
-            element.month = element.month ?? element.news.publishedDate.month;
-            element.day = element.day ?? element.news.publishedDate.day;
-          } else {
-            element.month = element.news.publishedDate.month;
-            element.day = element.news.publishedDate.day;
-          }
-          element.time = null;
-          break;
-        case TimeDimension.onlyMonth:
-          if (isEdit) {
-            element.month = element.month ?? element.news.publishedDate.month;
-          } else {
-            element.month = element.news.publishedDate.month;
-          }
-          element.day = null;
-          element.time = null;
-          break;
-        case TimeDimension.onlyYear:
-          element.month = null;
-          element.day = null;
-          element.time = null;
-          break;
-      }
-    }
-    sortListByTime();
-    this.timeDimension.value = timeDimension;
-    timelineStoryList.refresh();
   }
 
   void sortListByTime() {
