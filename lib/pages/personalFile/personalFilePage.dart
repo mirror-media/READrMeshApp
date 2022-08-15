@@ -1,6 +1,5 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:extended_text/extended_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -30,28 +29,26 @@ import 'package:validated/validated.dart' as validate;
 class PersonalFilePage extends GetView<PersonalFilePageController> {
   final Member viewMember;
   final bool isFromBottomTab;
-  late final String controllerTag;
-  PersonalFilePage({
+  const PersonalFilePage({
     required this.viewMember,
     this.isFromBottomTab = false,
-  }) {
-    controllerTag = viewMember.memberId;
-  }
+  });
 
   @override
-  String get tag => controllerTag;
+  String get tag => viewMember.memberId;
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<PersonalFilePageController>(tag: controllerTag)) {
+    if (!Get.isRegistered<PersonalFilePageController>(
+        tag: viewMember.memberId)) {
       Get.put(
         PersonalFilePageController(
           personalFileRepos: PersonalFileService(),
           viewMember: viewMember,
         ),
-        tag: controllerTag,
+        tag: viewMember.memberId,
         permanent:
-            controllerTag == Get.find<UserService>().currentUser.memberId,
+            viewMember.memberId == Get.find<UserService>().currentUser.memberId,
       );
     } else {
       controller.fetchMemberData();
@@ -126,49 +123,135 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       actions: [
-        IconButton(
-          icon: Icon(
-            PlatformIcons(context).ellipsis,
-            color: readrBlack87,
-          ),
-          onPressed: () async => await _showShareBottomSheet(context),
-        ),
+        _optionButton(context),
       ],
     );
   }
 
-  Future<void> _showShareBottomSheet(BuildContext context) async {
+  Widget _optionButton(BuildContext context) {
     String shareButtonText = '分享這個個人檔案';
-    if (controllerTag == Get.find<UserService>().currentUser.memberId) {
+    bool showBlock = true;
+    bool isBlocked = false;
+    if (viewMember.memberId == Get.find<UserService>().currentUser.memberId) {
       shareButtonText = '分享我的個人檔案';
+      showBlock = false;
+    } else if (Get.find<UserService>().currentUser.blockMemberIds != null &&
+        Get.find<UserService>()
+            .currentUser
+            .blockMemberIds!
+            .contains(viewMember.memberId)) {
+      isBlocked = true;
     }
-    String? result = await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('copy'),
-            child: const Text(
-              '複製個人檔案連結',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
+    return PlatformPopupMenu(
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: Icon(
+          PlatformIcons(context).ellipsis,
+          color: readrBlack87,
+          size: 26,
+        ),
+      ),
+      options: [
+        PopupMenuOption(
+            label: '複製個人檔案連結',
+            onTap: (option) async {
+              String url = '';
+
+              if (controller.isLoading.isTrue) {
+                url =
+                    await DynamicLinkHelper.createPersonalFileLink(viewMember);
+              } else {
+                url = await DynamicLinkHelper.createPersonalFileLink(
+                    controller.viewMemberData.value);
+              }
+              Clipboard.setData(ClipboardData(text: url));
+              _showSuccessToast(context, '已複製連結');
+            }),
+        PopupMenuOption(
+          label: shareButtonText,
+          onTap: (option) async {
+            String url = '';
+
+            if (controller.isLoading.isTrue) {
+              url = await DynamicLinkHelper.createPersonalFileLink(viewMember);
+            } else {
+              url = await DynamicLinkHelper.createPersonalFileLink(
+                  controller.viewMemberData.value);
+            }
+            Share.shareWithResult(url).then((value) {
+              if (value.status == ShareResultStatus.success) {
+                logShare('member', viewMember.memberId, value.raw);
+              }
+            });
+          },
+        ),
+        if (showBlock && !isBlocked)
+          PopupMenuOption(
+            label: '封鎖',
+            cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+              child: const Text(
+                '封鎖',
+                style: TextStyle(color: Colors.red),
               ),
             ),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('share'),
-            child: Text(
-              shareButtonText,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
+            material: (context, platform) => MaterialPopupMenuOptionData(
+              child: const Text(
+                '封鎖',
+                style: TextStyle(color: Colors.red),
               ),
             ),
+            onTap: (option) async {
+              String title;
+              if (controller.isLoading.isTrue) {
+                title = '封鎖 ${viewMember.customId} ?';
+              } else {
+                title = '封鎖 ${controller.viewMemberData.value.customId} ?';
+              }
+              await showPlatformDialog(
+                context: context,
+                builder: (context) => PlatformAlertDialog(
+                  title: Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    ),
+                  ),
+                  content: const Text(
+                    '你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                  actions: [
+                    PlatformDialogAction(
+                      child: const Text(
+                        '封鎖',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    PlatformDialogAction(
+                      child: const Text(
+                        '取消',
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.of(context).pop('cancel'),
+        if (showBlock && isBlocked)
+          PopupMenuOption(
+            label: '解除封鎖',
+          ),
+      ],
+      cupertino: (context, platform) => CupertinoPopupMenuData(
+        cancelButtonData: CupertinoPopupMenuCancelButtonData(
           child: const Text(
             '取消',
             style: TextStyle(
@@ -176,69 +259,52 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               fontSize: 20,
             ),
           ),
+          isDefaultAction: true,
         ),
       ),
     );
+  }
 
-    String url = '';
-    if (result != null && result != 'cancel') {
-      if (controller.isLoading.isTrue) {
-        url = await DynamicLinkHelper.createPersonalFileLink(viewMember);
-      } else {
-        url = await DynamicLinkHelper.createPersonalFileLink(
-            controller.viewMemberData.value);
-      }
-    }
-
-    if (result == 'copy') {
-      Clipboard.setData(ClipboardData(text: url));
-      showToastWidget(
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.0),
-            color: const Color.fromRGBO(0, 9, 40, 0.66),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(
-                Icons.check_circle,
-                size: 16,
-                color: Colors.white,
-              ),
-              SizedBox(
-                width: 6.0,
-              ),
-              Text(
-                '已複製連結',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
+  void _showSuccessToast(BuildContext context, String message) {
+    showToastWidget(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6.0),
+          color: const Color.fromRGBO(0, 9, 40, 0.66),
         ),
-        context: context,
-        animation: StyledToastAnimation.slideFromTop,
-        reverseAnimation: StyledToastAnimation.slideToTop,
-        position: StyledToastPosition.top,
-        startOffset: const Offset(0.0, -3.0),
-        reverseEndOffset: const Offset(0.0, -3.0),
-        duration: const Duration(seconds: 3),
-        //Animation duration   animDuration * 2 <= duration
-        animDuration: const Duration(milliseconds: 250),
-        curve: Curves.linear,
-        reverseCurve: Curves.linear,
-      );
-    } else if (result == 'share') {
-      Share.shareWithResult(url).then((value) {
-        if (value.status == ShareResultStatus.success) {
-          logShare('member', viewMember.memberId, value.raw);
-        }
-      });
-    }
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.check_circle,
+              size: 16,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 6.0,
+            ),
+            Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+      ),
+      context: context,
+      animation: StyledToastAnimation.slideFromTop,
+      reverseAnimation: StyledToastAnimation.slideToTop,
+      position: StyledToastPosition.top,
+      startOffset: const Offset(0.0, -3.0),
+      reverseEndOffset: const Offset(0.0, -3.0),
+      duration: const Duration(seconds: 3),
+      animDuration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      reverseCurve: Curves.linear,
+    );
   }
 
   Widget _buildBody() {
