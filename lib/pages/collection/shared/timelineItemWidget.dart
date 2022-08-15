@@ -18,48 +18,47 @@ class TimelineItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 48,
-          child: _buildTimestamp(),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-              border: Border.all(
-                color: readrBlack10,
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: editMode
-                ? CollectionStoryItem(
-                    timelineStory.news,
-                    inTimeline: true,
-                  )
-                : NewsListItemWidget(
-                    timelineStory.news,
-                    key: Key(timelineStory.news.id),
-                    inTimeline: true,
-                  ),
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 48,
+            child: _buildTimestamp(),
           ),
-        ),
-      ],
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                border: Border.all(
+                  color: readrBlack10,
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              margin: const EdgeInsets.only(bottom: 8),
+              child: editMode
+                  ? CollectionStoryItem(
+                      timelineStory.news,
+                      inTimeline: true,
+                    )
+                  : NewsListItemWidget(
+                      timelineStory.news,
+                      key: Key(timelineStory.news.id),
+                      inTimeline: true,
+                    ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildTimestamp() {
-    List<Widget> children = [
-      const SizedBox(
-        height: 16,
-      )
-    ];
+    List<Widget> children = [];
 
     switch (_compareTwoStory()) {
       case 4:
@@ -73,6 +72,17 @@ class TimelineItemWidget extends StatelessWidget {
               color: readrBlack50,
             ),
           ));
+        } else {
+          children.add(
+            Text(
+              '${timelineStory.month!}/${timelineStory.day!}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
         }
         break;
       case 2:
@@ -108,7 +118,7 @@ class TimelineItemWidget extends StatelessWidget {
               ),
             ),
           );
-        } else if (!editMode) {
+        } else {
           children.add(
             Text(
               '${timelineStory.month!}月',
@@ -268,6 +278,7 @@ class TimelineItemWidget extends StatelessWidget {
     }
 
     if (editMode) {
+      children.insert(0, const SizedBox(height: 16));
       if (children.length > 1) {
         children.add(const SizedBox(
           height: 12,
@@ -280,6 +291,21 @@ class TimelineItemWidget extends StatelessWidget {
           color: Colors.blue,
         ),
       ));
+    } else {
+      if (children.isNotEmpty) {
+        children.insert(0, const SizedBox(height: 16));
+        children.add(const SizedBox(
+          height: 16,
+        ));
+      }
+      children.add(
+        const Expanded(
+          child: VerticalDivider(
+            color: readrBlack10,
+            thickness: 1,
+          ),
+        ),
+      );
     }
 
     return Column(
