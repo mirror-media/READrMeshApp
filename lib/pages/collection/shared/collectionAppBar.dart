@@ -215,8 +215,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                 List<TimelineCollectionPick> timelineStoryList =
                     List<TimelineCollectionPick>.from(
                         controller.collectionPicks.map(
-                  (element) =>
-                      TimelineCollectionPick.fromCollectionPick(element),
+                  (element) => element as TimelineCollectionPick,
                 ));
 
                 Get.to(
