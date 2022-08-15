@@ -272,19 +272,41 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
   Widget _buildBody(BuildContext context) {
     return Obx(
       () => ListView.builder(
-        padding: const EdgeInsets.all(20),
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Get.to(
-            () => CustomTimePage(
-              controller.timelineStoryList[index],
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        itemBuilder: (context, index) => Dismissible(
+          key: Key(controller.timelineStoryList[index].news.id),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            alignment: AlignmentDirectional.centerEnd,
+            color: Colors.red,
+            margin: const EdgeInsets.only(bottom: 8),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
             ),
-            fullscreenDialog: true,
           ),
-          child: TimelineItemWidget(
-            controller.timelineStoryList[index],
-            previousTimelineStory:
-                index == 0 ? null : controller.timelineStoryList[index - 1],
-            editMode: true,
+          onDismissed: (direction) {
+            controller.timelineStoryList.removeAt(index);
+          },
+          child: GestureDetector(
+            onTap: () => Get.to(
+              () => CustomTimePage(
+                controller.timelineStoryList[index],
+              ),
+              fullscreenDialog: true,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TimelineItemWidget(
+                controller.timelineStoryList[index],
+                previousTimelineStory:
+                    index == 0 ? null : controller.timelineStoryList[index - 1],
+                editMode: true,
+              ),
+            ),
           ),
         ),
         itemCount: controller.timelineStoryList.length,
