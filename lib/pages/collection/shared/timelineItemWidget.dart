@@ -296,6 +296,13 @@ class TimelineItemWidget extends StatelessWidget {
     // return 4 if they are all same
 
     if (previousTimelineStory != null) {
+      if (previousTimelineStory!.year == timelineStory.year &&
+          previousTimelineStory!.month == timelineStory.month &&
+          previousTimelineStory!.day == timelineStory.day &&
+          previousTimelineStory!.time == timelineStory.time) {
+        return 4;
+      }
+
       if (previousTimelineStory!.year != timelineStory.year) {
         return 0;
       }
