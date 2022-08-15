@@ -1337,15 +1337,25 @@ mutation(
     List<Map> dataList = [];
 
     for (var item in collectionPicks) {
+      int? customYear;
+      int? customMonth;
+      int? customDay;
+      String? customTime;
+      if (item is TimelineCollectionPick) {
+        customYear = item.year;
+        customMonth = item.month;
+        customDay = item.day;
+        customTime = item.time?.toUtc().toIso8601String();
+      }
       dataList.add({
         "where": {"id": item.id},
         "data": {
           "sort_order": item.sortOrder,
           "updated_date": DateTime.now().toUtc().toIso8601String(),
-          "custom_year": item.customYear,
-          "custom_month": item.customMonth,
-          "custom_day": item.customDay,
-          "custom_time": item.customTime?.toUtc().toIso8601String(),
+          "custom_year": customYear,
+          "custom_month": customMonth,
+          "custom_day": customDay,
+          "custom_time": customTime,
         }
       });
     }
