@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -89,7 +90,7 @@ class TimeDimensionPageController extends GetxController {
   @override
   void onReady() {
     if (_isFirstTimeEdit) {
-      tooltipController.showTooltip();
+      _showDeleteHint();
     }
     super.onReady();
   }
@@ -297,5 +298,63 @@ class TimeDimensionPageController extends GetxController {
       );
       isUpdating.value = false;
     }
+  }
+
+  void _showDeleteHint() async {
+    await showGeneralDialog(
+      context: Get.overlayContext!,
+      pageBuilder: (_, __, ___) {
+        return Material(
+          color: Colors.black.withOpacity(0.6),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                collectionDeleteHintSvg,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                '向左滑可以刪除文章',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight:
+                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.find<SharedPreferencesService>()
+                      .prefs
+                      .setBool('firstTimeEditFolder', false);
+                  Get.back();
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 20,
+                  ),
+                  primary: Colors.white,
+                ),
+                child: const Text(
+                  '我知道了',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: readrBlack87,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+    tooltipController.showTooltip();
   }
 }
