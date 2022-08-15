@@ -189,10 +189,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           PopupMenuOption(
             label: '封鎖',
             cupertino: (context, platform) => CupertinoPopupMenuOptionData(
-              child: const Text(
-                '封鎖',
-                style: TextStyle(color: Colors.red),
-              ),
+              isDestructiveAction: true,
             ),
             material: (context, platform) => MaterialPopupMenuOptionData(
               child: const Text(
