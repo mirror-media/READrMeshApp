@@ -34,6 +34,7 @@ abstract class MemberRepos {
   Future<Member?> fetchMemberDataById(String id);
   Future<void> addBlockMember(String blockMemberId);
   Future<void> removeBlockMember(String blockMemberId);
+  Future<List<Member>> fetchBlockMembers(List<String> blockMemberIds);
 }
 
 class MemberService implements MemberRepos {
@@ -774,5 +775,51 @@ mutation(
       mutationBody: mutation,
       variables: variables,
     );
+  }
+
+  @override
+  Future<List<Member>> fetchBlockMembers(List<String> blockMemberIds) async {
+    const String query = """
+query(
+  \$blockIds: [ID!]
+){
+  members(
+    where:{
+      is_active:{
+        equals: true
+      }
+      id:{
+        in: \$blockIds
+      }
+    }
+    orderBy:{
+      customId: asc
+    }
+  ){
+    id
+    nickname
+    avatar
+    avatar_image{
+      resized{
+        original
+      }
+    }
+    customId
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockIds": blockMemberIds,
+    };
+
+    final response = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
+      variables: variables,
+    );
+
+    return List<Member>.from(
+        response.data!['members'].map((element) => Member.fromJson(element)));
   }
 }
