@@ -11,6 +11,7 @@ class PickAndBookmarkService extends GetxService {
   final List<PickIdItem> bookmarkList = [];
   final MemberService _memberService = MemberService();
   Future<PickAndBookmarkService> init() async {
+    await fetchPickIds();
     return this;
   }
 
