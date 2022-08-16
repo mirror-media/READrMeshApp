@@ -32,7 +32,7 @@ class UserService extends GetxService {
   bool showCollectionTooltip = false;
 
   Future<UserService> init() async {
-    currentUser = Get.find<HiveService>().localMember;
+    await fetchUserData();
     isMember.value = _isMember;
     showPickTooltip =
         Get.find<HiveService>().tooltipBox.get('showPickTooltip') ?? true;
