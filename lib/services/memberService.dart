@@ -32,6 +32,8 @@ abstract class MemberRepos {
   Future<bool> deleteAvatarUrl(String memberId);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
   Future<Member?> fetchMemberDataById(String id);
+  Future<void> addBlockMember(String blockMemberId);
+  Future<void> removeBlockMember(String blockMemberId);
 }
 
 class MemberService implements MemberRepos {
@@ -117,6 +119,24 @@ class MemberService implements MemberRepos {
             }
           }
         )
+        block(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+        blocked(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
+        }
       }
     }
     """;
@@ -658,5 +678,101 @@ query(
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<void> addBlockMember(String blockMemberId) async {
+    const String mutation = """
+mutation(
+  \$blockId: ID
+  \$myId: ID
+){
+  updateMember(
+    where:{
+      id: \$myId
+    }
+    data:{
+      block:{
+        connect:{
+          id: \$blockId
+        }
+      }
+      following:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+      follower:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+    }
+  ){
+    block(
+      where:{
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockId": blockMemberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+  }
+
+  @override
+  Future<void> removeBlockMember(String blockMemberId) async {
+    const String mutation = """
+mutation(
+  \$blockId: ID
+  \$myId: ID
+){
+  updateMember(
+    where:{
+      id: \$myId
+    }
+    data:{
+      block:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+    }
+  ){
+    block(
+      where:{
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockId": blockMemberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
   }
 }
