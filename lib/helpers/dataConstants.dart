@@ -28,6 +28,7 @@ const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
+const String deletedMemberSvg = 'assets/image/deletedMember.svg';
 //onboard image
 const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
 const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
