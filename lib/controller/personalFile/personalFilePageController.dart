@@ -69,7 +69,6 @@ class PersonalFilePageController extends GetxController
       personalFileRepos
           .fetchMemberData(viewMember)
           .then((value) => viewMemberData.value = value),
-      Get.find<UserService>().fetchUserData(),
     ]);
 
     pickCount.value = viewMemberData.value.pickCount ?? 0;

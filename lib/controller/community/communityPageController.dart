@@ -41,11 +41,11 @@ class CommunityPageController extends GetxController {
     isInitialized = false;
     isError = false;
     update();
-    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchFollowingStoryAndCollection().then((value) => isError = !value),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
+    await Get.find<PickAndBookmarkService>().fetchPickIds();
     isInitialized = true;
     update();
   }
@@ -122,11 +122,11 @@ class CommunityPageController extends GetxController {
   }
 
   Future<void> updateCommunityPage() async {
-    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchFollowingStoryAndCollection(),
       Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
+    await Get.find<PickAndBookmarkService>().fetchPickIds();
   }
 
   void _updateIdList(List<CommunityListItem> communityList,

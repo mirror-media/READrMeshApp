@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -62,7 +63,6 @@ class CollectionPageController extends GetxController {
 
   Future<void> fetchCollectionData() async {
     try {
-      await Get.find<UserService>().fetchUserData();
       await collectionPageRepos
           .fetchCollectionData(collection.id)
           .then((value) {
@@ -77,6 +77,7 @@ class CollectionPageController extends GetxController {
           collectionFormat(value['format']);
         }
       });
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch collection data failed: $e');
       error = determineException(e);
