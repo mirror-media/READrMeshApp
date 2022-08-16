@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
@@ -32,16 +34,17 @@ class UserService extends GetxService {
   bool showCollectionTooltip = false;
 
   Future<UserService> init() async {
-    await fetchUserData();
+    await fetchUserData(isInit: true);
     isMember.value = _isMember;
     showPickTooltip =
         Get.find<HiveService>().tooltipBox.get('showPickTooltip') ?? true;
     showCollectionTooltip =
         Get.find<HiveService>().tooltipBox.get('showCollectionTooltip') ?? true;
+    Timer.periodic(30.minutes, (timer) async => await fetchUserData());
     return this;
   }
 
-  Future<void> fetchUserData({Member? member}) async {
+  Future<void> fetchUserData({Member? member, bool isInit = false}) async {
     if (member != null) {
       currentUser = member;
     } else if (_isMember) {
@@ -60,7 +63,7 @@ class UserService extends GetxService {
             currentUser = Get.find<HiveService>().localMember;
           },
         ),
-        Get.find<PickAndBookmarkService>().fetchPickIds(),
+        if (!isInit) Get.find<PickAndBookmarkService>().fetchPickIds(),
       ]);
     } else {
       currentUser = await _visitorService.fetchMemberData().catchError((error) {
@@ -129,5 +132,14 @@ class UserService extends GetxService {
 
   List<String> get followingPublisherIds {
     return List<String>.from(currentUser.followingPublisher.map((e) => e.id));
+  }
+
+  void addBlockMember(String blockMemberId) {
+    currentUser.blockMemberIds?.add(blockMemberId);
+  }
+
+  void removeBlockMember(String blockedMemberId) {
+    currentUser.blockMemberIds
+        ?.removeWhere((element) => element == blockedMemberId);
   }
 }
