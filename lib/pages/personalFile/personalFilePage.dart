@@ -22,6 +22,7 @@ import 'package:readr/pages/personalFile/personalFileSkeletonScreen.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
+import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:validated/validated.dart' as validate;
@@ -44,6 +45,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       Get.put(
         PersonalFilePageController(
           personalFileRepos: PersonalFileService(),
+          memberRepos: MemberService(),
           viewMember: viewMember,
         ),
         tag: viewMember.memberId,
@@ -129,136 +131,140 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
   }
 
   Widget _optionButton(BuildContext context) {
-    String shareButtonText = '分享這個個人檔案';
-    bool showBlock = true;
-    bool isBlocked = false;
-    if (viewMember.memberId == Get.find<UserService>().currentUser.memberId) {
-      shareButtonText = '分享我的個人檔案';
-      showBlock = false;
-    } else if (Get.find<UserService>().currentUser.blockMemberIds != null &&
-        Get.find<UserService>()
-            .currentUser
-            .blockMemberIds!
-            .contains(viewMember.memberId)) {
-      isBlocked = true;
-    }
-    return PlatformPopupMenu(
-      icon: Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Icon(
-          PlatformIcons(context).ellipsis,
-          color: readrBlack87,
-          size: 26,
-        ),
-      ),
-      options: [
-        PopupMenuOption(
-            label: '複製個人檔案連結',
-            onTap: (option) async {
-              String url = '';
+    return Obx(
+      () {
+        String shareButtonText = '分享這個個人檔案';
+        bool showBlock = true;
+        bool isBlock = controller.isBlock.value;
+        if (viewMember.memberId ==
+            Get.find<UserService>().currentUser.memberId) {
+          shareButtonText = '分享我的個人檔案';
+          showBlock = false;
+        }
 
-              if (controller.isLoading.isTrue) {
-                url =
-                    await DynamicLinkHelper.createPersonalFileLink(viewMember);
-              } else {
-                url = await DynamicLinkHelper.createPersonalFileLink(
-                    controller.viewMemberData.value);
-              }
-              Clipboard.setData(ClipboardData(text: url));
-              _showSuccessToast(context, '已複製連結');
-            }),
-        PopupMenuOption(
-          label: shareButtonText,
-          onTap: (option) async {
-            String url = '';
+        return PlatformPopupMenu(
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(
+              PlatformIcons(context).ellipsis,
+              color: readrBlack87,
+              size: 26,
+            ),
+          ),
+          options: [
+            PopupMenuOption(
+                label: '複製個人檔案連結',
+                onTap: (option) async {
+                  String url = '';
 
-            if (controller.isLoading.isTrue) {
-              url = await DynamicLinkHelper.createPersonalFileLink(viewMember);
-            } else {
-              url = await DynamicLinkHelper.createPersonalFileLink(
-                  controller.viewMemberData.value);
-            }
-            Share.shareWithResult(url).then((value) {
-              if (value.status == ShareResultStatus.success) {
-                logShare('member', viewMember.memberId, value.raw);
-              }
-            });
-          },
-        ),
-        if (showBlock && !isBlocked)
-          PopupMenuOption(
-            label: '封鎖',
-            cupertino: (context, platform) => CupertinoPopupMenuOptionData(
-              isDestructiveAction: true,
+                  if (controller.isLoading.isTrue) {
+                    url = await DynamicLinkHelper.createPersonalFileLink(
+                        viewMember);
+                  } else {
+                    url = await DynamicLinkHelper.createPersonalFileLink(
+                        controller.viewMemberData.value);
+                  }
+                  Clipboard.setData(ClipboardData(text: url));
+                  _showSuccessToast(context, '已複製連結');
+                }),
+            PopupMenuOption(
+              label: shareButtonText,
+              onTap: (option) async {
+                String url = '';
+
+                if (controller.isLoading.isTrue) {
+                  url = await DynamicLinkHelper.createPersonalFileLink(
+                      viewMember);
+                } else {
+                  url = await DynamicLinkHelper.createPersonalFileLink(
+                      controller.viewMemberData.value);
+                }
+                Share.shareWithResult(url).then((value) {
+                  if (value.status == ShareResultStatus.success) {
+                    logShare('member', viewMember.memberId, value.raw);
+                  }
+                });
+              },
             ),
-            material: (context, platform) => MaterialPopupMenuOptionData(
-              child: const Text(
-                '封鎖',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-            onTap: (option) async {
-              String title;
-              if (controller.isLoading.isTrue) {
-                title = '封鎖 ${viewMember.customId} ?';
-              } else {
-                title = '封鎖 ${controller.viewMemberData.value.customId} ?';
-              }
-              await showPlatformDialog(
-                context: context,
-                builder: (context) => PlatformAlertDialog(
-                  title: Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                    ),
-                  ),
-                  content: const Text(
-                    '你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                    ),
-                  ),
-                  actions: [
-                    PlatformDialogAction(
-                      child: const Text(
-                        '封鎖',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                    PlatformDialogAction(
-                      child: const Text(
-                        '取消',
-                      ),
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                  ],
+            if (showBlock && !isBlock)
+              PopupMenuOption(
+                label: '封鎖',
+                cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+                  isDestructiveAction: true,
                 ),
-              );
-            },
-          ),
-        if (showBlock && isBlocked)
-          PopupMenuOption(
-            label: '解除封鎖',
-          ),
-      ],
-      cupertino: (context, platform) => CupertinoPopupMenuData(
-        cancelButtonData: CupertinoPopupMenuCancelButtonData(
-          child: const Text(
-            '取消',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
+                material: (context, platform) => MaterialPopupMenuOptionData(
+                  child: const Text(
+                    '封鎖',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+                onTap: (option) async {
+                  String title;
+                  if (controller.isLoading.isTrue) {
+                    title = '封鎖 ${viewMember.customId} ?';
+                  } else {
+                    title = '封鎖 ${controller.viewMemberData.value.customId} ?';
+                  }
+                  await showPlatformDialog(
+                    context: context,
+                    builder: (context) => PlatformAlertDialog(
+                      title: Text(
+                        title,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                      content: const Text(
+                        '你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                        ),
+                      ),
+                      actions: [
+                        PlatformDialogAction(
+                          child: const Text(
+                            '封鎖',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () {
+                            controller.blockMember();
+                            Get.back();
+                          },
+                        ),
+                        PlatformDialogAction(
+                          child: const Text(
+                            '取消',
+                          ),
+                          onPressed: () => Get.back(),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            if (showBlock && isBlock)
+              PopupMenuOption(
+                label: '解除封鎖',
+                onTap: (option) => controller.unblockMember(),
+              ),
+          ],
+          cupertino: (context, platform) => CupertinoPopupMenuData(
+            cancelButtonData: CupertinoPopupMenuCancelButtonData(
+              child: const Text(
+                '取消',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+              isDefaultAction: true,
             ),
           ),
-          isDefaultAction: true,
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -438,6 +444,8 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   controller.viewMemberData.value.memberId ==
                       Get.find<UserService>().currentUser.memberId) {
                 return _editProfileButton();
+              } else if (controller.isBlock.isTrue) {
+                return _blockWidget();
               }
 
               return FollowButton(
@@ -644,6 +652,31 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           color: readrBlack87,
         ),
       ),
+    );
+  }
+
+  Widget _blockWidget() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        const Text(
+          '你已封鎖這位使用者。',
+          style: TextStyle(
+            fontSize: 14,
+            color: readrBlack50,
+          ),
+        ),
+        GestureDetector(
+          onTap: () => controller.unblockMember(),
+          child: const Text(
+            '解除封鎖',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
