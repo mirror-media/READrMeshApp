@@ -58,7 +58,16 @@ class CollectionTabContent extends GetView<CollectionTabController> {
           if (controller.collectionList.isEmpty) {
             return _emptyWidget();
           }
-          return _buildContent();
+
+          return Obx(() {
+            if (Get.find<PersonalFilePageController>(tag: viewMember.memberId)
+                .isBlock
+                .isTrue) {
+              return _emptyWidget();
+            }
+
+            return _buildContent();
+          });
         }
 
         return const Center(

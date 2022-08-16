@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -51,7 +52,16 @@ class PickTabContent extends GetView<PickTabController> {
               controller.collecionPickList.isEmpty) {
             return _emptyWidget();
           }
-          return _buildContent();
+
+          return Obx(() {
+            if (Get.find<PersonalFilePageController>(tag: viewMember.memberId)
+                .isBlock
+                .isTrue) {
+              return _emptyWidget();
+            }
+
+            return _buildContent();
+          });
         }
 
         return const Center(
