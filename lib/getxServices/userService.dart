@@ -142,4 +142,12 @@ class UserService extends GetxService {
     currentUser.blockMemberIds
         ?.removeWhere((element) => element == blockedMemberId);
   }
+
+  bool isBlockMember(String memberId) {
+    return currentUser.blockMemberIds?.contains(memberId) ?? false;
+  }
+
+  bool isBlocked(String viewMemberId) {
+    return currentUser.blockedMemberIds?.contains(viewMemberId) ?? false;
+  }
 }
