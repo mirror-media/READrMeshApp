@@ -10,6 +10,7 @@ import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
 import 'package:readr/pages/personalFile/collectionTabContent.dart';
+import 'package:readr/pages/personalFile/deletedMemberPage.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -48,15 +49,19 @@ class PersonalFilePageController extends GetxController
   @override
   void onInit() {
     viewMemberData = Rx<Member>(viewMember);
-    if (Get.find<UserService>()
-            .currentUser
-            .blockMemberIds
-            ?.contains(viewMember.memberId) ??
-        false) {
+    if (Get.find<UserService>().isBlockMember(viewMember.memberId)) {
       isBlock.value = true;
     }
     initPage();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    if (Get.find<UserService>().isBlocked(viewMember.memberId)) {
+      Get.off(() => DeletedMemberPage());
+    }
+    super.onReady();
   }
 
   @override
