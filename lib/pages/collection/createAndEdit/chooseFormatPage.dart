@@ -286,7 +286,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           .sort((a, b) => b.news.publishedDate.compareTo(a.news.publishedDate));
     }
     return Container(
-      color: collectionBackgroundColor,
+      color: meshGray,
       child: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemBuilder: (context, index) => TimelineItemWidget(

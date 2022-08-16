@@ -76,7 +76,7 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
             );
           }
           return Scaffold(
-            backgroundColor: collectionBackgroundColor,
+            backgroundColor: meshGray,
             appBar: AppBar(
               backgroundColor: Colors.white,
               automaticallyImplyLeading: false,

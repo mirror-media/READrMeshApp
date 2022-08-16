@@ -13,7 +13,7 @@ class CollectionEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: collectionBackgroundColor,
+      color: meshGray,
       child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [

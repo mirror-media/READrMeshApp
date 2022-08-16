@@ -26,7 +26,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
     controller.time.value = timelineStory.time;
 
     return Scaffold(
-      backgroundColor: collectionBackgroundColor,
+      backgroundColor: meshGray,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,

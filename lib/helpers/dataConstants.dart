@@ -67,7 +67,7 @@ const Color storySummaryFrameColor = storyWidgetColor;
 const Color blockquoteColor = Color.fromRGBO(0, 9, 40, 0.1);
 const Color annotationColor = readrBlack87;
 const Color homeScreenBackgroundColor = Color.fromRGBO(246, 246, 251, 1);
-const Color collectionBackgroundColor = Color(0xffF6F6FB);
+const Color meshGray = Color(0xffF6F6FB);
 
 // enum
 enum PickObjective {

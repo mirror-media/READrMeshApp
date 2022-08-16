@@ -138,7 +138,7 @@ class CollectionPage extends GetView<CollectionPageController> {
             break;
           case CollectionFormat.timeline:
             listWidget = TimelineCollectionWidget(collection);
-            background = collectionBackgroundColor;
+            background = meshGray;
             break;
         }
 
