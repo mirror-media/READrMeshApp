@@ -10,6 +10,7 @@ import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
+import 'package:readr/pages/setting/blocklistPage.dart';
 import 'package:readr/pages/setting/contactUsPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/initialSettingPage.dart';
@@ -45,7 +46,6 @@ class SettingPage extends GetView<SettingPageController> {
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(0),
-          physics: const ClampingScrollPhysics(),
           children: [
             Obx(
               () {
@@ -55,7 +55,14 @@ class SettingPage extends GetView<SettingPageController> {
                 return Container();
               },
             ),
-            _settingTile(context),
+            Obx(
+              () {
+                if (Get.find<UserService>().isMember.isTrue) {
+                  return _memberSettingTile(context);
+                }
+                return _visitorSettingTile(context);
+              },
+            ),
             Obx(
               () {
                 if (Get.find<UserService>().isMember.isTrue) {
@@ -119,11 +126,10 @@ class SettingPage extends GetView<SettingPageController> {
     );
   }
 
-  Widget _settingTile(BuildContext context) {
+  Widget _visitorSettingTile(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      margin: const EdgeInsets.only(bottom: 12),
       child: Column(
         children: [
           _settingButton(
@@ -197,6 +203,106 @@ class SettingPage extends GetView<SettingPageController> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _memberSettingTile(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Column(
+            children: [
+              _settingButton(
+                text: '顯示新聞範圍',
+                onPressed: () {
+                  Get.to(() => NewsCoverageSettingPage());
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: '預設顯示頁面',
+                onPressed: () {
+                  Get.to(() => InitialSettingPage());
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: '封鎖名單',
+                onPressed: () {
+                  Get.to(() => BlocklistPage());
+                },
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Column(
+            children: [
+              _settingButton(
+                text: '聯絡我們',
+                onPressed: () {
+                  Get.to(() => ContactUsPage(
+                        appVersion: controller.versionAndBuildNumber.value,
+                        platform: controller.platform,
+                        device: controller.device,
+                      ));
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: '關於',
+                onPressed: () => Get.to(() => AboutPage()),
+                hideArrow: true,
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              SizedBox(
+                height: 56,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '版本',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: readrBlack87,
+                      ),
+                    ),
+                    Obx(
+                      () => Text(
+                        controller.versionAndBuildNumber.value,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: readrBlack50,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
