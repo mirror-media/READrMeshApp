@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:readr/controller/followableItemController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
 import 'package:readr/pages/personalFile/collectionTabContent.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
+import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 
 class PersonalFilePageController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final PersonalFileRepos personalFileRepos;
+  final MemberRepos memberRepos;
   Member viewMember;
   PersonalFilePageController({
     required this.personalFileRepos,
+    required this.memberRepos,
     required this.viewMember,
   });
 
@@ -37,9 +43,18 @@ class PersonalFilePageController extends GetxController
 
   final JustTheController tooltipController = JustTheController();
 
+  final isBlock = false.obs;
+
   @override
   void onInit() {
     viewMemberData = Rx<Member>(viewMember);
+    if (Get.find<UserService>()
+            .currentUser
+            .blockMemberIds
+            ?.contains(viewMember.memberId) ??
+        false) {
+      isBlock.value = true;
+    }
     initPage();
     super.onInit();
   }
@@ -155,5 +170,76 @@ class PersonalFilePageController extends GetxController
         Get.find<HiveService>().tooltipBox.put('showCollectionTooltip', false);
       }
     });
+  }
+
+  void blockMember() async {
+    try {
+      memberRepos.addBlockMember(viewMember.memberId);
+      Get.find<UserService>().addBlockMember(viewMember.memberId);
+      Get.find<UserService>().removeFollowingMember(viewMember.memberId);
+      Get.find<FollowableItemController>(
+              tag: MemberFollowableItem(viewMemberData.value).tag)
+          .isFollowed
+          .value = false;
+      isBlock.value = true;
+      _showResultToast('已封鎖');
+    } catch (e) {
+      print('Block member error: $e');
+    }
+  }
+
+  void unblockMember() async {
+    try {
+      memberRepos.removeBlockMember(viewMember.memberId);
+      Get.find<UserService>().removeBlockMember(viewMember.memberId);
+      isBlock.value = false;
+      _showResultToast('已取消封鎖');
+    } catch (e) {
+      print('Unblock member error: $e');
+    }
+  }
+
+  void _showResultToast(String message) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6.0),
+        color: const Color.fromRGBO(0, 9, 40, 0.66),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.check_circle,
+            size: 16,
+            color: Colors.white,
+          ),
+          const SizedBox(
+            width: 6.0,
+          ),
+          Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+    showToastWidget(
+      toast,
+      context: Get.overlayContext,
+      animation: StyledToastAnimation.slideFromTop,
+      reverseAnimation: StyledToastAnimation.slideToTop,
+      position: StyledToastPosition.top,
+      startOffset: const Offset(0.0, -3.0),
+      reverseEndOffset: const Offset(0.0, -3.0),
+      duration: const Duration(seconds: 3),
+      //Animation duration   animDuration * 2 <= duration
+      animDuration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      reverseCurve: Curves.linear,
+    );
   }
 }
