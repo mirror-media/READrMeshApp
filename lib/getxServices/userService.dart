@@ -135,7 +135,8 @@ class UserService extends GetxService {
   }
 
   void addBlockMember(String blockMemberId) {
-    currentUser.blockMemberIds?.add(blockMemberId);
+    currentUser.blockMemberIds ??= [];
+    currentUser.blockMemberIds!.add(blockMemberId);
   }
 
   void removeBlockMember(String blockedMemberId) {
