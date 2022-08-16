@@ -12,6 +12,7 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
+import 'package:readr/pages/personalFile/deletedMemberPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/rootPage.dart';
 import 'package:readr/pages/shared/follow/followingSyncToast.dart';
@@ -226,21 +227,15 @@ class DynamicLinkService extends GetxService {
       print('Open collection link error: $e');
     }
 
-    if (member != null) {
+    if (member != null && !Get.find<UserService>().isBlocked(member.memberId)) {
       Get.to(
         () => PersonalFilePage(
           viewMember: member!,
         ),
       );
     } else {
-      Fluttertoast.showToast(
-        msg: "用戶不存在",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
+      Get.to(
+        () => DeletedMemberPage(),
       );
     }
   }
