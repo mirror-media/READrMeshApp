@@ -3,6 +3,7 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/followableItemController.dart';
+import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
@@ -188,6 +189,9 @@ class PersonalFilePageController extends GetxController
           .value = false;
       isBlock.value = true;
       _showResultToast('已封鎖');
+      if (Get.isRegistered<SettingPageController>()) {
+        Get.find<SettingPageController>().fetchBlocklist();
+      }
     } catch (e) {
       print('Block member error: $e');
     }
@@ -199,6 +203,12 @@ class PersonalFilePageController extends GetxController
       Get.find<UserService>().removeBlockMember(viewMember.memberId);
       isBlock.value = false;
       _showResultToast('已取消封鎖');
+      if (Get.isRegistered<SettingPageController>()) {
+        final settingPageController = Get.find<SettingPageController>();
+        settingPageController.blockMembers
+            .removeWhere((element) => element.memberId == viewMember.memberId);
+        settingPageController.update();
+      }
     } catch (e) {
       print('Unblock member error: $e');
     }
