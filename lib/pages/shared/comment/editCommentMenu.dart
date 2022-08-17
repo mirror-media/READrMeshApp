@@ -92,7 +92,7 @@ Future<void> showEditCommentMenu(
               TextButton.icon(
                 onPressed: () => Navigator.of(context).pop('edit'),
                 icon: const Icon(
-                  Icons.edit,
+                  Icons.edit_outlined,
                   color: readrBlack87,
                   size: 18,
                 ),
@@ -112,7 +112,7 @@ Future<void> showEditCommentMenu(
               TextButton.icon(
                 onPressed: () => Navigator.of(context).pop('delete'),
                 icon: const Icon(
-                  Icons.delete,
+                  Icons.delete_outlined,
                   color: Colors.red,
                   size: 18,
                 ),
