@@ -61,10 +61,10 @@ class CollectionPageController extends GetxController {
     super.onReady();
   }
 
-  Future<void> fetchCollectionData() async {
+  Future<void> fetchCollectionData({bool useCache = true}) async {
     try {
       await collectionPageRepos
-          .fetchCollectionData(collection.id)
+          .fetchCollectionData(collection.id, useCache: useCache)
           .then((value) {
         if (value['status'] == CollectionStatus.delete) {
           Get.off(() => const CollectionDeletedPage());

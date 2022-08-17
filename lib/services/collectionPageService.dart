@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -11,12 +12,14 @@ import 'package:readr/models/member.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 
 abstract class CollectionPageRepos {
-  Future<Map<String, dynamic>> fetchCollectionData(String collectionId);
+  Future<Map<String, dynamic>> fetchCollectionData(String collectionId,
+      {bool useCache = true});
 }
 
 class CollectionPageService implements CollectionPageRepos {
   @override
-  Future<Map<String, dynamic>> fetchCollectionData(String collectionId) async {
+  Future<Map<String, dynamic>> fetchCollectionData(String collectionId,
+      {bool useCache = true}) async {
     const String query = """
 query(
   \$myId: ID
@@ -364,6 +367,7 @@ query(
       api: Api.mesh,
       queryBody: query,
       variables: variables,
+      fetchPolicy: useCache ? FetchPolicy.cacheFirst : FetchPolicy.networkOnly,
     );
 
     List<Comment> allComments = [];

@@ -283,7 +283,7 @@ class TimeDimensionPageController extends GetxController {
         format: CollectionFormat.timeline,
       );
       await Get.find<CollectionPageController>(tag: collection!.id)
-          .fetchCollectionData();
+          .fetchCollectionData(useCache: false);
       Get.back();
     } catch (e) {
       print('Update collection picks error: $e');

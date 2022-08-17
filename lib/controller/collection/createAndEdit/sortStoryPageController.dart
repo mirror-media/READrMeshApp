@@ -142,7 +142,7 @@ class SortStoryPageController extends GetxController {
         format: CollectionFormat.folder,
       );
       await Get.find<CollectionPageController>(tag: collection!.id)
-          .fetchCollectionData();
+          .fetchCollectionData(useCache: false);
       Get.back();
     } catch (e) {
       print('Update collection picks error: $e');
