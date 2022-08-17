@@ -151,4 +151,15 @@ class UserService extends GetxService {
   bool isBlocked(String viewMemberId) {
     return currentUser.blockedMemberIds?.contains(viewMemberId) ?? false;
   }
+
+  List<String> get blockAndBlockedIds {
+    List<String> blockAndBlockedIds = [];
+    if (currentUser.blockMemberIds != null) {
+      blockAndBlockedIds.addAll(currentUser.blockMemberIds!);
+    }
+    if (currentUser.blockedMemberIds != null) {
+      blockAndBlockedIds.addAll(currentUser.blockedMemberIds!);
+    }
+    return blockAndBlockedIds;
+  }
 }
