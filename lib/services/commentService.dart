@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/comment.dart';
@@ -86,6 +87,7 @@ class CommentService implements CommentRepos {
         api: Api.mesh,
         queryBody: query,
         variables: variables,
+        fetchPolicy: FetchPolicy.noCache,
       );
 
       List<Comment> allComments = [];
@@ -175,6 +177,7 @@ class CommentService implements CommentRepos {
       api: Api.mesh,
       queryBody: query,
       variables: variables,
+      fetchPolicy: FetchPolicy.noCache,
     );
 
     List<Comment> allComments = [];
