@@ -256,7 +256,7 @@ class CommentItem extends GetView<CommentItemController> {
                             controller.isSending.isFalse) {
                           return GestureDetector(
                             onTap: () async {
-                              await EditCommentMenu.showEditCommentMenu(
+                              await showEditCommentMenu(
                                 context,
                                 controller.comment,
                                 pickableItemControllerTag,

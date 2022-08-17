@@ -109,7 +109,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     widget.comment.member.memberId) {
               return GestureDetector(
                 onTap: () async {
-                  await EditCommentMenu.showEditCommentMenu(
+                  await showEditCommentMenu(
                     context,
                     widget.controller.comment,
                     widget.pickControllerTag,

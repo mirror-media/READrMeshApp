@@ -1,21 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/editCommentWidget.dart';
 
-class EditCommentMenu {
-  static Future<void> showEditCommentMenu(
-    BuildContext context,
-    Comment comment,
-    String controllerTag, {
-    bool isFromPickTab = false,
-  }) async {
-    var result = await showCupertinoModalPopup(
+Future<void> showEditCommentMenu(
+  BuildContext context,
+  Comment comment,
+  String controllerTag, {
+  bool isFromPickTab = false,
+}) async {
+  String? result;
+  if (GetPlatform.isIOS) {
+    result = await showCupertinoModalPopup<String>(
       context: context,
       builder: (context) => CupertinoActionSheet(
         actions: [
@@ -36,7 +40,7 @@ class EditCommentMenu {
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
-                color: Color.fromRGBO(255, 59, 48, 1),
+                color: Colors.red,
               ),
             ),
           )
@@ -53,83 +57,161 @@ class EditCommentMenu {
         ),
       ),
     );
-    if (result == 'edit') {
-      await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          return AnimatedPadding(
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.easeOut,
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: EditCommentWidget(comment),
-          );
-        },
-      );
-    } else if (result == 'delete') {
-      Widget? dialogContent;
-
-      final pickAndBookmarkService = Get.find<PickAndBookmarkService>();
-      if (pickAndBookmarkService.pickList
-          .any((element) => element.myPickCommentId == comment.id)) {
-        dialogContent = const Text(
-          '系統仍會保留您的精選記錄',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-          ),
-        );
-      }
-
-      await showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: const Text(
-            '確定要刪除留言？',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          content: dialogContent,
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (isFromPickTab) {
-                  Get.find<PickTabController>()
-                      .deletePickComment(comment.id, controllerTag);
-                } else {
-                  Get.find<CommentController>(tag: controllerTag)
-                      .deleteComment(comment.id);
-                }
-                Navigator.pop(context);
-              },
-              child: Text(
-                '刪除留言',
-                style: TextStyle(
+  } else {
+    result = await showCupertinoModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      topRadius: const Radius.circular(24),
+      builder: (context) => Material(
+        color: Colors.white,
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                child: Container(
+                  height: 4,
+                  width: 48,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    color: Colors.white,
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: readrBlack20,
+                    ),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () => Navigator.of(context).pop('edit'),
+                icon: const Icon(
+                  Icons.edit,
+                  color: readrBlack87,
+                  size: 18,
+                ),
+                label: const Text(
+                  '編輯留言',
+                  style: TextStyle(
+                    color: readrBlack87,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () => Navigator.of(context).pop('delete'),
+                icon: const Icon(
+                  Icons.delete,
                   color: Colors.red,
-                  fontSize: 15,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
+                  size: 18,
+                ),
+                label: const Text(
+                  '刪除留言',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                  alignment: Alignment.centerLeft,
                 ),
               ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                '取消',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 15,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  if (result == 'edit') {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return AnimatedPadding(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: EditCommentWidget(comment),
+        );
+      },
+    );
+  } else if (result == 'delete') {
+    Widget? dialogContent;
+
+    final pickAndBookmarkService = Get.find<PickAndBookmarkService>();
+    if (pickAndBookmarkService.pickList
+        .any((element) => element.myPickCommentId == comment.id)) {
+      dialogContent = const Text(
+        '系統仍會保留您的精選記錄',
+        style: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
         ),
       );
     }
+
+    await showPlatformDialog(
+      context: context,
+      builder: (context) => PlatformAlertDialog(
+        title: const Text(
+          '確定要刪除留言？',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: dialogContent,
+        actions: [
+          PlatformDialogAction(
+            onPressed: () {
+              if (isFromPickTab) {
+                Get.find<PickTabController>()
+                    .deletePickComment(comment.id, controllerTag);
+              } else {
+                Get.find<CommentController>(tag: controllerTag)
+                    .deleteComment(comment.id);
+              }
+              Navigator.pop(context);
+            },
+            child: Text(
+              '刪除留言',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 15,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
+              ),
+            ),
+          ),
+          PlatformDialogAction(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              '取消',
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 15,
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
