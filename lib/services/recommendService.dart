@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/getxServices/environmentService.dart';
-
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 
@@ -15,18 +11,6 @@ abstract class RecommendRepos {
 }
 
 class RecommendService implements RecommendRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
-  Future<Map<String, String>> _getHeaders() async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-    };
-
-    return headers;
-  }
-
   @override
   Future<List<Publisher>> fetchAllPublishers() async {
     const String query = """
@@ -60,21 +44,14 @@ class RecommendService implements RecommendRepos {
       "readrId": Get.find<EnvironmentService>().config.readrPublisherId
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Publisher> allPublisherList = [];
-    for (var publisher in jsonResponse['data']['publishers']) {
+    for (var publisher in jsonResponse.data!['publishers']) {
       allPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -157,26 +134,19 @@ class RecommendService implements RecommendRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: await _getHeaders(),
-    );
-
     List<Member> recommedMembers = [];
-    for (var member in jsonResponse['data']['recommendMember']) {
+    for (var member in jsonResponse.data!['recommendMember']) {
       recommedMembers.add(Member.fromJson(member));
     }
 
     if (recommedMembers.length < 20) {
-      for (var item in jsonResponse['data']['otherMember']) {
+      for (var item in jsonResponse.data!['otherMember']) {
         Member member = Member.fromJson(item);
         if (!recommedMembers
             .any((element) => element.memberId == member.memberId)) {

@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 
@@ -19,9 +15,6 @@ abstract class CollectionPageRepos {
 }
 
 class CollectionPageService implements CollectionPageRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
   Future<Map<String, dynamic>> fetchCollectionData(String collectionId) async {
     const String query = """
@@ -29,6 +22,7 @@ query(
   \$myId: ID
   \$followingMembers: [ID!]
   \$collectionId: ID
+  \$blockAndBlockedIds: [ID!]
 ){
   collection(
     where:{
@@ -73,12 +67,26 @@ query(
     otherPickMembers: picks(
       where:{
         member:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+            	}
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+            {
+              is_active:{
+                equals: true
+              }
+            }
+          ]
         }
         is_active:{
           equals: true
@@ -106,48 +114,16 @@ query(
         is_active:{
           equals: true
         }
-      }
-    )
-    myPickId: picks(
-      where:{
         member:{
           id:{
-            equals: \$myId
+            notIn: \$blockAndBlockedIds
           }
-        }
-      	is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-      pick_comment(
-        where:{
           is_active:{
             equals: true
           }
         }
-      ){
-        id
       }
-    }
-    bookmarkId: picks(
-      where:{
-        member:{
-          id:{
-            equals: \$myId
-          }
-        }
-        kind:{
-          equals: "bookmark"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-    }
+    )
     comment(
       where:{
         is_active:{
@@ -160,6 +136,9 @@ query(
           is_active:{
             equals: true
           }
+          id:{
+          	notIn: \$blockAndBlockedIds
+        	}
         }
       }
       orderBy:{
@@ -279,12 +258,26 @@ query(
       otherPicks:pick(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -322,6 +315,14 @@ query(
           is_active:{
             equals: true
           }
+          member:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
+          }
         }
       )
       commentCount(
@@ -332,37 +333,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: pick(
-        where:{
           member:{
-            id:{
-              equals: \$myId
-            }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
-        ){
-          id
         }
-      }
+      )
     }
   }
 }
@@ -377,25 +357,19 @@ query(
       "collectionId": collectionId,
       "followingMembers": followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
     );
 
     List<Comment> allComments = [];
     List<Comment> popularComments = [];
 
-    var collection = jsonResponse['data']['collection'];
+    var collection = jsonResponse.data!['collection'];
 
     if (collection['comment'].isNotEmpty) {
       allComments = List<Comment>.from(
@@ -412,17 +386,17 @@ query(
     }
 
     List<CollectionPick> collectionPicks = [];
-    if (jsonResponse['data']['collectionPicks'].isNotEmpty) {
+    if (jsonResponse.data!['collectionPicks'].isNotEmpty) {
       switch (format) {
         case CollectionFormat.folder:
-          collectionPicks = List<FolderCollectionPick>.from(jsonResponse['data']
-                  ['collectionPicks']
+          collectionPicks = List<FolderCollectionPick>.from(jsonResponse
+              .data!['collectionPicks']
               .map((element) => FolderCollectionPick.fromJson(element)));
           break;
         case CollectionFormat.timeline:
-          collectionPicks = List<TimelineCollectionPick>.from(
-              jsonResponse['data']['collectionPicks']
-                  .map((element) => TimelineCollectionPick.fromJson(element)));
+          collectionPicks = List<TimelineCollectionPick>.from(jsonResponse
+              .data!['collectionPicks']
+              .map((element) => TimelineCollectionPick.fromJson(element)));
           break;
       }
     }

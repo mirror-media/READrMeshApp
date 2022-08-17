@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/cacheDurationCache.dart';
-
 import 'package:readr/models/editorChoiceItem.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class EditorChoiceRepos {
@@ -16,12 +11,8 @@ abstract class EditorChoiceRepos {
 }
 
 class EditorChoiceService implements EditorChoiceRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-
   @override
   Future<List<EditorChoiceItem>> fetchEditorChoiceList() async {
-    const key = 'fetchEditorChoiceList';
-
     String query = """
     query(
       \$where: EditorChoiceWhereInput, 
@@ -45,23 +36,17 @@ class EditorChoiceService implements EditorChoiceRepos {
       "first": 3
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.readr,
+      queryBody: query,
       variables: variables,
+      cacheDuration: 30.minutes,
     );
 
-    final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key,
-        Get.find<EnvironmentService>().config.readrApi,
-        jsonEncode(graphqlBody.toJson()),
-        maxAge: editorChoiceCacheDuration,
-        headers: {"Content-Type": "application/json"});
-
     List<EditorChoiceItem> editorChoiceList = [];
-    for (int i = 0; i < jsonResponse['data']['allEditorChoices'].length; i++) {
-      editorChoiceList.add(EditorChoiceItem.fromJson(
-          jsonResponse['data']['allEditorChoices'][i]));
+    for (int i = 0; i < jsonResponse.data!['allEditorChoices'].length; i++) {
+      editorChoiceList.add(
+          EditorChoiceItem.fromJson(jsonResponse.data!['allEditorChoices'][i]));
     }
     return editorChoiceList;
   }
@@ -76,6 +61,7 @@ class EditorChoiceService implements EditorChoiceRepos {
       \$urlList: [String!]
       \$urlFilter: String
       \$readrId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       stories(
         where:{
@@ -166,12 +152,26 @@ class EditorChoiceService implements EditorChoiceRepos {
         otherPicks:pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                  not:{
-                    equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
                   }
                 }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -209,6 +209,14 @@ class EditorChoiceService implements EditorChoiceRepos {
             is_active:{
               equals: true
             }
+            member:{
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+              is_active:{
+                equals: true
+              }
+            }
           }
         )
         commentCount(
@@ -219,37 +227,16 @@ class EditorChoiceService implements EditorChoiceRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     ''';
@@ -280,23 +267,17 @@ class EditorChoiceService implements EditorChoiceRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
       "urlFilter": Get.find<EnvironmentService>().config.readrWebsiteLink,
       "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      Get.find<EnvironmentService>().config.readrMeshApi,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (jsonResponse['data']['stories'].isNotEmpty) {
-      for (var item in jsonResponse['data']['stories']) {
+    if (jsonResponse.data!['stories'].isNotEmpty) {
+      for (var item in jsonResponse.data!['stories']) {
         NewsListItem news = NewsListItem.fromJson(item);
         int index = editorChoiceList.indexWhere((element) {
           if (element.id != null) {

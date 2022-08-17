@@ -31,7 +31,7 @@ abstract class CollectionRepos {
     required String collectionId,
     required List<CollectionPick> collectionPicks,
   });
-  Future<Collection> updateTitle({
+  Future<void> updateTitle({
     required String collectionId,
     required String newTitle,
   });
@@ -83,6 +83,7 @@ class CollectionService implements CollectionRepos {
       \$fetchedPickStoryIds: [ID!]
       \$keyWord: String
       \$followingMembers: [ID!]
+      \$blockAndBlockedIds: [ID!]
     ){
       bookmarks: picks(
         where:{
@@ -144,6 +145,9 @@ class CollectionService implements CollectionRepos {
                 is_active:{
                   equals: true
                 }
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
               }
             }
           )
@@ -186,12 +190,26 @@ class CollectionService implements CollectionRepos {
           otherPicks:pick(
             where:{
               member:{
-                id:{
-                  notIn: \$followingMembers
-                  not:{
-                    equals: \$myId
+                AND:[
+                  {
+                    id:{
+                      notIn: \$followingMembers
+                      not:{
+                        equals: \$myId
+                      }
+                    }
                   }
-                }
+                  {
+                    id:{
+                      notIn: \$blockAndBlockedIds
+                    }
+                  }
+                  {
+                    is_active:{
+                      equals: true
+                    }
+                  }
+                ]
               }
               state:{
                 in: "public"
@@ -229,93 +247,16 @@ class CollectionService implements CollectionRepos {
               is_active:{
                 equals: true
               }
+              member:{
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+                is_active:{
+                  equals: true
+                }
+              }
             }
           )
-          myPickId: pick(
-            where:{
-              member:{
-                id:{
-                  equals: \$myId
-                }
-              }
-              state:{
-                notIn: "private"
-              }
-              kind:{
-                equals: "read"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-          ){
-            id
-            pick_comment(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-            }
-          }
-          comment(
-            where:{
-              is_active:{
-                equals: true
-              }
-              state:{
-                equals: "public"
-              }
-              member:{
-                id:{
-                  in: \$followingMembers
-                  not:{
-                    equals: \$myId
-                  }
-                }
-              }
-            }
-            orderBy:{
-              published_date: desc
-            }
-            take: 2
-          ){
-            id
-            member{
-              id
-              nickname
-              avatar
-              customId
-              avatar_image{
-                id
-                resized{
-                  original
-                }
-              }
-            }
-            content
-            state
-            published_date
-            likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            isLiked:likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-                id:{
-                  equals: \$myId
-                }
-              }
-            )
-          }
         }
       }
       picks: picks(
@@ -378,6 +319,9 @@ class CollectionService implements CollectionRepos {
                 is_active:{
                   equals: true
                 }
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
               }
             }
           )
@@ -420,12 +364,26 @@ class CollectionService implements CollectionRepos {
           otherPicks:pick(
             where:{
               member:{
-                id:{
-                  notIn: \$followingMembers
-                  not:{
-                    equals: \$myId
+                AND:[
+                  {
+                    id:{
+                      notIn: \$followingMembers
+                      not:{
+                        equals: \$myId
+                      }
+                    }
                   }
-                }
+                  {
+                    id:{
+                      notIn: \$blockAndBlockedIds
+                    }
+                  }
+                  {
+                    is_active:{
+                      equals: true
+                    }
+                  }
+                ]
               }
               state:{
                 in: "public"
@@ -463,93 +421,16 @@ class CollectionService implements CollectionRepos {
               is_active:{
                 equals: true
               }
+              member:{
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+                is_active:{
+                  equals: true
+                }
+              }
             }
           )
-          myPickId: pick(
-            where:{
-              member:{
-                id:{
-                  equals: \$myId
-                }
-              }
-              state:{
-                notIn: "private"
-              }
-              kind:{
-                equals: "read"
-              }
-              is_active:{
-                equals: true
-              }
-            }
-          ){
-            id
-            pick_comment(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-            }
-          }
-          comment(
-            where:{
-              is_active:{
-                equals: true
-              }
-              state:{
-                equals: "public"
-              }
-              member:{
-                id:{
-                  in: \$followingMembers
-                  not:{
-                    equals: \$myId
-                  }
-                }
-              }
-            }
-            orderBy:{
-              published_date: desc
-            }
-            take: 2
-          ){
-            id
-            member{
-              id
-              nickname
-              avatar
-              customId
-              avatar_image{
-                id
-                resized{
-                  original
-                }
-              }
-            }
-            content
-            state
-            published_date
-            likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-              }
-            )
-            isLiked:likeCount(
-              where:{
-                is_active:{
-                  equals: true
-                }
-                id:{
-                  equals: \$myId
-                }
-              }
-            )
-          }
         }
       }
     }
@@ -561,6 +442,7 @@ class CollectionService implements CollectionRepos {
       "fetchedPickStoryIds": fetchedPickStoryIds ?? [],
       "keyWord": keyWord ?? '',
       "followingMembers": Get.find<UserService>().followingMemberIds,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -688,6 +570,7 @@ mutation(
   \$collectionpicks: [CollectionPickCreateInput!]
   \$followingMembers: [ID!]
   \$description: String
+  \$blockAndBlockedIds: [ID!]
 ){
   createCollection(
     data:{
@@ -799,12 +682,26 @@ mutation(
         otherPicks:pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -842,6 +739,14 @@ mutation(
             is_active:{
               equals: true
             }
+            member:{
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+              is_active:{
+                equals: true
+              }
+            }
           }
         )
         commentCount(
@@ -852,37 +757,16 @@ mutation(
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
   }
@@ -920,6 +804,7 @@ mutation(
       "collectionpicks": collectionStoryList,
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "description": description,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final result = await Get.find<GraphQLService>().mutation(
@@ -1137,7 +1022,7 @@ mutation(
   }
 
   @override
-  Future<Collection> updateTitle({
+  Future<void> updateTitle({
     required String collectionId,
     required String newTitle,
   }) async {
@@ -1145,8 +1030,6 @@ mutation(
 mutation(
   \$collectionId: ID
   \$newTitle: String
-  \$followingMembers: [ID!]
-  \$myId: ID
 ){
   updateCollection(
     where:{
@@ -1158,146 +1041,13 @@ mutation(
   ){
     id
     title
-    slug
-    public
-    status
-    summary
     heroImage{
       id
       resized{
         original
       }
     }
-    format
-    createdAt
     updatedAt
-    commentCount(
-      where:{
-        is_active:{
-          equals: true
-        }
-        state:{
-          equals: "public"
-        }
-        member:{
-          is_active:{
-            equals: true
-          }
-        }
-      }
-    )
-    followingPicks: picks(
-      where:{
-        member:{
-          id:{
-            in: \$followingMembers
-          }
-        }
-        state:{
-          equals: "public"
-        }
-        kind:{
-          equals: "read"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-      orderBy:{
-        picked_date: desc
-      }
-      take: 4
-    ){
-      member{
-        id
-        nickname
-        avatar
-        customId
-        avatar_image{
-          id
-          resized{
-            original
-          }
-        }
-      }
-    }
-    otherPicks:picks(
-      where:{
-        member:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
-            }
-          }
-        }
-        state:{
-          in: "public"
-        }
-        kind:{
-          equals: "read"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-      orderBy:{
-        picked_date: desc
-      }
-      take: 4
-    ){
-      member{
-        id
-        nickname
-        avatar
-        customId
-        avatar_image{
-          id
-          resized{
-            original
-          }
-        }
-      }
-    }
-    picksCount(
-      where:{
-        state:{
-          in: "public"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-    )
-    myPickId: picks(
-      where:{
-        member:{
-          id:{
-            equals: \$myId
-          }
-        }
-        state:{
-          notIn: "private"
-        }
-        kind:{
-          equals: "read"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-      pick_comment(
-        where:{
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-      }
-    }
   }
 }
     """;
@@ -1305,8 +1055,6 @@ mutation(
     Map<String, dynamic> variables = {
       "collectionId": collectionId,
       "newTitle": newTitle,
-      "myId": Get.find<UserService>().currentUser.memberId,
-      "followingMembers": Get.find<UserService>().followingMemberIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().mutation(
@@ -1314,8 +1062,14 @@ mutation(
       variables: variables,
     );
 
-    return Collection.fromJsonWithMember(jsonResponse.data!['updateCollection'],
-        Get.find<UserService>().currentUser);
+    final json = jsonResponse.data!['updateCollection'];
+
+    final controller =
+        Get.find<PickableItemController>(tag: 'Collection${json['id']}');
+    controller.collectionTitle.value = json['title'];
+    controller.collectionHeroImageUrl.value =
+        json['heroImage']['resized']['original'];
+    controller.collectionUpdatetime.value = DateTime.parse(json['updatedAt']);
   }
 
   @override
@@ -1453,6 +1207,7 @@ mutation(
       \$collectionId: ID
       \$followingMembers: [ID!]
       \$myId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       collection(
         where:{
@@ -1499,6 +1254,9 @@ mutation(
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
         )
@@ -1540,12 +1298,26 @@ mutation(
         otherPicks:picks(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -1583,37 +1355,16 @@ mutation(
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: picks(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -1622,6 +1373,7 @@ mutation(
       "collectionId": id,
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(

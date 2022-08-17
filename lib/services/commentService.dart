@@ -15,6 +15,7 @@ class CommentService implements CommentRepos {
       query(
         \$storyId: ID
         \$myId: ID
+        \$blockAndBlockedIds: [ID!]
       ){
         comments(
           orderBy:{
@@ -35,6 +36,9 @@ class CommentService implements CommentRepos {
             member:{
               is_active:{
                 equals: true
+              }
+              id:{
+                notIn: \$blockAndBlockedIds
               }
             }
           }
@@ -71,9 +75,10 @@ class CommentService implements CommentRepos {
       }
       """;
 
-    Map<String, String> variables = {
+    Map<String, dynamic> variables = {
       "storyId": storyId,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     try {
@@ -100,6 +105,7 @@ class CommentService implements CommentRepos {
       query(
         \$collectionId: ID
         \$myId: ID
+        \$blockAndBlockedIds: [ID!]
       ){
         comments(
           orderBy:{
@@ -120,6 +126,9 @@ class CommentService implements CommentRepos {
             member:{
               is_active:{
                 equals: true
+              }
+              id:{
+                notIn: \$blockAndBlockedIds
               }
             }
           }
@@ -156,9 +165,10 @@ class CommentService implements CommentRepos {
       }
       """;
 
-    Map<String, String> variables = {
+    Map<String, dynamic> variables = {
       "collectionId": collectionId,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(

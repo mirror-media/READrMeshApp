@@ -34,6 +34,7 @@ class PersonalFileService implements PersonalFileRepos {
     const String query = """
     query(
       \$memberId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       member(
         where:{
@@ -85,12 +86,18 @@ class PersonalFileService implements PersonalFileRepos {
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
         )
         followingCount(
           where:{
             is_active:{
               equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
             }
           }
         )
@@ -99,7 +106,10 @@ class PersonalFileService implements PersonalFileRepos {
     }
     """;
 
-    Map<String, dynamic> variables = {"memberId": member.memberId};
+    Map<String, dynamic> variables = {
+      "memberId": member.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
+    };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
       api: Api.mesh,
@@ -119,6 +129,7 @@ query(
   \$followingMembers: [ID!]
   \$pickFilterTime: DateTime
   \$viewMemberId: ID
+  \$blockAndBlockedIds: [ID!]
 ){
   picks(
     where:{
@@ -215,12 +226,26 @@ query(
       otherPicks:pick(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -251,6 +276,14 @@ query(
           is_active:{
             equals: true
           }
+          member:{
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
+            is_active:{
+              equals: true
+            }
+          }
         }
       )
       commentCount(
@@ -261,37 +294,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: pick(
-        where:{
           member:{
-            id:{
-              equals: \$myId
-            }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
-        ){
-          id
         }
-      }
+      )
     }
     pick_comment(
       where:{
@@ -347,7 +359,8 @@ query(
       "myId": Get.find<UserService>().currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
-      "viewMemberId": targetMember.memberId
+      "viewMemberId": targetMember.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -373,6 +386,7 @@ query(
       \$myId: ID
       \$followingMembers: [ID!]
       \$pickFilterTime: DateTime
+      \$blockAndBlockedIds: [ID!]
     ){
       member(
         where:{
@@ -463,12 +477,26 @@ query(
             otherPicks:pick(
               where:{
                 member:{
-                  id:{
-                    notIn: \$followingMembers
-                    not:{
-                      equals: \$myId
+                  AND:[
+                    {
+                      id:{
+                        notIn: \$followingMembers
+                        not:{
+                          equals: \$myId
+                        }
+                      }
                     }
-                  }
+                    {
+                      id:{
+                        notIn: \$blockAndBlockedIds
+                      }
+                    }
+                    {
+                      is_active:{
+                        equals: true
+                      }
+                    }
+                  ]
                 }
                 state:{
                   in: "public"
@@ -505,6 +533,14 @@ query(
                 is_active:{
                   equals: true
                 }
+                member:{
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                  is_active:{
+                    equals: true
+                  }
+                }
               }
             )
             commentCount(
@@ -515,37 +551,16 @@ query(
                 is_active:{
                   equals: true
                 }
-              }
-            )
-            myPickId: pick(
-              where:{
                 member:{
                   id:{
-                    equals: \$myId
+                    notIn: \$blockAndBlockedIds
                   }
-                }
-                state:{
-                  notIn: "private"
-                }
-                kind:{
-                  equals: "read"
-                }
-                is_active:{
-                  equals: true
-                }
-              }
-            ){
-              id
-              pick_comment(
-                where:{
                   is_active:{
                     equals: true
                   }
                 }
-              ){
-                id
               }
-            }
+            )
           }
         }
       }
@@ -562,6 +577,7 @@ query(
       "myId": Get.find<UserService>().currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -588,9 +604,13 @@ query(
       \$viewMemberId: ID
       \$currentMemberId: ID
       \$skip: Int!
+      \$blockAndBlockedIds: [ID!]
     ){
       members(
         where:{
+          id:{
+            notIn: \$blockAndBlockedIds
+          }
           following:{
             some:{
               id:{
@@ -635,6 +655,7 @@ query(
       "viewMemberId": viewMember.memberId,
       "currentMemberId": Get.find<UserService>().currentUser.memberId,
       "skip": skip,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -660,9 +681,13 @@ query(
       \$viewMemberId: ID
       \$currentMemberId: ID
       \$skip: Int!
+      \$blockAndBlockedIds: [ID!]
     ){
       members(
         where:{
+          id:{
+            notIn: \$blockAndBlockedIds
+          }
           follower:{
             some:{
               id:{
@@ -702,6 +727,9 @@ query(
       }
       membersCount(
         where:{
+          id:{
+            notIn: \$blockAndBlockedIds
+          }
           follower:{
             some:{
               id:{
@@ -721,6 +749,7 @@ query(
       "viewMemberId": viewMember.memberId,
       "currentMemberId": Get.find<UserService>().currentUser.memberId,
       "skip": skip,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -821,6 +850,7 @@ query(
       \$fetchedCollectionIds: [ID!]
       \$followingMembers: [ID!]
       \$myId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       collections(
         where:{
@@ -865,6 +895,9 @@ query(
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
         )
@@ -906,12 +939,26 @@ query(
         otherPicks:picks(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -949,37 +996,16 @@ query(
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: picks(
-          where:{
             member:{
-              id:{
-                equals: \$myId
-              }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -994,6 +1020,7 @@ query(
       "fetchedCollectionIds": fetchedCollectionIds ?? [],
       "myId": Get.find<UserService>().currentUser.memberId,
       "followingMembers": followingMemberIds,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -1027,7 +1054,7 @@ query(
 query(
   \$viewMemberId: ID
   \$pickFilterTime: DateTime
-  \$myId: ID
+  \$blockAndBlockedIds: [ID!]
 ){
   picks(
     where:{
@@ -1046,6 +1073,11 @@ query(
       collection:{
         status:{
           equals: "publish"
+        }
+        creator:{
+          id:{
+          	notIn: \$blockAndBlockedIds
+        	}
         }
       }
       member:{
@@ -1107,47 +1139,26 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: picks(
-        where:{
           member:{
             id:{
-              equals: \$myId
+              notIn: \$blockAndBlockedIds
             }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
           }
-        ){
-          id
         }
-      }
+      )
     }
   }
 }
     """;
 
     Map<String, dynamic> variables = {
-      "myId": Get.find<UserService>().currentUser.memberId,
       "pickFilterTime": pickFilterTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
-      "viewMemberId": targetMember.memberId
+      "viewMemberId": targetMember.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(

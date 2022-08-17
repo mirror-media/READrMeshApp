@@ -17,6 +17,7 @@ class SearchService implements SearchRepos {
       \$idList: [ID!]
       \$followingMembers: [ID!]
       \$myId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       stories(
         take: 60
@@ -88,12 +89,26 @@ class SearchService implements SearchRepos {
         otherPicks:pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -131,6 +146,14 @@ class SearchService implements SearchRepos {
             is_active:{
               equals: true
             }
+            member:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
           }
         )
         commentCount(
@@ -141,37 +164,16 @@ class SearchService implements SearchRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
-              id:{
-                equals: \$myId
-              }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -180,6 +182,7 @@ class SearchService implements SearchRepos {
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
       "idList": idList,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final response = await Get.find<GraphQLService>().query(
@@ -207,6 +210,7 @@ class SearchService implements SearchRepos {
       \$idList: [ID!]
       \$followingMembers: [ID!]
       \$myId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       collections(
         where:{
@@ -215,6 +219,11 @@ class SearchService implements SearchRepos {
           }
           status:{
             equals: "publish"
+          }
+          creator:{
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
         }
         orderBy:{
@@ -258,6 +267,9 @@ class SearchService implements SearchRepos {
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
         )
@@ -299,12 +311,26 @@ class SearchService implements SearchRepos {
         otherPicks:picks(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -342,37 +368,16 @@ class SearchService implements SearchRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: picks(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -386,6 +391,7 @@ class SearchService implements SearchRepos {
       "idList": idList,
       "myId": Get.find<UserService>().currentUser.memberId,
       "followingMembers": followingMemberIds,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
