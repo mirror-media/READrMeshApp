@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class ChangeOgPage extends StatelessWidget {
@@ -90,43 +91,123 @@ class ChangeOgPage extends StatelessWidget {
   }
 
   Future<void> _showImageBottomSheet(BuildContext context) async {
-    String? result = await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('camera'),
-            child: const Text(
-              '開啟相機',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
+    String? result;
+    if (GetPlatform.isIOS) {
+      result = await showCupertinoModalPopup<String>(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pop('camera'),
+              child: const Text(
+                '開啟相機',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
               ),
             ),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('photo'),
-            child: const Text(
-              '選擇照片',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pop('photo'),
+              child: const Text(
+                '選擇照片',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
               ),
             ),
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.of(context).pop('cancel'),
-          child: const Text(
-            '取消',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('cancel'),
+            child: const Text(
+              '取消',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      result = await showCupertinoModalBottomSheet<String>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        topRadius: const Radius.circular(24),
+        builder: (context) => Material(
+          color: Colors.white,
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  child: Container(
+                    height: 4,
+                    width: 48,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Colors.white,
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: readrBlack20,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => Navigator.of(context).pop('camera'),
+                  icon: const Icon(
+                    Icons.photo_camera_outlined,
+                    color: readrBlack87,
+                    size: 18,
+                  ),
+                  label: const Text(
+                    '開啟相機',
+                    style: TextStyle(
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => Navigator.of(context).pop('photo'),
+                  icon: const Icon(
+                    Icons.photo_library_outlined,
+                    color: readrBlack87,
+                    size: 18,
+                  ),
+                  label: const Text(
+                    '選擇照片',
+                    style: TextStyle(
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     try {
       if (result == 'photo' || result == 'camera') {
