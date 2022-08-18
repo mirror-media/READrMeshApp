@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -16,6 +15,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/collectionService.dart';
 
 class TimeDimensionPageController extends GetxController {
@@ -197,7 +197,14 @@ class TimeDimensionPageController extends GetxController {
           },
         );
         Get.back();
-        _showResultToast();
+        showMeshToast(
+          icon: const Icon(
+            Icons.check_circle,
+            size: 16,
+            color: Colors.white,
+          ),
+          message: '成功加入集錦',
+        );
       } else {
         Get.offUntil<GetPageRoute>(
           GetPageRoute(
@@ -226,50 +233,6 @@ class TimeDimensionPageController extends GetxController {
       );
     }
     isUpdating.value = false;
-  }
-
-  void _showResultToast() {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.0),
-        color: const Color.fromRGBO(0, 9, 40, 0.66),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(
-            Icons.check_circle,
-            size: 16,
-            color: Colors.white,
-          ),
-          SizedBox(
-            width: 6.0,
-          ),
-          Text(
-            '成功加入集錦',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-            ),
-          ),
-        ],
-      ),
-    );
-    showToastWidget(
-      toast,
-      context: Get.overlayContext,
-      animation: StyledToastAnimation.slideFromTop,
-      reverseAnimation: StyledToastAnimation.slideToTop,
-      position: StyledToastPosition.top,
-      startOffset: const Offset(0.0, -3.0),
-      reverseEndOffset: const Offset(0.0, -3.0),
-      duration: const Duration(seconds: 3),
-      //Animation duration   animDuration * 2 <= duration
-      animDuration: const Duration(milliseconds: 250),
-      curve: Curves.linear,
-      reverseCurve: Curves.linear,
-    );
   }
 
   void updateCollectionPicks(bool isAddToEmpty) async {

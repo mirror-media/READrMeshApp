@@ -7,7 +7,7 @@ import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:readr/services/recommendService.dart';
 

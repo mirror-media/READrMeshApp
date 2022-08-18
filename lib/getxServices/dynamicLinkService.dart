@@ -15,7 +15,7 @@ import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/personalFile/deletedMemberPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/collectionService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';

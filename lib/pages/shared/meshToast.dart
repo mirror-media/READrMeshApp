@@ -3,8 +3,10 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 
-void showFollowingSyncToast() {
-  final prefs = Get.find<SharedPreferencesService>().prefs;
+void showMeshToast({
+  required Widget icon,
+  required String message,
+}) async {
   showToastWidget(
     Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
@@ -14,18 +16,14 @@ void showFollowingSyncToast() {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(
-            Icons.check_circle,
-            size: 16,
-            color: Colors.white,
-          ),
-          SizedBox(
+        children: [
+          icon,
+          const SizedBox(
             width: 6.0,
           ),
           Text(
-            '已同步追蹤名單',
-            style: TextStyle(
+            message,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 13,
             ),
@@ -40,10 +38,21 @@ void showFollowingSyncToast() {
     startOffset: const Offset(0.0, -3.0),
     reverseEndOffset: const Offset(0.0, -3.0),
     duration: const Duration(seconds: 3),
-    //Animation duration   animDuration * 2 <= duration
     animDuration: const Duration(milliseconds: 250),
     curve: Curves.linear,
     reverseCurve: Curves.linear,
+  );
+}
+
+void showFollowingSyncToast() {
+  final prefs = Get.find<SharedPreferencesService>().prefs;
+  showMeshToast(
+    icon: const Icon(
+      Icons.check_circle,
+      size: 16,
+      color: Colors.white,
+    ),
+    message: '已同步追蹤名單',
   );
   prefs.setStringList('followingPublisherIds', []);
 }

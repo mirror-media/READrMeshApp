@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/invitationCodePageController.dart';
@@ -8,6 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/services/invitationCodeService.dart';
 
@@ -137,7 +137,14 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
           OutlinedButton.icon(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: invitationCode.code));
-              showCopiedToast(context);
+              showMeshToast(
+                icon: const Icon(
+                  Icons.check_circle,
+                  size: 16,
+                  color: Colors.white,
+                ),
+                message: '已複製邀請碼',
+              );
             },
             icon: const FaIcon(
               FontAwesomeIcons.link,
@@ -238,49 +245,6 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
           ),
         ],
       ),
-    );
-  }
-
-  void showCopiedToast(BuildContext context) {
-    showToastWidget(
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.0),
-          color: const Color.fromRGBO(0, 9, 40, 0.66),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
-              Icons.check_circle,
-              size: 16,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 6.0,
-            ),
-            Text(
-              '已複製邀請碼',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-      context: context,
-      animation: StyledToastAnimation.slideFromTop,
-      reverseAnimation: StyledToastAnimation.slideToTop,
-      position: StyledToastPosition.top,
-      startOffset: const Offset(0.0, -3.0),
-      reverseEndOffset: const Offset(0.0, -3.0),
-      duration: const Duration(seconds: 3),
-      //Animation duration   animDuration * 2 <= duration
-      animDuration: const Duration(milliseconds: 250),
-      curve: Curves.linear,
-      reverseCurve: Curves.linear,
     );
   }
 }

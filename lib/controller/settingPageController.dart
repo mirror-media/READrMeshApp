@@ -1,7 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -12,6 +11,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/memberService.dart';
 
 class SettingPageController extends GetxController {
@@ -193,54 +193,18 @@ class SettingPageController extends GetxController {
     try {
       memberRepos.removeBlockMember(blockMemberId);
       Get.find<UserService>().removeBlockMember(blockMemberId);
-      _showResultToast('已取消封鎖');
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: '已取消封鎖',
+      );
       blockMembers.removeWhere((element) => element.memberId == blockMemberId);
       update();
     } catch (e) {
       print('Unblock member error: $e');
     }
-  }
-
-  void _showResultToast(String message) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.0),
-        color: const Color.fromRGBO(0, 9, 40, 0.66),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.check_circle,
-            size: 16,
-            color: Colors.white,
-          ),
-          const SizedBox(
-            width: 6.0,
-          ),
-          Text(
-            message,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-            ),
-          ),
-        ],
-      ),
-    );
-    showToastWidget(
-      toast,
-      context: Get.overlayContext,
-      animation: StyledToastAnimation.slideFromTop,
-      reverseAnimation: StyledToastAnimation.slideToTop,
-      position: StyledToastPosition.top,
-      startOffset: const Offset(0.0, -3.0),
-      reverseEndOffset: const Offset(0.0, -3.0),
-      duration: const Duration(seconds: 3),
-      animDuration: const Duration(milliseconds: 250),
-      curve: Curves.linear,
-      reverseCurve: Curves.linear,
-    );
   }
 }

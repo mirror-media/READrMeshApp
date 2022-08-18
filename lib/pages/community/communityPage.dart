@@ -435,7 +435,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 url = await DynamicLinkHelper.createCollectionLink(
                     item.collection!);
               }
-              await MoreActionBottomSheet.showMoreActionSheet(
+              await showMoreActionSheet(
                 context: context,
                 objective: objective,
                 id: item.itemId,

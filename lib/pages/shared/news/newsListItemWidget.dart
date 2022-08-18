@@ -62,8 +62,7 @@ class NewsListItemWidget extends StatelessWidget {
                   IconButton(
                     padding: const EdgeInsets.only(right: 4, left: 10),
                     alignment: Alignment.centerRight,
-                    onPressed: () async =>
-                        await MoreActionBottomSheet.showMoreActionSheet(
+                    onPressed: () async => await showMoreActionSheet(
                       context: context,
                       objective: PickObjective.story,
                       id: news.id,

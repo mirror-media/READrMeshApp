@@ -3,7 +3,6 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -22,6 +21,7 @@ import 'package:readr/pages/personalFile/personalFileSkeletonScreen.dart';
 import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:share_plus/share_plus.dart';
@@ -165,7 +165,14 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         controller.viewMemberData.value);
                   }
                   Clipboard.setData(ClipboardData(text: url));
-                  _showSuccessToast(context, '已複製連結');
+                  showMeshToast(
+                    icon: const Icon(
+                      Icons.check_circle,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    message: '已複製連結',
+                  );
                 }),
             PopupMenuOption(
               label: shareButtonText,
@@ -265,48 +272,6 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           ),
         );
       },
-    );
-  }
-
-  void _showSuccessToast(BuildContext context, String message) {
-    showToastWidget(
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.0),
-          color: const Color.fromRGBO(0, 9, 40, 0.66),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.check_circle,
-              size: 16,
-              color: Colors.white,
-            ),
-            const SizedBox(
-              width: 6.0,
-            ),
-            Text(
-              message,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-      context: context,
-      animation: StyledToastAnimation.slideFromTop,
-      reverseAnimation: StyledToastAnimation.slideToTop,
-      position: StyledToastPosition.top,
-      startOffset: const Offset(0.0, -3.0),
-      reverseEndOffset: const Offset(0.0, -3.0),
-      duration: const Duration(seconds: 3),
-      animDuration: const Duration(milliseconds: 250),
-      curve: Curves.linear,
-      reverseCurve: Curves.linear,
     );
   }
 
