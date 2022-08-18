@@ -20,10 +20,10 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.year.value = timelineStory.year;
-    controller.month.value = timelineStory.month;
-    controller.day.value = timelineStory.day;
-    controller.time.value = timelineStory.time;
+    controller.year.value = timelineStory.customYear!;
+    controller.month.value = timelineStory.customMonth;
+    controller.day.value = timelineStory.customDay;
+    controller.time.value = timelineStory.customTime;
 
     return Scaffold(
       backgroundColor: meshGray,
@@ -60,10 +60,10 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
               ),
             ),
             onPressed: () {
-              timelineStory.year = controller.year.value;
-              timelineStory.month = controller.month.value;
-              timelineStory.day = controller.day.value;
-              timelineStory.time = controller.time.value;
+              timelineStory.customYear = controller.year.value;
+              timelineStory.customMonth = controller.month.value;
+              timelineStory.customDay = controller.day.value;
+              timelineStory.customTime = controller.time.value;
               int itemIndex = controller.timelineStoryList.indexWhere(
                   (element) => element.news.id == timelineStory.news.id);
               controller.timelineStoryList[itemIndex] = timelineStory;

@@ -785,10 +785,10 @@ mutation(
         },
         "picked_date": DateTime.now().toUtc().toIso8601String(),
         if (item is TimelineCollectionPick) ...{
-          "custom_year": item.year,
-          "custom_month": item.month,
-          "custom_day": item.day,
-          "custom_time": item.time?.toUtc().toIso8601String(),
+          "custom_year": item.customYear,
+          "custom_month": item.customMonth,
+          "custom_day": item.customDay,
+          "custom_time": item.customTime?.toUtc().toIso8601String(),
         },
       };
       collectionStoryList.add(createInput);
@@ -917,16 +917,6 @@ mutation(
 
     List<Map<String, dynamic>> dataList = [];
     for (var item in collectionPicks) {
-      int? customYear;
-      int? customMonth;
-      int? customDay;
-      String? customTime;
-      if (item is TimelineCollectionPick) {
-        customYear = item.year;
-        customMonth = item.month;
-        customDay = item.day;
-        customTime = item.time?.toUtc().toIso8601String();
-      }
       Map<String, dynamic> createInput = {
         "story": {
           "connect": {"id": item.pickNewsId}
@@ -939,10 +929,10 @@ mutation(
           "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
         "picked_date": DateTime.now().toUtc().toIso8601String(),
-        "custom_year": customYear,
-        "custom_month": customMonth,
-        "custom_day": customDay,
-        "custom_time": customTime,
+        "custom_year": item.customYear,
+        "custom_month": item.customMonth,
+        "custom_day": item.customDay,
+        "custom_time": item.customTime?.toUtc().toIso8601String(),
       };
       dataList.add(createInput);
     }
@@ -1091,25 +1081,15 @@ mutation(
     List<Map> dataList = [];
 
     for (var item in collectionPicks) {
-      int? customYear;
-      int? customMonth;
-      int? customDay;
-      String? customTime;
-      if (item is TimelineCollectionPick) {
-        customYear = item.year;
-        customMonth = item.month;
-        customDay = item.day;
-        customTime = item.time?.toUtc().toIso8601String();
-      }
       dataList.add({
         "where": {"id": item.id},
         "data": {
           "sort_order": item.sortOrder,
           "updated_date": DateTime.now().toUtc().toIso8601String(),
-          "custom_year": customYear,
-          "custom_month": customMonth,
-          "custom_day": customDay,
-          "custom_time": customTime,
+          "custom_year": item.customYear,
+          "custom_month": item.customMonth,
+          "custom_day": item.customDay,
+          "custom_time": item.customTime?.toUtc().toIso8601String(),
         }
       });
     }

@@ -4,18 +4,14 @@ import 'package:readr/models/newsListItem.dart';
 
 class TimelineCollectionPick extends CollectionPick {
   final NewsListItem news;
-  int year;
-  int? month;
-  int? day;
-  DateTime? time;
 
   TimelineCollectionPick({
     required String id,
     required this.news,
-    required this.year,
-    this.month,
-    this.day,
-    this.time,
+    required int customYear,
+    int? customMonth,
+    int? customDay,
+    DateTime? customTime,
     int sortOrder = 0,
     Member? creator,
   }) : super(
@@ -23,10 +19,10 @@ class TimelineCollectionPick extends CollectionPick {
           sortOrder: sortOrder,
           creator: creator,
           pickNewsId: news.id,
-          customYear: year,
-          customMonth: month,
-          customDay: day,
-          customTime: time,
+          customYear: customYear,
+          customMonth: customMonth,
+          customDay: customDay,
+          customTime: customTime,
           newsListItem: news,
         );
 
@@ -35,9 +31,9 @@ class TimelineCollectionPick extends CollectionPick {
     return TimelineCollectionPick(
       id: collectionPick.id,
       news: collectionPick.newsListItem!,
-      year: collectionPick.newsListItem!.publishedDate.year,
-      month: collectionPick.newsListItem!.publishedDate.month,
-      day: collectionPick.newsListItem!.publishedDate.day,
+      customYear: collectionPick.newsListItem!.publishedDate.year,
+      customMonth: collectionPick.newsListItem!.publishedDate.month,
+      customDay: collectionPick.newsListItem!.publishedDate.day,
       sortOrder: collectionPick.sortOrder,
       creator: collectionPick.creator,
     );
@@ -53,10 +49,10 @@ class TimelineCollectionPick extends CollectionPick {
       id: json['id'],
       news: NewsListItem.fromJson(json['story']),
       creator: Member.fromJson(json['creator']),
-      year: json['custom_year'],
-      month: json['custom_month'],
-      day: json['custom_day'],
-      time: time,
+      customYear: json['custom_year'],
+      customMonth: json['custom_month'],
+      customDay: json['custom_day'],
+      customTime: time,
     );
   }
 }

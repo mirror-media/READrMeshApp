@@ -98,48 +98,48 @@ class TimeDimensionPageController extends GetxController {
   void sortListByTime() {
     timelineStoryList.sort((a, b) {
       // compare year
-      int result = b.year.compareTo(a.year);
+      int result = b.customYear!.compareTo(a.customYear!);
       if (result != 0) {
         return result;
       }
 
       //compare month
-      if (a.month == null && b.month == null) {
+      if (a.customMonth == null && b.customMonth == null) {
         return b.news.publishedDate.compareTo(a.news.publishedDate);
-      } else if (a.month == null) {
+      } else if (a.customMonth == null) {
         return 1;
-      } else if (b.month == null) {
+      } else if (b.customMonth == null) {
         return -1;
       } else {
-        result = b.month!.compareTo(a.month!);
+        result = b.customMonth!.compareTo(a.customMonth!);
         if (result != 0) {
           return result;
         }
       }
 
       // compare day
-      if (a.day == null && b.day == null) {
+      if (a.customDay == null && b.customDay == null) {
         return b.news.publishedDate.compareTo(a.news.publishedDate);
-      } else if (a.day == null) {
+      } else if (a.customDay == null) {
         return 1;
-      } else if (b.day == null) {
+      } else if (b.customDay == null) {
         return -1;
       } else {
-        result = b.day!.compareTo(a.day!);
+        result = b.customDay!.compareTo(a.customDay!);
         if (result != 0) {
           return result;
         }
       }
 
       // compare time
-      if (a.time == null && b.time == null) {
+      if (a.customTime == null && b.customTime == null) {
         return b.news.publishedDate.compareTo(a.news.publishedDate);
-      } else if (a.time == null) {
+      } else if (a.customTime == null) {
         return 1;
-      } else if (b.time == null) {
+      } else if (b.customTime == null) {
         return -1;
       } else {
-        result = b.time!.compareTo(a.time!);
+        result = b.customTime!.compareTo(a.customTime!);
         if (result != 0) {
           return result;
         } else {

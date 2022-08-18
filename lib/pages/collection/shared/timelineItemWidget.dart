@@ -64,9 +64,9 @@ class TimelineItemWidget extends StatelessWidget {
       case 4:
         break;
       case 3:
-        if (timelineStory.time != null) {
+        if (timelineStory.customTime != null) {
           children.add(Text(
-            DateFormat('HH:mm').format(timelineStory.time!),
+            DateFormat('HH:mm').format(timelineStory.customTime!),
             style: const TextStyle(
               fontSize: 12,
               color: readrBlack50,
@@ -75,7 +75,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.add(
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -86,10 +86,10 @@ class TimelineItemWidget extends StatelessWidget {
         }
         break;
       case 2:
-        if (timelineStory.time != null) {
+        if (timelineStory.customTime != null) {
           children.addAll([
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -100,17 +100,17 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              DateFormat('HH:mm').format(timelineStory.time!),
+              DateFormat('HH:mm').format(timelineStory.customTime!),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
               ),
             ),
           ]);
-        } else if (timelineStory.day != null) {
+        } else if (timelineStory.customDay != null) {
           children.add(
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -121,7 +121,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.add(
             Text(
-              '${timelineStory.month!}月',
+              '${timelineStory.customMonth!}月',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -132,10 +132,10 @@ class TimelineItemWidget extends StatelessWidget {
         }
         break;
       case 1:
-        if (timelineStory.time != null) {
+        if (timelineStory.customTime != null) {
           children.addAll([
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -146,17 +146,17 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              DateFormat('HH:mm').format(timelineStory.time!),
+              DateFormat('HH:mm').format(timelineStory.customTime!),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
               ),
             ),
           ]);
-        } else if (timelineStory.day != null) {
+        } else if (timelineStory.customDay != null) {
           children.add(
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -164,10 +164,10 @@ class TimelineItemWidget extends StatelessWidget {
               ),
             ),
           );
-        } else if (timelineStory.month != null) {
+        } else if (timelineStory.customMonth != null) {
           children.add(
             Text(
-              '${timelineStory.month!}月',
+              '${timelineStory.customMonth!}月',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -178,7 +178,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.add(
             Text(
-              timelineStory.year.toString(),
+              timelineStory.customYear.toString(),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -190,10 +190,10 @@ class TimelineItemWidget extends StatelessWidget {
         break;
 
       case 0:
-        if (timelineStory.time != null) {
+        if (timelineStory.customTime != null) {
           children.addAll([
             Text(
-              timelineStory.year.toString(),
+              timelineStory.customYear.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -203,7 +203,7 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -214,17 +214,17 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              DateFormat('HH:mm').format(timelineStory.time!),
+              DateFormat('HH:mm').format(timelineStory.customTime!),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
               ),
             ),
           ]);
-        } else if (timelineStory.day != null) {
+        } else if (timelineStory.customDay != null) {
           children.addAll([
             Text(
-              timelineStory.year.toString(),
+              timelineStory.customYear.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -234,7 +234,7 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              '${timelineStory.month!}/${timelineStory.day!}',
+              '${timelineStory.customMonth!}/${timelineStory.customDay!}',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -242,10 +242,10 @@ class TimelineItemWidget extends StatelessWidget {
               ),
             ),
           ]);
-        } else if (timelineStory.month != null) {
+        } else if (timelineStory.customMonth != null) {
           children.addAll([
             Text(
-              timelineStory.year.toString(),
+              timelineStory.customYear.toString(),
               style: const TextStyle(
                 fontSize: 12,
                 color: readrBlack50,
@@ -255,7 +255,7 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              '${timelineStory.month!}月',
+              '${timelineStory.customMonth!}月',
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -266,7 +266,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.add(
             Text(
-              timelineStory.year.toString(),
+              timelineStory.customYear.toString(),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -316,35 +316,35 @@ class TimelineItemWidget extends StatelessWidget {
 
   int _compareTwoStory() {
     // return 0 if they are all different or previousTimelineStory is null
-    // return 1 if their year are same
-    // return 2 if their year and month are same
-    // return 3 if their year, month, and day are same
+    // return 1 if their customYear are same
+    // return 2 if their customYear and customMonth are same
+    // return 3 if their customYear, customMonth, and customDay are same
     // return 4 if they are all same
 
     if (previousTimelineStory != null) {
-      if (previousTimelineStory!.year == timelineStory.year &&
-          previousTimelineStory!.month == timelineStory.month &&
-          previousTimelineStory!.day == timelineStory.day &&
-          previousTimelineStory!.time == timelineStory.time) {
+      if (previousTimelineStory!.customYear == timelineStory.customYear &&
+          previousTimelineStory!.customMonth == timelineStory.customMonth &&
+          previousTimelineStory!.customDay == timelineStory.customDay &&
+          previousTimelineStory!.customTime == timelineStory.customTime) {
         return 4;
       }
 
-      if (previousTimelineStory!.year != timelineStory.year) {
+      if (previousTimelineStory!.customYear != timelineStory.customYear) {
         return 0;
       }
 
-      if (previousTimelineStory!.month != timelineStory.month ||
-          timelineStory.month == null) {
+      if (previousTimelineStory!.customMonth != timelineStory.customMonth ||
+          timelineStory.customMonth == null) {
         return 1;
       }
 
-      if (previousTimelineStory!.day != timelineStory.day ||
-          timelineStory.day == null) {
+      if (previousTimelineStory!.customDay != timelineStory.customDay ||
+          timelineStory.customDay == null) {
         return 2;
       }
 
-      if (previousTimelineStory!.time != timelineStory.time ||
-          timelineStory.time == null) {
+      if (previousTimelineStory!.customTime != timelineStory.customTime ||
+          timelineStory.customTime == null) {
         return 3;
       } else {
         return 4;
