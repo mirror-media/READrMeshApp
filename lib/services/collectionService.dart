@@ -610,7 +610,11 @@ mutation(
     format
     createdAt
     updatedAt
-    collectionpicks{
+    collectionpicks(
+      orderBy:{
+        sort_order: asc
+      }
+    ){
       id
       sort_order
       picked_date
