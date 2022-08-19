@@ -8,6 +8,7 @@ import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/services/newsStoryService.dart';
 import 'package:readr/services/storyService.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class StoryPageController extends GetxController {
   final NewsStoryRepos newsStoryRepos;
@@ -25,6 +26,9 @@ class StoryPageController extends GetxController {
   late NewsStoryItem newsStoryItem;
   late Story readrStory;
   late ParagraphFormat paragraphFormat;
+
+  bool webViewControllerIsLoaded = false;
+  late WebViewController webViewController;
 
   @override
   void onInit() {

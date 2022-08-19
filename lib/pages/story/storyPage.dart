@@ -62,7 +62,11 @@ class StoryPage extends GetView<StoryPageController> {
         body: child,
       ),
       onWillPop: () async {
-        if (Get.isRegistered<CommentInputBoxController>(
+        if (controller.webViewControllerIsLoaded &&
+            await controller.webViewController.canGoBack()) {
+          await controller.webViewController.goBack();
+          return false;
+        } else if (Get.isRegistered<CommentInputBoxController>(
                 tag: news.controllerTag) &&
             Get.find<CommentInputBoxController>(tag: news.controllerTag)
                 .hasInput
