@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
-import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -37,13 +35,6 @@ class DescriptionPageController extends GetxController {
       Get.find<CollectionPageController>(tag: collection!.id)
           .collectionDescription
           .value = collectionDescription.value;
-
-      if (Get.isRegistered<CollectionTabController>(
-          tag: Get.find<UserService>().currentUser.memberId)) {
-        Get.find<CollectionTabController>(
-                tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
-      }
 
       Get.back();
     } catch (e) {

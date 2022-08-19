@@ -35,10 +35,10 @@ class CollectionTabController extends GetxController {
     await fetchCollecitionList();
   }
 
-  Future<void> fetchCollecitionList() async {
+  Future<void> fetchCollecitionList({bool useCache = true}) async {
     try {
       await personalFileRepos
-          .fetchCollectionList(viewMember)
+          .fetchCollectionList(viewMember, useCache: useCache)
           .then((value) => collectionList.assignAll(value));
       await Get.find<PickAndBookmarkService>().fetchPickIds();
 

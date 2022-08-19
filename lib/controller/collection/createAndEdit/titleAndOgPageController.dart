@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -43,12 +41,6 @@ class TitleAndOgPageController extends GetxController {
           .timeout(const Duration(minutes: 1));
 
       Get.back();
-      if (Get.isRegistered<CollectionTabController>(
-          tag: Get.find<UserService>().currentUser.memberId)) {
-        Get.find<CollectionTabController>(
-                tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
-      }
     } catch (e) {
       print('Update collection title and og error: $e');
       Fluttertoast.showToast(

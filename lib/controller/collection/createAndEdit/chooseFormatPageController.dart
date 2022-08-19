@@ -65,7 +65,7 @@ class ChooseFormatPageController extends GetxController {
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
+            .fetchCollecitionList(useCache: false);
       }
       showMeshToast(
         icon: const Icon(

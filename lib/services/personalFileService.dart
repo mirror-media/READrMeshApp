@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
@@ -19,6 +20,7 @@ abstract class PersonalFileRepos {
   Future<List<Collection>> fetchCollectionList(
     Member viewMember, {
     List<String>? fetchedCollectionIds,
+    bool useCache = true,
   });
   Future<List<Collection>> fetchMoreCollectionList(
     Member viewMember,
@@ -843,6 +845,7 @@ query(
   Future<List<Collection>> fetchCollectionList(
     Member viewMember, {
     List<String>? fetchedCollectionIds,
+    bool useCache = true,
   }) async {
     const String query = """
     query(
@@ -1027,6 +1030,7 @@ query(
       api: Api.mesh,
       queryBody: query,
       variables: variables,
+      fetchPolicy: useCache ? FetchPolicy.cacheFirst : FetchPolicy.networkOnly,
     );
 
     List<Collection> collectionList = List<Collection>.from(jsonResponse
