@@ -64,7 +64,10 @@ class CollectionAppBar extends GetView<CollectionPageController>
                 ),
                 actions: [
                   PlatformDialogAction(
-                    onPressed: () => Get.back(closeOverlays: true),
+                    onPressed: () {
+                      Get.back();
+                      Get.back();
+                    },
                     child: PlatformText(
                       '刪除留言',
                       style: const TextStyle(
