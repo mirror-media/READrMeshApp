@@ -223,9 +223,8 @@ class CommunityPage extends GetView<CommunityPageController> {
                   alignment: Alignment.topRight,
                   children: [
                     item.heroImageWidget,
-                    if (item.type == CommunityListItemType.pickCollection ||
-                        item.type == CommunityListItemType.commentCollection ||
-                        item.type == CommunityListItemType.createCollection)
+                    if (item.type != CommunityListItemType.commentStory &&
+                        item.type != CommunityListItemType.pickStory)
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
