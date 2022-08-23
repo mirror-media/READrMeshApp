@@ -61,12 +61,12 @@ class CollectionPage extends GetView<CollectionPageController> {
 
         if (!controller.isLoading) {
           return Scaffold(
-            appBar: CollectionAppBar(collection),
             body: Stack(
               fit: StackFit.expand,
               children: [
                 Column(
                   children: [
+                    CollectionAppBar(collection),
                     Expanded(
                       child: _buildBody(),
                     ),
