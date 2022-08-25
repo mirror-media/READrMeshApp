@@ -272,7 +272,10 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
   Widget _buildBody(BuildContext context) {
     return Obx(
       () => ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.only(
+          bottom: 20,
+          top: controller.timelineStoryList[0].summary == null ? 20 : 0,
+        ),
         itemBuilder: (context, index) => Dismissible(
           key: Key(controller.timelineStoryList[index].news.id),
           direction: DismissDirection.endToStart,
