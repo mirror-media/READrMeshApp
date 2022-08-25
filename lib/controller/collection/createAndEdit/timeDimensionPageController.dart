@@ -39,6 +39,9 @@ class TimeDimensionPageController extends GetxController {
   final month = RxnInt();
   final day = RxnInt();
   final time = Rxn<DateTime>();
+  final TextEditingController sectionTitleController = TextEditingController();
+  final FocusNode sectionTitleFocusNode = FocusNode();
+  final showClearTextButton = false.obs;
 
   @override
   void onInit() {
@@ -84,6 +87,13 @@ class TimeDimensionPageController extends GetxController {
         }
       },
     );
+    sectionTitleFocusNode.addListener(() {
+      if (sectionTitleFocusNode.hasFocus) {
+        showClearTextButton.value = true;
+      } else {
+        showClearTextButton.value = false;
+      }
+    });
     super.onInit();
   }
 
@@ -93,6 +103,13 @@ class TimeDimensionPageController extends GetxController {
       _showDeleteHint();
     }
     super.onReady();
+  }
+
+  @override
+  void onClose() {
+    sectionTitleController.dispose();
+    sectionTitleFocusNode.dispose();
+    super.onClose();
   }
 
   void sortListByTime() {

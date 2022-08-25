@@ -24,62 +24,78 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
     controller.month.value = timelineStory.customMonth;
     controller.day.value = timelineStory.customDay;
     controller.time.value = timelineStory.customTime;
+    controller.sectionTitleController.text = timelineStory.summary ?? '';
 
-    return Scaffold(
-      backgroundColor: meshGray,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        elevation: 0.5,
-        leading: TextButton(
-          child: const Text(
-            '取消',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
-              color: readrBlack50,
-            ),
-          ),
-          onPressed: () => Get.back(),
-        ),
-        title: const Text(
-          '自訂時間',
-          style: TextStyle(
-            fontSize: 18,
-            color: readrBlack,
-          ),
-        ),
-        actions: [
-          TextButton(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: meshGray,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          elevation: 0.5,
+          leading: TextButton(
             child: const Text(
-              '儲存',
+              '取消',
               style: TextStyle(
-                color: Colors.blue,
+                fontWeight: FontWeight.w400,
                 fontSize: 18,
+                color: readrBlack50,
               ),
             ),
-            onPressed: () {
-              timelineStory.customYear = controller.year.value;
-              timelineStory.customMonth = controller.month.value;
-              timelineStory.customDay = controller.day.value;
-              timelineStory.customTime = controller.time.value;
-              int itemIndex = controller.timelineStoryList.indexWhere(
-                  (element) => element.news.id == timelineStory.news.id);
-              controller.timelineStoryList[itemIndex] = timelineStory;
-              controller.sortListByTime();
-              controller.timelineStoryList.refresh();
-
-              Get.back();
-            },
+            onPressed: () => Get.back(),
           ),
-        ],
+          title: const Text(
+            '自訂時間',
+            style: TextStyle(
+              fontSize: 18,
+              color: readrBlack,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                '儲存',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18,
+                ),
+              ),
+              onPressed: () {
+                timelineStory.customYear = controller.year.value;
+                timelineStory.customMonth = controller.month.value;
+                timelineStory.customDay = controller.day.value;
+                timelineStory.customTime = controller.time.value;
+                if (controller.sectionTitleController.text.isNotEmpty) {
+                  timelineStory.summary =
+                      controller.sectionTitleController.text;
+                } else {
+                  timelineStory.summary = null;
+                }
+
+                int itemIndex = controller.timelineStoryList.indexWhere(
+                    (element) => element.news.id == timelineStory.news.id);
+                controller.timelineStoryList[itemIndex] = timelineStory;
+                controller.sortListByTime();
+                controller.timelineStoryList.refresh();
+
+                Get.back();
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            _customTimeBlock(context),
+            _sectionTitleBlock(context),
+          ],
+        ),
       ),
-      body: _buildBody(context),
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _customTimeBlock(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -125,6 +141,97 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
             child: _buildButton(context, TimeLevel.time),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitleBlock(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+        border: Border.all(
+          color: const Color.fromRGBO(218, 220, 227, 1),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '區塊標題',
+            style: TextStyle(
+              fontSize: 16,
+              color: readrBlack87,
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          const Text(
+            '若新聞數量太多，可以輸入區塊標題，將時間軸切分成多個重點段落，讓人更好閱讀。',
+            style: TextStyle(
+              fontSize: 14,
+              color: readrBlack50,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Obx(
+            () => TextField(
+              controller: controller.sectionTitleController,
+              focusNode: controller.sectionTitleFocusNode,
+              style: const TextStyle(
+                fontSize: 16,
+                color: readrBlack87,
+              ),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  controller.showClearTextButton.value = true;
+                } else {
+                  controller.showClearTextButton.value = false;
+                }
+              },
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(
+                  bottom: 8,
+                ),
+                hintText: '輸入區塊標題...',
+                hintStyle: const TextStyle(
+                  color: readrBlack30,
+                  fontSize: 16,
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: readrBlack66,
+                  ),
+                ),
+                border: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white10,
+                  ),
+                ),
+                suffix: (controller.showClearTextButton.isFalse ||
+                        controller.sectionTitleController.text.isEmpty)
+                    ? null
+                    : GestureDetector(
+                        onTap: () {
+                          controller.sectionTitleController.clear();
+                          controller.showClearTextButton.value = false;
+                        },
+                        child: const Icon(
+                          Icons.cancel,
+                          color: readrBlack87,
+                          size: 16,
+                        ),
+                      ),
+              ),
+            ),
           ),
         ],
       ),
@@ -178,6 +285,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
         }
         return GestureDetector(
           onTap: () async {
+            FocusManager.instance.primaryFocus?.unfocus();
             if (isActive) {
               await _showPicker(context, level);
             }
