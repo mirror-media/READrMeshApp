@@ -12,6 +12,7 @@ class CollectionPick {
   final Member? creator;
   final DateTime? pickedDate;
   final NewsListItem? newsListItem;
+  String? summary;
 
   CollectionPick({
     required this.id,
@@ -24,6 +25,7 @@ class CollectionPick {
     this.creator,
     this.pickedDate,
     this.newsListItem,
+    this.summary,
   });
 
   factory CollectionPick.fromPick(Map<String, dynamic> json) {
