@@ -37,7 +37,7 @@ abstract class CollectionRepos {
   });
   Future<void> updateOgPhoto(
       {required String photoId, required String ogImageUrlOrPath});
-  Future<void> updateCollectionPicksOrder({
+  Future<void> updateCollectionPicksData({
     required List<CollectionPick> collectionPicks,
   });
   Future<void> removeCollectionPicks(
@@ -788,12 +788,11 @@ mutation(
           "connect": {"id": Get.find<UserService>().currentUser.memberId}
         },
         "picked_date": DateTime.now().toUtc().toIso8601String(),
-        if (item is TimelineCollectionPick) ...{
-          "custom_year": item.customYear,
-          "custom_month": item.customMonth,
-          "custom_day": item.customDay,
-          "custom_time": item.customTime?.toUtc().toIso8601String(),
-        },
+        "custom_year": item.customYear,
+        "custom_month": item.customMonth,
+        "custom_day": item.customDay,
+        "custom_time": item.customTime?.toUtc().toIso8601String(),
+        "summary": item.summary ?? '',
       };
       collectionStoryList.add(createInput);
     }
@@ -886,7 +885,7 @@ mutation(
           collectionPicks: addItemList,
         ),
       if (moveItemList.isNotEmpty)
-        updateCollectionPicksOrder(
+        updateCollectionPicksData(
           collectionPicks: moveItemList,
         ),
       if (deleteItemList.isNotEmpty)
@@ -937,6 +936,7 @@ mutation(
         "custom_month": item.customMonth,
         "custom_day": item.customDay,
         "custom_time": item.customTime?.toUtc().toIso8601String(),
+        "summary": item.summary ?? '',
       };
       dataList.add(createInput);
     }
@@ -1067,7 +1067,7 @@ mutation(
   }
 
   @override
-  Future<void> updateCollectionPicksOrder({
+  Future<void> updateCollectionPicksData({
     required List<CollectionPick> collectionPicks,
   }) async {
     const String mutation = """
@@ -1094,6 +1094,7 @@ mutation(
           "custom_month": item.customMonth,
           "custom_day": item.customDay,
           "custom_time": item.customTime?.toUtc().toIso8601String(),
+          "summary": item.summary ?? '',
         }
       });
     }
