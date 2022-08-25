@@ -105,7 +105,7 @@ class AddToCollectionPageController extends GetxController {
               customDay: newPick.customDay,
             ),
             if (needUpdateList.isNotEmpty)
-              collectionRepos.updateCollectionPicksOrder(
+              collectionRepos.updateCollectionPicksData(
                   collectionPicks: needUpdateList),
           ]);
           break;
