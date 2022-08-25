@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
@@ -18,42 +19,65 @@ class TimelineItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 48,
-            child: _buildTimestamp(),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-                border: Border.all(
-                  color: readrBlack10,
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (timelineStory.summary != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 12),
+            child: Text(
+              timelineStory.summary!,
+              style: TextStyle(
+                fontWeight:
+                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
+                fontSize: 18,
+                color: readrBlack87,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              margin: const EdgeInsets.only(bottom: 8),
-              child: editMode
-                  ? CollectionStoryItem(
-                      timelineStory.news,
-                      inTimeline: true,
-                    )
-                  : NewsListItemWidget(
-                      timelineStory.news,
-                      key: Key(timelineStory.news.id),
-                      inTimeline: true,
-                    ),
             ),
           ),
-        ],
-      ),
+        Flexible(
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 48,
+                  child: _buildTimestamp(),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(6.0)),
+                      border: Border.all(
+                        color: readrBlack10,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: editMode
+                        ? CollectionStoryItem(
+                            timelineStory.news,
+                            inTimeline: true,
+                          )
+                        : NewsListItemWidget(
+                            timelineStory.news,
+                            key: Key(timelineStory.news.id),
+                            inTimeline: true,
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -325,7 +349,8 @@ class TimelineItemWidget extends StatelessWidget {
       if (previousTimelineStory!.customYear == timelineStory.customYear &&
           previousTimelineStory!.customMonth == timelineStory.customMonth &&
           previousTimelineStory!.customDay == timelineStory.customDay &&
-          previousTimelineStory!.customTime == timelineStory.customTime) {
+          previousTimelineStory!.customTime == timelineStory.customTime &&
+          timelineStory.summary == null) {
         return 4;
       }
 
@@ -344,7 +369,8 @@ class TimelineItemWidget extends StatelessWidget {
       }
 
       if (previousTimelineStory!.customTime != timelineStory.customTime ||
-          timelineStory.customTime == null) {
+          timelineStory.customTime == null ||
+          timelineStory.summary != null) {
         return 3;
       } else {
         return 4;
