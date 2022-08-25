@@ -318,10 +318,29 @@ class TimelineItemWidget extends StatelessWidget {
     } else {
       if (children.isNotEmpty) {
         children.insert(0, const SizedBox(height: 16));
+        if (_checkIsCustomTime()) {
+          children.addAll([
+            const SizedBox(
+              height: 8,
+            ),
+            _customTimeTag(),
+          ]);
+        }
         children.add(const SizedBox(
           height: 16,
         ));
+      } else if (_checkIsCustomTime()) {
+        children.addAll([
+          const SizedBox(
+            height: 16,
+          ),
+          _customTimeTag(),
+          const SizedBox(
+            height: 16,
+          ),
+        ]);
       }
+
       children.add(
         const Expanded(
           child: VerticalDivider(
@@ -377,5 +396,44 @@ class TimelineItemWidget extends StatelessWidget {
       }
     }
     return 0;
+  }
+
+  bool _checkIsCustomTime() {
+    if (timelineStory.customTime != null) {
+      return true;
+    }
+
+    if (timelineStory.customDay != null &&
+        timelineStory.customDay != timelineStory.news.publishedDate.day) {
+      return true;
+    }
+
+    if (timelineStory.customMonth != null &&
+        timelineStory.customMonth != timelineStory.news.publishedDate.month) {
+      return true;
+    }
+
+    if (timelineStory.customYear != timelineStory.news.publishedDate.year) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Widget _customTimeTag() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: readrBlack10,
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: const Text(
+        '自訂',
+        style: TextStyle(
+          fontSize: 11,
+          color: readrBlack30,
+        ),
+      ),
+    );
   }
 }
