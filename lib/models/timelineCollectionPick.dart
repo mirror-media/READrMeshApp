@@ -14,6 +14,7 @@ class TimelineCollectionPick extends CollectionPick {
     DateTime? customTime,
     int sortOrder = 0,
     Member? creator,
+    String? summary,
   }) : super(
           id: id,
           sortOrder: sortOrder,
@@ -24,6 +25,7 @@ class TimelineCollectionPick extends CollectionPick {
           customDay: customDay,
           customTime: customTime,
           newsListItem: news,
+          summary: summary,
         );
 
   factory TimelineCollectionPick.fromCollectionPick(
@@ -44,6 +46,12 @@ class TimelineCollectionPick extends CollectionPick {
     if (json['custom_time'] != null) {
       time = DateTime.tryParse(json['custom_time'])?.toLocal();
     }
+
+    String? summary = json['summary'] as String;
+    if (summary.isEmpty) {
+      summary = null;
+    }
+
     return TimelineCollectionPick(
       sortOrder: json['sort_order'],
       id: json['id'],
@@ -53,6 +61,7 @@ class TimelineCollectionPick extends CollectionPick {
       customMonth: json['custom_month'],
       customDay: json['custom_day'],
       customTime: time,
+      summary: summary,
     );
   }
 }
