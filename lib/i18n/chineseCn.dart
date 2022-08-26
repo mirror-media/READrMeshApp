@@ -68,4 +68,7 @@ const Map<String, String> chineseCnMap = {
   'commentVisitorHint': '注册参加讨论',
   'commentTextFieldHint': '在此处输入评论...',
   'sendComment': '发表',
+  //newsInfo
+  'paidArticle': '付费文章',
+  'fullScreenAd': '盖版广告',
 };

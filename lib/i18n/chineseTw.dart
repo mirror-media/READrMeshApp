@@ -68,4 +68,7 @@ const Map<String, String> chineseTwMap = {
   'commentVisitorHint': '註冊以參與討論',
   'commentTextFieldHint': '在這裡輸入留言...',
   'sendComment': '發佈',
+  //newsInfo
+  'paidArticle': '付費文章',
+  'fullScreenAd': '蓋板廣告',
 };

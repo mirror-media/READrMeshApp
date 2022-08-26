@@ -69,4 +69,7 @@ const Map<String, String> englishMap = {
   'commentVisitorHint': 'Sign up to participate in discussions',
   'commentTextFieldHint': 'Enter a comment here...',
   'sendComment': 'Publish',
+  //newsInfo
+  'paidArticle': 'Paid Article',
+  'fullScreenAd': 'Hover ad',
 };
