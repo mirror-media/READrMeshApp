@@ -60,7 +60,7 @@ const Map<String, String> englishMap = {
   'cancelEdit': 'Cancel',
   //pick
   'pickCount': ' pick',
-  'noPick': 'No picks yet',
+  'noPick': 'No pick yet',
   //collection
   'collection': 'Collection',
   //collection timestamp
