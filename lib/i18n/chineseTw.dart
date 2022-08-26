@@ -33,4 +33,10 @@ const Map<String, String> chineseTwMap = {
   'followerConunt': '人追蹤',
   //tab content no result
   'tabContentNoResult': '這個分類目前沒有文章',
+  //timestamp
+  'just': '剛剛',
+  'minutesAgo': '分鐘前',
+  'hoursAgo': '小時前',
+  'daysAgo': '天前',
+  'edited': ' (已編輯)',
 };

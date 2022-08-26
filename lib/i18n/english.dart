@@ -34,4 +34,10 @@ const Map<String, String> englishMap = {
   'followerConunt': 'follower',
   //tab content no result
   'tabContentNoResult': 'There are currently no articles in this category',
+  //timestamp
+  'just': 'Just a moment ago',
+  'minutesAgo': ' minutes ago',
+  'hoursAgo': ' hours ago',
+  'daysAgo': ' days ago',
+  'edited': ' (Edited)',
 };

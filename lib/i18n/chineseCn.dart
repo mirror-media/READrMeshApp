@@ -33,4 +33,10 @@ const Map<String, String> chineseCnMap = {
   'followerConunt': '人追踪',
   //tab content no result
   'tabContentNoResult': '此类别中当前没有文章',
+  //timestamp
+  'just': '刚才',
+  'minutesAgo': '分钟前',
+  'hoursAgo': '小时前',
+  'daysAgo': '天前',
+  'edited': ' (已编辑)',
 };
