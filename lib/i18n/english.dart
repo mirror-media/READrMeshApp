@@ -44,4 +44,7 @@ const Map<String, String> englishMap = {
   'allComments': 'All comments',
   'popularComments': 'Top Comments',
   'noComment': 'No one has commented yet, be the first to comment!',
+  //collapsePickBar
+  'commentCount': ' comment',
+  'pickCount': ' pick',
 };

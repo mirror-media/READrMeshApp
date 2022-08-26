@@ -23,14 +23,23 @@ class CollapsePickBar extends StatelessWidget {
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
-              children: const [
+              children: [
                 TextSpan(
-                  text: ' 則留言',
-                  style: TextStyle(
+                  text: 'commentCount'.tr,
+                  style: const TextStyle(
                     color: readrBlack50,
                     fontWeight: FontWeight.w400,
                   ),
-                )
+                ),
+                if (controller.commentCount > 1 &&
+                    Get.locale?.languageCode == 'en')
+                  const TextSpan(
+                    text: 's',
+                    style: TextStyle(
+                      color: readrBlack50,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
               ],
             ),
             style: const TextStyle(fontSize: 13),
@@ -55,14 +64,23 @@ class CollapsePickBar extends StatelessWidget {
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               ),
-              children: const [
+              children: [
                 TextSpan(
-                  text: ' 人精選',
-                  style: TextStyle(
+                  text: 'pickCount'.tr,
+                  style: const TextStyle(
                     color: readrBlack50,
                     fontWeight: FontWeight.w400,
                   ),
-                )
+                ),
+                if (controller.pickCount > 1 &&
+                    Get.locale?.languageCode == 'en')
+                  const TextSpan(
+                    text: 's',
+                    style: TextStyle(
+                      color: readrBlack50,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
               ],
             ),
             style: const TextStyle(fontSize: 13),

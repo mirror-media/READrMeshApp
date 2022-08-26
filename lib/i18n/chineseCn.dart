@@ -42,5 +42,8 @@ const Map<String, String> chineseCnMap = {
   //bottom card
   'allComments': '所有评论',
   'popularComments': '热门评论',
-  'noComment': '还没有人发表评论，快来抢沙发！'
+  'noComment': '还没有人发表评论，快来抢沙发！',
+  //collapsePickBar
+  'commentCount': ' 条评论',
+  'pickCount': ' 人精选',
 };

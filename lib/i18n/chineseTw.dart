@@ -43,4 +43,7 @@ const Map<String, String> chineseTwMap = {
   'allComments': '所有留言',
   'popularComments': '熱門留言',
   'noComment': '還沒有人留言，快來搶頭香！',
+  //collapsePickBar
+  'commentCount': ' 則留言',
+  'pickCount': ' 人精選',
 };
