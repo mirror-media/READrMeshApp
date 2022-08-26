@@ -97,7 +97,7 @@ class PickButton extends GetView<PickableItemController> {
               fullscreenDialog: true,
             );
           } else if (controller.isPicked.isFalse) {
-            await PickBottomSheet.showPickBottomSheet(
+            await showPickBottomSheet(
               context: context,
               controller: controller,
             );
