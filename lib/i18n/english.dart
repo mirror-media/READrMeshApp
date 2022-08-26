@@ -99,4 +99,7 @@ const Map<String, String> englishMap = {
   //newsInfo
   'paidArticle': 'Paid Article',
   'fullScreenAd': 'Hover ad',
+
+  //recommendFollow
+  'viewAll': 'View all',
 };

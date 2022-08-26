@@ -97,4 +97,7 @@ const Map<String, String> chineseCnMap = {
   //newsInfo
   'paidArticle': '付费文章',
   'fullScreenAd': '盖版广告',
+
+  //recommendFollow
+  'viewAll': '查看全部',
 };

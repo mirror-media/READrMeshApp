@@ -56,10 +56,10 @@ class LookmoreItem extends StatelessWidget {
                   backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
-                child: const Text(
-                  '查看全部',
+                child: Text(
+                  'viewAll'.tr,
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: readrBlack87,
                   ),

@@ -97,4 +97,7 @@ const Map<String, String> chineseTwMap = {
   //newsInfo
   'paidArticle': '付費文章',
   'fullScreenAd': '蓋板廣告',
+
+  //recommendFollow
+  'viewAll': '查看全部',
 };
