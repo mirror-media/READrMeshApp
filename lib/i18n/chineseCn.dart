@@ -141,4 +141,9 @@ const Map<String, String> chineseCnMap = {
   'noInternetTitle': '没有互联网连接',
   'noInternetDescription': '请确保您已连接到互联网',
   'retry': '再试一次',
+
+  //block
+  'blockList': '黑名单',
+  'emptyBlockList': '你目前没有屏蔽任何人',
+  'unBlock': '解除屏蔽',
 };

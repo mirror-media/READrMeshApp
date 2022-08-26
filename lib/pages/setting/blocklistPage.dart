@@ -26,9 +26,9 @@ class BlocklistPage extends GetView<SettingPageController> {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: const Text(
-          '封鎖名單',
-          style: TextStyle(
+        title: Text(
+          'blockList'.tr,
+          style: const TextStyle(
             fontSize: 18,
             color: readrBlack,
             fontWeight: FontWeight.w400,
@@ -50,10 +50,10 @@ class BlocklistPage extends GetView<SettingPageController> {
 
           if (!controller.blocklistPageIsLoading) {
             if (controller.blockMembers.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
-                  '你目前沒有封鎖任何人',
-                  style: TextStyle(
+                  'emptyBlockList'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: readrBlack30,
                   ),
@@ -144,9 +144,9 @@ class BlocklistPage extends GetView<SettingPageController> {
             backgroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
           ),
-          child: const Text(
-            '解除封鎖',
-            style: TextStyle(
+          child: Text(
+            'unBlock'.tr,
+            style: const TextStyle(
               fontSize: 14,
               color: readrBlack87,
             ),

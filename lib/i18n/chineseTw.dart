@@ -140,4 +140,9 @@ const Map<String, String> chineseTwMap = {
   'noInternetTitle': '沒有網際網路連線',
   'noInternetDescription': '請確認您已連接網路',
   'retry': '重新嘗試',
+
+  //block
+  'blockList': '封鎖名單',
+  'emptyBlockList': '你目前沒有封鎖任何人',
+  'unBlock': '解除封鎖',
 };

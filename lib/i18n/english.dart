@@ -142,4 +142,9 @@ const Map<String, String> englishMap = {
   'noInternetTitle': 'No internet connection',
   'noInternetDescription': 'Please make sure you are connected to the Internet',
   'retry': 'Try again',
+
+  //block
+  'blockList': 'Block list',
+  'emptyBlockList': "You didn't block anyone",
+  'unBlock': 'Unblock',
 };
