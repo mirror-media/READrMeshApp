@@ -1,4 +1,4 @@
-const Map<String, String> englishMap = {
+const Map<String, String> englishUsMap = {
   'cancel': 'Cancel',
   'delete': 'Delete',
   'save': 'Save',
@@ -8,6 +8,7 @@ const Map<String, String> englishMap = {
   'back': 'Back',
   'ok': 'OK',
   'viewAll': 'View all',
+  'updating': 'Updating',
 
   //bottom tab
   'communityTab': 'Community',
@@ -40,6 +41,8 @@ const Map<String, String> englishMap = {
   //bookmark
   'addBookmark': 'Bookmark',
   'removeBookmark': 'Remove bookmark',
+  'bookmark': 'Bookmark',
+  'bookmarks': 'Bookmarks',
 
   //link
   'copiedLink': 'Link copied',
@@ -88,9 +91,11 @@ const Map<String, String> englishMap = {
       'If you remove the pick, your comment will also be removed',
   'pick': 'Pick',
   'picked': 'Picked',
+  'picks': 'Picks',
 
   //collection
   'collection': 'Collection',
+  'collections': 'Collections',
   'addToCollection': 'Add to collection',
 
   //collection timestamp
@@ -148,6 +153,11 @@ const Map<String, String> englishMap = {
   'blockList': 'Block list',
   'emptyBlockList': "You didn't block anyone",
   'unBlock': 'Unblock',
+  'block': 'Block',
+  'blockAlertContent':
+      "You will no longer see his/her picked news, collections, comments and other updates and related notifications. If you are following the user, this will also unfollow.",
+  'blockSuccess': 'Blocked',
+  'unBlockSuccess': 'Unblocked',
 
   //contactUsPage
   'contactUs': 'Contact us',
@@ -219,4 +229,53 @@ const Map<String, String> englishMap = {
   'slugEducation': 'Education',
   'slugBreakingNews': 'Current affairs',
   'slugLatest': 'Latest articles',
+
+  //personalFile
+  'emptyBookmark': 'You have no saved bookmarks',
+  'emptyCollectionWithNoPickOrBookmarkDescription':
+      'You must first pick your favorite news to create a collection',
+  'emptyCollectionDescription':
+      'From picked News or Bookmarks package several news into a collection',
+  'emptyCollectionWithNoPickOrBookmarkButtonText': 'Pick articles',
+  'emptyCollectionButtonText': 'Try it now',
+  'viewMemberNoCollection': "This person hasn't built a collection yet",
+  'createCollectionBarTitle': 'Make your own collection',
+  'createCollectionBarButton': 'Create now',
+  'deletedMemberTitle': 'This content is currently unavailable',
+  'deletedMemberDescription': 'This personal file may have been deleted',
+  'editPersonalFile': 'Edit personal file',
+  'name': 'Name',
+  'nameError': 'This name is currently unavailable, please use another name.',
+  'nameEmptyError': 'Name cannot be blank',
+  'customIdError': 'This ID is currently unavailable, please use another ID.',
+  'customIdEmptyError': 'ID cannot be blank',
+  'introduction': 'Introduction',
+  'characters': 'characters',
+  'introductionHint': 'Introduce yourself to everyone...',
+  'changeAvatar': 'Change avatar',
+  'deleteAvatar': 'Delete the current avatar',
+  'noFollower': 'No fans yet',
+  'viewMemberNoFollower': "This person doesn't have fans yet",
+  'noFollowing': 'Unfollowing users or media',
+  'viewMemberNoFollowing': 'This person does not follow users or media',
+  'media': 'Media',
+  'figure': 'User',
+  'sharePersonalFile': 'Share this personal file',
+  'shareMyPersonalFile': 'Share my personal file',
+  'copyPersonalFileLink': 'Copy personal file link',
+  'collectionTooltip': 'Pack your favorite news into collections',
+  'follower': 'Follower',
+  'blockWidgetText': 'You have blocked this user.',
+  'emptyPick': 'This is still empty\nQuickly pick your favorite news',
+  'viewMemberEmptyPick': 'This person has no picked news yet',
+  'pickedCollections': 'Picked Collections',
+  'pickedArticles': 'Pikced Articles',
+  'visitorContentTitle':
+      'Create an account and customize to follow more high-quality news',
+  'visitorContentButton': 'Create now',
+
+  //choose picture
+  'openCamera': 'Take a picture',
+  'choosePhoto': 'Choose a photo',
+  'crop': 'Crop',
 };

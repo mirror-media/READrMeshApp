@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
@@ -101,8 +102,8 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                 children: [
                   Text(
                     hasPickOrBookmark
-                        ? '從精選新聞或書籤中\n將數篇新聞打包成集錦'
-                        : '要先將喜愛的新聞加入精選\n才能建立集錦喔',
+                        ? 'emptyCollectionDescription'.tr
+                        : 'emptyCollectionWithNoPickOrBookmarkDescription'.tr,
                     style: const TextStyle(
                       color: readrBlack30,
                       fontSize: 16,
@@ -132,7 +133,9 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                       ),
                     ),
                     child: Text(
-                      hasPickOrBookmark ? '立即嘗試' : '去精選文章',
+                      hasPickOrBookmark
+                          ? 'emptyCollectionButtonText'.tr
+                          : 'emptyCollectionWithNoPickOrBookmarkButtonText'.tr,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -147,10 +150,10 @@ class CollectionTabContent extends GetView<CollectionTabController> {
         }
         return Container(
           color: homeScreenBackgroundColor,
-          child: const Center(
+          child: Center(
             child: Text(
-              '這個人還沒有建立集錦',
-              style: TextStyle(
+              'viewMemberNoCollection'.tr,
+              style: const TextStyle(
                 color: readrBlack30,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
@@ -209,29 +212,30 @@ class CollectionTabContent extends GetView<CollectionTabController> {
       ),
       child: Row(
         children: [
-          const Text(
-            '製作自己的新聞集錦',
-            style: TextStyle(
-              color: readrBlack50,
-              fontSize: 16,
+          Expanded(
+            child: AutoSizeText(
+              'createCollectionBarTitle'.tr,
+              style: const TextStyle(
+                color: readrBlack50,
+                fontSize: 16,
+              ),
+              maxLines: 1,
             ),
-            maxLines: 1,
           ),
-          const Spacer(),
           GestureDetector(
             onTap: () => Get.to(() => const ChooseStoryPage()),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Text(
-                  '立即建立',
-                  style: TextStyle(
+                  'createCollectionBarButton'.tr,
+                  style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 16,
                   ),
                   maxLines: 1,
                 ),
-                Icon(
+                const Icon(
                   Icons.chevron_right_outlined,
                   color: Colors.blue,
                 )

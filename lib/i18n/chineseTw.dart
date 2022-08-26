@@ -8,6 +8,7 @@ const Map<String, String> chineseTwMap = {
   'back': '回前頁',
   'ok': '確定',
   'viewAll': '查看全部',
+  'updating': '更新中',
 
   //bottom tab
   'communityTab': '社群',
@@ -39,6 +40,8 @@ const Map<String, String> chineseTwMap = {
   //bookmark
   'addBookmark': '加入書籤',
   'removeBookmark': '移除書籤',
+  'bookmark': '書籤',
+  'bookmarks': '書籤',
 
   //link
   'copiedLink': '已複製連結',
@@ -86,9 +89,11 @@ const Map<String, String> chineseTwMap = {
   'unPickAlertContent': '移除精選，將會一併移除您的留言',
   'pick': '精選',
   'picked': '已精選',
+  'picks': '精選',
 
   //collection
   'collection': '集錦',
+  'collections': '集錦',
   'addToCollection': '加入集錦',
 
   //collection timestamp
@@ -146,6 +151,10 @@ const Map<String, String> chineseTwMap = {
   'blockList': '封鎖名單',
   'emptyBlockList': '你目前沒有封鎖任何人',
   'unBlock': '解除封鎖',
+  'block': '封鎖',
+  'blockAlertContent': '你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。',
+  'blockSuccess': '已封鎖',
+  'unBlockSuccess': '已取消封鎖',
 
   //contactUsPage
   'contactUs': '聯絡我們',
@@ -215,4 +224,50 @@ const Map<String, String> chineseTwMap = {
   'slugEducation': '教育',
   'slugBreakingNews': '時事',
   'slugLatest': '最新文章',
+
+  //personalFile
+  'emptyBookmark': '你沒有已儲存的書籤',
+  'emptyCollectionWithNoPickOrBookmarkDescription': '要先將喜愛的新聞加入精選\n才能建立集錦喔',
+  'emptyCollectionDescription': '從精選新聞或書籤中\n將數篇新聞打包成集錦',
+  'emptyCollectionWithNoPickOrBookmarkButtonText': '去精選文章',
+  'emptyCollectionButtonText': '立即嘗試',
+  'viewMemberNoCollection': '這個人還沒有建立集錦',
+  'createCollectionBarTitle': '製作自己的新聞集錦',
+  'createCollectionBarButton': '立即建立',
+  'deletedMemberTitle': '目前無法查看此內容',
+  'deletedMemberDescription': '此個人檔案可能已被刪除',
+  'editPersonalFile': '編輯個人檔案',
+  'name': '姓名',
+  'nameError': '這個名稱目前無法使用，請使用其他名稱。',
+  'nameEmptyError': '姓名不能空白',
+  'customIdError': '這個 ID 目前無法使用，請使用其他 ID。',
+  'customIdEmptyError': 'ID不能空白',
+  'introduction': '簡介',
+  'characters': '字',
+  'introductionHint': '向大家介紹一下自己吧...',
+  'changeAvatar': '更換大頭貼照',
+  'deleteAvatar': '刪除目前的大頭貼照',
+  'noFollower': '目前還沒有粉絲',
+  'viewMemberNoFollower': '這個人還沒有粉絲',
+  'noFollowing': '目前沒有追蹤中的對象',
+  'viewMemberNoFollowing': '這個人目前沒有追蹤中的對象',
+  'media': '媒體',
+  'figure': '人物',
+  'sharePersonalFile': '分享這個個人檔案',
+  'shareMyPersonalFile': '分享我的個人檔案',
+  'copyPersonalFileLink': '複製個人檔案連結',
+  'collectionTooltip': '將喜歡的新聞打包成集錦',
+  'follower': '粉絲',
+  'blockWidgetText': '你已封鎖這位使用者。',
+  'emptyPick': '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
+  'viewMemberEmptyPick': '這個人還沒有精選新聞',
+  'pickedCollections': '精選集錦',
+  'pickedArticles': '精選文章',
+  'visitorContentTitle': '建立帳號，客製化追蹤更多優質新聞',
+  'visitorContentButton': '立即建立',
+
+  //choose picture
+  'openCamera': '開啟相機',
+  'choosePhoto': '選擇照片',
+  'crop': '裁切',
 };

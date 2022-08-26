@@ -8,6 +8,7 @@ const Map<String, String> chineseCnMap = {
   'back': '返回',
   'ok': '确定',
   'viewAll': '查看全部',
+  'updating': '更新中',
 
   //bottom tab
   'communityTab': '社区',
@@ -39,6 +40,8 @@ const Map<String, String> chineseCnMap = {
   //bookmark
   'addBookmark': '加入书签',
   'removeBookmark': '移除书签',
+  'bookmark': '书签',
+  'bookmarks': '书签',
 
   //link
   'copiedLink': '已复制链接',
@@ -86,9 +89,11 @@ const Map<String, String> chineseCnMap = {
   'unPickAlertContent': '移除精选，将会一并移除您的评论',
   'pick': '精选',
   'picked': '已精选',
+  'picks': '精选',
 
   //collection
   'collection': '集锦',
+  'collections': '集锦',
   'addToCollection': '加入集锦',
 
   //collection timestamp
@@ -101,7 +106,7 @@ const Map<String, String> chineseCnMap = {
 
   //newsInfo
   'paidArticle': '付费文章',
-  'fullScreenAd': '盖版广告',
+  'fullScreenAd': '悬停广告',
 
   //recommendFollow
   'recommendFollow': '推荐关注',
@@ -147,6 +152,10 @@ const Map<String, String> chineseCnMap = {
   'blockList': '黑名单',
   'emptyBlockList': '你目前没有屏蔽任何人',
   'unBlock': '解除屏蔽',
+  'block': '屏蔽',
+  'blockAlertContent': '你将再也不会看到对方的精选新闻、集锦、留言等动态及相关通知。如果你有关注对方，屏蔽对方的同时也会取消关注。',
+  'blockSuccess': '已屏蔽',
+  'unBlockSuccess': '已解除屏蔽',
 
   //contactUsPage
   'contactUs': '联系我们',
@@ -216,4 +225,50 @@ const Map<String, String> chineseCnMap = {
   'slugEducation': '教育',
   'slugBreakingNews': '时事',
   'slugLatest': '最新文章',
+
+  //personalFile
+  'emptyBookmark': '您没有保存的书签',
+  'emptyCollectionWithNoPickOrBookmarkDescription': '要先将喜爱的新闻加入精选\n才能创建集锦喔',
+  'emptyCollectionDescription': '从精选新闻或书签中\n将数篇新闻打包成集锦',
+  'emptyCollectionWithNoPickOrBookmarkButtonText': '去精选文章',
+  'emptyCollectionButtonText': '立即尝试',
+  'viewMemberNoCollection': '这个人还没有创建集锦',
+  'createCollectionBarTitle': '制作自己的新闻集锦',
+  'createCollectionBarButton': '立即创建',
+  'deletedMemberTitle': '此内容当前不可用',
+  'deletedMemberDescription': '此个人档案可能已被删除',
+  'editPersonalFile': '编辑个人档案',
+  'name': '名称',
+  'nameError': '此名称当前不可用，请使用其他名称。',
+  'nameEmptyError': '名称不能为空',
+  'customIdError': '此ID当前不可用，请使用其他ID。',
+  'customIdEmptyError': 'ID不能为空',
+  'introduction': '介绍',
+  'characters': '字',
+  'introductionHint': '向大家介绍一下自己吧...',
+  'changeAvatar': '换头像',
+  'deleteAvatar': '删除当前头像',
+  'noFollower': '目前还没有粉丝',
+  'viewMemberNoFollower': '这个人还没有粉丝',
+  'noFollowing': '目前没有关注中的对象',
+  'viewMemberNoFollowing': '这个人目前没有关注中的对象',
+  'media': '媒体',
+  'figure': '人物',
+  'sharePersonalFile': '分享这个个人档案',
+  'shareMyPersonalFile': '分享我的个人档案',
+  'copyPersonalFileLink': '复制个人档案链接',
+  'collectionTooltip': '将喜欢的新闻打包成集锦',
+  'follower': '粉丝',
+  'blockWidgetText': '您已屏蔽此用户。',
+  'emptyPick': '此处仍有空白。\n赶快精选您喜欢的新闻吧',
+  'viewMemberEmptyPick': '此人还没有精选新闻',
+  'pickedCollections': '精选集锦',
+  'pickedArticles': '精选文章',
+  'visitorContentTitle': '创建帐户以自定义关注更多高质量的新闻',
+  'visitorContentButton': '立即创建',
+
+  //choose picture
+  'openCamera': '打开相机',
+  'choosePhoto': '选择照片',
+  'crop': '裁切',
 };

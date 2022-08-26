@@ -33,9 +33,9 @@ class DeletedMemberPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              '目前無法查看此內容',
-              style: TextStyle(
+            Text(
+              'deletedMemberTitle'.tr,
+              style: const TextStyle(
                 color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -44,9 +44,9 @@ class DeletedMemberPage extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            const Text(
-              '此個人檔案可能已被刪除',
-              style: TextStyle(
+            Text(
+              'deletedMemberDescription'.tr,
+              style: const TextStyle(
                 color: readrBlack66,
                 fontSize: 14,
               ),

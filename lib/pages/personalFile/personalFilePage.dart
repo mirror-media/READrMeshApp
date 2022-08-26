@@ -103,7 +103,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         () {
           String title = '';
           if (Get.find<UserService>().isMember.isFalse && isFromBottomTab) {
-            title = '個人檔案';
+            title = 'personalFileTab'.tr;
           } else if (controller.isLoading.isTrue) {
             title = viewMember.customId;
           } else {
@@ -133,12 +133,12 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
   Widget _optionButton(BuildContext context) {
     return Obx(
       () {
-        String shareButtonText = '分享這個個人檔案';
+        String shareButtonText = 'sharePersonalFile'.tr;
         bool showBlock = Get.find<UserService>().isMember.value;
         bool isBlock = controller.isBlock.value;
         if (viewMember.memberId ==
             Get.find<UserService>().currentUser.memberId) {
-          shareButtonText = '分享我的個人檔案';
+          shareButtonText = 'shareMyPersonalFile'.tr;
           showBlock = false;
         }
 
@@ -153,7 +153,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           ),
           options: [
             PopupMenuOption(
-                label: '複製個人檔案連結',
+                label: 'copyPersonalFileLink'.tr,
                 onTap: (option) async {
                   String url = '';
 
@@ -171,7 +171,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                       size: 16,
                       color: Colors.white,
                     ),
-                    message: '已複製連結',
+                    message: 'copiedLink'.tr,
                   );
                 }),
             PopupMenuOption(
@@ -195,22 +195,23 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             ),
             if (showBlock && !isBlock)
               PopupMenuOption(
-                label: '封鎖',
+                label: 'block'.tr,
                 cupertino: (context, platform) => CupertinoPopupMenuOptionData(
                   isDestructiveAction: true,
                 ),
                 material: (context, platform) => MaterialPopupMenuOptionData(
-                  child: const Text(
-                    '封鎖',
-                    style: TextStyle(color: Colors.red),
+                  child: Text(
+                    'block'.tr,
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ),
                 onTap: (option) async {
                   String title;
                   if (controller.isLoading.isTrue) {
-                    title = '封鎖 ${viewMember.customId} ?';
+                    title = '${'block'.tr} ${viewMember.customId} ?';
                   } else {
-                    title = '封鎖 ${controller.viewMemberData.value.customId} ?';
+                    title =
+                        '${'block'.tr} ${controller.viewMemberData.value.customId} ?';
                   }
                   await showPlatformDialog(
                     context: context,
@@ -223,18 +224,18 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           fontSize: 17,
                         ),
                       ),
-                      content: const Text(
-                        '你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。',
-                        style: TextStyle(
+                      content: Text(
+                        'blockAlertContent'.tr,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 13,
                         ),
                       ),
                       actions: [
                         PlatformDialogAction(
-                          child: const Text(
-                            '封鎖',
-                            style: TextStyle(color: Colors.red),
+                          child: Text(
+                            'block'.tr,
+                            style: const TextStyle(color: Colors.red),
                           ),
                           onPressed: () {
                             controller.blockMember();
@@ -242,8 +243,8 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           },
                         ),
                         PlatformDialogAction(
-                          child: const Text(
-                            '取消',
+                          child: Text(
+                            'cancel'.tr,
                           ),
                           onPressed: () => Get.back(),
                         ),
@@ -254,15 +255,15 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               ),
             if (showBlock && isBlock)
               PopupMenuOption(
-                label: '解除封鎖',
+                label: 'unBlock'.tr,
                 onTap: (option) => controller.unblockMember(),
               ),
           ],
           cupertino: (context, platform) => CupertinoPopupMenuData(
             cancelButtonData: CupertinoPopupMenuCancelButtonData(
-              child: const Text(
-                '取消',
-                style: TextStyle(
+              child: Text(
+                'cancel'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
@@ -286,11 +287,12 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           ),
           SliverToBoxAdapter(
             child: JustTheTooltip(
-              content: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              content: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: Text(
-                  '將喜歡的新聞打包成集錦',
-                  style: TextStyle(
+                  'collectionTooltip'.tr,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 13,
                   ),
@@ -343,109 +345,234 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
   }
 
   Widget _memberDataWidget() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(40, 20, 40, 32),
-      child: Column(
-        children: [
-          Obx(
-            () => ProfilePhotoWidget(
-              controller.viewMemberData.value,
-              40,
-              textSize: 40,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40, 20, 40, 24),
+          child: Column(
             children: [
-              Flexible(
-                child: Obx(
-                  () => ExtendedText(
-                    controller.viewMemberData.value.nickname,
-                    maxLines: 1,
-                    joinZeroWidthSpace: true,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: readrBlack87,
-                    ),
-                  ),
+              Obx(
+                () => ProfilePhotoWidget(
+                  controller.viewMemberData.value,
+                  40,
+                  textSize: 40,
                 ),
               ),
-              Obx(
-                () {
-                  if (controller.viewMemberData.value.verified) {
-                    return const Padding(
-                      padding: EdgeInsets.only(left: 6),
-                      child: Icon(
-                        Icons.verified,
-                        size: 16,
-                        color: readrBlack87,
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              )
-            ],
-          ),
-          const SizedBox(height: 4),
-          Obx(
-            () {
-              if (controller.viewMemberData.value.intro != null &&
-                  controller.viewMemberData.value.intro!.isNotEmpty) {
-                return _buildIntro(controller.viewMemberData.value.intro!);
-              }
-
-              return Container();
-            },
-          ),
-          const SizedBox(height: 12),
-          Obx(
-            () {
-              if (Get.find<UserService>().isMember.isTrue &&
-                  controller.viewMemberData.value.memberId ==
-                      Get.find<UserService>().currentUser.memberId) {
-                return _editProfileButton();
-              } else if (controller.isBlock.isTrue) {
-                return _blockWidget();
-              }
-
-              return FollowButton(
-                MemberFollowableItem(controller.viewMemberData.value),
-                expanded: true,
-                textSize: 16,
-              );
-            },
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Obx(
-                    () => RichText(
-                      text: TextSpan(
-                        text:
-                            _convertNumberToString(controller.pickCount.value),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Obx(
+                      () => ExtendedText(
+                        controller.viewMemberData.value.nickname,
+                        maxLines: 1,
+                        joinZeroWidthSpace: true,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: readrBlack87,
                         ),
-                        children: const [
-                          TextSpan(
-                            text: '\n精選',
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () {
+                      if (controller.viewMemberData.value.verified) {
+                        return const Padding(
+                          padding: EdgeInsets.only(left: 6),
+                          child: Icon(
+                            Icons.verified,
+                            size: 16,
+                            color: readrBlack87,
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(height: 4),
+              Obx(
+                () {
+                  if (controller.viewMemberData.value.intro != null &&
+                      controller.viewMemberData.value.intro!.isNotEmpty) {
+                    return _buildIntro(controller.viewMemberData.value.intro!);
+                  }
+
+                  return Container();
+                },
+              ),
+              const SizedBox(height: 12),
+              Obx(
+                () {
+                  if (Get.find<UserService>().isMember.isTrue &&
+                      controller.viewMemberData.value.memberId ==
+                          Get.find<UserService>().currentUser.memberId) {
+                    return _editProfileButton();
+                  } else if (controller.isBlock.isTrue) {
+                    return _blockWidget();
+                  }
+
+                  return FollowButton(
+                    MemberFollowableItem(controller.viewMemberData.value),
+                    expanded: true,
+                    textSize: 16,
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Obx(
+                  () => RichText(
+                    text: TextSpan(
+                      text: _convertNumberToString(controller.pickCount.value),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: readrBlack87,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '\n${'pick'.tr}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: readrBlack50,
+                          ),
+                        ),
+                        if (controller.followerCount.value > 1 &&
+                            Get.locale?.languageCode == 'en')
+                          const TextSpan(
+                            text: 's',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: readrBlack50,
                             ),
-                          )
+                          ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 20,
+              child: const VerticalDivider(
+                color: readrBlack10,
+                thickness: 0.5,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(() => FollowerListPage(
+                      viewMember: viewMember,
+                    ));
+              },
+              child: Obx(
+                () => RichText(
+                  text: TextSpan(
+                    text:
+                        _convertNumberToString(controller.followerCount.value),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: readrBlack87,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '\n${'follower'.tr}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: readrBlack50,
+                        ),
+                      ),
+                      if (controller.followerCount.value > 1 &&
+                          Get.locale?.languageCode == 'en')
+                        const TextSpan(
+                          text: 's',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: readrBlack50,
+                          ),
+                        ),
+                      const TextSpan(
+                        text: ' ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: readrBlack50,
+                        ),
+                      ),
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: SvgPicture.asset(
+                          personalFileArrowSvg,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 20,
+              child: const VerticalDivider(
+                color: readrBlack10,
+                thickness: 0.5,
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => FollowingListPage(
+                          viewMember: viewMember,
+                        ));
+                  },
+                  child: Obx(
+                    () => RichText(
+                      text: TextSpan(
+                        text: _convertNumberToString(
+                            controller.followingCount.value),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: readrBlack87,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '\n${'following'.tr} ',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: readrBlack50,
+                            ),
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: SvgPicture.asset(
+                              personalFileArrowSvg,
+                            ),
+                          ),
                         ],
                       ),
                       textAlign: TextAlign.center,
@@ -453,112 +580,25 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                height: 20,
-                child: const VerticalDivider(
-                  color: readrBlack10,
-                  thickness: 0.5,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => FollowerListPage(
-                        viewMember: viewMember,
-                      ));
-                },
-                child: Obx(
-                  () => RichText(
-                    text: TextSpan(
-                      text: _convertNumberToString(
-                          controller.followerCount.value),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: readrBlack87,
-                      ),
-                      children: [
-                        const TextSpan(
-                          text: '\n粉絲 ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: readrBlack50,
-                          ),
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset(
-                            personalFileArrowSvg,
-                          ),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                height: 20,
-                child: const VerticalDivider(
-                  color: readrBlack10,
-                  thickness: 0.5,
-                ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(() => FollowingListPage(
-                            viewMember: viewMember,
-                          ));
-                    },
-                    child: Obx(
-                      () => RichText(
-                        text: TextSpan(
-                          text: _convertNumberToString(
-                              controller.followingCount.value),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: readrBlack87,
-                          ),
-                          children: [
-                            const TextSpan(
-                              text: '\n追蹤中 ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: readrBlack50,
-                              ),
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: SvgPicture.asset(
-                                personalFileArrowSvg,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+            )
+          ],
+        ),
+        const SizedBox(height: 32),
+      ],
     );
   }
 
   String _convertNumberToString(int number) {
-    if (number >= 10000) {
+    if (number >= 1000 && Get.locale?.languageCode == 'en') {
+      double newNumber = number / 1000;
+      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}K';
+    } else if (number >= 10000) {
       double newNumber = number / 10000;
-      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}萬';
+      String tenThounsands = '萬';
+      if (Get.locale == const Locale('zh', 'CN')) {
+        tenThounsands = '万';
+      }
+      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}$tenThounsands';
     } else {
       return number.toString();
     }
@@ -608,11 +648,11 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       ),
-      child: const Text(
-        '編輯個人檔案',
+      child: Text(
+        'editPersonalFile'.tr,
         softWrap: true,
         maxLines: 1,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           color: readrBlack87,
         ),
@@ -624,18 +664,18 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     return Wrap(
       alignment: WrapAlignment.center,
       children: [
-        const Text(
-          '你已封鎖這位使用者。',
-          style: TextStyle(
+        Text(
+          'blockWidgetText'.tr,
+          style: const TextStyle(
             fontSize: 14,
             color: readrBlack50,
           ),
         ),
         GestureDetector(
           onTap: () => controller.unblockMember(),
-          child: const Text(
-            '解除封鎖',
-            style: TextStyle(
+          child: Text(
+            'unBlock'.tr,
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.blue,
             ),

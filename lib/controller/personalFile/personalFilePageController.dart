@@ -106,10 +106,10 @@ class PersonalFilePageController extends GetxController
     tabWidgets.clear();
 
     tabs.add(
-      const Tab(
+      Tab(
         child: Text(
-          '精選',
-          style: TextStyle(
+          'picks'.tr,
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
@@ -133,10 +133,10 @@ class PersonalFilePageController extends GetxController
     }
 
     tabs.add(
-      const Tab(
+      Tab(
         child: Text(
-          '集錦',
-          style: TextStyle(
+          'collections'.tr,
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
@@ -150,10 +150,10 @@ class PersonalFilePageController extends GetxController
     if (viewMemberData.value.memberId ==
         Get.find<UserService>().currentUser.memberId) {
       tabs.add(
-        const Tab(
+        Tab(
           child: Text(
-            '書籤',
-            style: TextStyle(
+            'bookmarks'.tr,
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),
@@ -188,7 +188,7 @@ class PersonalFilePageController extends GetxController
           .isFollowed
           .value = false;
       isBlock.value = true;
-      _showResultToast('已封鎖');
+      _showResultToast('blockSuccess'.tr);
       if (Get.isRegistered<SettingPageController>()) {
         Get.find<SettingPageController>().fetchBlocklist();
       }
@@ -202,7 +202,7 @@ class PersonalFilePageController extends GetxController
       memberRepos.removeBlockMember(viewMember.memberId);
       Get.find<UserService>().removeBlockMember(viewMember.memberId);
       isBlock.value = false;
-      _showResultToast('已取消封鎖');
+      _showResultToast('unBlockSuccess'.tr);
       if (Get.isRegistered<SettingPageController>()) {
         final settingPageController = Get.find<SettingPageController>();
         settingPageController.blockMembers

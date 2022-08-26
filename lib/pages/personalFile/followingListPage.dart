@@ -92,7 +92,7 @@ class FollowingListPage extends GetView<FollowingListController> {
       color: homeScreenBackgroundColor,
       child: Center(
         child: Text(
-          isMine ? '目前沒有追蹤中的對象' : '這個人目前沒有追蹤中的對象',
+          isMine ? 'noFollowing'.tr : 'viewMemberNoFollowing'.tr,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -126,7 +126,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                     Expanded(
                       child: Obx(
                         () => Text(
-                          '媒體  (${controller.followingPublisherList.length})',
+                          '${'media'.tr}  (${controller.followingPublisherList.length})',
                           style: TextStyle(
                             fontSize: 18,
                             color: readrBlack87,
@@ -174,7 +174,7 @@ class FollowingListPage extends GetView<FollowingListController> {
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Obx(
                 () => Text(
-                  '人物  (${controller.followingMemberCount.value})',
+                  '${'figure'.tr}  (${controller.followingMemberCount.value})',
                   style: TextStyle(
                     fontSize: 18,
                     color: readrBlack87,

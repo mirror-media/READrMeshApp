@@ -86,7 +86,7 @@ class FollowerListPage extends GetView<FollowerListController> {
       color: homeScreenBackgroundColor,
       child: Center(
         child: Text(
-          isMine ? '目前還沒有粉絲' : '這個人還沒有粉絲',
+          isMine ? 'noFollower'.tr : 'viewMemberNoFollower'.tr,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
