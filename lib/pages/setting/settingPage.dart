@@ -26,9 +26,9 @@ class SettingPage extends GetView<SettingPageController> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0.5,
-        title: const Text(
-          '設定',
-          style: TextStyle(
+        title: Text(
+          'setting'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -133,7 +133,7 @@ class SettingPage extends GetView<SettingPageController> {
       child: Column(
         children: [
           _settingButton(
-            text: '顯示新聞範圍',
+            text: 'newsCoverageSettingPageTitle'.tr,
             onPressed: () {
               Get.to(() => NewsCoverageSettingPage());
             },
@@ -143,7 +143,7 @@ class SettingPage extends GetView<SettingPageController> {
             height: 1,
           ),
           _settingButton(
-            text: '預設顯示頁面',
+            text: 'initialSettingPageTitle'.tr,
             onPressed: () {
               Get.to(() => InitialSettingPage());
             },
@@ -153,7 +153,7 @@ class SettingPage extends GetView<SettingPageController> {
             height: 1,
           ),
           _settingButton(
-            text: '聯絡我們',
+            text: 'contactUs'.tr,
             onPressed: () {
               Get.to(() => ContactUsPage(
                     appVersion: controller.versionAndBuildNumber.value,
@@ -167,7 +167,7 @@ class SettingPage extends GetView<SettingPageController> {
             height: 1,
           ),
           _settingButton(
-            text: '關於',
+            text: 'about'.tr,
             onPressed: () => Get.to(() => AboutPage()),
             hideArrow: true,
           ),
@@ -180,9 +180,9 @@ class SettingPage extends GetView<SettingPageController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  '版本',
-                  style: TextStyle(
+                Text(
+                  'version'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: readrBlack87,
@@ -216,7 +216,7 @@ class SettingPage extends GetView<SettingPageController> {
           child: Column(
             children: [
               _settingButton(
-                text: '顯示新聞範圍',
+                text: 'newsCoverageSettingPageTitle'.tr,
                 onPressed: () {
                   Get.to(() => NewsCoverageSettingPage());
                 },
@@ -226,7 +226,7 @@ class SettingPage extends GetView<SettingPageController> {
                 height: 1,
               ),
               _settingButton(
-                text: '預設顯示頁面',
+                text: 'initialSettingPageTitle'.tr,
                 onPressed: () {
                   Get.to(() => InitialSettingPage());
                 },
@@ -236,7 +236,7 @@ class SettingPage extends GetView<SettingPageController> {
                 height: 1,
               ),
               _settingButton(
-                text: '封鎖名單',
+                text: 'blockList'.tr,
                 onPressed: () {
                   Get.to(() => BlocklistPage());
                 },
@@ -251,7 +251,7 @@ class SettingPage extends GetView<SettingPageController> {
           child: Column(
             children: [
               _settingButton(
-                text: '聯絡我們',
+                text: 'contactUs'.tr,
                 onPressed: () {
                   Get.to(() => ContactUsPage(
                         appVersion: controller.versionAndBuildNumber.value,
@@ -265,7 +265,7 @@ class SettingPage extends GetView<SettingPageController> {
                 height: 1,
               ),
               _settingButton(
-                text: '關於',
+                text: 'about'.tr,
                 onPressed: () => Get.to(() => AboutPage()),
                 hideArrow: true,
               ),
@@ -278,9 +278,9 @@ class SettingPage extends GetView<SettingPageController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      '版本',
-                      style: TextStyle(
+                    Text(
+                      'version'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: readrBlack87,
@@ -349,9 +349,9 @@ class SettingPage extends GetView<SettingPageController> {
             child: Container(
               height: 56,
               alignment: Alignment.centerLeft,
-              child: const Text(
-                '登出',
-                style: TextStyle(
+              child: Text(
+                'logOut'.tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: readrBlack87,
@@ -382,9 +382,9 @@ class SettingPage extends GetView<SettingPageController> {
             child: Container(
               height: 56,
               alignment: Alignment.centerLeft,
-              child: const Text(
-                '刪除帳號',
-                style: TextStyle(
+              child: Text(
+                'deletePageTitle'.tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.red,

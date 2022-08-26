@@ -182,4 +182,10 @@ const Map<String, String> chineseCnMap = {
   'within24Hours': '24小时内',
   'within3Days': '3天内',
   'within1Week': '1周内',
+
+  //settingPage
+  'setting': '设置',
+  'about': '关于',
+  'version': '版本',
+  'logOut': '注销',
 };

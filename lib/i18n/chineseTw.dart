@@ -181,4 +181,10 @@ const Map<String, String> chineseTwMap = {
   'within24Hours': '24小時內',
   'within3Days': '3天內',
   'within1Week': '1週內',
+
+  //settingPage
+  'setting': '設定',
+  'about': '關於',
+  'version': '版本',
+  'logOut': '登出',
 };
