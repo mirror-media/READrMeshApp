@@ -172,4 +172,7 @@ const Map<String, String> chineseTwMap = {
   'letMeThinkAgain': '那我再想想',
   'backToHomePage': '回首頁',
   'confirmDeleteAccount': '確認刪除',
+
+  //initialSettingPage
+  'initialSettingPageTitle': '預設顯示頁面',
 };

@@ -173,4 +173,7 @@ const Map<String, String> chineseCnMap = {
   'letMeThinkAgain': '让我再想想',
   'backToHomePage': '返回主页',
   'confirmDeleteAccount': '确认删除',
+
+  //initialSettingPage
+  'initialSettingPageTitle': '默认显示页面',
 };

@@ -176,4 +176,7 @@ const Map<String, String> englishMap = {
   'letMeThinkAgain': 'Let me think again',
   'backToHomePage': 'Back to the homepage',
   'confirmDeleteAccount': 'Confirm deletion',
+
+  //initialSettingPage
+  'initialSettingPageTitle': 'Default display page',
 };
