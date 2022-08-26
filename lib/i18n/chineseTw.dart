@@ -175,4 +175,10 @@ const Map<String, String> chineseTwMap = {
 
   //initialSettingPage
   'initialSettingPageTitle': '預設顯示頁面',
+
+  //newsCoverageSettingPage
+  'newsCoverageSettingPageTitle': '顯示新聞範圍',
+  'within24Hours': '24小時內',
+  'within3Days': '3天內',
+  'within1Week': '1週內',
 };

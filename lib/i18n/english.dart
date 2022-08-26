@@ -179,4 +179,10 @@ const Map<String, String> englishMap = {
 
   //initialSettingPage
   'initialSettingPageTitle': 'Default display page',
+
+  //newsCoverageSettingPage
+  'newsCoverageSettingPageTitle': 'Displayed news time period',
+  'within24Hours': 'Within 24 hours',
+  'within3Days': 'Within 3 days',
+  'within1Week': 'Within 1 week',
 };

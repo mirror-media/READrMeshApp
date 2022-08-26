@@ -176,4 +176,10 @@ const Map<String, String> chineseCnMap = {
 
   //initialSettingPage
   'initialSettingPageTitle': '默认显示页面',
+
+  //newsCoverageSettingPage
+  'newsCoverageSettingPageTitle': '显示新闻范围',
+  'within24Hours': '24小时内',
+  'within3Days': '3天内',
+  'within1Week': '1周内',
 };
