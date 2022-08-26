@@ -3,6 +3,7 @@ const Map<String, String> chineseTwMap = {
   'delete': '刪除',
   'save': '儲存',
   'publish': '發佈',
+  'remove': '移除',
 
   //bottom tab
   'communityTab': '社群',
@@ -76,6 +77,11 @@ const Map<String, String> chineseTwMap = {
   'noPick': '尚無人精選',
   'pickCommentHint': '跟大家分享你為什麼精選...',
   'pickDirectly': '直接加入精選',
+  'pickTooltip': '精選喜歡的文章或集錦',
+  'unPickAlertTitle': '確認移除精選？',
+  'unPickAlertContent': '移除精選，將會一併移除您的留言',
+  'pick': '精選',
+  'picked': '已精選',
 
   //collection
   'collection': '集錦',

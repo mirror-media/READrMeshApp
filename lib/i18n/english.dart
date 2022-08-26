@@ -3,6 +3,7 @@ const Map<String, String> englishMap = {
   'delete': 'Delete',
   'save': 'Save',
   'publish': 'Publish',
+  'remove': 'Remove',
 
   //bottom tab
   'communityTab': 'Community',
@@ -77,6 +78,12 @@ const Map<String, String> englishMap = {
   'noPick': 'No pick yet',
   'pickCommentHint': 'Share with us why you picked...',
   'pickDirectly': 'Pick directly',
+  'pickTooltip': 'Pick favorite articles or collections',
+  'unPickAlertTitle': 'Are you sure you want to remove the pick?',
+  'unPickAlertContent':
+      'If you remove the pick, your comment will also be removed',
+  'pick': 'Pick',
+  'picked': 'Picked',
 
   //collection
   'collection': 'Collection',

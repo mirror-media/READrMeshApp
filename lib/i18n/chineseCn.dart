@@ -3,6 +3,7 @@ const Map<String, String> chineseCnMap = {
   'delete': '删除',
   'save': '保存',
   'publish': '发表',
+  'remove': '去除',
 
   //bottom tab
   'communityTab': '社区',
@@ -76,6 +77,11 @@ const Map<String, String> chineseCnMap = {
   'noPick': '尚无人精选',
   'pickCommentHint': '与大家分享你为什么精选...',
   'pickDirectly': '直接加入精选',
+  'pickTooltip': '精选喜欢的文章或集锦',
+  'unPickAlertTitle': '确认移除精选？',
+  'unPickAlertContent': '移除精选，将会一并移除您的评论',
+  'pick': '精选',
+  'picked': '已精选',
 
   //collection
   'collection': '集锦',
