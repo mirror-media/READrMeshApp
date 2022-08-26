@@ -47,8 +47,8 @@ class TimelineCollectionPick extends CollectionPick {
       time = DateTime.tryParse(json['custom_time'])?.toLocal();
     }
 
-    String? summary = json['summary'] as String;
-    if (summary.isEmpty) {
+    String? summary = json['summary'];
+    if (summary?.isEmpty ?? false) {
       summary = null;
     }
 
