@@ -31,4 +31,6 @@ const Map<String, String> chineseCnMap = {
   'share': '分享',
   //follow
   'followerConunt': '人追踪',
+  //tab content no result
+  'tabContentNoResult': '此类别中当前没有文章',
 };

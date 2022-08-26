@@ -31,4 +31,6 @@ const Map<String, String> chineseTwMap = {
   'share': '分享',
   //follow
   'followerConunt': '人追蹤',
+  //tab content no result
+  'tabContentNoResult': '這個分類目前沒有文章',
 };
