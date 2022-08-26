@@ -75,9 +75,9 @@ Future<void> showMoreActionSheet({
                   color: readrBlack87,
                   size: 18,
                 ),
-                label: const Text(
-                  '加入集錦',
-                  style: TextStyle(
+                label: Text(
+                  'addToCollection'.tr,
+                  style: const TextStyle(
                     color: readrBlack87,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -118,8 +118,8 @@ Future<void> showMoreActionSheet({
                   Get.find<PickableItemController>(tag: controllerTag)
                           .isBookmarked
                           .value
-                      ? '移除書籤'
-                      : '加入書籤',
+                      ? 'removeBookmark'.tr
+                      : 'addBookmark'.tr,
                   style: const TextStyle(
                     color: readrBlack87,
                     fontWeight: FontWeight.w400,
@@ -142,16 +142,16 @@ Future<void> showMoreActionSheet({
                         size: 16,
                         color: Colors.white,
                       ),
-                      message: '已複製連結');
+                      message: 'copiedLink'.tr);
                 },
                 icon: Icon(
                   GetPlatform.isAndroid ? Icons.link : CupertinoIcons.link,
                   size: 19,
                   color: readrBlack87,
                 ),
-                label: const Text(
-                  '複製連結',
-                  style: TextStyle(
+                label: Text(
+                  'copyLink'.tr,
+                  style: const TextStyle(
                     color: readrBlack87,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -178,9 +178,9 @@ Future<void> showMoreActionSheet({
                   color: readrBlack87,
                   size: 18,
                 ),
-                label: const Text(
-                  '分享',
-                  style: TextStyle(
+                label: Text(
+                  'share'.tr,
+                  style: const TextStyle(
                     color: readrBlack87,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,

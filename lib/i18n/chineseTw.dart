@@ -22,4 +22,11 @@ const Map<String, String> chineseTwMap = {
   'invitationCodeButtonTooltip': '邀請碼',
   //toast
   'syncFollowingPublisherToast': '已同步追蹤名單',
+  //more action bottom sheet
+  'addToCollection': '加入集錦',
+  'addBookmark': '加入書籤',
+  'removeBookmark': '移除書籤',
+  'copiedLink': '已複製連結',
+  'copyLink': '複製連結',
+  'share': '分享',
 };

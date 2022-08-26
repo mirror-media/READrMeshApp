@@ -23,4 +23,11 @@ const Map<String, String> englishMap = {
   'invitationCodeButtonTooltip': 'Invitation code',
   //toast
   'syncFollowingPublisherToast': 'Synced tracked media list',
+  //more action bottom sheet
+  'addToCollection': 'Add to collection',
+  'addBookmark': 'Bookmark',
+  'removeBookmark': 'Remove bookmark',
+  'copiedLink': 'Link copied',
+  'copyLink': 'Copy link',
+  'share': 'Share',
 };

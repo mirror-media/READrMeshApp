@@ -22,4 +22,11 @@ const Map<String, String> chineseCnMap = {
   'invitationCodeButtonTooltip': '邀请码',
   //toast
   'syncFollowingPublisherToast': '已同步追踪名单',
+  //more action bottom sheet
+  'addToCollection': '加入集锦',
+  'addBookmark': '加入书签',
+  'removeBookmark': '移除书签',
+  'copiedLink': '已复制链接',
+  'copyLink': '复制链接',
+  'share': '分享',
 };
