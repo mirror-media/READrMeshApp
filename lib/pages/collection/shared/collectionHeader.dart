@@ -90,14 +90,14 @@ class CollectionHeader extends GetView<CollectionPageController> {
 
             return Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-              child: Obx(
-                () => GestureDetector(
-                  onTap: () {
-                    if (controller.expandDescription.isFalse) {
-                      controller.expandDescription.value = true;
-                    }
-                  },
-                  child: ExtendedText(
+              child: GestureDetector(
+                onTap: () {
+                  if (controller.expandDescription.isFalse) {
+                    controller.expandDescription.value = true;
+                  }
+                },
+                child: Obx(
+                  () => ExtendedText(
                     controller.collectionDescription.value,
                     maxLines: controller.expandDescription.value ? null : 3,
                     style: const TextStyle(
