@@ -74,16 +74,16 @@ class StoryPage extends GetView<StoryPageController> {
           await showPlatformDialog(
             context: context,
             builder: (_) => PlatformAlertDialog(
-              title: const Text(
-                '確定要刪除留言？',
-                style: TextStyle(
+              title: Text(
+                'deleteAlertTitle'.tr,
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              content: const Text(
-                '系統將不會儲存您剛剛輸入的內容',
-                style: TextStyle(
+              content: Text(
+                'leaveAlertContent'.tr,
+                style: const TextStyle(
                   fontSize: 13,
                 ),
               ),
@@ -91,7 +91,7 @@ class StoryPage extends GetView<StoryPageController> {
                 PlatformDialogAction(
                   onPressed: () => Get.close(2),
                   child: PlatformText(
-                    '刪除留言',
+                    'deleteComment'.tr,
                     style: const TextStyle(
                       fontSize: 17,
                       color: Colors.red,
@@ -101,7 +101,7 @@ class StoryPage extends GetView<StoryPageController> {
                 PlatformDialogAction(
                   onPressed: () => Get.back(),
                   child: PlatformText(
-                    '繼續輸入',
+                    'continueInput'.tr,
                     style: const TextStyle(
                       fontSize: 17,
                       color: Colors.blue,
