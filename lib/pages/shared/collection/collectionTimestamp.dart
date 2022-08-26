@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -54,16 +55,39 @@ class _CollectionTimestampState extends State<CollectionTimestamp> {
   Widget build(BuildContext context) {
     String text = '';
     double fontSize = widget.textSize;
+    bool isEnglish = Get.locale?.languageCode == 'en';
     if (_duration.inSeconds < 60) {
-      text = '剛剛更新';
+      text = 'justUpdated'.tr;
     } else if (_duration.inMinutes < 60) {
-      text = '${_duration.inMinutes}分鐘前更新';
+      if (isEnglish && _duration.inMinutes == 1) {
+        text = 'Updated a minute ago';
+      } else if (isEnglish) {
+        text = 'Updated ${_duration.inMinutes}${'minutesAgo'.tr}';
+      } else {
+        text = '${_duration.inMinutes}${'minutesAgo'.tr}更新';
+      }
     } else if (_duration.inHours < 24) {
-      text = '${_duration.inHours}小時前更新';
+      if (isEnglish && _duration.inHours == 1) {
+        text = 'Updated an hour ago';
+      } else if (isEnglish) {
+        text = 'Updated ${_duration.inHours}${'hoursAgo'.tr}';
+      } else {
+        text = '${_duration.inHours}${'hoursAgo'.tr}更新';
+      }
     } else if (_duration.inDays < 8) {
-      text = '${_duration.inDays}天前更新';
+      if (isEnglish && _duration.inDays == 1) {
+        text = 'Updated a day ago';
+      } else if (isEnglish) {
+        text = 'Updated ${_duration.inDays}${'daysAgo'.tr}';
+      } else {
+        text = '${_duration.inDays}${'daysAgo'.tr}更新';
+      }
     } else {
-      text = '${DateFormat('yyyy/MM/dd').format(widget.dateTime)}更新';
+      if (isEnglish) {
+        text = 'Updated on ${DateFormat('MM/dd/yyyy').format(widget.dateTime)}';
+      } else {
+        text = '${DateFormat('yyyy/MM/dd').format(widget.dateTime)}更新';
+      }
     }
 
     return Text(

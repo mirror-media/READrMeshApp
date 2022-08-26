@@ -49,4 +49,6 @@ const Map<String, String> englishMap = {
   'pickCount': ' pick',
   //collection
   'collection': 'Collection',
+  //collection timestamp
+  'justUpdated': 'Just updated',
 };

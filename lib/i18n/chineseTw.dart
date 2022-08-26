@@ -48,4 +48,6 @@ const Map<String, String> chineseTwMap = {
   'pickCount': ' 人精選',
   //collection
   'collection': '集錦',
+  //collection timestamp
+  'justUpdated': '剛剛更新',
 };

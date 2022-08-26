@@ -48,4 +48,6 @@ const Map<String, String> chineseCnMap = {
   'pickCount': ' 人精选',
   //collection
   'collection': '集锦',
+  //collection timestamp
+  'justUpdated': '刚刚更新',
 };
