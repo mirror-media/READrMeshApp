@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -71,14 +72,14 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
         }
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _buildBar(),
+          appBar: _buildBar(context),
           body: _buildBody(context),
         );
       },
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       title: const Text(
@@ -134,33 +135,37 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       fontSize: 18,
                     ),
                   ),
-                  onPressed: () {
-                    chooseStoryList.sort((a, b) => b.newsListItem!.publishedDate
-                        .compareTo(a.newsListItem!.publishedDate));
-                    Get.back();
-                    switch (controller.format.value) {
-                      case CollectionFormat.folder:
-                        Get.off(
-                          () => SortStoryPage(
-                            folderCollectionPick,
-                            isChangeFormat: true,
-                            collection: collection,
-                          ),
-                          fullscreenDialog: true,
-                        );
+                  onPressed: () async {
+                    bool check = await _showChangeAlertDialog(context) ?? false;
+                    if (check) {
+                      chooseStoryList.sort((a, b) => b
+                          .newsListItem!.publishedDate
+                          .compareTo(a.newsListItem!.publishedDate));
+                      Get.back();
+                      switch (controller.format.value) {
+                        case CollectionFormat.folder:
+                          Get.off(
+                            () => SortStoryPage(
+                              folderCollectionPick,
+                              isChangeFormat: true,
+                              collection: collection,
+                            ),
+                            fullscreenDialog: true,
+                          );
 
-                        break;
-                      case CollectionFormat.timeline:
-                        Get.off(
-                          () => EditTimelinePage(
-                            timelineCollectionPick,
-                            isChangeFormat: true,
-                            collection: collection,
-                          ),
-                          fullscreenDialog: true,
-                        );
+                          break;
+                        case CollectionFormat.timeline:
+                          Get.off(
+                            () => EditTimelinePage(
+                              timelineCollectionPick,
+                              isChangeFormat: true,
+                              collection: collection,
+                            ),
+                            fullscreenDialog: true,
+                          );
 
-                        break;
+                          break;
+                      }
                     }
                   },
                 );
@@ -413,6 +418,49 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           ),
         );
       },
+    );
+  }
+
+  Future<bool?> _showChangeAlertDialog(BuildContext context) async {
+    return await showPlatformDialog<bool>(
+      context: context,
+      builder: (_) => PlatformAlertDialog(
+        title: const Text(
+          '確認更換集錦類型？',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: const Text(
+          '系統將無法復原您先前的自訂內容',
+          style: TextStyle(
+            fontSize: 13,
+          ),
+        ),
+        actions: [
+          PlatformDialogAction(
+            onPressed: () => Get.back<bool>(result: true),
+            child: PlatformText(
+              '確認更換',
+              style: const TextStyle(
+                fontSize: 17,
+                color: Colors.red,
+              ),
+            ),
+          ),
+          PlatformDialogAction(
+            onPressed: () => Get.back<bool>(result: false),
+            child: PlatformText(
+              '取消',
+              style: const TextStyle(
+                fontSize: 17,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
