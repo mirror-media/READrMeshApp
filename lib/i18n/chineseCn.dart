@@ -52,4 +52,8 @@ const Map<String, String> chineseCnMap = {
   'collection': '集锦',
   //collection timestamp
   'justUpdated': '刚刚更新',
+  //commentInputBox
+  'commentVisitorHint': '注册参加讨论',
+  'commentTextFieldHint': '在此处输入评论...',
+  'sendComment': '发表',
 };

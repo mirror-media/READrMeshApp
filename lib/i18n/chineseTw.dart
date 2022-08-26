@@ -52,4 +52,8 @@ const Map<String, String> chineseTwMap = {
   'collection': '集錦',
   //collection timestamp
   'justUpdated': '剛剛更新',
+  //commentInputBox
+  'commentVisitorHint': '註冊以參與討論',
+  'commentTextFieldHint': '在這裡輸入留言...',
+  'sendComment': '發佈',
 };

@@ -53,4 +53,8 @@ const Map<String, String> englishMap = {
   'collection': 'Collection',
   //collection timestamp
   'justUpdated': 'Just updated',
+  //commentInputBox
+  'commentVisitorHint': 'Sign up to participate in discussions',
+  'commentTextFieldHint': 'Enter a comment here...',
+  'sendComment': 'Publish',
 };
