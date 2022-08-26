@@ -174,12 +174,12 @@ class CommunityListItem {
         if (newsListItem.commentMembers != null &&
             newsListItem.commentMembers!.isNotEmpty) {
           itemBarMember.assignAll(newsListItem.commentMembers!);
-          itemBarText = '在這篇留言';
+          itemBarText = 'commentNews'.tr;
         } else {
           itemBarMember.assignAll(
               Get.find<PickableItemController>(tag: newsListItem.controllerTag)
                   .pickedMembers);
-          itemBarText = '精選了這篇';
+          itemBarText = 'pickNews'.tr;
         }
         break;
       case CommunityListItemType.pickCollection:
@@ -259,17 +259,17 @@ class CommunityListItem {
         itemId = collection.id;
         if (type == CommunityListItemType.updateCollection) {
           itemBarMember.assign(collection.creator);
-          itemBarText = '更新了一個集錦';
+          itemBarText = 'updateCollection'.tr;
         } else if (type == CommunityListItemType.createCollection) {
           itemBarMember.assign(collection.creator);
-          itemBarText = '建立了一個新的集錦';
+          itemBarText = 'createCollection'.tr;
         } else if (collection.commentMembers != null &&
             collection.commentMembers!.isNotEmpty) {
           itemBarMember.assignAll(collection.commentMembers!);
-          itemBarText = '在這個集錦留言';
+          itemBarText = 'commentCollection'.tr;
         } else {
           itemBarMember.assignAll(collection.followingPickMembers!);
-          itemBarText = '精選了這個集錦';
+          itemBarText = 'pickCollection'.tr;
         }
         break;
     }

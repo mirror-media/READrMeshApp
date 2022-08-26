@@ -151,9 +151,9 @@ class CommunityPage extends GetView<CommunityPageController> {
             padding: const EdgeInsets.fromLTRB(87.5, 22, 87.5, 26),
             child: SvgPicture.asset(noFollowingSvg),
           ),
-          const Text(
-            '咦？這裡好像還缺點什麼...',
-            style: TextStyle(
+          Text(
+            'communityEmptyTitle'.tr,
+            style: const TextStyle(
               color: readrBlack87,
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -163,23 +163,24 @@ class CommunityPage extends GetView<CommunityPageController> {
             height: 8,
           ),
           RichText(
-            text: const TextSpan(
-                text: '追蹤您喜愛的人\n看看他們都精選了什麼新聞',
-                style: TextStyle(
-                  color: readrBlack50,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-                children: [
-                  TextSpan(
-                    text: ' 👀',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: readrBlack,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ]),
+            text: TextSpan(
+              text: 'communityEmptyDescription'.tr,
+              style: const TextStyle(
+                color: readrBlack50,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              children: const [
+                TextSpan(
+                  text: ' 👀',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: readrBlack,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -370,10 +371,10 @@ class CommunityPage extends GetView<CommunityPageController> {
           ),
         ),
       ));
-      children.add(const Text(
-        '及',
-        style: TextStyle(fontSize: 14, color: readrBlack50),
-        strutStyle: StrutStyle(
+      children.add(Text(
+        'and'.tr,
+        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
         ),
@@ -398,7 +399,7 @@ class CommunityPage extends GetView<CommunityPageController> {
         ),
       ));
       children.add(Text(
-        '都${item.itemBarText}',
+        '${'both'.tr}${item.itemBarText}',
         style: const TextStyle(fontSize: 14, color: readrBlack50),
         strutStyle: const StrutStyle(
           forceStrutHeight: true,
@@ -551,17 +552,17 @@ class CommunityPage extends GetView<CommunityPageController> {
                           forceStrutHeight: true,
                           leading: 0.5,
                         ),
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: '... ',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color.fromRGBO(0, 9, 40, 0.66),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
                           children: [
                             TextSpan(
-                              text: '看完整留言',
-                              style: TextStyle(
+                              text: 'showFullComment'.tr,
+                              style: const TextStyle(
                                 color: readrBlack50,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -593,15 +594,15 @@ class CommunityPage extends GetView<CommunityPageController> {
             color: homeScreenBackgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 text: '🎉 ',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                 ),
                 children: [
                   TextSpan(
-                    text: '你已追完所有更新囉',
-                    style: TextStyle(
+                    text: 'communityNoMore'.tr,
+                    style: const TextStyle(
                       color: readrBlack30,
                       fontSize: 14,
                     ),
