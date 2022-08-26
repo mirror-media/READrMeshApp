@@ -45,6 +45,9 @@ const Map<String, String> chineseTwMap = {
   'noComment': '還沒有人留言，快來搶頭香！',
   //comment
   'commentCount': ' 則留言',
+  'sendingComment': '傳送中',
+  'editComment': '編輯留言',
+  'displayMore': '顯示更多',
   //pick
   'pickCount': ' 人精選',
   'noPick': '尚無人精選',

@@ -46,6 +46,9 @@ const Map<String, String> englishMap = {
   'noComment': 'No one has commented yet, be the first to comment!',
   //comment
   'commentCount': ' comment',
+  'sendingComment': 'Sending',
+  'editComment': 'Edit comment',
+  'displayMore': 'Display more',
   //pick
   'pickCount': ' pick',
   'noPick': 'No picks yet',
