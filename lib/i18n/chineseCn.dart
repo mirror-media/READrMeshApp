@@ -6,6 +6,7 @@ const Map<String, String> chineseCnMap = {
   'remove': '去除',
   'share': '分享',
   'back': '返回',
+  'ok': '确定',
 
   //bottom tab
   'communityTab': '社区',
@@ -146,4 +147,16 @@ const Map<String, String> chineseCnMap = {
   'blockList': '黑名单',
   'emptyBlockList': '你目前没有屏蔽任何人',
   'unBlock': '解除屏蔽',
+
+  //contactUsPage
+  'contactUs': '联系我们',
+  'customerServiceEmail': '客户服务邮箱',
+  'customerServicePhone': '客户服务电话',
+  'discordCommunity': 'Discord 社区',
+  'contactUsContent':
+      '如果您在使用过程中遇到任何问题，请将屏幕截图和问题说明发送到客户服务邮箱，或拨打客户服务电话，有专人会为您服务。\n（服务时间：周一至周五，10:00至18:00）',
+
+  //mail
+  'appleMail': '邮箱',
+  'noMailAppsDialogTitle': '找不到邮箱 APP',
 };

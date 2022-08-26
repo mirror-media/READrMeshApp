@@ -6,6 +6,7 @@ const Map<String, String> chineseTwMap = {
   'remove': '移除',
   'share': '分享',
   'back': '回前頁',
+  'ok': '確定',
 
   //bottom tab
   'communityTab': '社群',
@@ -145,4 +146,16 @@ const Map<String, String> chineseTwMap = {
   'blockList': '封鎖名單',
   'emptyBlockList': '你目前沒有封鎖任何人',
   'unBlock': '解除封鎖',
+
+  //contactUsPage
+  'contactUs': '聯絡我們',
+  'customerServiceEmail': '客服信箱',
+  'customerServicePhone': '客服電話',
+  'discordCommunity': 'Discord 社群',
+  'contactUsContent':
+      '若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務\n（服務時間：星期一 ~ 星期五，10:00 ~ 18:00）',
+
+  //mail
+  'appleMail': '信件',
+  'noMailAppsDialogTitle': '找不到信件 APP',
 };

@@ -6,6 +6,7 @@ const Map<String, String> englishMap = {
   'remove': 'Remove',
   'share': 'Share',
   'back': 'Back',
+  'ok': 'OK',
 
   //bottom tab
   'communityTab': 'Community',
@@ -147,4 +148,16 @@ const Map<String, String> englishMap = {
   'blockList': 'Block list',
   'emptyBlockList': "You didn't block anyone",
   'unBlock': 'Unblock',
+
+  //contactUsPage
+  'contactUs': 'Contact us',
+  'customerServiceEmail': 'Customer service email',
+  'customerServicePhone': 'Consumer hotline',
+  'discordCommunity': 'Discord community',
+  'contactUsContent':
+      'If you have any problems with use, please send the screenshot and description of the problem to the customer service email, or call the consumer hotline.\n (service time: Monday ~ Friday, 10:00 ~ 18:00)',
+
+  //mail
+  'appleMail': 'Apple Mail',
+  'noMailAppsDialogTitle': "Can't find email APP",
 };
