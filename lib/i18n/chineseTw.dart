@@ -9,6 +9,11 @@ const Map<String, String> chineseTwMap = {
   'ok': '確定',
   'viewAll': '查看全部',
   'updating': '更新中',
+  'close': '關閉',
+  'and': '及',
+  'andOther': '及其他',
+  'people': '人',
+  'all': '都',
 
   //bottom tab
   'communityTab': '社群',
@@ -18,7 +23,6 @@ const Map<String, String> chineseTwMap = {
   //community page
   'communityEmptyTitle': '咦？這裡好像還缺點什麼...',
   'communityEmptyDescription': '追蹤您喜愛的人\n看看他們都精選了什麼新聞',
-  'and': '及',
   'both': '都',
   'pickNews': '精選了這篇',
   'showFullComment': '看完整留言',
@@ -115,7 +119,6 @@ const Map<String, String> chineseTwMap = {
   //followableItem
   'defaultDescription': '為你推薦',
   'singleFollower': '的追蹤對象',
-  'andOther': '及其他',
   'multiFollower': '人的追蹤對象',
   'lookmoreMemberText': '探索更多為你推薦的使用者',
   'lookmorePublisherText': '探索更多為你推薦的媒體',
@@ -270,4 +273,25 @@ const Map<String, String> chineseTwMap = {
   'openCamera': '開啟相機',
   'choosePhoto': '選擇照片',
   'crop': '裁切',
+
+  //notifyPage
+  'notifications': '通知',
+  'newNotifications': '新通知',
+  'noNewNotification': '目前沒有新通知...',
+  'maintainAnnouncement': '系統維修公告',
+  'newFeatureAnnouncement': '新功能上線囉～',
+  'markAllAsRead': '全部標為已讀',
+  'previousNotifications': '之前的通知',
+
+  //notifyItem
+  'commentNewsPrefix': '也在',
+  'commentNewsSuffix': '的新聞下留言。',
+  'startFollowingYou': '開始追蹤你。',
+  'likeCommentPrefix': '喜歡你的留言「',
+  'likeCommentSuffix': '」。',
+  'pickCollectionPrefix': '精選了你的集錦「',
+  'pickCollectionSuffix': '」。',
+  'commentYourCollection': '在你的集錦下留言。',
+  'createCollectionPrefix': '建立了新的集錦「',
+  'createCollectionSuffix': '」。',
 };

@@ -9,6 +9,11 @@ const Map<String, String> chineseCnMap = {
   'ok': '确定',
   'viewAll': '查看全部',
   'updating': '更新中',
+  'close': '关闭',
+  'and': '及',
+  'andOther': '及其他',
+  'people': '人',
+  'all': '都',
 
   //bottom tab
   'communityTab': '社区',
@@ -18,7 +23,6 @@ const Map<String, String> chineseCnMap = {
   //community page
   'communityEmptyTitle': '咦？这里好像还缺点什么...',
   'communityEmptyDescription': '关注您喜爱的人\n看看他们都精选了什么新闻',
-  'and': '及',
   'both': '都',
   'pickNews': '精选了这篇',
   'showFullComment': '看完整评论',
@@ -115,7 +119,6 @@ const Map<String, String> chineseCnMap = {
   //followableItem
   'defaultDescription': '为你推荐',
   'singleFollower': '的关注对象',
-  'andOther': '及其他',
   'multiFollower': '人的关注对象',
   'lookmoreMemberText': '探索更多推荐给您的用户',
   'lookmorePublisherText': '探索更多推荐给您的媒体',
@@ -271,4 +274,25 @@ const Map<String, String> chineseCnMap = {
   'openCamera': '打开相机',
   'choosePhoto': '选择照片',
   'crop': '裁切',
+
+  //notifyPage
+  'notifications': '通知',
+  'newNotifications': '新通知',
+  'noNewNotification': '当前没有新通知...',
+  'maintainAnnouncement': '系统维护公告',
+  'newFeatureAnnouncement': '新功能已上线～',
+  'markAllAsRead': '将所有标记为已读',
+  'previousNotifications': '以前的通知',
+
+  //notifyItem
+  'commentNewsPrefix': '也在',
+  'commentNewsSuffix': '的新闻下评论。',
+  'startFollowingYou': '开始关注你。',
+  'likeCommentPrefix': '喜欢你的评论「',
+  'likeCommentSuffix': '」。',
+  'pickCollectionPrefix': '精选了你的集锦「',
+  'pickCollectionSuffix': '」。',
+  'commentYourCollection': '在你的集锦下评论。',
+  'createCollectionPrefix': '创建了新的集锦「',
+  'createCollectionSuffix': '」。',
 };

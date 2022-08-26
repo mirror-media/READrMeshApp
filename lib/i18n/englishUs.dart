@@ -9,6 +9,11 @@ const Map<String, String> englishUsMap = {
   'ok': 'OK',
   'viewAll': 'View all',
   'updating': 'Updating',
+  'close': 'Close',
+  'and': ' and ',
+  'andOther': 'and other',
+  'people': 'people',
+  'all': ' all',
 
   //bottom tab
   'communityTab': 'Community',
@@ -19,7 +24,6 @@ const Map<String, String> englishUsMap = {
   'communityEmptyTitle': 'Huh? There seems to be something missing here...',
   'communityEmptyDescription':
       'Follow your favorite users\nSee what news they have picked',
-  'and': ' and ',
   'both': ' both',
   'pickNews': ' picked this',
   'showFullComment': 'see full comment',
@@ -32,7 +36,7 @@ const Map<String, String> englishUsMap = {
 
   //main AppBar tooltip
   'searchButtonTooltip': 'Search',
-  'notificationButtonTooltip': 'Notification',
+  'notificationButtonTooltip': 'Notifications',
   'invitationCodeButtonTooltip': 'Invitation code',
 
   //toast
@@ -117,7 +121,6 @@ const Map<String, String> englishUsMap = {
   //followableItem
   'defaultDescription': 'Recommended to you',
   'singleFollower': ' followed',
-  'andOther': 'and other',
   'multiFollower': 'followed',
   'lookmoreMemberText': 'Explore more users recommended for you',
   'lookmorePublisherText': 'Explore more recommended media for you',
@@ -278,4 +281,25 @@ const Map<String, String> englishUsMap = {
   'openCamera': 'Take a picture',
   'choosePhoto': 'Choose a photo',
   'crop': 'Crop',
+
+  //notifyPage
+  'notifications': 'Notifications',
+  'newNotifications': 'New notifications',
+  'noNewNotification': 'There are currently no new notification...',
+  'maintainAnnouncement': 'Service Maintenance Announcement',
+  'newFeatureAnnouncement': 'New features are online~',
+  'markAllAsRead': 'Mark all as read',
+  'previousNotifications': 'Previous Notifications',
+
+  //notifyItem
+  'commentNewsPrefix': ' comment under ',
+  'commentNewsSuffix': "'s news.",
+  'startFollowingYou': ' start following you.',
+  'likeCommentPrefix': ' like your message "',
+  'likeCommentSuffix': '".',
+  'pickCollectionPrefix': ' pick your collection "',
+  'pickCollectionSuffix': '".',
+  'commentYourCollection': ' leave a comment under your collection.',
+  'createCollectionPrefix': ' create a new collection "',
+  'createCollectionSuffix': '".',
 };

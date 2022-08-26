@@ -19,9 +19,9 @@ class NotifyPage extends GetView<NotifyPageController> {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            '通知',
-            style: TextStyle(
+          title: Text(
+            'notifications'.tr,
+            style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack,
               fontSize: 18,
@@ -34,7 +34,7 @@ class NotifyPage extends GetView<NotifyPageController> {
                 color: readrBlack87,
                 size: 26,
               ),
-              tooltip: '關閉',
+              tooltip: 'close'.tr,
               onPressed: () {
                 controller.readAll();
                 Get.back();
@@ -64,7 +64,7 @@ class NotifyPage extends GetView<NotifyPageController> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                     child: Text(
-                      '新通知',
+                      'newNotifications'.tr,
                       style: TextStyle(
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500
@@ -77,9 +77,9 @@ class NotifyPage extends GetView<NotifyPageController> {
                   ),
                   Container(
                     padding: const EdgeInsets.all(20),
-                    child: const Text(
-                      '目前沒有新通知...',
-                      style: TextStyle(
+                    child: Text(
+                      'noNewNotification'.tr,
+                      style: const TextStyle(
                         color: readrBlack66,
                         fontSize: 14,
                       ),
@@ -120,11 +120,11 @@ class NotifyPage extends GetView<NotifyPageController> {
     Color backgroundColor;
     switch (announcement.type) {
       case AnnouncementType.maintain:
-        title = '系統維修公告';
+        title = 'maintainAnnouncement'.tr;
         backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
         break;
       case AnnouncementType.newFeature:
-        title = '新功能上線囉～';
+        title = 'newFeatureAnnouncement'.tr;
         backgroundColor = const Color.fromRGBO(242, 253, 255, 1);
         break;
     }
@@ -179,7 +179,7 @@ class NotifyPage extends GetView<NotifyPageController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '新通知',
+                      'newNotifications'.tr,
                       style: TextStyle(
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500
@@ -191,9 +191,9 @@ class NotifyPage extends GetView<NotifyPageController> {
                     ),
                     TextButton(
                       onPressed: () => controller.readAll(),
-                      child: const Text(
-                        '全部標為已讀',
-                        style: TextStyle(
+                      child: Text(
+                        'markAllAsRead'.tr,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
                           color: Colors.blue,
@@ -246,7 +246,7 @@ class NotifyPage extends GetView<NotifyPageController> {
                 color: Colors.white,
                 padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                 child: Text(
-                  '之前的通知',
+                  'previousNotifications'.tr,
                   style: TextStyle(
                     fontWeight:
                         GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
