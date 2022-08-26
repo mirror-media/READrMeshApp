@@ -121,4 +121,6 @@ const Map<String, String> chineseCnMap = {
   'referenceData': '参考数据',
   'readrContactEmail': 'READr联络信箱：',
   'readrCustomerServiceNumber': 'READr客服电话：',
+  'mmContactEmail': '镜周刊联络信箱：',
+  'mmCustomerServiceNumber': '镜周刊客服电话：',
 };

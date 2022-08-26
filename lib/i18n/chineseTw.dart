@@ -120,4 +120,6 @@ const Map<String, String> chineseTwMap = {
   'referenceData': '引用數據',
   'readrContactEmail': 'READr聯絡信箱：',
   'readrCustomerServiceNumber': 'READr客服電話：',
+  'mmContactEmail': '鏡週刊聯絡信箱：',
+  'mmCustomerServiceNumber': '鏡週刊客服電話：',
 };

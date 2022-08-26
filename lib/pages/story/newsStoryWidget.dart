@@ -150,7 +150,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
+        '${'updateTime'.tr}${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -168,7 +168,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '記者：${controller.newsStoryItem.writer!}',
+        '${'journalist'.tr}${controller.newsStoryItem.writer!}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -228,7 +228,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '鏡週刊連絡信箱：',
+            text: 'mmContactEmail'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
@@ -267,7 +267,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '鏡週刊客服電話：',
+            text: 'mmCustomerServiceNumber'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,

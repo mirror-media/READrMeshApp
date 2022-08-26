@@ -122,4 +122,6 @@ const Map<String, String> englishMap = {
   'referenceData': 'Reference data',
   'readrContactEmail': 'READr contact email: ',
   'readrCustomerServiceNumber': 'READr customer service number: ',
+  'mmContactEmail': 'Mirror Media contact email: ',
+  'mmCustomerServiceNumber': 'Mirror Media customer service number: ',
 };
