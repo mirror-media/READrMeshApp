@@ -29,4 +29,6 @@ const Map<String, String> chineseCnMap = {
   'copiedLink': '已复制链接',
   'copyLink': '复制链接',
   'share': '分享',
+  //follow
+  'followerConunt': '人追踪',
 };

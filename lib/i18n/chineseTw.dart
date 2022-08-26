@@ -29,4 +29,6 @@ const Map<String, String> chineseTwMap = {
   'copiedLink': '已複製連結',
   'copyLink': '複製連結',
   'share': '分享',
+  //follow
+  'followerConunt': '人追蹤',
 };

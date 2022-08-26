@@ -30,4 +30,6 @@ const Map<String, String> englishMap = {
   'copiedLink': 'Link copied',
   'copyLink': 'Copy link',
   'share': 'Share',
+  //follow
+  'followerConunt': 'follower',
 };

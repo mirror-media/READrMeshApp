@@ -52,8 +52,14 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
                   } else if (!originFollow && controller.isFollowed.isTrue) {
                     followCount++;
                   }
+
+                  String s = '';
+                  if (followCount > 1 && Get.locale?.languageCode == 'en') {
+                    s = 's';
+                  }
+
                   return Text(
-                    '${followCount.toString()} 人追蹤',
+                    '${followCount.toString()} ${'followerConunt'.tr}$s',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
