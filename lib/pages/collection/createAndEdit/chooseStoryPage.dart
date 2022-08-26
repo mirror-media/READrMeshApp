@@ -13,7 +13,7 @@ import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
-import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
@@ -269,7 +269,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                         break;
                       case CollectionFormat.timeline:
                         Get.off(
-                          () => TimeDimensionPage(
+                          () => EditTimelinePage(
                             List<TimelineCollectionPick>.from(
                                 controller.selectedList.map((e) =>
                                     TimelineCollectionPick.fromCollectionPick(

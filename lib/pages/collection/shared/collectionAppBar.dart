@@ -12,7 +12,7 @@ import 'package:readr/models/collection.dart';
 import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
-import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
 import 'package:share_plus/share_plus.dart';
@@ -222,7 +222,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                 ));
 
                 Get.to(
-                  () => TimeDimensionPage(
+                  () => EditTimelinePage(
                     timelineStoryList,
                     collection: collection,
                     isEdit: true,

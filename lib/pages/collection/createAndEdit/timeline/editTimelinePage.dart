@@ -16,13 +16,13 @@ import 'package:readr/pages/collection/createAndEdit/timeline/customTimePage.dar
 import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
 import 'package:readr/services/collectionService.dart';
 
-class TimeDimensionPage extends GetView<TimeDimensionPageController> {
+class EditTimelinePage extends GetView<TimeDimensionPageController> {
   final bool isEdit;
   final bool isChangeFormat;
   final List<TimelineCollectionPick> timelineStoryList;
   final Collection? collection;
   final bool isAddToEmpty;
-  const TimeDimensionPage(
+  const EditTimelinePage(
     this.timelineStoryList, {
     this.isEdit = false,
     this.isChangeFormat = false,
@@ -108,7 +108,7 @@ class TimeDimensionPage extends GetView<TimeDimensionPageController> {
                       onPressed: () => Get.back(),
                     ),
               title: const Text(
-                '時間維度',
+                '自訂時間',
                 style: TextStyle(
                   fontSize: 18,
                   color: readrBlack,

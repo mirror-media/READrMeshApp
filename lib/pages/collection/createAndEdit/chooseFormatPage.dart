@@ -9,7 +9,7 @@ import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
-import 'package:readr/pages/collection/createAndEdit/timeline/timeDimensionPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
 import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/collectionService.dart';
@@ -115,7 +115,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                     controller.createCollection();
                     break;
                   case CollectionFormat.timeline:
-                    Get.to(() => TimeDimensionPage(timelineCollectionPick));
+                    Get.to(() => EditTimelinePage(timelineCollectionPick));
                     break;
                 }
               },
@@ -151,7 +151,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                         break;
                       case CollectionFormat.timeline:
                         Get.off(
-                          () => TimeDimensionPage(
+                          () => EditTimelinePage(
                             timelineCollectionPick,
                             isChangeFormat: true,
                             collection: collection,
@@ -183,7 +183,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                   Get.to(() => SortStoryPage(folderCollectionPick));
                   break;
                 case CollectionFormat.timeline:
-                  Get.to(() => TimeDimensionPage(timelineCollectionPick));
+                  Get.to(() => EditTimelinePage(timelineCollectionPick));
                   break;
               }
             },
