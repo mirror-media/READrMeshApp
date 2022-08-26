@@ -160,4 +160,20 @@ const Map<String, String> englishMap = {
   //mail
   'appleMail': 'Apple Mail',
   'noMailAppsDialogTitle': "Can't find email APP",
+
+  //deleteMemberPage
+  'deletePageTitle': 'Delete account',
+  'deletingAccount': 'Deleting account',
+  'deleteAccountDefaultTitle': 'Do you really want to delete your account?',
+  'deleteAccountSuccessTitle': 'Account deletion succeeded',
+  'deleteAccountFailedTitle': 'Oh no, something went wrong...',
+  'noEmailDescription':
+      'Remind you that your account information (including picks, bookmarks, comments) will be permanently deleted and cannot be recovered.',
+  'deleteAccountSuccessDescription':
+      'Thank you for using our membership services. Feel free to come back anytime if you need it :)',
+  'deleteAccountFailedDescription':
+      'Deleting account failed. Please log in again, or contact the customer service email: readr@readr.tw.',
+  'letMeThinkAgain': 'Let me think again',
+  'backToHomePage': 'Back to the homepage',
+  'confirmDeleteAccount': 'Confirm deletion',
 };

@@ -158,4 +158,18 @@ const Map<String, String> chineseTwMap = {
   //mail
   'appleMail': '信件',
   'noMailAppsDialogTitle': '找不到信件 APP',
+
+  //deleteMemberPage
+  'deletePageTitle': '刪除帳號',
+  'deletingAccount': '刪除帳號中',
+  'deleteAccountDefaultTitle': '真的要刪除帳號嗎？',
+  'deleteAccountSuccessTitle': '刪除帳號成功',
+  'deleteAccountFailedTitle': '喔不，出錯了...',
+  'noEmailDescription': '提醒您，您的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。',
+  'deleteAccountSuccessDescription': '謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)',
+  'deleteAccountFailedDescription':
+      '刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@readr.tw 由專人為您服務。',
+  'letMeThinkAgain': '那我再想想',
+  'backToHomePage': '回首頁',
+  'confirmDeleteAccount': '確認刪除',
 };

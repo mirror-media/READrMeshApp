@@ -159,4 +159,18 @@ const Map<String, String> chineseCnMap = {
   //mail
   'appleMail': '邮箱',
   'noMailAppsDialogTitle': '找不到邮箱 APP',
+
+  //deleteMemberPage
+  'deletePageTitle': '删除帐户',
+  'deletingAccount': '删除帐户中',
+  'deleteAccountDefaultTitle': '是否确实要删除您的帐户？',
+  'deleteAccountSuccessTitle': '帐户删除成功',
+  'deleteAccountFailedTitle': '哦，出了问题...',
+  'noEmailDescription': '提醒您，您的帐户资讯（包含精选、书签、评论）将永久删除并无法复原。',
+  'deleteAccountSuccessDescription': '谢谢您使用我们的会员服务。如果您有需要，欢迎随时回来 :)',
+  'deleteAccountFailedDescription':
+      '删除帐号失败。请重新登入，或是联系客服信箱 readr@readr.tw 由专人为您服务。',
+  'letMeThinkAgain': '让我再想想',
+  'backToHomePage': '返回主页',
+  'confirmDeleteAccount': '确认删除',
 };
