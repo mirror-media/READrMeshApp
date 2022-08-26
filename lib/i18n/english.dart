@@ -104,4 +104,12 @@ const Map<String, String> englishMap = {
   'viewAll': 'View all',
   'recommendFollow': 'Recommended to follow',
   'noRecommend': 'No recommended to follow',
+
+  //followableItem
+  'defaultDescription': 'Recommended to you',
+  'singleFollower': ' followed',
+  'andOther': 'and other',
+  'multiFollower': 'followed',
+  'lookmoreMemberText': 'Explore more users recommended for you',
+  'lookmorePublisherText': 'Explore more recommended media for you',
 };

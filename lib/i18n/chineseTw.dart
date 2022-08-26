@@ -102,4 +102,12 @@ const Map<String, String> chineseTwMap = {
   'viewAll': '查看全部',
   'recommendFollow': '推薦追蹤',
   'noRecommend': '暫無推薦追蹤',
+
+  //followableItem
+  'defaultDescription': '為你推薦',
+  'singleFollower': '的追蹤對象',
+  'andOther': '及其他',
+  'multiFollower': '人的追蹤對象',
+  'lookmoreMemberText': '探索更多為你推薦的使用者',
+  'lookmorePublisherText': '探索更多為你推薦的媒體',
 };

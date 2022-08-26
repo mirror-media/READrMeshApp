@@ -47,13 +47,14 @@ class MemberFollowableItem implements FollowableItem {
 
   @override
   String get descriptionText {
-    String description = '為你推薦';
+    String description = 'defaultDescription'.tr;
     if (member.follower != null && member.follower!.isNotEmpty) {
       String followerName = member.follower![0].nickname;
       if (member.followerCount! == 1) {
-        description = '$followerName的追蹤對象';
+        description = '$followerName${'singleFollower'.tr}';
       } else {
-        description = '$followerName 及其他 ${member.followerCount! - 1} 人的追蹤對象';
+        description =
+            '$followerName ${'andOther'.tr} ${member.followerCount! - 1} ${'multiFollower'.tr}';
       }
     }
     return description;
@@ -72,7 +73,7 @@ class MemberFollowableItem implements FollowableItem {
   bool get isFollowed => Get.find<UserService>().isFollowingMember(member);
 
   @override
-  String get lookmoreText => '探索更多為你推薦的使用者';
+  String get lookmoreText => 'lookmoreMemberText'.tr;
 
   @override
   String get tag => 'member${member.memberId}';
@@ -124,13 +125,14 @@ class PublisherFollowableItem implements FollowableItem {
 
   @override
   String get descriptionText {
-    String description = '為你推薦';
+    String description = 'defaultDescription'.tr;
     if (publisher.follower != null && publisher.follower!.isNotEmpty) {
       String followerName = publisher.follower![0].nickname;
       if (publisher.followerCount == 1) {
-        description = '$followerName的追蹤對象';
+        description = '$followerName${'singleFollower'.tr}';
       } else {
-        description = '$followerName 及其他 ${publisher.followerCount - 1} 人的追蹤對象';
+        description =
+            '$followerName ${'andOther'.tr} ${publisher.followerCount - 1} ${'multiFollower'.tr}';
       }
     }
     return description;
@@ -181,7 +183,7 @@ class PublisherFollowableItem implements FollowableItem {
   }
 
   @override
-  String get lookmoreText => '探索更多為你推薦的媒體';
+  String get lookmoreText => 'lookmorePublisherText'.tr;
 
   @override
   Future<void> onTap() async {

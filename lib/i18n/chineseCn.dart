@@ -102,4 +102,12 @@ const Map<String, String> chineseCnMap = {
   'viewAll': '查看全部',
   'recommendFollow': '推荐关注',
   'noRecommend': '暂无推荐关注',
+
+  //followableItem
+  'defaultDescription': '为你推荐',
+  'singleFollower': '的关注对象',
+  'andOther': '及其他',
+  'multiFollower': '人的关注对象',
+  'lookmoreMemberText': '探索更多推荐给您的用户',
+  'lookmorePublisherText': '探索更多推荐给您的媒体',
 };
