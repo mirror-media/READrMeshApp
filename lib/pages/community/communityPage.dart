@@ -158,6 +158,7 @@ class CommunityPage extends GetView<CommunityPageController> {
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 8,

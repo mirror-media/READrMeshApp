@@ -18,7 +18,7 @@ const Map<String, String> englishUsMap = {
   //community page
   'communityEmptyTitle': 'Huh? There seems to be something missing here...',
   'communityEmptyDescription':
-      'Follow your favorites\nSee what news they have picked',
+      'Follow your favorite users\nSee what news they have picked',
   'and': ' and ',
   'both': ' both',
   'pickNews': ' picked this',
