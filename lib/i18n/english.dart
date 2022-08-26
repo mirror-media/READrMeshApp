@@ -4,6 +4,8 @@ const Map<String, String> englishMap = {
   'save': 'Save',
   'publish': 'Publish',
   'remove': 'Remove',
+  'share': 'Share',
+  'back': 'Back',
 
   //bottom tab
   'communityTab': 'Community',
@@ -33,13 +35,13 @@ const Map<String, String> englishMap = {
   //toast
   'syncFollowingPublisherToast': 'Synced followed list',
 
-  //more action bottom sheet
-  'addToCollection': 'Add to collection',
+  //bookmark
   'addBookmark': 'Bookmark',
   'removeBookmark': 'Remove bookmark',
+
+  //link
   'copiedLink': 'Link copied',
   'copyLink': 'Copy link',
-  'share': 'Share',
 
   //follow
   'followerConunt': 'follower',
@@ -87,6 +89,7 @@ const Map<String, String> englishMap = {
 
   //collection
   'collection': 'Collection',
+  'addToCollection': 'Add to collection',
 
   //collection timestamp
   'justUpdated': 'Just updated',

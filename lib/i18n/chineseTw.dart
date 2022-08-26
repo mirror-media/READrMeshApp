@@ -4,6 +4,8 @@ const Map<String, String> chineseTwMap = {
   'save': '儲存',
   'publish': '發佈',
   'remove': '移除',
+  'share': '分享',
+  'back': '回前頁',
 
   //bottom tab
   'communityTab': '社群',
@@ -32,13 +34,13 @@ const Map<String, String> chineseTwMap = {
   //toast
   'syncFollowingPublisherToast': '已同步追蹤名單',
 
-  //more action bottom sheet
-  'addToCollection': '加入集錦',
+  //bookmark
   'addBookmark': '加入書籤',
   'removeBookmark': '移除書籤',
+
+  //link
   'copiedLink': '已複製連結',
   'copyLink': '複製連結',
-  'share': '分享',
 
   //follow
   'followerConunt': '人追蹤',
@@ -85,6 +87,7 @@ const Map<String, String> chineseTwMap = {
 
   //collection
   'collection': '集錦',
+  'addToCollection': '加入集錦',
 
   //collection timestamp
   'justUpdated': '剛剛更新',

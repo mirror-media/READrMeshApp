@@ -4,6 +4,8 @@ const Map<String, String> chineseCnMap = {
   'save': '保存',
   'publish': '发表',
   'remove': '去除',
+  'share': '分享',
+  'back': '返回',
 
   //bottom tab
   'communityTab': '社区',
@@ -32,13 +34,13 @@ const Map<String, String> chineseCnMap = {
   //toast
   'syncFollowingPublisherToast': '已同步关注名单',
 
-  //more action bottom sheet
-  'addToCollection': '加入集锦',
+  //bookmark
   'addBookmark': '加入书签',
   'removeBookmark': '移除书签',
+
+  //link
   'copiedLink': '已复制链接',
   'copyLink': '复制链接',
-  'share': '分享',
 
   //follow
   'followerConunt': '粉丝',
@@ -85,6 +87,7 @@ const Map<String, String> chineseCnMap = {
 
   //collection
   'collection': '集锦',
+  'addToCollection': '加入集锦',
 
   //collection timestamp
   'justUpdated': '刚刚更新',
