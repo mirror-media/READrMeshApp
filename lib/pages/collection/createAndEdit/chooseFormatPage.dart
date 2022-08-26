@@ -29,8 +29,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
     this.initFormat = CollectionFormat.folder,
     this.collection,
   }) {
-    timelineCollectionPick = List<TimelineCollectionPick>.from(chooseStoryList
-        .map((e) => TimelineCollectionPick.fromCollectionPick(e)));
+    timelineCollectionPick = List<TimelineCollectionPick>.from(
+        chooseStoryList.map((e) =>
+            TimelineCollectionPick.fromCollectionPickWithNewsListItem(e)));
     folderCollectionPick = List<FolderCollectionPick>.from(
         chooseStoryList.map((e) => FolderCollectionPick.fromCollectionPick(e)));
   }

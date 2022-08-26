@@ -28,7 +28,7 @@ class TimelineCollectionPick extends CollectionPick {
           summary: summary,
         );
 
-  factory TimelineCollectionPick.fromCollectionPick(
+  factory TimelineCollectionPick.fromCollectionPickWithNewsListItem(
       CollectionPick collectionPick) {
     return TimelineCollectionPick(
       id: collectionPick.id,

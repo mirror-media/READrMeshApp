@@ -270,10 +270,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       case CollectionFormat.timeline:
                         Get.off(
                           () => EditTimelinePage(
-                            List<TimelineCollectionPick>.from(
-                                controller.selectedList.map((e) =>
-                                    TimelineCollectionPick.fromCollectionPick(
-                                        e))),
+                            List<TimelineCollectionPick>.from(controller
+                                .selectedList
+                                .map((e) => TimelineCollectionPick
+                                    .fromCollectionPickWithNewsListItem(e))),
                             isAddToEmpty: true,
                             collection: collection,
                           ),

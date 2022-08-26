@@ -229,8 +229,9 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                           controller.timelineStoryList.addAll(
                               List<TimelineCollectionPick>.from(
                                   newCollectionStory.map((e) =>
-                                      TimelineCollectionPick.fromCollectionPick(
-                                          e))));
+                                      TimelineCollectionPick
+                                          .fromCollectionPickWithNewsListItem(
+                                              e))));
                           controller.sortListByTime();
                         },
                         style: TextButton.styleFrom(
