@@ -856,22 +856,16 @@ mutation(
     List<CollectionPick> moveItemList = [];
     List<CollectionPick> deleteItemList = [];
 
-    bool isAddToEmpty = originList.isEmpty;
-
     for (int i = 0; i < newList.length; i++) {
       newList[i].sortOrder = i;
-      if (!isAddToEmpty) {
-        int originalListIndex = originList.indexWhere(
-            (element) => element.pickNewsId == newList[i].pickNewsId);
-        if (originalListIndex == -1) {
-          addItemList.add(newList[i]);
-        } else {
-          moveItemList.add(newList[i]);
-          originList.removeWhere(
-              (element) => element.pickNewsId == newList[i].pickNewsId);
-        }
-      } else {
+      int originalListIndex = originList
+          .indexWhere((element) => element.pickNewsId == newList[i].pickNewsId);
+      if (originalListIndex == -1) {
         addItemList.add(newList[i]);
+      } else {
+        moveItemList.add(newList[i]);
+        originList.removeWhere(
+            (element) => element.pickNewsId == newList[i].pickNewsId);
       }
     }
 
