@@ -35,6 +35,8 @@ const Map<String, String> englishMap = {
   'share': 'Share',
   //follow
   'followerConunt': 'follower',
+  'following': 'Following',
+  'follow': 'Follow',
   //tab content no result
   'tabContentNoResult': 'There are currently no articles in this category',
   //timestamp

@@ -8,7 +8,7 @@ const Map<String, String> chineseCnMap = {
   'personalFileTab': '个人档案',
   //community page
   'communityEmptyTitle': '咦？这里好像还缺点什么...',
-  'communityEmptyDescription': '追踪您喜爱的人\n看看他们都精选了什么新闻',
+  'communityEmptyDescription': '关注您喜爱的人\n看看他们都精选了什么新闻',
   'and': '及',
   'both': '都',
   'pickNews': '精选了这篇',
@@ -24,7 +24,7 @@ const Map<String, String> chineseCnMap = {
   'notificationButtonTooltip': '通知',
   'invitationCodeButtonTooltip': '邀请码',
   //toast
-  'syncFollowingPublisherToast': '已同步追踪名单',
+  'syncFollowingPublisherToast': '已同步关注名单',
   //more action bottom sheet
   'addToCollection': '加入集锦',
   'addBookmark': '加入书签',
@@ -33,7 +33,9 @@ const Map<String, String> chineseCnMap = {
   'copyLink': '复制链接',
   'share': '分享',
   //follow
-  'followerConunt': '人追踪',
+  'followerConunt': '粉丝',
+  'following': '关注中',
+  'follow': '关注',
   //tab content no result
   'tabContentNoResult': '此类别中当前没有文章',
   //timestamp
