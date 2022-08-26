@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class CollectionTag extends StatelessWidget {
@@ -29,7 +30,7 @@ class CollectionTag extends StatelessWidget {
             width: 5,
           ),
           Text(
-            '集錦',
+            'collection'.tr,
             style: TextStyle(
               fontSize: smallTag ? 11 : 12,
               fontWeight: FontWeight.w400,

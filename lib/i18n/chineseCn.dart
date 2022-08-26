@@ -46,4 +46,6 @@ const Map<String, String> chineseCnMap = {
   //collapsePickBar
   'commentCount': ' 条评论',
   'pickCount': ' 人精选',
+  //collection
+  'collection': '集锦',
 };

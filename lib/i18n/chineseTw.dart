@@ -46,4 +46,6 @@ const Map<String, String> chineseTwMap = {
   //collapsePickBar
   'commentCount': ' 則留言',
   'pickCount': ' 人精選',
+  //collection
+  'collection': '集錦',
 };

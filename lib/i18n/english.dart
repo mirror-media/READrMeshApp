@@ -47,4 +47,6 @@ const Map<String, String> englishMap = {
   //collapsePickBar
   'commentCount': ' comment',
   'pickCount': ' pick',
+  //collection
+  'collection': 'Collection',
 };
