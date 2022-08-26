@@ -134,7 +134,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     return Obx(
       () {
         String shareButtonText = '分享這個個人檔案';
-        bool showBlock = true;
+        bool showBlock = Get.find<UserService>().isMember.value;
         bool isBlock = controller.isBlock.value;
         if (viewMember.memberId ==
             Get.find<UserService>().currentUser.memberId) {
