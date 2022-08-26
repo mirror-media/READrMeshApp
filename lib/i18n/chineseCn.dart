@@ -57,6 +57,8 @@ const Map<String, String> chineseCnMap = {
   'deleteAlertContent': '系统仍会保留您的精选',
   'deleteAlertTitle': '是否确实要删除该评论？',
   'cancelEdit': '取消编辑',
+  'leaveAlertContent': '您刚输入的内容将不会保存',
+  'continueInput': '继续输入',
   //pick
   'pickCount': ' 人精选',
   'noPick': '尚无人精选',

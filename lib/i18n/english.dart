@@ -58,6 +58,8 @@ const Map<String, String> englishMap = {
   'deleteAlertContent': 'Your pick will still be retained',
   'deleteAlertTitle': 'Are you sure you want to delete the comment?',
   'cancelEdit': 'Cancel',
+  'leaveAlertContent': 'What you just entered will not be saved',
+  'continueInput': 'Keep typing',
   //pick
   'pickCount': ' pick',
   'noPick': 'No pick yet',

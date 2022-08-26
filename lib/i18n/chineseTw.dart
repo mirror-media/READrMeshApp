@@ -57,6 +57,8 @@ const Map<String, String> chineseTwMap = {
   'deleteAlertContent': '系統仍會保留您的精選',
   'deleteAlertTitle': '確定要刪除留言？',
   'cancelEdit': '取消編輯',
+  'leaveAlertContent': '系統將不會儲存您剛剛輸入的內容',
+  'continueInput': '繼續輸入',
   //pick
   'pickCount': ' 人精選',
   'noPick': '尚無人精選',

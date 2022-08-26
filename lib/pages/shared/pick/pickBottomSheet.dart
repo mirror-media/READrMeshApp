@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheetWidget.dart';
 
@@ -30,16 +31,16 @@ class PickBottomSheet {
         await showPlatformDialog(
           context: context,
           builder: (_) => PlatformAlertDialog(
-            title: const Text(
-              '確定要刪除留言？',
-              style: TextStyle(
+            title: Text(
+              'deleteAlertTitle'.tr,
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            content: const Text(
-              '系統將不會儲存您剛剛輸入的內容',
-              style: TextStyle(
+            content: Text(
+              'leaveAlertContent'.tr,
+              style: const TextStyle(
                 fontSize: 13,
               ),
             ),
@@ -47,7 +48,7 @@ class PickBottomSheet {
               PlatformDialogAction(
                 onPressed: () => Navigator.pop(context),
                 child: PlatformText(
-                  '刪除留言',
+                  'deleteComment'.tr,
                   style: const TextStyle(
                     fontSize: 17,
                     color: Colors.red,
@@ -64,7 +65,7 @@ class PickBottomSheet {
                   );
                 },
                 child: PlatformText(
-                  '繼續輸入',
+                  'continueInput'.tr,
                   style: const TextStyle(
                     fontSize: 17,
                     color: Colors.blue,
