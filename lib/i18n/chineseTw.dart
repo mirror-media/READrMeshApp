@@ -1,6 +1,7 @@
 const Map<String, String> chineseTwMap = {
   'cancel': '取消',
   'delete': '刪除',
+  'save': '儲存',
   //bottom tab
   'communityTab': '社群',
   'latestTab': '最新',
@@ -53,6 +54,7 @@ const Map<String, String> chineseTwMap = {
   'deleteComment': '刪除留言',
   'deleteAlertContent': '系統仍會保留您的精選',
   'deleteAlertTitle': '確定要刪除留言？',
+  'cancelEdit': '取消編輯',
   //pick
   'pickCount': ' 人精選',
   'noPick': '尚無人精選',

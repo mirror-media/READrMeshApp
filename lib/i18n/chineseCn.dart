@@ -1,6 +1,7 @@
 const Map<String, String> chineseCnMap = {
   'cancel': '取消',
   'delete': '删除',
+  'save': '保存',
   //bottom tab
   'communityTab': '社区',
   'latestTab': '最新',
@@ -53,6 +54,7 @@ const Map<String, String> chineseCnMap = {
   'deleteComment': '删除评论',
   'deleteAlertContent': '系统仍会保留您的精选',
   'deleteAlertTitle': '是否确实要删除该评论？',
+  'cancelEdit': '取消编辑',
   //pick
   'pickCount': ' 人精选',
   'noPick': '尚无人精选',

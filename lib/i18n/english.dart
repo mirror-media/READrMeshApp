@@ -1,6 +1,7 @@
 const Map<String, String> englishMap = {
   'cancel': 'Cancel',
   'delete': 'Delete',
+  'save': 'Save',
   //bottom tab
   'communityTab': 'Community',
   'latestTab': 'Latest',
@@ -54,6 +55,7 @@ const Map<String, String> englishMap = {
   'deleteComment': 'Delete comment',
   'deleteAlertContent': 'Your pick will still be retained',
   'deleteAlertTitle': 'Are you sure you want to delete the comment?',
+  'cancelEdit': 'Cancel',
   //pick
   'pickCount': ' pick',
   'noPick': 'No picks yet',

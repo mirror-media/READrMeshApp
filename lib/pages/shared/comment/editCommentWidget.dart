@@ -86,7 +86,7 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 child: Text(
-                  _hasInput ? '儲存' : '取消編輯',
+                  _hasInput ? 'save'.tr : 'cancelEdit'.tr,
                   style: const TextStyle(
                     color: Colors.blue,
                   ),
