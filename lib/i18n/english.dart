@@ -9,10 +9,10 @@ const Map<String, String> englishMap = {
       'Follow your favorites\nSee what news they have picked',
   'and': ' and ',
   'both': ' both',
-  'pickNews': ' picked this news',
+  'pickNews': ' picked this',
   'showFullComment': 'see full comment',
   'communityNoMore': 'You have followed all the updates',
-  'commentNews': ' commented on this news',
+  'commentNews': ' commented on this',
   'updateCollection': ' updated a collection',
   'createCollection': ' created a new collection',
   'commentCollection': ' commented on this collection',
@@ -22,7 +22,7 @@ const Map<String, String> englishMap = {
   'notificationButtonTooltip': 'Notification',
   'invitationCodeButtonTooltip': 'Invitation code',
   //toast
-  'syncFollowingPublisherToast': 'Synced tracked media list',
+  'syncFollowingPublisherToast': 'Synced followed list',
   //more action bottom sheet
   'addToCollection': 'Add to collection',
   'addBookmark': 'Bookmark',
