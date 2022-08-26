@@ -20,5 +20,7 @@ const Map<String, String> englishMap = {
   //main AppBar tooltip
   'searchButtonTooltip': 'Search',
   'notificationButtonTooltip': 'Notification',
-  'invitationCodeButtonTooltip': 'Invitation code'
+  'invitationCodeButtonTooltip': 'Invitation code',
+  //toast
+  'syncFollowingPublisherToast': 'Synced tracked media list',
 };

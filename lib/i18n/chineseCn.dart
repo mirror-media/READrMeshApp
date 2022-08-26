@@ -19,5 +19,7 @@ const Map<String, String> chineseCnMap = {
   //main AppBar tooltip
   'searchButtonTooltip': '搜索',
   'notificationButtonTooltip': '通知',
-  'invitationCodeButtonTooltip': '邀请码'
+  'invitationCodeButtonTooltip': '邀请码',
+  //toast
+  'syncFollowingPublisherToast': '已同步追踪名单',
 };

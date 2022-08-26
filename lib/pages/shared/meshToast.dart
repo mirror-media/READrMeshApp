@@ -52,7 +52,7 @@ void showFollowingSyncToast() {
       size: 16,
       color: Colors.white,
     ),
-    message: '已同步追蹤名單',
+    message: 'syncFollowingPublisherToast'.tr,
   );
   prefs.setStringList('followingPublisherIds', []);
 }

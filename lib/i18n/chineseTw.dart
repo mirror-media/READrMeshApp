@@ -19,5 +19,7 @@ const Map<String, String> chineseTwMap = {
   //main AppBar tooltip
   'searchButtonTooltip': '搜尋',
   'notificationButtonTooltip': '通知',
-  'invitationCodeButtonTooltip': '邀請碼'
+  'invitationCodeButtonTooltip': '邀請碼',
+  //toast
+  'syncFollowingPublisherToast': '已同步追蹤名單',
 };
