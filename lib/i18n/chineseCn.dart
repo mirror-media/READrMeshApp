@@ -43,9 +43,11 @@ const Map<String, String> chineseCnMap = {
   'allComments': '所有评论',
   'popularComments': '热门评论',
   'noComment': '还没有人发表评论，快来抢沙发！',
-  //collapsePickBar
+  //comment
   'commentCount': ' 条评论',
+  //pick
   'pickCount': ' 人精选',
+  'noPick': '尚无人精选',
   //collection
   'collection': '集锦',
   //collection timestamp

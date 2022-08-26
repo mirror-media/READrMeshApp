@@ -132,9 +132,10 @@ class SmallCollectionItem extends StatelessWidget {
                         tag: collection.controllerTag);
                     int pickCountData = controller.pickCount.value;
                     if (pickCountData <= 0) {
-                      return const Text(
-                        '尚無人精選',
-                        style: TextStyle(fontSize: 13, color: readrBlack50),
+                      return Text(
+                        'noPick'.tr,
+                        style:
+                            const TextStyle(fontSize: 13, color: readrBlack50),
                       );
                     }
                     return RichText(
@@ -149,15 +150,24 @@ class SmallCollectionItem extends StatelessWidget {
                               ? FontWeight.w500
                               : FontWeight.w600,
                         ),
-                        children: const [
+                        children: [
                           TextSpan(
-                            text: ' 人精選',
-                            style: TextStyle(
+                            text: 'pickCount'.tr,
+                            style: const TextStyle(
                               fontSize: 13,
                               color: readrBlack50,
                               fontWeight: FontWeight.w400,
                             ),
-                          )
+                          ),
+                          if (pickCountData > 1 &&
+                              Get.locale?.languageCode == 'en')
+                            const TextSpan(
+                              text: 's',
+                              style: TextStyle(
+                                color: readrBlack50,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                         ],
                       ),
                     );
