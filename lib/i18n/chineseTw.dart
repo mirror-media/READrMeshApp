@@ -100,4 +100,5 @@ const Map<String, String> chineseTwMap = {
 
   //recommendFollow
   'viewAll': '查看全部',
+  'recommendFollow': '推薦追蹤',
 };

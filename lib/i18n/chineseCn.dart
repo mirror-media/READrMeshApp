@@ -100,4 +100,5 @@ const Map<String, String> chineseCnMap = {
 
   //recommendFollow
   'viewAll': '查看全部',
+  'recommendFollow': '推荐关注',
 };

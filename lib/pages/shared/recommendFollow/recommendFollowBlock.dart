@@ -29,7 +29,7 @@ class RecommendFollowBlock extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '推薦追蹤',
+                      'recommendFollow'.tr,
                       style: TextStyle(
                         fontSize: 18,
                         color: readrBlack87,
@@ -42,9 +42,9 @@ class RecommendFollowBlock extends StatelessWidget {
                       onPressed: () {
                         Get.to(() => RecommendFollowPage(controller));
                       },
-                      child: const Text(
-                        '查看全部',
-                        style: TextStyle(
+                      child: Text(
+                        'viewAll'.tr,
+                        style: const TextStyle(
                           fontSize: 14,
                           color: readrBlack50,
                           fontWeight: FontWeight.w400,

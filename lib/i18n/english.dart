@@ -102,4 +102,5 @@ const Map<String, String> englishMap = {
 
   //recommendFollow
   'viewAll': 'View all',
+  'recommendFollow': 'Recommended to follow',
 };
