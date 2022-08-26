@@ -204,4 +204,19 @@ const Map<String, String> englishMap = {
   'allNews': 'All news',
   'viewAllCollectionResultPrefix': 'View all collections containing "',
   'viewAllCollectionResultSuffix': '"',
+
+  //readr
+  'topic': 'Special reports',
+  'readrNoMore': 'You have read all the news',
+  'slugInternational': 'International',
+  'slugCulture': 'Culture',
+  'slugNote': 'Notes',
+  'slugData': 'Data',
+  'slugOmt': 'Something new',
+  'slugEnvironment': 'Environment',
+  'slugHumanRights': 'Human rights',
+  'slugPolitics': 'Politics',
+  'slugEducation': 'Education',
+  'slugBreakingNews': 'Current affairs',
+  'slugLatest': 'Latest articles',
 };

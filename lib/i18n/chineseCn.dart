@@ -201,4 +201,19 @@ const Map<String, String> chineseCnMap = {
   'allNews': '所有新闻',
   'viewAllCollectionResultPrefix': '查看所有包含「',
   'viewAllCollectionResultSuffix': '」的集锦',
+
+  //readr
+  'topic': '专题',
+  'readrNoMore': '你已看完所有新闻',
+  'slugInternational': '国际',
+  'slugCulture': '文化',
+  'slugNote': '新闻幕后',
+  'slugData': '资料专栏',
+  'slugOmt': '新事物',
+  'slugEnvironment': '环境',
+  'slugHumanRights': '人权',
+  'slugPolitics': '政治',
+  'slugEducation': '教育',
+  'slugBreakingNews': '时事',
+  'slugLatest': '最新文章',
 };

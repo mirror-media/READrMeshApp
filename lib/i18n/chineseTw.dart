@@ -200,4 +200,19 @@ const Map<String, String> chineseTwMap = {
   'allNews': '所有新聞',
   'viewAllCollectionResultPrefix': '查看所有包含「',
   'viewAllCollectionResultSuffix': '」的集錦',
+
+  //readr
+  'topic': '專題',
+  'readrNoMore': '你已看完所有新聞囉',
+  'slugInternational': '國際',
+  'slugCulture': '文化',
+  'slugNote': '新聞幕後',
+  'slugData': '資料專欄',
+  'slugOmt': '新鮮事',
+  'slugEnvironment': '環境',
+  'slugHumanRights': '人權',
+  'slugPolitics': '政治',
+  'slugEducation': '教育',
+  'slugBreakingNews': '時事',
+  'slugLatest': '最新文章',
 };

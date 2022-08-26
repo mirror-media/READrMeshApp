@@ -51,7 +51,7 @@ class CategoryServices implements CategoryRepos {
         0,
         Category(
           id: '0',
-          name: '最新文章',
+          name: 'slugLatest'.tr,
           slug: 'latest',
         ));
 
