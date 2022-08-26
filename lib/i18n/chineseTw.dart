@@ -7,6 +7,7 @@ const Map<String, String> chineseTwMap = {
   'share': '分享',
   'back': '回前頁',
   'ok': '確定',
+  'viewAll': '查看全部',
 
   //bottom tab
   'communityTab': '社群',
@@ -103,7 +104,6 @@ const Map<String, String> chineseTwMap = {
   'fullScreenAd': '蓋板廣告',
 
   //recommendFollow
-  'viewAll': '查看全部',
   'recommendFollow': '推薦追蹤',
   'noRecommend': '暫無推薦追蹤',
 
@@ -187,4 +187,17 @@ const Map<String, String> chineseTwMap = {
   'about': '關於',
   'version': '版本',
   'logOut': '登出',
+
+  //search
+  'contain': '包含 ',
+  'containsCollection': ' 的集錦',
+  'searchBarHintText': '搜尋所有新聞與集錦...',
+  'searchHistory': '搜尋歷史',
+  'clearAllHistory': '清除所有記錄',
+  'noResultPrefix': '找不到包含「',
+  'noResultSuffix': '」的新聞或集錦，請換個關鍵字，再試一次。',
+  'allCollections': '所有集錦',
+  'allNews': '所有新聞',
+  'viewAllCollectionResultPrefix': '查看所有包含「',
+  'viewAllCollectionResultSuffix': '」的集錦',
 };

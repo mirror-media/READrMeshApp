@@ -7,6 +7,7 @@ const Map<String, String> englishMap = {
   'share': 'Share',
   'back': 'Back',
   'ok': 'OK',
+  'viewAll': 'View all',
 
   //bottom tab
   'communityTab': 'Community',
@@ -105,7 +106,6 @@ const Map<String, String> englishMap = {
   'fullScreenAd': 'Hover ad',
 
   //recommendFollow
-  'viewAll': 'View all',
   'recommendFollow': 'Recommended to follow',
   'noRecommend': 'No recommended to follow',
 
@@ -191,4 +191,17 @@ const Map<String, String> englishMap = {
   'about': 'About',
   'version': 'Version',
   'logOut': 'Log out',
+
+  //search
+  'contain': 'Collections that contain ',
+  'containsCollection': '',
+  'searchBarHintText': 'Search all news and collections...',
+  'searchHistory': 'Search history',
+  'clearAllHistory': 'Clear all records',
+  'noResultPrefix': 'No news or collections found containing "',
+  'noResultSuffix': '", please try again with another keyword.',
+  'allCollections': 'All collections',
+  'allNews': 'All news',
+  'viewAllCollectionResultPrefix': 'View all collections containing "',
+  'viewAllCollectionResultSuffix': '"',
 };

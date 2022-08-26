@@ -23,9 +23,9 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              '包含',
-              style: TextStyle(
+            Text(
+              'contain'.tr,
+              style: const TextStyle(
                 color: readrBlack,
                 fontSize: 18,
               ),
@@ -39,9 +39,9 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const Text(
-              '的集錦',
-              style: TextStyle(
+            Text(
+              'containsCollection'.tr,
+              style: const TextStyle(
                 color: readrBlack,
                 fontSize: 18,
               ),

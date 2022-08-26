@@ -7,6 +7,7 @@ const Map<String, String> chineseCnMap = {
   'share': '分享',
   'back': '返回',
   'ok': '确定',
+  'viewAll': '查看全部',
 
   //bottom tab
   'communityTab': '社区',
@@ -103,7 +104,6 @@ const Map<String, String> chineseCnMap = {
   'fullScreenAd': '盖版广告',
 
   //recommendFollow
-  'viewAll': '查看全部',
   'recommendFollow': '推荐关注',
   'noRecommend': '暂无推荐关注',
 
@@ -188,4 +188,17 @@ const Map<String, String> chineseCnMap = {
   'about': '关于',
   'version': '版本',
   'logOut': '注销',
+
+  //search
+  'contain': '包含 ',
+  'containsCollection': ' 的集锦',
+  'searchBarHintText': '搜索所有新闻和集锦...',
+  'searchHistory': '搜索历史',
+  'clearAllHistory': '清除所有记录',
+  'noResultPrefix': '找不到包含「',
+  'noResultSuffix': '」的新闻或集锦，请换个关键字，再试一次。',
+  'allCollections': '所有集锦',
+  'allNews': '所有新闻',
+  'viewAllCollectionResultPrefix': '查看所有包含「',
+  'viewAllCollectionResultSuffix': '」的集锦',
 };
