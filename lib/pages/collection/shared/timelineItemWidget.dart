@@ -329,16 +329,6 @@ class TimelineItemWidget extends StatelessWidget {
         children.add(const SizedBox(
           height: 16,
         ));
-      } else if (_checkIsCustomTime()) {
-        children.addAll([
-          const SizedBox(
-            height: 16,
-          ),
-          _customTimeTag(),
-          const SizedBox(
-            height: 16,
-          ),
-        ]);
       }
 
       children.add(
@@ -369,7 +359,8 @@ class TimelineItemWidget extends StatelessWidget {
           previousTimelineStory!.customMonth == timelineStory.customMonth &&
           previousTimelineStory!.customDay == timelineStory.customDay &&
           previousTimelineStory!.customTime == timelineStory.customTime &&
-          timelineStory.summary == null) {
+          timelineStory.summary == null &&
+          !_checkIsCustomTime()) {
         return 4;
       }
 
@@ -389,7 +380,8 @@ class TimelineItemWidget extends StatelessWidget {
 
       if (previousTimelineStory!.customTime != timelineStory.customTime ||
           timelineStory.customTime == null ||
-          timelineStory.summary != null) {
+          timelineStory.summary != null ||
+          _checkIsCustomTime()) {
         return 3;
       } else {
         return 4;
