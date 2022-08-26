@@ -109,6 +109,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color: readrBlack87,
                 ),
+                textAlign: TextAlign.center,
               );
             },
           ),
