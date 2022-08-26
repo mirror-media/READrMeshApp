@@ -17,4 +17,8 @@ const Map<String, String> englishMap = {
   'createCollection': ' created a new collection',
   'commentCollection': ' commented on this collection',
   'pickCollection': ' picked this collection',
+  //main AppBar tooltip
+  'searchButtonTooltip': 'Search',
+  'notificationButtonTooltip': 'Notification',
+  'invitationCodeButtonTooltip': 'Invitation code'
 };

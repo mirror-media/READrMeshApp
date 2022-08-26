@@ -16,4 +16,8 @@ const Map<String, String> chineseTwMap = {
   'createCollection': '建立了一個新的集錦',
   'commentCollection': '在這個集錦留言',
   'pickCollection': '精選了這個集錦',
+  //main AppBar tooltip
+  'searchButtonTooltip': '搜尋',
+  'notificationButtonTooltip': '通知',
+  'invitationCodeButtonTooltip': '邀請碼'
 };

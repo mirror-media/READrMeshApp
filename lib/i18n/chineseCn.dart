@@ -16,4 +16,8 @@ const Map<String, String> chineseCnMap = {
   'createCollection': '建立了一个新的集锦',
   'commentCollection': '在这个集锦评论',
   'pickCollection': '精选了这个集锦',
+  //main AppBar tooltip
+  'searchButtonTooltip': '搜索',
+  'notificationButtonTooltip': '通知',
+  'invitationCodeButtonTooltip': '邀请码'
 };
