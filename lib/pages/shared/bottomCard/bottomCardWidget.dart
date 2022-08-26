@@ -139,7 +139,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                           padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                           child: Obx(
                             () => Text(
-                              '所有留言 (${commentController.allComments.length})',
+                              '${'allComments'.tr} (${commentController.allComments.length})',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: readrBlack87,
@@ -341,7 +341,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                   color: Colors.white,
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                   child: Text(
-                    '熱門留言',
+                    'popularComments'.tr,
                     style: TextStyle(
                       fontSize: 18,
                       color: readrBlack87,
@@ -379,11 +379,11 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
       child: Obx(
         () {
           if (commentController.allComments.isEmpty) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                '還沒有人留言，快來搶頭香！',
-                style: TextStyle(
+                'noComment'.tr,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: readrBlack66,

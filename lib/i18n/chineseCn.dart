@@ -39,4 +39,8 @@ const Map<String, String> chineseCnMap = {
   'hoursAgo': '小时前',
   'daysAgo': '天前',
   'edited': ' (已编辑)',
+  //bottom card
+  'allComments': '所有评论',
+  'popularComments': '热门评论',
+  'noComment': '还没有人发表评论，快来抢沙发！'
 };

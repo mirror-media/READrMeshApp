@@ -39,4 +39,8 @@ const Map<String, String> chineseTwMap = {
   'hoursAgo': '小時前',
   'daysAgo': '天前',
   'edited': ' (已編輯)',
+  //bottom card
+  'allComments': '所有留言',
+  'popularComments': '熱門留言',
+  'noComment': '還沒有人留言，快來搶頭香！',
 };
