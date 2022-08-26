@@ -23,29 +23,29 @@ class _WelcomePageState extends State<WelcomePage> {
       _onboardItem(
         context: context,
         svgPath: onboard1Svg,
-        title: '看朋友推哪篇新聞',
-        description: '工人智慧挑的更有感',
+        title: 'item1Title'.tr,
+        description: 'item1Description'.tr,
         widthPadding: 80,
       ),
       _onboardItem(
         context: context,
         svgPath: onboard2Svg,
-        title: '精選喜愛的報導',
-        description: '這篇不能只有我看到',
+        title: 'item2Title'.tr,
+        description: 'item2Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
         svgPath: onboard3Svg,
-        title: '隨時來點討論吧',
-        description: '看看大家都在想什麼',
+        title: 'item3Title'.tr,
+        description: 'item3Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
         svgPath: onboard4Svg,
-        title: '集錦功能好分類',
-        description: '輕鬆製作自己的懶人包',
+        title: 'item4Title'.tr,
+        description: 'item4Description'.tr,
         widthPadding: 40,
       ),
     ];
@@ -129,9 +129,9 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(
-                    '開始使用',
-                    style: TextStyle(
+                  child: Text(
+                    'startToUse'.tr,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: Colors.white,
@@ -175,6 +175,7 @@ class _WelcomePageState extends State<WelcomePage> {
             fontWeight: FontWeight.w600,
             color: readrBlack87,
           ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 8,

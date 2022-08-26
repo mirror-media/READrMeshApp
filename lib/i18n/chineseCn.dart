@@ -123,4 +123,15 @@ const Map<String, String> chineseCnMap = {
   'readrCustomerServiceNumber': 'READr客服电话：',
   'mmContactEmail': '镜周刊联络信箱：',
   'mmCustomerServiceNumber': '镜周刊客服电话：',
+
+  //welcomePage
+  'item1Title': '看朋友推哪篇新闻',
+  'item1Description': '工人智慧挑的更有感',
+  'item2Title': '精选喜爱的报导',
+  'item2Description': '这篇不能只有我看到',
+  'item3Title': '随时来点讨论吧',
+  'item3Description': '看看大家都在想什么',
+  'item4Title': '集锦功能好分类',
+  'item4Description': '轻松制作自己的整合包',
+  'startToUse': '开始使用',
 };

@@ -122,4 +122,15 @@ const Map<String, String> chineseTwMap = {
   'readrCustomerServiceNumber': 'READr客服電話：',
   'mmContactEmail': '鏡週刊聯絡信箱：',
   'mmCustomerServiceNumber': '鏡週刊客服電話：',
+
+  //welcomePage
+  'item1Title': '看朋友推哪篇新聞',
+  'item1Description': '工人智慧挑的更有感',
+  'item2Title': '精選喜愛的報導',
+  'item2Description': '這篇不能只有我看到',
+  'item3Title': '隨時來點討論吧',
+  'item3Description': '看看大家都在想什麼',
+  'item4Title': '集錦功能好分類',
+  'item4Description': '輕鬆製作自己的懶人包',
+  'startToUse': '開始使用',
 };

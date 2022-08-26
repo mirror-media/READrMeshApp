@@ -124,4 +124,15 @@ const Map<String, String> englishMap = {
   'readrCustomerServiceNumber': 'READr customer service number: ',
   'mmContactEmail': 'Mirror Media contact email: ',
   'mmCustomerServiceNumber': 'Mirror Media customer service number: ',
+
+  //welcomePage
+  'item1Title': 'See which news your friends are pushing',
+  'item1Description': 'Humans pick better than AI',
+  'item2Title': 'Pick your favorite stories',
+  'item2Description': 'I can’t be the only one to see this',
+  'item3Title': 'Discuss anytime',
+  'item3Description': 'See what everyone is thinking',
+  'item4Title': 'Collection function help classification',
+  'item4Description': 'Easily make your own lazy guide',
+  'startToUse': 'Start using',
 };
