@@ -133,4 +133,11 @@ const Map<String, String> chineseTwMap = {
   'item4Title': '集錦功能好分類',
   'item4Description': '輕鬆製作自己的懶人包',
   'startToUse': '開始使用',
+
+  //errorPage
+  '500Description': '看來有哪裡出錯了...',
+  '404Description': '找不到這頁的資料...',
+  'noInternetTitle': '沒有網際網路連線',
+  'noInternetDescription': '請確認您已連接網路',
+  'retry': '重新嘗試',
 };

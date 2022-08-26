@@ -135,4 +135,11 @@ const Map<String, String> englishMap = {
   'item4Title': 'Collection function help classification',
   'item4Description': 'Easily make your own lazy guide',
   'startToUse': 'Start using',
+
+  //errorPage
+  '500Description': 'Looks like something went wrong...',
+  '404Description': 'No information found on this page...',
+  'noInternetTitle': 'No internet connection',
+  'noInternetDescription': 'Please make sure you are connected to the Internet',
+  'retry': 'Try again',
 };

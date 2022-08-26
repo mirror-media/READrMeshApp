@@ -134,4 +134,11 @@ const Map<String, String> chineseCnMap = {
   'item4Title': '集锦功能好分类',
   'item4Description': '轻松制作自己的整合包',
   'startToUse': '开始使用',
+
+  //errorPage
+  '500Description': '看来有哪里出错了...',
+  '404Description': '找不到这页的信息...',
+  'noInternetTitle': '没有互联网连接',
+  'noInternetDescription': '请确保您已连接到互联网',
+  'retry': '再试一次',
 };
