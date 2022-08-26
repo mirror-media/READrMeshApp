@@ -18,13 +18,13 @@ import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/collectionService.dart';
 
-class TimeDimensionPageController extends GetxController {
+class EditTimelinePageController extends GetxController {
   final CollectionRepos collectionRepos;
   final List<TimelineCollectionPick> timelineStory;
   final Collection? collection;
   final JustTheController tooltipController = JustTheController();
   bool _isFirstTimeEdit = true;
-  TimeDimensionPageController(
+  EditTimelinePageController(
     this.collectionRepos,
     this.timelineStory, {
     this.collection,

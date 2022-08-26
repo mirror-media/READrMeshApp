@@ -4,7 +4,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
-import 'package:readr/controller/collection/createAndEdit/timeDimensionPageController.dart';
+import 'package:readr/controller/collection/createAndEdit/editTimelinePageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
@@ -16,7 +16,7 @@ import 'package:readr/pages/collection/createAndEdit/timeline/customTimePage.dar
 import 'package:readr/pages/collection/shared/timelineItemWidget.dart';
 import 'package:readr/services/collectionService.dart';
 
-class EditTimelinePage extends GetView<TimeDimensionPageController> {
+class EditTimelinePage extends GetView<EditTimelinePageController> {
   final bool isEdit;
   final bool isChangeFormat;
   final List<TimelineCollectionPick> timelineStoryList;
@@ -32,7 +32,7 @@ class EditTimelinePage extends GetView<TimeDimensionPageController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(TimeDimensionPageController(
+    Get.put(EditTimelinePageController(
       CollectionService(),
       timelineStoryList,
       collection: collection,

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:readr/controller/collection/createAndEdit/timeDimensionPageController.dart';
+import 'package:readr/controller/collection/createAndEdit/editTimelinePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
@@ -14,7 +14,7 @@ enum TimeLevel {
   time,
 }
 
-class CustomTimePage extends GetView<TimeDimensionPageController> {
+class CustomTimePage extends GetView<EditTimelinePageController> {
   final TimelineCollectionPick timelineStory;
   const CustomTimePage(this.timelineStory);
 
