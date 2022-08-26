@@ -25,9 +25,9 @@ Future<void> showEditCommentMenu(
         actions: [
           CupertinoActionSheetAction(
             onPressed: () => Navigator.of(context).pop('edit'),
-            child: const Text(
-              '編輯留言',
-              style: TextStyle(
+            child: Text(
+              'editComment'.tr,
+              style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
               ),
@@ -35,9 +35,9 @@ Future<void> showEditCommentMenu(
           ),
           CupertinoActionSheetAction(
             onPressed: () => Navigator.of(context).pop('delete'),
-            child: const Text(
-              '刪除留言',
-              style: TextStyle(
+            child: Text(
+              'deleteComment'.tr,
+              style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
                 color: Colors.red,
@@ -47,9 +47,9 @@ Future<void> showEditCommentMenu(
         ],
         cancelButton: CupertinoActionSheetAction(
           onPressed: () => Navigator.of(context).pop('cancel'),
-          child: const Text(
-            '取消',
-            style: TextStyle(
+          child: Text(
+            'cancel'.tr,
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 20,
             ),
@@ -96,9 +96,9 @@ Future<void> showEditCommentMenu(
                   color: readrBlack87,
                   size: 18,
                 ),
-                label: const Text(
-                  '編輯留言',
-                  style: TextStyle(
+                label: Text(
+                  'editComment'.tr,
+                  style: const TextStyle(
                     color: readrBlack87,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -116,9 +116,9 @@ Future<void> showEditCommentMenu(
                   color: Colors.red,
                   size: 18,
                 ),
-                label: const Text(
-                  '刪除留言',
-                  style: TextStyle(
+                label: Text(
+                  'deleteComment'.tr,
+                  style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -156,9 +156,9 @@ Future<void> showEditCommentMenu(
     final pickAndBookmarkService = Get.find<PickAndBookmarkService>();
     if (pickAndBookmarkService.pickList
         .any((element) => element.myPickCommentId == comment.id)) {
-      dialogContent = const Text(
-        '系統仍會保留您的精選記錄',
-        style: TextStyle(
+      dialogContent = Text(
+        'deleteAlertContent'.tr,
+        style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w400,
         ),
@@ -168,9 +168,9 @@ Future<void> showEditCommentMenu(
     await showPlatformDialog(
       context: context,
       builder: (context) => PlatformAlertDialog(
-        title: const Text(
-          '確定要刪除留言？',
-          style: TextStyle(
+        title: Text(
+          'deleteAlertTitle'.tr,
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
@@ -189,7 +189,7 @@ Future<void> showEditCommentMenu(
               Navigator.pop(context);
             },
             child: Text(
-              '刪除留言',
+              'delete'.tr,
               style: TextStyle(
                 color: Colors.red,
                 fontSize: 15,
@@ -201,7 +201,7 @@ Future<void> showEditCommentMenu(
           PlatformDialogAction(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              '取消',
+              'cancel'.tr,
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 15,
