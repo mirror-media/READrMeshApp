@@ -115,4 +115,11 @@ const Map<String, String> englishMap = {
   'multiFollower': 'followed',
   'lookmoreMemberText': 'Explore more users recommended for you',
   'lookmorePublisherText': 'Explore more recommended media for you',
+
+  //story
+  'updateTime': 'Update time: ',
+  'journalist': 'Journalist: ',
+  'referenceData': 'Reference data',
+  'readrContactEmail': 'READr contact email: ',
+  'readrCustomerServiceNumber': 'READr customer service number: ',
 };

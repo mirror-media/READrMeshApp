@@ -113,4 +113,11 @@ const Map<String, String> chineseTwMap = {
   'multiFollower': '人的追蹤對象',
   'lookmoreMemberText': '探索更多為你推薦的使用者',
   'lookmorePublisherText': '探索更多為你推薦的媒體',
+
+  //story
+  'updateTime': '更新時間：',
+  'journalist': '記者：',
+  'referenceData': '引用數據',
+  'readrContactEmail': 'READr聯絡信箱：',
+  'readrCustomerServiceNumber': 'READr客服電話：',
 };

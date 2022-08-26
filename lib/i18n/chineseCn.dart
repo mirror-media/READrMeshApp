@@ -113,4 +113,12 @@ const Map<String, String> chineseCnMap = {
   'multiFollower': '人的关注对象',
   'lookmoreMemberText': '探索更多推荐给您的用户',
   'lookmorePublisherText': '探索更多推荐给您的媒体',
+
+  //story
+  'updateTime': '更新时间：',
+  'journalist': '记者：',
+  'readrSummaryTitle': '这篇报导想要告诉你的事：',
+  'referenceData': '参考数据',
+  'readrContactEmail': 'READr联络信箱：',
+  'readrCustomerServiceNumber': 'READr客服电话：',
 };

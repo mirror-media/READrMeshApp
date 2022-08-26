@@ -223,7 +223,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
+        '${'updateTime'.tr}${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -297,12 +297,13 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '記者：',
-            style: TextStyle(
+          Text(
+            'journalist'.tr,
+            style: const TextStyle(
               fontSize: 13,
               color: readrBlack50,
               fontWeight: FontWeight.w400,
+              height: 1.39,
             ),
           ),
           Expanded(
@@ -537,7 +538,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           ),
           padding: const EdgeInsets.only(left: 24.0),
           child: Text(
-            '引用數據',
+            'referenceData'.tr,
             style: TextStyle(
               color: readrBlack87,
               fontSize: 18,
@@ -635,7 +636,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: 'READr連絡信箱：',
+            text: 'readrContactEmail'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
@@ -674,7 +675,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: 'READr客服電話：',
+            text: 'readrCustomerServiceNumber'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
