@@ -32,9 +32,8 @@ class DescriptionPageController extends GetxController {
         description: collectionDescription.value,
       );
 
-      Get.find<CollectionPageController>(tag: collection!.id)
-          .collectionDescription
-          .value = collectionDescription.value;
+      await Get.find<CollectionPageController>(tag: collection!.id)
+          .fetchCollectionData(useCache: false);
 
       Get.back();
     } catch (e) {
