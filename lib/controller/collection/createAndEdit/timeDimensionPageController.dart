@@ -88,7 +88,15 @@ class TimeDimensionPageController extends GetxController {
       },
     );
     sectionTitleFocusNode.addListener(() {
-      if (sectionTitleFocusNode.hasFocus) {
+      if (sectionTitleFocusNode.hasFocus &&
+          sectionTitleController.text.isNotEmpty) {
+        showClearTextButton.value = true;
+      } else {
+        showClearTextButton.value = false;
+      }
+    });
+    sectionTitleController.addListener(() {
+      if (sectionTitleController.text.isNotEmpty) {
         showClearTextButton.value = true;
       } else {
         showClearTextButton.value = false;

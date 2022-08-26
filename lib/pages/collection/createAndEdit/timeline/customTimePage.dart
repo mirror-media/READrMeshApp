@@ -85,11 +85,15 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            _customTimeBlock(context),
-            _sectionTitleBlock(context),
-          ],
+        body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
+          child: Column(
+            children: [
+              _customTimeBlock(context),
+              _sectionTitleBlock(context),
+            ],
+          ),
         ),
       ),
     );
@@ -190,13 +194,6 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
                 fontSize: 16,
                 color: readrBlack87,
               ),
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  controller.showClearTextButton.value = true;
-                } else {
-                  controller.showClearTextButton.value = false;
-                }
-              },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(
                   bottom: 8,
@@ -216,8 +213,7 @@ class CustomTimePage extends GetView<TimeDimensionPageController> {
                     color: Colors.white10,
                   ),
                 ),
-                suffix: (controller.showClearTextButton.isFalse ||
-                        controller.sectionTitleController.text.isEmpty)
+                suffix: (controller.showClearTextButton.isFalse)
                     ? null
                     : GestureDetector(
                         onTap: () {
