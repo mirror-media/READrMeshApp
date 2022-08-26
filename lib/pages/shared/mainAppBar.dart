@@ -31,6 +31,7 @@ class MainAppBar extends GetView<MainAppBarController> {
           child: IconButton(
             onPressed: () => Get.to(() => SearchPage()),
             padding: const EdgeInsets.all(0),
+            tooltip: 'searchButtonTooltip'.tr,
             alignment: Alignment.centerRight,
             icon: Icon(
               PlatformIcons(context).search,
@@ -46,6 +47,7 @@ class MainAppBar extends GetView<MainAppBarController> {
           child: IconButton(
             onPressed: () => Get.to(() => NotifyPage(), fullscreenDialog: true),
             padding: const EdgeInsets.all(0),
+            tooltip: 'notificationButtonTooltip'.tr,
             icon: Stack(
               alignment: Alignment.center,
               children: [
@@ -108,6 +110,7 @@ class MainAppBar extends GetView<MainAppBarController> {
                   );
                 },
                 padding: const EdgeInsets.all(0),
+                tooltip: 'invitationCodeButtonTooltip'.tr,
                 icon: Stack(
                   alignment: Alignment.center,
                   children: [
