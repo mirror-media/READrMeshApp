@@ -119,7 +119,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                       if (hasPickOrBookmark) {
                         Get.to(() => const ChooseStoryPage());
                       } else {
-                        Get.until((route) => Get.currentRoute == '/');
+                        Get.until((route) => route.isFirst);
                         Get.find<RootPageController>().tabIndex.value = 1;
                       }
                     },
