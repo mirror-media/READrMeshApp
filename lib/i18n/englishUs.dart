@@ -224,7 +224,7 @@ const Map<String, String> englishUsMap = {
   'viewAllCollectionResultSuffix': '"',
 
   //readr
-  'topic': 'Special reports',
+  'topic': 'Feature',
   'readrNoMore': 'You have read all the news',
   'slugInternational': 'International',
   'slugCulture': 'Culture',
@@ -235,7 +235,7 @@ const Map<String, String> englishUsMap = {
   'slugHumanRights': 'Human rights',
   'slugPolitics': 'Politics',
   'slugEducation': 'Education',
-  'slugBreakingNews': 'Current affairs',
+  'slugBreakingNews': 'Breaking News',
   'slugLatest': 'Latest articles',
 
   //personalFile
