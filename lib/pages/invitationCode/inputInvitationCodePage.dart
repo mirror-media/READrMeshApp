@@ -34,9 +34,9 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          '邀請碼',
-          style: TextStyle(
+        title: Text(
+          'invitationCode'.tr,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 18,
             color: readrBlack,
@@ -65,9 +65,9 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                   _formKey.currentState!.validate();
                 }
               },
-              child: const Text(
-                '送出',
-                style: TextStyle(
+              child: Text(
+                'send'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: Colors.blue,
@@ -135,11 +135,11 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                   case InvitationCodeStatus.valid:
                     return null;
                   case InvitationCodeStatus.invalid:
-                    return '邀請碼輸入錯誤，請重新輸入';
+                    return 'invitationCodeInputError'.tr;
                   case InvitationCodeStatus.activated:
-                    return '此邀請碼已被使用，請重新輸入';
+                    return 'invitationCodeUsed'.tr;
                   case InvitationCodeStatus.error:
-                    return '發生錯誤，請再試一次';
+                    return 'invitationCodeError'.tr;
                 }
               },
               onCompleted: (text) {
@@ -171,7 +171,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
           alignment: Alignment.center,
           child: RichText(
             text: TextSpan(
-              text: '請輸入邀請碼後繼續使用，如邀請碼有使用異常之狀況，請聯繋',
+              text: 'inputInvitationCodeDescriptionPrefix'.tr,
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
@@ -207,9 +207,9 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                     ),
                   ),
                 ),
-                const TextSpan(
-                  text: ' 詢問。',
-                  style: TextStyle(
+                TextSpan(
+                  text: 'inputInvitationCodeDescriptionSuffix'.tr,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                     color: readrBlack50,
@@ -217,6 +217,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                 ),
               ],
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ],

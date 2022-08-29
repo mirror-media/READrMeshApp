@@ -18,6 +18,7 @@ const Map<String, String> chineseCnMap = {
   'nextStep': '下一步',
   'or': '或',
   'filter': '筛选',
+  'send': '发送',
 
   //bottom tab
   'communityTab': '社区',
@@ -335,7 +336,6 @@ const Map<String, String> chineseCnMap = {
   //inputEmailPage
   'email': '邮箱',
   'emailDeliveryFailed': '电子邮件发送失败',
-  'send': '发送',
   'inputEmailPageEmptyHint': '请输入您的邮箱地址',
   'inputEmailPageErrorHint': '请输入有效的邮箱地址',
   'inputEmailPageBodyText': '我们将向此邮箱发送登录链接，以省去您设置密码的麻烦。',
@@ -356,4 +356,17 @@ const Map<String, String> chineseCnMap = {
   'latestPageBar': '所有最新文章',
   'latestPageBottomWidgetText': '你已看完所有新闻',
   'latestPageFilterTitle': '自定义要查看的新闻',
+
+  //invitationCode
+  'invitationCode': '邀请码',
+  'invitationCodeInputError': '邀请码输入不正确，请重新输入',
+  'invitationCodeUsed': '此邀请码已被使用，请重新输入',
+  'invitationCodeError': '出现错误，请重试',
+  'inputInvitationCodeDescriptionPrefix': '请输入邀请码后继续使用，如邀请码有使用异常之状况，请联系',
+  'inputInvitationCodeDescriptionSuffix': ' 询问。',
+  'availableInviteCodes': '可用的邀请码',
+  'noAvailableInviteCodes': '目前没有可用的邀请码...',
+  'invitationCodeCopied': '已复制邀请码',
+  'copyTheInvitationCode': '复制邀请码',
+  'used': '已使用',
 };

@@ -18,6 +18,7 @@ const Map<String, String> chineseTwMap = {
   'nextStep': '下一步',
   'or': '或',
   'filter': '篩選',
+  'send': '送出',
 
   //bottom tab
   'communityTab': '社群',
@@ -334,7 +335,6 @@ const Map<String, String> chineseTwMap = {
   //inputEmailPage
   'email': 'Email',
   'emailDeliveryFailed': 'Email寄送失敗',
-  'send': '送出',
   'inputEmailPageEmptyHint': '請輸入您的 Email 地址',
   'inputEmailPageErrorHint': '請輸入有效的 Email 地址',
   'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
@@ -355,4 +355,17 @@ const Map<String, String> chineseTwMap = {
   'latestPageBar': '所有最新文章',
   'latestPageBottomWidgetText': '你已看完所有新聞囉',
   'latestPageFilterTitle': '自訂您想看到的新聞',
+
+  //invitationCode
+  'invitationCode': '邀請碼',
+  'invitationCodeInputError': '邀請碼輸入錯誤，請重新輸入',
+  'invitationCodeUsed': '此邀請碼已被使用，請重新輸入',
+  'invitationCodeError': '發生錯誤，請再試一次',
+  'inputInvitationCodeDescriptionPrefix': '請輸入邀請碼後繼續使用，如邀請碼有使用異常之狀況，請聯繋',
+  'inputInvitationCodeDescriptionSuffix': ' 詢問。',
+  'availableInviteCodes': '可用的邀請碼',
+  'noAvailableInviteCodes': '目前沒有可用的邀請碼...',
+  'invitationCodeCopied': '已複製邀請碼',
+  'copyTheInvitationCode': '複製邀請碼',
+  'used': '已使用',
 };

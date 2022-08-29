@@ -18,6 +18,7 @@ const Map<String, String> englishUsMap = {
   'nextStep': 'Next step',
   'or': 'or',
   'filter': 'Filter',
+  'send': 'Send',
 
   //bottom tab
   'communityTab': 'Community',
@@ -346,7 +347,6 @@ const Map<String, String> englishUsMap = {
   //inputEmailPage
   'email': 'Email',
   'emailDeliveryFailed': 'Email delivery failed',
-  'send': 'Send',
   'inputEmailPageEmptyHint': 'Please enter your email address',
   'inputEmailPageErrorHint': 'Please enter a valid email address',
   'inputEmailPageBodyText':
@@ -370,4 +370,20 @@ const Map<String, String> englishUsMap = {
   'latestPageBar': 'All latest articles',
   'latestPageBottomWidgetText': 'You have read all the news',
   'latestPageFilterTitle': 'Customize the news you want to see',
+
+  //invitationCode
+  'invitationCode': 'Invitation code',
+  'invitationCodeInputError':
+      'Invitation code entered incorrectly, please re-enter',
+  'invitationCodeUsed':
+      'This invitation code has already been used, please re-enter',
+  'invitationCodeError': 'An error occurred, please try again',
+  'inputInvitationCodeDescriptionPrefix':
+      'Please enter the invitation code to continue. If the invitation code is used abnormally, please contact',
+  'inputInvitationCodeDescriptionSuffix': ' to ask.',
+  'availableInviteCodes': 'Available invitation code',
+  'noAvailableInviteCodes': 'There are currently no invite codes available...',
+  'invitationCodeCopied': 'Invitation code copied',
+  'copyTheInvitationCode': 'Copy the invitation code',
+  'used': 'Used',
 };

@@ -21,9 +21,9 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         centerTitle: true,
         elevation: 0.5,
         backgroundColor: Colors.white,
-        title: const Text(
-          '邀請碼',
-          style: TextStyle(
+        title: Text(
+          'invitationCode'.tr,
+          style: const TextStyle(
             color: readrBlack,
             fontWeight: FontWeight.w400,
             fontSize: 18,
@@ -83,7 +83,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '可用的邀請碼',
+          'availableInviteCodes'.tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -92,11 +92,11 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         ),
         const SizedBox(height: 12),
         if (controller.usableCodeList.isEmpty)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 40),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
             child: Text(
-              '目前沒有可用的邀請碼...',
-              style: TextStyle(
+              'noAvailableInviteCodes'.tr,
+              style: const TextStyle(
                 color: readrBlack66,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -143,7 +143,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
                   size: 16,
                   color: Colors.white,
                 ),
-                message: '已複製邀請碼',
+                message: 'invitationCodeCopied'.tr,
               );
             },
             icon: const FaIcon(
@@ -151,9 +151,9 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
               size: 11,
               color: readrBlack87,
             ),
-            label: const Text(
-              '複製邀請碼',
-              style: TextStyle(
+            label: Text(
+              'copyTheInvitationCode'.tr,
+              style: const TextStyle(
                 color: readrBlack87,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
@@ -177,7 +177,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '已使用',
+          'used'.tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
