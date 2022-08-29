@@ -28,11 +28,11 @@ class LoginPage extends GetView<LoginPageController> {
     ));
     late final String appBarTitle;
     if (fromOnboard) {
-      appBarTitle = '開始使用';
+      appBarTitle = 'loginOnboardAppbarTitle'.tr;
     } else if (fromComment) {
-      appBarTitle = '加入討論';
+      appBarTitle = 'loginCommentAppbarTitle'.tr;
     } else {
-      appBarTitle = '繼續使用';
+      appBarTitle = 'loginAppbarTitle'.tr;
     }
     return WillPopScope(
       child: Scaffold(
@@ -90,15 +90,15 @@ class LoginPage extends GetView<LoginPageController> {
                 color: Colors.white,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SpinKitWanderingCubes(
+                  children: [
+                    const SpinKitWanderingCubes(
                       color: readrBlack,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Text(
-                        '登入中',
-                        style: TextStyle(
+                        'loggingIn'.tr,
+                        style: const TextStyle(
                           fontSize: 20,
                           color: readrBlack,
                         ),
@@ -150,7 +150,9 @@ class LoginPage extends GetView<LoginPageController> {
           Container(
             padding: const EdgeInsets.only(bottom: 20),
             child: Text(
-              fromComment ? '立即登入以參與大家的討論' : '立即登入，享受更多個人化新聞選讀服務',
+              fromComment
+                  ? 'loginPageContentFromComment'.tr
+                  : 'loginPageContent'.tr,
               style: const TextStyle(
                 color: readrBlack87,
                 fontSize: 16,
@@ -162,11 +164,12 @@ class LoginPage extends GetView<LoginPageController> {
         if (Platform.isIOS) ...[
           LoginButton(
             type: LoginType.apple,
+            buttonText: 'continueWithApple'.tr,
             onFinished: (result, isNewUser, error) async {
               if (result == FirebaseLoginStatus.success) {
                 controller.login(LoginType.apple, isNewUser);
               } else if (result == FirebaseLoginStatus.error) {
-                showToast("登入失敗");
+                showToast("loginFailed".tr);
               }
             },
           ),
@@ -176,11 +179,12 @@ class LoginPage extends GetView<LoginPageController> {
         ],
         LoginButton(
           type: LoginType.facebook,
+          buttonText: 'continueWithFacebook'.tr,
           onFinished: (result, isNewUser, error) async {
             if (result == FirebaseLoginStatus.success) {
               controller.login(LoginType.facebook, isNewUser);
             } else if (result == FirebaseLoginStatus.error) {
-              showToast("登入失敗");
+              showToast("loginFailed".tr);
             }
           },
         ),
@@ -189,11 +193,12 @@ class LoginPage extends GetView<LoginPageController> {
         ),
         LoginButton(
           type: LoginType.google,
+          buttonText: 'continueWithGoogle'.tr,
           onFinished: (result, isNewUser, error) async {
             if (result == FirebaseLoginStatus.success) {
               controller.login(LoginType.google, isNewUser);
             } else if (result == FirebaseLoginStatus.error) {
-              showToast("登入失敗");
+              showToast("loginFailed".tr);
             }
           },
         ),
@@ -202,9 +207,9 @@ class LoginPage extends GetView<LoginPageController> {
         ),
         OutlinedButton.icon(
           onPressed: () => Get.to(InputEmailPage()),
-          label: const Text(
-            '以 Email 信箱繼續',
-            style: TextStyle(
+          label: Text(
+            'continueWithEmail'.tr,
+            style: const TextStyle(
               color: readrBlack,
               fontSize: 16,
               fontWeight: FontWeight.w400,
@@ -233,8 +238,7 @@ class LoginPage extends GetView<LoginPageController> {
   }
 
   Widget _statement() {
-    String html =
-        "<div style='text-align:center'>繼續使用代表您同意與接受</div><div style='text-align:center'>我們的<a href='https://www.readr.tw/post/2901'>《服務條款》</a>及<a href='https://www.readr.tw/privacy-rule'>《隱私政策》</div>";
+    String html = "loginStatementHtml".tr;
     return HtmlWidget(
       html,
       customStylesBuilder: (element) {

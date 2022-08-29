@@ -29,9 +29,9 @@ class InputNamePage extends GetView<InputNamePageController> {
           shadowColor: Colors.white,
           backgroundColor: Colors.white,
           elevation: 0,
-          title: const Text(
-            '暱稱',
-            style: TextStyle(
+          title: Text(
+            'inputNamePageAppbarTitle'.tr,
+            style: const TextStyle(
               color: readrBlack,
               fontSize: 18,
               fontWeight: FontWeight.w400,
@@ -58,9 +58,9 @@ class InputNamePage extends GetView<InputNamePageController> {
                       controller.createMember();
                     }
                   },
-                  child: const Text(
-                    '完成註冊',
-                    style: TextStyle(
+                  child: Text(
+                    'completeRegistration'.tr,
+                    style: const TextStyle(
                       color: Colors.blue,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
@@ -84,15 +84,15 @@ class InputNamePage extends GetView<InputNamePageController> {
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '建立帳號中',
-                    style: TextStyle(
+                    'creatingAnAccount'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -132,9 +132,9 @@ class InputNamePage extends GetView<InputNamePageController> {
             controller: controller.textController,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return '請輸入暱稱。';
+                return 'inputNamePageEmptyHint'.tr;
               } else if (!_validateNickname(value)) {
-                return '這個暱稱目前無法使用，請使用其他暱稱。';
+                return 'inputNamePageErrorHint'.tr;
               }
               return null;
             },
@@ -156,9 +156,9 @@ class InputNamePage extends GetView<InputNamePageController> {
         const SizedBox(
           height: 12,
         ),
-        const Text(
-          '請輸入您想使用的公開顯示名稱，字數以20字內為限。',
-          style: TextStyle(
+        Text(
+          'inputNamePageDescription'.tr,
+          style: const TextStyle(
             fontSize: 13,
             color: readrBlack50,
             fontWeight: FontWeight.w400,

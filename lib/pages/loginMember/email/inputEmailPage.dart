@@ -25,9 +25,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Email',
-          style: TextStyle(
+        title: Text(
+          'email'.tr,
+          style: const TextStyle(
             color: readrBlack,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -53,7 +53,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
                   Get.off(() => SentEmailPage(_controller.text));
                 } else {
                   Fluttertoast.showToast(
-                    msg: "Email寄送失敗",
+                    msg: "emailDeliveryFailed".tr,
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -63,9 +63,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
                 _isSending = false;
               }
             },
-            child: const Text(
-              '送出',
-              style: TextStyle(
+            child: Text(
+              'send'.tr,
+              style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -98,9 +98,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
             validator: (value) {
               if (value != null) {
                 if (value.isEmpty) {
-                  return '請輸入您的 Email 地址';
+                  return 'inputEmailPageEmptyHint'.tr;
                 } else if (!isEmail(value)) {
-                  return '請輸入有效的 Email 地址';
+                  return 'inputEmailPageErrorHint'.tr;
                 }
               }
               return null;
@@ -122,9 +122,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
         const SizedBox(
           height: 12,
         ),
-        const Text(
-          '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
-          style: TextStyle(
+        Text(
+          'inputEmailPageBodyText'.tr,
+          style: const TextStyle(
             fontSize: 13,
             color: readrBlack50,
             fontWeight: FontWeight.w400,

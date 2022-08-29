@@ -14,6 +14,9 @@ const Map<String, String> chineseCnMap = {
   'andOther': '及其他',
   'people': '人',
   'all': '都',
+  'finish': '完成',
+  'nextStep': '下一步',
+  'or': '或',
 
   //bottom tab
   'communityTab': '社区',
@@ -295,4 +298,52 @@ const Map<String, String> chineseCnMap = {
   'commentYourCollection': '在你的集锦下评论。',
   'createCollectionPrefix': '创建了新的集锦「',
   'createCollectionSuffix': '」。',
+
+  //loginPage
+  'loginOnboardAppbarTitle': '开始使用',
+  'loginCommentAppbarTitle': '加入讨论',
+  'loginAppbarTitle': '继续使用',
+  'loggingIn': '登录中',
+  'loginPageContentFromComment': '立即登录以加入讨论',
+  'loginPageContent': '立即登录，享受更个性化的新闻选读服务',
+  'loginFailed': '登录失败',
+  'continueWithEmail': '以邮箱继续',
+  'continueWithApple': '以苹果帐号继续',
+  'continueWithFacebook': '以脸书帐号继续',
+  'continueWithGoogle': '以谷歌帐号继续',
+  'loginStatementHtml':
+      "<div style='text-align:center'>继续使用代表您同意与接受</div><div style='text-align:center'>我们的<a href='https://www.readr.tw/post/2901'>《服务条款》</a>及<a href='https://www.readr.tw/privacy-rule'>《隐私政策》</div>",
+
+  //inputNamePage
+  'inputNamePageAppbarTitle': '昵称',
+  'completeRegistration': '完成注册',
+  'creatingAnAccount': '创建帐户中',
+  'inputNamePageEmptyHint': '请输入昵称。',
+  'inputNamePageErrorHint': '此昵称当前不可用，请使用其他昵称。',
+  'inputNamePageDescription': '请输入要使用的公开显示名称，不超过20个字符。',
+
+  //choosePublisherPage
+  'choosePublisherPageAppbarTitle': '欢迎使用',
+  'choosePublisherPageBodyText': '请选择要关注的媒体',
+  'noChoosePublisherButtonText': '请至少选择 1 个',
+
+  //chooseMemberPage
+  'chooseMemberPageAppbarTitle': '推荐关注',
+  'chooseMemberPageBodyText': '根据您的偏好，我们建议您关注这些人',
+
+  //inputEmailPage
+  'email': '邮箱',
+  'emailDeliveryFailed': '电子邮件发送失败',
+  'send': '发送',
+  'inputEmailPageEmptyHint': '请输入您的邮箱地址',
+  'inputEmailPageErrorHint': '请输入有效的邮箱地址',
+  'inputEmailPageBodyText': '我们将向此邮箱发送登录链接，以省去您设置密码的麻烦。',
+
+  //sentEmailPage
+  'sentEmailPageAppbarTitle': '确认邮箱',
+  'sentEmailPagePrefix': '我们已将登录链接发送到',
+  'sentEmailPageSuffix': '，请点击信中的链接登录。',
+  'openEmailApp': '打开邮箱应用程序',
+  'notReceiveText': '没收到信吗？请检查您的垃圾邮件匣',
+  'tryOtherLoginMethod': '尝试其他登录方法',
 };

@@ -14,6 +14,9 @@ const Map<String, String> chineseTwMap = {
   'andOther': '及其他',
   'people': '人',
   'all': '都',
+  'finish': '完成',
+  'nextStep': '下一步',
+  'or': '或',
 
   //bottom tab
   'communityTab': '社群',
@@ -294,4 +297,52 @@ const Map<String, String> chineseTwMap = {
   'commentYourCollection': '在你的集錦下留言。',
   'createCollectionPrefix': '建立了新的集錦「',
   'createCollectionSuffix': '」。',
+
+  //loginPage
+  'loginOnboardAppbarTitle': '開始使用',
+  'loginCommentAppbarTitle': '加入討論',
+  'loginAppbarTitle': '繼續使用',
+  'loggingIn': '登入中',
+  'loginPageContentFromComment': '立即登入以參與大家的討論',
+  'loginPageContent': '立即登入，享受更多個人化新聞選讀服務',
+  'loginFailed': '登入失敗',
+  'continueWithEmail': '以 Email 信箱繼續',
+  'continueWithApple': '以 Apple 帳號繼續',
+  'continueWithFacebook': '以 Facebook 帳號繼續',
+  'continueWithGoogle': '以 Google 帳號繼續',
+  'loginStatementHtml':
+      "<div style='text-align:center'>繼續使用代表您同意與接受</div><div style='text-align:center'>我們的<a href='https://www.readr.tw/post/2901'>《服務條款》</a>及<a href='https://www.readr.tw/privacy-rule'>《隱私政策》</div>",
+
+  //inputNamePage
+  'inputNamePageAppbarTitle': '暱稱',
+  'completeRegistration': '完成註冊',
+  'creatingAnAccount': '建立帳號中',
+  'inputNamePageEmptyHint': '請輸入暱稱。',
+  'inputNamePageErrorHint': '這個暱稱目前無法使用，請使用其他暱稱。',
+  'inputNamePageDescription': '請輸入您想使用的公開顯示名稱，字數以20字內為限。',
+
+  //choosePublisherPage
+  'choosePublisherPageAppbarTitle': '歡迎使用',
+  'choosePublisherPageBodyText': '請選擇您想追蹤的媒體',
+  'noChoosePublisherButtonText': '請至少選擇 1 個',
+
+  //chooseMemberPage
+  'chooseMemberPageAppbarTitle': '推薦追蹤',
+  'chooseMemberPageBodyText': '根據您的喜好，我們推薦您追蹤這些人物',
+
+  //inputEmailPage
+  'email': 'Email',
+  'emailDeliveryFailed': 'Email寄送失敗',
+  'send': '送出',
+  'inputEmailPageEmptyHint': '請輸入您的 Email 地址',
+  'inputEmailPageErrorHint': '請輸入有效的 Email 地址',
+  'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
+
+  //sentEmailPage
+  'sentEmailPageAppbarTitle': '確認收件匣',
+  'sentEmailPagePrefix': '我們已將登入連結寄到',
+  'sentEmailPageSuffix': '，請點擊信件中的連結登入。',
+  'openEmailApp': '打開信件 APP',
+  'notReceiveText': '沒收到信件？請檢查垃圾信件匣',
+  'tryOtherLoginMethod': '嘗試其他登入方式',
 };

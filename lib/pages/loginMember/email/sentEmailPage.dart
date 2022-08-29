@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:get/get.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -16,9 +17,9 @@ class SentEmailPage extends StatelessWidget {
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          '確認收件匣',
-          style: TextStyle(
+        title: Text(
+          'sentEmailPageAppbarTitle'.tr,
+          style: const TextStyle(
             color: readrBlack,
             fontSize: 20,
             fontWeight: FontWeight.w400,
@@ -50,7 +51,7 @@ class SentEmailPage extends StatelessWidget {
       children: [
         Center(
           child: Text(
-            '我們已將登入連結寄到\n $email，請點擊信件中的連結登入。',
+            '${'sentEmailPagePrefix'.tr}\n $email${'sentEmailPageSuffix'.tr}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Color.fromRGBO(0, 9, 40, 0.66),
@@ -91,7 +92,9 @@ class SentEmailPage extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            app.name == 'Apple Mail' ? '信件' : app.name,
+                            app.name == 'Apple Mail'
+                                ? 'appleMail'.tr
+                                : app.name,
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 20,
@@ -101,9 +104,9 @@ class SentEmailPage extends StatelessWidget {
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        '取消',
-                        style: TextStyle(
+                      child: Text(
+                        'cancel'.tr,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
@@ -123,16 +126,16 @@ class SentEmailPage extends StatelessWidget {
                 color: readrBlack,
               ),
             ),
-            child: const Text('打開信件 APP'),
+            child: Text('openEmailApp'.tr),
           ),
         ),
         const SizedBox(
           height: 24,
         ),
-        const Center(
+        Center(
           child: Text(
-            '沒收到信件？請檢查垃圾信件匣',
-            style: TextStyle(
+            'notReceiveText'.tr,
+            style: const TextStyle(
               color: readrBlack30,
               fontSize: 13,
               fontWeight: FontWeight.w400,
@@ -142,9 +145,9 @@ class SentEmailPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '或',
-              style: TextStyle(
+            Text(
+              'or'.tr,
+              style: const TextStyle(
                 color: readrBlack30,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
@@ -154,10 +157,10 @@ class SentEmailPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                '嘗試其他登入方式',
+              child: Text(
+                'tryOtherLoginMethod'.tr,
                 softWrap: true,
-                style: TextStyle(
+                style: const TextStyle(
                   color: readrBlack87,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -176,10 +179,10 @@ class SentEmailPage extends StatelessWidget {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text("找不到信件 APP"),
+        title: Text("noMailAppsDialogTitle".tr),
         actions: <Widget>[
           PlatformDialogAction(
-            child: const Text("確定"),
+            child: Text("ok".tr),
             onPressed: () {
               Navigator.pop(context);
             },

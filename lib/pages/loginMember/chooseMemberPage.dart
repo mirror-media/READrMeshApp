@@ -23,9 +23,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
         backgroundColor: Colors.white,
         centerTitle: Platform.isIOS,
         elevation: 0,
-        title: const Text(
-          '推薦追蹤',
-          style: TextStyle(
+        title: Text(
+          'chooseMemberPageAppbarTitle'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -47,9 +47,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
             Container(
               color: Colors.white,
               padding: const EdgeInsets.all(20),
-              child: const Text(
-                '根據您的喜好，我們推薦您追蹤這些人物',
-                style: TextStyle(
+              child: Text(
+                'chooseMemberPageBodyText'.tr,
+                style: const TextStyle(
                   color: readrBlack87,
                   fontSize: 16,
                 ),
@@ -128,9 +128,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                     horizontal: 24,
                   ),
                 ),
-                child: const Text(
-                  '完成',
-                  style: TextStyle(
+                child: Text(
+                  'finish'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),

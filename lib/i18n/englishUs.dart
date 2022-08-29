@@ -14,6 +14,9 @@ const Map<String, String> englishUsMap = {
   'andOther': 'and other',
   'people': 'people',
   'all': ' all',
+  'finish': 'Finish',
+  'nextStep': 'Next step',
+  'or': 'or',
 
   //bottom tab
   'communityTab': 'Community',
@@ -302,4 +305,57 @@ const Map<String, String> englishUsMap = {
   'commentYourCollection': ' leave a comment under your collection.',
   'createCollectionPrefix': ' create a new collection "',
   'createCollectionSuffix': '".',
+
+  //loginPage
+  'loginOnboardAppbarTitle': 'Start using',
+  'loginCommentAppbarTitle': 'Join the discussion',
+  'loginAppbarTitle': 'Continue to use',
+  'loggingIn': 'Logging in',
+  'loginPageContentFromComment': 'Login now to join the discussion',
+  'loginPageContent':
+      'Log in now to enjoy more personalized news selection services',
+  'loginFailed': 'Login failed',
+  'continueWithEmail': 'Continue with Email',
+  'continueWithApple': 'Continue with Apple',
+  'continueWithFacebook': 'Continue with Facebook',
+  'continueWithGoogle': 'Continue with Google',
+  'loginStatementHtml':
+      "<div style='text-align:center'>By continuing to use, you agree to and accept our</div><div style='text-align:center'><a href='https://www.readr.tw/post/2901'>\"Terms of Service\"</a> and <a href='https://www.readr.tw/privacy-rule'>\"Privacy Policy\"</div>",
+
+  //inputNamePage
+  'inputNamePageAppbarTitle': 'Nick name',
+  'completeRegistration': 'Register',
+  'creatingAnAccount': 'Creating an account',
+  'inputNamePageEmptyHint': 'Please enter a nickname.',
+  'inputNamePageErrorHint':
+      'This nickname is currently unavailable, please use another nickname.',
+  'inputNamePageDescription':
+      'Please enter the public display name you would like to use, within 20 characters.',
+
+  //choosePublisherPage
+  'choosePublisherPageAppbarTitle': 'Welcome',
+  'choosePublisherPageBodyText': 'Please select the media you want to follow',
+  'noChoosePublisherButtonText': 'Please select at least one',
+
+  //chooseMemberPage
+  'chooseMemberPageAppbarTitle': 'Recommended to follow',
+  'chooseMemberPageBodyText':
+      'Based on your preferences, we recommend you to follow these people',
+
+  //inputEmailPage
+  'email': 'Email',
+  'emailDeliveryFailed': 'Email delivery failed',
+  'send': 'Send',
+  'inputEmailPageEmptyHint': 'Please enter your email address',
+  'inputEmailPageErrorHint': 'Please enter a valid email address',
+  'inputEmailPageBodyText':
+      'We will send a login link to this email to save you the trouble of setting a password.',
+
+  //sentEmailPage
+  'sentEmailPageAppbarTitle': 'Confirm inbox',
+  'sentEmailPagePrefix': 'We have sent a login link to',
+  'sentEmailPageSuffix': ', please click the link in the letter to log in.',
+  'openEmailApp': 'Open Email APP',
+  'notReceiveText': "Didn't get the letter? Please check your spam box",
+  'tryOtherLoginMethod': 'try another login method',
 };
