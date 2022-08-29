@@ -17,6 +17,7 @@ const Map<String, String> chineseCnMap = {
   'finish': '完成',
   'nextStep': '下一步',
   'or': '或',
+  'filter': '筛选',
 
   //bottom tab
   'communityTab': '社区',
@@ -346,4 +347,13 @@ const Map<String, String> chineseCnMap = {
   'openEmailApp': '打开邮箱应用程序',
   'notReceiveText': '没收到信吗？请检查您的垃圾邮件匣',
   'tryOtherLoginMethod': '尝试其他登录方法',
+
+  //latestPage
+  'latestPageEmptyTitle': '喔不...这里是空的',
+  'latestPageEmptyDescription': '关注您感兴趣的媒体\n并与所有人讨论',
+  'noArticlesTitle': '哇，今天没有新文章！',
+  'noArticlesDescription': '您可以放下手机休息\n也可以关注其他感兴趣的媒体',
+  'latestPageBar': '所有最新文章',
+  'latestPageBottomWidgetText': '你已看完所有新闻',
+  'latestPageFilterTitle': '自定义要查看的新闻',
 };

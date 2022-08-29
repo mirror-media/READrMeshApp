@@ -17,6 +17,7 @@ const Map<String, String> chineseTwMap = {
   'finish': '完成',
   'nextStep': '下一步',
   'or': '或',
+  'filter': '篩選',
 
   //bottom tab
   'communityTab': '社群',
@@ -345,4 +346,13 @@ const Map<String, String> chineseTwMap = {
   'openEmailApp': '打開信件 APP',
   'notReceiveText': '沒收到信件？請檢查垃圾信件匣',
   'tryOtherLoginMethod': '嘗試其他登入方式',
+
+  //latestPage
+  'latestPageEmptyTitle': '喔不...這裡空空的',
+  'latestPageEmptyDescription': '追蹤您感興趣的媒體\n並和大家一起討論',
+  'noArticlesTitle': '哇，今天沒有新文章！',
+  'noArticlesDescription': '您可以放下手機休息一下\n或者追蹤其他感興趣的媒體',
+  'latestPageBar': '所有最新文章',
+  'latestPageBottomWidgetText': '你已看完所有新聞囉',
+  'latestPageFilterTitle': '自訂您想看到的新聞',
 };

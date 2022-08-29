@@ -163,9 +163,9 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(
               height: 24,
             ),
-            const Text(
-              '喔不...這裡空空的',
-              style: TextStyle(
+            Text(
+              'latestPageEmptyTitle'.tr,
+              style: const TextStyle(
                 color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -175,14 +175,14 @@ class LatestPage extends GetView<LatestPageController> {
               height: 8,
             ),
             RichText(
-              text: const TextSpan(
-                  text: '追蹤您感興趣的媒體\n並和大家一起討論',
-                  style: TextStyle(
+              text: TextSpan(
+                  text: 'latestPageEmptyDescription'.tr,
+                  style: const TextStyle(
                     color: readrBlack50,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
-                  children: [
+                  children: const [
                     TextSpan(
                       text: ' 🗣',
                       style: TextStyle(
@@ -216,9 +216,9 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(
               height: 24,
             ),
-            const Text(
-              '哇，今天沒有新文章！',
-              style: TextStyle(
+            Text(
+              'noArticlesTitle'.tr,
+              style: const TextStyle(
                 color: readrBlack87,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -228,14 +228,14 @@ class LatestPage extends GetView<LatestPageController> {
               height: 8,
             ),
             RichText(
-              text: const TextSpan(
-                  text: '您可以放下手機休息一下\n或者追蹤其他感興趣的媒體',
-                  style: TextStyle(
+              text: TextSpan(
+                  text: 'noArticlesDescription'.tr,
+                  style: const TextStyle(
                     color: readrBlack50,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
-                  children: [
+                  children: const [
                     TextSpan(
                       text: ' 👇',
                       style: TextStyle(
@@ -274,7 +274,7 @@ class LatestPage extends GetView<LatestPageController> {
         child: Row(
           children: [
             Text(
-              '所有最新文章',
+              'latestPageBar'.tr,
               style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
@@ -333,15 +333,15 @@ class LatestPage extends GetView<LatestPageController> {
             color: homeScreenBackgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 text: '🎉 ',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                 ),
                 children: [
                   TextSpan(
-                    text: '你已看完所有新聞囉',
-                    style: TextStyle(
+                    text: 'latestPageBottomWidgetText'.tr,
+                    style: const TextStyle(
                       color: readrBlack30,
                       fontSize: 14,
                     ),
@@ -408,9 +408,9 @@ class LatestPage extends GetView<LatestPageController> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
                     alignment: Alignment.centerLeft,
-                    child: const Text(
-                      '自訂您想看到的新聞',
-                      style: TextStyle(
+                    child: Text(
+                      'latestPageFilterTitle'.tr,
+                      style: const TextStyle(
                         color: readrBlack50,
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
@@ -428,9 +428,9 @@ class LatestPage extends GetView<LatestPageController> {
                     activeColor: readrBlack87,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
-                    title: const Text(
-                      '付費文章',
-                      style: TextStyle(
+                    title: Text(
+                      'paidArticle'.tr,
+                      style: const TextStyle(
                         color: readrBlack87,
                         fontSize: 16,
                       ),
@@ -447,9 +447,9 @@ class LatestPage extends GetView<LatestPageController> {
                     activeColor: readrBlack87,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
-                    title: const Text(
-                      '蓋板廣告',
-                      style: TextStyle(
+                    title: Text(
+                      'fullScreenAd'.tr,
+                      style: const TextStyle(
                         color: readrBlack87,
                         fontSize: 16,
                       ),
@@ -484,9 +484,9 @@ class LatestPage extends GetView<LatestPageController> {
                         ),
                         minimumSize: const Size.fromHeight(48),
                       ),
-                      child: const Text(
-                        '篩選',
-                        style: TextStyle(
+                      child: Text(
+                        'filter'.tr,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: Colors.white,

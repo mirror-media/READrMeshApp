@@ -17,6 +17,7 @@ const Map<String, String> englishUsMap = {
   'finish': 'Finish',
   'nextStep': 'Next step',
   'or': 'or',
+  'filter': 'Filter',
 
   //bottom tab
   'communityTab': 'Community',
@@ -358,4 +359,15 @@ const Map<String, String> englishUsMap = {
   'openEmailApp': 'Open Email APP',
   'notReceiveText': "Didn't get the letter? Please check your spam box",
   'tryOtherLoginMethod': 'try another login method',
+
+  //latestPage
+  'latestPageEmptyTitle': "oh no...it's empty",
+  'latestPageEmptyDescription':
+      'Follow the media you are interested in\nand discuss with everyone',
+  'noArticlesTitle': 'Wow, no new articles today!',
+  'noArticlesDescription':
+      'You can put down your phone and take a break\nor follow other media of interest',
+  'latestPageBar': 'All latest articles',
+  'latestPageBottomWidgetText': 'You have read all the news',
+  'latestPageFilterTitle': 'Customize the news you want to see',
 };
