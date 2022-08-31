@@ -126,6 +126,8 @@ const Map<String, String> chineseTwMap = {
   'myCollectionEmptyTitle': '從精選新聞或書籤中\n將數篇新聞打包成集錦',
   'myCollectionEmptyButtonText': '立即嘗試',
   'viewCollectionEmpty': '這個集錦還沒有新聞',
+  'expandDescription': '展開更多',
+  'articleCount': '篇文章',
 
   //collection timestamp
   'justUpdated': '剛剛更新',

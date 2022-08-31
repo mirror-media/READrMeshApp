@@ -126,6 +126,8 @@ const Map<String, String> chineseCnMap = {
   'myCollectionEmptyTitle': '从精选新闻或书签\n将多条新闻打包到一个集锦中',
   'myCollectionEmptyButtonText': '现在就试试',
   'viewCollectionEmpty': '这个集锦中还没有新闻',
+  'expandDescription': '点击展开',
+  'articleCount': '篇文章',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

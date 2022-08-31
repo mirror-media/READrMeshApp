@@ -132,6 +132,8 @@ const Map<String, String> englishUsMap = {
       'From Picked News or Bookmarks\nPackage several news into a collection',
   'myCollectionEmptyButtonText': 'Try it now',
   'viewCollectionEmpty': 'There is no news in this collection yet',
+  'expandDescription': 'Expand More',
+  'articleCount': ' article',
 
   //collection timestamp
   'justUpdated': 'Just updated',

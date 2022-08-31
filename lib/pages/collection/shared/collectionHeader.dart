@@ -109,17 +109,17 @@ class CollectionHeader extends GetView<CollectionPageController> {
                     overflowWidget: TextOverflowWidget(
                       position: TextOverflowPosition.end,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: '.... ',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color.fromRGBO(0, 9, 40, 0.66),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
                           children: [
                             TextSpan(
-                              text: '展開更多',
-                              style: TextStyle(
+                              text: 'expandDescription'.tr,
+                              style: const TextStyle(
                                 color: readrBlack50,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -139,8 +139,16 @@ class CollectionHeader extends GetView<CollectionPageController> {
             child: Row(
               children: [
                 Obx(
-                  () => ExtendedText(
-                    '${controller.collectionPicks.length}篇文章',
+                  () => ExtendedText.rich(
+                    TextSpan(
+                      text:
+                          '${controller.collectionPicks.length}${'articleCount'.tr}',
+                      children: [
+                        if (controller.collectionPicks.length > 1 &&
+                            Get.locale?.languageCode == 'en')
+                          const TextSpan(text: 's'),
+                      ],
+                    ),
                     joinZeroWidthSpace: true,
                     style: const TextStyle(
                       fontSize: 13,
