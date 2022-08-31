@@ -119,6 +119,8 @@ const Map<String, String> englishUsMap = {
   'comma': ', ',
   'alreadyAddToCollectionsSuffix1': ' etc. ',
   'alreadyAddToCollectionsSuffix2': ' collections',
+  'collectionDeletedTitle': 'Collection does not exist',
+  'collectionDeletedDescription': 'This collection has been removed',
 
   //collection timestamp
   'justUpdated': 'Just updated',

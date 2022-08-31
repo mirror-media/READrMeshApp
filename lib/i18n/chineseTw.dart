@@ -115,6 +115,8 @@ const Map<String, String> chineseTwMap = {
   'comma': '、',
   'alreadyAddToCollectionsSuffix1': '等',
   'alreadyAddToCollectionsSuffix2': '個集錦囉',
+  'collectionDeletedTitle': '集錦不存在',
+  'collectionDeletedDescription': '這個集錦已經被刪除了',
 
   //collection timestamp
   'justUpdated': '剛剛更新',

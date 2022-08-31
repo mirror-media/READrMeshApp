@@ -115,6 +115,8 @@ const Map<String, String> chineseCnMap = {
   'comma': '、',
   'alreadyAddToCollectionsSuffix1': 'etc. ',
   'alreadyAddToCollectionsSuffix2': '个集锦',
+  'collectionDeletedTitle': '集锦不存在',
+  'collectionDeletedDescription': '此集锦已被删除',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

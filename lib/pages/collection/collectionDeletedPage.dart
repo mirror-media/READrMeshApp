@@ -21,9 +21,9 @@ class CollectionDeletedPage extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text(
-          '集錦',
-          style: TextStyle(
+        title: Text(
+          'collection'.tr,
+          style: const TextStyle(
             fontSize: 18,
             color: readrBlack,
           ),
@@ -39,9 +39,9 @@ class CollectionDeletedPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              '集錦不存在',
-              style: TextStyle(
+            Text(
+              'collectionDeletedTitle'.tr,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: readrBlack87,
@@ -50,9 +50,9 @@ class CollectionDeletedPage extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            const Text(
-              '這個集錦已經被刪除了',
-              style: TextStyle(
+            Text(
+              'collectionDeletedDescription'.tr,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: readrBlack66,
