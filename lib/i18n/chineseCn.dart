@@ -19,6 +19,7 @@ const Map<String, String> chineseCnMap = {
   'or': '或',
   'filter': '筛选',
   'send': '发送',
+  'edit': '编辑',
 
   //bottom tab
   'communityTab': '社区',
@@ -128,6 +129,21 @@ const Map<String, String> chineseCnMap = {
   'viewCollectionEmpty': '这个集锦中还没有新闻',
   'expandDescription': '点击展开',
   'articleCount': '篇文章',
+  'customization': '定制',
+
+  //month
+  'january': '1月',
+  'february': '2月',
+  'march': '3月',
+  'april': '4月',
+  'may': '5月',
+  'june': '6月',
+  'july': '7月',
+  'august': '8月',
+  'september': '9月',
+  'october': '10月',
+  'november': '11月',
+  'december': '12月',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

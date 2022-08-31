@@ -145,7 +145,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else {
           children.add(
             Text(
-              '${timelineStory.customMonth!}月',
+              _getMonthText(timelineStory.customMonth!),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -191,7 +191,7 @@ class TimelineItemWidget extends StatelessWidget {
         } else if (timelineStory.customMonth != null) {
           children.add(
             Text(
-              '${timelineStory.customMonth!}月',
+              _getMonthText(timelineStory.customMonth!),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -279,7 +279,7 @@ class TimelineItemWidget extends StatelessWidget {
               height: 4,
             ),
             Text(
-              '${timelineStory.customMonth!}月',
+              _getMonthText(timelineStory.customMonth!),
               style: const TextStyle(
                 fontSize: 16,
                 color: readrBlack87,
@@ -308,9 +308,9 @@ class TimelineItemWidget extends StatelessWidget {
           height: 12,
         ));
       }
-      children.add(const Text(
-        '編輯',
-        style: TextStyle(
+      children.add(Text(
+        'edit'.tr,
+        style: const TextStyle(
           fontSize: 14,
           color: Colors.blue,
         ),
@@ -419,13 +419,44 @@ class TimelineItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       padding: const EdgeInsets.all(4),
-      child: const Text(
-        '自訂',
-        style: TextStyle(
+      child: Text(
+        'customization'.tr,
+        style: const TextStyle(
           fontSize: 11,
           color: readrBlack30,
         ),
       ),
     );
+  }
+
+  String _getMonthText(int month) {
+    switch (month) {
+      case 1:
+        return 'january'.tr;
+      case 2:
+        return 'february'.tr;
+      case 3:
+        return 'march'.tr;
+      case 4:
+        return 'april'.tr;
+      case 5:
+        return 'may'.tr;
+      case 6:
+        return 'june'.tr;
+      case 7:
+        return 'july'.tr;
+      case 8:
+        return 'august'.tr;
+      case 9:
+        return 'september'.tr;
+      case 10:
+        return 'october'.tr;
+      case 11:
+        return 'november'.tr;
+      case 12:
+        return 'december'.tr;
+      default:
+        return '';
+    }
   }
 }

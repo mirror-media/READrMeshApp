@@ -19,6 +19,7 @@ const Map<String, String> englishUsMap = {
   'or': 'or',
   'filter': 'Filter',
   'send': 'Send',
+  'edit': 'Edit',
 
   //bottom tab
   'communityTab': 'Community',
@@ -134,6 +135,21 @@ const Map<String, String> englishUsMap = {
   'viewCollectionEmpty': 'There is no news in this collection yet',
   'expandDescription': 'Expand More',
   'articleCount': ' article',
+  'customization': 'User-\ndefined',
+
+  //month
+  'january': 'Jan.',
+  'february': 'Feb.',
+  'march': 'Mar.',
+  'april': 'Apr.',
+  'may': 'May',
+  'june': 'Jun.',
+  'july': 'Jul.',
+  'august': 'Aug.',
+  'september': 'Sep.',
+  'october': 'Oct.',
+  'november': 'Nov.',
+  'december': 'Dec.',
 
   //collection timestamp
   'justUpdated': 'Just updated',
