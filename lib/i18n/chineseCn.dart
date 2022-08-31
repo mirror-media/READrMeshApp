@@ -123,6 +123,9 @@ const Map<String, String> chineseCnMap = {
   'deleteCollection': '删除集锦',
   'deleteCollectionAlertTitle': '是否确实要删除集锦？',
   'deleteCollectionAlertDescription': '此操作无法撤消',
+  'myCollectionEmptyTitle': '从精选新闻或书签\n将多条新闻打包到一个集锦中',
+  'myCollectionEmptyButtonText': '现在就试试',
+  'viewCollectionEmpty': '这个集锦中还没有新闻',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

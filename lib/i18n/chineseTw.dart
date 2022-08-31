@@ -123,6 +123,9 @@ const Map<String, String> chineseTwMap = {
   'deleteCollection': '刪除集錦',
   'deleteCollectionAlertTitle': '確認刪除集錦？',
   'deleteCollectionAlertDescription': '此動作無法復原',
+  'myCollectionEmptyTitle': '從精選新聞或書籤中\n將數篇新聞打包成集錦',
+  'myCollectionEmptyButtonText': '立即嘗試',
+  'viewCollectionEmpty': '這個集錦還沒有新聞',
 
   //collection timestamp
   'justUpdated': '剛剛更新',

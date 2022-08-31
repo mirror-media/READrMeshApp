@@ -34,9 +34,9 @@ class CollectionEmptyWidget extends StatelessWidget {
                           Get.find<UserService>().currentUser.memberId) {
                     return Column(
                       children: [
-                        const Text(
-                          '從精選新聞或書籤中\n將數篇新聞打包成集錦',
-                          style: TextStyle(
+                        Text(
+                          'myCollectionEmptyTitle'.tr,
+                          style: const TextStyle(
                             fontSize: 16,
                             color: readrBlack30,
                           ),
@@ -68,9 +68,9 @@ class CollectionEmptyWidget extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
                             ),
-                            child: const Text(
-                              '立即嘗試',
-                              style: TextStyle(
+                            child: Text(
+                              'myCollectionEmptyButtonText'.tr,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -81,9 +81,9 @@ class CollectionEmptyWidget extends StatelessWidget {
                     );
                   }
 
-                  return const Text(
-                    '這個集錦還沒有新聞',
-                    style: TextStyle(
+                  return Text(
+                    'viewCollectionEmpty'.tr,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: readrBlack30,
                     ),

@@ -128,6 +128,10 @@ const Map<String, String> englishUsMap = {
   'deleteCollectionAlertTitle':
       'Are you sure you want to delete the collection?',
   'deleteCollectionAlertDescription': 'This action cannot be undone',
+  'myCollectionEmptyTitle':
+      'From Picked News or Bookmarks\nPackage several news into a collection',
+  'myCollectionEmptyButtonText': 'Try it now',
+  'viewCollectionEmpty': 'There is no news in this collection yet',
 
   //collection timestamp
   'justUpdated': 'Just updated',
