@@ -121,6 +121,13 @@ const Map<String, String> englishUsMap = {
   'alreadyAddToCollectionsSuffix2': ' collections',
   'collectionDeletedTitle': 'Collection does not exist',
   'collectionDeletedDescription': 'This collection has been removed',
+  'editTitle': 'Edit title',
+  'editDescription': 'Modify the narrative',
+  'editContentAndSorting': 'Edit content and sorting',
+  'deleteCollection': 'Delete collection',
+  'deleteCollectionAlertTitle':
+      'Are you sure you want to delete the collection?',
+  'deleteCollectionAlertDescription': 'This action cannot be undone',
 
   //collection timestamp
   'justUpdated': 'Just updated',

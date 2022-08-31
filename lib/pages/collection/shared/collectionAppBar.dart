@@ -49,16 +49,16 @@ class CollectionAppBar extends GetView<CollectionPageController>
             await showPlatformDialog(
               context: context,
               builder: (_) => PlatformAlertDialog(
-                title: const Text(
-                  '確定要刪除留言？',
-                  style: TextStyle(
+                title: Text(
+                  'deleteAlertTitle'.tr,
+                  style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                content: const Text(
-                  '系統將不會儲存您剛剛輸入的內容',
-                  style: TextStyle(
+                content: Text(
+                  'leaveAlertContent'.tr,
+                  style: const TextStyle(
                     fontSize: 13,
                   ),
                 ),
@@ -69,7 +69,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                       Get.back();
                     },
                     child: PlatformText(
-                      '刪除留言',
+                      'deleteComment'.tr,
                       style: const TextStyle(
                         fontSize: 17,
                         color: Colors.red,
@@ -79,7 +79,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   PlatformDialogAction(
                     onPressed: () => Get.back(),
                     child: PlatformText(
-                      '繼續輸入',
+                      'continueInput'.tr,
                       style: const TextStyle(
                         fontSize: 17,
                         color: Colors.blue,
@@ -94,9 +94,9 @@ class CollectionAppBar extends GetView<CollectionPageController>
           }
         },
       ),
-      title: const Text(
-        '集錦',
-        style: TextStyle(
+      title: Text(
+        'collection'.tr,
+        style: const TextStyle(
           fontSize: 18,
           color: readrBlack,
         ),
@@ -112,7 +112,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   color: readrBlack87,
                   size: 26,
                 ),
-                tooltip: '分享',
+                tooltip: 'share'.tr,
                 onPressed: () async {
                   String shareLink =
                       await DynamicLinkHelper.createCollectionLink(collection);
@@ -163,7 +163,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
       ),
       options: [
         PopupMenuOption(
-          label: '修改標題',
+          label: 'editTitle'.tr,
           onTap: (option) => Get.to(
             () => TitleAndOgPage(
               Get.find<PickableItemController>(tag: collection.controllerTag)
@@ -186,7 +186,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
           ),
         ),
         PopupMenuOption(
-          label: '修改敘述',
+          label: 'editDescription'.tr,
           onTap: (option) => Get.to(
             () => DescriptionPage(
               collection: collection,
@@ -196,7 +196,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
           ),
         ),
         PopupMenuOption(
-          label: '編輯內容與排序',
+          label: 'editContentAndSorting'.tr,
           onTap: (option) {
             switch (controller.collectionFormat.value) {
               case CollectionFormat.folder:
@@ -234,37 +234,37 @@ class CollectionAppBar extends GetView<CollectionPageController>
           },
         ),
         PopupMenuOption(
-          label: '刪除集錦',
+          label: 'deleteCollection'.tr,
           cupertino: (context, platform) => CupertinoPopupMenuOptionData(
             isDestructiveAction: true,
           ),
           material: (context, platform) => MaterialPopupMenuOptionData(
-            child: const Text(
-              '刪除集錦',
-              style: TextStyle(color: Colors.red),
+            child: Text(
+              'deleteCollection'.tr,
+              style: const TextStyle(color: Colors.red),
             ),
           ),
           onTap: (option) async => await showPlatformDialog(
             context: context,
             builder: (context) => PlatformAlertDialog(
-              title: const Text(
-                '確認刪除集錦？',
-                style: TextStyle(
+              title: Text(
+                'deleteCollectionAlertTitle'.tr,
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              content: const Text(
-                '此動作無法復原',
-                style: TextStyle(
+              content: Text(
+                'deleteCollectionAlertDescription'.tr,
+                style: const TextStyle(
                   fontSize: 13,
                 ),
               ),
               actions: [
                 PlatformDialogAction(
-                  child: const Text(
-                    '刪除',
-                    style: TextStyle(color: Colors.red),
+                  child: Text(
+                    'delete'.tr,
+                    style: const TextStyle(color: Colors.red),
                   ),
                   onPressed: () async {
                     controller.deleteCollection();
@@ -272,8 +272,8 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   },
                 ),
                 PlatformDialogAction(
-                  child: const Text(
-                    '取消',
+                  child: Text(
+                    'cancel'.tr,
                   ),
                   onPressed: () => Get.back(),
                 ),
@@ -287,9 +287,9 @@ class CollectionAppBar extends GetView<CollectionPageController>
       ),
       cupertino: (context, platform) => CupertinoPopupMenuData(
         cancelButtonData: CupertinoPopupMenuCancelButtonData(
-          child: const Text(
-            '取消',
-            style: TextStyle(
+          child: Text(
+            'cancel'.tr,
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 20,
             ),

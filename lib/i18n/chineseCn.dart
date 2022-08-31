@@ -117,6 +117,12 @@ const Map<String, String> chineseCnMap = {
   'alreadyAddToCollectionsSuffix2': '个集锦',
   'collectionDeletedTitle': '集锦不存在',
   'collectionDeletedDescription': '此集锦已被删除',
+  'editTitle': '编辑标题',
+  'editDescription': '修改叙述',
+  'editContentAndSorting': 'Edit content and sorting',
+  'deleteCollection': '删除集锦',
+  'deleteCollectionAlertTitle': '是否确实要删除集锦？',
+  'deleteCollectionAlertDescription': '此操作无法撤消',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

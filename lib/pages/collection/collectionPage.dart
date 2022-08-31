@@ -112,9 +112,9 @@ class CollectionPage extends GetView<CollectionPageController> {
         ),
         onPressed: () => Get.back(),
       ),
-      title: const Text(
-        '集錦',
-        style: TextStyle(
+      title: Text(
+        'collection'.tr,
+        style: const TextStyle(
           fontSize: 18,
           color: readrBlack,
         ),

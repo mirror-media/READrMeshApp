@@ -117,6 +117,12 @@ const Map<String, String> chineseTwMap = {
   'alreadyAddToCollectionsSuffix2': '個集錦囉',
   'collectionDeletedTitle': '集錦不存在',
   'collectionDeletedDescription': '這個集錦已經被刪除了',
+  'editTitle': '修改標題',
+  'editDescription': '修改敘述',
+  'editContentAndSorting': '编辑内容和排序',
+  'deleteCollection': '刪除集錦',
+  'deleteCollectionAlertTitle': '確認刪除集錦？',
+  'deleteCollectionAlertDescription': '此動作無法復原',
 
   //collection timestamp
   'justUpdated': '剛剛更新',
