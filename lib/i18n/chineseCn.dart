@@ -103,7 +103,18 @@ const Map<String, String> chineseCnMap = {
   //collection
   'collection': '集锦',
   'collections': '集锦',
-  'addToCollection': '加入集锦',
+  'addToCollection': '添加到集锦',
+  'createNewCollection': '创建新集锦',
+  'userNoCollection': '你还没有任何集锦...',
+  'alreadyAddToAllCollections': '您以前已将此新闻添加到所有集锦中',
+  'alreadyAddToACollectionPrefix': '您以前已将此新闻添加到「',
+  'alreadyAddToACollectionSuffix': '」集锦',
+  'alreadyAddToCollectionsPrefix': '您以前已将此新闻添加到',
+  'upperQuotationMarks': '「',
+  'lowerQuotationMarks': '」',
+  'comma': '、',
+  'alreadyAddToCollectionsSuffix1': 'etc. ',
+  'alreadyAddToCollectionsSuffix2': '个集锦',
 
   //collection timestamp
   'justUpdated': '刚刚更新',

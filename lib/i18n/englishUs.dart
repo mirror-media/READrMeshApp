@@ -106,6 +106,19 @@ const Map<String, String> englishUsMap = {
   'collection': 'Collection',
   'collections': 'Collections',
   'addToCollection': 'Add to collection',
+  'createNewCollection': 'Create a new collection',
+  'userNoCollection': "You don't have any collections yet...",
+  'alreadyAddToAllCollections':
+      'You have added this news to all your collections before',
+  'alreadyAddToACollectionPrefix':
+      'You have previously added this news to collection "',
+  'alreadyAddToACollectionSuffix': '"',
+  'alreadyAddToCollectionsPrefix': 'You have previously added this news to ',
+  'upperQuotationMarks': '"',
+  'lowerQuotationMarks': '"',
+  'comma': ', ',
+  'alreadyAddToCollectionsSuffix1': ' etc. ',
+  'alreadyAddToCollectionsSuffix2': ' collections',
 
   //collection timestamp
   'justUpdated': 'Just updated',

@@ -26,9 +26,9 @@ class AddToCollectionPage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         elevation: 0.5,
-        title: const Text(
-          '加入集錦',
-          style: TextStyle(
+        title: Text(
+          'addToCollection'.tr,
+          style: const TextStyle(
             fontSize: 18,
             color: readrBlack,
           ),
@@ -40,7 +40,7 @@ class AddToCollectionPage extends StatelessWidget {
               color: readrBlack87,
               size: 26,
             ),
-            tooltip: '回前頁',
+            tooltip: 'back'.tr,
             onPressed: () => Get.back(),
           ),
         ],
@@ -73,10 +73,10 @@ class AddToCollectionPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(6.0),
             ),
           ),
-          child: const Text(
-            '建立新集錦',
+          child: Text(
+            'createNewCollection'.tr,
             maxLines: 1,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: readrBlack,
             ),
@@ -102,22 +102,22 @@ class AddToCollectionPage extends StatelessWidget {
           Widget banner = Container();
           if (controller.alreadyPickCollections.isEmpty &&
               controller.notPickCollections.isEmpty) {
-            banner = const Padding(
-              padding: EdgeInsets.all(20),
+            banner = Padding(
+              padding: const EdgeInsets.all(20),
               child: Text(
-                '你目前還沒有任何集錦...',
-                style: TextStyle(
+                'userNoCollection'.tr,
+                style: const TextStyle(
                   fontSize: 14,
                   color: readrBlack50,
                 ),
               ),
             );
           } else if (controller.notPickCollections.isEmpty) {
-            banner = const Padding(
-              padding: EdgeInsets.all(20),
+            banner = Padding(
+              padding: const EdgeInsets.all(20),
               child: Text(
-                '你之前已將這篇新聞加入你所有的集錦囉',
-                style: TextStyle(
+                'alreadyAddToAllCollections'.tr,
+                style: const TextStyle(
                   fontSize: 14,
                   color: readrBlack50,
                 ),
@@ -128,7 +128,7 @@ class AddToCollectionPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: ExtendedText.rich(
                 TextSpan(
-                  text: '你之前已將這篇新聞加入「',
+                  text: 'alreadyAddToACollectionPrefix'.tr,
                   style: const TextStyle(
                     fontSize: 14,
                     color: readrBlack50,
@@ -141,9 +141,9 @@ class AddToCollectionPage extends StatelessWidget {
                         color: readrBlack87,
                       ),
                     ),
-                    const TextSpan(
-                      text: '」集錦囉',
-                      style: TextStyle(
+                    TextSpan(
+                      text: 'alreadyAddToACollectionSuffix'.tr,
+                      style: const TextStyle(
                         fontSize: 14,
                         color: readrBlack50,
                       ),
@@ -154,16 +154,16 @@ class AddToCollectionPage extends StatelessWidget {
                 maxLines: 2,
                 overflowWidget: TextOverflowWidget(
                   child: RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: '...',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: readrBlack87,
                       ),
                       children: [
                         TextSpan(
-                          text: '」集錦囉',
-                          style: TextStyle(
+                          text: 'alreadyAddToACollectionSuffix'.tr,
+                          style: const TextStyle(
                             fontSize: 14,
                             color: readrBlack50,
                           ),
@@ -180,7 +180,7 @@ class AddToCollectionPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: ExtendedText.rich(
                 TextSpan(
-                  text: '你之前已將這篇新聞加入',
+                  text: 'alreadyAddToCollectionsPrefix'.tr,
                   style: const TextStyle(
                     fontSize: 14,
                     color: readrBlack50,
@@ -190,7 +190,7 @@ class AddToCollectionPage extends StatelessWidget {
                         i < controller.alreadyPickCollections.length;
                         i++)
                       TextSpan(
-                        text: '「',
+                        text: 'upperQuotationMarks'.tr,
                         style: const TextStyle(
                           fontSize: 14,
                           color: readrBlack50,
@@ -203,17 +203,17 @@ class AddToCollectionPage extends StatelessWidget {
                               color: readrBlack87,
                             ),
                           ),
-                          const TextSpan(
-                            text: '」',
-                            style: TextStyle(
+                          TextSpan(
+                            text: 'lowerQuotationMarks'.tr,
+                            style: const TextStyle(
                               fontSize: 14,
                               color: readrBlack50,
                             ),
                           ),
                           if (i < controller.alreadyPickCollections.length - 1)
-                            const TextSpan(
-                              text: '、',
-                              style: TextStyle(
+                            TextSpan(
+                              text: 'comma'.tr,
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: readrBlack50,
                               ),
@@ -221,7 +221,8 @@ class AddToCollectionPage extends StatelessWidget {
                         ],
                       ),
                     TextSpan(
-                      text: '等${controller.alreadyPickCollections.length}個集錦囉',
+                      text:
+                          '${'alreadyAddToCollectionsSuffix1'.tr}${controller.alreadyPickCollections.length}${'alreadyAddToCollectionsSuffix2'.tr}',
                       style: const TextStyle(
                         fontSize: 14,
                         color: readrBlack50,
@@ -242,7 +243,7 @@ class AddToCollectionPage extends StatelessWidget {
                       children: [
                         TextSpan(
                           text:
-                              '等${controller.alreadyPickCollections.length}個集錦囉',
+                              '${'alreadyAddToCollectionsSuffix1'.tr}${controller.alreadyPickCollections.length}${'alreadyAddToCollectionsSuffix2'.tr}',
                           style: const TextStyle(
                             fontSize: 14,
                             color: readrBlack50,

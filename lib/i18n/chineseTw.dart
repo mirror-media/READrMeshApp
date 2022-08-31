@@ -104,6 +104,17 @@ const Map<String, String> chineseTwMap = {
   'collection': '集錦',
   'collections': '集錦',
   'addToCollection': '加入集錦',
+  'createNewCollection': '建立新集錦',
+  'userNoCollection': '你目前還沒有任何集錦...',
+  'alreadyAddToAllCollections': '你之前已將這篇新聞加入你所有的集錦囉',
+  'alreadyAddToACollectionPrefix': '你之前已將這篇新聞加入「',
+  'alreadyAddToACollectionSuffix': '」集錦囉',
+  'alreadyAddToCollectionsPrefix': '你之前已將這篇新聞加入',
+  'upperQuotationMarks': '「',
+  'lowerQuotationMarks': '」',
+  'comma': '、',
+  'alreadyAddToCollectionsSuffix1': '等',
+  'alreadyAddToCollectionsSuffix2': '個集錦囉',
 
   //collection timestamp
   'justUpdated': '剛剛更新',
