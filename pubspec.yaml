@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: 
+    sdk: flutter
   # The dart library for making HTTP requests.
   http: ^0.13.4
   # Provides internationalization and localization facilities
