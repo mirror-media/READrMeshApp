@@ -125,7 +125,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      primary: readrBlack87,
+                      backgroundColor: readrBlack87,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
                       shape: RoundedRectangleBorder(

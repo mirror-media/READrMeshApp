@@ -27,10 +27,10 @@ class READrAudioPlayer extends StatefulWidget {
 class _READrAudioPlayerState extends State<READrAudioPlayer>
     with AutomaticKeepAliveClientMixin {
   late AudioPlayer _audioPlayer;
-  bool get _checkIsPlaying => !(_audioPlayer.state == PlayerState.COMPLETED ||
-      _audioPlayer.state == PlayerState.STOPPED ||
-      _audioPlayer.state == PlayerState.PAUSED);
-  int _duration = 0;
+  bool get _checkIsPlaying => !(_audioPlayer.state == PlayerState.completed ||
+      _audioPlayer.state == PlayerState.stopped ||
+      _audioPlayer.state == PlayerState.paused);
+  Duration _duration = const Duration();
   late double _textSize;
 
   @override
@@ -45,20 +45,20 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
 
   void _initAudioPlayer() async {
     _audioPlayer = AudioPlayer();
-    await _audioPlayer.setUrl(widget.audioUrl);
+    await _audioPlayer.setSourceUrl(widget.audioUrl);
   }
 
   _start() async {
     try {
-      _duration = await _audioPlayer.getDuration();
-      if (_duration < 0) {
-        _duration = 0;
+      _duration = await _audioPlayer.getDuration() ?? const Duration();
+      if (_duration.inMilliseconds < 0) {
+        _duration = const Duration();
       }
     } catch (e) {
-      _duration = 0;
+      _duration = const Duration();
     }
 
-    await _audioPlayer.play(widget.audioUrl);
+    await _audioPlayer.play(UrlSource(widget.audioUrl));
   }
 
   _play() async {
@@ -70,12 +70,12 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
   }
 
   _playAndPause() {
-    if (_audioPlayer.state == PlayerState.COMPLETED ||
-        _audioPlayer.state == PlayerState.STOPPED) {
+    if (_audioPlayer.state == PlayerState.completed ||
+        _audioPlayer.state == PlayerState.stopped) {
       _start();
-    } else if (_audioPlayer.state == PlayerState.PLAYING) {
+    } else if (_audioPlayer.state == PlayerState.playing) {
       _pause();
-    } else if (_audioPlayer.state == PlayerState.PAUSED) {
+    } else if (_audioPlayer.state == PlayerState.paused) {
       _play();
     }
   }
@@ -171,15 +171,15 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                     ),
                   ],
                   StreamBuilder<Duration>(
-                    stream: _audioPlayer.onAudioPositionChanged,
+                    stream: _audioPlayer.onPositionChanged,
                     builder: (context, snapshot) {
                       double sliderPosition = snapshot.data == null
                           ? 0.0
                           : snapshot.data!.inMilliseconds.toDouble();
                       String position =
                           DateTimeFormat.stringDuration(snapshot.data);
-                      String duration = DateTimeFormat.stringDuration(
-                          Duration(milliseconds: _duration));
+                      String duration =
+                          DateTimeFormat.stringDuration(_duration);
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -190,7 +190,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               thumbShape: const RoundSliderThumbShape(
                                   enabledThumbRadius: 0.0),
                             ),
-                            child: _duration == 0
+                            child: _duration.inMilliseconds == 0
                                 ? Slider(
                                     value: 0,
                                     inactiveColor: readrBlack20,
@@ -199,7 +199,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                   )
                                 : Slider(
                                     min: 0.0,
-                                    max: _duration.toDouble(),
+                                    max: _duration.inMilliseconds.toDouble(),
                                     value: sliderPosition,
                                     activeColor: readrBlack87,
                                     inactiveColor: readrBlack20,

@@ -122,7 +122,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   onPressed: () =>
                       Get.off(() => const InputInvitationCodePage()),
                   style: ElevatedButton.styleFrom(
-                    primary: readrBlack87,
+                    backgroundColor: readrBlack87,
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
                       horizontal: 24,

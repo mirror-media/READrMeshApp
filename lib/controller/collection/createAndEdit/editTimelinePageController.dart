@@ -329,7 +329,7 @@ class EditTimelinePageController extends GetxController {
                     vertical: 8,
                     horizontal: 20,
                   ),
-                  primary: Colors.white,
+                  backgroundColor: Colors.white,
                 ),
                 child: const Text(
                   '我知道了',

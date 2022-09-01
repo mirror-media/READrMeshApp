@@ -118,9 +118,7 @@ class SentEmailPage extends StatelessWidget {
             },
             style: OutlinedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 16),
-              primary: readrBlack,
               backgroundColor: Colors.white,
-              onSurface: readrBlack20,
               minimumSize: const Size(double.infinity, 48),
               side: const BorderSide(
                 color: readrBlack,

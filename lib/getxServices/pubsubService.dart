@@ -226,7 +226,7 @@ class PubsubService extends GetxService {
 
     if (GetPlatform.isAndroid) {
       AndroidDeviceInfo androidInfo = await _deviceInfo.androidInfo;
-      uuid = androidInfo.androidId ?? '';
+      uuid = androidInfo.id ?? '';
       os = 'Android';
       osVersion =
           '${androidInfo.version.release ?? ''} (SDK ${androidInfo.version.sdkInt ?? ''})';

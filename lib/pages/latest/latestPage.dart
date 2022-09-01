@@ -473,7 +473,7 @@ class LatestPage extends GetView<LatestPageController> {
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: readrBlack87,
+                        backgroundColor: readrBlack87,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,

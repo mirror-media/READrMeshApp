@@ -193,7 +193,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff04295E),
+                              backgroundColor: const Color(0xff04295E),
                               shadowColor: readrBlack30,
                               padding: const EdgeInsets.all(12),
                               shape: const RoundedRectangleBorder(

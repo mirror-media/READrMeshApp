@@ -48,7 +48,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: readrBlack87,
+                backgroundColor: readrBlack87,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,

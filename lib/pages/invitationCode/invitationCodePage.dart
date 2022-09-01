@@ -160,7 +160,6 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
               ),
             ),
             style: OutlinedButton.styleFrom(
-              primary: readrBlack87,
               backgroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               side: const BorderSide(color: readrBlack87),
