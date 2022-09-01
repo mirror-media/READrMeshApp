@@ -20,6 +20,8 @@ const Map<String, String> chineseTwMap = {
   'filter': '篩選',
   'send': '送出',
   'edit': '編輯',
+  'create': '建立',
+  'add': '新增',
 
   //bottom tab
   'communityTab': '社群',
@@ -130,6 +132,15 @@ const Map<String, String> chineseTwMap = {
   'expandDescription': '展開更多',
   'articleCount': '篇文章',
   'customization': '自訂',
+  'updatingCollection': '更新集錦中',
+  'creatingCollection': '集錦建立中',
+  'sort': '排序',
+  'editSort': '編輯排序',
+  'changeCollectionType': '更換集錦類型',
+  'editLeaveAlertTitle': '捨棄變更？',
+  'editLeaveAlertContent': '如果現在返回，將不會儲存變更。',
+  'continueEditing': '繼續編輯',
+  'discardChanges': '捨棄變更',
 
   //month
   'january': '1月',

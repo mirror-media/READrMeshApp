@@ -20,6 +20,8 @@ const Map<String, String> chineseCnMap = {
   'filter': '筛选',
   'send': '发送',
   'edit': '编辑',
+  'create': '创建',
+  'add': '添加',
 
   //bottom tab
   'communityTab': '社区',
@@ -130,6 +132,15 @@ const Map<String, String> chineseCnMap = {
   'expandDescription': '点击展开',
   'articleCount': '篇文章',
   'customization': '定制',
+  'updatingCollection': '更新集锦中',
+  'creatingCollection': '创建集锦中',
+  'sort': '排序',
+  'editSort': '编辑排序',
+  'changeCollectionType': '更改集锦类型',
+  'editLeaveAlertTitle': '放弃更改？',
+  'editLeaveAlertContent': '如果现在返回，将不会保存更改。',
+  'continueEditing': '继续编辑',
+  'discardChanges': '放弃更改',
 
   //month
   'january': '1月',

@@ -20,6 +20,8 @@ const Map<String, String> englishUsMap = {
   'filter': 'Filter',
   'send': 'Send',
   'edit': 'Edit',
+  'create': 'Create',
+  'add': 'Add',
 
   //bottom tab
   'communityTab': 'Community',
@@ -136,6 +138,15 @@ const Map<String, String> englishUsMap = {
   'expandDescription': 'Expand More',
   'articleCount': ' article',
   'customization': 'User-\ndefined',
+  'updatingCollection': 'Updating collection',
+  'creatingCollection': 'Creating collection',
+  'sort': 'Sort',
+  'editSort': 'Edit sort',
+  'changeCollectionType': 'Change collection type',
+  'editLeaveAlertTitle': 'Discard changes?',
+  'editLeaveAlertContent': 'If you go back now, the changes will not be saved.',
+  'continueEditing': 'Continue editing',
+  'discardChanges': 'Discard changes',
 
   //month
   'january': 'Jan.',
