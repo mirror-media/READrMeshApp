@@ -22,6 +22,8 @@ const Map<String, String> englishUsMap = {
   'edit': 'Edit',
   'create': 'Create',
   'add': 'Add',
+  'clear': 'Clear',
+  'setUp': 'Set up',
 
   //bottom tab
   'communityTab': 'Community',
@@ -145,8 +147,20 @@ const Map<String, String> englishUsMap = {
   'changeCollectionType': 'Change collection type',
   'editLeaveAlertTitle': 'Discard changes?',
   'editLeaveAlertContent': 'If you go back now, the changes will not be saved.',
+  'editLeaveAlertContent2': 'Changes will not be saved',
   'continueEditing': 'Continue editing',
   'discardChanges': 'Discard changes',
+  'customTime': 'Custom time',
+  'blockTitle': 'Block title',
+  'blockTitleDescription':
+      'If there are too many news, you can enter the block title and divide the timeline into multiple key paragraphs for better reading.',
+  'blockTitleHint': 'Enter block title...',
+  'selectMonthFirst': '',
+  'selectMonthAndDateFirst': '',
+  'selectYear': 'Select year',
+  'selectMonth': 'Select month',
+  'selectDate': 'Select date',
+  'selectTime': 'Select time',
 
   //month
   'january': 'Jan.',
@@ -161,6 +175,12 @@ const Map<String, String> englishUsMap = {
   'october': 'Oct.',
   'november': 'Nov.',
   'december': 'Dec.',
+
+  //time
+  'year': 'Year',
+  'month': 'Month',
+  'date': 'Date',
+  'time': 'Time',
 
   //collection timestamp
   'justUpdated': 'Just updated',

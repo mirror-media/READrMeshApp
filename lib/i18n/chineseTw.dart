@@ -22,6 +22,8 @@ const Map<String, String> chineseTwMap = {
   'edit': '編輯',
   'create': '建立',
   'add': '新增',
+  'clear': '清除',
+  'setUp': '設定',
 
   //bottom tab
   'communityTab': '社群',
@@ -139,8 +141,19 @@ const Map<String, String> chineseTwMap = {
   'changeCollectionType': '更換集錦類型',
   'editLeaveAlertTitle': '捨棄變更？',
   'editLeaveAlertContent': '如果現在返回，將不會儲存變更。',
+  'editLeaveAlertContent2': '系統將不會儲存變更',
   'continueEditing': '繼續編輯',
   'discardChanges': '捨棄變更',
+  'customTime': '自訂時間',
+  'blockTitle': '區塊標題',
+  'blockTitleDescription': '若新聞數量太多，可以輸入區塊標題，將時間軸切分成多個重點段落，讓人更好閱讀。',
+  'blockTitleHint': '輸入區塊標題...',
+  'selectMonthFirst': '請選月份',
+  'selectMonthAndDateFirst': '請先選擇月份跟日期',
+  'selectYear': '選擇年份',
+  'selectMonth': '選擇月份',
+  'selectDate': '選擇日期',
+  'selectTime': '選擇時間',
 
   //month
   'january': '1月',
@@ -155,6 +168,12 @@ const Map<String, String> chineseTwMap = {
   'october': '10月',
   'november': '11月',
   'december': '12月',
+
+  //time
+  'year': '年份',
+  'month': '月份',
+  'date': '日期',
+  'time': '時間',
 
   //collection timestamp
   'justUpdated': '剛剛更新',

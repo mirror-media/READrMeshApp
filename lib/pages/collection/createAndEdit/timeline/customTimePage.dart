@@ -35,10 +35,11 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           elevation: 0.5,
+          leadingWidth: 75,
           leading: TextButton(
-            child: const Text(
-              '取消',
-              style: TextStyle(
+            child: Text(
+              'cancel'.tr,
+              style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 18,
                 color: readrBlack50,
@@ -46,18 +47,18 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             ),
             onPressed: () => Get.back(),
           ),
-          title: const Text(
-            '自訂時間',
-            style: TextStyle(
+          title: Text(
+            'customTime'.tr,
+            style: const TextStyle(
               fontSize: 18,
               color: readrBlack,
             ),
           ),
           actions: [
             TextButton(
-              child: const Text(
-                '儲存',
-                style: TextStyle(
+              child: Text(
+                'save'.tr,
+                style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 18,
                 ),
@@ -166,9 +167,9 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '區塊標題',
-            style: TextStyle(
+          Text(
+            'blockTitle'.tr,
+            style: const TextStyle(
               fontSize: 16,
               color: readrBlack87,
             ),
@@ -176,9 +177,9 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           const SizedBox(
             height: 4,
           ),
-          const Text(
-            '若新聞數量太多，可以輸入區塊標題，將時間軸切分成多個重點段落，讓人更好閱讀。',
-            style: TextStyle(
+          Text(
+            'blockTitleDescription'.tr,
+            style: const TextStyle(
               fontSize: 14,
               color: readrBlack50,
             ),
@@ -198,7 +199,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 contentPadding: const EdgeInsets.only(
                   bottom: 8,
                 ),
-                hintText: '輸入區塊標題...',
+                hintText: 'blockTitleHint'.tr,
                 hintStyle: const TextStyle(
                   color: readrBlack30,
                   fontSize: 16,
@@ -238,16 +239,16 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
     String label;
     switch (level) {
       case TimeLevel.year:
-        label = '年份';
+        label = 'year'.tr;
         break;
       case TimeLevel.month:
-        label = '月份';
+        label = 'month'.tr;
         break;
       case TimeLevel.day:
-        label = '日期';
+        label = 'date'.tr;
         break;
       case TimeLevel.time:
-        label = '時間';
+        label = 'time'.tr;
         break;
     }
     return Obx(
@@ -265,13 +266,13 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             contentText = controller.day.value?.toString() ?? '';
             if (controller.month.value == null) {
               isActive = false;
-              contentText = '請選月份';
+              contentText = 'selectMonthFirst'.tr;
             }
             break;
           case TimeLevel.time:
             if (controller.day.value == null) {
               isActive = false;
-              contentText = '請先選擇月份跟日期';
+              contentText = 'selectMonthAndDateFirst'.tr;
             } else if (controller.time.value == null) {
               contentText = '';
             } else {
@@ -312,6 +313,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     fontSize: 16,
                     color: isActive ? readrBlack87 : readrBlack20,
                   ),
+                  maxLines: 1,
                 ),
                 const SizedBox(
                   width: 3,
@@ -341,14 +343,14 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
     Function()? set;
     switch (level) {
       case TimeLevel.year:
-        title = '選擇年份';
+        title = 'selectYear'.tr;
         timeRange = List<int>.generate(1031, (index) => 1970 + index);
         set = () => controller.year.value = timeRange[chooseIndex];
         chooseIndex =
             timeRange.indexWhere((element) => element == controller.year.value);
         break;
       case TimeLevel.month:
-        title = '選擇月份';
+        title = 'selectMonth'.tr;
         timeRange = List<int>.generate(12, (index) => 1 + index);
         set = () => controller.month.value = timeRange[chooseIndex];
         clear = () {
@@ -362,7 +364,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         }
         break;
       case TimeLevel.day:
-        title = '選擇日期';
+        title = 'selectDate'.tr;
         timeRange = List<int>.generate(
             DateTime(controller.year.value, controller.month.value! + 1, 0).day,
             (index) => 1 + index);
@@ -377,7 +379,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         }
         break;
       case TimeLevel.time:
-        title = '選擇時間';
+        title = 'selectTime'.tr;
         clear = () => controller.time.value = null;
         break;
     }
@@ -521,9 +523,9 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                           padding: const EdgeInsets.all(0),
                           alignment: Alignment.centerLeft,
                         ),
-                        child: const Text(
-                          '清除',
-                          style: TextStyle(
+                        child: Text(
+                          'clear'.tr,
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.red,
                           ),
@@ -548,9 +550,9 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                       padding: const EdgeInsets.all(0),
                       alignment: Alignment.centerRight,
                     ),
-                    child: const Text(
-                      '設定',
-                      style: TextStyle(
+                    child: Text(
+                      'setUp'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.blue,
                       ),

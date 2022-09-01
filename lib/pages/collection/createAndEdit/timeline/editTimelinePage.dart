@@ -63,8 +63,8 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                     padding: const EdgeInsets.only(top: 20),
                     child: Text(
                       (isEdit || isChangeFormat || isAddToEmpty)
-                          ? '更新集錦中'
-                          : '集錦建立中',
+                          ? 'updatingCollection'.tr
+                          : 'creatingCollection'.tr,
                       style: const TextStyle(
                         fontSize: 20,
                         color: readrBlack,
@@ -84,9 +84,9 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
               elevation: 0.5,
               leading: (isEdit || isChangeFormat)
                   ? TextButton(
-                      child: const Text(
-                        '取消',
-                        style: TextStyle(
+                      child: Text(
+                        'cancel'.tr,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
                           color: readrBlack50,
@@ -107,9 +107,10 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                       ),
                       onPressed: () => Get.back(),
                     ),
-              title: const Text(
-                '自訂時間',
-                style: TextStyle(
+              leadingWidth: 75,
+              title: Text(
+                'customTime'.tr,
+                style: const TextStyle(
                   fontSize: 18,
                   color: readrBlack,
                 ),
@@ -124,8 +125,8 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                     return TextButton(
                       child: Text(
                         (isEdit || isChangeFormat || isAddToEmpty)
-                            ? '儲存'
-                            : '建立',
+                            ? 'save'.tr
+                            : 'create'.tr,
                         style: const TextStyle(
                           color: Colors.blue,
                           fontSize: 18,
@@ -154,12 +155,12 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                         width: 40,
                         height: 40,
                         child: JustTheTooltip(
-                          content: const Padding(
-                            padding: EdgeInsets.symmetric(
+                          content: Padding(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             child: Text(
-                              '更換集錦類型',
-                              style: TextStyle(
+                              'changeCollectionType'.tr,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 13,
                               ),
@@ -253,9 +254,9 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                           size: 17,
                           color: Colors.white,
                         ),
-                        label: const Text(
-                          '新增',
-                          style: TextStyle(
+                        label: Text(
+                          'add'.tr,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -322,16 +323,16 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
     return await showPlatformDialog<bool>(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text(
-          '捨棄變更？',
-          style: TextStyle(
+        title: Text(
+          'editLeaveAlertTitle'.tr,
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
         ),
-        content: const Text(
-          '系統將不會儲存變更',
-          style: TextStyle(
+        content: Text(
+          'editLeaveAlertContent2'.tr,
+          style: const TextStyle(
             fontSize: 13,
           ),
         ),
@@ -339,7 +340,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
           PlatformDialogAction(
             onPressed: () => Get.back(),
             child: PlatformText(
-              '繼續編輯',
+              'continueEditing'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.blue,
@@ -352,7 +353,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
               Get.back();
             },
             child: PlatformText(
-              '捨棄變更',
+              'discardChanges'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.red,

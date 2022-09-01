@@ -22,6 +22,8 @@ const Map<String, String> chineseCnMap = {
   'edit': '编辑',
   'create': '创建',
   'add': '添加',
+  'clear': '清除',
+  'setUp': '设置',
 
   //bottom tab
   'communityTab': '社区',
@@ -139,8 +141,19 @@ const Map<String, String> chineseCnMap = {
   'changeCollectionType': '更改集锦类型',
   'editLeaveAlertTitle': '放弃更改？',
   'editLeaveAlertContent': '如果现在返回，将不会保存更改。',
+  'editLeaveAlertContent2': '更改将不会保存',
   'continueEditing': '继续编辑',
   'discardChanges': '放弃更改',
+  'customTime': '自定义时间',
+  'blockTitle': '区块标题',
+  'blockTitleDescription': '如果有太多的新闻，您可以输入区块标题，并将时间线分成多个关键段落，以便更好地阅读。',
+  'blockTitleHint': '输入区块标题...',
+  'selectMonthFirst': '请先选择月份',
+  'selectMonthAndDateFirst': '请先选择月份和日期',
+  'selectYear': '选择年份',
+  'selectMonth': '选择月份',
+  'selectDate': '选择日期',
+  'selectTime': '选择时间',
 
   //month
   'january': '1月',
@@ -155,6 +168,12 @@ const Map<String, String> chineseCnMap = {
   'october': '10月',
   'november': '11月',
   'december': '12月',
+
+  //time
+  'year': '年份',
+  'month': '月份',
+  'date': '日期',
+  'time': '时间',
 
   //collection timestamp
   'justUpdated': '刚刚更新',
