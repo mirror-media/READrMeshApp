@@ -264,6 +264,8 @@ const Map<String, String> englishUsMap = {
   'about': 'About',
   'version': 'Version',
   'logOut': 'Log out',
+  'setLanguage': 'Set language',
+  'systemSetting': 'System setting',
 
   //search
   'contain': 'Collections that contain ',

@@ -138,3 +138,10 @@ enum NotifyType {
   @HiveField(5)
   createCollection,
 }
+
+enum LanguageSettings {
+  system,
+  traditionalChinese,
+  simplifiedChinese,
+  english,
+}

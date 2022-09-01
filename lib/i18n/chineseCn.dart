@@ -256,6 +256,8 @@ const Map<String, String> chineseCnMap = {
   'about': '关于',
   'version': '版本',
   'logOut': '注销',
+  'setLanguage': '设置语言',
+  'systemSetting': '系统设置',
 
   //search
   'contain': '包含 ',

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -161,5 +163,20 @@ class UserService extends GetxService {
       blockAndBlockedIds.addAll(currentUser.blockedMemberIds!);
     }
     return blockAndBlockedIds;
+  }
+
+  Locale get appLocaleSetting {
+    String? languageCode =
+        Get.find<SharedPreferencesService>().prefs.getString('languageSetting');
+    switch (languageCode) {
+      case 'enUS':
+        return const Locale('en', 'US');
+      case 'zhTW':
+        return const Locale('zh', 'TW');
+      case 'zhCN':
+        return const Locale('zh', 'CN');
+      default:
+        return Get.deviceLocale ?? const Locale('en', 'US');
+    }
   }
 }

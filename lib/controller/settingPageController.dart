@@ -9,6 +9,7 @@ import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/meshToast.dart';
@@ -40,6 +41,10 @@ class SettingPageController extends GetxController {
   dynamic error;
   bool blocklistPageIsLoading = true;
   final List<Member> blockMembers = [];
+
+  //for setLanguagePage
+  final languageSetting = LanguageSettings.system.obs;
+  String languageCode = 'system';
 
   @override
   void onInit() {
@@ -113,6 +118,22 @@ class SettingPageController extends GetxController {
 
     //get initial page setting
     initialPageIndex.value = prefs.getInt('initialPageIndex') ?? 0;
+
+    //get language setting
+    languageCode = prefs.getString('languageSetting') ?? 'system';
+    switch (languageCode) {
+      case 'enUS':
+        languageSetting.value = LanguageSettings.english;
+        break;
+      case 'zhTW':
+        languageSetting.value = LanguageSettings.traditionalChinese;
+        break;
+      case 'zhCN':
+        languageSetting.value = LanguageSettings.simplifiedChinese;
+        break;
+      default:
+        languageSetting.value = LanguageSettings.system;
+    }
   }
 
   void updateDuration(int index) {
@@ -206,5 +227,28 @@ class SettingPageController extends GetxController {
     } catch (e) {
       print('Unblock member error: $e');
     }
+  }
+
+  void updateLanguage(LanguageSettings newLanguageSetting) async {
+    languageSetting.value = newLanguageSetting;
+    switch (newLanguageSetting) {
+      case LanguageSettings.system:
+        languageCode = 'system';
+        await Get.updateLocale(Get.deviceLocale ?? const Locale('en'));
+        break;
+      case LanguageSettings.traditionalChinese:
+        languageCode = 'zhTW';
+        await Get.updateLocale(const Locale('zh', 'TW'));
+        break;
+      case LanguageSettings.simplifiedChinese:
+        languageCode = 'zhCN';
+        await Get.updateLocale(const Locale('zh', 'CN'));
+        break;
+      case LanguageSettings.english:
+        languageCode = 'enUS';
+        await Get.updateLocale(const Locale('en', 'US'));
+        break;
+    }
+    await prefs.setString('languageSetting', languageCode);
   }
 }

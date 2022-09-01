@@ -15,6 +15,7 @@ import 'package:readr/pages/setting/contactUsPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
 import 'package:readr/pages/setting/initialSettingPage.dart';
 import 'package:readr/pages/setting/newsCoverageSettingPage.dart';
+import 'package:readr/pages/setting/setLanguagePage.dart';
 import 'package:readr/services/memberService.dart';
 
 class SettingPage extends GetView<SettingPageController> {
@@ -127,82 +128,103 @@ class SettingPage extends GetView<SettingPageController> {
   }
 
   Widget _visitorSettingTile(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          _settingButton(
-            text: 'newsCoverageSettingPageTitle'.tr,
-            onPressed: () {
-              Get.to(() => NewsCoverageSettingPage());
-            },
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              _settingButton(
+                text: 'newsCoverageSettingPageTitle'.tr,
+                onPressed: () {
+                  Get.to(() => NewsCoverageSettingPage());
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: 'initialSettingPageTitle'.tr,
+                onPressed: () {
+                  Get.to(() => InitialSettingPage());
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: 'setLanguage'.tr,
+                onPressed: () {
+                  Get.to(() => SetLanguagePage());
+                },
+              ),
+            ],
           ),
-          const Divider(
-            color: readrBlack10,
-            height: 1,
-          ),
-          _settingButton(
-            text: 'initialSettingPageTitle'.tr,
-            onPressed: () {
-              Get.to(() => InitialSettingPage());
-            },
-          ),
-          const Divider(
-            color: readrBlack10,
-            height: 1,
-          ),
-          _settingButton(
-            text: 'contactUs'.tr,
-            onPressed: () {
-              Get.to(() => ContactUsPage(
-                    appVersion: controller.versionAndBuildNumber.value,
-                    platform: controller.platform,
-                    device: controller.device,
-                  ));
-            },
-          ),
-          const Divider(
-            color: readrBlack10,
-            height: 1,
-          ),
-          _settingButton(
-            text: 'about'.tr,
-            onPressed: () => Get.to(() => AboutPage()),
-            hideArrow: true,
-          ),
-          const Divider(
-            color: readrBlack10,
-            height: 1,
-          ),
-          SizedBox(
-            height: 56,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'version'.tr,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: readrBlack87,
-                  ),
-                ),
-                Obx(
-                  () => Text(
-                    controller.versionAndBuildNumber.value,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                      color: readrBlack50,
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              _settingButton(
+                text: 'contactUs'.tr,
+                onPressed: () {
+                  Get.to(() => ContactUsPage(
+                        appVersion: controller.versionAndBuildNumber.value,
+                        platform: controller.platform,
+                        device: controller.device,
+                      ));
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: 'about'.tr,
+                onPressed: () => Get.to(() => AboutPage()),
+                hideArrow: true,
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              SizedBox(
+                height: 56,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'version'.tr,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: readrBlack87,
+                      ),
                     ),
-                  ),
+                    Obx(
+                      () => Text(
+                        controller.versionAndBuildNumber.value,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: readrBlack50,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -239,6 +261,16 @@ class SettingPage extends GetView<SettingPageController> {
                 text: 'blockList'.tr,
                 onPressed: () {
                   Get.to(() => BlocklistPage());
+                },
+              ),
+              const Divider(
+                color: readrBlack10,
+                height: 1,
+              ),
+              _settingButton(
+                text: 'setLanguage'.tr,
+                onPressed: () {
+                  Get.to(() => SetLanguagePage());
                 },
               ),
             ],
