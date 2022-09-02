@@ -75,7 +75,7 @@ class DynamicLinkService extends GetxService {
         var result = await MemberService().fetchMemberData();
         if (result != null) {
           Fluttertoast.showToast(
-            msg: "登入成功",
+            msg: "loginSuccessToast".tr,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -85,7 +85,7 @@ class DynamicLinkService extends GetxService {
               prefs.getStringList('followingPublisherIds') ?? [];
           if (followingPublisherIds.isNotEmpty) {
             Fluttertoast.showToast(
-              msg: "同步追蹤清單中",
+              msg: "syncingFollowingPublisherToast".tr,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2,
@@ -124,7 +124,7 @@ class DynamicLinkService extends GetxService {
     }).catchError((onError) async {
       print('Error signing in with email link $onError');
       Fluttertoast.showToast(
-        msg: "登入失敗，請重新登入",
+        msg: "loginFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -164,7 +164,7 @@ class DynamicLinkService extends GetxService {
             await CollectionService().fetchCollectionById(collectionId);
       } else {
         Fluttertoast.showToast(
-          msg: "請更新APP",
+          msg: "updateAppToast".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -185,7 +185,7 @@ class DynamicLinkService extends GetxService {
       Get.to(() => const CollectionDeletedPage());
     } else {
       Fluttertoast.showToast(
-        msg: "開啟連結失敗",
+        msg: "openLinkFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -214,7 +214,7 @@ class DynamicLinkService extends GetxService {
         member = await MemberService().fetchMemberDataById(memberId);
       } else {
         Fluttertoast.showToast(
-          msg: "請更新APP",
+          msg: "updateAppToast".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

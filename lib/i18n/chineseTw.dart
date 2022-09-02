@@ -52,6 +52,11 @@ const Map<String, String> chineseTwMap = {
 
   //toast
   'syncFollowingPublisherToast': '已同步追蹤名單',
+  'syncingFollowingPublisherToast': '同步追蹤清單中',
+  'loginSuccessToast': '登入成功',
+  'loginFailedToast': '登入失敗，請重新登入',
+  'updateAppToast': '請更新APP',
+  'openLinkFailedToast': '開啟連結失敗',
 
   //bookmark
   'addBookmark': '加入書籤',

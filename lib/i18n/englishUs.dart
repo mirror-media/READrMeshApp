@@ -52,7 +52,12 @@ const Map<String, String> englishUsMap = {
   'invitationCodeButtonTooltip': 'Invitation code',
 
   //toast
-  'syncFollowingPublisherToast': 'Synced followed list',
+  'syncFollowingPublisherToast': 'Synced following list',
+  'syncingFollowingPublisherToast': 'Syncing following list',
+  'loginSuccessToast': 'Login successfully',
+  'loginFailedToast': 'Login failed, please try again',
+  'updateAppToast': 'Please update APP',
+  'openLinkFailedToast': 'Failed to open link',
 
   //bookmark
   'addBookmark': 'Bookmark',

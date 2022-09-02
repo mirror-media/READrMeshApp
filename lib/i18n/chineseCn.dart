@@ -52,6 +52,11 @@ const Map<String, String> chineseCnMap = {
 
   //toast
   'syncFollowingPublisherToast': '已同步关注名单',
+  'syncingFollowingPublisherToast': '同步关注名单中',
+  'loginSuccessToast': '登录成功',
+  'loginFailedToast': '登录失败，请重新登录',
+  'updateAppToast': '请更新应用程序',
+  'openLinkFailedToast': '无法打开链接',
 
   //bookmark
   'addBookmark': '加入书签',
