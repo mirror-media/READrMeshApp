@@ -47,6 +47,10 @@ class PersonalFilePageController extends GetxController
 
   final isBlock = false.obs;
 
+  final pickTabText = 'picks'.tr.obs;
+  final collectionTabText = 'collections'.tr.obs;
+  final bookmarkTabText = 'bookmarks'.tr.obs;
+
   @override
   void onInit() {
     viewMemberData = Rx<Member>(viewMember);
@@ -107,10 +111,12 @@ class PersonalFilePageController extends GetxController
 
     tabs.add(
       Tab(
-        child: Text(
-          'picks'.tr,
-          style: const TextStyle(
-            fontSize: 16,
+        child: Obx(
+          () => Text(
+            pickTabText.value,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -134,10 +140,12 @@ class PersonalFilePageController extends GetxController
 
     tabs.add(
       Tab(
-        child: Text(
-          'collections'.tr,
-          style: const TextStyle(
-            fontSize: 16,
+        child: Obx(
+          () => Text(
+            collectionTabText.value,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -151,10 +159,12 @@ class PersonalFilePageController extends GetxController
         Get.find<UserService>().currentUser.memberId) {
       tabs.add(
         Tab(
-          child: Text(
-            'bookmarks'.tr,
-            style: const TextStyle(
-              fontSize: 16,
+          child: Obx(
+            () => Text(
+              bookmarkTabText.value,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
             ),
           ),
         ),
@@ -176,6 +186,12 @@ class PersonalFilePageController extends GetxController
         Get.find<HiveService>().tooltipBox.put('showCollectionTooltip', false);
       }
     });
+  }
+
+  void updateTabs() {
+    pickTabText.value = 'picks'.tr;
+    collectionTabText.value = 'collections'.tr;
+    bookmarkTabText.value = 'bookmarks'.tr;
   }
 
   void blockMember() async {

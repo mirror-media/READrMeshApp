@@ -249,6 +249,13 @@ class SettingPageController extends GetxController {
         await Get.updateLocale(const Locale('en', 'US'));
         break;
     }
+
+    if (Get.isRegistered<PersonalFilePageController>(
+        tag: Get.find<UserService>().currentUser.memberId)) {
+      Get.find<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)
+          .updateTabs();
+    }
     await prefs.setString('languageSetting', languageCode);
   }
 }
