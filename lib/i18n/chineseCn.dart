@@ -276,7 +276,7 @@ const Map<String, String> chineseCnMap = {
   'noEmailDescription': '提醒您，您的帐户资讯（包含精选、书签、评论）将永久删除并无法复原。',
   'deleteAccountSuccessDescription': '谢谢您使用我们的会员服务。如果您有需要，欢迎随时回来 :)',
   'deleteAccountFailedDescription':
-      '删除帐号失败。请重新登入，或是联系客服信箱 readr@readr.tw 由专人为您服务。',
+      '删除帐号失败。请重新登录，或是联系客服信箱 readr@readr.tw 由专人为您服务。',
   'letMeThinkAgain': '让我再想想',
   'backToHomePage': '返回主页',
   'confirmDeleteAccount': '确认删除',
@@ -294,7 +294,7 @@ const Map<String, String> chineseCnMap = {
   'setting': '设置',
   'about': '关于',
   'version': '版本',
-  'logOut': '注销',
+  'logOut': '退出登录',
   'setLanguage': '设置语言',
   'systemSetting': '系统设置',
 
