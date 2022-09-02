@@ -176,8 +176,11 @@ const Map<String, String> chineseCnMap = {
   'chooseStoryPageLeaveAlertContent': '您的更改将不会保存',
   'newsSource': '新闻来源',
   'narrative': '叙述',
-  'collectionNarrative': '输入集锦叙述',
+  'collectionNarrativeHint': '输入集锦叙述',
   'collectionNarrativeLengthAlert': '字数不能超过3000字',
+  'editCollectionTitle': '编辑标题',
+  'title': '标题',
+  'collectionTitleHint': '输入集锦标题',
 
   //month
   'january': '1月',

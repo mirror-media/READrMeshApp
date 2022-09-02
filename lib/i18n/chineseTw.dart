@@ -176,8 +176,11 @@ const Map<String, String> chineseTwMap = {
   'chooseStoryPageLeaveAlertContent': '系統不會儲存您所做的變更',
   'newsSource': '新聞來源',
   'narrative': '敘述',
-  'collectionNarrative': '輸入集錦敘述',
+  'collectionNarrativeHint': '輸入集錦敘述',
   'collectionNarrativeLengthAlert': '字數不能超過 3000 字',
+  'editCollectionTitle': '修改標題',
+  'title': '標題',
+  'collectionTitleHint': '輸入集錦標題',
 
   //month
   'january': '1月',

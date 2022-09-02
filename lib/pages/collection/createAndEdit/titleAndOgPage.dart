@@ -41,15 +41,15 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
             backgroundColor: Colors.white,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '更新集錦中',
-                    style: TextStyle(
+                    'updatingCollection'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -75,11 +75,12 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
       elevation: 0.5,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
+      leadingWidth: 75,
       leading: isEdit
           ? TextButton(
-              child: const Text(
-                '取消',
-                style: TextStyle(
+              child: Text(
+                'cancel'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: readrBlack50,
@@ -95,7 +96,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
               onPressed: () => Get.back(),
             ),
       title: Text(
-        isEdit ? '修改標題' : '標題',
+        isEdit ? 'editCollectionTitle'.tr : 'title'.tr,
         style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
@@ -117,7 +118,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
 
             return TextButton(
               child: Text(
-                isEdit ? '儲存' : '下一步',
+                isEdit ? 'save'.tr : 'nextStep'.tr,
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
@@ -191,9 +192,9 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           const SizedBox(
             height: 12,
           ),
-          const Text(
-            '更換封面照片',
-            style: TextStyle(
+          Text(
+            'changeCollectionOg'.tr,
+            style: const TextStyle(
               color: Colors.blue,
               fontSize: 16,
             ),
@@ -222,7 +223,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                 color: Colors.white10,
               ),
             ),
-            hintText: '輸入集錦標題',
+            hintText: 'collectionTitleHint'.tr,
             hintStyle: const TextStyle(color: readrBlack30),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
             suffix: (controller.collectionTitle.value.isEmpty)

@@ -184,8 +184,11 @@ const Map<String, String> englishUsMap = {
   'chooseStoryPageLeaveAlertContent': 'Your changes will not be saved',
   'newsSource': 'News source',
   'narrative': 'Narrative',
-  'collectionNarrative': 'Enter a collection narrative',
+  'collectionNarrativeHint': 'Enter a collection narrative',
   'collectionNarrativeLengthAlert': 'Word count cannot exceed 3000 words',
+  'editCollectionTitle': 'Edit title',
+  'title': 'Title',
+  'collectionTitleHint': 'Enter collection title',
 
   //month
   'january': 'Jan.',
