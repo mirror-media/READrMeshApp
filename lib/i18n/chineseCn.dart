@@ -154,6 +154,7 @@ const Map<String, String> chineseCnMap = {
   'selectMonth': '选择月份',
   'selectDate': '选择日期',
   'selectTime': '选择时间',
+  'changeCollectionOg': '更换封面照片',
 
   //month
   'january': '1月',

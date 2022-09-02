@@ -161,6 +161,7 @@ const Map<String, String> englishUsMap = {
   'selectMonth': 'Select month',
   'selectDate': 'Select date',
   'selectTime': 'Select time',
+  'changeCollectionOg': 'Change cover photo',
 
   //month
   'january': 'Jan.',

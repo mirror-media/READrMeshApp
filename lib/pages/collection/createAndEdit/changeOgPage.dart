@@ -29,9 +29,9 @@ class ChangeOgPage extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text(
-          '更換封面照片',
-          style: TextStyle(
+        title: Text(
+          'changeCollectionOg'.tr,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 18,
             color: readrBlack,
@@ -99,9 +99,9 @@ class ChangeOgPage extends StatelessWidget {
           actions: [
             CupertinoActionSheetAction(
               onPressed: () => Navigator.of(context).pop('camera'),
-              child: const Text(
-                '開啟相機',
-                style: TextStyle(
+              child: Text(
+                'openCamera'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
                 ),
@@ -109,9 +109,9 @@ class ChangeOgPage extends StatelessWidget {
             ),
             CupertinoActionSheetAction(
               onPressed: () => Navigator.of(context).pop('photo'),
-              child: const Text(
-                '選擇照片',
-                style: TextStyle(
+              child: Text(
+                'choosePhoto'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
                 ),
@@ -120,9 +120,9 @@ class ChangeOgPage extends StatelessWidget {
           ],
           cancelButton: CupertinoActionSheetAction(
             onPressed: () => Navigator.of(context).pop('cancel'),
-            child: const Text(
-              '取消',
-              style: TextStyle(
+            child: Text(
+              'cancel'.tr,
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
               ),
@@ -169,9 +169,9 @@ class ChangeOgPage extends StatelessWidget {
                     color: readrBlack87,
                     size: 18,
                   ),
-                  label: const Text(
-                    '開啟相機',
-                    style: TextStyle(
+                  label: Text(
+                    'openCamera'.tr,
+                    style: const TextStyle(
                       color: readrBlack87,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
@@ -189,9 +189,9 @@ class ChangeOgPage extends StatelessWidget {
                     color: readrBlack87,
                     size: 18,
                   ),
-                  label: const Text(
-                    '選擇照片',
-                    style: TextStyle(
+                  label: Text(
+                    'choosePhoto'.tr,
+                    style: const TextStyle(
                       color: readrBlack87,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
@@ -220,7 +220,7 @@ class ChangeOgPage extends StatelessWidget {
             aspectRatio: const CropAspectRatio(ratioX: 2, ratioY: 1),
             uiSettings: [
               AndroidUiSettings(
-                toolbarTitle: '裁切',
+                toolbarTitle: 'crop'.tr,
                 toolbarColor: Colors.white,
                 toolbarWidgetColor: readrBlack87,
                 statusBarColor: readrBlack87,
@@ -230,7 +230,7 @@ class ChangeOgPage extends StatelessWidget {
                 lockAspectRatio: false,
               ),
               IOSUiSettings(
-                title: '裁切',
+                title: 'crop'.tr,
                 aspectRatioLockEnabled: true,
                 rotateButtonsHidden: true,
               ),

@@ -154,6 +154,7 @@ const Map<String, String> chineseTwMap = {
   'selectMonth': '選擇月份',
   'selectDate': '選擇日期',
   'selectTime': '選擇時間',
+  'changeCollectionOg': '更換封面照片',
 
   //month
   'january': '1月',
