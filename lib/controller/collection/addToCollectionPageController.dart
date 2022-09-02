@@ -119,7 +119,9 @@ class AddToCollectionPageController extends GetxController {
   }
 
   void _showResultToast(bool isSuccess) {
-    String message = isSuccess ? '成功加入集錦' : '加入集錦失敗';
+    String message = isSuccess
+        ? 'addToCollectionSuccessToast'.tr
+        : 'addToCollectionFailedToast'.tr;
     IconData iconData = isSuccess ? Icons.check_circle : Icons.error;
     Widget icon = Icon(
       iconData,

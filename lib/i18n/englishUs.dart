@@ -61,6 +61,7 @@ const Map<String, String> englishUsMap = {
   'updateAppToast': 'Please update APP',
   'openLinkFailedToast': 'Failed to open link',
   'addToCollectionSuccessToast': 'Successfully joined the collection',
+  'addToCollectionFailedToast': 'Failed to join collection',
   'createCollectionFailedToast': 'Failed to create, please try again later',
   'loadFailedToast': 'Failed to load, please try again later',
   'updateFailedToast': 'Update failed, please try again later',

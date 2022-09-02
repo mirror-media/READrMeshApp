@@ -60,6 +60,7 @@ const Map<String, String> chineseCnMap = {
   'updateAppToast': '请更新应用程序',
   'openLinkFailedToast': '无法打开链接',
   'addToCollectionSuccessToast': '已成功加入集锦',
+  'addToCollectionFailedToast': '加入集锦失败',
   'createCollectionFailedToast': '创建失败，请稍后重试',
   'loadFailedToast': '加载失败，请稍后重试',
   'updateFailedToast': '更新失败，请稍后重试',

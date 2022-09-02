@@ -60,6 +60,7 @@ const Map<String, String> chineseTwMap = {
   'updateAppToast': '請更新APP',
   'openLinkFailedToast': '開啟連結失敗',
   'addToCollectionSuccessToast': '成功加入集錦',
+  'addToCollectionFailedToast': '加入集錦失敗',
   'createCollectionFailedToast': '建立失敗 請稍後再試',
   'loadFailedToast': '載入失敗 請稍後再試',
   'updateFailedToast': '更新失敗 請稍後再試',
