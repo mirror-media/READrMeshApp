@@ -155,6 +155,15 @@ const Map<String, String> chineseTwMap = {
   'selectDate': '選擇日期',
   'selectTime': '選擇時間',
   'changeCollectionOg': '更換封面照片',
+  'collectionType': '集錦類型',
+  'selectCollectionType': '選擇集錦類型',
+  'folder': '資料夾',
+  'folderDescription': '打包多篇新聞',
+  'timeline': '時間軸',
+  'timelineDescription': '自訂時間排序',
+  'changeCollectionTypeAlertTitle': '確認更換集錦類型？',
+  'changeCollectionTypeAlertContent': '系統將無法復原您先前的自訂內容',
+  'comfirmChangeCollectionType': '確認更換',
 
   //month
   'january': '1月',

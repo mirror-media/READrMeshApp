@@ -162,6 +162,16 @@ const Map<String, String> englishUsMap = {
   'selectDate': 'Select date',
   'selectTime': 'Select time',
   'changeCollectionOg': 'Change cover photo',
+  'collectionType': 'Collection type',
+  'selectCollectionType': 'Select Collection Type',
+  'folder': 'Folder',
+  'folderDescription': 'Pack multiple news',
+  'timeline': 'Timeline',
+  'timelineDescription': 'Custom time sorting',
+  'changeCollectionTypeAlertTitle': 'Confirm change collection type?',
+  'changeCollectionTypeAlertContent':
+      'Your previous customizations will not be restored',
+  'comfirmChangeCollectionType': 'Confirm',
 
   //month
   'january': 'Jan.',

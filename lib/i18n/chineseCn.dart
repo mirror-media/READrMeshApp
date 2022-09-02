@@ -155,6 +155,15 @@ const Map<String, String> chineseCnMap = {
   'selectDate': '选择日期',
   'selectTime': '选择时间',
   'changeCollectionOg': '更换封面照片',
+  'collectionType': '集锦类型',
+  'selectCollectionType': '选择集锦类型',
+  'folder': '文件夹',
+  'folderDescription': '打包多条新闻',
+  'timeline': '时间线',
+  'timelineDescription': '自定义时间排序',
+  'changeCollectionTypeAlertTitle': '确认更改集锦类型吗？',
+  'changeCollectionTypeAlertContent': '将无法还原以前的自定义设置',
+  'comfirmChangeCollectionType': '确认更换',
 
   //month
   'january': '1月',

@@ -52,15 +52,15 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             backgroundColor: Colors.white,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '集錦建立中',
-                    style: TextStyle(
+                    'creatingCollection'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -82,9 +82,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: const Text(
-        '集錦類型',
-        style: TextStyle(
+      title: Text(
+        'collectionType'.tr,
+        style: const TextStyle(
           fontSize: 18,
           color: readrBlack,
         ),
@@ -104,8 +104,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             () => TextButton(
               child: Text(
                 controller.format.value == CollectionFormat.folder
-                    ? '建立'
-                    : '下一步',
+                    ? 'create'.tr
+                    : 'nextStep'.tr,
                 style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 18,
@@ -128,9 +128,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             () {
               if (controller.format.value != initFormat) {
                 return TextButton(
-                  child: const Text(
-                    '完成',
-                    style: TextStyle(
+                  child: Text(
+                    'finish'.tr,
+                    style: const TextStyle(
                       color: Colors.blue,
                       fontSize: 18,
                     ),
@@ -176,9 +176,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           ),
         if (!isQuickCreate && !isEdit)
           TextButton(
-            child: const Text(
-              '下一步',
-              style: TextStyle(
+            child: Text(
+              'nextStep'.tr,
+              style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
               ),
@@ -238,7 +238,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '選擇集錦類型',
+                    'selectCollectionType'.tr,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -319,13 +319,13 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
         switch (format) {
           case CollectionFormat.folder:
             iconImage = folderIconSvg;
-            title = '資料夾';
-            description = '打包多篇新聞';
+            title = 'folder'.tr;
+            description = 'folderDescription'.tr;
             break;
           case CollectionFormat.timeline:
             iconImage = timelineIconSvg;
-            title = '時間軸';
-            description = '自訂時間排序';
+            title = 'timeline'.tr;
+            description = 'timelineDescription'.tr;
             break;
         }
         return InkWell(
@@ -425,16 +425,16 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
     return await showPlatformDialog<bool>(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text(
-          '確認更換集錦類型？',
-          style: TextStyle(
+        title: Text(
+          'changeCollectionTypeAlertTitle'.tr,
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
         ),
-        content: const Text(
-          '系統將無法復原您先前的自訂內容',
-          style: TextStyle(
+        content: Text(
+          'changeCollectionTypeAlertContent'.tr,
+          style: const TextStyle(
             fontSize: 13,
           ),
         ),
@@ -442,7 +442,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           PlatformDialogAction(
             onPressed: () => Get.back<bool>(result: true),
             child: PlatformText(
-              '確認更換',
+              'comfirmChangeCollectionType'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.red,
@@ -452,7 +452,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           PlatformDialogAction(
             onPressed: () => Get.back<bool>(result: false),
             child: PlatformText(
-              '取消',
+              'cancel'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.blue,
