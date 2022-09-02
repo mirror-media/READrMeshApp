@@ -220,7 +220,7 @@ class SettingPageController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '已取消封鎖',
+        message: 'unBlockSuccess'.tr,
       );
       blockMembers.removeWhere((element) => element.memberId == blockMemberId);
       update();
