@@ -134,7 +134,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                       ),
                       onPressed: () {
                         if (isEdit || isAddToEmpty || isChangeFormat) {
-                          controller.updateCollectionPicks(isAddToEmpty);
+                          controller.updateCollectionPicks();
                         } else {
                           controller.createCollection();
                         }

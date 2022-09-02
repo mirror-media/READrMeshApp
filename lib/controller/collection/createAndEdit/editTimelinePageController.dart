@@ -261,13 +261,13 @@ class EditTimelinePageController extends GetxController {
     isUpdating.value = false;
   }
 
-  void updateCollectionPicks(bool isAddToEmpty) async {
+  void updateCollectionPicks() async {
     isUpdating.value = true;
 
     try {
       await collectionRepos.updateCollectionPicks(
         collectionId: collection!.id,
-        originList: isAddToEmpty ? [] : timelineStory,
+        originList: timelineStory,
         newList: timelineStoryList,
         format: CollectionFormat.timeline,
       );

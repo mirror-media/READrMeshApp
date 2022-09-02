@@ -131,13 +131,13 @@ class SortStoryPageController extends GetxController {
     isUpdating.value = false;
   }
 
-  void updateCollectionPicks(bool isAddToEmpty) async {
+  void updateCollectionPicks() async {
     isUpdating.value = true;
 
     try {
       await collectionRepos.updateCollectionPicks(
         collectionId: collection!.id,
-        originList: isAddToEmpty ? [] : originalList,
+        originList: originalList,
         newList: collectionStoryList,
         format: CollectionFormat.folder,
       );

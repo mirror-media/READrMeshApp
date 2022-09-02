@@ -140,7 +140,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                       ),
                       onPressed: () {
                         if (isEdit || isAddToEmpty || isChangeFormat) {
-                          controller.updateCollectionPicks(isAddToEmpty);
+                          controller.updateCollectionPicks();
                         } else {
                           controller.createCollection();
                         }
