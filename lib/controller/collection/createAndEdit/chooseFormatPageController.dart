@@ -73,7 +73,7 @@ class ChooseFormatPageController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '成功加入集錦',
+        message: 'addToCollectionSuccessToast'.tr,
       );
 
       Get.until(
@@ -85,7 +85,7 @@ class ChooseFormatPageController extends GetxController {
     } catch (e) {
       print('Create collection error: $e');
       Fluttertoast.showToast(
-        msg: "建立失敗 請稍後再試",
+        msg: "createCollectionFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

@@ -58,6 +58,8 @@ const Map<String, String> englishUsMap = {
   'loginFailedToast': 'Login failed, please try again',
   'updateAppToast': 'Please update APP',
   'openLinkFailedToast': 'Failed to open link',
+  'addToCollectionSuccessToast': 'Successfully joined the collection',
+  'createCollectionFailedToast': 'Failed to create, please try again later',
 
   //bookmark
   'addBookmark': 'Bookmark',
