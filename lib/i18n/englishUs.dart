@@ -24,6 +24,7 @@ const Map<String, String> englishUsMap = {
   'add': 'Add',
   'clear': 'Clear',
   'setUp': 'Set up',
+  'quit': 'Quit',
 
   //bottom tab
   'communityTab': 'Community',
@@ -40,7 +41,7 @@ const Map<String, String> englishUsMap = {
   'communityNoMore': 'You have followed all the updates',
   'commentNews': ' commented on this',
   'updateCollection': ' updated a collection',
-  'createCollection': ' created a new collection',
+  'createANewCollection': ' created a new collection',
   'commentCollection': ' commented on this collection',
   'pickCollection': ' picked this collection',
 
@@ -172,6 +173,15 @@ const Map<String, String> englishUsMap = {
   'changeCollectionTypeAlertContent':
       'Your previous customizations will not be restored',
   'comfirmChangeCollectionType': 'Confirm',
+  'picksAndBookmarks': 'Picked Articles & Bookmarks',
+  'searchAllNews': 'Search all news...',
+  'addNewArticle': 'Add new article',
+  'createCollection': 'Build a Collection',
+  'chooseStoryPageSelectTitlePrefix': '',
+  'chooseStoryPageSelectTitleSuffix': ' selected',
+  'chooseStoryPageLeaveAlertTitle': 'Are you sure you want to quit editing?',
+  'chooseStoryPageLeaveAlertContent': 'Your changes will not be saved',
+  'newsSource': 'News source',
 
   //month
   'january': 'Jan.',
@@ -306,6 +316,8 @@ const Map<String, String> englishUsMap = {
   'clearAllHistory': 'Clear all records',
   'noResultPrefix': 'No news or collections found containing "',
   'noResultSuffix': '", please try again with another keyword.',
+  'noNewsResultPrefix': 'No news found containing "',
+  'noNewsResultSuffix': '", please try again with another keyword.',
   'allCollections': 'All collections',
   'allNews': 'All news',
   'viewAllCollectionResultPrefix': 'View all collections containing "',

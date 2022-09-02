@@ -24,6 +24,7 @@ const Map<String, String> chineseCnMap = {
   'add': '添加',
   'clear': '清除',
   'setUp': '设置',
+  'quit': '退出',
 
   //bottom tab
   'communityTab': '社区',
@@ -39,7 +40,7 @@ const Map<String, String> chineseCnMap = {
   'communityNoMore': '你已追完所有更新啰',
   'commentNews': '在这篇评论',
   'updateCollection': '更新了一个集锦',
-  'createCollection': '建立了一个新的集锦',
+  'createANewCollection': '建立了一个新的集锦',
   'commentCollection': '在这个集锦评论',
   'pickCollection': '精选了这个集锦',
 
@@ -164,6 +165,15 @@ const Map<String, String> chineseCnMap = {
   'changeCollectionTypeAlertTitle': '确认更改集锦类型吗？',
   'changeCollectionTypeAlertContent': '将无法还原以前的自定义设置',
   'comfirmChangeCollectionType': '确认更换',
+  'picksAndBookmarks': '精选文章和书签',
+  'searchAllNews': '搜索所有新闻...',
+  'addNewArticle': '添加新文章',
+  'createCollection': '创建集锦',
+  'chooseStoryPageSelectTitlePrefix': '已选',
+  'chooseStoryPageSelectTitleSuffix': '篇',
+  'chooseStoryPageLeaveAlertTitle': '是否确实要退出编辑？',
+  'chooseStoryPageLeaveAlertContent': '您的更改将不会保存',
+  'newsSource': '新闻来源',
 
   //month
   'january': '1月',
@@ -296,6 +306,8 @@ const Map<String, String> chineseCnMap = {
   'clearAllHistory': '清除所有记录',
   'noResultPrefix': '找不到包含「',
   'noResultSuffix': '」的新闻或集锦，请换个关键字，再试一次。',
+  'noNewsResultPrefix': '找不到包含「',
+  'noNewsResultSuffix': '」的新闻，请换个关键字，再试一次。',
   'allCollections': '所有集锦',
   'allNews': '所有新闻',
   'viewAllCollectionResultPrefix': '查看所有包含「',

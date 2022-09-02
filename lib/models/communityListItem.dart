@@ -262,7 +262,7 @@ class CommunityListItem {
           itemBarText = 'updateCollection'.tr;
         } else if (type == CommunityListItemType.createCollection) {
           itemBarMember.assign(collection.creator);
-          itemBarText = 'createCollection'.tr;
+          itemBarText = 'createANewCollection'.tr;
         } else if (collection.commentMembers != null &&
             collection.commentMembers!.isNotEmpty) {
           itemBarMember.assignAll(collection.commentMembers!);

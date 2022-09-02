@@ -24,6 +24,7 @@ const Map<String, String> chineseTwMap = {
   'add': '新增',
   'clear': '清除',
   'setUp': '設定',
+  'quit': '退出',
 
   //bottom tab
   'communityTab': '社群',
@@ -39,7 +40,7 @@ const Map<String, String> chineseTwMap = {
   'communityNoMore': '你已追完所有更新囉',
   'commentNews': '在這篇留言',
   'updateCollection': '更新了一個集錦',
-  'createCollection': '建立了一個新的集錦',
+  'createANewCollection': '建立了一個新的集錦',
   'commentCollection': '在這個集錦留言',
   'pickCollection': '精選了這個集錦',
 
@@ -164,6 +165,15 @@ const Map<String, String> chineseTwMap = {
   'changeCollectionTypeAlertTitle': '確認更換集錦類型？',
   'changeCollectionTypeAlertContent': '系統將無法復原您先前的自訂內容',
   'comfirmChangeCollectionType': '確認更換',
+  'picksAndBookmarks': '精選文章及書籤',
+  'searchAllNews': '搜尋所有新聞...',
+  'addNewArticle': '加入新文章',
+  'createCollection': '建立集錦',
+  'chooseStoryPageSelectTitlePrefix': '已選',
+  'chooseStoryPageSelectTitleSuffix': '篇',
+  'chooseStoryPageLeaveAlertTitle': '確認要退出編輯？',
+  'chooseStoryPageLeaveAlertContent': '系統不會儲存您所做的變更',
+  'newsSource': '新聞來源',
 
   //month
   'january': '1月',
@@ -295,6 +305,8 @@ const Map<String, String> chineseTwMap = {
   'clearAllHistory': '清除所有記錄',
   'noResultPrefix': '找不到包含「',
   'noResultSuffix': '」的新聞或集錦，請換個關鍵字，再試一次。',
+  'noNewsResultPrefix': '找不到包含「',
+  'noNewsResultSuffix': '」的新聞，請換個關鍵字，再試一次。',
   'allCollections': '所有集錦',
   'allNews': '所有新聞',
   'viewAllCollectionResultPrefix': '查看所有包含「',
