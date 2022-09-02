@@ -99,7 +99,7 @@ class CollectionPageController extends GetxController {
 
     if (!result) {
       Fluttertoast.showToast(
-        msg: "刪除失敗 請稍後再試",
+        msg: "deleteFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -116,7 +116,7 @@ class CollectionPageController extends GetxController {
       }
       Get.back();
       Fluttertoast.showToast(
-        msg: "刪除成功",
+        msg: "deleteSuccessToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

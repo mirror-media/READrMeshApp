@@ -64,6 +64,8 @@ const Map<String, String> chineseTwMap = {
   'createCollectionFailedToast': '建立失敗 請稍後再試',
   'loadFailedToast': '載入失敗 請稍後再試',
   'updateFailedToast': '更新失敗 請稍後再試',
+  'deleteFailedToast': '刪除失敗 請稍後再試',
+  'deleteSuccessToast': '刪除成功',
 
   //bookmark
   'addBookmark': '加入書籤',
