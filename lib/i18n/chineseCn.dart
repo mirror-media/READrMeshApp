@@ -26,6 +26,7 @@ const Map<String, String> chineseCnMap = {
   'setUp': '设置',
   'quit': '退出',
   'skip': '跳过',
+  'iGotIt': '我明白了',
 
   //bottom tab
   'communityTab': '社区',
@@ -44,6 +45,7 @@ const Map<String, String> chineseCnMap = {
   'createANewCollection': '建立了一个新的集锦',
   'commentCollection': '在这个集锦评论',
   'pickCollection': '精选了这个集锦',
+  'collectionDeleteItemHint': '向左滑动可删除文章',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜索',

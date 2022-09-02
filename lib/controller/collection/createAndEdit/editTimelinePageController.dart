@@ -229,7 +229,7 @@ class EditTimelinePageController extends GetxController {
             size: 16,
             color: Colors.white,
           ),
-          message: '成功加入集錦',
+          message: 'addToCollectionSuccessToast'.tr,
         );
       } else {
         Get.offUntil<GetPageRoute>(
@@ -249,7 +249,7 @@ class EditTimelinePageController extends GetxController {
       print('Create collection error: $e');
       isUpdating.value = false;
       Fluttertoast.showToast(
-        msg: "建立失敗 請稍後再試",
+        msg: "createCollectionFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -277,7 +277,7 @@ class EditTimelinePageController extends GetxController {
     } catch (e) {
       print('Update collection picks error: $e');
       Fluttertoast.showToast(
-        msg: "更新失敗 請稍後再試",
+        msg: "updateFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -305,7 +305,7 @@ class EditTimelinePageController extends GetxController {
                 height: 4,
               ),
               Text(
-                '向左滑可以刪除文章',
+                'collectionDeleteItemHint'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight:
@@ -331,9 +331,9 @@ class EditTimelinePageController extends GetxController {
                   ),
                   backgroundColor: Colors.white,
                 ),
-                child: const Text(
-                  '我知道了',
-                  style: TextStyle(
+                child: Text(
+                  'iGotIt'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: readrBlack87,
                   ),

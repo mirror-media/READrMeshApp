@@ -26,6 +26,7 @@ const Map<String, String> chineseTwMap = {
   'setUp': '設定',
   'quit': '退出',
   'skip': '略過',
+  'iGotIt': '我知道了',
 
   //bottom tab
   'communityTab': '社群',
@@ -44,6 +45,7 @@ const Map<String, String> chineseTwMap = {
   'createANewCollection': '建立了一個新的集錦',
   'commentCollection': '在這個集錦留言',
   'pickCollection': '精選了這個集錦',
+  'collectionDeleteItemHint': '向左滑可以刪除文章',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜尋',

@@ -26,6 +26,7 @@ const Map<String, String> englishUsMap = {
   'setUp': 'Set up',
   'quit': 'Quit',
   'skip': 'Skip',
+  'iGotIt': 'I got it',
 
   //bottom tab
   'communityTab': 'Community',
@@ -45,6 +46,7 @@ const Map<String, String> englishUsMap = {
   'createANewCollection': ' created a new collection',
   'commentCollection': ' commented on this collection',
   'pickCollection': ' picked this collection',
+  'collectionDeleteItemHint': 'Swipe left to delete an article',
 
   //main AppBar tooltip
   'searchButtonTooltip': 'Search',
