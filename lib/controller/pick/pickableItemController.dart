@@ -294,7 +294,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '成功加入精選',
+        message: 'pickSuccessToast'.tr,
       );
     } else {
       showMeshToast(
@@ -303,7 +303,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '加入精選失敗',
+        message: 'pickFailedToast'.tr,
       );
     }
   }
@@ -316,7 +316,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '成功移除精選',
+        message: 'unPickSuccessToast'.tr,
       );
     } else {
       showMeshToast(
@@ -325,7 +325,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '移除精選失敗',
+        message: 'unPickFailedToast'.tr,
       );
     }
   }
@@ -338,7 +338,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '成功加入書籤',
+        message: 'addBookmarkSuccessToast'.tr,
       );
     } else {
       showMeshToast(
@@ -347,7 +347,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '加入書籤失敗',
+        message: 'addBookmarkFailedToast'.tr,
       );
     }
   }
@@ -360,7 +360,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '成功移除書籤',
+        message: 'removeBookmarkSuccessToast'.tr,
       );
     } else {
       showMeshToast(
@@ -369,7 +369,7 @@ class PickableItemController extends GetxController {
           size: 16,
           color: Colors.white,
         ),
-        message: '移除書籤失敗',
+        message: 'removeBookmarkFailedToast'.tr,
       );
     }
   }

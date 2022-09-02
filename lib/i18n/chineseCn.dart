@@ -71,9 +71,17 @@ const Map<String, String> chineseCnMap = {
   'loadMoreFailedToast': '加载更多失败',
   'updateSuccessToast': '更新完成',
   'saveFailedToast': '保存失败，请稍后再试',
+  'pickSuccessToast': '已成功添加到精选',
+  'pickFailedToast': '添加精选失败',
+  'unPickSuccessToast': '精选成功移除',
+  'unPickFailedToast': '未能删除精选',
+  'addBookmarkSuccessToast': '成功添加书签',
+  'addBookmarkFailedToast': '添加书签失败',
+  'removeBookmarkSuccessToast': '书签已成功删除',
+  'removeBookmarkFailedToast': '删除书签失败',
 
   //bookmark
-  'addBookmark': '加入书签',
+  'addBookmark': '添加书签',
   'removeBookmark': '移除书签',
   'bookmark': '书签',
   'bookmarks': '书签',

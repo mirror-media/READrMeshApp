@@ -72,6 +72,14 @@ const Map<String, String> englishUsMap = {
   'loadMoreFailedToast': 'Failed to load more',
   'updateSuccessToast': 'Update completed',
   'saveFailedToast': 'Failed to save, please try again later',
+  'pickSuccessToast': 'Successfully added to picks',
+  'pickFailedToast': 'Failed to pick',
+  'unPickSuccessToast': 'Pick removed successfully',
+  'unPickFailedToast': 'Failed to remove pick',
+  'addBookmarkSuccessToast': 'Bookmarked successfully',
+  'addBookmarkFailedToast': 'Failed to add bookmark',
+  'removeBookmarkSuccessToast': 'Bookmark removed successfully',
+  'removeBookmarkFailedToast': 'Failed to remove bookmark',
 
   //bookmark
   'addBookmark': 'Bookmark',
