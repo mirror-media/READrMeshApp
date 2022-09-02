@@ -162,7 +162,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 ),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: 'collectionNarrative'.tr,
+                  hintText: 'collectionNarrativeHint'.tr,
                   hintStyle: const TextStyle(
                     color: readrBlack30,
                     fontSize: 16,
