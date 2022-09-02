@@ -89,7 +89,7 @@ class LoginPageController extends GetxController {
         isLoading.value = false;
 
         Fluttertoast.showToast(
-          msg: '登入成功',
+          msg: 'loginSuccessToast'.tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -123,7 +123,7 @@ class LoginPageController extends GetxController {
       print('Login Error: $e');
       await FirebaseAuth.instance.signOut();
       Fluttertoast.showToast(
-        msg: '登入失敗',
+        msg: 'loginFailedToast'.tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
