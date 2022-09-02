@@ -67,7 +67,7 @@ class CollectionTabController extends GetxController {
     } catch (e) {
       print('Fetch more collection tab error: $e');
       Fluttertoast.showToast(
-        msg: "載入失敗",
+        msg: "loadFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
