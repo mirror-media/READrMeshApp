@@ -45,7 +45,7 @@ class InputNamePageController extends GetxController {
       logSignUp();
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "發生錯誤，請稍後再試",
+        msg: "errorRetryToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
