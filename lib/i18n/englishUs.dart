@@ -25,6 +25,7 @@ const Map<String, String> englishUsMap = {
   'clear': 'Clear',
   'setUp': 'Set up',
   'quit': 'Quit',
+  'skip': 'Skip',
 
   //bottom tab
   'communityTab': 'Community',
@@ -182,6 +183,9 @@ const Map<String, String> englishUsMap = {
   'chooseStoryPageLeaveAlertTitle': 'Are you sure you want to quit editing?',
   'chooseStoryPageLeaveAlertContent': 'Your changes will not be saved',
   'newsSource': 'News source',
+  'narrative': 'Narrative',
+  'collectionNarrative': 'Enter a collection narrative',
+  'collectionNarrativeLengthAlert': 'Word count cannot exceed 3000 words',
 
   //month
   'january': 'Jan.',

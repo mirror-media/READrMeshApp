@@ -25,6 +25,7 @@ const Map<String, String> chineseCnMap = {
   'clear': '清除',
   'setUp': '设置',
   'quit': '退出',
+  'skip': '跳过',
 
   //bottom tab
   'communityTab': '社区',
@@ -174,6 +175,9 @@ const Map<String, String> chineseCnMap = {
   'chooseStoryPageLeaveAlertTitle': '是否确实要退出编辑？',
   'chooseStoryPageLeaveAlertContent': '您的更改将不会保存',
   'newsSource': '新闻来源',
+  'narrative': '叙述',
+  'collectionNarrative': '输入集锦叙述',
+  'collectionNarrativeLengthAlert': '字数不能超过3000字',
 
   //month
   'january': '1月',

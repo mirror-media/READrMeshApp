@@ -25,6 +25,7 @@ const Map<String, String> chineseTwMap = {
   'clear': '清除',
   'setUp': '設定',
   'quit': '退出',
+  'skip': '略過',
 
   //bottom tab
   'communityTab': '社群',
@@ -174,6 +175,9 @@ const Map<String, String> chineseTwMap = {
   'chooseStoryPageLeaveAlertTitle': '確認要退出編輯？',
   'chooseStoryPageLeaveAlertContent': '系統不會儲存您所做的變更',
   'newsSource': '新聞來源',
+  'narrative': '敘述',
+  'collectionNarrative': '輸入集錦敘述',
+  'collectionNarrativeLengthAlert': '字數不能超過 3000 字',
 
   //month
   'january': '1月',

@@ -35,15 +35,15 @@ class DescriptionPage extends GetView<DescriptionPageController> {
             backgroundColor: Colors.white,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '更新集錦中',
-                    style: TextStyle(
+                    'updatingCollection'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -76,9 +76,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
         ),
         onPressed: () => Get.back(),
       ),
-      title: const Text(
-        '敘述',
-        style: TextStyle(
+      title: Text(
+        'narrative'.tr,
+        style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
           color: readrBlack,
@@ -89,9 +89,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
       actions: [
         Obx(
           () {
-            String buttonText = isEdit ? '儲存' : '略過';
+            String buttonText = isEdit ? 'save'.tr : 'skip'.tr;
             if (controller.collectionDescription.isNotEmpty && !isEdit) {
-              buttonText = '下一步';
+              buttonText = 'nextStep'.tr;
             } else if (controller.collectionDescription.value == description &&
                 isEdit) {
               return Container();
@@ -162,7 +162,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 ),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: '輸入集錦敘述',
+                  hintText: 'collectionNarrative'.tr,
                   hintStyle: const TextStyle(
                     color: readrBlack30,
                     fontSize: 16,
@@ -202,9 +202,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
           ),
           Obx(() {
             if (controller.collectionDescription.value.length >= 3000) {
-              return const Text(
-                '字數不能超過 3000 字',
-                style: TextStyle(
+              return Text(
+                'collectionNarrativeLengthAlert'.tr,
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 14,
                 ),
