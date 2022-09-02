@@ -69,6 +69,7 @@ const Map<String, String> englishUsMap = {
   'deleteSuccessToast': 'Successfully deleted',
   'errorRetryToast': 'An error occurred please try again later',
   'commentFailedToast': 'Comment failed, please try again later',
+  'loadMoreFailedToast': 'Failed to load more',
 
   //bookmark
   'addBookmark': 'Bookmark',

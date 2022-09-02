@@ -68,6 +68,7 @@ const Map<String, String> chineseCnMap = {
   'deleteSuccessToast': '已成功删除',
   'errorRetryToast': '发生错误 请稍后再试',
   'commentFailedToast': '评论失败 请稍后重试',
+  'loadMoreFailedToast': '加载更多失败',
 
   //bookmark
   'addBookmark': '加入书签',
