@@ -147,7 +147,7 @@ class EditPersonalFilePageController extends GetxController {
           // refresh to trigger bottom navigation bar icon update
           Get.find<UserService>().isMember.refresh();
           Fluttertoast.showToast(
-            msg: "更新完成",
+            msg: "updateSuccessToast".tr,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -165,7 +165,7 @@ class EditPersonalFilePageController extends GetxController {
     } catch (e) {
       print('Save new personal file error: $e');
       Fluttertoast.showToast(
-        msg: "儲存失敗 請稍後再試一次",
+        msg: "saveFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
