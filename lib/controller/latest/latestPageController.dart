@@ -126,7 +126,7 @@ class LatestPageController extends GetxController {
     } catch (e) {
       print('Fetch more latest news error: $e');
       Fluttertoast.showToast(
-        msg: "載入更多失敗",
+        msg: "loadMoreFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
