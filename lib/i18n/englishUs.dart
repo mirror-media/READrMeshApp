@@ -61,6 +61,7 @@ const Map<String, String> englishUsMap = {
   'addToCollectionSuccessToast': 'Successfully joined the collection',
   'createCollectionFailedToast': 'Failed to create, please try again later',
   'loadFailedToast': 'Failed to load, please try again later',
+  'updateFailedToast': 'Update failed, please try again later',
 
   //bookmark
   'addBookmark': 'Bookmark',

@@ -60,6 +60,7 @@ const Map<String, String> chineseCnMap = {
   'addToCollectionSuccessToast': '已成功加入集锦',
   'createCollectionFailedToast': '创建失败，请稍后重试',
   'loadFailedToast': '加载失败，请稍后重试',
+  'updateFailedToast': '更新失败，请稍后重试',
 
   //bookmark
   'addBookmark': '加入书签',

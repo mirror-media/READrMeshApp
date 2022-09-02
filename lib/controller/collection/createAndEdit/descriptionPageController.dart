@@ -39,7 +39,7 @@ class DescriptionPageController extends GetxController {
     } catch (e) {
       print('Update collection description error: $e');
       Fluttertoast.showToast(
-        msg: "更新失敗 請稍後再試",
+        msg: "updateFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
