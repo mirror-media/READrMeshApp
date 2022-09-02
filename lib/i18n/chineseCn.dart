@@ -470,4 +470,11 @@ const Map<String, String> chineseCnMap = {
   'invitationCodeCopied': '已复制邀请码',
   'copyTheInvitationCode': '复制邀请码',
   'used': '已使用',
+
+  //share
+  'collectionShareLinkDescription': '看看大家精选了哪些新闻？ READr Mesh集锦，客制化挑选喜爱的报导。',
+  'personalFileShareLinkTitle': '的精选的新闻和集锦',
+  'personalFileShareLinkDescriptionPrefix': '快来看看',
+  'personalFileShareLinkDescriptionSuffix':
+      '在READr Mesh挑选了哪些新闻和集锦？成为您自己的新闻编辑室，加入READr Mesh创建您自己的个人页面。',
 };

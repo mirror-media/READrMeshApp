@@ -469,4 +469,11 @@ const Map<String, String> chineseTwMap = {
   'invitationCodeCopied': '已複製邀請碼',
   'copyTheInvitationCode': '複製邀請碼',
   'used': '已使用',
+
+  //share
+  'collectionShareLinkDescription': '看看大家精選了哪些新聞？READr Mesh集錦，客製化挑選喜愛的報導。',
+  'personalFileShareLinkTitle': '的精選的新聞和集錦',
+  'personalFileShareLinkDescriptionPrefix': '快來看看',
+  'personalFileShareLinkDescriptionSuffix':
+      '在READr Mesh挑選了哪些新聞和集錦？做自己的新聞編輯台，加入READr Mesh建立專屬的個人頁面。',
 };

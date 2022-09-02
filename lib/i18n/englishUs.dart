@@ -493,4 +493,13 @@ const Map<String, String> englishUsMap = {
   'invitationCodeCopied': 'Invitation code copied',
   'copyTheInvitationCode': 'Copy the invitation code',
   'used': 'Used',
+
+  //share
+  'collectionShareLinkDescription':
+      "See what news you've picked up? READr Mesh collection, customize your favorite reports.",
+  'personalFileShareLinkTitle': "'s picked news and collections",
+  'personalFileShareLinkDescriptionPrefix':
+      'Come see what news and collections',
+  'personalFileShareLinkDescriptionSuffix':
+      ' has picked up at READr Mesh? Be your own newsroom and join READr Mesh to create your own personal page.',
 };
