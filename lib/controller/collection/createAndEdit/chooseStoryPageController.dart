@@ -125,7 +125,7 @@ class ChooseStoryPageController extends GetxController {
     } catch (e) {
       print('FetchMorePickAndBookmarkError: $e');
       Fluttertoast.showToast(
-        msg: "載入失敗 請稍後再試",
+        msg: "loadFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -198,7 +198,7 @@ class ChooseStoryPageController extends GetxController {
     } catch (e) {
       print('SearchAllNewsLoadMoreError: $e');
       Fluttertoast.showToast(
-        msg: "載入失敗 請稍後再試",
+        msg: "loadFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

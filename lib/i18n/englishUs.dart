@@ -60,6 +60,7 @@ const Map<String, String> englishUsMap = {
   'openLinkFailedToast': 'Failed to open link',
   'addToCollectionSuccessToast': 'Successfully joined the collection',
   'createCollectionFailedToast': 'Failed to create, please try again later',
+  'loadFailedToast': 'Failed to load, please try again later',
 
   //bookmark
   'addBookmark': 'Bookmark',

@@ -59,6 +59,7 @@ const Map<String, String> chineseCnMap = {
   'openLinkFailedToast': '无法打开链接',
   'addToCollectionSuccessToast': '已成功加入集锦',
   'createCollectionFailedToast': '创建失败，请稍后重试',
+  'loadFailedToast': '加载失败，请稍后重试',
 
   //bookmark
   'addBookmark': '加入书签',
