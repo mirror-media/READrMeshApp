@@ -858,12 +858,18 @@ mutation(
 
     for (int i = 0; i < newList.length; i++) {
       newList[i].sortOrder = i;
-      int originalListIndex = originList
-          .indexWhere((element) => element.pickNewsId == newList[i].pickNewsId);
-      if (originalListIndex == -1) {
-        addItemList.add(newList[i]);
+      bool notNewItem = originList
+          .any((element) => element.pickNewsId == newList[i].pickNewsId);
+      if (!notNewItem) {
+        addItemList.addIf(
+            !addItemList
+                .any((element) => element.pickNewsId == newList[i].pickNewsId),
+            newList[i]);
       } else {
-        moveItemList.add(newList[i]);
+        moveItemList.addIf(
+            !moveItemList
+                .any((element) => element.pickNewsId == newList[i].pickNewsId),
+            newList[i]);
         originList.removeWhere(
             (element) => element.pickNewsId == newList[i].pickNewsId);
       }
@@ -871,6 +877,12 @@ mutation(
 
     if (originList.isNotEmpty) {
       deleteItemList.assignAll(originList);
+    }
+
+    //check repeat
+    for (var item in moveItemList) {
+      addItemList
+          .removeWhere((element) => element.pickNewsId == item.pickNewsId);
     }
 
     await Future.wait([
