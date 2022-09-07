@@ -45,7 +45,6 @@ const Map<String, String> chineseCnMap = {
   'createANewCollection': '建立了一个新的集锦',
   'commentCollection': '在这个集锦评论',
   'pickCollection': '精选了这个集锦',
-  'collectionDeleteItemHint': '向左滑动可删除文章',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜索',
@@ -208,6 +207,7 @@ const Map<String, String> chineseCnMap = {
   'editCollectionTitle': '编辑标题',
   'title': '标题',
   'collectionTitleHint': '输入集锦标题',
+  'collectionDeleteItemHint': '向左滑动可删除文章',
 
   //month
   'january': '1月',

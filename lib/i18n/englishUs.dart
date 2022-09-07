@@ -46,7 +46,6 @@ const Map<String, String> englishUsMap = {
   'createANewCollection': ' created a new collection',
   'commentCollection': ' commented on this collection',
   'pickCollection': ' picked this collection',
-  'collectionDeleteItemHint': 'Swipe left to delete an article',
 
   //main AppBar tooltip
   'searchButtonTooltip': 'Search',
@@ -216,6 +215,7 @@ const Map<String, String> englishUsMap = {
   'editCollectionTitle': 'Edit title',
   'title': 'Title',
   'collectionTitleHint': 'Enter collection title',
+  'collectionDeleteItemHint': 'Swipe left to delete an article',
 
   //month
   'january': 'Jan.',
