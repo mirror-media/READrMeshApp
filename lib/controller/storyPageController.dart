@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/getxServices/userService.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/helpers/paragraphFormat.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -8,6 +8,7 @@ import 'package:readr/models/newsStoryItem.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/services/newsStoryService.dart';
 import 'package:readr/services/storyService.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class StoryPageController extends GetxController {
   final NewsStoryRepos newsStoryRepos;
@@ -26,6 +27,9 @@ class StoryPageController extends GetxController {
   late Story readrStory;
   late ParagraphFormat paragraphFormat;
 
+  bool webViewControllerIsLoaded = false;
+  late WebViewController webViewController;
+
   @override
   void onInit() {
     super.onInit();
@@ -38,11 +42,11 @@ class StoryPageController extends GetxController {
     bool isFullContent = newsListItem.fullContent;
     print('Fetch news data id=${newsListItem.id}');
     update();
-    await Get.find<UserService>().fetchUserData();
     try {
       await newsStoryRepos
           .fetchNewsData(newsListItem.id)
           .then((value) => newsStoryItem = value);
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
 
       //if publisher is readr and not project, fetch story from readr CMS
       if (newsListItem.source?.id ==
@@ -69,9 +73,9 @@ class StoryPageController extends GetxController {
   void updateNewsData(NewsListItem newNewsListItem) async {
     newsListItem = newNewsListItem;
     bool isFullContent = newsListItem.fullContent;
-    await Get.find<UserService>().fetchUserData();
     try {
       newsStoryItem = await newsStoryRepos.fetchNewsData(newsListItem.id);
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
 
       //if publisher is readr and not project, fetch story from readr CMS
       if (newsListItem.source?.id ==

@@ -1,5 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,6 +9,10 @@ import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/errorHelper.dart';
+import 'package:readr/models/member.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/memberService.dart';
 
 class SettingPageController extends GetxController {
@@ -31,6 +36,15 @@ class SettingPageController extends GetxController {
   final isDeleting = false.obs;
   bool deleteSuccess = false;
   bool isInitial = true;
+
+  //for blocklistPage
+  dynamic error;
+  bool blocklistPageIsLoading = true;
+  final List<Member> blockMembers = [];
+
+  //for setLanguagePage
+  final languageSetting = LanguageSettings.system.obs;
+  String languageCode = 'system';
 
   @override
   void onInit() {
@@ -104,6 +118,22 @@ class SettingPageController extends GetxController {
 
     //get initial page setting
     initialPageIndex.value = prefs.getInt('initialPageIndex') ?? 0;
+
+    //get language setting
+    languageCode = prefs.getString('languageSetting') ?? 'system';
+    switch (languageCode) {
+      case 'enUS':
+        languageSetting.value = LanguageSettings.english;
+        break;
+      case 'zhTW':
+        languageSetting.value = LanguageSettings.traditionalChinese;
+        break;
+      case 'zhCN':
+        languageSetting.value = LanguageSettings.simplifiedChinese;
+        break;
+      default:
+        languageSetting.value = LanguageSettings.system;
+    }
   }
 
   void updateDuration(int index) {
@@ -160,5 +190,72 @@ class SettingPageController extends GetxController {
       }
     }
     Get.find<HiveService>().deleteLocalMember();
+  }
+
+  void fetchBlocklist() async {
+    blocklistPageIsLoading = true;
+    error = null;
+    update();
+    try {
+      if (Get.find<UserService>().currentUser.blockMemberIds != null &&
+          Get.find<UserService>().currentUser.blockMemberIds!.isNotEmpty) {
+        blockMembers.assignAll(await memberRepos.fetchBlockMembers(
+            Get.find<UserService>().currentUser.blockMemberIds!));
+      }
+    } catch (e) {
+      print('Fetch blocklist page failed: $e');
+      error = determineException(e);
+    }
+    blocklistPageIsLoading = false;
+    update();
+  }
+
+  void unblockMember(String blockMemberId) async {
+    try {
+      memberRepos.removeBlockMember(blockMemberId);
+      Get.find<UserService>().removeBlockMember(blockMemberId);
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'unBlockSuccess'.tr,
+      );
+      blockMembers.removeWhere((element) => element.memberId == blockMemberId);
+      update();
+    } catch (e) {
+      print('Unblock member error: $e');
+    }
+  }
+
+  void updateLanguage(LanguageSettings newLanguageSetting) async {
+    languageSetting.value = newLanguageSetting;
+    switch (newLanguageSetting) {
+      case LanguageSettings.system:
+        languageCode = 'system';
+        await Get.updateLocale(Get.deviceLocale ?? const Locale('en'));
+        break;
+      case LanguageSettings.traditionalChinese:
+        languageCode = 'zhTW';
+        await Get.updateLocale(const Locale('zh', 'TW'));
+        break;
+      case LanguageSettings.simplifiedChinese:
+        languageCode = 'zhCN';
+        await Get.updateLocale(const Locale('zh', 'CN'));
+        break;
+      case LanguageSettings.english:
+        languageCode = 'enUS';
+        await Get.updateLocale(const Locale('en', 'US'));
+        break;
+    }
+
+    if (Get.isRegistered<PersonalFilePageController>(
+        tag: Get.find<UserService>().currentUser.memberId)) {
+      Get.find<PersonalFilePageController>(
+              tag: Get.find<UserService>().currentUser.memberId)
+          .updateTabs();
+    }
+    await prefs.setString('languageSetting', languageCode);
   }
 }

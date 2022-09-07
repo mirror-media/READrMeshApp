@@ -46,6 +46,11 @@ class Member {
   int? bookmarkCount;
   bool isFollowing;
 
+  @HiveField(7)
+  List<String>? blockMemberIds;
+  @HiveField(8)
+  List<String>? blockedMemberIds;
+
   Member({
     this.firebaseId,
     required this.memberId,
@@ -67,6 +72,8 @@ class Member {
     required this.customId,
     this.isFollowing = false,
     this.avatarImageId,
+    this.blockMemberIds,
+    this.blockedMemberIds,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -89,6 +96,8 @@ class Member {
     String customId = '';
     bool isFollowing = false;
     String? avatarImageId;
+    List<String>? blockMemberIds;
+    List<String>? blockedMemberIds;
 
     if (BaseModel.hasKey(json, 'name')) {
       name = json['name'];
@@ -176,6 +185,20 @@ class Member {
       isFollowing = true;
     }
 
+    if (BaseModel.hasKey(json, 'block') && json['block'].isNotEmpty) {
+      blockMemberIds = [];
+      for (var item in json['block']) {
+        blockMemberIds.add(item['id']);
+      }
+    }
+
+    if (BaseModel.hasKey(json, 'blocked') && json['blocked'].isNotEmpty) {
+      blockedMemberIds = [];
+      for (var item in json['blocked']) {
+        blockedMemberIds.add(item['id']);
+      }
+    }
+
     return Member(
       memberId: json['id'],
       firebaseId: firebaseId,
@@ -197,6 +220,8 @@ class Member {
       intro: intro,
       isFollowing: isFollowing,
       avatarImageId: avatarImageId,
+      blockMemberIds: blockMemberIds,
+      blockedMemberIds: blockedMemberIds,
     );
   }
 

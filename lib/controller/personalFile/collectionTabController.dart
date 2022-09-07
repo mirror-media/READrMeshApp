@@ -35,10 +35,10 @@ class CollectionTabController extends GetxController {
     await fetchCollecitionList();
   }
 
-  Future<void> fetchCollecitionList() async {
+  Future<void> fetchCollecitionList({bool useCache = true}) async {
     try {
       await personalFileRepos
-          .fetchCollectionList(viewMember)
+          .fetchCollectionList(viewMember, useCache: useCache)
           .then((value) => collectionList.assignAll(value));
       await Get.find<PickAndBookmarkService>().fetchPickIds();
 
@@ -67,7 +67,7 @@ class CollectionTabController extends GetxController {
     } catch (e) {
       print('Fetch more collection tab error: $e');
       Fluttertoast.showToast(
-        msg: "載入失敗",
+        msg: "loadFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

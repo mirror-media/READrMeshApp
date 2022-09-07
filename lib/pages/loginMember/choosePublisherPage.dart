@@ -21,9 +21,9 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
-        title: const Text(
-          '歡迎使用',
-          style: TextStyle(
+        title: Text(
+          'choosePublisherPageAppbarTitle'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -39,18 +39,18 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
   Widget _buildBody(context) {
     String buttonText;
     if (Get.find<UserService>().isMember.isFalse) {
-      buttonText = '完成';
+      buttonText = 'finish'.tr;
     } else {
-      buttonText = '下一步';
+      buttonText = 'nextStep'.tr;
     }
     return Column(
       children: [
         Container(
           color: Colors.white,
           padding: const EdgeInsets.all(20),
-          child: const Text(
-            '請選擇您想追蹤的媒體',
-            style: TextStyle(
+          child: Text(
+            'choosePublisherPageBodyText'.tr,
+            style: const TextStyle(
               color: readrBlack87,
               fontSize: 16,
             ),
@@ -96,7 +96,9 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
                 ),
               ),
               child: Text(
-                controller.followedCount.value == 0 ? '請至少選擇 1 個' : buttonText,
+                controller.followedCount.value == 0
+                    ? 'noChoosePublisherButtonText'.tr
+                    : buttonText,
                 style: TextStyle(
                   fontSize: 16,
                   color: controller.followedCount.value == 0

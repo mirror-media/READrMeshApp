@@ -2,6 +2,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
 
@@ -13,7 +14,7 @@ class DynamicLinkHelper {
     return _buildDynamicLink(
       url: url,
       socialMediaTitle: collection.title,
-      socialMediaDescription: '看看大家精選了哪些新聞？READr MESH集錦，客製化挑選喜愛的報導。',
+      socialMediaDescription: 'collectionShareLinkDescription'.tr,
     );
   }
 
@@ -23,9 +24,9 @@ class DynamicLinkHelper {
 
     return _buildDynamicLink(
       url: url,
-      socialMediaTitle: '${member.nickname}的精選的新聞和集錦',
+      socialMediaTitle: '${member.nickname}${'personalFileShareLinkTitle'.tr}',
       socialMediaDescription:
-          '快來看看${member.nickname}在READr MESH 挑選了哪些新聞和集錦？做自己的新聞編輯台，加入READr MESH建立專屬的個人頁面。',
+          '${'personalFileShareLinkDescriptionPrefix'.tr}${member.nickname}${'personalFileShareLinkDescriptionSuffix'.tr}',
     );
   }
 
@@ -53,8 +54,7 @@ class DynamicLinkHelper {
       socialMetaTagParameters: SocialMetaTagParameters(
         title: socialMediaTitle,
         description: socialMediaDescription,
-        imageUrl: Uri.parse(
-            "https://storage.googleapis.com/static-readr-tw-prod/READr_MESH_Logo.jpg"),
+        imageUrl: Uri.parse(meshLogoImage),
       ),
     );
     final Uri longLink =

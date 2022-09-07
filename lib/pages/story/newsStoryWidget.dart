@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
@@ -14,16 +15,16 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsStoryWidget extends GetView<StoryPageController> {
-  final String newsId;
-  const NewsStoryWidget(this.newsId);
+  final NewsListItem news;
+  const NewsStoryWidget(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoryPageController>(
-      tag: newsId,
+      tag: news.id,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -39,7 +40,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(newsId),
+                  StoryAppBar(news),
                   Expanded(
                     child: _buildContent(context),
                   ),
@@ -58,7 +59,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           );
         }
 
-        return StorySkeletonScreen(newsId);
+        return StorySkeletonScreen(news);
       },
     );
   }
@@ -149,7 +150,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
+        '${'updateTime'.tr}${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -167,7 +168,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '記者：${controller.newsStoryItem.writer!}',
+        '${'journalist'.tr}${controller.newsStoryItem.writer!}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -227,7 +228,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '鏡週刊連絡信箱：',
+            text: 'mmContactEmail'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
@@ -266,7 +267,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '鏡週刊客服電話：',
+            text: 'mmCustomerServiceNumber'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,

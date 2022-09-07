@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/personalFile/editPersonalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -79,9 +80,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             child: GestureDetector(
               onTap: () => Get.back(result: false),
               child: GetPlatform.isIOS
-                  ? const Text(
-                      '取消',
-                      style: TextStyle(
+                  ? Text(
+                      'cancel'.tr,
+                      style: const TextStyle(
                         color: readrBlack50,
                         fontSize: 18,
                       ),
@@ -94,9 +95,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
           );
         },
       ),
+      leadingWidth: 80,
       centerTitle: GetPlatform.isIOS,
-      title: const Text('編輯個人檔案',
-          style: TextStyle(
+      title: Text('editPersonalFile'.tr,
+          style: const TextStyle(
             fontSize: 18,
             color: readrBlack,
             fontWeight: FontWeight.w400,
@@ -112,7 +114,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                         controller.savePersonalFile();
                       },
                 child: Text(
-                  controller.isSaving.value ? '更新中' : '儲存',
+                  controller.isSaving.value ? 'updating'.tr : 'save'.tr,
                   style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 18,
@@ -156,7 +158,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   fontSize: 16,
                 ),
                 decoration: InputDecoration(
-                  labelText: '姓名',
+                  labelText: 'name'.tr,
                   labelStyle: const TextStyle(
                     color: readrBlack50,
                     fontSize: 18,
@@ -189,10 +191,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 ),
                 validator: (value) {
                   if (controller.nicknameError.isTrue) {
-                    return '這個名稱目前無法使用，請使用其他名稱。';
+                    return 'nameError'.tr;
                   }
 
-                  return value!.trim().isNotEmpty ? null : "姓名不能空白";
+                  return value!.trim().isNotEmpty ? null : "nameEmptyError".tr;
                 },
               ),
             ),
@@ -251,9 +253,11 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 ),
                 validator: (value) {
                   if (controller.customIdError.value) {
-                    return '這個 ID 目前無法使用，請使用其他 ID。';
+                    return 'customIdError'.tr;
                   }
-                  return value!.trim().isNotEmpty ? null : "ID不能空白";
+                  return value!.trim().isNotEmpty
+                      ? null
+                      : "customIdEmptyError".tr;
                 },
               ),
             ),
@@ -262,10 +266,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             ),
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    '簡介',
-                    style: TextStyle(
+                    'introduction'.tr,
+                    style: const TextStyle(
                       color: readrBlack50,
                       fontSize: 14,
                     ),
@@ -275,7 +279,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   alignment: Alignment.centerRight,
                   child: Obx(
                     () => Text(
-                      '${controller.introLength}/250字',
+                      '${controller.introLength}/250 ${'characters'.tr}',
                       style: const TextStyle(
                         color: readrBlack50,
                         fontSize: 14,
@@ -306,23 +310,23 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     color: readrBlack87,
                     fontSize: 16,
                   ),
-                  decoration: const InputDecoration(
-                    hintText: '向大家介紹一下自己吧...',
-                    hintStyle: TextStyle(
+                  decoration: InputDecoration(
+                    hintText: 'introductionHint'.tr,
+                    hintStyle: const TextStyle(
                       color: readrBlack30,
                       fontSize: 16,
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(
                         color: readrBlack87,
                       ),
                     ),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.white10,
                       ),
                     ),
-                    contentPadding: EdgeInsets.all(12),
+                    contentPadding: const EdgeInsets.all(12),
                     counterText: '',
                   ),
                 ),
@@ -388,9 +392,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             const SizedBox(
               height: 12,
             ),
-            const Text(
-              '更換大頭貼照',
-              style: TextStyle(color: Colors.blue, fontSize: 16),
+            Text(
+              'changeAvatar'.tr,
+              style: const TextStyle(color: Colors.blue, fontSize: 16),
             )
           ],
         ),
@@ -399,56 +403,158 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
   }
 
   Future<void> _showAvatarBottomSheet(BuildContext context) async {
-    String? result = await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('camera'),
-            child: const Text(
-              '開啟相機',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop('photo'),
-            child: const Text(
-              '選擇照片',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          if (controller.avatarImageUrl.isNotEmpty ||
-              controller.avatarImagePath.isNotEmpty)
+    String? result;
+    if (GetPlatform.isIOS) {
+      result = await showCupertinoModalPopup<String>(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          actions: [
             CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pop('delete'),
-              child: const Text(
-                '刪除目前的大頭貼照',
-                style: TextStyle(
+              onPressed: () => Navigator.of(context).pop('camera'),
+              child: Text(
+                'openCamera'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
-                  color: Colors.red,
                 ),
               ),
             ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.of(context).pop('cancel'),
-          child: const Text(
-            '取消',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pop('photo'),
+              child: Text(
+                'choosePhoto'.tr,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            if (controller.avatarImageUrl.isNotEmpty ||
+                controller.avatarImagePath.isNotEmpty)
+              CupertinoActionSheetAction(
+                onPressed: () => Navigator.of(context).pop('delete'),
+                child: Text(
+                  'deleteAvatar'.tr,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop('cancel'),
+            child: Text(
+              'cancel'.tr,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      result = await showCupertinoModalBottomSheet<String>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        topRadius: const Radius.circular(24),
+        builder: (context) => Material(
+          color: Colors.white,
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  child: Container(
+                    height: 4,
+                    width: 48,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Colors.white,
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: readrBlack20,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => Navigator.of(context).pop('camera'),
+                  icon: const Icon(
+                    Icons.photo_camera_outlined,
+                    color: readrBlack87,
+                    size: 18,
+                  ),
+                  label: Text(
+                    'openCamera'.tr,
+                    style: const TextStyle(
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => Navigator.of(context).pop('photo'),
+                  icon: const Icon(
+                    Icons.photo_library_outlined,
+                    color: readrBlack87,
+                    size: 18,
+                  ),
+                  label: Text(
+                    'choosePhoto'.tr,
+                    style: const TextStyle(
+                      color: readrBlack87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+                if (controller.avatarImageUrl.isNotEmpty ||
+                    controller.avatarImagePath.isNotEmpty)
+                  TextButton.icon(
+                    onPressed: () => Navigator.of(context).pop('delete'),
+                    icon: const Icon(
+                      Icons.delete_outlined,
+                      color: Colors.red,
+                      size: 18,
+                    ),
+                    label: Text(
+                      'deleteAvatar'.tr,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     try {
       if (result == 'photo' || result == 'camera') {
@@ -461,7 +567,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             cropStyle: CropStyle.circle,
             uiSettings: [
               AndroidUiSettings(
-                toolbarTitle: '裁切',
+                toolbarTitle: 'crop'.tr,
                 toolbarColor: Colors.white,
                 toolbarWidgetColor: readrBlack87,
                 statusBarColor: readrBlack87,
@@ -471,7 +577,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 lockAspectRatio: false,
               ),
               IOSUiSettings(
-                title: '裁切',
+                title: 'crop'.tr,
               ),
             ],
           );

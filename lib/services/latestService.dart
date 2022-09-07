@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
 
@@ -16,8 +13,6 @@ abstract class LatestRepos {
 }
 
 class LatestService implements LatestRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
   DateTime _earliestNewsPublishTime = DateTime.now();
 
   @override
@@ -30,6 +25,7 @@ class LatestService implements LatestRepos {
       \$followingMembers: [ID!]
       \$myId: ID
       \$lastNewsPublishTime: DateTime
+      \$blockAndBlockedIds: [ID!]
     ){
       stories(
         take: 60
@@ -107,12 +103,26 @@ class LatestService implements LatestRepos {
         otherPicks:pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -150,6 +160,14 @@ class LatestService implements LatestRepos {
             is_active:{
               equals: true
             }
+            member:{
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+              is_active:{
+                equals: true
+              }
+            }
           }
         )
         commentCount(
@@ -160,37 +178,16 @@ class LatestService implements LatestRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -221,25 +218,19 @@ class LatestService implements LatestRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
       "timeFilter": timeFilter,
       "lastNewsPublishTime": lastNewsPublishTime?.toUtc().toIso8601String() ??
-          DateTime.now().toUtc().toIso8601String()
+          DateTime.now().toUtc().toIso8601String(),
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<NewsListItem> allLatestNews = [];
-    if (jsonResponse['data']['stories'].isNotEmpty) {
-      for (var item in jsonResponse['data']['stories']) {
+    if (jsonResponse.data!['stories'].isNotEmpty) {
+      for (var item in jsonResponse.data!['stories']) {
         allLatestNews.add(NewsListItem.fromJson(item));
       }
       _earliestNewsPublishTime = allLatestNews.last.publishedDate;
@@ -330,22 +321,15 @@ class LatestService implements LatestRepos {
       "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<Publisher> recommendedPublishers = [];
-    if (jsonResponse['data']['publishers'].isNotEmpty) {
-      for (var publisher in jsonResponse['data']['publishers']) {
+    if (jsonResponse.data!['publishers'].isNotEmpty) {
+      for (var publisher in jsonResponse.data!['publishers']) {
         recommendedPublishers.add(Publisher.fromJson(publisher));
       }
     }

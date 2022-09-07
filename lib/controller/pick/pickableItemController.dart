@@ -1,4 +1,5 @@
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/bookmarkTabController.dart';
@@ -10,7 +11,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/pickIdItem.dart';
-import 'package:readr/pages/shared/pick/pickToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 
 //controller for pickBar and pickButton
 class PickableItemController extends GetxController {
@@ -57,6 +58,21 @@ class PickableItemController extends GetxController {
   }
 
   @override
+  void onInit() {
+    ever<int>(pickCount, (callback) {
+      if (callback < 0) {
+        pickCount.value = 0;
+      }
+    });
+    ever<int>(commentCount, (callback) {
+      if (callback < 0) {
+        commentCount.value = 0;
+      }
+    });
+    super.onInit();
+  }
+
+  @override
   void onReady() {
     isPicked.value = Get.find<PickAndBookmarkService>().pickList.any(
         (element) =>
@@ -77,7 +93,7 @@ class PickableItemController extends GetxController {
       objective: objective,
     );
 
-    PickToast.showPickToast(result, true);
+    _showAddPickToast(result);
 
     if (result) {
       Get.find<PickAndBookmarkService>().pickList.add(PickIdItem(
@@ -127,7 +143,7 @@ class PickableItemController extends GetxController {
       }
     }
 
-    PickToast.showPickToast(result, true);
+    _showAddPickToast(result);
 
     if (result) {
       if (Get.isRegistered<PersonalFilePageController>(
@@ -188,7 +204,7 @@ class PickableItemController extends GetxController {
       }
       isPicked.value = true;
     }
-    PickToast.showPickToast(isSuccess, false);
+    _showRemovePickToast(isSuccess);
   }
 
   Future<void> _updateOwnPickTab() async {
@@ -214,7 +230,7 @@ class PickableItemController extends GetxController {
         memberId: Get.find<UserService>().currentUser.memberId,
         storyId: targetId,
       );
-      PickToast.showBookmarkToast(result, true);
+      _showAddBookmarkToast(result);
       if (!result) {
         isBookmarked(false);
       } else {
@@ -243,7 +259,7 @@ class PickableItemController extends GetxController {
         memberId: Get.find<UserService>().currentUser.memberId,
         storyId: targetId,
       );
-      PickToast.showBookmarkToast(result, false);
+      _showRemoveBookmarkToast(result);
       if (!result) {
         isBookmarked(true);
       } else {
@@ -267,6 +283,94 @@ class PickableItemController extends GetxController {
         Get.find<PickAndBookmarkService>().bookmarkList.removeWhere((element) =>
             element.objective == objective && element.targetId == targetId);
       }
+    }
+  }
+
+  void _showAddPickToast(bool isSuccess) {
+    if (isSuccess) {
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'pickSuccessToast'.tr,
+      );
+    } else {
+      showMeshToast(
+        icon: const Icon(
+          Icons.error,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'pickFailedToast'.tr,
+      );
+    }
+  }
+
+  void _showRemovePickToast(bool isSuccess) {
+    if (isSuccess) {
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'unPickSuccessToast'.tr,
+      );
+    } else {
+      showMeshToast(
+        icon: const Icon(
+          Icons.error,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'unPickFailedToast'.tr,
+      );
+    }
+  }
+
+  void _showAddBookmarkToast(bool isSuccess) {
+    if (isSuccess) {
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'addBookmarkSuccessToast'.tr,
+      );
+    } else {
+      showMeshToast(
+        icon: const Icon(
+          Icons.error,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'addBookmarkFailedToast'.tr,
+      );
+    }
+  }
+
+  void _showRemoveBookmarkToast(bool isSuccess) {
+    if (isSuccess) {
+      showMeshToast(
+        icon: const Icon(
+          Icons.check_circle,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'removeBookmarkSuccessToast'.tr,
+      );
+    } else {
+      showMeshToast(
+        icon: const Icon(
+          Icons.error,
+          size: 16,
+          color: Colors.white,
+        ),
+        message: 'removeBookmarkFailedToast'.tr,
+      );
     }
   }
 }

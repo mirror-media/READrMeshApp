@@ -1,15 +1,10 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/announcement.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/notify.dart';
 import 'package:readr/models/notifyPageItem.dart';
@@ -22,9 +17,6 @@ abstract class NotifyRepos {
 }
 
 class NotifyService implements NotifyRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
   Future<List<Notify>> fetchNotifies(
       {List<String>? alreadyFetchNotifyIds}) async {
@@ -88,20 +80,16 @@ query(
       "alreadyFetchedIds": alreadyFetchNotifyIds ?? [],
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
-
-    final jsonResponse = await _helper.postByUrl(
-        _api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
 
     List<Notify> notifications = [];
 
     try {
-      notifications = List<Notify>.from(jsonResponse['data']['notifies']
+      notifications = List<Notify>.from(jsonResponse.data!['notifies']
           .map((element) => Notify.fromJson(element)));
     } catch (e) {
       print('Fetch notify error: $e');
@@ -135,10 +123,8 @@ query{
       final jsonResponse = await Get.find<GraphQLService>()
           .query(api: Api.mesh, queryBody: query);
 
-      if (!jsonResponse.hasException) {
-        for (var item in jsonResponse.data?['announcements']) {
-          announcements.add(Announcement.fromJson(item));
-        }
+      for (var item in jsonResponse.data!['announcements']) {
+        announcements.add(Announcement.fromJson(item));
       }
     } catch (e) {
       print('Fetch announcements error: $e');
@@ -155,6 +141,7 @@ query(
   \$collectionIds: [ID!]
   \$commentIds: [ID!]
   \$storyIds: [ID!]
+  \$blockAndBlockedIds: [ID!]
 ){
   stories(
    where:{
@@ -184,6 +171,11 @@ query(
       }
       status:{
         equals: "publish"
+      }
+      creator:{
+        id:{
+          notIn: \$blockAndBlockedIds
+        }
       }
     }
   ){
@@ -220,6 +212,14 @@ query(
       }
       is_active:{
         equals: true
+      }
+      member:{
+        id:{
+          notIn: \$blockAndBlockedIds
+        }
+        is_active:{
+          equals: true
+        }
       }
     }
   ){
@@ -316,17 +316,13 @@ query(
       "storyIds": storyIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    final jsonResponse = await _helper.postByUrl(
-        _api, jsonEncode(graphqlBody.toJson()),
-        headers: {"Content-Type": "application/json"});
-
-    for (var collectionItem in jsonResponse['data']['collections']) {
+    for (var collectionItem in jsonResponse.data!['collections']) {
       Collection collection = Collection.fromJson(collectionItem);
       pageItemList
           .firstWhereOrNull((element) =>
@@ -336,7 +332,7 @@ query(
           ?.collection = collection;
     }
 
-    for (var storyItem in jsonResponse['data']['stories']) {
+    for (var storyItem in jsonResponse.data!['stories']) {
       NewsListItem news = NewsListItem.fromJson(storyItem);
       pageItemList
           .firstWhereOrNull((element) =>
@@ -344,7 +340,7 @@ query(
           ?.newsListItem = news;
     }
 
-    for (var commentItem in jsonResponse['data']['comments']) {
+    for (var commentItem in jsonResponse.data!['comments']) {
       Comment comment = Comment.fromJson(commentItem);
       int index = pageItemList.indexWhere((element) =>
           element.objectId == comment.id && element.type == NotifyType.like);

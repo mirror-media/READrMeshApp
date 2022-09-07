@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -51,7 +52,16 @@ class PickTabContent extends GetView<PickTabController> {
               controller.collecionPickList.isEmpty) {
             return _emptyWidget();
           }
-          return _buildContent();
+
+          return Obx(() {
+            if (Get.find<PersonalFilePageController>(tag: viewMember.memberId)
+                .isBlock
+                .isTrue) {
+              return _emptyWidget();
+            }
+
+            return _buildContent();
+          });
         }
 
         return const Center(
@@ -68,7 +78,7 @@ class PickTabContent extends GetView<PickTabController> {
       color: homeScreenBackgroundColor,
       child: Center(
         child: Text(
-          isMine ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧' : '這個人還沒有精選新聞',
+          isMine ? 'emptyPick'.tr : 'viewMemberEmptyPick'.tr,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -96,7 +106,7 @@ class PickTabContent extends GetView<PickTabController> {
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 0),
               child: Text(
-                '精選集錦',
+                'pickedCollections'.tr,
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
@@ -118,7 +128,7 @@ class PickTabContent extends GetView<PickTabController> {
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
-                '精選文章',
+                'pickedArticles'.tr,
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,

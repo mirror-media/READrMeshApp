@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class TabContentNoResultWidget extends StatelessWidget {
@@ -15,10 +16,10 @@ class TabContentNoResultWidget extends StatelessWidget {
             height: 80,
           ),
           const SizedBox(height: 12),
-          const Text(
-            '這個分類目前沒有文章',
-            style:
-                TextStyle(color: Color.fromRGBO(0, 9, 40, 0.3), fontSize: 15),
+          Text(
+            'tabContentNoResult'.tr,
+            style: const TextStyle(
+                color: Color.fromRGBO(0, 9, 40, 0.3), fontSize: 15),
           ),
         ],
       ),

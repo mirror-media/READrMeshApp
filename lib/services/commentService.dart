@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/comment.dart';
@@ -15,6 +16,7 @@ class CommentService implements CommentRepos {
       query(
         \$storyId: ID
         \$myId: ID
+        \$blockAndBlockedIds: [ID!]
       ){
         comments(
           orderBy:{
@@ -36,6 +38,9 @@ class CommentService implements CommentRepos {
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
         ){
@@ -71,9 +76,10 @@ class CommentService implements CommentRepos {
       }
       """;
 
-    Map<String, String> variables = {
+    Map<String, dynamic> variables = {
       "storyId": storyId,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     try {
@@ -81,6 +87,7 @@ class CommentService implements CommentRepos {
         api: Api.mesh,
         queryBody: query,
         variables: variables,
+        fetchPolicy: FetchPolicy.noCache,
       );
 
       List<Comment> allComments = [];
@@ -100,6 +107,7 @@ class CommentService implements CommentRepos {
       query(
         \$collectionId: ID
         \$myId: ID
+        \$blockAndBlockedIds: [ID!]
       ){
         comments(
           orderBy:{
@@ -121,6 +129,9 @@ class CommentService implements CommentRepos {
               is_active:{
                 equals: true
               }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
         ){
@@ -156,15 +167,17 @@ class CommentService implements CommentRepos {
       }
       """;
 
-    Map<String, String> variables = {
+    Map<String, dynamic> variables = {
       "collectionId": collectionId,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
       api: Api.mesh,
       queryBody: query,
       variables: variables,
+      fetchPolicy: FetchPolicy.noCache,
     );
 
     List<Comment> allComments = [];

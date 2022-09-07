@@ -11,9 +11,9 @@ class InitialSettingPage extends GetView<SettingPageController> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0.5,
-        title: const Text(
-          '預設顯示頁面',
-          style: TextStyle(
+        title: Text(
+          'initialSettingPageTitle'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -47,9 +47,9 @@ class InitialSettingPage extends GetView<SettingPageController> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    String title = '社群';
+    String title = 'communityTab'.tr;
     if (index == 1) {
-      title = '最新';
+      title = 'latestTab'.tr;
     }
     return GestureDetector(
       onTap: () => controller.initialPageIndex.value = index,

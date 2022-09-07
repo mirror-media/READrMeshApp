@@ -87,17 +87,17 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
               minLines: 1,
               maxLines: 6,
               controller: _controller,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: '跟大家分享你為什麼精選這篇文章...',
-                hintStyle: TextStyle(color: readrBlack30),
+                hintText: 'pickCommentHint'.tr,
+                hintStyle: const TextStyle(color: readrBlack30),
               ),
             ),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 child: Text(
-                  _hasInput ? '發佈' : '直接加入精選',
+                  _hasInput ? 'publish'.tr : 'pickDirectly'.tr,
                   style: const TextStyle(
                     color: Colors.blue,
                   ),

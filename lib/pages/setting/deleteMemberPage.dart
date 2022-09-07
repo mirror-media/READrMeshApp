@@ -18,9 +18,9 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           elevation: 0.5,
-          title: const Text(
-            '刪除帳號',
-            style: TextStyle(
+          title: Text(
+            'deletePageTitle'.tr,
+            style: const TextStyle(
               color: readrBlack,
               fontSize: 20,
               fontWeight: FontWeight.w400,
@@ -48,15 +48,15 @@ class DeleteMemberPage extends GetView<SettingPageController> {
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '刪除帳號中',
-                    style: TextStyle(
+                    'deletingAccount'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -72,11 +72,19 @@ class DeleteMemberPage extends GetView<SettingPageController> {
   }
 
   Widget _buildContent() {
-    String email;
+    String discription;
     if (Get.find<UserService>().currentUser.email!.contains('[0x0001]')) {
-      email = '您';
+      discription = 'noEmailDescription'.tr;
     } else {
-      email = '${Get.find<UserService>().currentUser.email} ';
+      String email = '${Get.find<UserService>().currentUser.email} ';
+      if (Get.locale?.languageCode == 'en') {
+        discription =
+            "Remind you that $email's information (including picks, bookmarks, comments) will be permanently deleted and cannot be recovered.";
+      } else if (Get.locale == const Locale('zh', 'CN')) {
+        discription = '提醒您，$email 的帐户资讯（包含精选、书签、评论）将永久删除并无法复原。';
+      } else {
+        discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
+      }
     }
 
     return ListView(
@@ -87,11 +95,11 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           alignment: Alignment.center,
           child: GetBuilder<SettingPageController>(
             builder: (controller) {
-              String title = '真的要刪除帳號嗎？';
+              String title = 'deleteAccountDefaultTitle'.tr;
               if (!controller.isInitial && controller.deleteSuccess) {
-                title = '刪除帳號成功';
+                title = 'deleteAccountSuccessTitle'.tr;
               } else if (!controller.isInitial && !controller.deleteSuccess) {
-                title = '喔不，出錯了...';
+                title = 'deleteAccountFailedTitle'.tr;
               }
               return Text(
                 title,
@@ -101,6 +109,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color: readrBlack87,
                 ),
+                textAlign: TextAlign.center,
               );
             },
           ),
@@ -112,11 +121,10 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           alignment: Alignment.center,
           child: GetBuilder<SettingPageController>(
             builder: (controller) {
-              String discription = '提醒您，$email 的帳號資訊（包含精選、書籤、留言）將永久刪除並無法復原。';
               if (!controller.isInitial && controller.deleteSuccess) {
-                discription = '謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)';
+                discription = 'deleteAccountSuccessDescription'.tr;
               } else if (!controller.isInitial && !controller.deleteSuccess) {
-                discription = '刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@readr.tw 由專人為您服務。';
+                discription = 'deleteAccountFailedDescription'.tr;
               }
               return Text(
                 discription,
@@ -140,9 +148,9 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           alignment: Alignment.center,
           child: GetBuilder<SettingPageController>(
             builder: (controller) {
-              String buttonText = '那我再想想';
+              String buttonText = 'letMeThinkAgain'.tr;
               if (!controller.isInitial) {
-                buttonText = '回首頁';
+                buttonText = 'backToHomePage'.tr;
               }
               return OutlinedButton(
                 onPressed: () async {
@@ -183,9 +191,9 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                 onTap: () async {
                   controller.deleteMember();
                 },
-                child: const Text(
-                  '確認刪除',
-                  style: TextStyle(
+                child: Text(
+                  'confirmDeleteAccount'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: Colors.red,

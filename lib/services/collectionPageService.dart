@@ -1,38 +1,38 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/comment.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
 
 abstract class CollectionPageRepos {
-  Future<Map<String, dynamic>> fetchCollectionData(String collectionId);
+  Future<Map<String, dynamic>> fetchCollectionData(String collectionId,
+      {bool useCache = true});
 }
 
 class CollectionPageService implements CollectionPageRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
-  Future<Map<String, dynamic>> fetchCollectionData(String collectionId) async {
+  Future<Map<String, dynamic>> fetchCollectionData(String collectionId,
+      {bool useCache = true}) async {
     const String query = """
 query(
   \$myId: ID
   \$followingMembers: [ID!]
   \$collectionId: ID
+  \$blockAndBlockedIds: [ID!]
 ){
   collection(
     where:{
       id: \$collectionId
     }
   ){
+    format
     summary
     status
     updatedAt
@@ -70,12 +70,26 @@ query(
     otherPickMembers: picks(
       where:{
         member:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+            	}
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+            {
+              is_active:{
+                equals: true
+              }
+            }
+          ]
         }
         is_active:{
           equals: true
@@ -103,48 +117,16 @@ query(
         is_active:{
           equals: true
         }
-      }
-    )
-    myPickId: picks(
-      where:{
         member:{
           id:{
-            equals: \$myId
+            notIn: \$blockAndBlockedIds
           }
-        }
-      	is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-      pick_comment(
-        where:{
           is_active:{
             equals: true
           }
         }
-      ){
-        id
       }
-    }
-    bookmarkId: picks(
-      where:{
-        member:{
-          id:{
-            equals: \$myId
-          }
-        }
-        kind:{
-          equals: "bookmark"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-    }
+    )
     comment(
       where:{
         is_active:{
@@ -157,6 +139,9 @@ query(
           is_active:{
             equals: true
           }
+          id:{
+          	notIn: \$blockAndBlockedIds
+        	}
         }
       }
       orderBy:{
@@ -208,6 +193,11 @@ query(
     id
     sort_order
     picked_date
+    custom_year
+    custom_month
+    custom_day
+    custom_time
+    summary
     creator{
       id
       nickname
@@ -272,12 +262,26 @@ query(
       otherPicks:pick(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -315,6 +319,14 @@ query(
           is_active:{
             equals: true
           }
+          member:{
+            is_active:{
+              equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
+          }
         }
       )
       commentCount(
@@ -325,37 +337,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: pick(
-        where:{
           member:{
-            id:{
-              equals: \$myId
-            }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
-        ){
-          id
         }
-      }
+      )
     }
   }
 }
@@ -370,25 +361,20 @@ query(
       "collectionId": collectionId,
       "followingMembers": followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
-    );
-
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
+      fetchPolicy: useCache ? FetchPolicy.cacheFirst : FetchPolicy.networkOnly,
     );
 
     List<Comment> allComments = [];
     List<Comment> popularComments = [];
 
-    var collection = jsonResponse['data']['collection'];
+    var collection = jsonResponse.data!['collection'];
 
     if (collection['comment'].isNotEmpty) {
       allComments = List<Comment>.from(
@@ -399,11 +385,25 @@ query(
       popularComments.removeWhere((element) => element.likedCount == 0);
     }
 
-    List<CollectionStory> collectionPicks = [];
-    if (jsonResponse['data']['collectionPicks'].isNotEmpty) {
-      collectionPicks = List<CollectionStory>.from(jsonResponse['data']
-              ['collectionPicks']
-          .map((element) => CollectionStory.fromJson(element)));
+    CollectionFormat format = CollectionFormat.folder;
+    if (collection['format'] == 'timeline') {
+      format = CollectionFormat.timeline;
+    }
+
+    List<CollectionPick> collectionPicks = [];
+    if (jsonResponse.data!['collectionPicks'].isNotEmpty) {
+      switch (format) {
+        case CollectionFormat.folder:
+          collectionPicks = List<FolderCollectionPick>.from(jsonResponse
+              .data!['collectionPicks']
+              .map((element) => FolderCollectionPick.fromJson(element)));
+          break;
+        case CollectionFormat.timeline:
+          collectionPicks = List<TimelineCollectionPick>.from(jsonResponse
+              .data!['collectionPicks']
+              .map((element) => TimelineCollectionPick.fromJson(element)));
+          break;
+      }
     }
 
     int pickCount = collection['picksCount'];
@@ -446,6 +446,7 @@ query(
       'collectionPicks': collectionPicks,
       'status': status,
       'description': collection['summary'],
+      'format': format,
     };
   }
 }

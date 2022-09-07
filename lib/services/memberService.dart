@@ -32,6 +32,9 @@ abstract class MemberRepos {
   Future<bool> deleteAvatarUrl(String memberId);
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
   Future<Member?> fetchMemberDataById(String id);
+  Future<void> addBlockMember(String blockMemberId);
+  Future<void> removeBlockMember(String blockMemberId);
+  Future<List<Member>> fetchBlockMembers(List<String> blockMemberIds);
 }
 
 class MemberService implements MemberRepos {
@@ -89,6 +92,51 @@ class MemberService implements MemberRepos {
         follow_publisher{
           id
           title
+        }
+        pickCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            kind:{
+              notIn:["bookmark"]
+            }
+          }
+        )
+        bookmarkCount: pickCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+            kind:{
+              equals:"bookmark"
+            }
+          }
+        )
+        commentCount(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        )
+        block(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
+        }
+        blocked(
+          where: {
+            is_active: {
+              equals: true
+            }
+          }
+        ){
+          id
         }
       }
     }
@@ -631,5 +679,147 @@ query(
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<void> addBlockMember(String blockMemberId) async {
+    const String mutation = """
+mutation(
+  \$blockId: ID
+  \$myId: ID
+){
+  updateMember(
+    where:{
+      id: \$myId
+    }
+    data:{
+      block:{
+        connect:{
+          id: \$blockId
+        }
+      }
+      following:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+      follower:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+    }
+  ){
+    block(
+      where:{
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockId": blockMemberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+  }
+
+  @override
+  Future<void> removeBlockMember(String blockMemberId) async {
+    const String mutation = """
+mutation(
+  \$blockId: ID
+  \$myId: ID
+){
+  updateMember(
+    where:{
+      id: \$myId
+    }
+    data:{
+      block:{
+        disconnect:{
+          id: \$blockId
+        }
+      }
+    }
+  ){
+    block(
+      where:{
+        is_active:{
+          equals: true
+        }
+      }
+    ){
+      id
+    }
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockId": blockMemberId,
+      "myId": Get.find<UserService>().currentUser.memberId,
+    };
+
+    await Get.find<GraphQLService>().mutation(
+      mutationBody: mutation,
+      variables: variables,
+    );
+  }
+
+  @override
+  Future<List<Member>> fetchBlockMembers(List<String> blockMemberIds) async {
+    const String query = """
+query(
+  \$blockIds: [ID!]
+){
+  members(
+    where:{
+      is_active:{
+        equals: true
+      }
+      id:{
+        in: \$blockIds
+      }
+    }
+    orderBy:{
+      customId: asc
+    }
+  ){
+    id
+    nickname
+    avatar
+    avatar_image{
+      resized{
+        original
+      }
+    }
+    customId
+  }
+}
+    """;
+
+    Map<String, dynamic> variables = {
+      "blockIds": blockMemberIds,
+    };
+
+    final response = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
+      variables: variables,
+    );
+
+    return List<Member>.from(
+        response.data!['members'].map((element) => Member.fromJson(element)));
   }
 }

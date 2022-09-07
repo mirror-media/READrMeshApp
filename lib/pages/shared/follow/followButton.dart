@@ -58,7 +58,7 @@ class FollowButton extends GetView<FollowableItemController> {
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         ),
         child: Text(
-          controller.isFollowed.value ? '追蹤中' : '追蹤',
+          controller.isFollowed.value ? 'following'.tr : 'follow'.tr,
           maxLines: 1,
           style: TextStyle(
             fontSize: textSize,

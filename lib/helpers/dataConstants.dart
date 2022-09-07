@@ -7,6 +7,8 @@ part 'dataConstants.g.dart';
 const readrMail = 'readr@readr.tw';
 const youtubeLink = 'https://www.youtube.com/';
 const readrProjectLink = 'https://www.readr.tw/';
+const meshLogoImage =
+    'https://storage.googleapis.com/static-readr-tw-prod/READr_MESH_Logo.jpg';
 
 /// assets
 const String error400Svg = 'assets/image/error404.svg';
@@ -23,16 +25,22 @@ const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
 const String readrPageActiveSvg = 'assets/icon/readrPageActive.svg';
 const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
-const String collectionDeleteHintSvg = 'assets/image/collectionDeleteHint.svg';
-const String collectionDeletedSvg = 'assets/image/collectionDeleted.svg';
 const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
 const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
-//onboard svgs
+const String deletedMemberSvg = 'assets/image/deletedMember.svg';
+//onboard image
 const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
 const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
 const String onboard3Svg = 'assets/image/onboard/onboard3.svg';
 const String onboard4Svg = 'assets/image/onboard/onboard4.svg';
+// collection image
+const String collectionDeleteHintSvg =
+    'assets/image/collection/collectionDeleteHint.svg';
+const String collectionDeletedSvg =
+    'assets/image/collection/collectionDeleted.svg';
+const String folderIconSvg = 'assets/image/collection/folderIcon.svg';
+const String timelineIconSvg = 'assets/image/collection/timelineIcon.svg';
 
 //json
 const serviceAccountCredentialsJson =
@@ -60,6 +68,7 @@ const Color storySummaryFrameColor = storyWidgetColor;
 const Color blockquoteColor = Color.fromRGBO(0, 9, 40, 0.1);
 const Color annotationColor = readrBlack87;
 const Color homeScreenBackgroundColor = Color.fromRGBO(246, 246, 251, 1);
+const Color meshGray = Color(0xffF6F6FB);
 
 // enum
 enum PickObjective {
@@ -128,4 +137,11 @@ enum NotifyType {
 
   @HiveField(5)
   createCollection,
+}
+
+enum LanguageSettings {
+  system,
+  traditionalChinese,
+  simplifiedChinese,
+  english,
 }

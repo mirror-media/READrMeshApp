@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:readr/helpers/apiException.dart';
-import 'package:readr/helpers/mNewsCacheManager.dart';
+import 'package:readr/helpers/meshCacheManager.dart';
 
 class ApiBaseHelper {
   Future<dynamic> getByUrl(String url,
@@ -26,8 +26,8 @@ class ApiBaseHelper {
     Duration maxAge = const Duration(days: 30),
     Map<String, String> headers = const {'Cache-control': 'no-cache'},
   }) async {
-    MNewsCacheManager mNewsCacheManager = MNewsCacheManager();
-    final cacheFile = await mNewsCacheManager.getFileFromCache(url);
+    MeshCacheManager meshCacheManager = MeshCacheManager();
+    final cacheFile = await meshCacheManager.getFileFromCache(url);
     if (cacheFile == null || cacheFile.validTill.isBefore(DateTime.now())) {
       Uri uri = Uri.parse(url);
       final response = await http.get(uri, headers: headers);
@@ -35,7 +35,7 @@ class ApiBaseHelper {
 
       try {
         // save cache file
-        mNewsCacheManager.putFile(url, response.bodyBytes,
+        meshCacheManager.putFile(url, response.bodyBytes,
             maxAge: maxAge, fileExtension: 'json');
       } catch (e) {
         print('error: $e');
@@ -91,7 +91,7 @@ class ApiBaseHelper {
     Duration maxAge = const Duration(days: 30),
     Map<String, String> headers = const {'Cache-control': 'no-cache'},
   }) async {
-    MNewsCacheManager mNewsCacheManager = MNewsCacheManager();
+    MeshCacheManager mNewsCacheManager = MeshCacheManager();
     final cacheFile = await mNewsCacheManager.getFileFromCache(fileKey);
     if (cacheFile == null || cacheFile.validTill.isBefore(DateTime.now())) {
       Uri uri = Uri.parse(url);

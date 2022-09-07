@@ -52,7 +52,7 @@ class CommentController extends GetxController {
       isLoading.value = false;
     } else {
       Fluttertoast.showToast(
-        msg: "發生錯誤 請稍後再試一次",
+        msg: "errorRetryToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -86,7 +86,7 @@ class CommentController extends GetxController {
         _updatePopularCommentList();
       } else {
         Fluttertoast.showToast(
-          msg: "留言失敗，請稍後再試一次",
+          msg: "commentFailedToast".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -196,7 +196,7 @@ class CommentController extends GetxController {
       }
     } else {
       Fluttertoast.showToast(
-        msg: "發生錯誤 請稍後再試",
+        msg: "errorRetryToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

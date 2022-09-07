@@ -57,11 +57,11 @@ class PickButton extends GetView<PickableItemController> {
     }
 
     return JustTheTooltip(
-      content: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Text(
-          '精選喜歡的報導',
-          style: TextStyle(
+          'pickTooltip'.tr,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 13,
           ),
@@ -97,7 +97,7 @@ class PickButton extends GetView<PickableItemController> {
               fullscreenDialog: true,
             );
           } else if (controller.isPicked.isFalse) {
-            await PickBottomSheet.showPickBottomSheet(
+            await showPickBottomSheet(
               context: context,
               controller: controller,
             );
@@ -105,31 +105,31 @@ class PickButton extends GetView<PickableItemController> {
             bool? result = await showDialog<bool>(
               context: context,
               builder: (context) => PlatformAlertDialog(
-                title: const Text(
-                  '確認移除精選？',
+                title: Text(
+                  'unPickAlertTitle'.tr,
                 ),
                 content: Get.find<PickAndBookmarkService>().pickList.any(
                         (element) =>
                             element.targetId == controller.targetId &&
                             element.objective == controller.objective)
-                    ? const Text(
-                        '移除精選文章，將會一併移除您的留言',
+                    ? Text(
+                        'unPickAlertContent'.tr,
                       )
                     : null,
                 actions: [
                   PlatformDialogAction(
-                    child: const Text(
-                      '移除',
-                      style: TextStyle(color: Colors.red),
+                    child: Text(
+                      'remove'.tr,
+                      style: const TextStyle(color: Colors.red),
                     ),
                     onPressed: () async {
                       Navigator.pop<bool>(context, true);
                     },
                   ),
                   PlatformDialogAction(
-                    child: const Text(
-                      '取消',
-                      style: TextStyle(color: Colors.blue),
+                    child: Text(
+                      'cancel'.tr,
+                      style: const TextStyle(color: Colors.blue),
                     ),
                     onPressed: () => Navigator.pop<bool>(context, false),
                   )
@@ -184,7 +184,7 @@ class PickButton extends GetView<PickableItemController> {
             ),
             const SizedBox(width: 3),
             Text(
-              controller.isPicked.value ? '已精選' : '精選',
+              controller.isPicked.value ? 'picked'.tr : 'pick'.tr,
               style: TextStyle(
                 fontSize: textSize,
                 color: controller.isPicked.value ? Colors.white : readrBlack87,

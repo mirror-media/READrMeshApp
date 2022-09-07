@@ -24,13 +24,15 @@ class MemberAdapter extends TypeAdapter<Member> {
       following: (fields[4] as List).cast<Member>(),
       customId: fields[5] as String,
       avatarImageId: fields[6] as String?,
+      blockMemberIds: (fields[7] as List?)?.cast<String>(),
+      blockedMemberIds: (fields[8] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Member obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.memberId)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class MemberAdapter extends TypeAdapter<Member> {
       ..writeByte(5)
       ..write(obj.customId)
       ..writeByte(6)
-      ..write(obj.avatarImageId);
+      ..write(obj.avatarImageId)
+      ..writeByte(7)
+      ..write(obj.blockMemberIds)
+      ..writeByte(8)
+      ..write(obj.blockedMemberIds);
   }
 
   @override

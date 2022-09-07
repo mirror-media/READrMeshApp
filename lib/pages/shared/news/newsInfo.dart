@@ -69,13 +69,13 @@ class NewsInfo extends StatelessWidget {
               color: readrBlack20,
             ),
           ));
-          children.add(const Text(
-            '付費文章',
-            strutStyle: StrutStyle(
+          children.add(Text(
+            'paidArticle'.tr,
+            strutStyle: const StrutStyle(
               forceStrutHeight: true,
               leading: 0.5,
             ),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: readrBlack50,
             ),
@@ -93,13 +93,13 @@ class NewsInfo extends StatelessWidget {
               color: readrBlack20,
             ),
           ));
-          children.add(const Text(
-            '蓋板廣告',
-            strutStyle: StrutStyle(
+          children.add(Text(
+            'fullScreenAd'.tr,
+            strutStyle: const StrutStyle(
               forceStrutHeight: true,
               leading: 0.5,
             ),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: readrBlack50,
             ),

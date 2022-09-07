@@ -11,9 +11,9 @@ class NewsCoverageSettingPage extends GetView<SettingPageController> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0.5,
-        title: const Text(
-          '顯示新聞範圍',
-          style: TextStyle(
+        title: Text(
+          'newsCoverageSettingPageTitle'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -47,11 +47,11 @@ class NewsCoverageSettingPage extends GetView<SettingPageController> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    String title = '24小時內';
+    String title = 'within24Hours'.tr;
     if (index == 1) {
-      title = '3天內';
+      title = 'within3Days'.tr;
     } else if (index == 2) {
-      title = '1週內';
+      title = 'within1Week'.tr;
     }
     return GestureDetector(
       onTap: () => controller.updateDuration(index),

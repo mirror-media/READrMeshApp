@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
@@ -23,11 +24,11 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
   final ItemScrollController _itemScrollController = ItemScrollController();
-  final String newsId;
-  ReadrStoryWidget(this.newsId);
+  final NewsListItem news;
+  ReadrStoryWidget(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   bool _isNullOrEmpty(String? input) {
     return input == null || input == '' || input == ' ';
@@ -38,7 +39,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     var width = MediaQuery.of(context).size.width;
 
     return GetBuilder<StoryPageController>(
-      tag: newsId,
+      tag: news.id,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -56,7 +57,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             children: [
               Column(
                 children: [
-                  StoryAppBar(newsId),
+                  StoryAppBar(news),
                   Expanded(
                     child: _storyContent(width, story),
                   ),
@@ -76,7 +77,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         }
 
         // state is Init, loading, or other
-        return StorySkeletonScreen(newsId);
+        return StorySkeletonScreen(news);
       },
     );
   }
@@ -222,7 +223,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '更新時間：${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
+        '${'updateTime'.tr}${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
         style: const TextStyle(
           color: readrBlack50,
           fontSize: 13,
@@ -296,12 +297,13 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '記者：',
-            style: TextStyle(
+          Text(
+            'journalist'.tr,
+            style: const TextStyle(
               fontSize: 13,
               color: readrBlack50,
               fontWeight: FontWeight.w400,
+              height: 1.39,
             ),
           ),
           Expanded(
@@ -536,7 +538,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           ),
           padding: const EdgeInsets.only(left: 24.0),
           child: Text(
-            '引用數據',
+            'referenceData'.tr,
             style: TextStyle(
               color: readrBlack87,
               fontSize: 18,
@@ -634,7 +636,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: 'READr連絡信箱：',
+            text: 'readrContactEmail'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
@@ -673,7 +675,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: 'READr客服電話：',
+            text: 'readrCustomerServiceNumber'.tr,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,

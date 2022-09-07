@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -56,20 +57,37 @@ class _TimestampState extends State<Timestamp> {
   Widget build(BuildContext context) {
     String text = '';
     double fontSize = widget.textSize;
+    bool isEnglish = Get.locale?.languageCode == 'en';
     if (_duration.inSeconds < 60) {
-      text = '剛剛';
+      text = 'just'.tr;
     } else if (_duration.inMinutes < 60) {
-      text = '${_duration.inMinutes}分鐘前';
+      if (isEnglish && _duration.inMinutes == 1) {
+        text = 'A minute ago';
+      } else {
+        text = '${_duration.inMinutes}${'minutesAgo'.tr}';
+      }
     } else if (_duration.inHours < 24) {
-      text = '${_duration.inHours}小時前';
+      if (isEnglish && _duration.inHours == 1) {
+        text = 'An hour ago';
+      } else {
+        text = '${_duration.inHours}${'hoursAgo'.tr}';
+      }
     } else if (_duration.inDays < 8) {
-      text = '${_duration.inDays}天前';
+      if (isEnglish && _duration.inDays == 1) {
+        text = 'One day ago';
+      } else {
+        text = '${_duration.inDays}${'daysAgo'.tr}';
+      }
     } else {
-      text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
+      if (isEnglish) {
+        text = DateFormat('MM/dd/yyyy').format(widget.dateTime);
+      } else {
+        text = DateFormat('yyyy/MM/dd').format(widget.dateTime);
+      }
     }
 
     if (widget.isEdited) {
-      text += '(已編輯)';
+      text += 'edited'.tr;
     }
 
     return Text(

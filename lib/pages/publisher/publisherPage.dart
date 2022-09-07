@@ -107,15 +107,25 @@ class PublisherPage extends GetView<PublisherPageController> {
                           fontWeight: FontWeight.w600,
                           color: readrBlack87,
                         ),
-                        children: const [
+                        children: [
                           TextSpan(
-                            text: ' 人追蹤',
-                            style: TextStyle(
+                            text: ' ${'followerConunt'.tr}',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: readrBlack50,
                             ),
-                          )
+                          ),
+                          if (controller.followerCount.value > 1 &&
+                              Get.locale?.languageCode == 'en')
+                            const TextSpan(
+                              text: 's',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: readrBlack50,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -138,9 +148,16 @@ class PublisherPage extends GetView<PublisherPageController> {
   }
 
   String _convertNumberToString(int number) {
-    if (number >= 10000) {
+    if (number >= 1000 && Get.locale?.languageCode == 'en') {
+      double newNumber = number / 1000;
+      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}K';
+    } else if (number >= 10000) {
       double newNumber = number / 10000;
-      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}萬';
+      String tenThounsands = '萬';
+      if (Get.locale == const Locale('zh', 'CN')) {
+        tenThounsands = '万';
+      }
+      return '${newNumber.toStringAsFixed(newNumber.truncateToDouble() == newNumber ? 0 : 1)}$tenThounsands';
     } else {
       return number.toString();
     }

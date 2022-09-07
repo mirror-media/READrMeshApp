@@ -1,10 +1,5 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/helpers/cacheDurationCache.dart';
-import 'package:readr/models/graphqlBody.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/models/story.dart';
 
 abstract class StoryRepos {
@@ -12,12 +7,8 @@ abstract class StoryRepos {
 }
 
 class StoryServices implements StoryRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-
   @override
   Future<Story> fetchPublishedStoryById(String id) async {
-    final key = 'fetchPublishedStoryById?id=$id';
-
     const String query = """
     query (
       \$where: PostWhereInput,
@@ -113,26 +104,13 @@ class StoryServices implements StoryRepos {
       "where": {"state": "published", "id": id},
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.readr,
+      queryBody: query,
       variables: variables,
+      cacheDuration: 30.minutes,
     );
 
-    final jsonResponse = await _helper.postByCacheAndAutoCache(
-        key,
-        Get.find<EnvironmentService>().config.readrApi,
-        jsonEncode(graphqlBody.toJson()),
-        maxAge: newsStoryCacheDuration,
-        headers: {"Content-Type": "application/json"});
-
-    Story story;
-    try {
-      story = Story.fromJson(jsonResponse['data']['allPosts'][0]);
-    } catch (e) {
-      throw FormatException(e.toString());
-    }
-
-    return story;
+    return Story.fromJson(jsonResponse.data!['allPosts'][0]);
   }
 }

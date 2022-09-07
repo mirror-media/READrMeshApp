@@ -7,9 +7,14 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/collectionStory.dart';
-import 'package:readr/pages/collection/collectionStoryItem.dart';
-import 'package:readr/pages/collection/createAndEdit/inputTitlePage.dart';
+import 'package:readr/models/collection.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/models/folderCollectionPick.dart';
+import 'package:readr/models/timelineCollectionPick.dart';
+import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
+import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
+import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
+import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/collectionService.dart';
 import 'package:readr/services/searchService.dart';
@@ -17,7 +22,14 @@ import 'package:readr/services/searchService.dart';
 class ChooseStoryPage extends GetView<ChooseStoryPageController> {
   final bool isEdit;
   final List<String>? pickedStoryIds;
-  const ChooseStoryPage({this.isEdit = false, this.pickedStoryIds});
+  final bool isAddToEmpty;
+  final Collection? collection;
+  const ChooseStoryPage({
+    this.isEdit = false,
+    this.pickedStoryIds,
+    this.isAddToEmpty = false,
+    this.collection,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +78,15 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                               children: [
                                 Obx(
                                   () {
-                                    String text = '精選文章及書籤';
+                                    String text = 'picksAndBookmarks'.tr;
                                     if (controller.showPicked.isFalse &&
                                         controller.showBookmark.isFalse) {
-                                      text = '所有新聞';
+                                      text = 'allNews'.tr;
                                     } else if (controller.showPicked.isFalse) {
-                                      text = '書籤';
+                                      text = 'bookmarks'.tr;
                                     } else if (controller
                                         .showBookmark.isFalse) {
-                                      text = '精選文章';
+                                      text = 'pickedArticles'.tr;
                                     }
                                     return Text(
                                       text,
@@ -121,29 +133,29 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                               onChanged: (text) =>
                                   controller.keyWord.value = text,
                               textInputAction: TextInputAction.search,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 8),
-                                hintText: '搜尋所有新聞...',
-                                hintStyle: TextStyle(
+                                hintText: 'searchAllNews'.tr,
+                                hintStyle: const TextStyle(
                                   color: readrBlack30,
                                   fontSize: 14,
                                 ),
                                 filled: true,
-                                fillColor: Color(0xffF6F6FB),
-                                focusedBorder: OutlineInputBorder(
+                                fillColor: const Color(0xffF6F6FB),
+                                focusedBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(6.0)),
                                   borderSide:
                                       BorderSide(color: Color(0xffF6F6FB)),
                                 ),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(6.0)),
                                   borderSide:
                                       BorderSide(color: Color(0xffF6F6FB)),
                                 ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(6.0)),
                                   borderSide:
@@ -206,9 +218,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
       ),
       title: Obx(
         () {
-          String title = isEdit ? '加入新文章' : '建立集錦';
+          String title = isEdit ? 'addNewArticle'.tr : 'createCollection'.tr;
           if (controller.selectedList.isNotEmpty) {
-            title = '已選${controller.selectedList.length}篇';
+            title =
+                '${'chooseStoryPageSelectTitlePrefix'.tr}${controller.selectedList.length}${'chooseStoryPageSelectTitleSuffix'.tr}';
           }
           return Text(
             title,
@@ -228,7 +241,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
             if (controller.selectedList.isNotEmpty) {
               return TextButton(
                 child: Text(
-                  isEdit ? '完成' : '下一步',
+                  isEdit ? 'finish'.tr : 'nextStep'.tr,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
@@ -236,18 +249,48 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   ),
                 ),
                 onPressed: () {
-                  controller.selectedList.sort((a, b) =>
-                      b.news.publishedDate.compareTo(a.news.publishedDate));
+                  controller.selectedList.sort((a, b) => b
+                      .newsListItem!.publishedDate
+                      .compareTo(a.newsListItem!.publishedDate));
                   if (isEdit) {
                     Get.back(result: controller.selectedList);
+                  } else if (isAddToEmpty) {
+                    switch (collection?.format) {
+                      case CollectionFormat.folder:
+                        Get.off(
+                          () => SortStoryPage(
+                            List<FolderCollectionPick>.from(
+                                controller.selectedList.map((element) =>
+                                    FolderCollectionPick.fromCollectionPick(
+                                        element))),
+                            isAddToEmpty: true,
+                            collection: collection,
+                          ),
+                        );
+                        break;
+                      case CollectionFormat.timeline:
+                        Get.off(
+                          () => EditTimelinePage(
+                            List<TimelineCollectionPick>.from(controller
+                                .selectedList
+                                .map((e) => TimelineCollectionPick
+                                    .fromCollectionPickWithNewsListItem(e))),
+                            isAddToEmpty: true,
+                            collection: collection,
+                          ),
+                        );
+                        break;
+                      case null:
+                        break;
+                    }
                   } else {
                     List<String> ogImageUrlList = [];
                     for (var collectionStory in controller.selectedList) {
                       ogImageUrlList.addIf(
-                          collectionStory.news.heroImageUrl != null,
-                          collectionStory.news.heroImageUrl!);
+                          collectionStory.newsListItem!.heroImageUrl != null,
+                          collectionStory.newsListItem!.heroImageUrl!);
                     }
-                    Get.to(() => InputTitlePage(
+                    Get.to(() => TitleAndOgPage(
                           null,
                           ogImageUrlList.first,
                           ogImageUrlList,
@@ -267,16 +310,16 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
     return await showPlatformDialog<bool>(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text(
-          '確認要退出編輯？',
-          style: TextStyle(
+        title: Text(
+          'chooseStoryPageLeaveAlertTitle'.tr,
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
         ),
-        content: const Text(
-          '系統不會儲存您所做的變更',
-          style: TextStyle(
+        content: Text(
+          'chooseStoryPageLeaveAlertContent'.tr,
+          style: const TextStyle(
             fontSize: 13,
           ),
         ),
@@ -287,7 +330,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
               Get.back();
             },
             child: PlatformText(
-              '退出',
+              'quit'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.red,
@@ -297,7 +340,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
           PlatformDialogAction(
             onPressed: () => Get.back(),
             child: PlatformText(
-              '繼續編輯',
+              'continueEditing'.tr,
               style: const TextStyle(
                 fontSize: 17,
                 color: Colors.blue,
@@ -312,7 +355,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
   Widget _buildContent(BuildContext context) {
     return Obx(
       () {
-        List<CollectionStory> showList;
+        List<CollectionPick> showList;
         bool noMore = false;
         if (controller.showPicked.isTrue && controller.showBookmark.isTrue) {
           showList = controller.pickAndBookmarkList;
@@ -379,7 +422,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
       padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
       child: ExtendedText.rich(
         TextSpan(
-          text: '找不到包含「',
+          text: 'noNewsResultPrefix'.tr,
           style: const TextStyle(
             color: readrBlack50,
           ),
@@ -390,9 +433,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                 color: readrBlack87,
               ),
             ),
-            const TextSpan(
-              text: '」的新聞，請換個關鍵字，再試一次。',
-              style: TextStyle(
+            TextSpan(
+              text: 'noNewsResultSuffix'.tr,
+              style: const TextStyle(
                 color: readrBlack50,
               ),
             ),
@@ -407,24 +450,24 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
     );
   }
 
-  Widget _buildListItem(CollectionStory collectionStory) {
+  Widget _buildListItem(CollectionPick collectionStory) {
     return Obx(
       () => CheckboxListTile(
         value: controller.selectedList
-            .any((element) => element.news.id == collectionStory.news.id),
+            .any((element) => element.pickNewsId == collectionStory.pickNewsId),
         dense: true,
         onChanged: (value) {
           if (value != null && value) {
             controller.selectedList.add(collectionStory);
           } else {
             controller.selectedList.removeWhere(
-                (element) => element.news.id == collectionStory.news.id);
+                (element) => element.pickNewsId == collectionStory.pickNewsId);
           }
         },
         activeColor: readrBlack87,
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
-        title: CollectionStoryItem(collectionStory),
+        title: CollectionStoryItem(collectionStory.newsListItem!),
       ),
     );
   }
@@ -465,9 +508,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
                   alignment: Alignment.centerLeft,
-                  child: const Text(
-                    '新聞來源',
-                    style: TextStyle(
+                  child: Text(
+                    'newsSource'.tr,
+                    style: const TextStyle(
                       color: readrBlack50,
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
@@ -485,9 +528,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   activeColor: readrBlack87,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
-                  title: const Text(
-                    '精選文章',
-                    style: TextStyle(
+                  title: Text(
+                    'pickedArticles'.tr,
+                    style: const TextStyle(
                       color: readrBlack87,
                       fontSize: 16,
                     ),
@@ -504,9 +547,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   activeColor: readrBlack87,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
-                  title: const Text(
-                    '書籤',
-                    style: TextStyle(
+                  title: Text(
+                    'bookmarks'.tr,
+                    style: const TextStyle(
                       color: readrBlack87,
                       fontSize: 16,
                     ),
@@ -545,7 +588,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                             Navigator.pop(context);
                           },
                     style: ElevatedButton.styleFrom(
-                      primary: readrBlack87,
+                      backgroundColor: readrBlack87,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,
@@ -556,9 +599,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       ),
                       minimumSize: const Size.fromHeight(48),
                     ),
-                    child: const Text(
-                      '篩選',
-                      style: TextStyle(
+                    child: Text(
+                      'filter'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,

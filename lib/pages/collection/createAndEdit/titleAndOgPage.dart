@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/collection/createAndEdit/inputTitlePageController.dart';
+import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/changeOgPage.dart';
 import 'package:readr/services/collectionService.dart';
 
-class InputTitlePage extends GetView<InputTitlePageController> {
+class TitleAndOgPage extends GetView<TitleAndOgPageController> {
   final String? title;
   final String imageUrl;
   final bool isEdit;
   final List<String> ogImageUrlList;
   final Collection? collection;
-  const InputTitlePage(
+  const TitleAndOgPage(
     this.title,
     this.imageUrl,
     this.ogImageUrlList, {
@@ -28,7 +28,7 @@ class InputTitlePage extends GetView<InputTitlePageController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(InputTitlePageController(
+    Get.put(TitleAndOgPageController(
       title,
       imageUrl,
       CollectionService(),
@@ -41,15 +41,15 @@ class InputTitlePage extends GetView<InputTitlePageController> {
             backgroundColor: Colors.white,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '更新集錦中',
-                    style: TextStyle(
+                    'updatingCollection'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -75,11 +75,12 @@ class InputTitlePage extends GetView<InputTitlePageController> {
       elevation: 0.5,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
+      leadingWidth: 75,
       leading: isEdit
           ? TextButton(
-              child: const Text(
-                '取消',
-                style: TextStyle(
+              child: Text(
+                'cancel'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: readrBlack50,
@@ -95,7 +96,7 @@ class InputTitlePage extends GetView<InputTitlePageController> {
               onPressed: () => Get.back(),
             ),
       title: Text(
-        isEdit ? '修改標題' : '標題',
+        isEdit ? 'editCollectionTitle'.tr : 'title'.tr,
         style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
@@ -107,26 +108,31 @@ class InputTitlePage extends GetView<InputTitlePageController> {
       actions: [
         Obx(
           () {
-            if (controller.collectionTitle.isNotEmpty) {
-              return TextButton(
-                child: Text(
-                  isEdit ? '儲存' : '下一步',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                    color: Colors.blue,
-                  ),
-                ),
-                onPressed: () {
-                  if (isEdit) {
-                    controller.updateTitleAndOg();
-                  } else {
-                    Get.to(() => const DescriptionPage());
-                  }
-                },
-              );
+            if (controller.collectionTitle.isEmpty) {
+              return Container();
+            } else if (isEdit &&
+                controller.collectionTitle.value == title &&
+                controller.collectionOgUrlOrPath.value == imageUrl) {
+              return Container();
             }
-            return Container();
+
+            return TextButton(
+              child: Text(
+                isEdit ? 'save'.tr : 'nextStep'.tr,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () {
+                if (isEdit) {
+                  controller.updateTitleAndOg();
+                } else {
+                  Get.to(() => const DescriptionPage());
+                }
+              },
+            );
           },
         ),
       ],
@@ -186,9 +192,9 @@ class InputTitlePage extends GetView<InputTitlePageController> {
           const SizedBox(
             height: 12,
           ),
-          const Text(
-            '更換封面照片',
-            style: TextStyle(
+          Text(
+            'changeCollectionOg'.tr,
+            style: const TextStyle(
               color: Colors.blue,
               fontSize: 16,
             ),
@@ -217,7 +223,7 @@ class InputTitlePage extends GetView<InputTitlePageController> {
                 color: Colors.white10,
               ),
             ),
-            hintText: '輸入集錦標題',
+            hintText: 'collectionTitleHint'.tr,
             hintStyle: const TextStyle(color: readrBlack30),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
             suffix: (controller.collectionTitle.value.isEmpty)

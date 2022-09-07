@@ -7,7 +7,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -89,7 +89,7 @@ class LoginPageController extends GetxController {
         isLoading.value = false;
 
         Fluttertoast.showToast(
-          msg: '登入成功',
+          msg: 'loginSuccessToast'.tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -123,7 +123,7 @@ class LoginPageController extends GetxController {
       print('Login Error: $e');
       await FirebaseAuth.instance.signOut();
       Fluttertoast.showToast(
-        msg: '登入失敗',
+        msg: 'loginFailedToast'.tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

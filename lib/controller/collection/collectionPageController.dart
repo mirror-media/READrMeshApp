@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
+import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/services/collectionPageService.dart';
@@ -31,10 +32,18 @@ class CollectionPageController extends GetxController {
 
   final List<Comment> allComments = [];
   final List<Comment> popularComments = [];
-  final collectionPicks = <CollectionStory>[].obs;
+  final collectionPicks = <CollectionPick>[].obs;
 
   final collectionDescription = ''.obs;
   final expandDescription = false.obs;
+
+  final collectionFormat = CollectionFormat.folder.obs;
+
+  @override
+  void onInit() {
+    collectionFormat.value = collection.format;
+    super.onInit();
+  }
 
   @override
   void onReady() {
@@ -52,11 +61,10 @@ class CollectionPageController extends GetxController {
     super.onReady();
   }
 
-  Future<void> fetchCollectionData() async {
+  Future<void> fetchCollectionData({bool useCache = true}) async {
     try {
-      await Get.find<UserService>().fetchUserData();
       await collectionPageRepos
-          .fetchCollectionData(collection.id)
+          .fetchCollectionData(collection.id, useCache: useCache)
           .then((value) {
         if (value['status'] == CollectionStatus.delete) {
           Get.off(() => const CollectionDeletedPage());
@@ -66,8 +74,10 @@ class CollectionPageController extends GetxController {
           collectionPicks.assignAll(value['collectionPicks']);
           collection.collectionPicks = value['collectionPicks'];
           collectionDescription(value['description']);
+          collectionFormat(value['format']);
         }
       });
+      await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch collection data failed: $e');
       error = determineException(e);
@@ -89,7 +99,7 @@ class CollectionPageController extends GetxController {
 
     if (!result) {
       Fluttertoast.showToast(
-        msg: "刪除失敗 請稍後再試",
+        msg: "deleteFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -102,11 +112,11 @@ class CollectionPageController extends GetxController {
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
+            .fetchCollecitionList(useCache: false);
       }
       Get.back();
       Fluttertoast.showToast(
-        msg: "刪除成功",
+        msg: "deleteSuccessToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

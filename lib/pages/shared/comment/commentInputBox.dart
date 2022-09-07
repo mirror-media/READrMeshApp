@@ -48,7 +48,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: readrBlack87,
+                backgroundColor: readrBlack87,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
@@ -59,9 +59,9 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                 ),
                 minimumSize: const Size.fromHeight(48),
               ),
-              child: const Text(
-                '註冊以參與討論',
-                style: TextStyle(
+              child: Text(
+                'commentVisitorHint'.tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
@@ -102,10 +102,10 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                             .value,
                         style: TextStyle(color: textFieldTextColor),
                         controller: controller.textController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: '在這裡輸入留言...',
-                          hintStyle: TextStyle(color: readrBlack30),
+                          hintText: 'commentTextFieldHint'.tr,
+                          hintStyle: const TextStyle(color: readrBlack30),
                         ),
                       );
                     }),
@@ -127,7 +127,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                           sendTextColor = readrBlack20;
                         }
                         return Text(
-                          '發佈',
+                          'sendComment'.tr,
                           style: TextStyle(
                             color: sendTextColor,
                           ),

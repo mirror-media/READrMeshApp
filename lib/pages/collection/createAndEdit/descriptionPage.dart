@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/pages/collection/createAndEdit/sortStoryPage.dart';
+import 'package:readr/models/collectionPick.dart';
+import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
 import 'package:readr/services/collectionService.dart';
 
 class DescriptionPage extends GetView<DescriptionPageController> {
@@ -33,15 +35,15 @@ class DescriptionPage extends GetView<DescriptionPageController> {
             backgroundColor: Colors.white,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SpinKitWanderingCubes(
+              children: [
+                const SpinKitWanderingCubes(
                   color: readrBlack,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    '更新集錦中',
-                    style: TextStyle(
+                    'updatingCollection'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: readrBlack,
                     ),
@@ -74,9 +76,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
         ),
         onPressed: () => Get.back(),
       ),
-      title: const Text(
-        '敘述',
-        style: TextStyle(
+      title: Text(
+        'narrative'.tr,
+        style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
           color: readrBlack,
@@ -87,11 +89,13 @@ class DescriptionPage extends GetView<DescriptionPageController> {
       actions: [
         Obx(
           () {
-            String buttonText = isEdit ? '儲存' : '略過';
+            String buttonText = isEdit ? 'save'.tr : 'skip'.tr;
             if (controller.collectionDescription.isNotEmpty && !isEdit) {
-              buttonText = '下一步';
+              buttonText = 'nextStep'.tr;
+            } else if (controller.collectionDescription.value == description &&
+                isEdit) {
+              return Container();
             }
-
             return TextButton(
               child: Text(
                 buttonText,
@@ -105,9 +109,21 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 if (isEdit) {
                   controller.updateDescription();
                 } else {
-                  Get.to(() => SortStoryPage(
-                        Get.find<ChooseStoryPageController>().selectedList,
-                      ));
+                  List<CollectionPick> chooseStoryList = [];
+                  if (Get.isRegistered<AddToCollectionPageController>()) {
+                    chooseStoryList.add(CollectionPick.fromNewsListItem(
+                        Get.find<AddToCollectionPageController>().news));
+                  } else {
+                    chooseStoryList =
+                        Get.find<ChooseStoryPageController>().selectedList;
+                  }
+                  Get.to(
+                    () => ChooseFormatPage(
+                      chooseStoryList,
+                      isQuickCreate:
+                          Get.isRegistered<AddToCollectionPageController>(),
+                    ),
+                  );
                 }
               },
             );
@@ -137,6 +153,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 maxLines: null,
                 maxLength: 3000,
                 expands: true,
+                initialValue: description,
                 textAlignVertical: TextAlignVertical.top,
                 onChanged: (value) => controller.collectionDescription(value),
                 style: const TextStyle(
@@ -145,7 +162,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 ),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: '輸入集錦敘述',
+                  hintText: 'collectionNarrativeHint'.tr,
                   hintStyle: const TextStyle(
                     color: readrBlack30,
                     fontSize: 16,
@@ -185,9 +202,9 @@ class DescriptionPage extends GetView<DescriptionPageController> {
           ),
           Obx(() {
             if (controller.collectionDescription.value.length >= 3000) {
-              return const Text(
-                '字數不能超過 3000 字',
-                style: TextStyle(
+              return Text(
+                'collectionNarrativeLengthAlert'.tr,
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 14,
                 ),

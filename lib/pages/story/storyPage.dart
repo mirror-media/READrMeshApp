@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/helpers/analyticsHelper.dart';
+import 'package:readr/getxServices/pubsubService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
@@ -36,16 +37,19 @@ class StoryPage extends GetView<StoryPageController> {
       );
     }
 
-    logOpenStory(source: news.source?.title);
+    Get.find<PubsubService>().logReadStory(
+      memberId: Get.find<UserService>().currentUser.memberId,
+      storyId: news.id,
+    );
 
     Widget child;
     if (!news.fullContent) {
-      child = NewsWebviewWidget(news.id);
+      child = NewsWebviewWidget(news);
     } else if (news.source?.id ==
         Get.find<EnvironmentService>().config.readrPublisherId) {
-      child = ReadrStoryWidget(news.id);
+      child = ReadrStoryWidget(news);
     } else {
-      child = NewsStoryWidget(news.id);
+      child = NewsStoryWidget(news);
     }
     return WillPopScope(
       child: Scaffold(
@@ -58,7 +62,11 @@ class StoryPage extends GetView<StoryPageController> {
         body: child,
       ),
       onWillPop: () async {
-        if (Get.isRegistered<CommentInputBoxController>(
+        if (controller.webViewControllerIsLoaded &&
+            await controller.webViewController.canGoBack()) {
+          await controller.webViewController.goBack();
+          return false;
+        } else if (Get.isRegistered<CommentInputBoxController>(
                 tag: news.controllerTag) &&
             Get.find<CommentInputBoxController>(tag: news.controllerTag)
                 .hasInput
@@ -66,16 +74,16 @@ class StoryPage extends GetView<StoryPageController> {
           await showPlatformDialog(
             context: context,
             builder: (_) => PlatformAlertDialog(
-              title: const Text(
-                '確定要刪除留言？',
-                style: TextStyle(
+              title: Text(
+                'deleteAlertTitle'.tr,
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              content: const Text(
-                '系統將不會儲存您剛剛輸入的內容',
-                style: TextStyle(
+              content: Text(
+                'leaveAlertContent'.tr,
+                style: const TextStyle(
                   fontSize: 13,
                 ),
               ),
@@ -83,7 +91,7 @@ class StoryPage extends GetView<StoryPageController> {
                 PlatformDialogAction(
                   onPressed: () => Get.close(2),
                   child: PlatformText(
-                    '刪除留言',
+                    'deleteComment'.tr,
                     style: const TextStyle(
                       fontSize: 17,
                       color: Colors.red,
@@ -93,7 +101,7 @@ class StoryPage extends GetView<StoryPageController> {
                 PlatformDialogAction(
                   onPressed: () => Get.back(),
                   child: PlatformText(
-                    '繼續輸入',
+                    'continueInput'.tr,
                     style: const TextStyle(
                       fontSize: 17,
                       color: Colors.blue,

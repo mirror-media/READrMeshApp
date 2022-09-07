@@ -31,6 +31,7 @@ class MainAppBar extends GetView<MainAppBarController> {
           child: IconButton(
             onPressed: () => Get.to(() => SearchPage()),
             padding: const EdgeInsets.all(0),
+            tooltip: 'searchButtonTooltip'.tr,
             alignment: Alignment.centerRight,
             icon: Icon(
               PlatformIcons(context).search,
@@ -46,6 +47,7 @@ class MainAppBar extends GetView<MainAppBarController> {
           child: IconButton(
             onPressed: () => Get.to(() => NotifyPage(), fullscreenDialog: true),
             padding: const EdgeInsets.all(0),
+            tooltip: 'notificationButtonTooltip'.tr,
             icon: Stack(
               alignment: Alignment.center,
               children: [
@@ -61,17 +63,26 @@ class MainAppBar extends GetView<MainAppBarController> {
                     if (Get.find<NotifyPageController>()
                         .unReadNotifyList
                         .isNotEmpty) {
-                      return Container(
-                        margin: const EdgeInsets.only(left: 12, bottom: 12),
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 2,
+                      return Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(243, 75, 75, 0.5),
+                                blurRadius: 4,
+                              ),
+                              BoxShadow(
+                                color: Color.fromRGBO(243, 75, 75, 0.3),
+                                blurRadius: 8,
+                              ),
+                            ],
                           ),
-                          shape: BoxShape.circle,
                         ),
                       );
                     }
@@ -99,11 +110,12 @@ class MainAppBar extends GetView<MainAppBarController> {
                   );
                 },
                 padding: const EdgeInsets.all(0),
+                tooltip: 'invitationCodeButtonTooltip'.tr,
                 icon: Stack(
                   alignment: Alignment.center,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(right: 2),
+                      padding: EdgeInsets.only(right: 4),
                       child: Icon(
                         CupertinoIcons.envelope,
                         color: readrBlack87,
@@ -113,17 +125,26 @@ class MainAppBar extends GetView<MainAppBarController> {
                     Obx(
                       () {
                         if (controller.hasInvitationCode.isTrue) {
-                          return Container(
-                            width: 12,
-                            height: 12,
-                            margin: const EdgeInsets.only(left: 18, bottom: 18),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2,
+                          return Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(243, 75, 75, 0.5),
+                                    blurRadius: 4,
+                                  ),
+                                  BoxShadow(
+                                    color: Color.fromRGBO(243, 75, 75, 0.3),
+                                    blurRadius: 8,
+                                  ),
+                                ],
                               ),
-                              shape: BoxShape.circle,
                             ),
                           );
                         }

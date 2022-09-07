@@ -70,29 +70,29 @@ class SearchPage extends GetView<SearchPageController> {
         controller: controller.textController,
         onSubmitted: (value) => controller.search(value),
         textInputAction: TextInputAction.search,
-        decoration: const InputDecoration(
-          prefixIcon: Icon(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(
             CupertinoIcons.search,
             size: 22,
             color: readrBlack30,
           ),
-          contentPadding: EdgeInsets.fromLTRB(5.5, 8, 12, 8),
-          hintText: '搜尋所有新聞與集錦...',
-          hintStyle: TextStyle(
+          contentPadding: const EdgeInsets.fromLTRB(5.5, 8, 12, 8),
+          hintText: 'searchBarHintText'.tr,
+          hintStyle: const TextStyle(
             color: readrBlack30,
             fontSize: 14,
           ),
           filled: true,
-          fillColor: Color(0xffF6F6FB),
-          focusedBorder: OutlineInputBorder(
+          fillColor: const Color(0xffF6F6FB),
+          focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
             borderSide: BorderSide(color: Color(0xffF6F6FB)),
           ),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
             borderSide: BorderSide(color: Color(0xffF6F6FB)),
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
             borderSide: BorderSide(color: Color(0xffF6F6FB)),
           ),
@@ -118,7 +118,7 @@ class SearchPage extends GetView<SearchPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '搜尋歷史',
+                    'searchHistory'.tr,
                     style: TextStyle(
                       fontWeight:
                           GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -128,10 +128,13 @@ class SearchPage extends GetView<SearchPageController> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => controller.searchHistoryList.clear(),
-                    child: const Text(
-                      '清除所有記錄',
-                      style: TextStyle(
+                    onPressed: () {
+                      controller.searchHistoryList.clear();
+                      controller.update();
+                    },
+                    child: Text(
+                      'clearAllHistory'.tr,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                         color: Colors.blue,
@@ -145,49 +148,51 @@ class SearchPage extends GetView<SearchPageController> {
 
           return Container();
         }),
-        Obx(() {
-          if (controller.searchHistoryList.isEmpty) {
-            return Container();
-          }
+        GetBuilder<SearchPageController>(
+          builder: (controller) {
+            if (controller.searchHistoryList.isEmpty) {
+              return Container();
+            }
 
-          return Expanded(
-            child: AnimatedList(
-              key: _key,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemBuilder: (context, index, animation) => FadeTransition(
-                opacity: animation,
-                child: ListTile(
-                  tileColor: Colors.white,
-                  textColor: readrBlack87,
-                  iconColor: readrBlack30,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  title: Text(
-                    controller.searchHistoryList[index],
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: GestureDetector(
-                    onTap: () => _removeItem(
-                        index, context, controller.searchHistoryList[index]),
-                    child: const Icon(
-                      CupertinoIcons.minus_circle,
-                      size: 20,
+            return Expanded(
+              child: AnimatedList(
+                key: _key,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemBuilder: (context, index, animation) => FadeTransition(
+                  opacity: animation,
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    textColor: readrBlack87,
+                    iconColor: readrBlack30,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    title: Text(
+                      controller.searchHistoryList[index],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    trailing: GestureDetector(
+                      onTap: () => _removeItem(
+                          index, context, controller.searchHistoryList[index]),
+                      child: const Icon(
+                        CupertinoIcons.minus_circle,
+                        size: 20,
+                      ),
+                    ),
+                    onTap: () {
+                      controller.textController.text =
+                          controller.searchHistoryList[index];
+                      controller.search(controller.searchHistoryList[index]);
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    shape: const Border(
+                        bottom: BorderSide(width: 0.5, color: Colors.black12)),
                   ),
-                  onTap: () {
-                    controller.textController.text =
-                        controller.searchHistoryList[index];
-                    controller.search(controller.searchHistoryList[index]);
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  shape: const Border(
-                      bottom: BorderSide(width: 0.5, color: Colors.black12)),
                 ),
+                initialItemCount: controller.searchHistoryList.length,
               ),
-              initialItemCount: controller.searchHistoryList.length,
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ],
     );
   }
@@ -223,7 +228,7 @@ class SearchPage extends GetView<SearchPageController> {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
       child: ExtendedText.rich(
         TextSpan(
-          text: '找不到包含「',
+          text: 'noResultPrefix'.tr,
           style: const TextStyle(
             color: readrBlack50,
           ),
@@ -234,9 +239,9 @@ class SearchPage extends GetView<SearchPageController> {
                 color: readrBlack87,
               ),
             ),
-            const TextSpan(
-              text: '」的新聞或集錦，請換個關鍵字，再試一次。',
-              style: TextStyle(
+            TextSpan(
+              text: 'noResultSuffix'.tr,
+              style: const TextStyle(
                 color: readrBlack50,
               ),
             ),
@@ -268,7 +273,7 @@ class SearchPage extends GetView<SearchPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '所有集錦',
+                    'allCollections'.tr,
                     style: TextStyle(
                       fontWeight:
                           GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -285,9 +290,9 @@ class SearchPage extends GetView<SearchPageController> {
                       return TextButton(
                         onPressed: () =>
                             Get.to(() => AllCollectionResultPage()),
-                        child: const Text(
-                          '查看全部',
-                          style: TextStyle(
+                        child: Text(
+                          'viewAll'.tr,
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
                             color: readrBlack50,
@@ -312,7 +317,7 @@ class SearchPage extends GetView<SearchPageController> {
               color: Colors.white,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
-                '所有新聞',
+                'allNews'.tr,
                 style: TextStyle(
                   color: readrBlack87,
                   fontSize: 18,
@@ -428,7 +433,7 @@ class SearchPage extends GetView<SearchPageController> {
                         const SizedBox(height: 31),
                         ExtendedText.rich(
                           TextSpan(
-                            text: '查看所有包含「',
+                            text: 'viewAllCollectionResultPrefix'.tr,
                             style: const TextStyle(
                               color: readrBlack50,
                             ),
@@ -439,9 +444,9 @@ class SearchPage extends GetView<SearchPageController> {
                                   color: readrBlack87,
                                 ),
                               ),
-                              const TextSpan(
-                                text: '」的集錦',
-                                style: TextStyle(
+                              TextSpan(
+                                text: 'viewAllCollectionResultSuffix'.tr,
+                                style: const TextStyle(
                                   color: readrBlack50,
                                 ),
                               ),
@@ -478,10 +483,10 @@ class SearchPage extends GetView<SearchPageController> {
                               backgroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 8),
                             ),
-                            child: const Text(
-                              '查看全部',
+                            child: Text(
+                              'viewAll'.tr,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: readrBlack87,
                               ),

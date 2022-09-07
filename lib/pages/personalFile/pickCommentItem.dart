@@ -109,16 +109,16 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     widget.comment.member.memberId) {
               return GestureDetector(
                 onTap: () async {
-                  await EditCommentMenu.showEditCommentMenu(
+                  await showEditCommentMenu(
                     context,
                     widget.controller.comment,
                     widget.pickControllerTag,
                     isFromPickTab: true,
                   );
                 },
-                child: const Text(
-                  '編輯留言',
-                  style: TextStyle(
+                child: Text(
+                  'editComment'.tr,
+                  style: const TextStyle(
                     color: readrBlack50,
                     fontSize: 13,
                   ),
@@ -236,15 +236,15 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
-              text: const TextSpan(
+              text: TextSpan(
                 text: '... ',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromRGBO(0, 9, 40, 0.66),
                 ),
                 children: [
                   TextSpan(
-                    text: '顯示更多',
-                    style: TextStyle(
+                    text: 'displayMore'.tr,
+                    style: const TextStyle(
                       color: readrBlack50,
                     ),
                   )

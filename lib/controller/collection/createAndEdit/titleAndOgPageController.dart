@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/services/collectionService.dart';
 
-class InputTitlePageController extends GetxController {
+class TitleAndOgPageController extends GetxController {
   final collectionTitle = ''.obs;
   final collectionOgUrlOrPath = ''.obs;
   late final TextEditingController titleTextController;
@@ -15,7 +13,7 @@ class InputTitlePageController extends GetxController {
   final String imageUrl;
   final isUpdating = false.obs;
   final CollectionRepos collectionRepos;
-  InputTitlePageController(this.title, this.imageUrl, this.collectionRepos,
+  TitleAndOgPageController(this.title, this.imageUrl, this.collectionRepos,
       {this.collection});
 
   @override
@@ -43,16 +41,10 @@ class InputTitlePageController extends GetxController {
           .timeout(const Duration(minutes: 1));
 
       Get.back();
-      if (Get.isRegistered<CollectionTabController>(
-          tag: Get.find<UserService>().currentUser.memberId)) {
-        Get.find<CollectionTabController>(
-                tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
-      }
     } catch (e) {
       print('Update collection title and og error: $e');
       Fluttertoast.showToast(
-        msg: "更新失敗 請稍後再試",
+        msg: "updateFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

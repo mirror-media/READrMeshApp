@@ -93,18 +93,18 @@ class NotifyItem extends GetView<NotifyItemController> {
       mainText = notify.senderList.first.nickname;
     } else if (notify.senderList.length == 2) {
       mainText =
-          '${notify.senderList.first.nickname}及${notify.senderList[1].nickname}';
+          '${notify.senderList.first.nickname}${'and'.tr}${notify.senderList[1].nickname}';
     } else {
       mainText =
-          '${notify.senderList.first.nickname}、${notify.senderList[1].nickname}及其他${notify.senderList.length - 2}人';
+          '${notify.senderList.first.nickname}、${notify.senderList[1].nickname} ${'andOther'.tr} ${notify.senderList.length - 2} ${'people'.tr}';
     }
 
     List<InlineSpan> textChildren = [];
     switch (notify.type) {
       case NotifyType.comment:
-        textChildren.add(const TextSpan(
-          text: '也在',
-          style: TextStyle(
+        textChildren.add(TextSpan(
+          text: 'commentNewsPrefix'.tr,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             color: readrBlack66,
           ),
@@ -116,9 +116,9 @@ class NotifyItem extends GetView<NotifyItemController> {
             color: readrBlack,
           ),
         ));
-        textChildren.add(const TextSpan(
-          text: '的新聞下留言。',
-          style: TextStyle(
+        textChildren.add(TextSpan(
+          text: 'commentNewsSuffix'.tr,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             color: readrBlack66,
           ),
@@ -126,10 +126,10 @@ class NotifyItem extends GetView<NotifyItemController> {
         break;
 
       case NotifyType.follow:
-        String text = '開始追蹤你。';
+        String text = 'startFollowingYou'.tr;
         textChildren = [
           TextSpan(
-            text: notify.senderList.length > 1 ? '都$text' : text,
+            text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack66,
@@ -139,10 +139,11 @@ class NotifyItem extends GetView<NotifyItemController> {
         break;
 
       case NotifyType.like:
-        String text = '喜歡你的留言「${notify.comment?.content}」。';
+        String text =
+            '${'likeCommentPrefix'.tr}${notify.comment?.content}${'likeCommentSuffix'.tr}';
         textChildren = [
           TextSpan(
-            text: notify.senderList.length > 1 ? '都$text' : text,
+            text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack66,
@@ -152,10 +153,11 @@ class NotifyItem extends GetView<NotifyItemController> {
         break;
 
       case NotifyType.pickCollection:
-        String text = '精選了你的集錦「${notify.collection?.title}」。';
+        String text =
+            '${'pickCollectionPrefix'.tr}${notify.collection?.title}${'pickCollectionSuffix'.tr}';
         textChildren = [
           TextSpan(
-            text: notify.senderList.length > 1 ? '都$text' : text,
+            text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack66,
@@ -165,10 +167,10 @@ class NotifyItem extends GetView<NotifyItemController> {
         break;
 
       case NotifyType.commentCollection:
-        String text = '在你的集錦下留言。';
+        String text = 'commentYourCollection'.tr;
         textChildren = [
           TextSpan(
-            text: notify.senderList.length > 1 ? '都$text' : text,
+            text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack66,
@@ -180,7 +182,8 @@ class NotifyItem extends GetView<NotifyItemController> {
       case NotifyType.createCollection:
         textChildren = [
           TextSpan(
-            text: '建立了新的集錦「${notify.collection?.title}」。',
+            text:
+                '${'createCollectionPrefix'.tr}${notify.collection?.title}${'createCollectionSuffix'.tr}',
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: readrBlack66,

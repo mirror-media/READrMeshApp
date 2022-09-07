@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/models/communityListItem.dart';
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/member.dart';
 
 abstract class CommunityRepos {
@@ -21,9 +17,6 @@ abstract class CommunityRepos {
 }
 
 class CommunityService implements CommunityRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String _api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
   Future<List<CommunityListItem>> fetchFollowingPicked(
       {List<String>? alreadyFetchStoryIds,
@@ -34,6 +27,7 @@ query(
   \$myId: ID
   \$alreadyFetchStoryIds: [ID!]
   \$alreadyFetchCollectionIds: [ID!]
+  \$blockAndBlockedIds: [ID!]
 ){
   storyPicks: picks(
     orderBy: [{picked_date: desc}],
@@ -92,6 +86,9 @@ query(
           member:{
             is_active:{
               equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
             }
           }
         }
@@ -184,12 +181,26 @@ query(
       otherPicks:pick(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -227,37 +238,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: pick(
-        where:{
           member:{
             id:{
-              equals: \$myId
+              notIn: \$blockAndBlockedIds
             }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-          	equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
           }
-        ){
-          id
         }
-      }
+      )
     }
   }
   collectionPicks: picks(
@@ -326,37 +316,13 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: picks(
-        where:{
           member:{
             id:{
-              equals: \$myId
+              notIn: \$blockAndBlockedIds
             }
           }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
         }
-      ){
-        id
-        pick_comment(
-          where:{
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-        }
-      }
+      )
       commentCount(
         where:{
           is_active:{
@@ -368,6 +334,9 @@ query(
           member:{
             is_active:{
               equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
             }
           }
         }
@@ -460,12 +429,26 @@ query(
       otherPicks:picks(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -504,24 +487,18 @@ query(
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
       "alreadyFetchStoryIds": alreadyFetchStoryIds ?? [],
-      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? [],
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<CommunityListItem> followingPicked = [];
-    for (var item in jsonResponse['data']['storyPicks']) {
+    for (var item in jsonResponse.data!['storyPicks']) {
       CommunityListItem pickItem = CommunityListItem.fromJson(item);
       followingPicked.addIf(
         !followingPicked.any(
@@ -529,7 +506,7 @@ query(
         pickItem,
       );
     }
-    for (var item in jsonResponse['data']['collectionPicks']) {
+    for (var item in jsonResponse.data!['collectionPicks']) {
       CommunityListItem pickItem = CommunityListItem.fromJson(item);
       followingPicked.addIf(
         !followingPicked.any(
@@ -551,6 +528,7 @@ query(
   \$myId: ID
   \$alreadyFetchStoryIds: [ID!]
   \$alreadyFetchCollectionIds: [ID!]
+  \$blockAndBlockedIds: [ID!]
 ){
   storyComments: comments(
     orderBy: [{published_date: desc}],
@@ -607,6 +585,9 @@ query(
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
         }
       )
@@ -649,12 +630,26 @@ query(
       otherPicks:pick(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -692,37 +687,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: pick(
-        where:{
           member:{
-            id:{
-              equals: \$myId
-            }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-          	equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
-        ){
-          id
         }
-      }
+      )
       comment(
         where:{
           is_active:{
@@ -844,37 +818,16 @@ query(
           is_active:{
             equals: true
           }
-        }
-      )
-      myPickId: picks(
-        where:{
           member:{
-            id:{
-              equals: \$myId
-            }
-          }
-          state:{
-            notIn: "private"
-          }
-          kind:{
-            equals: "read"
-          }
-          is_active:{
-            equals: true
-          }
-        }
-      ){
-        id
-        pick_comment(
-          where:{
             is_active:{
               equals: true
             }
+            id:{
+              notIn: \$blockAndBlockedIds
+            }
           }
-        ){
-          id
         }
-      }
+      )
       commentCount(
         where:{
           is_active:{
@@ -886,6 +839,9 @@ query(
           member:{
             is_active:{
               equals: true
+            }
+            id:{
+              notIn: \$blockAndBlockedIds
             }
           }
         }
@@ -929,12 +885,26 @@ query(
       otherPicks:picks(
         where:{
           member:{
-            id:{
-              notIn: \$followingMembers
-              not:{
-                equals: \$myId
+            AND:[
+              {
+                id:{
+                  notIn: \$followingMembers
+                  not:{
+                    equals: \$myId
+                  }
+                }
               }
-            }
+              {
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+              }
+              {
+                is_active:{
+                  equals: true
+                }
+              }
+            ]
           }
           state:{
             in: "public"
@@ -1029,24 +999,18 @@ query(
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
       "alreadyFetchStoryIds": alreadyFetchStoryIds ?? [],
-      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? [],
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<CommunityListItem> followingComment = [];
-    for (var item in jsonResponse['data']['storyComments']) {
+    for (var item in jsonResponse.data!['storyComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       followingComment.addIf(
         !followingComment.any((element) =>
@@ -1054,7 +1018,7 @@ query(
         commentItem,
       );
     }
-    for (var item in jsonResponse['data']['collectionComments']) {
+    for (var item in jsonResponse.data!['collectionComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       followingComment.addIf(
         !followingComment.any(
@@ -1074,16 +1038,26 @@ query(
       \$myId: ID
       \$followingPublisherIds: [ID!]
       \$yesterday: DateTime
+      \$blockAndBlockedIds: [ID!]
     ){
       followedFollowing:members(
         orderBy:[{id: desc}]
         where:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+          ]
           follower:{
             some:{
               id:{
@@ -1134,12 +1108,21 @@ query(
       }
       otherRecommendMembers:members(
         where:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+          ]
           is_active: {
             equals: true
           }
@@ -1206,12 +1189,21 @@ query(
       otherMembers:members(
         orderBy: [{id: desc}]
         where:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+              }
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+          ]
           is_active: {
             equals: true
           }
@@ -1293,24 +1285,18 @@ query(
       "followingMembers": followingMemberIds,
       "followingPublisherIds": followingPublisherIds,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<Member> recommendMembers = [];
-    if (jsonResponse['data']['followedFollowing'].isNotEmpty) {
-      for (var member in jsonResponse['data']['followedFollowing']) {
+    if (jsonResponse.data!['followedFollowing'].isNotEmpty) {
+      for (var member in jsonResponse.data!['followedFollowing']) {
         Member recommendMember = Member.followedFollowing(member);
         recommendMembers.addIf(
             !recommendMembers
@@ -1319,11 +1305,10 @@ query(
       }
     }
 
-    if (jsonResponse['data']['otherRecommendMembers'].isNotEmpty &&
+    if (jsonResponse.data!['otherRecommendMembers'].isNotEmpty &&
         recommendMembers.length < 20) {
       List<Member> otherRecommendMembers = [];
-      for (var otherRecommend in jsonResponse['data']
-          ['otherRecommendMembers']) {
+      for (var otherRecommend in jsonResponse.data!['otherRecommendMembers']) {
         otherRecommendMembers.add(Member.otherRecommend(otherRecommend));
       }
       // sort by amount of comments and picks in last 24 hours
@@ -1344,8 +1329,8 @@ query(
       }
     }
 
-    if (jsonResponse['data']['otherMembers'].isNotEmpty) {
-      for (var item in jsonResponse['data']['otherMembers']) {
+    if (jsonResponse.data!['otherMembers'].isNotEmpty) {
+      for (var item in jsonResponse.data!['otherMembers']) {
         Member member = Member.otherRecommend(item);
         if (!recommendMembers
             .any((element) => element.memberId == member.memberId)) {
@@ -1365,6 +1350,7 @@ query(
   \$myId: ID
   \$followingMembers: [ID!]
   \$alreadyFetchCollectionIds: [ID!]
+  \$blockAndBlockedIds: [ID!]
 ){
   collections(
     where:{
@@ -1416,37 +1402,16 @@ query(
         is_active:{
           equals: true
         }
-      }
-    )
-    myPickId: picks(
-      where:{
         member:{
           id:{
-            equals: \$myId
+            notIn: \$blockAndBlockedIds
           }
-        }
-        state:{
-          notIn: "private"
-        }
-        kind:{
-          equals: "read"
-        }
-        is_active:{
-          equals: true
-        }
-      }
-    ){
-      id
-      pick_comment(
-        where:{
           is_active:{
             equals: true
           }
         }
-      ){
-        id
       }
-    }
+    )
     commentCount(
       where:{
         is_active:{
@@ -1458,6 +1423,9 @@ query(
         member:{
           is_active:{
             equals: true
+          }
+          id:{
+            notIn: \$blockAndBlockedIds
           }
         }
       }
@@ -1501,12 +1469,26 @@ query(
     otherPicks:picks(
       where:{
         member:{
-          id:{
-            notIn: \$followingMembers
-            not:{
-              equals: \$myId
+          AND:[
+            {
+              id:{
+                notIn: \$followingMembers
+                not:{
+                  equals: \$myId
+                }
+            	}
             }
-          }
+            {
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+            }
+            {
+              is_active:{
+                equals: true
+              }
+            }
+          ]
         }
         state:{
           in: "public"
@@ -1543,24 +1525,18 @@ query(
     Map<String, dynamic> variables = {
       "followingMembers": Get.find<UserService>().followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
-      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? []
+      "alreadyFetchCollectionIds": alreadyFetchCollectionIds ?? [],
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      _api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<CommunityListItem> newCollection = [];
-    for (var item in jsonResponse['data']['collections']) {
+    for (var item in jsonResponse.data!['collections']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       newCollection.addIf(
         !newCollection.any(

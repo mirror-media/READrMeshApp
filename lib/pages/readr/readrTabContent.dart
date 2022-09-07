@@ -135,15 +135,15 @@ class ReadrTabContent extends GetView<ReadrTabController> {
               alignment: Alignment.center,
               color: homeScreenBackgroundColor,
               child: RichText(
-                text: const TextSpan(
+                text: TextSpan(
                   text: '🎉 ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                   children: [
                     TextSpan(
-                      text: '你已看完所有新聞囉',
-                      style: TextStyle(
+                      text: 'readrNoMore'.tr,
+                      style: const TextStyle(
                         color: readrBlack30,
                         fontSize: 14,
                       ),

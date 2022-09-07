@@ -46,11 +46,11 @@ class LatestPageController extends GetxController {
     isInitialized = false;
     isError = false;
     update();
-    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchLatestNews().then((value) => isError = !value),
       Get.find<RecommendPublisherBlockController>().fetchRecommendPublishers(),
     ]);
+    await Get.find<PickAndBookmarkService>().fetchPickIds();
     isInitialized = true;
     update();
   }
@@ -70,11 +70,11 @@ class LatestPageController extends GetxController {
   }
 
   Future<void> updateLatestNewsPage() async {
-    await Get.find<UserService>().fetchUserData();
     await Future.wait([
       fetchLatestNews(),
       Get.find<RecommendPublisherBlockController>().fetchRecommendPublishers(),
     ]);
+    await Get.find<PickAndBookmarkService>().fetchPickIds();
   }
 
   Future<bool> fetchLatestNews() async {
@@ -126,7 +126,7 @@ class LatestPageController extends GetxController {
     } catch (e) {
       print('Fetch more latest news error: $e');
       Fluttertoast.showToast(
-        msg: "載入更多失敗",
+        msg: "loadMoreFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

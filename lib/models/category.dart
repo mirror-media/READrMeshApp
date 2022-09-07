@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:get/get.dart';
 import 'package:readr/models/baseModel.dart';
 
 class Category {
@@ -19,9 +22,49 @@ class Category {
       latestPostTime =
           DateTime.parse(json['relatedPost'][0]['publishTime']).toLocal();
     }
+
+    String name = json[BaseModel.nameKey];
+
+    if (Get.locale != const Locale('zh', 'TW') ||
+        Get.locale != const Locale('zh', 'HK')) {
+      switch (json[BaseModel.slugKey]) {
+        case 'international':
+        case '國際':
+          name = 'slugInternational'.tr;
+          break;
+        case 'culture':
+          name = 'slugCulture'.tr;
+          break;
+        case 'note':
+          name = 'slugNote'.tr;
+          break;
+        case 'data':
+          name = 'slugData'.tr;
+          break;
+        case 'omt':
+          name = 'slugOmt'.tr;
+          break;
+        case 'environment':
+          name = 'slugEnvironment'.tr;
+          break;
+        case 'humanrights':
+          name = 'slugHumanRights'.tr;
+          break;
+        case 'politics':
+          name = 'slugPolitics'.tr;
+          break;
+        case 'education':
+          name = 'slugEducation'.tr;
+          break;
+        case 'breakingnews':
+          name = 'slugBreakingNews'.tr;
+          break;
+      }
+    }
+
     return Category(
       id: json[BaseModel.idKey],
-      name: json[BaseModel.nameKey],
+      name: name,
       slug: json[BaseModel.slugKey],
       latestPostTime: latestPostTime,
     );

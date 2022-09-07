@@ -69,7 +69,7 @@ class SearchPageController extends GetxController {
     noMoreCollection = false;
     isLoadingMoreNews.value = false;
     isLoadingMoreCollection = false;
-    if (!searchHistoryList.contains(keyWord)) {
+    if (!searchHistoryList.contains(keyWord) && keyWord.isNotEmpty) {
       searchHistoryList.insert(0, keyWord);
     }
     newsResultList.clear();
@@ -157,7 +157,7 @@ class SearchPageController extends GetxController {
     } catch (e) {
       print('Fetch more search news error failed: $e');
       Fluttertoast.showToast(
-        msg: '載入更多發生錯誤 請稍後再試',
+        msg: 'loadMoreFailedToast'.tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -195,7 +195,7 @@ class SearchPageController extends GetxController {
     } catch (e) {
       print('Fetch more search collection error failed: $e');
       Fluttertoast.showToast(
-        msg: '載入更多發生錯誤 請稍後再試',
+        msg: 'loadMoreFailedToast'.tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/invitationCodePageController.dart';
@@ -8,6 +7,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/services/invitationCodeService.dart';
 
@@ -21,9 +21,9 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         centerTitle: true,
         elevation: 0.5,
         backgroundColor: Colors.white,
-        title: const Text(
-          '邀請碼',
-          style: TextStyle(
+        title: Text(
+          'invitationCode'.tr,
+          style: const TextStyle(
             color: readrBlack,
             fontWeight: FontWeight.w400,
             fontSize: 18,
@@ -83,7 +83,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '可用的邀請碼',
+          'availableInviteCodes'.tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -92,11 +92,11 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         ),
         const SizedBox(height: 12),
         if (controller.usableCodeList.isEmpty)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 40),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
             child: Text(
-              '目前沒有可用的邀請碼...',
-              style: TextStyle(
+              'noAvailableInviteCodes'.tr,
+              style: const TextStyle(
                 color: readrBlack66,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -137,23 +137,29 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
           OutlinedButton.icon(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: invitationCode.code));
-              showCopiedToast(context);
+              showMeshToast(
+                icon: const Icon(
+                  Icons.check_circle,
+                  size: 16,
+                  color: Colors.white,
+                ),
+                message: 'invitationCodeCopied'.tr,
+              );
             },
             icon: const FaIcon(
               FontAwesomeIcons.link,
               size: 11,
               color: readrBlack87,
             ),
-            label: const Text(
-              '複製邀請碼',
-              style: TextStyle(
+            label: Text(
+              'copyTheInvitationCode'.tr,
+              style: const TextStyle(
                 color: readrBlack87,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               ),
             ),
             style: OutlinedButton.styleFrom(
-              primary: readrBlack87,
               backgroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               side: const BorderSide(color: readrBlack87),
@@ -170,7 +176,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '已使用',
+          'used'.tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -238,49 +244,6 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
           ),
         ],
       ),
-    );
-  }
-
-  void showCopiedToast(BuildContext context) {
-    showToastWidget(
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.0),
-          color: const Color.fromRGBO(0, 9, 40, 0.66),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
-              Icons.check_circle,
-              size: 16,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 6.0,
-            ),
-            Text(
-              '已複製邀請碼',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-      context: context,
-      animation: StyledToastAnimation.slideFromTop,
-      reverseAnimation: StyledToastAnimation.slideToTop,
-      position: StyledToastPosition.top,
-      startOffset: const Offset(0.0, -3.0),
-      reverseEndOffset: const Offset(0.0, -3.0),
-      duration: const Duration(seconds: 3),
-      //Animation duration   animDuration * 2 <= duration
-      animDuration: const Duration(milliseconds: 250),
-      curve: Curves.linear,
-      reverseCurve: Curves.linear,
     );
   }
 }

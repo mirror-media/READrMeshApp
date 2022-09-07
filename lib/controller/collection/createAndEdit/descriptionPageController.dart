@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
-import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/services/collectionService.dart';
 
@@ -34,22 +32,14 @@ class DescriptionPageController extends GetxController {
         description: collectionDescription.value,
       );
 
-      Get.find<CollectionPageController>(tag: collection!.id)
-          .collectionDescription
-          .value = collectionDescription.value;
-
-      if (Get.isRegistered<CollectionTabController>(
-          tag: Get.find<UserService>().currentUser.memberId)) {
-        Get.find<CollectionTabController>(
-                tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
-      }
+      await Get.find<CollectionPageController>(tag: collection!.id)
+          .fetchCollectionData(useCache: false);
 
       Get.back();
     } catch (e) {
       print('Update collection description error: $e');
       Fluttertoast.showToast(
-        msg: "更新失敗 請稍後再試",
+        msg: "updateFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

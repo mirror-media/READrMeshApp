@@ -21,9 +21,9 @@ class RecommendFollowPage extends StatelessWidget {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          '推薦追蹤',
-          style: TextStyle(
+        title: Text(
+          'recommendFollow'.tr,
+          style: const TextStyle(
             color: readrBlack,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -35,10 +35,10 @@ class RecommendFollowPage extends StatelessWidget {
         () {
           double ratio = (context.width - 40 - 12) / 460;
           if (controller.recommendItems.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                '暫無推薦追蹤',
-                style: TextStyle(
+                'noRecommend'.tr,
+                style: const TextStyle(
                   color: readrBlack,
                   fontSize: 20,
                 ),

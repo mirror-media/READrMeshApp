@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 
@@ -13,7 +13,7 @@ class Collection {
   final Member creator;
   CollectionFormat format;
   CollectionPublic public;
-  List<CollectionStory>? collectionPicks;
+  List<CollectionPick>? collectionPicks;
   final String controllerTag;
   String ogImageUrl;
   String ogImageId;
@@ -47,7 +47,7 @@ class Collection {
     this.commentMembers,
   });
 
-  factory Collection.fromFetchCollectionList(
+  factory Collection.fromJsonWithMember(
       Map<String, dynamic> json, Member viewMember) {
     String imageUrl = '';
     if (json['heroImage'] != null) {
@@ -64,7 +64,7 @@ class Collection {
         break;
     }
 
-    int pickCount = json['picksCount'];
+    int pickCount = json['picksCount'] ?? 0;
 
     List<Member> allPickedMember = [];
     if (BaseModel.checkJsonKeys(json, ['followingPicks']) &&
@@ -95,7 +95,7 @@ class Collection {
       final controller =
           Get.find<PickableItemController>(tag: 'Collection${json['id']}');
       controller.pickCount.value = pickCount;
-      controller.commentCount.value = json['commentCount'];
+      controller.commentCount.value = json['commentCount'] ?? 0;
       controller.pickedMembers.assignAll(allPickedMember);
       controller.collectionTitle.value = json['title'];
       controller.collectionHeroImageUrl.value = imageUrl;
@@ -106,7 +106,7 @@ class Collection {
           targetId: json["id"],
           objective: PickObjective.collection,
           pickCount: pickCount,
-          commentCount: json['commentCount'],
+          commentCount: json['commentCount'] ?? 0,
           pickedMembers: allPickedMember,
           controllerTag: 'Collection${json['id']}',
           collectionHeroImageUrl: imageUrl,
@@ -137,7 +137,7 @@ class Collection {
       title: json['title'],
       slug: json['slug'],
       creator: viewMember,
-      commentCount: json['commentCount'],
+      commentCount: json['commentCount'] ?? 0,
       updateTime: updateTime,
       ogImageUrl: imageUrl,
       controllerTag: 'Collection${json['id']}',

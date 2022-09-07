@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -25,9 +26,9 @@ class ContactUsPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0.5,
-        title: const Text(
-          '聯絡我們',
-          style: TextStyle(
+        title: Text(
+          'contactUs'.tr,
+          style: const TextStyle(
             fontSize: 18,
             color: readrBlack,
             fontWeight: FontWeight.w400,
@@ -57,7 +58,7 @@ class ContactUsPage extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildItem(
-                  title: '客服信箱',
+                  title: 'customerServiceEmail'.tr,
                   content: 'readr@readr.tw',
                   onTap: () async {
                     String currentTime = DateFormat('yyyy/MM/dd HH:mm:ss')
@@ -90,7 +91,9 @@ class ContactUsPage extends StatelessWidget {
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                  app.name == 'Apple Mail' ? '信件' : app.name,
+                                  app.name == 'Apple Mail'
+                                      ? 'appleMail'.tr
+                                      : app.name,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 20,
@@ -100,9 +103,9 @@ class ContactUsPage extends StatelessWidget {
                           ],
                           cancelButton: CupertinoActionSheetAction(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text(
-                              '取消',
-                              style: TextStyle(
+                            child: Text(
+                              'cancel'.tr,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
                               ),
@@ -119,7 +122,7 @@ class ContactUsPage extends StatelessWidget {
                   height: 1,
                 ),
                 _buildItem(
-                  title: '客服電話',
+                  title: 'customerServicePhone'.tr,
                   content: '(02) 6633-3890',
                   onTap: () async {
                     String url = 'tel:02-6633-3890';
@@ -134,7 +137,7 @@ class ContactUsPage extends StatelessWidget {
                   height: 1,
                 ),
                 _buildItem(
-                  title: 'Discord 社群',
+                  title: 'discordCommunity'.tr,
                   content: 'https://discord.gg/ywpth4mZUw',
                   onTap: () async {
                     String url = 'https://discord.gg/ywpth4mZUw';
@@ -166,9 +169,9 @@ class ContactUsPage extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const Text(
-            '若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務\n（服務時間：星期一 ~ 星期五，10:00 ~ 18:00）',
-            style: TextStyle(
+          Text(
+            'contactUsContent'.tr,
+            style: const TextStyle(
               fontSize: 14,
               color: readrBlack66,
             ),
@@ -182,10 +185,10 @@ class ContactUsPage extends StatelessWidget {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text("找不到信件 APP"),
+        title: Text("noMailAppsDialogTitle".tr),
         actions: <Widget>[
           PlatformDialogAction(
-            child: const Text("確定"),
+            child: Text("ok".tr),
             onPressed: () {
               Navigator.pop(context);
             },

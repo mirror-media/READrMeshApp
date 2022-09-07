@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/services/recommendService.dart';
@@ -23,7 +22,6 @@ class ChoosePublisherController extends GetxController {
   Future<void> fetchAllPublishers() async {
     try {
       publishers = await repository.fetchAllPublishers();
-      await Get.find<UserService>().fetchUserData();
       isLoading = false;
       isError = false;
     } catch (e) {

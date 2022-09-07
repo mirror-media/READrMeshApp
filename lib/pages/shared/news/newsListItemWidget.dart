@@ -17,11 +17,13 @@ class NewsListItemWidget extends StatelessWidget {
   final bool hidePublisher;
   final bool isInMyPersonalFile;
   final bool showPickTooltip;
+  final bool inTimeline;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
     this.isInMyPersonalFile = false,
     this.showPickTooltip = false,
+    this.inTimeline = false,
     Key? key,
   }) : super(key: key);
 
@@ -38,8 +40,9 @@ class NewsListItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!hidePublisher)
-            Padding(
+            Container(
               padding: const EdgeInsets.only(bottom: 4),
+              height: 24,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -55,16 +58,17 @@ class NewsListItemWidget extends StatelessWidget {
                             const TextStyle(color: readrBlack50, fontSize: 12),
                       ),
                     ),
+                  const Spacer(),
                   IconButton(
-                    padding: const EdgeInsets.all(9),
+                    padding: const EdgeInsets.only(right: 4, left: 10),
                     alignment: Alignment.centerRight,
-                    onPressed: () async =>
-                        await MoreActionBottomSheet.showMoreActionSheet(
+                    onPressed: () async => await showMoreActionSheet(
                       context: context,
                       objective: PickObjective.story,
                       id: news.id,
                       controllerTag: news.controllerTag,
                       url: news.url,
+                      newsListItem: news,
                     ),
                     icon: const Icon(
                       CupertinoIcons.ellipsis,
@@ -111,16 +115,16 @@ class NewsListItemWidget extends StatelessWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.only(left: 12),
-                    width: 96,
-                    height: 96 / 2,
+                    width: inTimeline ? 48 : 96,
+                    height: 48,
                     child: Shimmer.fromColors(
                       baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
                       highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: Container(
-                          width: 96,
-                          height: 96 / 2,
+                          width: inTimeline ? 48 : 96,
+                          height: 48,
                           color: Colors.white,
                         ),
                       ),
@@ -159,16 +163,14 @@ class NewsListItemWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
+                    Padding(
                       padding: const EdgeInsets.only(left: 12),
-                      width: 96,
-                      height: 96 / 2,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: Image(
                           image: imageProvider,
-                          width: 96,
-                          height: 96 / 2,
+                          width: inTimeline ? 48 : 96,
+                          height: 48,
                           fit: BoxFit.cover,
                         ),
                       ),

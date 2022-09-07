@@ -42,10 +42,10 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
   Widget _emptyWidget() {
     return Container(
       color: homeScreenBackgroundColor,
-      child: const Center(
+      child: Center(
         child: Text(
-          '你沒有已儲存的書籤',
-          style: TextStyle(
+          'emptyBookmark'.tr,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: readrBlack30,

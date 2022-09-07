@@ -205,10 +205,10 @@ class CommentItem extends GetView<CommentItemController> {
                       ),
                     Obx(() {
                       if (controller.isSending.isTrue) {
-                        return const Text(
-                          '傳送中',
+                        return Text(
+                          'sendingComment'.tr,
                           softWrap: true,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: readrBlack50,
                           ),
@@ -256,16 +256,16 @@ class CommentItem extends GetView<CommentItemController> {
                             controller.isSending.isFalse) {
                           return GestureDetector(
                             onTap: () async {
-                              await EditCommentMenu.showEditCommentMenu(
+                              await showEditCommentMenu(
                                 context,
                                 controller.comment,
                                 pickableItemControllerTag,
                               );
                             },
-                            child: const Text(
-                              '編輯留言',
+                            child: Text(
+                              'editComment'.tr,
                               softWrap: true,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: readrBlack50,
                                 fontSize: 12,
                               ),
@@ -363,17 +363,17 @@ class CommentItem extends GetView<CommentItemController> {
           overflowWidget: TextOverflowWidget(
             position: TextOverflowPosition.end,
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 text: '.... ',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromRGBO(0, 9, 40, 0.66),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
                 children: [
                   TextSpan(
-                    text: '顯示更多',
-                    style: TextStyle(
+                    text: 'displayMore'.tr,
+                    style: const TextStyle(
                       color: readrBlack50,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

@@ -63,7 +63,7 @@ class FollowerListController extends GetxController {
     } catch (e) {
       print('Fetch member${viewMember.memberId} more follower error: $e');
       Fluttertoast.showToast(
-        msg: "載入更多失敗",
+        msg: "loadMoreFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

@@ -63,6 +63,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
           child: Container(
             color: readrBlack,
             child: Stack(
+              alignment: AlignmentDirectional.topEnd,
               children: [
                 FadeIn(
                   key: UniqueKey(),
@@ -74,14 +75,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                   ),
                 ),
                 if (widget.editorChoiceList.elementAt(_current).isProject)
-                  Container(
-                    alignment: Alignment.topRight,
-                    margin: const EdgeInsets.only(
-                      top: 16,
-                      right: 12,
-                    ),
-                    child: _displayTag(),
-                  ),
+                  _displayTag(),
               ],
             ),
           ),
@@ -156,24 +150,29 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   }
 
   Widget _displayTag() {
-    return Container(
-      decoration: BoxDecoration(
-        color: editorChoiceTagColor,
-        borderRadius: BorderRadiusDirectional.circular(6),
-      ),
-      height: 24,
-      width: 40,
-      alignment: Alignment.center,
-      child: const Padding(
-        padding: EdgeInsets.symmetric(
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Container(
+        decoration: BoxDecoration(
+          color: editorChoiceTagColor,
+          borderRadius: BorderRadiusDirectional.circular(6),
+        ),
+        margin: const EdgeInsets.only(
+          top: 8,
+          right: 12,
+        ),
+        height: 24,
+        padding: const EdgeInsets.symmetric(
           horizontal: 8,
         ),
+        alignment: Alignment.center,
         child: Text(
-          '專題',
-          style: TextStyle(
+          'topic'.tr,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 12,
           ),
+          maxLines: 1,
         ),
       ),
     );

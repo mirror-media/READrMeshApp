@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
-
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsStoryItem.dart';
 
 abstract class NewsStoryRepos {
@@ -13,9 +8,6 @@ abstract class NewsStoryRepos {
 }
 
 class NewsStoryService implements NewsStoryRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
   Future<NewsStoryItem> fetchNewsData(String storyId) async {
     const String query = '''
@@ -23,6 +15,7 @@ class NewsStoryService implements NewsStoryRepos {
       \$followingMembers: [ID!]
       \$storyId: ID
       \$myId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
       story(
         where:{
@@ -72,12 +65,26 @@ class NewsStoryService implements NewsStoryRepos {
         otherPickMembers: pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             is_active:{
               equals: true
@@ -105,48 +112,16 @@ class NewsStoryService implements NewsStoryRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
-        bookmarkId: pick(
-          where:{
-            member:{
-              id:{
-                equals: \$myId
-              }
-            }
-            kind:{
-              equals: "bookmark"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-        }
+        )
         comment(
           where:{
             is_active:{
@@ -154,6 +129,14 @@ class NewsStoryService implements NewsStoryRepos {
             }
             state:{
               equals: "public"
+            }
+            member:{
+              is_active:{
+                equals: true
+              }
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
             }
           }
           orderBy:{
@@ -202,21 +185,15 @@ class NewsStoryService implements NewsStoryRepos {
       "storyId": storyId,
       "followingMembers": followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    return NewsStoryItem.fromJson(jsonResponse['data']['story']);
+    return NewsStoryItem.fromJson(jsonResponse.data!['story']);
   }
 }

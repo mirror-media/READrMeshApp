@@ -19,15 +19,15 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title = '500';
-    String description = '看來有哪裡出錯了...';
+    String description = '500Description'.tr;
     String imagePath = error500Svg;
     if (error is Error400Exception) {
       title = '404';
-      description = '找不到這頁的資料...';
+      description = '404Description'.tr;
       imagePath = error400Svg;
     } else if (error is NoInternetException) {
-      title = '沒有網際網路連線';
-      description = '請確認您已連接網路';
+      title = 'noInternetTitle'.tr;
+      description = 'noInternetDescription'.tr;
       imagePath = noInternetSvg;
     }
     void Function() onPressedFunction = onPressed;
@@ -61,7 +61,7 @@ class ErrorPage extends StatelessWidget {
               color: readrBlack87,
               size: 26,
             ),
-            tooltip: '回前頁',
+            tooltip: 'back'.tr,
           ),
         ],
       ),
@@ -128,9 +128,9 @@ class ErrorPage extends StatelessWidget {
                 side: const BorderSide(color: readrBlack30),
               ),
               onPressed: onPressedFunction,
-              child: const Text(
-                '重新嘗試',
-                style: TextStyle(
+              child: Text(
+                'retry'.tr,
+                style: const TextStyle(
                   color: readrBlack,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,

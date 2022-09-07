@@ -80,16 +80,16 @@ class RootPage extends GetView<RootPageController> {
           unselectedItemColor: bottomNavigationBarUnselectedColor,
           type: BottomNavigationBarType.fixed,
           items: [
-            const BottomNavigationBarItem(
-              icon: SizedBox(
+            BottomNavigationBarItem(
+              icon: const SizedBox(
                 height: 24,
                 child: Icon(CupertinoIcons.bubble_left_bubble_right),
               ),
-              activeIcon: SizedBox(
+              activeIcon: const SizedBox(
                 height: 24,
                 child: Icon(CupertinoIcons.bubble_left_bubble_right_fill),
               ),
-              label: '社群',
+              label: 'communityTab'.tr,
             ),
             BottomNavigationBarItem(
               icon: SizedBox(
@@ -108,7 +108,7 @@ class RootPage extends GetView<RootPageController> {
                   height: 20,
                 ),
               ),
-              label: '最新',
+              label: 'latestTab'.tr,
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -180,7 +180,7 @@ class RootPage extends GetView<RootPageController> {
                   },
                 ),
               ),
-              label: '個人檔案',
+              label: 'personalFileTab'.tr,
             ),
           ],
         ),

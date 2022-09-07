@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
+import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/apiBaseHelper.dart';
-import 'package:readr/getxServices/environmentService.dart';
-
-import 'package:readr/models/graphqlBody.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class PublisherRepos {
@@ -15,10 +10,6 @@ abstract class PublisherRepos {
 }
 
 class PublisherService implements PublisherRepos {
-  final ApiBaseHelper _helper = ApiBaseHelper();
-
-  final String api = Get.find<EnvironmentService>().config.readrMeshApi;
-
   @override
   Future<List<NewsListItem>> fetchPublisherNews(
       String publisherId, DateTime newsFilterTime) async {
@@ -28,6 +19,7 @@ class PublisherService implements PublisherRepos {
       \$timeFilter: DateTime
       \$myId: ID
       \$publisherId: ID
+      \$blockAndBlockedIds: [ID!]
     ){
     stories(
         take: 20
@@ -111,12 +103,26 @@ class PublisherService implements PublisherRepos {
         otherPicks:pick(
           where:{
             member:{
-              id:{
-                notIn: \$followingMembers
-                not:{
-                  equals: \$myId
+              AND:[
+                {
+                  id:{
+                    notIn: \$followingMembers
+                    not:{
+                      equals: \$myId
+                    }
+                  }
                 }
-              }
+                {
+                  id:{
+                    notIn: \$blockAndBlockedIds
+                  }
+                }
+                {
+                  is_active:{
+                    equals: true
+                  }
+                }
+              ]
             }
             state:{
               in: "public"
@@ -154,6 +160,14 @@ class PublisherService implements PublisherRepos {
             is_active:{
               equals: true
             }
+            member:{
+              id:{
+                notIn: \$blockAndBlockedIds
+              }
+              is_active:{
+                equals: true
+              }
+            }
           }
         )
         commentCount(
@@ -164,37 +178,16 @@ class PublisherService implements PublisherRepos {
             is_active:{
               equals: true
             }
-          }
-        )
-        myPickId: pick(
-          where:{
             member:{
               id:{
-                equals: \$myId
+                notIn: \$blockAndBlockedIds
               }
-            }
-            state:{
-              notIn: "private"
-            }
-            kind:{
-              equals: "read"
-            }
-            is_active:{
-              equals: true
-            }
-          }
-        ){
-          id
-          pick_comment(
-            where:{
               is_active:{
                 equals: true
               }
             }
-          ){
-            id
           }
-        }
+        )
       }
     }
     """;
@@ -208,25 +201,19 @@ class PublisherService implements PublisherRepos {
       "followingMembers": followingMemberIds,
       "myId": Get.find<UserService>().currentUser.memberId,
       "publisherId": publisherId,
-      "timeFilter": newsFilterTime.toUtc().toIso8601String()
+      "timeFilter": newsFilterTime.toUtc().toIso8601String(),
+      "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
     List<NewsListItem> allNews = [];
-    if (jsonResponse['data']['stories'].isNotEmpty) {
-      for (var item in jsonResponse['data']['stories']) {
+    if (jsonResponse.data!['stories'].isNotEmpty) {
+      for (var item in jsonResponse.data!['stories']) {
         allNews.add(NewsListItem.fromJson(item));
       }
     }
@@ -258,23 +245,17 @@ class PublisherService implements PublisherRepos {
 
     Map<String, dynamic> variables = {"publisherId": publisherId};
 
-    GraphqlBody graphqlBody = GraphqlBody(
-      operationName: null,
-      query: query,
+    final jsonResponse = await Get.find<GraphQLService>().query(
+      api: Api.mesh,
+      queryBody: query,
       variables: variables,
+      throwException: false,
     );
 
-    late final dynamic jsonResponse;
-    jsonResponse = await _helper.postByUrl(
-      api,
-      jsonEncode(graphqlBody.toJson()),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (jsonResponse.containsKey('errors')) {
+    if (jsonResponse.hasException) {
       return 0;
     } else {
-      return jsonResponse['data']['publisher']['followerCount'];
+      return jsonResponse.data?['publisher']['followerCount'] ?? 0;
     }
   }
 }

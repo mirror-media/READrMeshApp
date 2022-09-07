@@ -7,7 +7,7 @@ import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/pages/shared/memberListItemWidget.dart';
 import 'package:readr/services/recommendService.dart';
 
@@ -23,9 +23,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
         backgroundColor: Colors.white,
         centerTitle: Platform.isIOS,
         elevation: 0,
-        title: const Text(
-          '推薦追蹤',
-          style: TextStyle(
+        title: Text(
+          'chooseMemberPageAppbarTitle'.tr,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack,
@@ -47,9 +47,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
             Container(
               color: Colors.white,
               padding: const EdgeInsets.all(20),
-              child: const Text(
-                '根據您的喜好，我們推薦您追蹤這些人物',
-                style: TextStyle(
+              child: Text(
+                'chooseMemberPageBodyText'.tr,
+                style: const TextStyle(
                   color: readrBlack87,
                   fontSize: 16,
                 ),
@@ -122,15 +122,15 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  primary: readrBlack87,
+                  backgroundColor: readrBlack87,
                   padding: const EdgeInsets.symmetric(
                     vertical: 12,
                     horizontal: 24,
                   ),
                 ),
-                child: const Text(
-                  '完成',
-                  style: TextStyle(
+                child: Text(
+                  'finish'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),

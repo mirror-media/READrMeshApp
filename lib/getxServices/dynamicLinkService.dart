@@ -12,9 +12,10 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/collectionDeletedPage.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/loginMember/inputNamePage.dart';
+import 'package:readr/pages/personalFile/deletedMemberPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/rootPage.dart';
-import 'package:readr/pages/shared/follow/followingSyncToast.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/collectionService.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -74,7 +75,7 @@ class DynamicLinkService extends GetxService {
         var result = await MemberService().fetchMemberData();
         if (result != null) {
           Fluttertoast.showToast(
-            msg: "登入成功",
+            msg: "loginSuccessToast".tr,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -84,7 +85,7 @@ class DynamicLinkService extends GetxService {
               prefs.getStringList('followingPublisherIds') ?? [];
           if (followingPublisherIds.isNotEmpty) {
             Fluttertoast.showToast(
-              msg: "同步追蹤清單中",
+              msg: "syncingFollowingPublisherToast".tr,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2,
@@ -123,7 +124,7 @@ class DynamicLinkService extends GetxService {
     }).catchError((onError) async {
       print('Error signing in with email link $onError');
       Fluttertoast.showToast(
-        msg: "登入失敗，請重新登入",
+        msg: "loginFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -163,7 +164,7 @@ class DynamicLinkService extends GetxService {
             await CollectionService().fetchCollectionById(collectionId);
       } else {
         Fluttertoast.showToast(
-          msg: "請更新APP",
+          msg: "updateAppToast".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -184,7 +185,7 @@ class DynamicLinkService extends GetxService {
       Get.to(() => const CollectionDeletedPage());
     } else {
       Fluttertoast.showToast(
-        msg: "開啟連結失敗",
+        msg: "openLinkFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -213,7 +214,7 @@ class DynamicLinkService extends GetxService {
         member = await MemberService().fetchMemberDataById(memberId);
       } else {
         Fluttertoast.showToast(
-          msg: "請更新APP",
+          msg: "updateAppToast".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -226,21 +227,15 @@ class DynamicLinkService extends GetxService {
       print('Open collection link error: $e');
     }
 
-    if (member != null) {
+    if (member != null && !Get.find<UserService>().isBlocked(member.memberId)) {
       Get.to(
         () => PersonalFilePage(
           viewMember: member!,
         ),
       );
     } else {
-      Fluttertoast.showToast(
-        msg: "用戶不存在",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
+      Get.to(
+        () => DeletedMemberPage(),
       );
     }
   }

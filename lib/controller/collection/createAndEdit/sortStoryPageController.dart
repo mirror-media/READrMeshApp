@@ -2,29 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
-import 'package:readr/controller/collection/createAndEdit/inputTitlePageController.dart';
+import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/controller/personalFile/collectionTabController.dart';
-import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
-import 'package:readr/models/collectionStory.dart';
+import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/services/collectionService.dart';
 
 class SortStoryPageController extends GetxController {
   final CollectionRepos collectionRepos;
   final isUpdating = false.obs;
-  final List<CollectionStory> originalList;
-  final collectionStoryList = <CollectionStory>[].obs;
+  final List<FolderCollectionPick> originalList;
+  final collectionStoryList = <FolderCollectionPick>[].obs;
   final Collection? collection;
-  bool isFirstTimeEdit = true;
+  bool _isFirstTimeEdit = true;
   final bool isEdit;
-  bool hasChange = false;
+  final hasChange = false.obs;
+  final JustTheController tooltipController = JustTheController();
   SortStoryPageController(
     this.collectionRepos,
     this.originalList,
@@ -34,9 +35,9 @@ class SortStoryPageController extends GetxController {
 
   @override
   void onInit() {
-    isFirstTimeEdit = Get.find<SharedPreferencesService>()
+    _isFirstTimeEdit = Get.find<SharedPreferencesService>()
             .prefs
-            .getBool('firstTimeEditCollection') ??
+            .getBool('firstTimeEditFolder') ??
         true;
     ever(collectionStoryList, (callback) => _checkHasChange());
     collectionStoryList.assignAll(originalList);
@@ -45,7 +46,7 @@ class SortStoryPageController extends GetxController {
 
   @override
   void onReady() {
-    if (isFirstTimeEdit && isEdit) {
+    if (_isFirstTimeEdit && isEdit) {
       _showDeleteHint();
     }
     super.onReady();
@@ -53,14 +54,14 @@ class SortStoryPageController extends GetxController {
 
   void _checkHasChange() {
     if (collectionStoryList.length != originalList.length) {
-      hasChange = true;
+      hasChange.value = true;
     } else {
       for (int i = 0; i < collectionStoryList.length; i++) {
         if (collectionStoryList[i].news.id != originalList[i].news.id) {
-          hasChange = true;
+          hasChange.value = true;
           break;
         } else {
-          hasChange = false;
+          hasChange.value = false;
         }
       }
     }
@@ -72,7 +73,7 @@ class SortStoryPageController extends GetxController {
     try {
       String imageId = await collectionRepos
           .createOgPhoto(
-              ogImageUrlOrPath: Get.find<InputTitlePageController>()
+              ogImageUrlOrPath: Get.find<TitleAndOgPageController>()
                   .collectionOgUrlOrPath
                   .value)
           .timeout(
@@ -80,9 +81,9 @@ class SortStoryPageController extends GetxController {
           );
       Collection newCollection = await collectionRepos
           .createCollection(
-            title: Get.find<InputTitlePageController>().collectionTitle.value,
+            title: Get.find<TitleAndOgPageController>().collectionTitle.value,
             ogImageId: imageId,
-            collectionStory: collectionStoryList,
+            collectionPicks: collectionStoryList,
             description: Get.find<DescriptionPageController>()
                 .collectionDescription
                 .value,
@@ -96,20 +97,11 @@ class SortStoryPageController extends GetxController {
         collectionId: newCollection.id,
       );
 
-      Get.lazyPut<PickableItemController>(
-        () => PickableItemController(
-          targetId: newCollection.id,
-          objective: PickObjective.collection,
-          controllerTag: newCollection.controllerTag,
-        ),
-        tag: newCollection.controllerTag,
-        fenix: true,
-      );
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
                 tag: Get.find<UserService>().currentUser.memberId)
-            .fetchCollecitionList();
+            .fetchCollecitionList(useCache: false);
       }
       Get.offUntil<GetPageRoute>(
         GetPageRoute(
@@ -127,7 +119,7 @@ class SortStoryPageController extends GetxController {
       print('Create collection error: $e');
       isUpdating.value = false;
       Fluttertoast.showToast(
-        msg: "建立失敗 請稍後再試",
+        msg: "createCollectionFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -141,61 +133,21 @@ class SortStoryPageController extends GetxController {
 
   void updateCollectionPicks() async {
     isUpdating.value = true;
-    List<CollectionStory> originItemList = [];
-    originItemList.assignAll(originalList);
-    List<CollectionStory> addItemList = [];
-    List<CollectionStory> moveItemList = [];
-    List<CollectionStory> deleteItemList = [];
-
-    for (int i = 0; i < collectionStoryList.length; i++) {
-      collectionStoryList[i].sortOrder = i;
-      int originListIndex = originItemList.indexWhere(
-          (element) => element.news.id == collectionStoryList[i].news.id);
-      if (originListIndex == -1) {
-        addItemList.add(collectionStoryList[i]);
-      } else if (i != originListIndex) {
-        moveItemList.add(collectionStoryList[i]);
-        originItemList.removeAt(originListIndex);
-      } else {
-        originItemList.removeAt(originListIndex);
-      }
-    }
-
-    if (originItemList.isNotEmpty) {
-      deleteItemList.assignAll(originItemList);
-    }
-
-    List<Future> futureList = [];
-    futureList.addIf(
-      addItemList.isNotEmpty,
-      collectionRepos.createCollectionPicks(
-        collection: collection!,
-        collectionStory: addItemList,
-      ),
-    );
-    futureList.addIf(
-      moveItemList.isNotEmpty,
-      collectionRepos.updateCollectionPicksOrder(
-        collectionId: collection!.id,
-        collectionStory: moveItemList,
-      ),
-    );
-    futureList.addIf(
-      deleteItemList.isNotEmpty,
-      collectionRepos.removeCollectionPicks(
-        collectionStory: deleteItemList,
-      ),
-    );
 
     try {
-      await Future.wait(futureList);
+      await collectionRepos.updateCollectionPicks(
+        collectionId: collection!.id,
+        originList: originalList,
+        newList: collectionStoryList,
+        format: CollectionFormat.folder,
+      );
       await Get.find<CollectionPageController>(tag: collection!.id)
-          .fetchCollectionData();
+          .fetchCollectionData(useCache: false);
       Get.back();
     } catch (e) {
       print('Update collection picks error: $e');
       Fluttertoast.showToast(
-        msg: "更新失敗 請稍後再試",
+        msg: "updateFailedToast".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -223,7 +175,7 @@ class SortStoryPageController extends GetxController {
                 height: 4,
               ),
               Text(
-                '向左滑可以刪除文章',
+                'collectionDeleteItemHint'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight:
@@ -238,7 +190,7 @@ class SortStoryPageController extends GetxController {
                 onPressed: () {
                   Get.find<SharedPreferencesService>()
                       .prefs
-                      .setBool('firstTimeEditCollection', false);
+                      .setBool('firstTimeEditFolder', false);
                   Get.back();
                 },
                 style: ElevatedButton.styleFrom(
@@ -247,11 +199,11 @@ class SortStoryPageController extends GetxController {
                     vertical: 8,
                     horizontal: 20,
                   ),
-                  primary: Colors.white,
+                  backgroundColor: Colors.white,
                 ),
-                child: const Text(
-                  '我知道了',
-                  style: TextStyle(
+                child: Text(
+                  'iGotIt'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: readrBlack87,
                   ),
@@ -262,5 +214,6 @@ class SortStoryPageController extends GetxController {
         );
       },
     );
+    tooltipController.showTooltip();
   }
 }

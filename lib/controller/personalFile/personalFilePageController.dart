@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:readr/controller/followableItemController.dart';
+import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/personalFile/bookmarkTabContent.dart';
 import 'package:readr/pages/personalFile/collectionTabContent.dart';
+import 'package:readr/pages/personalFile/deletedMemberPage.dart';
 import 'package:readr/pages/personalFile/pickTabContent.dart';
+import 'package:readr/pages/shared/meshToast.dart';
+import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 
 class PersonalFilePageController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final PersonalFileRepos personalFileRepos;
+  final MemberRepos memberRepos;
   Member viewMember;
   PersonalFilePageController({
     required this.personalFileRepos,
+    required this.memberRepos,
     required this.viewMember,
   });
 
@@ -37,11 +45,28 @@ class PersonalFilePageController extends GetxController
 
   final JustTheController tooltipController = JustTheController();
 
+  final isBlock = false.obs;
+
+  final pickTabText = 'picks'.tr.obs;
+  final collectionTabText = 'collections'.tr.obs;
+  final bookmarkTabText = 'bookmarks'.tr.obs;
+
   @override
   void onInit() {
     viewMemberData = Rx<Member>(viewMember);
+    if (Get.find<UserService>().isBlockMember(viewMember.memberId)) {
+      isBlock.value = true;
+    }
     initPage();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    if (Get.find<UserService>().isBlocked(viewMember.memberId)) {
+      Get.off(() => DeletedMemberPage());
+    }
+    super.onReady();
   }
 
   @override
@@ -69,7 +94,6 @@ class PersonalFilePageController extends GetxController
       personalFileRepos
           .fetchMemberData(viewMember)
           .then((value) => viewMemberData.value = value),
-      Get.find<UserService>().fetchUserData(),
     ]);
 
     pickCount.value = viewMemberData.value.pickCount ?? 0;
@@ -86,11 +110,13 @@ class PersonalFilePageController extends GetxController
     tabWidgets.clear();
 
     tabs.add(
-      const Tab(
-        child: Text(
-          '精選',
-          style: TextStyle(
-            fontSize: 16,
+      Tab(
+        child: Obx(
+          () => Text(
+            pickTabText.value,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -113,11 +139,13 @@ class PersonalFilePageController extends GetxController
     }
 
     tabs.add(
-      const Tab(
-        child: Text(
-          '集錦',
-          style: TextStyle(
-            fontSize: 16,
+      Tab(
+        child: Obx(
+          () => Text(
+            collectionTabText.value,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -130,11 +158,13 @@ class PersonalFilePageController extends GetxController
     if (viewMemberData.value.memberId ==
         Get.find<UserService>().currentUser.memberId) {
       tabs.add(
-        const Tab(
-          child: Text(
-            '書籤',
-            style: TextStyle(
-              fontSize: 16,
+        Tab(
+          child: Obx(
+            () => Text(
+              bookmarkTabText.value,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
             ),
           ),
         ),
@@ -156,5 +186,58 @@ class PersonalFilePageController extends GetxController
         Get.find<HiveService>().tooltipBox.put('showCollectionTooltip', false);
       }
     });
+  }
+
+  void updateTabs() {
+    pickTabText.value = 'picks'.tr;
+    collectionTabText.value = 'collections'.tr;
+    bookmarkTabText.value = 'bookmarks'.tr;
+  }
+
+  void blockMember() async {
+    try {
+      memberRepos.addBlockMember(viewMember.memberId);
+      Get.find<UserService>().addBlockMember(viewMember.memberId);
+      Get.find<UserService>().removeFollowingMember(viewMember.memberId);
+      Get.find<FollowableItemController>(
+              tag: MemberFollowableItem(viewMemberData.value).tag)
+          .isFollowed
+          .value = false;
+      isBlock.value = true;
+      _showResultToast('blockSuccess'.tr);
+      if (Get.isRegistered<SettingPageController>()) {
+        Get.find<SettingPageController>().fetchBlocklist();
+      }
+    } catch (e) {
+      print('Block member error: $e');
+    }
+  }
+
+  void unblockMember() async {
+    try {
+      memberRepos.removeBlockMember(viewMember.memberId);
+      Get.find<UserService>().removeBlockMember(viewMember.memberId);
+      isBlock.value = false;
+      _showResultToast('unBlockSuccess'.tr);
+      if (Get.isRegistered<SettingPageController>()) {
+        final settingPageController = Get.find<SettingPageController>();
+        settingPageController.blockMembers
+            .removeWhere((element) => element.memberId == viewMember.memberId);
+        settingPageController.update();
+      }
+    } catch (e) {
+      print('Unblock member error: $e');
+    }
+  }
+
+  void _showResultToast(String message) {
+    showMeshToast(
+      icon: const Icon(
+        Icons.check_circle,
+        size: 16,
+        color: Colors.white,
+      ),
+      message: message,
+    );
   }
 }

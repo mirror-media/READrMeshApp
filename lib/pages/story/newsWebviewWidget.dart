@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
@@ -10,16 +11,16 @@ import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebviewWidget extends GetView<StoryPageController> {
-  final String newsId;
-  const NewsWebviewWidget(this.newsId);
+  final NewsListItem news;
+  const NewsWebviewWidget(this.news);
 
   @override
-  String get tag => newsId;
+  String get tag => news.id;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoryPageController>(
-      tag: newsId,
+      tag: news.id,
       builder: (controller) {
         if (controller.isError) {
           return ErrorPage(
@@ -35,13 +36,12 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
   }
 
   Widget _webViewWidget(BuildContext context) {
-    late WebViewController webViewController;
     return Stack(
       fit: StackFit.expand,
       children: [
         Column(
           children: [
-            StoryAppBar(newsId),
+            StoryAppBar(news),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(bottom: context.height * 0.12),
@@ -49,36 +49,39 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                   initialUrl: controller.newsListItem.url,
                   backgroundColor: Colors.white,
                   javascriptMode: JavascriptMode.unrestricted,
-                  onWebViewCreated: (newWebViewController) =>
-                      webViewController = newWebViewController,
+                  gestureNavigationEnabled: true,
+                  onWebViewCreated: (newWebViewController) {
+                    controller.webViewController = newWebViewController;
+                    controller.webViewControllerIsLoaded = true;
+                  },
                   onPageFinished: (url) {
                     if (controller.newsListItem.source?.id ==
                         Get.find<EnvironmentService>()
                             .config
                             .readrPublisherId) {
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('header')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('footer')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('footer')[1].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('frame__donate')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('frame__tag-list-wrapper')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('news-letter')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('frame__related-list-wrapper')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByClassName('latest-coverages')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('readr-header')[0].style.display = 'none';");
-                      webViewController.runJavascript(
+                      controller.webViewController.runJavascript(
                           "document.getElementsByTagName('readr-donate-link')[0].style.display = 'none';");
                     }
                   },
@@ -88,7 +91,7 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           ],
         ),
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading) {
               return Container();
@@ -106,10 +109,10 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
           },
         ),
         GetBuilder<StoryPageController>(
-          tag: newsId,
+          tag: news.id,
           builder: (controller) {
             if (controller.isLoading) {
-              return StorySkeletonScreen(newsId);
+              return StorySkeletonScreen(news);
             }
 
             return Container();

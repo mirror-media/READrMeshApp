@@ -1,3 +1,4 @@
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/recommendItemController.dart';
@@ -33,8 +34,9 @@ class LookmoreItem extends StatelessWidget {
             const SizedBox(height: 8),
             SizedBox(
               height: 34,
-              child: Text(
+              child: ExtendedText(
                 controller.recommendItems.first.lookmoreText,
+                joinZeroWidthSpace: true,
                 style: const TextStyle(
                   fontSize: 12,
                   color: readrBlack50,
@@ -56,10 +58,10 @@ class LookmoreItem extends StatelessWidget {
                   backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
-                child: const Text(
-                  '查看全部',
+                child: Text(
+                  'viewAll'.tr,
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: readrBlack87,
                   ),

@@ -22,11 +22,11 @@ class VisitorPersonalFile extends StatelessWidget {
             Get.to(() => SettingPage());
           },
         ),
-        title: const Text(
-          '個人檔案',
+        title: Text(
+          'personalFileTab'.tr,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: readrBlack87,
@@ -43,15 +43,16 @@ class VisitorPersonalFile extends StatelessWidget {
   Widget _visitorContent() {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(40, 20, 40, 24),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40, 20, 40, 24),
           child: Text(
-            '建立帳號，客製化追蹤更多優質新聞',
-            style: TextStyle(
+            'visitorContentTitle'.tr,
+            style: const TextStyle(
               color: readrBlack87,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
         Padding(
@@ -64,7 +65,7 @@ class VisitorPersonalFile extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              primary: readrBlack87,
+              backgroundColor: readrBlack87,
               elevation: 0,
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
@@ -75,9 +76,9 @@ class VisitorPersonalFile extends StatelessWidget {
               ),
               minimumSize: const Size.fromHeight(48),
             ),
-            child: const Text(
-              '立即建立',
-              style: TextStyle(
+            child: Text(
+              'visitorContentButton'.tr,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
