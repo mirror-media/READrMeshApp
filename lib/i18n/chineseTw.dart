@@ -152,7 +152,7 @@ const Map<String, String> chineseTwMap = {
   'collectionDeletedDescription': '這個集錦已經被刪除了',
   'editTitle': '修改標題',
   'editDescription': '修改敘述',
-  'editContentAndSorting': '编辑内容和排序',
+  'editContentAndSorting': '編輯内容和排序',
   'deleteCollection': '刪除集錦',
   'deleteCollectionAlertTitle': '確認刪除集錦？',
   'deleteCollectionAlertDescription': '此動作無法復原',

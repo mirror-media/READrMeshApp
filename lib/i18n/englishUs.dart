@@ -495,7 +495,7 @@ const Map<String, String> englishUsMap = {
   'tryOtherLoginMethod': 'try another login method',
 
   //latestPage
-  'latestPageEmptyTitle': "oh no...it's empty",
+  'latestPageEmptyTitle': "Oh no...it's empty",
   'latestPageEmptyDescription':
       'Follow the media you are interested in\nand discuss with everyone',
   'noArticlesTitle': 'Wow, no new articles today!',
