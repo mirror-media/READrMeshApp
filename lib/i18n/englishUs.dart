@@ -15,7 +15,7 @@ const Map<String, String> englishUsMap = {
   'people': 'people',
   'all': ' all',
   'finish': 'Finish',
-  'nextStep': 'Next step',
+  'nextStep': 'Next',
   'or': 'or',
   'filter': 'Filter',
   'send': 'Send',
@@ -26,21 +26,21 @@ const Map<String, String> englishUsMap = {
   'setUp': 'Set up',
   'quit': 'Quit',
   'skip': 'Skip',
-  'iGotIt': 'I got it',
+  'iGotIt': 'Got it',
 
   //bottom tab
   'communityTab': 'Community',
   'latestTab': 'Latest',
-  'personalFileTab': 'Personal file',
+  'personalFileTab': 'Profile',
 
   //community page
   'communityEmptyTitle': 'Huh? There seems to be something missing here...',
   'communityEmptyDescription':
-      'Follow your favorite users\nSee what news they have picked',
+      'Follow your favorite people\nSee what news they have picked',
   'both': ' both',
   'pickNews': ' picked this',
-  'showFullComment': 'see full comment',
-  'communityNoMore': 'You have followed all the updates',
+  'showFullComment': 'more',
+  'communityNoMore': "You're all caught up",
   'commentNews': ' commented on this',
   'updateCollection': ' updated a collection',
   'createANewCollection': ' created a new collection',
@@ -59,15 +59,15 @@ const Map<String, String> englishUsMap = {
   'loginFailedToast': 'Login failed, please try again',
   'updateAppToast': 'Please update APP',
   'openLinkFailedToast': 'Failed to open link',
-  'addToCollectionSuccessToast': 'Successfully joined the collection',
-  'addToCollectionFailedToast': 'Failed to join collection',
+  'addToCollectionSuccessToast': 'Successfully added to your collection',
+  'addToCollectionFailedToast': 'Failed to added to your collection',
   'createCollectionFailedToast': 'Failed to create, please try again later',
   'loadFailedToast': 'Failed to load, please try again later',
   'updateFailedToast': 'Update failed, please try again later',
-  'deleteFailedToast': 'Deletion failed, please try again later',
+  'deleteFailedToast': 'Failed to delete, please try again later',
   'deleteSuccessToast': 'Successfully deleted',
   'errorRetryToast': 'An error occurred, please try again later',
-  'commentFailedToast': 'Comment failed, please try again later',
+  'commentFailedToast': 'Comment failed to post, please try again later',
   'loadMoreFailedToast': 'Failed to load more',
   'updateSuccessToast': 'Update completed',
   'saveFailedToast': 'Failed to save, please try again later',
@@ -114,20 +114,20 @@ const Map<String, String> englishUsMap = {
   'commentCount': ' comment',
   'sendingComment': 'Sending',
   'editComment': 'Edit comment',
-  'displayMore': 'Display more',
-  'deleteComment': 'Delete comment',
+  'displayMore': 'more',
+  'deleteComment': 'Delete',
   'deleteAlertContent': 'Your pick will still be retained',
   'deleteAlertTitle': 'Are you sure you want to delete the comment?',
   'cancelEdit': 'Cancel',
   'leaveAlertContent': 'What you just entered will not be saved',
-  'continueInput': 'Keep typing',
+  'continueInput': 'Keep',
 
   //pick
   'pickCount': ' pick',
   'noPick': 'No pick yet',
   'pickCommentHint': 'Share with us why you picked...',
   'pickDirectly': 'Pick directly',
-  'pickTooltip': 'Pick favorite articles or collections',
+  'pickTooltip': 'Pick your favorite articles or collections',
   'unPickAlertTitle': 'Are you sure you want to remove the pick?',
   'unPickAlertContent':
       'If you remove the pick, your comment will also be removed',
@@ -144,11 +144,11 @@ const Map<String, String> englishUsMap = {
   'alreadyAddToAllCollections':
       'You have added this news to all your collections before',
   'alreadyAddToACollectionPrefix':
-      'You have previously added this news to collection "',
-  'alreadyAddToACollectionSuffix': '"',
+      'You have previously added this news to collection “',
+  'alreadyAddToACollectionSuffix': '”',
   'alreadyAddToCollectionsPrefix': 'You have previously added this news to ',
-  'upperQuotationMarks': '"',
-  'lowerQuotationMarks': '"',
+  'upperQuotationMarks': '“',
+  'lowerQuotationMarks': '”',
   'comma': ', ',
   'alreadyAddToCollectionsSuffix1': ' etc. ',
   'alreadyAddToCollectionsSuffix2': ' collections',
@@ -165,9 +165,9 @@ const Map<String, String> englishUsMap = {
       'From Picked News or Bookmarks\nPackage several news into a collection',
   'myCollectionEmptyButtonText': 'Try it now',
   'viewCollectionEmpty': 'There is no news in this collection yet',
-  'expandDescription': 'Expand More',
+  'expandDescription': 'more',
   'articleCount': ' article',
-  'customization': 'User-\ndefined',
+  'customization': 'custom',
   'updatingCollection': 'Updating collection',
   'creatingCollection': 'Creating collection',
   'sort': 'Sort',
@@ -241,7 +241,7 @@ const Map<String, String> englishUsMap = {
   'justUpdated': 'Just updated',
 
   //commentInputBox
-  'commentVisitorHint': 'Sign up to participate in discussions',
+  'commentVisitorHint': 'Sign up to join the discussions',
   'commentTextFieldHint': 'Enter a comment here...',
   'sendComment': 'Publish',
 
@@ -250,15 +250,15 @@ const Map<String, String> englishUsMap = {
   'fullScreenAd': 'Hover ad',
 
   //recommendFollow
-  'recommendFollow': 'Recommended to follow',
-  'noRecommend': 'No recommended to follow',
+  'recommendFollow': 'Discover',
+  'noRecommend': 'No follow suggestions',
 
   //followableItem
-  'defaultDescription': 'Recommended to you',
+  'defaultDescription': 'Suggested to you',
   'singleFollower': ' followed',
   'multiFollower': 'followed',
-  'lookmoreMemberText': 'Explore more users recommended for you',
-  'lookmorePublisherText': 'Explore more recommended media for you',
+  'lookmoreMemberText': 'Explore more users suggested for you',
+  'lookmorePublisherText': 'Explore more suggested media for you',
 
   //story
   'updateTime': 'Update time: ',
@@ -270,15 +270,15 @@ const Map<String, String> englishUsMap = {
   'mmCustomerServiceNumber': 'Mirror Media customer service number: ',
 
   //welcomePage
-  'item1Title': 'See which news your friends are pushing',
+  'item1Title': 'See which news your friends upvoted',
   'item1Description': 'Humans pick better than AI',
   'item2Title': 'Pick your favorite stories',
   'item2Description': 'I can’t be the only one to see this',
   'item3Title': 'Discuss anytime',
   'item3Description': 'See what everyone is thinking',
   'item4Title': 'Collection function help classification',
-  'item4Description': 'Easily make your own lazy guide',
-  'startToUse': 'Start using',
+  'item4Description': 'Easily make your own guide for dummies',
+  'startToUse': 'Start',
 
   //errorPage
   '500Description': 'Looks like something went wrong...',
@@ -323,7 +323,7 @@ const Map<String, String> englishUsMap = {
       'Deleting account failed. Please log in again, or contact the customer service email: readr@readr.tw.',
   'letMeThinkAgain': 'Let me think again',
   'backToHomePage': 'Back to the homepage',
-  'confirmDeleteAccount': 'Confirm deletion',
+  'confirmDeleteAccount': 'Delete',
 
   //initialSettingPage
   'initialSettingPageTitle': 'Default display page',
@@ -348,14 +348,14 @@ const Map<String, String> englishUsMap = {
   'searchBarHintText': 'Search all news and collections...',
   'searchHistory': 'Search history',
   'clearAllHistory': 'Clear all records',
-  'noResultPrefix': 'No news or collections found containing "',
-  'noResultSuffix': '", please try again with another keyword.',
-  'noNewsResultPrefix': 'No news found containing "',
-  'noNewsResultSuffix': '", please try again with another keyword.',
+  'noResultPrefix': 'No news or collections found containing “',
+  'noResultSuffix': '”, please try again with another keyword.',
+  'noNewsResultPrefix': 'No news found containing “',
+  'noNewsResultSuffix': '”, please try again with another keyword.',
   'allCollections': 'All collections',
   'allNews': 'All news',
-  'viewAllCollectionResultPrefix': 'View all collections containing "',
-  'viewAllCollectionResultSuffix': '"',
+  'viewAllCollectionResultPrefix': 'View all collections containing “',
+  'viewAllCollectionResultSuffix': '”',
 
   //readr
   'topic': 'Feature',
@@ -401,20 +401,20 @@ const Map<String, String> englishUsMap = {
   'noFollowing': 'Unfollowing users or media',
   'viewMemberNoFollowing': 'This person does not follow users or media',
   'media': 'Media',
-  'figure': 'User',
+  'figure': 'People',
   'sharePersonalFile': 'Share this personal file',
   'shareMyPersonalFile': 'Share my personal file',
   'copyPersonalFileLink': 'Copy personal file link',
   'collectionTooltip': 'Pack your favorite news into collections',
   'follower': 'Follower',
   'blockWidgetText': 'You have blocked this user.',
-  'emptyPick': 'This is still empty\nQuickly pick your favorite news',
+  'emptyPick': 'No picks yet\nQuickly pick your favorite news',
   'viewMemberEmptyPick': 'This person has no picked news yet',
   'pickedCollections': 'Picked Collections',
   'pickedArticles': 'Pikced Articles',
   'visitorContentTitle':
       'Create an account and customize to follow more high-quality news',
-  'visitorContentButton': 'Create now',
+  'visitorContentButton': 'Create',
 
   //choose picture
   'openCamera': 'Take a picture',
@@ -434,13 +434,13 @@ const Map<String, String> englishUsMap = {
   'commentNewsPrefix': ' comment under ',
   'commentNewsSuffix': "'s news.",
   'startFollowingYou': ' start following you.',
-  'likeCommentPrefix': ' like your message "',
-  'likeCommentSuffix': '".',
-  'pickCollectionPrefix': ' pick your collection "',
-  'pickCollectionSuffix': '".',
+  'likeCommentPrefix': ' like your message “',
+  'likeCommentSuffix': '”.',
+  'pickCollectionPrefix': ' pick your collection “',
+  'pickCollectionSuffix': '”.',
   'commentYourCollection': ' leave a comment under your collection.',
-  'createCollectionPrefix': ' create a new collection "',
-  'createCollectionSuffix': '".',
+  'createCollectionPrefix': 'create a new collection “',
+  'createCollectionSuffix': '”.',
 
   //loginPage
   'loginOnboardAppbarTitle': 'Start using',
@@ -459,12 +459,12 @@ const Map<String, String> englishUsMap = {
       "<div style='text-align:center'>By continuing to use, you agree to and accept our</div><div style='text-align:center'><a href='https://www.readr.tw/post/2901'>\"Terms of Service\"</a> and <a href='https://www.readr.tw/privacy-rule'>\"Privacy Policy\"</div>",
 
   //inputNamePage
-  'inputNamePageAppbarTitle': 'Nick name',
+  'inputNamePageAppbarTitle': 'Name',
   'completeRegistration': 'Register',
   'creatingAnAccount': 'Creating an account',
-  'inputNamePageEmptyHint': 'Please enter a nickname.',
+  'inputNamePageEmptyHint': 'Please enter a name',
   'inputNamePageErrorHint':
-      'This nickname is currently unavailable, please use another nickname.',
+      'This name is currently unavailable, please use another nickname.',
   'inputNamePageDescription':
       'Please enter the public display name you would like to use, within 20 characters.',
 
@@ -474,7 +474,7 @@ const Map<String, String> englishUsMap = {
   'noChoosePublisherButtonText': 'Please select at least one',
 
   //chooseMemberPage
-  'chooseMemberPageAppbarTitle': 'Recommended to follow',
+  'chooseMemberPageAppbarTitle': 'Discover people',
   'chooseMemberPageBodyText':
       'Based on your preferences, we recommend you to follow these people',
 
@@ -484,12 +484,12 @@ const Map<String, String> englishUsMap = {
   'inputEmailPageEmptyHint': 'Please enter your email address',
   'inputEmailPageErrorHint': 'Please enter a valid email address',
   'inputEmailPageBodyText':
-      'We will send a login link to this email to save you the trouble of setting a password.',
+      'We will send a login link to this email to save you the trouble of setting a password',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': 'Confirm inbox',
   'sentEmailPagePrefix': 'We have sent a login link to',
-  'sentEmailPageSuffix': ', please click the link in the letter to log in.',
+  'sentEmailPageSuffix': ', please click the link in the letter to log in',
   'openEmailApp': 'Open Email APP',
   'notReceiveText': "Didn't get the letter? Please check your spam box",
   'tryOtherLoginMethod': 'try another login method',
@@ -507,8 +507,7 @@ const Map<String, String> englishUsMap = {
 
   //invitationCode
   'invitationCode': 'Invitation code',
-  'invitationCodeInputError':
-      'Invitation code entered incorrectly, please re-enter',
+  'invitationCodeInputError': 'Invalid invitation code. Please try again',
   'invitationCodeUsed':
       'This invitation code has already been used, please re-enter',
   'invitationCodeError': 'An error occurred, please try again',
@@ -518,7 +517,7 @@ const Map<String, String> englishUsMap = {
   'availableInviteCodes': 'Available invitation code',
   'noAvailableInviteCodes': 'There are currently no invite codes available...',
   'invitationCodeCopied': 'Invitation code copied',
-  'copyTheInvitationCode': 'Copy the invitation code',
+  'copyTheInvitationCode': 'Copy',
   'used': 'Used',
 
   //share

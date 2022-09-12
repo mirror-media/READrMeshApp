@@ -447,9 +447,9 @@ const Map<String, String> chineseTwMap = {
   'inputNamePageAppbarTitle': '暱稱',
   'completeRegistration': '完成註冊',
   'creatingAnAccount': '建立帳號中',
-  'inputNamePageEmptyHint': '請輸入暱稱。',
-  'inputNamePageErrorHint': '這個暱稱目前無法使用，請使用其他暱稱。',
-  'inputNamePageDescription': '請輸入您想使用的公開顯示名稱，字數以20字內為限。',
+  'inputNamePageEmptyHint': '請輸入暱稱',
+  'inputNamePageErrorHint': '這個暱稱目前無法使用，請使用其他暱稱',
+  'inputNamePageDescription': '請輸入您想使用的公開顯示名稱，字數以20字內為限',
 
   //choosePublisherPage
   'choosePublisherPageAppbarTitle': '歡迎使用',
@@ -465,12 +465,12 @@ const Map<String, String> chineseTwMap = {
   'emailDeliveryFailed': 'Email寄送失敗',
   'inputEmailPageEmptyHint': '請輸入您的 Email 地址',
   'inputEmailPageErrorHint': '請輸入有效的 Email 地址',
-  'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
+  'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': '確認收件匣',
   'sentEmailPagePrefix': '我們已將登入連結寄到',
-  'sentEmailPageSuffix': '，請點擊信件中的連結登入。',
+  'sentEmailPageSuffix': '，請點擊信件中的連結登入',
   'openEmailApp': '打開信件 APP',
   'notReceiveText': '沒收到信件？請檢查垃圾信件匣',
   'tryOtherLoginMethod': '嘗試其他登入方式',
