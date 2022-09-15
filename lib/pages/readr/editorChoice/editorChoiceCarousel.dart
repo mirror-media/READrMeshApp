@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -26,7 +25,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   final CarouselController _controller = CarouselController();
   int _current = 0;
   final double aspectRatio = 16 / 9;
-  final ChromeSafariBrowser browser = ChromeSafariBrowser();
   late double width;
   final List<Widget> items = [];
 
