@@ -78,7 +78,7 @@
             android:id="@+id/native_ad_image"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:background="@drawable/native_ad_image_border"
+            android:background="@drawable/small_list_image_border"
             android:gravity="end" />
 
 
