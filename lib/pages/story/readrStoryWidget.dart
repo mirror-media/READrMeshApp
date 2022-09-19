@@ -11,6 +11,7 @@ import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
@@ -100,6 +101,23 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       _buildAnnotationBlock(story),
       const SizedBox(height: 48),
       _buildCitation(story),
+      const SizedBox(height: 32),
+      Container(
+        decoration: BoxDecoration(
+          color: readrBlack10,
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          border: Border.all(
+            color: readrBlack10,
+          ),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+        child: NativeAdWidget(
+          adUnitIdKey: 'READr_300x250_AT3',
+          factoryId: 'outline',
+          adHeight: width * 0.65,
+        ),
+      ),
       const SizedBox(height: 32),
       _buildContact(),
       const SizedBox(height: 160),
@@ -417,6 +435,10 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
   Widget _buildContent(Story story) {
     List<Paragraph> storyContents = story.contentApiData!;
+    const Map<int, String> adUnitIdMap = {
+      0: 'READr_300x250_AT1',
+      4: 'READr_300x250_AT2',
+    };
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -429,8 +451,43 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
+            if (index == 0 || index == 4) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32.0),
+                    child: controller.paragraphFormat.parseTheParagraph(
+                      paragraph,
+                      context,
+                      _textSize,
+                      showAnnotations: true,
+                      annotationLength: story.contentAnnotationData!.length,
+                      itemScrollController: _itemScrollController,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: readrBlack10,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10.0)),
+                      border: Border.all(
+                        color: readrBlack10,
+                      ),
+                    ),
+                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                    child: NativeAdWidget(
+                      adUnitIdKey: adUnitIdMap[index]!,
+                      factoryId: 'outline',
+                      adHeight: context.width * 0.65,
+                    ),
+                  ),
+                ],
+              );
+            }
             return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.only(bottom: 32.0),
               child: controller.paragraphFormat.parseTheParagraph(
                 paragraph,
                 context,
