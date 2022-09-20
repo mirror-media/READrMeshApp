@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
-import 'package:readr/getxServices/adService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
@@ -230,8 +229,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 topWidget: const SizedBox(height: 8),
                 adBgColor: Colors.white,
                 factoryId: 'full',
-                adUnitId:
-                    Get.find<AdService>().getAdUnitId(adIndexAndId[index]!),
+                adUnitIdKey: adIndexAndId[index]!,
               ),
             ],
           );
