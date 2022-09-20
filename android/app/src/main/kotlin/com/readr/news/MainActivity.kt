@@ -13,6 +13,8 @@ class MainActivity: FlutterActivity() {
                 flutterEngine, "smallList", SmallListNativeAdFactory(context))
         GoogleMobileAdsPlugin.registerNativeAdFactory(
                 flutterEngine, "full", FullNativeAdFactory(context))
+        GoogleMobileAdsPlugin.registerNativeAdFactory(
+                flutterEngine, "outline", OutlineNativeAdFactory(context))
     }
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
@@ -21,5 +23,6 @@ class MainActivity: FlutterActivity() {
         // TODO: Unregister the ListTileNativeAdFactory
         GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, "smallList")
         GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, "full")
+        GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, "outline")
     }
 }
