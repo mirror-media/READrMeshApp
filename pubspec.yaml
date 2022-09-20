@@ -36,7 +36,7 @@ dependencies:
   # Provides internationalization and localization facilities
   intl: ^0.17.0
   # The Font Awesome Icon pack available as set of Flutter Icons.
-  font_awesome_flutter: ^9.1.0
+  font_awesome_flutter: ^10.2.1
   # Launching a URL in the mobile platform.
   url_launcher: ^6.0.12
   # share url
@@ -108,7 +108,7 @@ dependencies:
     git:
       url: https://github.com/mirror-media/flutter_login.git
       ref: main
-      version: ^0.0.6
+      version: ^0.0.8
   # more powerful text widget
   extended_text: ^9.1.0
   # bottom sheet
