@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0470BC43271EB3FD007797AC /* config in Resources */ = {isa = PBXBuildFile; fileRef = 0470BC42271EB3FD007797AC /* config */; };
+		04DAA6F828D1C2ED006A9448 /* AdTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DAA6F728D1C2ED006A9448 /* AdTag.swift */; };
+		04EB111828D04DC10059AB38 /* SmallListNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */; };
+		04EB111A28D0711F0059AB38 /* SmallListNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		5EFFB377FAF5F2BBD33E05E6 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D576A4FFC544DAD77B01C4 /* Pods_Runner.framework */; };
@@ -34,6 +37,9 @@
 		0413959B273A4F9200BDB07F /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		0423D76B2735143200A81551 /* RunnerRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-dev.entitlements"; sourceTree = "<group>"; };
 		0470BC42271EB3FD007797AC /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		04DAA6F728D1C2ED006A9448 /* AdTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTag.swift; sourceTree = "<group>"; };
+		04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SmallListNativeAdView.xib; sourceTree = "<group>"; };
+		04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallListNativeAdFactory.swift; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
@@ -71,6 +77,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04EB111F28D08D6C0059AB38 /* GoogleAds */ = {
+			isa = PBXGroup;
+			children = (
+				04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */,
+				04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */,
+				04DAA6F728D1C2ED006A9448 /* AdTag.swift */,
+			);
+			path = GoogleAds;
+			sourceTree = "<group>";
+		};
 		1DC42A177B5CB64B0AF67EB7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +129,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				04EB111F28D08D6C0059AB38 /* GoogleAds */,
 				0413959B273A4F9200BDB07F /* Runner.entitlements */,
 				0423D76B2735143200A81551 /* RunnerRelease-dev.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
@@ -208,6 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04EB111828D04DC10059AB38 /* SmallListNativeAdView.xib in Resources */,
 				0470BC43271EB3FD007797AC /* config in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
@@ -333,6 +351,8 @@
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				04DAA6F828D1C2ED006A9448 /* AdTag.swift in Sources */,
+				04EB111A28D0711F0059AB38 /* SmallListNativeAdFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
