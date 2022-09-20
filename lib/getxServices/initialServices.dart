@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:readr/getxServices/adService.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
 import 'package:readr/getxServices/graphQLService.dart';
@@ -37,6 +38,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => UserService().init());
   await Get.putAsync(() => PickAndBookmarkService().init());
   await Get.putAsync(() => PubsubService().init());
+  await Get.putAsync(() => AdService().init());
 
   print('All services started...');
 }
