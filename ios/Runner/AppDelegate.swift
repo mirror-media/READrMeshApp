@@ -13,6 +13,9 @@ import google_mobile_ads
     let smallListFactory = SmallListNativeAdFactory()
     FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
         self, factoryId: "smallList", nativeAdFactory: smallListFactory)
+    let FullFactory = FullNativeAdFactory()
+      FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+          self, factoryId: "full", nativeAdFactory: FullFactory)
       
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

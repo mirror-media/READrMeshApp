@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0470BC43271EB3FD007797AC /* config in Resources */ = {isa = PBXBuildFile; fileRef = 0470BC42271EB3FD007797AC /* config */; };
+		04D0971F28D46E2000F78998 /* FullNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */; };
 		04DAA6F828D1C2ED006A9448 /* AdTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DAA6F728D1C2ED006A9448 /* AdTag.swift */; };
 		04EB111828D04DC10059AB38 /* SmallListNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */; };
 		04EB111A28D0711F0059AB38 /* SmallListNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */; };
+		04FCC8EE28D4602100DA616F /* FullNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04FCC8ED28D4602100DA616F /* FullNativeAdView.xib */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		5EFFB377FAF5F2BBD33E05E6 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D576A4FFC544DAD77B01C4 /* Pods_Runner.framework */; };
@@ -37,9 +39,11 @@
 		0413959B273A4F9200BDB07F /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		0423D76B2735143200A81551 /* RunnerRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-dev.entitlements"; sourceTree = "<group>"; };
 		0470BC42271EB3FD007797AC /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNativeAdFactory.swift; sourceTree = "<group>"; };
 		04DAA6F728D1C2ED006A9448 /* AdTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTag.swift; sourceTree = "<group>"; };
 		04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SmallListNativeAdView.xib; sourceTree = "<group>"; };
 		04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallListNativeAdFactory.swift; sourceTree = "<group>"; };
+		04FCC8ED28D4602100DA616F /* FullNativeAdView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullNativeAdView.xib; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 				04EB111728D04DC10059AB38 /* SmallListNativeAdView.xib */,
 				04EB111928D0711F0059AB38 /* SmallListNativeAdFactory.swift */,
 				04DAA6F728D1C2ED006A9448 /* AdTag.swift */,
+				04FCC8ED28D4602100DA616F /* FullNativeAdView.xib */,
+				04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */,
 			);
 			path = GoogleAds;
 			sourceTree = "<group>";
@@ -231,6 +237,7 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				04FCC8EE28D4602100DA616F /* FullNativeAdView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				04D0971F28D46E2000F78998 /* FullNativeAdFactory.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				04DAA6F828D1C2ED006A9448 /* AdTag.swift in Sources */,
 				04EB111A28D0711F0059AB38 /* SmallListNativeAdFactory.swift in Sources */,
