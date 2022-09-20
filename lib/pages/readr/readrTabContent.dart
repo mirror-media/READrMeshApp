@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/readr/readrTabController.dart';
+import 'package:readr/getxServices/adService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrTabContent extends GetView<ReadrTabController> {
   final String categorySlug;
+  static const Map<int, String> _adIndexAndId = {
+    2: 'listingREADr_320x100_AT1',
+    7: 'listingREADr_320x100_AT2',
+    13: 'listingREADr_320x100_AT3',
+    17: 'listingREADr_320x100_AT4',
+  };
   const ReadrTabContent({
     required this.categorySlug,
   });
@@ -58,9 +66,10 @@ class ReadrTabContent extends GetView<ReadrTabController> {
         () => ListView.separated(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           separatorBuilder: (context, index) {
-            if (controller.readrMixedList[index].isProject) {
+            if (controller.readrMixedList[index].isProject &&
+                !_adIndexAndId.containsKey(index)) {
               return const SizedBox(
                 height: 36,
               );
@@ -84,33 +93,61 @@ class ReadrTabContent extends GetView<ReadrTabController> {
                 color: readrBlack10,
                 thickness: 0.5,
                 height: 0.5,
-                indent: 20,
-                endIndent: 20,
               ),
             );
           },
           itemBuilder: (BuildContext context, int index) {
+            Widget content;
             if (index == controller.readrMixedList.length) {
               return _loadMoreWidget();
             }
 
             if (controller.readrMixedList[index].isProject) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ReadrProjectItemWidget(
-                  controller.readrMixedList[index].newsListItem,
-                ),
+              content = ReadrProjectItemWidget(
+                controller.readrMixedList[index].newsListItem,
               );
-            }
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: NewsListItemWidget(
+            } else {
+              content = NewsListItemWidget(
                 controller.readrMixedList[index].newsListItem,
                 hidePublisher: true,
                 key: Key(controller.readrMixedList[index].newsListItem.id),
-              ),
-            );
+              );
+            }
+
+            if (_adIndexAndId.containsKey(index)) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  content,
+                  if (content is ReadrProjectItemWidget)
+                    const SizedBox(
+                      height: 36,
+                    ),
+                  if (content is NewsListItemWidget)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 16, bottom: 20),
+                      child: Divider(
+                        color: readrBlack10,
+                        thickness: 0.5,
+                        height: 0.5,
+                      ),
+                    ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 76,
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: NativeAdWidget(
+                      key: Key(_adIndexAndId[index]!),
+                      factoryId: 'smallList',
+                      adUnitId: Get.find<AdService>()
+                          .getAdUnitId(_adIndexAndId[index]!),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            return content;
           },
           itemCount: controller.readrMixedList.length + 1,
         ),
