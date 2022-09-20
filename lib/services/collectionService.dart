@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:graphql/client.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
@@ -1518,6 +1519,7 @@ query(
       api: Api.mesh,
       queryBody: query,
       variables: variables,
+      fetchPolicy: FetchPolicy.noCache,
     );
 
     List<AddToCollectionItem> alreadyPickCollections = [];
