@@ -102,7 +102,10 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       const SizedBox(height: 48),
       _buildCitation(story),
       const SizedBox(height: 32),
-      Container(
+      NativeAdWidget(
+        adUnitIdKey: 'READr_AT3',
+        factoryId: 'outline',
+        adHeight: width * 0.75,
         decoration: BoxDecoration(
           color: readrBlack10,
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -112,11 +115,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 20),
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-        child: NativeAdWidget(
-          adUnitIdKey: 'READr_AT3',
-          factoryId: 'outline',
-          adHeight: width * 0.65,
-        ),
+        keepAlive: true,
       ),
       const SizedBox(height: 32),
       _buildContact(),
@@ -466,7 +465,10 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                       itemScrollController: _itemScrollController,
                     ),
                   ),
-                  Container(
+                  NativeAdWidget(
+                    adUnitIdKey: adUnitIdMap[index]!,
+                    factoryId: 'outline',
+                    adHeight: context.width * 0.75,
                     decoration: BoxDecoration(
                       color: readrBlack10,
                       borderRadius:
@@ -477,11 +479,6 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                     ),
                     margin: const EdgeInsets.fromLTRB(20, 0, 20, 32),
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                    child: NativeAdWidget(
-                      adUnitIdKey: adUnitIdMap[index]!,
-                      factoryId: 'outline',
-                      adHeight: context.width * 0.65,
-                    ),
                   ),
                 ],
               );
