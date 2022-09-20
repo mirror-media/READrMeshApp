@@ -4,9 +4,19 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class NativeAdWidget extends StatefulWidget {
   final String adUnitId;
   final String factoryId;
+  final Widget? topWidget;
+  final Widget? bottomWidget;
+  final double? adWidth;
+  final double? adHeight;
+  final Color? adBgColor;
   const NativeAdWidget({
     required this.adUnitId,
     required this.factoryId,
+    this.topWidget,
+    this.bottomWidget,
+    this.adWidth,
+    this.adHeight,
+    this.adBgColor,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +36,9 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
       adUnitId: widget.adUnitId,
       factoryId: widget.factoryId,
       request: const AdRequest(),
-      nativeAdOptions: NativeAdOptions(),
+      nativeAdOptions: NativeAdOptions(
+        mediaAspectRatio: MediaAspectRatio.landscape,
+      ),
       listener: NativeAdListener(
         onAdLoaded: (ad) {
           setState(() {
@@ -48,7 +60,20 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
   @override
   Widget build(BuildContext context) {
     if (_loadSeccess) {
-      return AdWidget(ad: _ad!);
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.topWidget != null) widget.topWidget!,
+          Container(
+            width: widget.adWidth,
+            height: widget.adHeight,
+            alignment: Alignment.center,
+            color: widget.adBgColor,
+            child: AdWidget(ad: _ad!),
+          ),
+          if (widget.bottomWidget != null) widget.bottomWidget!,
+        ],
+      );
     }
     return Container();
   }
