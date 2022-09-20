@@ -153,7 +153,8 @@ class SortStoryPage extends GetView<SortStoryPageController> {
             body: Obx(
               () => ReorderableListView.builder(
                 itemBuilder: (context, index) => Dismissible(
-                  key: Key(controller.collectionStoryList[index].news.id),
+                  key: Key(controller.collectionStoryList[index].news.id +
+                      controller.collectionStoryList[index].id),
                   direction: DismissDirection.endToStart,
                   background: Container(
                     alignment: AlignmentDirectional.centerEnd,
