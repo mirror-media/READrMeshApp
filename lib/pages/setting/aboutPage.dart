@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -12,29 +12,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   bool _isLoading = true;
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-        mediaPlaybackRequiresUserGesture: false,
-        disableContextMenu: true,
-      ),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-        allowsLinkPreview: false,
-        disableLongPressContextMenuOnLinks: true,
-      ));
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  late WebViewController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -65,26 +43,24 @@ class _AboutPageState extends State<AboutPage> {
   Widget _buildBody(BuildContext context) {
     return Stack(
       children: [
-        InAppWebView(
-          initialOptions: options,
-          initialUrlRequest:
-              URLRequest(url: Uri.parse("https://www.readr.tw/about")),
-          onLoadStop: (controller, url) async {
-            controller.evaluateJavascript(
-                source:
-                    "document.getElementsByTagName('header')[0].style.display = 'none';");
-            controller.evaluateJavascript(
-                source:
-                    "document.getElementsByTagName('footer')[0].style.display = 'none';");
-            controller.evaluateJavascript(
-                source:
-                    "document.getElementsByTagName('footer')[1].style.display = 'none';");
-            controller.evaluateJavascript(
-                source:
-                    "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
-            controller.evaluateJavascript(
-                source:
-                    "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
+        WebView(
+          initialUrl: 'https://www.readr.tw/about',
+          backgroundColor: Colors.white,
+          javascriptMode: JavascriptMode.unrestricted,
+          gestureNavigationEnabled: true,
+          onWebViewCreated: (webViewController) =>
+              controller = webViewController,
+          onPageFinished: (url) async {
+            controller.runJavascript(
+                "document.getElementsByTagName('header')[0].style.display = 'none';");
+            controller.runJavascript(
+                "document.getElementsByTagName('footer')[0].style.display = 'none';");
+            controller.runJavascript(
+                "document.getElementsByTagName('footer')[1].style.display = 'none';");
+            controller.runJavascript(
+                "document.getElementsByTagName('readr-footer')[0].style.display = 'none';");
+            controller.runJavascript(
+                "document.getElementsByClassName('the-gdpr')[0].style.display = 'none';");
             await Future.delayed(const Duration(milliseconds: 150));
             setState(() {
               _isLoading = false;

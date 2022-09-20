@@ -11,6 +11,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
@@ -89,7 +90,10 @@ class LatestPage extends GetView<LatestPageController> {
                   color: Colors.white,
                   padding: const EdgeInsets.only(top: 12),
                   child: _buildNewsList(
-                      context, controller.showLatestNews.sublist(0, end)),
+                    context,
+                    controller.showLatestNews.sublist(0, end),
+                    {2: 'listingnew_AT1'},
+                  ),
                 );
               },
             ),
@@ -134,9 +138,15 @@ class LatestPage extends GetView<LatestPageController> {
                 }
 
                 return _buildNewsList(
-                    context,
-                    controller.showLatestNews
-                        .sublist(5, controller.showLength.value));
+                  context,
+                  controller.showLatestNews
+                      .sublist(5, controller.showLength.value),
+                  {
+                    2: 'listingnew_AT2',
+                    8: 'listingnew_AT3',
+                    12: 'listingnew_AT4',
+                  },
+                );
               },
             ),
           ),
@@ -293,7 +303,11 @@ class LatestPage extends GetView<LatestPageController> {
     );
   }
 
-  Widget _buildNewsList(BuildContext context, List<NewsListItem> newsList) {
+  Widget _buildNewsList(
+    BuildContext context,
+    List<NewsListItem> newsList,
+    Map<int, String> adIndexAndId,
+  ) {
     return Container(
       color: Colors.white,
       child: ListView.separated(
@@ -301,6 +315,31 @@ class LatestPage extends GetView<LatestPageController> {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          if (adIndexAndId.containsKey(index)) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                NewsListItemWidget(
+                  newsList[index],
+                  key: Key(newsList[index].id),
+                ),
+                NativeAdWidget(
+                  key: Key(adIndexAndId[index]!),
+                  factoryId: 'smallList',
+                  adHeight: 76,
+                  topWidget: const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 20),
+                    child: Divider(
+                      color: readrBlack10,
+                      thickness: 1,
+                      height: 1,
+                    ),
+                  ),
+                  adUnitIdKey: adIndexAndId[index]!,
+                ),
+              ],
+            );
+          }
           return NewsListItemWidget(
             newsList[index],
             showPickTooltip: index == 0,

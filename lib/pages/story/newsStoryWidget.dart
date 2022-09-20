@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,7 +79,23 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         const SizedBox(height: 4),
         _buildAuthor(),
         const SizedBox(height: 24),
-        _buildStoryContent(),
+        _buildStoryContent(context),
+        const SizedBox(height: 32),
+        NativeAdWidget(
+          adUnitIdKey: 'mirror_AT3',
+          factoryId: 'outline',
+          adHeight: context.width * 0.75,
+          decoration: BoxDecoration(
+            color: readrBlack10,
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            border: Border.all(
+              color: readrBlack10,
+            ),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+          keepAlive: true,
+        ),
         const SizedBox(height: 32),
         _buildContact(),
         const SizedBox(height: 160),
@@ -178,15 +196,60 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildStoryContent() {
+  Widget _buildStoryContent(BuildContext context) {
+    int paragraphCount = 0;
     return HtmlWidget(
       controller.newsStoryItem.content!,
+      customWidgetBuilder: (element) {
+        if (element.localName == 'p') {
+          paragraphCount++;
+        }
+
+        if ((paragraphCount == 1 || paragraphCount == 5) &&
+            element.localName == 'p') {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ExtendedText(
+                  element.text,
+                  joinZeroWidthSpace: true,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    height: 2,
+                    color: readrBlack87,
+                  ),
+                ),
+              ),
+              NativeAdWidget(
+                adUnitIdKey: paragraphCount == 1 ? 'mirror_AT1' : 'mirror_AT2',
+                factoryId: 'outline',
+                adHeight: context.width * 0.75,
+                decoration: BoxDecoration(
+                  color: readrBlack10,
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  border: Border.all(
+                    color: readrBlack10,
+                  ),
+                ),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+              ),
+            ],
+          );
+        } else {
+          return null;
+        }
+      },
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
             'text-decoration-color': 'black',
             'color': 'black',
             'text-decoration-thickness': '100%',
+            'padding': '0px 20px 0px 20px',
           };
         } else if (element.localName == 'h1') {
           return {

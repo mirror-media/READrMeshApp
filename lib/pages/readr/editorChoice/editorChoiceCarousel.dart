@@ -1,14 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fadein/flutter_fadein.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
-import 'package:readr/pages/story/storyPage.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 
 class EditorChoiceCarousel extends StatefulWidget {
   final List<EditorChoiceItem> editorChoiceList;
@@ -26,7 +22,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
   final CarouselController _controller = CarouselController();
   int _current = 0;
   final double aspectRatio = 16 / 9;
-  final ChromeSafariBrowser browser = ChromeSafariBrowser();
   late double width;
   final List<Widget> items = [];
 
@@ -39,6 +34,12 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
         editorChoiceItem: widget.editorChoiceList[i],
       ));
     }
+    items.add(NativeAdWidget(
+      key: const Key('listingREADr_slideshow'),
+      adUnitIdKey: 'listingREADr_slideshow',
+      factoryId: 'slideshow',
+      adHeight: width / 2 + 186,
+    ));
   }
 
   @override
@@ -53,33 +54,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
     }
     return Column(
       children: [
-        GestureDetector(
-          onTap: () => Get.to(
-            () => StoryPage(
-              news: widget.editorChoiceList[_current].newsListItem!,
-            ),
-            fullscreenDialog: true,
-          ),
-          child: Container(
-            color: readrBlack,
-            child: Stack(
-              alignment: AlignmentDirectional.topEnd,
-              children: [
-                FadeIn(
-                  key: UniqueKey(),
-                  duration: const Duration(milliseconds: 500),
-                  child: Container(
-                    color: readrBlack,
-                    child: _displayImage(
-                        width, widget.editorChoiceList.elementAt(_current)),
-                  ),
-                ),
-                if (widget.editorChoiceList.elementAt(_current).isProject)
-                  _displayTag(),
-              ],
-            ),
-          ),
-        ),
         CarouselSlider(
           items: items,
           carouselController: _controller,
@@ -92,7 +66,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                 _current = index;
               });
             },
-            height: 186,
+            height: 186 + context.width / 2,
           ),
         ),
         const Divider(
@@ -104,7 +78,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
           height: 48,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.editorChoiceList.asMap().entries.map((entry) {
+            children: items.asMap().entries.map((entry) {
               return GestureDetector(
                 onTap: () => _controller.animateToPage(entry.key),
                 child: Container(
@@ -124,57 +98,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _displayImage(double width, EditorChoiceItem editorChoiceItem) {
-    return editorChoiceItem.newsListItem!.heroImageUrl == null
-        ? SvgPicture.asset(defaultImageSvg)
-        : CachedNetworkImage(
-            height: width / 2,
-            width: width,
-            imageUrl: editorChoiceItem.newsListItem!.heroImageUrl!,
-            placeholder: (context, url) => Container(
-              height: width / 2,
-              width: width,
-              color: Colors.grey,
-            ),
-            errorWidget: (context, url, error) => Container(
-              height: width / 2,
-              width: width,
-              color: Colors.grey,
-              child: const Icon(Icons.error),
-            ),
-            fit: BoxFit.cover,
-          );
-  }
-
-  Widget _displayTag() {
-    return FittedBox(
-      fit: BoxFit.fitWidth,
-      child: Container(
-        decoration: BoxDecoration(
-          color: editorChoiceTagColor,
-          borderRadius: BorderRadiusDirectional.circular(6),
-        ),
-        margin: const EdgeInsets.only(
-          top: 8,
-          right: 12,
-        ),
-        height: 24,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          'topic'.tr,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-          ),
-          maxLines: 1,
-        ),
-      ),
     );
   }
 }

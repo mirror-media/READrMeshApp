@@ -45,7 +45,6 @@ const Map<String, String> chineseTwMap = {
   'createANewCollection': '建立了一個新的集錦',
   'commentCollection': '在這個集錦留言',
   'pickCollection': '精選了這個集錦',
-  'collectionDeleteItemHint': '向左滑可以刪除文章',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜尋',
@@ -153,7 +152,7 @@ const Map<String, String> chineseTwMap = {
   'collectionDeletedDescription': '這個集錦已經被刪除了',
   'editTitle': '修改標題',
   'editDescription': '修改敘述',
-  'editContentAndSorting': '编辑内容和排序',
+  'editContentAndSorting': '編輯内容和排序',
   'deleteCollection': '刪除集錦',
   'deleteCollectionAlertTitle': '確認刪除集錦？',
   'deleteCollectionAlertDescription': '此動作無法復原',
@@ -208,6 +207,7 @@ const Map<String, String> chineseTwMap = {
   'editCollectionTitle': '修改標題',
   'title': '標題',
   'collectionTitleHint': '輸入集錦標題',
+  'collectionDeleteItemHint': '向左滑可以刪除文章',
 
   //month
   'january': '1月',
@@ -447,9 +447,9 @@ const Map<String, String> chineseTwMap = {
   'inputNamePageAppbarTitle': '暱稱',
   'completeRegistration': '完成註冊',
   'creatingAnAccount': '建立帳號中',
-  'inputNamePageEmptyHint': '請輸入暱稱。',
-  'inputNamePageErrorHint': '這個暱稱目前無法使用，請使用其他暱稱。',
-  'inputNamePageDescription': '請輸入您想使用的公開顯示名稱，字數以20字內為限。',
+  'inputNamePageEmptyHint': '請輸入暱稱',
+  'inputNamePageErrorHint': '這個暱稱目前無法使用，請使用其他暱稱',
+  'inputNamePageDescription': '請輸入您想使用的公開顯示名稱，字數以20字內為限',
 
   //choosePublisherPage
   'choosePublisherPageAppbarTitle': '歡迎使用',
@@ -465,12 +465,12 @@ const Map<String, String> chineseTwMap = {
   'emailDeliveryFailed': 'Email寄送失敗',
   'inputEmailPageEmptyHint': '請輸入您的 Email 地址',
   'inputEmailPageErrorHint': '請輸入有效的 Email 地址',
-  'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。',
+  'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': '確認收件匣',
   'sentEmailPagePrefix': '我們已將登入連結寄到',
-  'sentEmailPageSuffix': '，請點擊信件中的連結登入。',
+  'sentEmailPageSuffix': '，請點擊信件中的連結登入',
   'openEmailApp': '打開信件 APP',
   'notReceiveText': '沒收到信件？請檢查垃圾信件匣',
   'tryOtherLoginMethod': '嘗試其他登入方式',

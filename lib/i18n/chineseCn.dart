@@ -3,7 +3,7 @@ const Map<String, String> chineseCnMap = {
   'delete': '删除',
   'save': '保存',
   'publish': '发表',
-  'remove': '去除',
+  'remove': '移除',
   'share': '分享',
   'back': '返回',
   'ok': '确定',
@@ -45,7 +45,6 @@ const Map<String, String> chineseCnMap = {
   'createANewCollection': '建立了一个新的集锦',
   'commentCollection': '在这个集锦评论',
   'pickCollection': '精选了这个集锦',
-  'collectionDeleteItemHint': '向左滑动可删除文章',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜索',
@@ -119,7 +118,7 @@ const Map<String, String> chineseCnMap = {
   'deleteAlertContent': '系统仍会保留您的精选',
   'deleteAlertTitle': '是否确实要删除该评论？',
   'cancelEdit': '取消编辑',
-  'leaveAlertContent': '您刚输入的内容将不会保存',
+  'leaveAlertContent': '系统将不会保存您刚才输入的内容',
   'continueInput': '继续输入',
 
   //pick
@@ -141,19 +140,19 @@ const Map<String, String> chineseCnMap = {
   'createNewCollection': '创建新集锦',
   'userNoCollection': '你还没有任何集锦...',
   'alreadyAddToAllCollections': '您以前已将此新闻添加到所有集锦中',
-  'alreadyAddToACollectionPrefix': '您以前已将此新闻添加到「',
-  'alreadyAddToACollectionSuffix': '」集锦',
+  'alreadyAddToACollectionPrefix': '您以前已将此新闻添加到“',
+  'alreadyAddToACollectionSuffix': '”集锦',
   'alreadyAddToCollectionsPrefix': '您以前已将此新闻添加到',
-  'upperQuotationMarks': '「',
-  'lowerQuotationMarks': '」',
+  'upperQuotationMarks': '“',
+  'lowerQuotationMarks': '”',
   'comma': '、',
-  'alreadyAddToCollectionsSuffix1': 'etc. ',
+  'alreadyAddToCollectionsSuffix1': '等',
   'alreadyAddToCollectionsSuffix2': '个集锦',
   'collectionDeletedTitle': '集锦不存在',
   'collectionDeletedDescription': '此集锦已被删除',
   'editTitle': '编辑标题',
   'editDescription': '修改叙述',
-  'editContentAndSorting': 'Edit content and sorting',
+  'editContentAndSorting': '编辑内容和排序',
   'deleteCollection': '删除集锦',
   'deleteCollectionAlertTitle': '是否确实要删除集锦？',
   'deleteCollectionAlertDescription': '此操作无法撤消',
@@ -175,7 +174,7 @@ const Map<String, String> chineseCnMap = {
   'discardChanges': '放弃更改',
   'customTime': '自定义时间',
   'blockTitle': '区块标题',
-  'blockTitleDescription': '如果有太多的新闻，您可以输入区块标题，并将时间线分成多个关键段落，以便更好地阅读。',
+  'blockTitleDescription': '若新闻数太多，您可以输入区块标题，并将时间线分成多个关键段落，以便更好地阅读。',
   'blockTitleHint': '输入区块标题...',
   'selectMonthFirst': '请先选择月份',
   'selectMonthAndDateFirst': '请先选择月份和日期',
@@ -208,6 +207,7 @@ const Map<String, String> chineseCnMap = {
   'editCollectionTitle': '编辑标题',
   'title': '标题',
   'collectionTitleHint': '输入集锦标题',
+  'collectionDeleteItemHint': '向左滑动可删除文章',
 
   //month
   'january': '1月',
@@ -230,7 +230,7 @@ const Map<String, String> chineseCnMap = {
   'time': '时间',
 
   //collection timestamp
-  'justUpdated': '刚刚更新',
+  'justUpdated': '刚才更新',
 
   //commentInputBox
   'commentVisitorHint': '注册参加讨论',
@@ -255,8 +255,7 @@ const Map<String, String> chineseCnMap = {
   //story
   'updateTime': '更新时间：',
   'journalist': '记者：',
-  'readrSummaryTitle': '这篇报导想要告诉你的事：',
-  'referenceData': '参考数据',
+  'referenceData': '引用数据',
   'readrContactEmail': 'READr联络信箱：',
   'readrCustomerServiceNumber': 'READr客服电话：',
   'mmContactEmail': '镜周刊联络信箱：',
@@ -270,7 +269,7 @@ const Map<String, String> chineseCnMap = {
   'item3Title': '随时来点讨论吧',
   'item3Description': '看看大家都在想什么',
   'item4Title': '集锦功能好分类',
-  'item4Description': '轻松制作自己的整合包',
+  'item4Description': '轻松制作自己的新闻懒人包',
   'startToUse': '开始使用',
 
   //errorPage
@@ -338,14 +337,14 @@ const Map<String, String> chineseCnMap = {
   'searchBarHintText': '搜索所有新闻和集锦...',
   'searchHistory': '搜索历史',
   'clearAllHistory': '清除所有记录',
-  'noResultPrefix': '找不到包含「',
-  'noResultSuffix': '」的新闻或集锦，请换个关键字，再试一次。',
-  'noNewsResultPrefix': '找不到包含「',
-  'noNewsResultSuffix': '」的新闻，请换个关键字，再试一次。',
+  'noResultPrefix': '找不到包含“',
+  'noResultSuffix': '”的新闻或集锦，请换个关键字，再试一次。',
+  'noNewsResultPrefix': '找不到包含“',
+  'noNewsResultSuffix': '”的新闻，请换个关键字，再试一次。',
   'allCollections': '所有集锦',
   'allNews': '所有新闻',
-  'viewAllCollectionResultPrefix': '查看所有包含「',
-  'viewAllCollectionResultSuffix': '」的集锦',
+  'viewAllCollectionResultPrefix': '查看所有包含“',
+  'viewAllCollectionResultSuffix': '”的集锦',
 
   //readr
   'topic': '专题',
@@ -396,7 +395,7 @@ const Map<String, String> chineseCnMap = {
   'collectionTooltip': '将喜欢的新闻打包成集锦',
   'follower': '粉丝',
   'blockWidgetText': '您已屏蔽此用户。',
-  'emptyPick': '此处仍有空白。\n赶快精选您喜欢的新闻吧',
+  'emptyPick': '此处空无一物。\n赶快精选您喜欢的新闻吧',
   'viewMemberEmptyPick': '此人还没有精选新闻',
   'pickedCollections': '精选集锦',
   'pickedArticles': '精选文章',
@@ -421,13 +420,13 @@ const Map<String, String> chineseCnMap = {
   'commentNewsPrefix': '也在',
   'commentNewsSuffix': '的新闻下评论。',
   'startFollowingYou': '开始关注你。',
-  'likeCommentPrefix': '喜欢你的评论「',
-  'likeCommentSuffix': '」。',
-  'pickCollectionPrefix': '精选了你的集锦「',
-  'pickCollectionSuffix': '」。',
+  'likeCommentPrefix': '喜欢你的评论“',
+  'likeCommentSuffix': '”。',
+  'pickCollectionPrefix': '精选了你的集锦“',
+  'pickCollectionSuffix': '”。',
   'commentYourCollection': '在你的集锦下评论。',
-  'createCollectionPrefix': '创建了新的集锦「',
-  'createCollectionSuffix': '」。',
+  'createCollectionPrefix': '创建了新的集锦“',
+  'createCollectionSuffix': '”。',
 
   //loginPage
   'loginOnboardAppbarTitle': '开始使用',
@@ -448,9 +447,9 @@ const Map<String, String> chineseCnMap = {
   'inputNamePageAppbarTitle': '昵称',
   'completeRegistration': '完成注册',
   'creatingAnAccount': '创建帐户中',
-  'inputNamePageEmptyHint': '请输入昵称。',
-  'inputNamePageErrorHint': '此昵称当前不可用，请使用其他昵称。',
-  'inputNamePageDescription': '请输入要使用的公开显示名称，不超过20个字符。',
+  'inputNamePageEmptyHint': '请输入昵称',
+  'inputNamePageErrorHint': '此昵称当前不可用，请使用其他昵称',
+  'inputNamePageDescription': '请输入要使用的公开显示名称，不超过20个字符',
 
   //choosePublisherPage
   'choosePublisherPageAppbarTitle': '欢迎使用',
@@ -466,12 +465,12 @@ const Map<String, String> chineseCnMap = {
   'emailDeliveryFailed': '电子邮件发送失败',
   'inputEmailPageEmptyHint': '请输入您的邮箱地址',
   'inputEmailPageErrorHint': '请输入有效的邮箱地址',
-  'inputEmailPageBodyText': '我们将向此邮箱发送登录链接，以省去您设置密码的麻烦。',
+  'inputEmailPageBodyText': '我们将向此邮箱发送登录链接，以省去您设置密码的麻烦',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': '确认邮箱',
   'sentEmailPagePrefix': '我们已将登录链接发送到',
-  'sentEmailPageSuffix': '，请点击信中的链接登录。',
+  'sentEmailPageSuffix': '，请点击信中的链接登录',
   'openEmailApp': '打开邮箱应用程序',
   'notReceiveText': '没收到信吗？请检查您的垃圾邮件匣',
   'tryOtherLoginMethod': '尝试其他登录方法',

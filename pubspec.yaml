@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.0+38
+version: 1.5.1+38
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -36,7 +36,7 @@ dependencies:
   # Provides internationalization and localization facilities
   intl: ^0.17.0
   # The Font Awesome Icon pack available as set of Flutter Icons.
-  font_awesome_flutter: ^9.1.0
+  font_awesome_flutter: ^10.2.1
   # Launching a URL in the mobile platform.
   url_launcher: ^6.0.12
   # share url
@@ -75,8 +75,6 @@ dependencies:
   firebase_remote_config: ^2.0.0
   # equatable
   equatable: ^2.0.3
-  # in-app webview
-  flutter_inappwebview: ^5.3.2
   # widget fade-in animation
   flutter_fadein: ^2.0.0
   # auto text size
@@ -110,7 +108,7 @@ dependencies:
     git:
       url: https://github.com/mirror-media/flutter_login.git
       ref: main
-      version: ^0.0.6
+      version: ^0.0.8
   # more powerful text widget
   extended_text: ^9.1.0
   # bottom sheet
@@ -177,6 +175,8 @@ dependencies:
   animated_list_plus: ^0.4.3
   # splash screen
   flutter_native_splash: ^2.2.7
+  # google ads
+  google_mobile_ads: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

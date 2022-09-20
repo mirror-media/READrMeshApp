@@ -67,11 +67,11 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.readr.news"
-        minSdkVersion 23
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        ndkVersion "23.1.7779620"
+        ndkVersion "23.0.7123448"
         ndk {
             debugSymbolLevel 'FULL'
         }
@@ -153,6 +153,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-ads:21.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

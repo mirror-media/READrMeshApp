@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="GADNativeAdView">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="body" text="body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzA-MW-Ud5">
+                    <rect key="frame" x="20" y="257.33333333333331" width="350" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="headline" text="Headline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REY-3b-mEB">
+                    <rect key="frame" x="20" y="229.33333333333334" width="350" height="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <color key="textColor" red="0.13119179010000001" green="0.1620697975" blue="0.26473164560000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="advertiser" text="Advertiser" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5m-Jm-Ume">
+                    <rect key="frame" x="61" y="209" width="309" height="14.333333333333343"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sk-o0-Hmh" customClass="GADMediaView">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="195"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="4Sk-o0-Hmh" secondAttribute="height" multiplier="2:1" id="ZIi-mM-kRJ"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1KV-Nt-y3d" customClass="AdTagLabel" customModule="Runner" customModuleProvider="target">
+                    <rect key="frame" x="20" y="207" width="33" height="18.333333333333343"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="33" id="j6L-9e-H3I"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingRight">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="labelBorderColor">
+                            <color key="value" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="labelBorderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="u5m-Jm-Ume" firstAttribute="leading" secondItem="1KV-Nt-y3d" secondAttribute="trailing" constant="8" id="46N-n5-O5C"/>
+                <constraint firstItem="tzA-MW-Ud5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="4Pd-xR-Tms"/>
+                <constraint firstItem="REY-3b-mEB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="6wh-Jb-HGS"/>
+                <constraint firstItem="4Sk-o0-Hmh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8GQ-Rb-h2X"/>
+                <constraint firstItem="1KV-Nt-y3d" firstAttribute="top" secondItem="4Sk-o0-Hmh" secondAttribute="bottom" constant="12" id="EG8-nS-IhX"/>
+                <constraint firstItem="u5m-Jm-Ume" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" constant="-20" id="Pyc-kL-ZVs"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tzA-MW-Ud5" secondAttribute="trailing" constant="20" id="RPt-VK-lxB"/>
+                <constraint firstItem="4Sk-o0-Hmh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="THp-zl-cXe"/>
+                <constraint firstItem="1KV-Nt-y3d" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="UWb-sz-Rld"/>
+                <constraint firstAttribute="trailing" secondItem="REY-3b-mEB" secondAttribute="trailing" constant="20" id="YR9-I4-lMP"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tzA-MW-Ud5" secondAttribute="bottom" constant="16" id="bAY-Jc-Uwn"/>
+                <constraint firstItem="tzA-MW-Ud5" firstAttribute="top" secondItem="REY-3b-mEB" secondAttribute="bottom" constant="4" id="msH-gi-GT1"/>
+                <constraint firstItem="REY-3b-mEB" firstAttribute="top" secondItem="1KV-Nt-y3d" secondAttribute="bottom" constant="4" id="sVE-OC-Qbm"/>
+                <constraint firstItem="1KV-Nt-y3d" firstAttribute="bottom" secondItem="u5m-Jm-Ume" secondAttribute="bottom" constant="2" id="tne-vK-y6a"/>
+                <constraint firstAttribute="trailing" secondItem="4Sk-o0-Hmh" secondAttribute="trailing" id="uvH-Yc-Ahp"/>
+                <constraint firstItem="u5m-Jm-Ume" firstAttribute="top" secondItem="1KV-Nt-y3d" secondAttribute="top" constant="2" id="xk4-m6-6O9"/>
+                <constraint firstItem="u5m-Jm-Ume" firstAttribute="centerY" secondItem="1KV-Nt-y3d" secondAttribute="centerY" id="xkh-O6-vgh"/>
+            </constraints>
+            <connections>
+                <outlet property="advertiserView" destination="u5m-Jm-Ume" id="GAD-Ful-Avt"/>
+                <outlet property="bodyView" destination="tzA-MW-Ud5" id="GAD-Ful-Bdy"/>
+                <outlet property="headlineView" destination="REY-3b-mEB" id="GAD-Ful-Hdl"/>
+                <outlet property="mediaView" destination="4Sk-o0-Hmh" id="GAD-Ful-Med"/>
+            </connections>
+            <point key="canvasLocation" x="84.615384615384613" y="-11.374407582938389"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="1KV-Nt-y3d">
+            <size key="intrinsicContentSize" width="17" height="14.333333333333334"/>
+        </designable>
+    </designables>
+</document>

@@ -94,7 +94,7 @@ class SettingPage extends GetView<SettingPageController> {
       );
     } else if (controller.loginType.value == 'facebook') {
       icon = const FaIcon(
-        FontAwesomeIcons.facebookSquare,
+        FontAwesomeIcons.squareFacebook,
         size: 18,
         color: Color.fromRGBO(59, 89, 152, 1),
       );
