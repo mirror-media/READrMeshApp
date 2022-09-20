@@ -279,7 +279,8 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
           top: controller.timelineStoryList[0].summary == null ? 20 : 0,
         ),
         itemBuilder: (context, index) => Dismissible(
-          key: Key(controller.timelineStoryList[index].news.id),
+          key: Key(controller.timelineStoryList[index].news.id +
+              controller.timelineStoryList[index].id),
           direction: DismissDirection.endToStart,
           background: Container(
             alignment: AlignmentDirectional.centerEnd,
