@@ -113,7 +113,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         margin: const EdgeInsets.symmetric(horizontal: 20),
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
         child: NativeAdWidget(
-          adUnitIdKey: 'READr_300x250_AT3',
+          adUnitIdKey: 'READr_AT3',
           factoryId: 'outline',
           adHeight: width * 0.65,
         ),
@@ -436,8 +436,8 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   Widget _buildContent(Story story) {
     List<Paragraph> storyContents = story.contentApiData!;
     const Map<int, String> adUnitIdMap = {
-      0: 'READr_300x250_AT1',
-      4: 'READr_300x250_AT2',
+      0: 'READr_AT1',
+      4: 'READr_AT2',
     };
 
     return Padding(

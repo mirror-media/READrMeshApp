@@ -92,7 +92,7 @@ class LatestPage extends GetView<LatestPageController> {
                   child: _buildNewsList(
                     context,
                     controller.showLatestNews.sublist(0, end),
-                    {2: 'listingnew_320x100_AT1'},
+                    {2: 'listingnew_AT1'},
                   ),
                 );
               },
@@ -142,9 +142,9 @@ class LatestPage extends GetView<LatestPageController> {
                   controller.showLatestNews
                       .sublist(5, controller.showLength.value),
                   {
-                    2: 'listingnew_320x100_AT2',
-                    8: 'listingnew_320x100_AT3',
-                    12: 'listingnew_320x100_AT4',
+                    2: 'listingnew_AT2',
+                    8: 'listingnew_AT3',
+                    12: 'listingnew_AT4',
                   },
                 );
               },
