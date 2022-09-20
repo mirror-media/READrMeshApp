@@ -45,6 +45,8 @@ const String timelineIconSvg = 'assets/image/collection/timelineIcon.svg';
 //json
 const serviceAccountCredentialsJson =
     'assets/json/serviceAccountCredentials.json';
+const iosAdsIdsJson = 'assets/json/iosAdIds.json';
+const androidAdsIdsJson = 'assets/json/androidAdIds.json';
 
 /// color
 const Color themeColor = Color(0xffFFFFFF);
