@@ -16,6 +16,9 @@ import google_mobile_ads
     let FullFactory = FullNativeAdFactory()
       FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
           self, factoryId: "full", nativeAdFactory: FullFactory)
+    let OutlineFactory = OutlineNativeAdFactory()
+      FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+            self, factoryId: "outline", nativeAdFactory: OutlineFactory)
       
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
