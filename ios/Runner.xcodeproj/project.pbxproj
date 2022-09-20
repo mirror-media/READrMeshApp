@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		045D94B428D997E20020910F /* SlideshowNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 045D94B328D997E20020910F /* SlideshowNativeAdView.xib */; };
+		045D94B628D99AFA0020910F /* SlideshowNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045D94B528D99AFA0020910F /* SlideshowNativeAdFactory.swift */; };
 		0468C65428D85F02009EB480 /* OutlineNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468C65328D85F02009EB480 /* OutlineNativeAdFactory.swift */; };
 		0470BC43271EB3FD007797AC /* config in Resources */ = {isa = PBXBuildFile; fileRef = 0470BC42271EB3FD007797AC /* config */; };
 		04D0971F28D46E2000F78998 /* FullNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */; };
@@ -40,6 +42,8 @@
 /* Begin PBXFileReference section */
 		0413959B273A4F9200BDB07F /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		0423D76B2735143200A81551 /* RunnerRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-dev.entitlements"; sourceTree = "<group>"; };
+		045D94B328D997E20020910F /* SlideshowNativeAdView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideshowNativeAdView.xib; sourceTree = "<group>"; };
+		045D94B528D99AFA0020910F /* SlideshowNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowNativeAdFactory.swift; sourceTree = "<group>"; };
 		0468C65328D85F02009EB480 /* OutlineNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineNativeAdFactory.swift; sourceTree = "<group>"; };
 		0470BC42271EB3FD007797AC /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNativeAdFactory.swift; sourceTree = "<group>"; };
@@ -95,6 +99,8 @@
 				04D0971E28D46E2000F78998 /* FullNativeAdFactory.swift */,
 				04D1BBF828D85977008C9480 /* OutlineNativeAdView.xib */,
 				0468C65328D85F02009EB480 /* OutlineNativeAdFactory.swift */,
+				045D94B328D997E20020910F /* SlideshowNativeAdView.xib */,
+				045D94B528D99AFA0020910F /* SlideshowNativeAdFactory.swift */,
 			);
 			path = GoogleAds;
 			sourceTree = "<group>";
@@ -240,6 +246,7 @@
 				04EB111828D04DC10059AB38 /* SmallListNativeAdView.xib in Resources */,
 				0470BC43271EB3FD007797AC /* config in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				045D94B428D997E20020910F /* SlideshowNativeAdView.xib in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
@@ -368,6 +375,7 @@
 				04D0971F28D46E2000F78998 /* FullNativeAdFactory.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				04DAA6F828D1C2ED006A9448 /* AdTag.swift in Sources */,
+				045D94B628D99AFA0020910F /* SlideshowNativeAdFactory.swift in Sources */,
 				04EB111A28D0711F0059AB38 /* SmallListNativeAdFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
