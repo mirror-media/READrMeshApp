@@ -859,9 +859,9 @@ mutation(
 
     for (int i = 0; i < newList.length; i++) {
       newList[i].sortOrder = i;
-      bool notNewItem = originList
-          .any((element) => element.pickNewsId == newList[i].pickNewsId);
-      if (!notNewItem) {
+      int indexInOldList = originList
+          .indexWhere((element) => element.pickNewsId == newList[i].pickNewsId);
+      if (indexInOldList == -1) {
         addItemList.addIf(
             !addItemList
                 .any((element) => element.pickNewsId == newList[i].pickNewsId),
@@ -871,8 +871,7 @@ mutation(
             !moveItemList
                 .any((element) => element.pickNewsId == newList[i].pickNewsId),
             newList[i]);
-        originList.removeWhere(
-            (element) => element.pickNewsId == newList[i].pickNewsId);
+        originList.removeAt(indexInOldList);
       }
     }
 
