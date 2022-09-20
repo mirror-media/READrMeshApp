@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/getxServices/adService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
@@ -18,6 +19,7 @@ import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
@@ -95,7 +97,10 @@ class CommunityPage extends GetView<CommunityPageController> {
                 }
 
                 return _buildList(
-                    context, controller.communityList.sublist(0, end));
+                  context,
+                  controller.communityList.sublist(0, end),
+                  {2: 'social_300x250_AT1'},
+                );
               },
             ),
           ),
@@ -128,7 +133,15 @@ class CommunityPage extends GetView<CommunityPageController> {
                   return Container();
                 }
 
-                return _buildList(context, controller.communityList.sublist(3));
+                return _buildList(
+                  context,
+                  controller.communityList.sublist(3),
+                  {
+                    4: 'social_300x250_AT2',
+                    10: 'social_300x250_AT3',
+                    14: 'social_300x250_AT4',
+                  },
+                );
               },
             ),
           ),
@@ -197,13 +210,35 @@ class CommunityPage extends GetView<CommunityPageController> {
   }
 
   Widget _buildList(
-      BuildContext context, List<CommunityListItem> communityList) {
+    BuildContext context,
+    List<CommunityListItem> communityList,
+    Map<int, String> adIndexAndId,
+  ) {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
-      itemBuilder: (context, index) =>
-          _buildItem(context, communityList[index]),
+      itemBuilder: (context, index) {
+        if (adIndexAndId.containsKey(index)) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildItem(context, communityList[index]),
+              NativeAdWidget(
+                key: Key(adIndexAndId[index]!),
+                adHeight: context.width * 0.82,
+                topWidget: const SizedBox(height: 8),
+                adBgColor: Colors.white,
+                factoryId: 'full',
+                adUnitId:
+                    Get.find<AdService>().getAdUnitId(adIndexAndId[index]!),
+              ),
+            ],
+          );
+        }
+
+        return _buildItem(context, communityList[index]);
+      },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: communityList.length,
     );
