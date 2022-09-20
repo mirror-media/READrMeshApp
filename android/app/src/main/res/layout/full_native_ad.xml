@@ -68,6 +68,7 @@
                 android:maxLines="1"
                 android:textColor="#DE000928"
                 android:textSize="20sp"
+                android:textFontWeight="600"
                 tools:text="Headline" />
 
             <TextView
