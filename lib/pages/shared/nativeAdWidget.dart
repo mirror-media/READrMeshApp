@@ -11,6 +11,10 @@ class NativeAdWidget extends StatefulWidget {
   final double? adWidth;
   final double adHeight;
   final Color? adBgColor;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Decoration? decoration;
+  final bool keepAlive;
   const NativeAdWidget({
     required this.adUnitIdKey,
     required this.factoryId,
@@ -19,6 +23,10 @@ class NativeAdWidget extends StatefulWidget {
     this.adWidth,
     required this.adHeight,
     this.adBgColor,
+    this.padding,
+    this.margin,
+    this.decoration,
+    this.keepAlive = false,
     Key? key,
   }) : super(key: key);
 
@@ -26,9 +34,13 @@ class NativeAdWidget extends StatefulWidget {
   State<NativeAdWidget> createState() => _NativeAdWidgetState();
 }
 
-class _NativeAdWidgetState extends State<NativeAdWidget> {
+class _NativeAdWidgetState extends State<NativeAdWidget>
+    with AutomaticKeepAliveClientMixin {
   NativeAd? _ad;
   bool _loadSeccess = false;
+
+  @override
+  bool get wantKeepAlive => widget.keepAlive;
 
   @override
   void initState() {
@@ -62,6 +74,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (_loadSeccess) {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -72,6 +85,9 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
             height: widget.adHeight,
             alignment: Alignment.center,
             color: widget.adBgColor,
+            padding: widget.padding,
+            margin: widget.margin,
+            decoration: widget.decoration,
             child: AdWidget(ad: _ad!),
           ),
           if (widget.bottomWidget != null) widget.bottomWidget!,
