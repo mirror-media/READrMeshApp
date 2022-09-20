@@ -13,10 +13,10 @@ import 'package:readr/services/tabStoryListService.dart';
 class ReadrTabContent extends GetView<ReadrTabController> {
   final String categorySlug;
   static const Map<int, String> _adIndexAndId = {
-    2: 'listingREADr_320x100_AT1',
-    7: 'listingREADr_320x100_AT2',
-    13: 'listingREADr_320x100_AT3',
-    17: 'listingREADr_320x100_AT4',
+    2: 'listingREADr_AT1',
+    7: 'listingREADr_AT2',
+    13: 'listingREADr_AT3',
+    17: 'listingREADr_AT4',
   };
   const ReadrTabContent({
     required this.categorySlug,

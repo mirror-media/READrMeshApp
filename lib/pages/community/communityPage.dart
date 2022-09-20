@@ -98,7 +98,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 return _buildList(
                   context,
                   controller.communityList.sublist(0, end),
-                  {2: 'social_300x250_AT1'},
+                  {2: 'social_AT1'},
                 );
               },
             ),
@@ -136,9 +136,9 @@ class CommunityPage extends GetView<CommunityPageController> {
                   context,
                   controller.communityList.sublist(3),
                   {
-                    4: 'social_300x250_AT2',
-                    10: 'social_300x250_AT3',
-                    14: 'social_300x250_AT4',
+                    4: 'social_AT2',
+                    10: 'social_AT3',
+                    14: 'social_AT4',
                   },
                 );
               },
