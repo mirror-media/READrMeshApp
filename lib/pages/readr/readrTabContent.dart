@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/readr/readrTabController.dart';
-import 'package:readr/getxServices/adService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';
@@ -115,33 +114,32 @@ class ReadrTabContent extends GetView<ReadrTabController> {
             }
 
             if (_adIndexAndId.containsKey(index)) {
+              Widget topWidget;
+              if (content is ReadrProjectItemWidget) {
+                topWidget = const SizedBox(
+                  height: 36,
+                );
+              } else {
+                topWidget = const Padding(
+                  padding: EdgeInsets.only(top: 16, bottom: 20),
+                  child: Divider(
+                    color: readrBlack10,
+                    thickness: 0.5,
+                    height: 0.5,
+                  ),
+                );
+              }
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   content,
-                  if (content is ReadrProjectItemWidget)
-                    const SizedBox(
-                      height: 36,
-                    ),
-                  if (content is NewsListItemWidget)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 16, bottom: 20),
-                      child: Divider(
-                        color: readrBlack10,
-                        thickness: 0.5,
-                        height: 0.5,
-                      ),
-                    ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 76,
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: NativeAdWidget(
-                      key: Key(_adIndexAndId[index]!),
-                      factoryId: 'smallList',
-                      adUnitId: Get.find<AdService>()
-                          .getAdUnitId(_adIndexAndId[index]!),
-                    ),
+                  NativeAdWidget(
+                    key: Key(_adIndexAndId[index]!),
+                    factoryId: 'smallList',
+                    adHeight: 76,
+                    topWidget: topWidget,
+                    bottomWidget: const SizedBox(height: 4),
+                    adUnitIdKey: _adIndexAndId[index]!,
                   ),
                 ],
               );

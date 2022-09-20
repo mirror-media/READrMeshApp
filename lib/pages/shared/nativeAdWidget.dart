@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:readr/getxServices/adService.dart';
 
 class NativeAdWidget extends StatefulWidget {
-  final String adUnitId;
+  final String adUnitIdKey;
   final String factoryId;
   final Widget? topWidget;
   final Widget? bottomWidget;
   final double? adWidth;
-  final double? adHeight;
+  final double adHeight;
   final Color? adBgColor;
   const NativeAdWidget({
-    required this.adUnitId,
+    required this.adUnitIdKey,
     required this.factoryId,
     this.topWidget,
     this.bottomWidget,
     this.adWidth,
-    this.adHeight,
+    required this.adHeight,
     this.adBgColor,
     Key? key,
   }) : super(key: key);
@@ -31,9 +33,10 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
   @override
   void initState() {
     super.initState();
+    String adUnitId = Get.find<AdService>().getAdUnitId(widget.adUnitIdKey);
 
     _ad = NativeAd(
-      adUnitId: widget.adUnitId,
+      adUnitId: adUnitId,
       factoryId: widget.factoryId,
       request: const AdRequest(),
       nativeAdOptions: NativeAdOptions(

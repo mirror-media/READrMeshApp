@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
-import 'package:readr/getxServices/adService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -336,8 +335,7 @@ class LatestPage extends GetView<LatestPageController> {
                       height: 1,
                     ),
                   ),
-                  adUnitId:
-                      Get.find<AdService>().getAdUnitId(adIndexAndId[index]!),
+                  adUnitIdKey: adIndexAndId[index]!,
                 ),
               ],
             );
