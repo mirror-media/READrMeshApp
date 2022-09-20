@@ -8,19 +8,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -34,14 +35,15 @@
 
                 <TextView
                     android:id="@+id/advertiser_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="1"
                     android:maxLines="1"
                     android:text="Advertiser"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginVertical="2dp"
+                    android:layout_marginStart="8dp"
                     android:textColor="#80000928"
                     android:textSize="12sp" />
             </LinearLayout>
