@@ -324,23 +324,20 @@ class LatestPage extends GetView<LatestPageController> {
                   newsList[index],
                   key: Key(newsList[index].id),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 20),
-                  child: Divider(
-                    color: readrBlack10,
-                    thickness: 1,
-                    height: 1,
+                NativeAdWidget(
+                  key: Key(adIndexAndId[index]!),
+                  factoryId: 'smallList',
+                  adHeight: 76,
+                  topWidget: const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 20),
+                    child: Divider(
+                      color: readrBlack10,
+                      thickness: 1,
+                      height: 1,
+                    ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  height: 76,
-                  child: NativeAdWidget(
-                    key: Key(adIndexAndId[index]!),
-                    factoryId: 'smallList',
-                    adUnitId:
-                        Get.find<AdService>().getAdUnitId(adIndexAndId[index]!),
-                  ),
+                  adUnitId:
+                      Get.find<AdService>().getAdUnitId(adIndexAndId[index]!),
                 ),
               ],
             );
