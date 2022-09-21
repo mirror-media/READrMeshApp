@@ -14,6 +14,7 @@ import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
+import 'package:readr/pages/story/widgets/relatedStoriesWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -98,7 +99,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           keepAlive: true,
         ),
         const SizedBox(height: 32),
-        _buildRelatedStories(context),
+        RelatedStoriesWidget(controller.newsStoryItem.relatedStories),
         _buildContact(),
       ],
     );
@@ -366,52 +367,6 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRelatedStories(BuildContext context) {
-    if (controller.newsStoryItem.relatedStories.isEmpty) {
-      return Container();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'relatedNews'.tr,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: readrBlack87,
-            ),
-          ),
-          ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) => NewsListItemWidget(
-              controller.newsStoryItem.relatedStories[index],
-              hidePublisher: true,
-              pushReplacement: true,
-              key: Key(controller.newsStoryItem.relatedStories[index].id),
-            ),
-            separatorBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 16, bottom: 20),
-                child: Divider(
-                  color: readrBlack10,
-                  thickness: 1,
-                  height: 1,
-                ),
-              );
-            },
-            itemCount: controller.newsStoryItem.relatedStories.length,
           ),
         ],
       ),
