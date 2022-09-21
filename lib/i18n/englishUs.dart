@@ -268,6 +268,7 @@ const Map<String, String> englishUsMap = {
   'readrCustomerServiceNumber': 'READr customer service number: ',
   'mmContactEmail': 'Mirror Media contact email: ',
   'mmCustomerServiceNumber': 'Mirror Media customer service number: ',
+  'relatedNews': 'Related news',
 
   //welcomePage
   'item1Title': 'See which news your friends upvoted',

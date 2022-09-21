@@ -260,6 +260,7 @@ const Map<String, String> chineseCnMap = {
   'readrCustomerServiceNumber': 'READr客服电话：',
   'mmContactEmail': '镜周刊联络信箱：',
   'mmCustomerServiceNumber': '镜周刊客服电话：',
+  'relatedNews': '相关报导',
 
   //welcomePage
   'item1Title': '看朋友推哪篇新闻',
