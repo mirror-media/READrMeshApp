@@ -291,6 +291,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
       color: meshGray,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
             textAlign: TextAlign.center,
