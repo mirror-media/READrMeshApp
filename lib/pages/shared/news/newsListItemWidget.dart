@@ -18,24 +18,38 @@ class NewsListItemWidget extends StatelessWidget {
   final bool isInMyPersonalFile;
   final bool showPickTooltip;
   final bool inTimeline;
+  final bool pushReplacement;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
     this.isInMyPersonalFile = false,
     this.showPickTooltip = false,
     this.inTimeline = false,
+    this.pushReplacement = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(
-        () => StoryPage(
-          news: news,
-        ),
-        fullscreenDialog: true,
-      ),
+      onTap: () {
+        if (pushReplacement) {
+          Get.off(
+            () => StoryPage(
+              news: news,
+            ),
+            fullscreenDialog: true,
+            preventDuplicates: false,
+          );
+        } else {
+          Get.to(
+            () => StoryPage(
+              news: news,
+            ),
+            fullscreenDialog: true,
+          );
+        }
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
