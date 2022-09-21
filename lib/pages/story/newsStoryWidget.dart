@@ -11,6 +11,7 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
+import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -97,8 +98,8 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           keepAlive: true,
         ),
         const SizedBox(height: 32),
+        _buildRelatedStories(context),
         _buildContact(),
-        const SizedBox(height: 160),
       ],
     );
   }
@@ -286,83 +287,133 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     if (controller.newsListItem.source?.title != '鏡週刊') {
       return Container();
     }
-    return Column(
-      children: [
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'mmContactEmail'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
-            ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri params = Uri(
-                      scheme: 'mailto',
-                      path: 'MM-onlineservice@mirrormedia.mg',
-                    );
+    return Container(
+      color: meshGray,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+      child: Column(
+        children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'mmContactEmail'.tr,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+                color: readrBlack87,
+              ),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri params = Uri(
+                        scheme: 'mailto',
+                        path: 'MM-onlineservice@mirrormedia.mg',
+                      );
 
-                    if (await canLaunchUrl(params)) {
-                      await launchUrl(params);
-                    } else {
-                      print('Could not launch ${params.toString()}');
-                    }
-                  },
-                  child: const Text(
-                    'MM-onlineservice@mirrormedia.mg',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+                      if (await canLaunchUrl(params)) {
+                        await launchUrl(params);
+                      } else {
+                        print('Could not launch ${params.toString()}');
+                      }
+                    },
+                    child: const Text(
+                      'MM-onlineservice@mirrormedia.mg',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: readrBlack87,
+                        decoration: TextDecoration.underline,
+                        decorationColor: readrBlack50,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'mmCustomerServiceNumber'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'mmCustomerServiceNumber'.tr,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+                color: readrBlack87,
+              ),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      String url = 'tel://0266333966';
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url);
+                      } else {
+                        print('Could not launch $url');
+                      }
+                    },
+                    child: const Text(
+                      '（02）6633-3966',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: readrBlack87,
+                        decoration: TextDecoration.underline,
+                        decorationColor: readrBlack50,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRelatedStories(BuildContext context) {
+    if (controller.newsStoryItem.relatedStories.isEmpty) {
+      return Container();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'relatedNews'.tr,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
               color: readrBlack87,
             ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    String url = 'tel://0266333966';
-                    if (await canLaunchUrlString(url)) {
-                      await launchUrlString(url);
-                    } else {
-                      print('Could not launch $url');
-                    }
-                  },
-                  child: const Text(
-                    '（02）6633-3966',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
-        ),
-      ],
+          ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) => NewsListItemWidget(
+              controller.newsStoryItem.relatedStories[index],
+              hidePublisher: true,
+              pushReplacement: true,
+              key: Key(controller.newsStoryItem.relatedStories[index].id),
+            ),
+            separatorBuilder: (context, index) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 16, bottom: 20),
+                child: Divider(
+                  color: readrBlack10,
+                  thickness: 1,
+                  height: 1,
+                ),
+              );
+            },
+            itemCount: controller.newsStoryItem.relatedStories.length,
+          ),
+        ],
+      ),
     );
   }
 }
