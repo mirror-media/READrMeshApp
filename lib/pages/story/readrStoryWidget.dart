@@ -16,6 +16,7 @@ import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
+import 'package:readr/pages/story/widgets/relatedStoriesWidget.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -118,8 +119,8 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         keepAlive: true,
       ),
       const SizedBox(height: 32),
+      RelatedStoriesWidget(controller.newsStoryItem.relatedStories),
       _buildContact(),
-      const SizedBox(height: 160),
     ];
     return ScrollablePositionedList.builder(
       physics: const ClampingScrollPhysics(),
@@ -685,83 +686,88 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   }
 
   Widget _buildContact() {
-    return Column(
-      children: [
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'readrContactEmail'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
-            ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri params = Uri(
-                      scheme: 'mailto',
-                      path: 'readr@readr.tw',
-                    );
+    return Container(
+      color: meshGray,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'readrContactEmail'.tr,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+                color: readrBlack87,
+              ),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri params = Uri(
+                        scheme: 'mailto',
+                        path: 'readr@readr.tw',
+                      );
 
-                    if (await canLaunchUrl(params)) {
-                      await launchUrl(params);
-                    } else {
-                      print('Could not launch ${params.toString()}');
-                    }
-                  },
-                  child: const Text(
-                    'readr@readr.tw',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+                      if (await canLaunchUrl(params)) {
+                        await launchUrl(params);
+                      } else {
+                        print('Could not launch ${params.toString()}');
+                      }
+                    },
+                    child: const Text(
+                      'readr@readr.tw',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: readrBlack87,
+                        decoration: TextDecoration.underline,
+                        decorationColor: readrBlack50,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'readrCustomerServiceNumber'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
+              ],
             ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    String url = 'tel://0266333890';
-                    if (await canLaunchUrlString(url)) {
-                      await launchUrlString(url);
-                    } else {
-                      print('Could not launch $url');
-                    }
-                  },
-                  child: const Text(
-                    '（02）6633-3890',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'readrCustomerServiceNumber'.tr,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+                color: readrBlack87,
+              ),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      String url = 'tel://0266333890';
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url);
+                      } else {
+                        print('Could not launch $url');
+                      }
+                    },
+                    child: const Text(
+                      '（02）6633-3890',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: readrBlack87,
+                        decoration: TextDecoration.underline,
+                        decorationColor: readrBlack50,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
