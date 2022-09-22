@@ -21,12 +21,7 @@ const String noFollowingSvg = 'assets/image/noFollowing.svg';
 const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
 const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';
-const String appBarIconSvg = 'assets/icon/appBarIcon.svg';
 const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
-const String readrPageActiveSvg = 'assets/icon/readrPageActive.svg';
-const String readrPageDefaultSvg = 'assets/icon/readrPageDefault.svg';
-const String latestPageActiveSvg = 'assets/icon/latestPageActive.svg';
-const String latestPageDefaultSvg = 'assets/icon/latestPageDefault.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
 const String deletedMemberSvg = 'assets/image/deletedMember.svg';
 //onboard image
@@ -41,6 +36,19 @@ const String collectionDeletedSvg =
     'assets/image/collection/collectionDeleted.svg';
 const String folderIconSvg = 'assets/image/collection/folderIcon.svg';
 const String timelineIconSvg = 'assets/image/collection/timelineIcon.svg';
+
+//CustomIcon
+const _kFontFam = 'CustomIcon';
+const String? _kFontPkg = null;
+
+const IconData latestpageFill =
+    IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+const IconData latestpage =
+    IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+const IconData readrLogo =
+    IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+const IconData meshLogo =
+    IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
 //json
 const serviceAccountCredentialsJson =
