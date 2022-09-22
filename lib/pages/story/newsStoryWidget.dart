@@ -11,7 +11,6 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
-import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/relatedStoriesWidget.dart';
