@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
@@ -14,17 +16,20 @@ import 'package:readr/models/member.dart';
 import 'package:readr/pages/community/comment/commentBottomSheet.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
+import 'package:readr/pages/shared/collection/collectionInfo.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
+import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CommunityPage extends GetView<CommunityPageController> {
@@ -34,7 +39,6 @@ class CommunityPage extends GetView<CommunityPageController> {
       controller.initPage();
     }
     return Scaffold(
-      backgroundColor: homeScreenBackgroundColor,
       body: GetBuilder<CommunityPageController>(
         builder: (controller) {
           if (controller.isError) {
@@ -87,7 +91,7 @@ class CommunityPage extends GetView<CommunityPageController> {
             child: Obx(
               () {
                 if (controller.communityList.isEmpty) {
-                  return _emptyWidget();
+                  return _emptyWidget(context);
                 }
 
                 int end = 3;
@@ -117,7 +121,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 }
 
                 return Container(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   margin: const EdgeInsets.only(bottom: 8),
                   child: RecommendFollowBlock(
                       Get.find<RecommendMemberBlockController>()),
@@ -145,18 +149,18 @@ class CommunityPage extends GetView<CommunityPageController> {
             ),
           ),
           SliverToBoxAdapter(
-            child: _bottomWidget(),
+            child: _bottomWidget(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     final recommendMemberBlockController =
         Get.find<RecommendMemberBlockController>();
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         children: [
           Padding(
@@ -165,11 +169,7 @@ class CommunityPage extends GetView<CommunityPageController> {
           ),
           Text(
             'communityEmptyTitle'.tr,
-            style: const TextStyle(
-              color: readrBlack87,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -178,17 +178,13 @@ class CommunityPage extends GetView<CommunityPageController> {
           RichText(
             text: TextSpan(
               text: 'communityEmptyDescription'.tr,
-              style: const TextStyle(
-                color: readrBlack50,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
               children: const [
                 TextSpan(
                   text: ' 👀',
                   style: TextStyle(
                     fontSize: 16,
-                    color: readrBlack,
+                    color: Colors.black,
                     fontWeight: FontWeight.w400,
                   ),
                 )
@@ -227,7 +223,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 key: Key(adIndexAndId[index]!),
                 adHeight: context.width * 0.82,
                 topWidget: const SizedBox(height: 8),
-                adBgColor: Colors.white,
+                adBgColor: Theme.of(context).backgroundColor,
                 factoryId: 'full',
                 adUnitIdKey: adIndexAndId[index]!,
               ),
@@ -244,7 +240,7 @@ class CommunityPage extends GetView<CommunityPageController> {
 
   Widget _buildItem(BuildContext context, CommunityListItem item) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -257,7 +253,33 @@ class CommunityPage extends GetView<CommunityPageController> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    item.heroImageWidget,
+                    Obx(
+                      () => CachedNetworkImage(
+                        imageUrl: item.heroImageUrl.value ?? '',
+                        placeholder: (context, url) => SizedBox(
+                          width: Get.width,
+                          height: Get.width / 2,
+                          child: Shimmer.fromColors(
+                            baseColor: Theme.of(context).dividerColor,
+                            highlightColor: Theme.of(context).shadowColor,
+                            child: Container(
+                              width: Get.width,
+                              height: Get.width / 2,
+                              color: Theme.of(context).backgroundColor,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(),
+                        imageBuilder: (context, imageProvider) {
+                          return Image(
+                            image: imageProvider,
+                            width: Get.width,
+                            height: Get.width / 2,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
                     if (item.type != CommunityListItemType.commentStory &&
                         item.type != CommunityListItemType.pickStory)
                       const Padding(
@@ -270,18 +292,67 @@ class CommunityPage extends GetView<CommunityPageController> {
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                   child: GestureDetector(
                     onTap: item.tapAuthor,
-                    child: item.authorTextWidget,
+                    child: Obx(
+                      () {
+                        String author = '';
+                        if (item.type == CommunityListItemType.commentStory ||
+                            item.type == CommunityListItemType.pickStory) {
+                          author = item.authorText.value ?? '';
+                        } else if (Get.find<UserService>().isMember.isTrue &&
+                            Get.find<UserService>().currentUser.memberId ==
+                                item.collection!.creator.memberId) {
+                          author =
+                              '@${Get.find<UserService>().currentUser.customId}';
+                        } else {
+                          author = '@${item.authorText.value ?? ''}';
+                        }
+
+                        return ExtendedText(
+                          author,
+                          joinZeroWidthSpace: true,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        );
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 20, right: 20, bottom: 8),
-                  child: item.titleWidget,
+                  child: Obx(
+                    () {
+                      String title = item.titleText.value;
+                      if (item.type != CommunityListItemType.commentStory &&
+                          item.type != CommunityListItemType.pickStory) {
+                        title = Get.find<PickableItemController>(
+                                    tag: item.collection!.controllerTag)
+                                .collectionTitle
+                                .value ??
+                            item.titleText.value;
+                      }
+                      return ExtendedText(
+                        title,
+                        joinZeroWidthSpace: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      );
+                    },
+                  ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 16),
-                  child: item.infoWidget,
+                  child: (item.type == CommunityListItemType.commentStory ||
+                          item.type == CommunityListItemType.pickStory)
+                      ? NewsInfo(
+                          item.newsListItem!,
+                          key: Key(item.newsListItem!.id),
+                        )
+                      : CollectionInfo(
+                          item.collection!,
+                          key: Key(item.collection!.id),
+                        ),
                 ),
               ],
             ),
@@ -298,9 +369,6 @@ class CommunityPage extends GetView<CommunityPageController> {
             const Divider(
               indent: 20,
               endIndent: 20,
-              color: Colors.black12,
-              height: 1,
-              thickness: 0.5,
             ),
             InkWell(
               onTap: () async {
@@ -370,7 +438,7 @@ class CommunityPage extends GetView<CommunityPageController> {
               forceStrutHeight: true,
               leading: 0.5,
             ),
-            style: const TextStyle(fontSize: 14, color: readrBlack87),
+            style: Theme.of(context).textTheme.titleSmall,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -378,7 +446,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       ));
       children.add(Text(
         item.itemBarText,
-        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
         strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
@@ -395,7 +463,7 @@ class CommunityPage extends GetView<CommunityPageController> {
           child: ExtendedText(
             firstTwoMember[0].nickname,
             joinZeroWidthSpace: true,
-            style: const TextStyle(fontSize: 14, color: readrBlack87),
+            style: Theme.of(context).textTheme.titleSmall,
             strutStyle: const StrutStyle(
               forceStrutHeight: true,
               leading: 0.5,
@@ -407,7 +475,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       ));
       children.add(Text(
         'and'.tr,
-        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
         strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
@@ -422,7 +490,7 @@ class CommunityPage extends GetView<CommunityPageController> {
           child: ExtendedText(
             firstTwoMember[1].nickname,
             joinZeroWidthSpace: true,
-            style: const TextStyle(fontSize: 14, color: readrBlack87),
+            style: Theme.of(context).textTheme.titleSmall,
             strutStyle: const StrutStyle(
               forceStrutHeight: true,
               leading: 0.5,
@@ -434,7 +502,7 @@ class CommunityPage extends GetView<CommunityPageController> {
       ));
       children.add(Text(
         '${'both'.tr}${item.itemBarText}',
-        style: const TextStyle(fontSize: 14, color: readrBlack50),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
         strutStyle: const StrutStyle(
           forceStrutHeight: true,
           leading: 0.5,
@@ -444,7 +512,7 @@ class CommunityPage extends GetView<CommunityPageController> {
     }
 
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -488,7 +556,7 @@ class CommunityPage extends GetView<CommunityPageController> {
             constraints: const BoxConstraints(maxHeight: 18),
             icon: Icon(
               PlatformIcons(context).ellipsis,
-              color: readrBlack66,
+              color: Theme.of(context).primaryColor,
               size: 18,
             ),
           ),
@@ -500,7 +568,7 @@ class CommunityPage extends GetView<CommunityPageController> {
   Widget _commentsWidget(BuildContext context, Comment comment) {
     return Container(
       padding: const EdgeInsets.only(top: 16, right: 20, left: 20),
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -534,13 +602,10 @@ class CommunityPage extends GetView<CommunityPageController> {
                           maxLines: 1,
                           joinZeroWidthSpace: true,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: readrBlack87,
-                            fontSize: 14,
-                            fontWeight: GetPlatform.isIOS
-                                ? FontWeight.w500
-                                : FontWeight.w600,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontSize: 14),
                           strutStyle: const StrutStyle(
                             forceStrutHeight: true,
                             leading: 0.5,
@@ -553,9 +618,9 @@ class CommunityPage extends GetView<CommunityPageController> {
                       height: 2,
                       margin: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 10.0),
                       alignment: Alignment.center,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: readrBlack20,
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                     Timestamp(
@@ -569,11 +634,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                   child: ExtendedText(
                     comment.content,
                     maxLines: 2,
-                    style: const TextStyle(
-                      color: Color.fromRGBO(0, 9, 40, 0.66),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.displaySmall,
                     strutStyle: const StrutStyle(
                       forceStrutHeight: true,
                       leading: 0.5,
@@ -588,19 +649,11 @@ class CommunityPage extends GetView<CommunityPageController> {
                         ),
                         text: TextSpan(
                           text: '... ',
-                          style: const TextStyle(
-                            color: Color.fromRGBO(0, 9, 40, 0.66),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.displaySmall,
                           children: [
                             TextSpan(
                               text: 'showFullComment'.tr,
-                              style: const TextStyle(
-                                color: readrBlack50,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall,
                             )
                           ],
                         ),
@@ -616,7 +669,7 @@ class CommunityPage extends GetView<CommunityPageController> {
     );
   }
 
-  Widget _bottomWidget() {
+  Widget _bottomWidget(BuildContext context) {
     return Obx(
       () {
         if (Get.find<UserService>().isMember.isFalse) {
@@ -636,10 +689,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                 children: [
                   TextSpan(
                     text: 'communityNoMore'.tr,
-                    style: const TextStyle(
-                      color: readrBlack30,
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium,
                   )
                 ],
               ),
