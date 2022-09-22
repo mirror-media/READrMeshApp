@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,12 +15,10 @@ class MainAppBar extends GetView<MainAppBarController> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
       centerTitle: false,
-      elevation: 0.5,
       title: SvgPicture.asset(
         appBarIconSvg,
+        color: Theme.of(context).appBarTheme.foregroundColor,
       ),
       actions: [
         Container(
@@ -36,7 +33,7 @@ class MainAppBar extends GetView<MainAppBarController> {
             icon: Icon(
               PlatformIcons(context).search,
               size: 26,
-              color: readrBlack87,
+              color: Theme.of(context).appBarTheme.foregroundColor,
             ),
           ),
         ),
@@ -55,7 +52,7 @@ class MainAppBar extends GetView<MainAppBarController> {
                   GetPlatform.isAndroid
                       ? Icons.notifications_none_outlined
                       : CupertinoIcons.bell,
-                  color: readrBlack87,
+                  color: Theme.of(context).appBarTheme.foregroundColor,
                   size: 26,
                 ),
                 Obx(
@@ -114,11 +111,11 @@ class MainAppBar extends GetView<MainAppBarController> {
                 icon: Stack(
                   alignment: Alignment.center,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 4),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4),
                       child: Icon(
                         CupertinoIcons.envelope,
-                        color: readrBlack87,
+                        color: Theme.of(context).appBarTheme.foregroundColor,
                         size: 26,
                       ),
                     ),
