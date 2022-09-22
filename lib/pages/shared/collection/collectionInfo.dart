@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -21,10 +22,10 @@ class CollectionInfo extends GetView<PickableItemController> {
           children.add(Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 CupertinoIcons.bubble_left,
                 size: 11,
-                color: readrBlack50,
+                color: Theme.of(context).primaryColorLight,
               ),
               const SizedBox(width: 3),
               Text(
@@ -33,11 +34,10 @@ class CollectionInfo extends GetView<PickableItemController> {
                   forceStrutHeight: true,
                   leading: 0.5,
                 ),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: readrBlack50,
-                  height: 1.4,
-                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      height: 1.4,
+                    ),
               ),
             ],
           ));
@@ -46,9 +46,9 @@ class CollectionInfo extends GetView<PickableItemController> {
             height: 2,
             margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: readrBlack20,
+              color: Theme.of(context).dividerColor,
             ),
           ));
         }
