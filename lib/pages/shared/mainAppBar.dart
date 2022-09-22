@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/mainAppBarController.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
@@ -16,8 +15,9 @@ class MainAppBar extends GetView<MainAppBarController> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       centerTitle: false,
-      title: SvgPicture.asset(
-        appBarIconSvg,
+      title: Icon(
+        meshLogo,
+        size: 32,
         color: Theme.of(context).appBarTheme.foregroundColor,
       ),
       actions: [
