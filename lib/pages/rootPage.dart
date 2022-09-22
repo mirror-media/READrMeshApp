@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
@@ -64,48 +62,55 @@ class RootPage extends GetView<RootPageController> {
     ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         toolbarHeight: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           elevation: 10,
-          backgroundColor: Colors.white,
           selectedFontSize: 12,
           currentIndex: controller.tabIndex.value,
           onTap: (index) => controller.changeTabIndex(index),
-          selectedItemColor: bottomNavigationBarSelectedColor,
-          unselectedItemColor: bottomNavigationBarUnselectedColor,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: const SizedBox(
+              icon: SizedBox(
                 height: 24,
-                child: Icon(CupertinoIcons.bubble_left_bubble_right),
+                child: Icon(
+                  CupertinoIcons.bubble_left_bubble_right,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .unselectedItemColor,
+                ),
               ),
-              activeIcon: const SizedBox(
+              activeIcon: SizedBox(
                 height: 24,
-                child: Icon(CupertinoIcons.bubble_left_bubble_right_fill),
+                child: Icon(
+                  CupertinoIcons.bubble_left_bubble_right_fill,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
+                ),
               ),
               label: 'communityTab'.tr,
             ),
             BottomNavigationBarItem(
               icon: SizedBox(
                 height: 24,
-                child: SvgPicture.asset(
-                  latestPageDefaultSvg,
-                  width: 23,
-                  height: 20,
+                child: Icon(
+                  latestpage,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .unselectedItemColor,
                 ),
               ),
               activeIcon: SizedBox(
                 height: 24,
-                child: SvgPicture.asset(
-                  latestPageActiveSvg,
-                  width: 23,
-                  height: 20,
+                child: Icon(
+                  latestpageFill,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
                 ),
               ),
               label: 'latestTab'.tr,
@@ -113,20 +118,34 @@ class RootPage extends GetView<RootPageController> {
             BottomNavigationBarItem(
               icon: Container(
                 height: 24,
-                margin: const EdgeInsets.only(bottom: 1.5),
-                child: SvgPicture.asset(
-                  readrPageDefaultSvg,
-                  width: 22,
-                  height: 22,
+                margin: const EdgeInsets.only(bottom: 1),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? meshBlack30
+                      : meshGray50,
+                ),
+                child: Icon(
+                  readrLogo,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .backgroundColor,
                 ),
               ),
               activeIcon: Container(
                 height: 24,
-                margin: const EdgeInsets.only(bottom: 1.5),
-                child: SvgPicture.asset(
-                  readrPageActiveSvg,
-                  width: 22,
-                  height: 22,
+                margin: const EdgeInsets.only(bottom: 1),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
+                ),
+                child: Icon(
+                  readrLogo,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .backgroundColor,
                 ),
               ),
               label: 'READr',
@@ -137,10 +156,10 @@ class RootPage extends GetView<RootPageController> {
                 child: Obx(
                   () {
                     if (Get.find<UserService>().isMember.isFalse) {
-                      return const Icon(
+                      return Icon(
                         CupertinoIcons.person_solid,
                         size: 20,
-                        color: readrBlack87,
+                        color: Theme.of(context).primaryColorDark,
                       );
                     } else {
                       return Stack(
