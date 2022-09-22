@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
   appBarTheme: const AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle.dark,
     backgroundColor: Colors.white,
@@ -81,6 +82,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
   appBarTheme: const AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle.light,
     backgroundColor: meshBlackDefault,
