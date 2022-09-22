@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/initControllerBinding.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/i18n/i18nHelper.dart';
 import 'package:readr/pages/rootPage.dart';
 
@@ -14,12 +14,8 @@ class ReadrApp extends StatelessWidget {
     logAppOpen();
     return GetMaterialApp(
       title: 'READr Mesh',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: const AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-        ),
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       initialBinding: InitControllerBinding(),
       home: RootPage(),
       locale: Get.find<UserService>().appLocaleSetting,
