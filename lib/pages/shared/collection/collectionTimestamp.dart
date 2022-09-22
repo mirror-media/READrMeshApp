@@ -1,18 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:readr/helpers/dataConstants.dart';
 
 class CollectionTimestamp extends StatefulWidget {
   final DateTime dateTime;
   final double textSize;
-  final Color textColor;
+  final Color? textColor;
   const CollectionTimestamp(
     this.dateTime, {
     this.textSize = 12.0,
-    this.textColor = readrBlack50,
+    this.textColor,
     required Key key,
   }) : super(key: key);
 
@@ -97,10 +95,10 @@ class _CollectionTimestampState extends State<CollectionTimestamp> {
         forceStrutHeight: true,
         leading: 0.5,
       ),
-      style: TextStyle(
-        fontSize: fontSize,
-        color: widget.textColor,
-      ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontSize: fontSize,
+            color: widget.textColor,
+          ),
     );
   }
 }
