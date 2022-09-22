@@ -21,7 +21,7 @@ class ProfilePhotoWidget extends StatelessWidget {
     Color randomColor =
         Colors.primaries[int.parse(member.memberId) % Colors.primaries.length];
     Color textColor =
-        randomColor.computeLuminance() > 0.5 ? readrBlack : Colors.white;
+        randomColor.computeLuminance() > 0.5 ? meshBlack87 : meshGray;
     List<String> splitNickname = member.nickname.split('');
     String firstLetter = '';
     for (int i = 0; i < splitNickname.length; i++) {
@@ -45,7 +45,7 @@ class ProfilePhotoWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 1,
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
         child: CircleAvatar(
@@ -64,7 +64,7 @@ class ProfilePhotoWidget extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 width: 1,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
       child: CircleAvatar(
