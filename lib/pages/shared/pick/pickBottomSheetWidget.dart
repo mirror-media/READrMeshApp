@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 
@@ -56,7 +56,7 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: SafeArea(
         top: false,
         child: ListView(
@@ -73,12 +73,10 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
                     Get.find<UserService>().currentUser.nickname,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: readrBlack87,
-                      fontSize: 14,
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontSize: 14),
                   ),
                 ),
               ],
@@ -90,16 +88,24 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'pickCommentHint'.tr,
-                hintStyle: const TextStyle(color: readrBlack30),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(fontSize: 16),
               ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 16),
             ),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 child: Text(
                   _hasInput ? 'publish'.tr : 'pickDirectly'.tr,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color:
+                        Theme.of(context).extension<CustomColors>()!.systemBlue,
                   ),
                 ),
                 onPressed: () async {

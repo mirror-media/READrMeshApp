@@ -7,7 +7,7 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheet.dart';
 
@@ -67,7 +67,7 @@ class PickButton extends GetView<PickableItemController> {
           ),
         ),
       ),
-      backgroundColor: const Color(0xFF007AFF),
+      backgroundColor: Theme.of(context).extension<CustomColors>()!.systemBlue,
       preferredDirection: AxisDirection.up,
       margin: const EdgeInsets.only(left: 20),
       tailLength: 8,
@@ -120,7 +120,11 @@ class PickButton extends GetView<PickableItemController> {
                   PlatformDialogAction(
                     child: Text(
                       'remove'.tr,
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .systemRed,
+                      ),
                     ),
                     onPressed: () async {
                       Navigator.pop<bool>(context, true);
@@ -129,28 +133,27 @@ class PickButton extends GetView<PickableItemController> {
                   PlatformDialogAction(
                     child: Text(
                       'cancel'.tr,
-                      style: const TextStyle(color: Colors.blue),
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .systemBlue,
+                      ),
                     ),
                     onPressed: () => Navigator.pop<bool>(context, false),
                   )
                 ],
                 material: (context, target) => MaterialAlertDialogData(
-                  titleTextStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight:
-                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                  contentTextStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(109, 120, 133, 1),
-                  ),
+                  titleTextStyle: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontSize: 20),
+                  contentTextStyle: Theme.of(context).textTheme.bodyMedium,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(12.0),
                     ),
                   ),
+                  backgroundColor: Theme.of(context).backgroundColor,
                 ),
               ),
             );
@@ -166,9 +169,10 @@ class PickButton extends GetView<PickableItemController> {
           }
         },
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: readrBlack87, width: 1),
-          backgroundColor:
-              controller.isPicked.value ? readrBlack87 : Colors.white,
+          side: BorderSide(color: Theme.of(context).primaryColorDark, width: 1),
+          backgroundColor: controller.isPicked.value
+              ? Theme.of(context).primaryColorDark
+              : Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         ),
         child: Row(
@@ -180,14 +184,18 @@ class PickButton extends GetView<PickableItemController> {
                   ? Icons.done_outlined
                   : Icons.add_outlined,
               size: textSize + 4,
-              color: controller.isPicked.value ? Colors.white : readrBlack87,
+              color: controller.isPicked.value
+                  ? Theme.of(context).backgroundColor
+                  : Theme.of(context).primaryColorDark,
             ),
             const SizedBox(width: 3),
             Text(
               controller.isPicked.value ? 'picked'.tr : 'pick'.tr,
               style: TextStyle(
                 fontSize: textSize,
-                color: controller.isPicked.value ? Colors.white : readrBlack87,
+                color: controller.isPicked.value
+                    ? Theme.of(context).backgroundColor
+                    : Theme.of(context).primaryColorDark,
               ),
             ),
           ],
