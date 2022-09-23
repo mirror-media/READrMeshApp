@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ad_tag_border"
                     android:text="AD"
-                    android:textColor="#80000928"
+                    android:textColor="?android:textColor"
                     android:textSize="12sp"
                     tools:ignore="TextContrastCheck" />
 
@@ -54,7 +54,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:text="Advertiser"
-                    android:textColor="#80000928"
+                    android:textColor="?android:textColor"
                     android:textSize="12sp"
                     tools:ignore="TextContrastCheck" />
             </LinearLayout>
@@ -67,7 +67,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
-                android:textColor="#DE000928"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="18sp"
                 android:textFontWeight="500"
                 tools:text="Headline" />
@@ -80,7 +80,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
-                android:textColor="#80000928"
+                android:textColor="?android:textColor"
                 android:textSize="14sp"
                 tools:ignore="TextContrastCheck"
                 tools:text="body" />
