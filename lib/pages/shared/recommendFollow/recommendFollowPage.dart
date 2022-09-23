@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/recommendItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowItem.dart';
 
 class RecommendFollowPage extends StatelessWidget {
@@ -12,25 +11,17 @@ class RecommendFollowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'recommendFollow'.tr,
-          style: const TextStyle(
-            color: readrBlack,
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 18),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Obx(
         () {
           double ratio = (context.width - 40 - 12) / 460;
@@ -38,10 +29,7 @@ class RecommendFollowPage extends StatelessWidget {
             return Center(
               child: Text(
                 'noRecommend'.tr,
-                style: const TextStyle(
-                  color: readrBlack,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             );
           }

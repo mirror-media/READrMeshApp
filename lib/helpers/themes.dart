@@ -135,6 +135,15 @@ ThemeData lightTheme = ThemeData(
       highlightBlue: meshHighlightBlue,
     ),
   ],
+  cardTheme: const CardTheme(
+    color: Colors.white,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      side: BorderSide(color: meshBlack10, width: 1),
+      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+    ),
+    clipBehavior: Clip.antiAlias,
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -222,4 +231,13 @@ ThemeData darkTheme = ThemeData(
       highlightBlue: meshHighlightBlueDarkMode,
     ),
   ],
+  cardTheme: const CardTheme(
+    color: meshBlackDefault,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      side: BorderSide(color: meshGray20, width: 1),
+      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+    ),
+    clipBehavior: Clip.antiAlias,
+  ),
 );
