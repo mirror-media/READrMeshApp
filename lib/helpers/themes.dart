@@ -3,6 +3,53 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
+class CustomColors extends ThemeExtension<CustomColors> {
+  final Color? systemBlue;
+  final Color? redText;
+  final Color? systemRed;
+  final Color? highlightRed;
+  final Color? highlightBlue;
+  const CustomColors({
+    required this.systemBlue,
+    required this.redText,
+    required this.systemRed,
+    required this.highlightRed,
+    required this.highlightBlue,
+  });
+
+  @override
+  ThemeExtension<CustomColors> copyWith({
+    Color? systemBlue,
+    Color? redText,
+    Color? systemRed,
+    Color? highlightRed,
+    Color? highlightBlue,
+  }) {
+    return CustomColors(
+      systemBlue: systemBlue ?? this.systemBlue,
+      redText: redText ?? this.redText,
+      systemRed: systemRed ?? this.systemRed,
+      highlightRed: highlightRed ?? this.highlightRed,
+      highlightBlue: highlightBlue ?? this.highlightBlue,
+    );
+  }
+
+  @override
+  ThemeExtension<CustomColors> lerp(
+      ThemeExtension<CustomColors>? other, double t) {
+    if (other is! CustomColors) {
+      return this;
+    }
+    return CustomColors(
+      systemBlue: Color.lerp(systemBlue, other.systemBlue, t),
+      redText: Color.lerp(redText, other.redText, t),
+      systemRed: Color.lerp(systemRed, other.systemRed, t),
+      highlightRed: Color.lerp(highlightRed, other.highlightRed, t),
+      highlightBlue: Color.lerp(highlightBlue, other.highlightBlue, t),
+    );
+  }
+}
+
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   appBarTheme: const AppBarTheme(
@@ -79,6 +126,15 @@ ThemeData lightTheme = ThemeData(
     unselectedItemColor: meshBlack50,
   ),
   shadowColor: meshBlack10,
+  extensions: const <ThemeExtension<dynamic>>[
+    CustomColors(
+      systemBlue: meshBlue,
+      redText: meshRedText,
+      systemRed: meshRed,
+      highlightRed: meshHighlightRed,
+      highlightBlue: meshHighlightBlue,
+    ),
+  ],
 );
 
 ThemeData darkTheme = ThemeData(
@@ -157,4 +213,13 @@ ThemeData darkTheme = ThemeData(
     unselectedItemColor: meshGray66,
   ),
   shadowColor: meshGray20,
+  extensions: const <ThemeExtension<dynamic>>[
+    CustomColors(
+      systemBlue: meshBlueDarkMode,
+      redText: meshRedTextDarkMode,
+      systemRed: meshRedDarkMode,
+      highlightRed: meshHighlightRedDarkMode,
+      highlightBlue: meshHighlightBlueDarkMode,
+    ),
+  ],
 );
