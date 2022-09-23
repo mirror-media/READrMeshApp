@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,13 +18,13 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="headline" text="Headline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="np3-X5-HsF">
                     <rect key="frame" x="0.0" y="256.66666666666669" width="390" height="21.666666666666686"/>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                    <color key="textColor" red="0.13119179010000001" green="0.1620697975" blue="0.26473164560000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" name="meshColor87"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="advertiser" text="Advertiser" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bg-xJ-ecz">
                     <rect key="frame" x="41" y="236.33333333333334" width="349" height="14.333333333333343"/>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="textColor" name="meshColor50"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-WL-2KW" customClass="AdTagLabel" customModule="Runner" customModuleProvider="target">
@@ -32,7 +33,7 @@
                         <constraint firstAttribute="width" constant="33" id="IAl-W5-BTv"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="textColor" name="meshColor50"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
@@ -48,7 +49,7 @@
                             <real key="value" value="2"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="labelBorderColor">
-                            <color key="value" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="value" name="meshColor30"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="labelBorderWidth">
                             <real key="value" value="1"/>
@@ -68,7 +69,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="body" text="body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="deK-LN-xHP">
                     <rect key="frame" x="0.0" y="282.33333333333331" width="390" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" red="0.0" green="0.035294117649999998" blue="0.15686274510000001" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="textColor" name="meshColor50"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -106,4 +107,15 @@
             <size key="intrinsicContentSize" width="17" height="14.333333333333334"/>
         </designable>
     </designables>
+    <resources>
+        <namedColor name="meshColor30">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="meshColor50">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="meshColor87">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

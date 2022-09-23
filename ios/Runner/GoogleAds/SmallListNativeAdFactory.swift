@@ -19,7 +19,7 @@ class SmallListNativeAdFactory : FLTNativeAdFactory {
         nativeAdView.iconView?.layer.cornerRadius = 4
         nativeAdView.iconView?.clipsToBounds = true
         nativeAdView.iconView?.layer.borderWidth = 0.5
-        nativeAdView.iconView?.layer.borderColor = UIColor(red: 0, green: 9, blue: 40, alpha: 0.5).cgColor
+        nativeAdView.iconView?.layer.borderColor = UIColor(named: "meshColor10")?.cgColor
         
         (nativeAdView.advertiserView as! UILabel).text = nativeAd.advertiser
         nativeAdView.advertiserView!.isHidden = nativeAd.advertiser == nil
