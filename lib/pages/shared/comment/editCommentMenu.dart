@@ -6,7 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/editCommentWidget.dart';
@@ -27,9 +27,10 @@ Future<void> showEditCommentMenu(
             onPressed: () => Navigator.of(context).pop('edit'),
             child: Text(
               'editComment'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
+                color: Theme.of(context).extension<CustomColors>()?.blue,
               ),
             ),
           ),
@@ -37,10 +38,10 @@ Future<void> showEditCommentMenu(
             onPressed: () => Navigator.of(context).pop('delete'),
             child: Text(
               'deleteComment'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
-                color: Colors.red,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
               ),
             ),
           )
@@ -49,9 +50,10 @@ Future<void> showEditCommentMenu(
           onPressed: () => Navigator.of(context).pop('cancel'),
           child: Text(
             'cancel'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 20,
+              color: Theme.of(context).extension<CustomColors>()?.blue,
             ),
           ),
         ),
@@ -62,8 +64,9 @@ Future<void> showEditCommentMenu(
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) => Material(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -73,36 +76,38 @@ Future<void> showEditCommentMenu(
                 child: Container(
                   height: 4,
                   width: 48,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                   ),
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: readrBlack20,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv4,
                     ),
                   ),
                 ),
               ),
               TextButton.icon(
                 onPressed: () => Navigator.of(context).pop('edit'),
-                icon: const Icon(
+                icon: Icon(
                   Icons.edit_outlined,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   size: 18,
                 ),
                 label: Text(
                   'editComment'.tr,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w400),
                 ),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -111,15 +116,15 @@ Future<void> showEditCommentMenu(
               ),
               TextButton.icon(
                 onPressed: () => Navigator.of(context).pop('delete'),
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete_outlined,
-                  color: Colors.red,
+                  color: Theme.of(context).extension<CustomColors>()?.red,
                   size: 18,
                 ),
                 label: Text(
                   'deleteComment'.tr,
-                  style: const TextStyle(
-                    color: Colors.red,
+                  style: TextStyle(
+                    color: Theme.of(context).extension<CustomColors>()?.redText,
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
                   ),
@@ -140,6 +145,7 @@ Future<void> showEditCommentMenu(
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) {
         return AnimatedPadding(
           duration: const Duration(milliseconds: 100),
@@ -158,10 +164,7 @@ Future<void> showEditCommentMenu(
         .any((element) => element.myPickCommentId == comment.id)) {
       dialogContent = Text(
         'deleteAlertContent'.tr,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall,
       );
     }
 
@@ -170,10 +173,7 @@ Future<void> showEditCommentMenu(
       builder: (context) => PlatformAlertDialog(
         title: Text(
           'deleteAlertTitle'.tr,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         content: dialogContent,
         actions: [
@@ -191,7 +191,7 @@ Future<void> showEditCommentMenu(
             child: Text(
               'delete'.tr,
               style: TextStyle(
-                color: Colors.red,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
                 fontSize: 15,
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -203,7 +203,7 @@ Future<void> showEditCommentMenu(
             child: Text(
               'cancel'.tr,
               style: TextStyle(
-                color: Colors.blue,
+                color: Theme.of(context).extension<CustomColors>()?.blue,
                 fontSize: 15,
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,

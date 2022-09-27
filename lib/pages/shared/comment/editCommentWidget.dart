@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
@@ -46,7 +46,7 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: SafeArea(
         top: false,
         child: ListView(
@@ -63,12 +63,10 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
                     Get.find<UserService>().currentUser.nickname,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: readrBlack87,
-                      fontSize: 14,
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontSize: 14),
                   ),
                 ),
               ],
@@ -78,8 +76,18 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
               maxLines: 6,
               autofocus: true,
               controller: _controller,
-              decoration: const InputDecoration(
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: InputDecoration(
                 border: InputBorder.none,
+                hintText: 'commentTextFieldHint'.tr,
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(fontSize: 16),
               ),
             ),
             Align(
@@ -87,8 +95,8 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
               child: TextButton(
                 child: Text(
                   _hasInput ? 'save'.tr : 'cancelEdit'.tr,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color: Theme.of(context).extension<CustomColors>()?.blue,
                   ),
                 ),
                 onPressed: () async {
