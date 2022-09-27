@@ -381,6 +381,7 @@ class LatestPage extends GetView<LatestPageController> {
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(20),
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return Material(
@@ -397,21 +398,6 @@ class LatestPage extends GetView<LatestPageController> {
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .extension<CustomColors>()!
-                              .primaryLv7!,
-                          blurRadius: 20,
-                          offset: const Offset(0, -8),
-                        ),
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .extension<CustomColors>()!
-                              .primaryLv7!,
-                          blurRadius: 8,
-                        ),
-                      ],
                       color: Theme.of(context).backgroundColor,
                     ),
                     margin: const EdgeInsets.only(top: 16),
