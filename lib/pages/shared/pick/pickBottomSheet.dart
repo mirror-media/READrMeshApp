@@ -49,7 +49,7 @@ Future<dynamic> showPickBottomSheet({
                 'deleteComment'.tr,
                 style: TextStyle(
                   fontSize: 17,
-                  color: Theme.of(context).extension<CustomColors>()!.systemRed,
+                  color: Theme.of(context).extension<CustomColors>()!.red,
                 ),
               ),
             ),
@@ -66,8 +66,7 @@ Future<dynamic> showPickBottomSheet({
                 'continueInput'.tr,
                 style: TextStyle(
                   fontSize: 17,
-                  color:
-                      Theme.of(context).extension<CustomColors>()!.systemBlue,
+                  color: Theme.of(context).extension<CustomColors>()!.blue,
                 ),
               ),
             ),

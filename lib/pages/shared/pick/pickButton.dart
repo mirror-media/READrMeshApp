@@ -67,7 +67,7 @@ class PickButton extends GetView<PickableItemController> {
           ),
         ),
       ),
-      backgroundColor: Theme.of(context).extension<CustomColors>()!.systemBlue,
+      backgroundColor: Theme.of(context).extension<CustomColors>()!.blue,
       preferredDirection: AxisDirection.up,
       margin: const EdgeInsets.only(left: 20),
       tailLength: 8,
@@ -121,9 +121,7 @@ class PickButton extends GetView<PickableItemController> {
                     child: Text(
                       'remove'.tr,
                       style: TextStyle(
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .systemRed,
+                        color: Theme.of(context).extension<CustomColors>()!.red,
                       ),
                     ),
                     onPressed: () async {
@@ -134,9 +132,8 @@ class PickButton extends GetView<PickableItemController> {
                     child: Text(
                       'cancel'.tr,
                       style: TextStyle(
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .systemBlue,
+                        color:
+                            Theme.of(context).extension<CustomColors>()!.blue,
                       ),
                     ),
                     onPressed: () => Navigator.pop<bool>(context, false),

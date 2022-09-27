@@ -85,12 +85,14 @@ const Color meshBlack50 = Color.fromRGBO(0, 9, 40, 0.5);
 const Color meshBlack30 = Color.fromRGBO(0, 9, 40, 0.3);
 const Color meshBlack20 = Color.fromRGBO(0, 9, 40, 0.2);
 const Color meshBlack10 = Color.fromRGBO(0, 9, 40, 0.1);
+const Color meshBlack05 = Color.fromRGBO(0, 9, 40, 0.05);
 const Color meshGray = Color.fromRGBO(246, 246, 251, 1);
 const Color meshGray87 = Color.fromRGBO(246, 246, 251, 0.87);
 const Color meshGray66 = Color.fromRGBO(246, 246, 251, 0.66);
 const Color meshGray50 = Color.fromRGBO(246, 246, 251, 0.5);
 const Color meshGray30 = Color.fromRGBO(246, 246, 251, 0.3);
 const Color meshGray20 = Color.fromRGBO(246, 246, 251, 0.2);
+const Color meshGray10 = Color.fromRGBO(246, 246, 251, 0.1);
 const Color meshBlackDark = Color.fromRGBO(22, 22, 23, 1);
 const Color meshBlackLight = Color.fromRGBO(65, 66, 70, 1);
 const Color meshBlackDefault = Color.fromRGBO(41, 42, 45, 1);
@@ -104,6 +106,10 @@ const Color meshHighlightRed = Color.fromRGBO(255, 245, 245, 1);
 const Color meshHighlightRedDarkMode = Color.fromRGBO(51, 41, 41, 1);
 const Color meshHighlightBlue = Color.fromRGBO(242, 253, 255, 1);
 const Color meshHighlightBlueDarkMode = Color.fromRGBO(45, 52, 58, 1);
+const Color meshGrayLight = Color.fromRGBO(218, 220, 227, 1);
+const Color meshGrayLightDarkMode = Color.fromRGBO(84, 84, 84, 1);
+const Color meshGrayDark = Color.fromRGBO(208, 210, 216, 1);
+const Color meshGrayDarkDarkMode = Color.fromRGBO(71, 71, 71, 1);
 
 // enum
 enum PickObjective {

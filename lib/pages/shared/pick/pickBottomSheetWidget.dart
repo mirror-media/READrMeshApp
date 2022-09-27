@@ -104,8 +104,7 @@ class _PickBottomSheetWidgetState extends State<PickBottomSheetWidget> {
                 child: Text(
                   _hasInput ? 'publish'.tr : 'pickDirectly'.tr,
                   style: TextStyle(
-                    color:
-                        Theme.of(context).extension<CustomColors>()!.systemBlue,
+                    color: Theme.of(context).extension<CustomColors>()!.blue,
                   ),
                 ),
                 onPressed: () async {
