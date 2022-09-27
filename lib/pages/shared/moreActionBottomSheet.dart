@@ -8,6 +8,7 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/collection/addToCollectionPage.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -28,7 +29,7 @@ Future<void> showMoreActionSheet({
     backgroundColor: Colors.transparent,
     topRadius: const Radius.circular(24),
     builder: (context) => Material(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -38,18 +39,34 @@ Future<void> showMoreActionSheet({
               child: Container(
                 height: 4,
                 width: 48,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv7!,
+                      blurRadius: 20,
+                      offset: const Offset(0, -8),
+                    ),
+                    BoxShadow(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv7!,
+                      blurRadius: 8,
+                    ),
+                  ],
                 ),
                 margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: readrBlack20,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
                   ),
                 ),
               ),
@@ -72,16 +89,13 @@ Future<void> showMoreActionSheet({
                 },
                 icon: Icon(
                   PlatformIcons(context).folderOpen,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   size: 18,
                 ),
                 label: Text(
                   'addToCollection'.tr,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -111,7 +125,8 @@ Future<void> showMoreActionSheet({
                           .value
                       ? PlatformIcons(context).bookmarkSolid
                       : PlatformIcons(context).bookmarkOutline,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   size: 18,
                 ),
                 label: Text(
@@ -120,11 +135,7 @@ Future<void> showMoreActionSheet({
                           .value
                       ? 'removeBookmark'.tr
                       : 'addBookmark'.tr,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -147,15 +158,12 @@ Future<void> showMoreActionSheet({
                 icon: Icon(
                   GetPlatform.isAndroid ? Icons.link : CupertinoIcons.link,
                   size: 19,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
                 label: Text(
                   'copyLink'.tr,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -175,16 +183,13 @@ Future<void> showMoreActionSheet({
                 },
                 icon: Icon(
                   PlatformIcons(context).share,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   size: 18,
                 ),
                 label: Text(
                   'share'.tr,
-                  style: const TextStyle(
-                    color: readrBlack87,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
