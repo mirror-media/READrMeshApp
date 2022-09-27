@@ -28,6 +28,7 @@ Future<void> showMoreActionSheet({
     context: context,
     backgroundColor: Colors.transparent,
     topRadius: const Radius.circular(24),
+    barrierColor: Colors.black.withOpacity(0.3),
     builder: (context) => Material(
       color: Theme.of(context).backgroundColor,
       child: SafeArea(
@@ -45,21 +46,6 @@ Future<void> showMoreActionSheet({
                     topRight: Radius.circular(20),
                   ),
                   color: Theme.of(context).backgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context)
-                          .extension<CustomColors>()!
-                          .primaryLv7!,
-                      blurRadius: 20,
-                      offset: const Offset(0, -8),
-                    ),
-                    BoxShadow(
-                      color: Theme.of(context)
-                          .extension<CustomColors>()!
-                          .primaryLv7!,
-                      blurRadius: 8,
-                    ),
-                  ],
                 ),
                 margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Container(
