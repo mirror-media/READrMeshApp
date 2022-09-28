@@ -6,6 +6,7 @@ import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
@@ -81,18 +82,25 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
           children: [
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   boxShadow: [
                     BoxShadow(
-                      color: readrBlack10,
-                      offset: Offset(0, -8),
-                      blurRadius: 10,
-                      spreadRadius: 5,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
+                      blurRadius: 8,
+                    ),
+                    BoxShadow(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
+                      offset: const Offset(0, -8),
+                      blurRadius: 20,
                     ),
                   ],
                 ),
@@ -108,45 +116,38 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                         centerTitle: true,
                         automaticallyImplyLeading: false,
                         pinned: true,
-                        elevation: 0,
                         titleSpacing: 0,
-                        backgroundColor: Colors.white,
                         title: Container(
                           height: kToolbarHeight,
                           width: double.infinity,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
                             ),
-                            color: Colors.white,
+                            color: Theme.of(context).backgroundColor,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.expand_more_outlined,
-                            color: readrBlack30,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv4!,
                             size: 32,
                           ),
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: _titleAndPickBar(),
+                        child: _titleAndPickBar(context),
                       ),
                       _popularCommentList(context),
                       SliverAppBar(
-                        backgroundColor: Colors.white,
                         title: Container(
-                          color: Colors.white,
+                          color: Theme.of(context).backgroundColor,
                           padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                           child: Obx(
                             () => Text(
                               '${'allComments'.tr} (${commentController.allComments.length})',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: readrBlack87,
-                                fontWeight: GetPlatform.isIOS
-                                    ? FontWeight.w500
-                                    : FontWeight.w600,
-                              ),
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
                         ),
@@ -172,13 +173,8 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
               () => Visibility(
                 visible: controller.isCollapsed.isFalse,
                 child: Container(
-                  color: Colors.white,
-                  //padding: const EdgeInsets.only(top: 16),
-                  child: const Divider(
-                    color: readrBlack10,
-                    thickness: 0.5,
-                    height: 1,
-                  ),
+                  color: Theme.of(context).backgroundColor,
+                  child: const Divider(),
                 ),
               ),
             ),
@@ -202,19 +198,19 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
         Container(
           height: 4,
           width: 48,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
           ),
           margin: const EdgeInsets.only(top: 16),
           child: Container(
             constraints: const BoxConstraints(maxHeight: 1),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: readrBlack20,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
             ),
           ),
         ),
@@ -236,12 +232,14 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
     );
   }
 
-  Widget _titleAndPickBar() {
+  Widget _titleAndPickBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border.symmetric(
-          horizontal: BorderSide(color: readrBlack10, width: 0.5),
+          horizontal: BorderSide(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              width: 0.5),
         ),
       ),
       child: Column(
@@ -257,12 +255,10 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                 forceStrutHeight: true,
                 leading: 0.5,
               ),
-              style: TextStyle(
-                color: readrBlack87,
-                fontSize: 16,
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 16),
             ),
           ),
           const SizedBox(height: 8),
@@ -283,11 +279,10 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                       forceStrutHeight: true,
                       leading: 0.5,
                     ),
-                    style: const TextStyle(
-                      color: readrBlack50,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontSize: 12),
                   )
                 : Obx(
                     () {
@@ -308,11 +303,10 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                           forceStrutHeight: true,
                           leading: 0.5,
                         ),
-                        style: const TextStyle(
-                          color: readrBlack50,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(fontSize: 12),
                       );
                     },
                   ),
@@ -338,16 +332,11 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Container(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                   child: Text(
                     'popularComments'.tr,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: readrBlack87,
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 );
               }
@@ -360,9 +349,6 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
             separatorBuilder: (context, index) {
               if (index == 0) return Container();
               return const Divider(
-                color: readrBlack10,
-                thickness: 0.5,
-                height: 0.5,
                 indent: 20,
                 endIndent: 20,
               );
@@ -383,11 +369,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 'noComment'.tr,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: readrBlack66,
-                ),
+                style: Theme.of(context).textTheme.displaySmall,
               ),
             );
           }
@@ -402,9 +384,6 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
               pickableItemControllerTag: controllerTag,
             ),
             separatorBuilder: (context, index) => const Divider(
-              color: readrBlack10,
-              thickness: 0.5,
-              height: 0.5,
               indent: 20,
               endIndent: 20,
             ),

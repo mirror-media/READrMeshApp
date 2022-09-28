@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 
 class CollapsePickBar extends StatelessWidget {
@@ -18,27 +18,26 @@ class CollapsePickBar extends StatelessWidget {
           () => AutoSizeText.rich(
             TextSpan(
               text: controller.commentCount.toString(),
-              style: TextStyle(
-                color: readrBlack87,
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 13),
               children: [
                 TextSpan(
                   text: 'commentCount'.tr,
-                  style: const TextStyle(
-                    color: readrBlack50,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 13),
                 ),
                 if (controller.commentCount > 1 &&
                     Get.locale?.languageCode == 'en')
-                  const TextSpan(
+                  TextSpan(
                     text: 's',
-                    style: TextStyle(
-                      color: readrBlack50,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontSize: 13),
                   ),
               ],
             ),
@@ -50,36 +49,35 @@ class CollapsePickBar extends StatelessWidget {
           height: 2,
           margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: readrBlack20,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
           ),
         ),
         Obx(
           () => AutoSizeText.rich(
             TextSpan(
               text: controller.pickCount.toString(),
-              style: TextStyle(
-                color: readrBlack87,
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 13),
               children: [
                 TextSpan(
                   text: 'pickCount'.tr,
-                  style: const TextStyle(
-                    color: readrBlack50,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 13),
                 ),
                 if (controller.pickCount > 1 &&
                     Get.locale?.languageCode == 'en')
-                  const TextSpan(
+                  TextSpan(
                     text: 's',
-                    style: TextStyle(
-                      color: readrBlack50,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontSize: 13),
                   ),
               ],
             ),
