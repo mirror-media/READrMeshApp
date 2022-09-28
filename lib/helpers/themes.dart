@@ -20,6 +20,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? backgroundSingleLayer;
   final Color? grayLight;
   final Color? grayDark;
+  final Color? shimmerBaseColor;
   const CustomColors({
     required this.blue,
     required this.redText,
@@ -37,6 +38,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.backgroundSingleLayer,
     required this.grayLight,
     required this.grayDark,
+    required this.shimmerBaseColor,
   });
 
   @override
@@ -57,6 +59,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? backgroundSingleLayer,
     Color? grayLight,
     Color? grayDark,
+    Color? shimmerBaseColor,
   }) {
     return CustomColors(
       blue: blue ?? this.blue,
@@ -76,6 +79,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
           backgroundSingleLayer ?? this.backgroundSingleLayer,
       grayLight: grayLight ?? this.grayLight,
       grayDark: grayDark ?? this.grayDark,
+      shimmerBaseColor: shimmerBaseColor ?? this.shimmerBaseColor,
     );
   }
 
@@ -104,6 +108,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
           Color.lerp(backgroundSingleLayer, other.backgroundSingleLayer, t),
       grayLight: Color.lerp(grayLight, other.grayLight, t),
       grayDark: Color.lerp(grayDark, other.grayDark, t),
+      shimmerBaseColor: Color.lerp(shimmerBaseColor, other.shimmerBaseColor, t),
     );
   }
 }
@@ -208,6 +213,7 @@ ThemeData lightTheme = ThemeData(
       backgroundSingleLayer: Colors.white,
       grayLight: meshGrayLight,
       grayDark: meshGrayDark,
+      shimmerBaseColor: meshBlack15,
     ),
   ],
   cardTheme: const CardTheme(
@@ -321,6 +327,7 @@ ThemeData darkTheme = ThemeData(
       backgroundSingleLayer: meshBlackDefault,
       grayLight: meshGrayLightDarkMode,
       grayDark: meshGrayDarkDarkMode,
+      shimmerBaseColor: meshGray15,
     ),
   ],
   cardTheme: const CardTheme(
