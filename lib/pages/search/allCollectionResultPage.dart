@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/searchPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 
 class AllCollectionResultPage extends GetView<SearchPageController> {
@@ -9,13 +8,11 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         leading: IconButton(
           padding: const EdgeInsets.only(left: 16),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
           onPressed: () => Get.back(),
         ),
@@ -25,31 +22,30 @@ class AllCollectionResultPage extends GetView<SearchPageController> {
           children: [
             Text(
               'contain'.tr,
-              style: const TextStyle(
-                color: readrBlack,
-                fontSize: 18,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.w400),
             ),
             Text(
               controller.keyWord,
-              style: const TextStyle(
-                color: readrBlack,
-                fontSize: 18,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.w400),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(
               'containsCollection'.tr,
-              style: const TextStyle(
-                color: readrBlack,
-                fontSize: 18,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.w400),
             ),
           ],
         ),
       ),
-      backgroundColor: Colors.white,
       body: Obx(
         () => GridView.builder(
           padding: const EdgeInsets.all(20),
