@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/notify/notifyItemController.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/notifyPageItem.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -51,8 +52,8 @@ class NotifyItem extends GetView<NotifyItemController> {
       child: Obx(
         () => Container(
           color: controller.alreadyRead.value
-              ? Colors.white
-              : const Color.fromRGBO(242, 253, 255, 1),
+              ? Theme.of(context).backgroundColor
+              : Theme.of(context).extension<CustomColors>()?.highlightBlue,
           padding: const EdgeInsets.all(20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +70,7 @@ class NotifyItem extends GetView<NotifyItemController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTextWidget(),
+                    _buildTextWidget(context),
                     const SizedBox(
                       height: 4,
                     ),
@@ -87,7 +88,7 @@ class NotifyItem extends GetView<NotifyItemController> {
     );
   }
 
-  Widget _buildTextWidget() {
+  Widget _buildTextWidget(BuildContext context) {
     String mainText;
     if (notify.senderList.length == 1) {
       mainText = notify.senderList.first.nickname;
@@ -104,24 +105,16 @@ class NotifyItem extends GetView<NotifyItemController> {
       case NotifyType.comment:
         textChildren.add(TextSpan(
           text: 'commentNewsPrefix'.tr,
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            color: readrBlack66,
-          ),
+          style: Theme.of(context).textTheme.displaySmall,
         ));
         textChildren.add(TextSpan(
           text: notify.newsListItem!.source?.title,
-          style: TextStyle(
-            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-            color: readrBlack,
-          ),
+          style:
+              Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 14),
         ));
         textChildren.add(TextSpan(
           text: 'commentNewsSuffix'.tr,
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            color: readrBlack66,
-          ),
+          style: Theme.of(context).textTheme.displaySmall,
         ));
         break;
 
@@ -130,10 +123,7 @@ class NotifyItem extends GetView<NotifyItemController> {
         textChildren = [
           TextSpan(
             text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack66,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ];
         break;
@@ -144,10 +134,7 @@ class NotifyItem extends GetView<NotifyItemController> {
         textChildren = [
           TextSpan(
             text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack66,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ];
         break;
@@ -158,10 +145,7 @@ class NotifyItem extends GetView<NotifyItemController> {
         textChildren = [
           TextSpan(
             text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack66,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ];
         break;
@@ -171,10 +155,7 @@ class NotifyItem extends GetView<NotifyItemController> {
         textChildren = [
           TextSpan(
             text: notify.senderList.length > 1 ? '${'all'.tr}$text' : text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack66,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ];
         break;
@@ -184,10 +165,7 @@ class NotifyItem extends GetView<NotifyItemController> {
           TextSpan(
             text:
                 '${'createCollectionPrefix'.tr}${notify.collection?.title}${'createCollectionSuffix'.tr}',
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack66,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ];
         break;
@@ -196,20 +174,14 @@ class NotifyItem extends GetView<NotifyItemController> {
     return ExtendedText.rich(
       TextSpan(
         text: mainText,
-        style: TextStyle(
-          fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-          color: readrBlack,
-        ),
+        style:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 14),
         children: textChildren,
       ),
       joinZeroWidthSpace: true,
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
-      style: const TextStyle(
-        color: readrBlack66,
-        fontSize: 14,
-        fontFamily: 'PingFang TC',
-      ),
+      style: Theme.of(context).textTheme.displaySmall,
     );
   }
 }
