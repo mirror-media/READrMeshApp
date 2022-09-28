@@ -136,18 +136,22 @@ ThemeData lightTheme = ThemeData(
     ),
     displayMedium: const TextStyle(
       color: meshBlack66,
+      fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
     displaySmall: const TextStyle(
       color: meshBlack66,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     bodyMedium: const TextStyle(
       color: meshBlack50,
+      fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
     bodySmall: const TextStyle(
       color: meshBlack50,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     titleLarge: const TextStyle(
@@ -162,10 +166,12 @@ ThemeData lightTheme = ThemeData(
     ),
     titleSmall: const TextStyle(
       color: meshBlack87,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     labelMedium: const TextStyle(
       color: meshBlack30,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
   ),
@@ -243,18 +249,22 @@ ThemeData darkTheme = ThemeData(
     ),
     displayMedium: const TextStyle(
       color: meshGray87,
+      fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
     displaySmall: const TextStyle(
       color: meshGray87,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     bodyMedium: const TextStyle(
       color: meshGray66,
+      fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
     bodySmall: const TextStyle(
       color: meshGray66,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     titleLarge: const TextStyle(
@@ -269,10 +279,12 @@ ThemeData darkTheme = ThemeData(
     ),
     titleSmall: const TextStyle(
       color: meshGray,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
     labelMedium: const TextStyle(
       color: meshGray50,
+      fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
   ),
