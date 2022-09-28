@@ -1,8 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
+import 'package:readr/helpers/themes.dart';
 
 class READrAudioPlayer extends StatefulWidget {
   /// The baseUrl of the audio
@@ -96,12 +95,6 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
   Widget build(BuildContext context) {
     super.build(context);
     return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: readrBlack10, width: 1.0),
-        borderRadius: BorderRadius.circular(6.0),
-      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
         child: Row(
@@ -118,11 +111,15 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 3,
-                                color: readrBlack87,
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()!
+                                    .primaryLv1!,
                               )),
-                          child: const Icon(
+                          child: Icon(
                             Icons.pause,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                             size: 40,
                           ),
                         )
@@ -132,11 +129,15 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 3,
-                                color: readrBlack87,
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()!
+                                    .primaryLv1!,
                               )),
-                          child: const Icon(
+                          child: Icon(
                             Icons.play_arrow_rounded,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                             size: 40,
                           ),
                         ),
@@ -158,13 +159,10 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                       widget.title!,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: _textSize - 4,
-                        fontWeight: GetPlatform.isIOS
-                            ? FontWeight.w500
-                            : FontWeight.w600,
-                        color: readrBlack87,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontSize: _textSize - 4),
                     ),
                     const SizedBox(
                       height: 8,
@@ -193,17 +191,27 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                             child: _duration.inMilliseconds == 0
                                 ? Slider(
                                     value: 0,
-                                    inactiveColor: readrBlack20,
-                                    thumbColor: readrBlack87,
+                                    inactiveColor: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .primaryLv5!,
+                                    thumbColor: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .primaryLv1!,
                                     onChanged: (v) {},
                                   )
                                 : Slider(
                                     min: 0.0,
                                     max: _duration.inMilliseconds.toDouble(),
                                     value: sliderPosition,
-                                    activeColor: readrBlack87,
-                                    inactiveColor: readrBlack20,
-                                    thumbColor: readrBlack87,
+                                    activeColor: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .primaryLv1!,
+                                    inactiveColor: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .primaryLv5!,
+                                    thumbColor: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .primaryLv1!,
                                     onChanged: (v) {
                                       _audioPlayer.seek(
                                           Duration(milliseconds: v.toInt()));
@@ -219,20 +227,24 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                               children: [
                                 Text(
                                   position,
-                                  style: const TextStyle(
-                                    color: readrBlack50,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(fontSize: 12),
                                 ),
-                                const VerticalDivider(
-                                  color: readrBlack10,
+                                VerticalDivider(
+                                  color: Theme.of(context)
+                                      .extension<CustomColors>()!
+                                      .primaryLv6!,
                                   thickness: 1,
                                   width: 17,
                                 ),
                                 Text(
                                   duration,
-                                  style: const TextStyle(
-                                    color: readrBlack50,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(fontSize: 12),
                                 ),
                               ],
                             ),

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/story/widgets/parseTheTextToHtmlWidget.dart';
 
 class BlockQuoteWidget extends StatelessWidget {
@@ -16,25 +16,25 @@ class BlockQuoteWidget extends StatelessWidget {
       children: [
         Transform.rotate(
           angle: 180 * math.pi / 180,
-          child: const Icon(
+          child: Icon(
             Icons.format_quote,
             size: 60,
-            color: blockquoteColor,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
           ),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: ParseTheTextToHtmlWidget(
             html: content,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             fontSize: textSize,
           ),
         ),
         const SizedBox(width: 8),
-        const Icon(
+        Icon(
           Icons.format_quote,
           size: 60,
-          color: blockquoteColor,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
         ),
       ],
     );

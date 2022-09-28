@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 
@@ -22,11 +21,7 @@ class RelatedStoriesWidget extends StatelessWidget {
         children: [
           Text(
             'relatedNews'.tr,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: readrBlack87,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           ListView.separated(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -41,11 +36,7 @@ class RelatedStoriesWidget extends StatelessWidget {
             separatorBuilder: (context, index) {
               return const Padding(
                 padding: EdgeInsets.only(top: 16, bottom: 20),
-                child: Divider(
-                  color: readrBlack10,
-                  thickness: 1,
-                  height: 1,
-                ),
+                child: Divider(),
               );
             },
             itemCount: relatedStories.length,

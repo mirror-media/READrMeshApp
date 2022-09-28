@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_embedded_webview/flutter_embedded_webview.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/annotation.dart';
 import 'package:readr/models/content.dart';
 import 'package:readr/models/paragraph.dart';
@@ -77,7 +77,9 @@ class ParagraphFormat {
                     ParseTheTextToHtmlWidget(
                       html: paragraph.contents![0].data,
                       fontSize: 14,
-                      color: readrBlack50,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv3,
                     )
                   ],
                 ),
@@ -164,7 +166,8 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
                   html: paragraph.contents![0].data,
                   fontSize: 14,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 ),
               );
             }
@@ -308,7 +311,8 @@ class ParagraphFormat {
                 style: TextStyle(
                   fontSize: textSize,
                   height: 1.7,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 ),
               ),
             ),
@@ -338,20 +342,18 @@ class ParagraphFormat {
                 ParseTheTextToHtmlWidget(
                   html: dataList[index],
                   fontSize: 16,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   isCitation: true,
                 ),
-                const Divider(
-                  color: Color.fromRGBO(0, 9, 40, 0.1),
-                  thickness: 1,
-                ),
+                const Divider(),
               ],
             );
           }
           return ParseTheTextToHtmlWidget(
             html: dataList[index],
             fontSize: 16,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             isCitation: true,
           );
         }
@@ -363,8 +365,9 @@ class ParagraphFormat {
               child: Container(
                 width: 6,
                 height: 6,
-                decoration: const BoxDecoration(
-                  color: readrBlack50,
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -374,7 +377,7 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
               html: dataList[index],
               fontSize: textSize,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             )),
           ],
         );

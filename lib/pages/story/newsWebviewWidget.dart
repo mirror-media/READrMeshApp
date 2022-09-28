@@ -47,7 +47,6 @@ class NewsWebviewWidget extends GetView<StoryPageController> {
                 padding: EdgeInsets.only(bottom: context.height * 0.12),
                 child: WebView(
                   initialUrl: controller.newsListItem.url,
-                  backgroundColor: Colors.white,
                   javascriptMode: JavascriptMode.unrestricted,
                   gestureNavigationEnabled: true,
                   onWebViewCreated: (newWebViewController) {

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/content.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 
@@ -72,7 +73,9 @@ class _ImageAndDescriptionSlideShowWidgetState
                   maxLines: 2,
                   text: TextSpan(
                     style: TextStyle(
-                        color: const Color(0xff757575),
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
                         fontSize: textSize - 4,
                         fontWeight: FontWeight.w400),
                     text: content.description,

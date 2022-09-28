@@ -6,6 +6,7 @@ import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/userService.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/newsStoryWidget.dart';
 import 'package:readr/pages/story/newsWebviewWidget.dart';
@@ -54,11 +55,13 @@ class StoryPage extends GetView<StoryPageController> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).backgroundColor,
           toolbarHeight: 0,
           elevation: 0,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: !news.fullContent
+            ? Colors.white
+            : Theme.of(context).backgroundColor,
         body: child,
       ),
       onWillPop: () async {
@@ -76,25 +79,21 @@ class StoryPage extends GetView<StoryPageController> {
             builder: (_) => PlatformAlertDialog(
               title: Text(
                 'deleteAlertTitle'.tr,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               content: Text(
                 'leaveAlertContent'.tr,
-                style: const TextStyle(
-                  fontSize: 13,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               actions: [
                 PlatformDialogAction(
                   onPressed: () => Get.close(2),
                   child: PlatformText(
                     'deleteComment'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
-                      color: Colors.red,
+                      color:
+                          Theme.of(context).extension<CustomColors>()?.redText,
                     ),
                   ),
                 ),
@@ -102,9 +101,9 @@ class StoryPage extends GetView<StoryPageController> {
                   onPressed: () => Get.back(),
                   child: PlatformText(
                     'continueInput'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
-                      color: Colors.blue,
+                      color: Theme.of(context).extension<CustomColors>()?.blue,
                     ),
                   ),
                 ),

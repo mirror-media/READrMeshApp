@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class QuoteByWidget extends StatelessWidget {
   final String quote;
@@ -15,12 +15,12 @@ class QuoteByWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 32),
       child: Column(
         children: [
-          const RotatedBox(
+          RotatedBox(
             quarterTurns: 2,
             child: Icon(
               Icons.format_quote,
               size: 60,
-              color: readrBlack10,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
             ),
           ),
           const SizedBox(
@@ -30,12 +30,10 @@ class QuoteByWidget extends StatelessWidget {
             width: width,
             child: Text(
               quote,
-              style: const TextStyle(
-                fontSize: 20,
-                height: 1.5,
-                fontWeight: FontWeight.w600,
-                color: readrBlack87,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(height: 1.5),
             ),
           ),
           if (quoteBy != null && quoteBy != '') ...[
@@ -47,11 +45,10 @@ class QuoteByWidget extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 '—— $quoteBy',
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: readrBlack50,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 13),
               ),
             ),
           ],

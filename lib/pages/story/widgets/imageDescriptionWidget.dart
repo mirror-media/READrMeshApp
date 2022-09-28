@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 
 class ImageDescriptionWidget extends StatelessWidget {
@@ -50,7 +51,11 @@ class ImageDescriptionWidget extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, left: 20.0),
               child: Text(
                 description!,
-                style: TextStyle(fontSize: textSize, color: Colors.grey),
+                style: TextStyle(
+                    fontSize: textSize,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()
+                        ?.primaryLv3),
               ),
             ),
         ],
