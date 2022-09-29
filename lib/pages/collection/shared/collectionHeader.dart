@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/collection/collectionTimestamp.dart';
@@ -20,7 +20,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,9 +58,10 @@ class CollectionHeader extends GetView<CollectionPageController> {
                 return ExtendedText(
                   '@$authorCustomId',
                   joinZeroWidthSpace: true,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: readrBlack50,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
                   ),
                 );
               }),
@@ -75,10 +76,11 @@ class CollectionHeader extends GetView<CollectionPageController> {
                         .value ??
                     collection.title,
                 joinZeroWidthSpace: true,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
               ),
             ),
@@ -100,8 +102,10 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   () => ExtendedText(
                     controller.collectionDescription.value,
                     maxLines: controller.expandDescription.value ? null : 3,
-                    style: const TextStyle(
-                      color: Color.fromRGBO(0, 9, 40, 0.66),
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv2,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
@@ -111,16 +115,20 @@ class CollectionHeader extends GetView<CollectionPageController> {
                       child: RichText(
                         text: TextSpan(
                           text: '.... ',
-                          style: const TextStyle(
-                            color: Color.fromRGBO(0, 9, 40, 0.66),
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primaryLv2,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
                           children: [
                             TextSpan(
                               text: 'expandDescription'.tr,
-                              style: const TextStyle(
-                                color: readrBlack50,
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()
+                                    ?.primaryLv3,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -150,9 +158,11 @@ class CollectionHeader extends GetView<CollectionPageController> {
                       ],
                     ),
                     joinZeroWidthSpace: true,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: readrBlack50,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv3,
                     ),
                     strutStyle: const StrutStyle(
                       forceStrutHeight: true,
@@ -165,9 +175,10 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   height: 4,
                   margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: readrBlack20,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv5,
                   ),
                 ),
                 Obx(

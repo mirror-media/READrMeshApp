@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseStoryPage.dart';
 import 'package:readr/pages/collection/shared/collectionHeader.dart';
@@ -13,7 +13,7 @@ class CollectionEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: meshGray,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
@@ -36,9 +36,11 @@ class CollectionEmptyWidget extends StatelessWidget {
                       children: [
                         Text(
                           'myCollectionEmptyTitle'.tr,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: readrBlack30,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primaryLv4,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -61,7 +63,9 @@ class CollectionEmptyWidget extends StatelessWidget {
                                 )),
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
-                              backgroundColor: readrBlack87,
+                              backgroundColor: Theme.of(context)
+                                  .extension<CustomColors>()
+                                  ?.primaryLv1,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 8),
                               shape: RoundedRectangleBorder(
@@ -70,8 +74,8 @@ class CollectionEmptyWidget extends StatelessWidget {
                             ),
                             child: Text(
                               'myCollectionEmptyButtonText'.tr,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: Theme.of(context).backgroundColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -83,9 +87,11 @@ class CollectionEmptyWidget extends StatelessWidget {
 
                   return Text(
                     'viewCollectionEmpty'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: readrBlack30,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv4,
                     ),
                     textAlign: TextAlign.center,
                   );

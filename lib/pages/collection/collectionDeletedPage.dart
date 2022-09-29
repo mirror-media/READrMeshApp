@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class CollectionDeletedPage extends StatelessWidget {
   const CollectionDeletedPage({Key? key}) : super(key: key);
@@ -12,24 +13,21 @@ class CollectionDeletedPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: GetPlatform.isIOS,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
           onPressed: () => Get.back(),
         ),
         title: Text(
           'collection'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
         ),
       ),
-      backgroundColor: homeScreenBackgroundColor,
       body: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -41,10 +39,10 @@ class CollectionDeletedPage extends StatelessWidget {
             ),
             Text(
               'collectionDeletedTitle'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               ),
             ),
             const SizedBox(
@@ -52,10 +50,10 @@ class CollectionDeletedPage extends StatelessWidget {
             ),
             Text(
               'collectionDeletedDescription'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: readrBlack66,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv2,
               ),
             ),
           ],

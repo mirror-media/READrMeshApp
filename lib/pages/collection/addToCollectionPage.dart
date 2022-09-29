@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -19,25 +19,23 @@ class AddToCollectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.white,
         centerTitle: true,
         automaticallyImplyLeading: false,
         elevation: 0.5,
         title: Text(
           'addToCollection'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
               PlatformIcons(context).clear,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               size: 26,
             ),
             tooltip: 'back'.tr,
@@ -49,11 +47,11 @@ class AddToCollectionPage extends StatelessWidget {
       bottomNavigationBar: Container(
         width: double.infinity,
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
               width: 0.5,
-              color: readrBlack10,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
             ),
           ),
         ),
@@ -66,8 +64,11 @@ class AddToCollectionPage extends StatelessWidget {
             ),
           ),
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: readrBlack, width: 1),
-            backgroundColor: Colors.white,
+            side: BorderSide(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              width: 1,
+            ),
+            backgroundColor: Theme.of(context).backgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6.0),
@@ -76,9 +77,9 @@ class AddToCollectionPage extends StatelessWidget {
           child: Text(
             'createNewCollection'.tr,
             maxLines: 1,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: readrBlack,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             ),
           ),
         ),
@@ -106,9 +107,10 @@ class AddToCollectionPage extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Text(
                 'userNoCollection'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 ),
               ),
             );
@@ -117,9 +119,10 @@ class AddToCollectionPage extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Text(
                 'alreadyAddToAllCollections'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 ),
               ),
             );
@@ -129,23 +132,28 @@ class AddToCollectionPage extends StatelessWidget {
               child: ExtendedText.rich(
                 TextSpan(
                   text: 'alreadyAddToACollectionPrefix'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: readrBlack50,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
                   ),
                   children: [
                     TextSpan(
                       text: controller.alreadyPickCollections[0].title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                       ),
                     ),
                     TextSpan(
                       text: 'alreadyAddToACollectionSuffix'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: readrBlack50,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
                       ),
                     )
                   ],
@@ -156,16 +164,20 @@ class AddToCollectionPage extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '...',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                       ),
                       children: [
                         TextSpan(
                           text: 'alreadyAddToACollectionSuffix'.tr,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: readrBlack50,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primaryLv3,
                           ),
                         )
                       ],
@@ -181,9 +193,10 @@ class AddToCollectionPage extends StatelessWidget {
               child: ExtendedText.rich(
                 TextSpan(
                   text: 'alreadyAddToCollectionsPrefix'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: readrBlack50,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
                   ),
                   children: [
                     for (int i = 0;
@@ -191,31 +204,39 @@ class AddToCollectionPage extends StatelessWidget {
                         i++)
                       TextSpan(
                         text: 'upperQuotationMarks'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.primaryLv3,
                         ),
                         children: [
                           TextSpan(
                             text: controller.alreadyPickCollections[i].title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              color: readrBlack87,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()
+                                  ?.primaryLv1,
                             ),
                           ),
                           TextSpan(
                             text: 'lowerQuotationMarks'.tr,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              color: readrBlack50,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()
+                                  ?.primaryLv3,
                             ),
                           ),
                           if (i < controller.alreadyPickCollections.length - 1)
                             TextSpan(
                               text: 'comma'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
-                                color: readrBlack50,
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()
+                                    ?.primaryLv3,
                               ),
                             ),
                         ],
@@ -223,9 +244,11 @@ class AddToCollectionPage extends StatelessWidget {
                     TextSpan(
                       text:
                           '${'alreadyAddToCollectionsSuffix1'.tr}${controller.alreadyPickCollections.length}${'alreadyAddToCollectionsSuffix2'.tr}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: readrBlack50,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
                       ),
                     ),
                   ],
@@ -236,17 +259,21 @@ class AddToCollectionPage extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '...',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                       ),
                       children: [
                         TextSpan(
                           text:
                               '${'alreadyAddToCollectionsSuffix1'.tr}${controller.alreadyPickCollections.length}${'alreadyAddToCollectionsSuffix2'.tr}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: readrBlack50,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primaryLv3,
                           ),
                         ),
                       ],
@@ -280,14 +307,16 @@ class AddToCollectionPage extends StatelessWidget {
                                 width: 96,
                                 height: 48,
                                 child: Shimmer.fromColors(
-                                  baseColor:
-                                      const Color.fromRGBO(0, 9, 40, 0.15),
-                                  highlightColor:
-                                      const Color.fromRGBO(0, 9, 40, 0.1),
+                                  baseColor: Theme.of(context)
+                                      .extension<CustomColors>()!
+                                      .shimmerBaseColor!,
+                                  highlightColor: Theme.of(context)
+                                      .extension<CustomColors>()!
+                                      .primaryLv6!,
                                   child: Container(
                                     width: 96,
                                     height: 48,
-                                    color: Colors.white,
+                                    color: Theme.of(context).backgroundColor,
                                   ),
                                 ),
                               ),
@@ -297,9 +326,11 @@ class AddToCollectionPage extends StatelessWidget {
                         : null,
                     title: Text(
                       controller.notPickCollections[index].title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -315,7 +346,6 @@ class AddToCollectionPage extends StatelessWidget {
                   separatorBuilder: (context, index) => const Divider(
                     thickness: 0.5,
                     height: 0.5,
-                    color: readrBlack10,
                   ),
                   itemCount: controller.notPickCollections.length,
                 ),
