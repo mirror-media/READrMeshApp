@@ -149,6 +149,11 @@ ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.w400,
       fontSize: 14,
     ),
+    bodyLarge: const TextStyle(
+      color: meshBlack50,
+      fontWeight: FontWeight.w400,
+      fontSize: 18,
+    ),
     bodyMedium: const TextStyle(
       color: meshBlack50,
       fontWeight: FontWeight.w400,
@@ -262,6 +267,11 @@ ThemeData darkTheme = ThemeData(
       color: meshGray87,
       fontWeight: FontWeight.w400,
       fontSize: 14,
+    ),
+    bodyLarge: const TextStyle(
+      color: meshGray66,
+      fontWeight: FontWeight.w400,
+      fontSize: 18,
     ),
     bodyMedium: const TextStyle(
       color: meshGray66,
