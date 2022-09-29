@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 void showMeshToast({
   required Widget icon,
@@ -12,7 +13,7 @@ void showMeshToast({
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6.0),
-        color: const Color.fromRGBO(0, 9, 40, 0.66),
+        color: Get.isDarkMode ? meshBlack87 : meshBlack66,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
