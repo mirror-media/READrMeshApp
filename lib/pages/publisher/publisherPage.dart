@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/publisherPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -24,26 +24,25 @@ class PublisherPage extends GetView<PublisherPageController> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         automaticallyImplyLeading: false,
         centerTitle: Platform.isIOS,
-        backgroundColor: Colors.white,
         title: Text(
           publisher.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         elevation: 0,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: GetBuilder<PublisherPageController>(
         init: PublisherPageController(
           publisher: publisher,
@@ -75,14 +74,14 @@ class PublisherPage extends GetView<PublisherPageController> {
     return Column(
       children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: readrBlack10,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
                 width: 0.5,
               ),
             ),
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
           ),
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 64),
           child: Row(
@@ -102,28 +101,34 @@ class PublisherPage extends GetView<PublisherPageController> {
                         text: _convertNumberToString(
                           controller.followerCount.value,
                         ),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: readrBlack87,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                         ),
                         children: [
                           TextSpan(
                             text: ' ${'followerConunt'.tr}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
-                              color: readrBlack50,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv3!,
                             ),
                           ),
                           if (controller.followerCount.value > 1 &&
                               Get.locale?.languageCode == 'en')
-                            const TextSpan(
+                            TextSpan(
                               text: 's',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: readrBlack50,
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()!
+                                    .primaryLv3!,
                               ),
                             ),
                         ],
@@ -176,7 +181,7 @@ class PublisherPage extends GetView<PublisherPageController> {
               controller.fetchMorePublisherNews();
             }
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: const Center(
                 child: CircularProgressIndicator.adaptive(),
@@ -193,7 +198,6 @@ class PublisherPage extends GetView<PublisherPageController> {
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
             child: Divider(
-              color: readrBlack10,
               thickness: 1,
               height: 1,
             ),
