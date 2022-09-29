@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/settingPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class InitialSettingPage extends GetView<SettingPageController> {
   @override
@@ -9,38 +9,38 @@ class InitialSettingPage extends GetView<SettingPageController> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         title: Text(
           'initialSettingPageTitle'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: homeScreenBackgroundColor,
       body: SafeArea(
-        child: ListView.separated(
-          padding: const EdgeInsets.all(0),
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) => _buildItem(context, index),
-          separatorBuilder: (context, index) => const Divider(
-            color: readrBlack10,
-            height: 0.5,
-            thickness: 0.5,
-            indent: 20,
-            endIndent: 20,
+        child: Container(
+          color: Theme.of(context).backgroundColor,
+          child: ListView.separated(
+            padding: const EdgeInsets.all(0),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) => _buildItem(context, index),
+            separatorBuilder: (context, index) => const Divider(
+              height: 0.5,
+              thickness: 0.5,
+              indent: 20,
+              endIndent: 20,
+            ),
+            itemCount: 2,
           ),
-          itemCount: 2,
         ),
       ),
     );
@@ -54,15 +54,15 @@ class InitialSettingPage extends GetView<SettingPageController> {
     return GestureDetector(
       onTap: () => controller.initialPageIndex.value = index,
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: readrBlack87,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
@@ -70,9 +70,9 @@ class InitialSettingPage extends GetView<SettingPageController> {
             Obx(
               () {
                 if (controller.initialPageIndex.value == index) {
-                  return const Icon(
+                  return Icon(
                     Icons.check_outlined,
-                    color: Colors.blue,
+                    color: Theme.of(context).extension<CustomColors>()!.blue!,
                     size: 16,
                   );
                 }

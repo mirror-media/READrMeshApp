@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsPage extends StatelessWidget {
@@ -21,43 +22,40 @@ class ContactUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: homeScreenBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         title: Text(
           'contactUs'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontWeight: FontWeight.w400,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Column(
         children: [
-          _introBlock(),
-          Divider(
-            color: Colors.grey[100],
+          _introBlock(context),
+          const Divider(
             thickness: 1,
             height: 1,
           ),
           Container(
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildItem(
+                  context: context,
                   title: 'customerServiceEmail'.tr,
                   content: 'readr@readr.tw',
                   onTap: () async {
@@ -94,9 +92,12 @@ class ContactUsPage extends StatelessWidget {
                                   app.name == 'Apple Mail'
                                       ? 'appleMail'.tr
                                       : app.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 20,
+                                    color: Theme.of(context)
+                                        .extension<CustomColors>()!
+                                        .blue!,
                                   ),
                                 ),
                               ),
@@ -105,9 +106,12 @@ class ContactUsPage extends StatelessWidget {
                             onPressed: () => Navigator.pop(context),
                             child: Text(
                               'cancel'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
+                                color: Theme.of(context)
+                                    .extension<CustomColors>()!
+                                    .blue!,
                               ),
                             ),
                           ),
@@ -116,12 +120,12 @@ class ContactUsPage extends StatelessWidget {
                     }
                   },
                 ),
-                Divider(
-                  color: Colors.grey[100],
+                const Divider(
                   thickness: 1,
                   height: 1,
                 ),
                 _buildItem(
+                  context: context,
                   title: 'customerServicePhone'.tr,
                   content: '(02) 6633-3890',
                   onTap: () async {
@@ -131,12 +135,12 @@ class ContactUsPage extends StatelessWidget {
                     }
                   },
                 ),
-                Divider(
-                  color: Colors.grey[100],
+                const Divider(
                   thickness: 1,
                   height: 1,
                 ),
                 _buildItem(
+                  context: context,
                   title: 'discordCommunity'.tr,
                   content: 'https://discord.gg/ywpth4mZUw',
                   onTap: () async {
@@ -154,9 +158,9 @@ class ContactUsPage extends StatelessWidget {
     );
   }
 
-  Widget _introBlock() {
+  Widget _introBlock(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Column(
@@ -165,15 +169,16 @@ class ContactUsPage extends StatelessWidget {
             welcomeScreenLogoSvg,
             width: 96,
             height: 40,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
           const SizedBox(
             height: 24,
           ),
           Text(
             'contactUsContent'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: readrBlack66,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
             ),
           )
         ],
@@ -185,10 +190,18 @@ class ContactUsPage extends StatelessWidget {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: Text("noMailAppsDialogTitle".tr),
+        title: Text(
+          "noMailAppsDialogTitle".tr,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         actions: <Widget>[
           PlatformDialogAction(
-            child: Text("ok".tr),
+            child: Text(
+              "ok".tr,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.blue!,
+              ),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -199,6 +212,7 @@ class ContactUsPage extends StatelessWidget {
   }
 
   Widget _buildItem({
+    required BuildContext context,
     required String title,
     required String content,
     void Function()? onTap,
@@ -206,7 +220,7 @@ class ContactUsPage extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         width: double.maxFinite,
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
@@ -214,9 +228,9 @@ class ContactUsPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               ),
             ),
             const SizedBox(
@@ -224,9 +238,9 @@ class ContactUsPage extends StatelessWidget {
             ),
             Text(
               content,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
               ),
             ),
           ],

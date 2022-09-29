@@ -9,6 +9,7 @@ import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
 import 'package:readr/pages/setting/blocklistPage.dart';
 import 'package:readr/pages/setting/contactUsPage.dart';
@@ -25,25 +26,22 @@ class SettingPage extends GetView<SettingPageController> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         title: Text(
           'setting'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: homeScreenBackgroundColor,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(0),
@@ -51,7 +49,7 @@ class SettingPage extends GetView<SettingPageController> {
             Obx(
               () {
                 if (Get.find<UserService>().isMember.isTrue) {
-                  return _userInfo();
+                  return _userInfo(context);
                 }
                 return Container();
               },
@@ -67,7 +65,7 @@ class SettingPage extends GetView<SettingPageController> {
             Obx(
               () {
                 if (Get.find<UserService>().isMember.isTrue) {
-                  return _accountTile();
+                  return _accountTile(context);
                 }
                 return Container();
               },
@@ -78,7 +76,7 @@ class SettingPage extends GetView<SettingPageController> {
     );
   }
 
-  Widget _userInfo() {
+  Widget _userInfo(BuildContext context) {
     String email = '';
     if (Get.find<UserService>().currentUser.email!.contains('[0x0001]')) {
       email = Get.find<UserService>().currentUser.nickname;
@@ -87,27 +85,32 @@ class SettingPage extends GetView<SettingPageController> {
     }
     Widget icon = Container();
     if (controller.loginType.value == 'apple') {
-      icon = const FaIcon(
+      icon = FaIcon(
         FontAwesomeIcons.apple,
         size: 18,
-        color: readrBlack,
+        color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
       );
     } else if (controller.loginType.value == 'facebook') {
-      icon = const FaIcon(
+      icon = FaIcon(
         FontAwesomeIcons.squareFacebook,
         size: 18,
-        color: Color.fromRGBO(59, 89, 152, 1),
+        color: Theme.of(context).brightness == Brightness.light
+            ? const Color.fromRGBO(59, 89, 152, 1)
+            : Colors.white,
       );
     } else if (controller.loginType.value == 'google') {
       icon = SvgPicture.asset(
         googleLogoSvg,
         width: 16,
         height: 16,
+        color: Theme.of(context).brightness == Brightness.light
+            ? null
+            : Colors.white,
       );
     }
 
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -115,10 +118,10 @@ class SettingPage extends GetView<SettingPageController> {
         children: [
           Text(
             email,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             ),
           ),
           icon,
@@ -131,7 +134,7 @@ class SettingPage extends GetView<SettingPageController> {
     return Column(
       children: [
         Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
@@ -140,9 +143,9 @@ class SettingPage extends GetView<SettingPageController> {
                 onPressed: () {
                   Get.to(() => NewsCoverageSettingPage());
                 },
+                context: context,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
@@ -150,9 +153,9 @@ class SettingPage extends GetView<SettingPageController> {
                 onPressed: () {
                   Get.to(() => InitialSettingPage());
                 },
+                context: context,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
@@ -160,6 +163,7 @@ class SettingPage extends GetView<SettingPageController> {
                 onPressed: () {
                   Get.to(() => SetLanguagePage());
                 },
+                context: context,
               ),
             ],
           ),
@@ -168,7 +172,7 @@ class SettingPage extends GetView<SettingPageController> {
           height: 12,
         ),
         Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
@@ -181,18 +185,18 @@ class SettingPage extends GetView<SettingPageController> {
                         device: controller.device,
                       ));
                 },
+                context: context,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
+                context: context,
                 text: 'about'.tr,
                 onPressed: () => Get.to(() => AboutPage()),
                 hideArrow: true,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               SizedBox(
@@ -202,19 +206,23 @@ class SettingPage extends GetView<SettingPageController> {
                   children: [
                     Text(
                       'version'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                     ),
                     Obx(
                       () => Text(
                         controller.versionAndBuildNumber.value,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                     ),
@@ -232,42 +240,43 @@ class SettingPage extends GetView<SettingPageController> {
     return Column(
       children: [
         Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           margin: const EdgeInsets.only(bottom: 12),
           child: Column(
             children: [
               _settingButton(
+                context: context,
                 text: 'newsCoverageSettingPageTitle'.tr,
                 onPressed: () {
                   Get.to(() => NewsCoverageSettingPage());
                 },
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
+                context: context,
                 text: 'initialSettingPageTitle'.tr,
                 onPressed: () {
                   Get.to(() => InitialSettingPage());
                 },
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
+                context: context,
                 text: 'blockList'.tr,
                 onPressed: () {
                   Get.to(() => BlocklistPage());
                 },
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
+                context: context,
                 text: 'setLanguage'.tr,
                 onPressed: () {
                   Get.to(() => SetLanguagePage());
@@ -277,12 +286,13 @@ class SettingPage extends GetView<SettingPageController> {
           ),
         ),
         Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           margin: const EdgeInsets.only(bottom: 12),
           child: Column(
             children: [
               _settingButton(
+                context: context,
                 text: 'contactUs'.tr,
                 onPressed: () {
                   Get.to(() => ContactUsPage(
@@ -293,16 +303,15 @@ class SettingPage extends GetView<SettingPageController> {
                 },
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               _settingButton(
+                context: context,
                 text: 'about'.tr,
                 onPressed: () => Get.to(() => AboutPage()),
                 hideArrow: true,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 1,
               ),
               SizedBox(
@@ -312,19 +321,23 @@ class SettingPage extends GetView<SettingPageController> {
                   children: [
                     Text(
                       'version'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                     ),
                     Obx(
                       () => Text(
                         controller.versionAndBuildNumber.value,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                     ),
@@ -339,6 +352,7 @@ class SettingPage extends GetView<SettingPageController> {
   }
 
   Widget _settingButton({
+    required BuildContext context,
     required String text,
     void Function()? onPressed,
     bool hideArrow = false,
@@ -352,16 +366,16 @@ class SettingPage extends GetView<SettingPageController> {
           children: [
             Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               ),
             ),
             if (!hideArrow)
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios_outlined,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
                 size: 16,
               ),
           ],
@@ -370,9 +384,9 @@ class SettingPage extends GetView<SettingPageController> {
     );
   }
 
-  Widget _accountTile() {
+  Widget _accountTile(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,10 +397,11 @@ class SettingPage extends GetView<SettingPageController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'logOut'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
               ),
             ),
@@ -407,7 +422,6 @@ class SettingPage extends GetView<SettingPageController> {
             },
           ),
           const Divider(
-            color: readrBlack10,
             height: 1,
           ),
           InkWell(
@@ -416,10 +430,10 @@ class SettingPage extends GetView<SettingPageController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'deletePageTitle'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Colors.red,
+                  color: Theme.of(context).extension<CustomColors>()!.redText!,
                 ),
               ),
             ),
