@@ -156,6 +156,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                         automaticallyImplyLeading: false,
                         titleSpacing: 0,
                         elevation: 0.5,
+                        primary: false,
                       ),
                       _allCommentList(context),
                     ]);
@@ -235,11 +236,9 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
   Widget _titleAndPickBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border.symmetric(
-          horizontal: BorderSide(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
-              width: 0.5),
+          horizontal: BorderSide(color: meshBlack10, width: 0.5),
         ),
       ),
       child: Column(
