@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/followerListController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/followSkeletonScreen.dart';
@@ -34,23 +34,21 @@ class FollowerListPage extends GetView<FollowerListController> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         centerTitle: Platform.isIOS,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         title: Text(
           viewMember.customId,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -68,7 +66,7 @@ class FollowerListPage extends GetView<FollowerListController> {
 
           if (!controller.isLoading) {
             if (controller.followerList.isEmpty) {
-              return _emptyWidget();
+              return _emptyWidget(context);
             }
             return _buildBody();
           }
@@ -79,18 +77,18 @@ class FollowerListPage extends GetView<FollowerListController> {
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     bool isMine =
         Get.find<UserService>().currentUser.memberId == viewMember.memberId;
     return Container(
-      color: homeScreenBackgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: Text(
           isMine ? 'noFollower'.tr : 'viewMemberNoFollower'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: readrBlack30,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
           ),
           textAlign: TextAlign.center,
         ),
@@ -142,7 +140,6 @@ class FollowerListPage extends GetView<FollowerListController> {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: Divider(
-              color: readrBlack10,
               thickness: 1,
               height: 1,
             ),
