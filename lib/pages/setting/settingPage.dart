@@ -11,6 +11,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/setting/aboutPage.dart';
+import 'package:readr/pages/setting/appearanceSettingPage.dart';
 import 'package:readr/pages/setting/blocklistPage.dart';
 import 'package:readr/pages/setting/contactUsPage.dart';
 import 'package:readr/pages/setting/deleteMemberPage.dart';
@@ -88,7 +89,9 @@ class SettingPage extends GetView<SettingPageController> {
       icon = FaIcon(
         FontAwesomeIcons.apple,
         size: 18,
-        color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.black
+            : Colors.white,
       );
     } else if (controller.loginType.value == 'facebook') {
       icon = FaIcon(
@@ -152,6 +155,16 @@ class SettingPage extends GetView<SettingPageController> {
                 text: 'initialSettingPageTitle'.tr,
                 onPressed: () {
                   Get.to(() => InitialSettingPage());
+                },
+                context: context,
+              ),
+              const Divider(
+                height: 1,
+              ),
+              _settingButton(
+                text: 'appearance'.tr,
+                onPressed: () {
+                  Get.to(() => AppearanceSettingPage());
                 },
                 context: context,
               ),
@@ -270,6 +283,16 @@ class SettingPage extends GetView<SettingPageController> {
                 text: 'blockList'.tr,
                 onPressed: () {
                   Get.to(() => BlocklistPage());
+                },
+              ),
+              const Divider(
+                height: 1,
+              ),
+              _settingButton(
+                context: context,
+                text: 'appearance'.tr,
+                onPressed: () {
+                  Get.to(() => AppearanceSettingPage());
                 },
               ),
               const Divider(

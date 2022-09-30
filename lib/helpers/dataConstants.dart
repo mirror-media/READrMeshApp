@@ -194,3 +194,9 @@ enum LanguageSettings {
   simplifiedChinese,
   english,
 }
+
+enum AppearanceSettings {
+  system,
+  light,
+  dark,
+}
