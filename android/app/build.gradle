@@ -71,7 +71,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        ndkVersion "23.0.7123448"
+        ndkVersion "25.1.8937393"
         ndk {
             debugSymbolLevel 'FULL'
         }
