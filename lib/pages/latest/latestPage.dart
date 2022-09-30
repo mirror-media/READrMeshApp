@@ -167,7 +167,13 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(
               height: 20,
             ),
-            SvgPicture.asset(latestNewsEmptySvg, height: 91, width: 62),
+            SvgPicture.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? latestNewsEmptySvg
+                  : latestNewsEmptyDarkSvg,
+              height: 91,
+              width: 62,
+            ),
             const SizedBox(
               height: 24,
             ),
