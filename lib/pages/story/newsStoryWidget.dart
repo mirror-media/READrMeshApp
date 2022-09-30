@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
@@ -13,6 +14,7 @@ import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
+import 'package:readr/pages/story/widgets/relatedStoriesWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -69,15 +71,15 @@ class NewsStoryWidget extends GetView<StoryPageController> {
   Widget _buildContent(BuildContext context) {
     return ListView(
       children: [
-        _buildHeroWidget(),
+        _buildHeroWidget(context),
         const SizedBox(height: 24),
-        _buildPublisher(),
+        _buildPublisher(context),
         const SizedBox(height: 4),
-        _buildTitle(),
+        _buildTitle(context),
         const SizedBox(height: 12),
-        _buildPublishDate(),
+        _buildPublishDate(context),
         const SizedBox(height: 4),
-        _buildAuthor(),
+        _buildAuthor(context),
         const SizedBox(height: 24),
         _buildStoryContent(context),
         const SizedBox(height: 32),
@@ -97,14 +99,14 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           keepAlive: true,
         ),
         const SizedBox(height: 32),
-        _buildContact(),
-        const SizedBox(height: 160),
+        RelatedStoriesWidget(controller.newsStoryItem.relatedStories),
+        _buildContact(context),
       ],
     );
   }
 
-  Widget _buildHeroWidget() {
-    double width = Get.width;
+  Widget _buildHeroWidget(BuildContext context) {
+    double width = context.width;
     double height = width / 2;
 
     if (controller.newsListItem.heroImageUrl == null) {
@@ -130,7 +132,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildPublisher() {
+  Widget _buildPublisher(BuildContext context) {
     if (controller.newsListItem.source == null) {
       return Container();
     }
@@ -140,45 +142,33 @@ class NewsStoryWidget extends GetView<StoryPageController> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Text(
           controller.newsListItem.source!.title,
-          style: const TextStyle(
-            color: readrBlack50,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ),
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         controller.newsStoryItem.title,
-        style: const TextStyle(
-          color: readrBlack87,
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.headlineLarge,
       ),
     );
   }
 
-  Widget _buildPublishDate() {
+  Widget _buildPublishDate(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         '${'updateTime'.tr}${DateFormat('yyyy/MM/dd HH:mm').format(controller.newsListItem.publishedDate)}',
-        style: const TextStyle(
-          color: readrBlack50,
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ),
     );
   }
 
-  Widget _buildAuthor() {
+  Widget _buildAuthor(BuildContext context) {
     if (controller.newsStoryItem.writer == null ||
         controller.newsStoryItem.writer!.isEmpty) {
       return Container();
@@ -187,17 +177,16 @@ class NewsStoryWidget extends GetView<StoryPageController> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         '${'journalist'.tr}${controller.newsStoryItem.writer!}',
-        style: const TextStyle(
-          color: readrBlack50,
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ),
     );
   }
 
   Widget _buildStoryContent(BuildContext context) {
     int paragraphCount = 0;
+    String textColor = Theme.of(context).brightness == Brightness.light
+        ? '#DE000928'
+        : '#F6F6FB ';
     return HtmlWidget(
       controller.newsStoryItem.content!,
       customWidgetBuilder: (element) {
@@ -215,10 +204,11 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 child: ExtendedText(
                   element.text,
                   joinZeroWidthSpace: true,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     height: 2,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                 ),
               ),
@@ -227,10 +217,13 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 factoryId: 'outline',
                 adHeight: context.width * 0.75,
                 decoration: BoxDecoration(
-                  color: readrBlack10,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv6,
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   border: Border.all(
-                    color: readrBlack10,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv6!,
                   ),
                 ),
                 margin:
@@ -246,8 +239,8 @@ class NewsStoryWidget extends GetView<StoryPageController> {
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
-            'text-decoration-color': 'black',
-            'color': 'black',
+            'text-decoration-color': textColor,
+            'color': textColor,
             'text-decoration-thickness': '100%',
             'padding': '0px 20px 0px 20px',
           };
@@ -274,95 +267,106 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           'padding': '0px 20px 0px 20px',
         };
       },
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 18,
         height: 2,
-        color: readrBlack87,
+        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
       ),
     );
   }
 
-  Widget _buildContact() {
+  Widget _buildContact(BuildContext context) {
     if (controller.newsListItem.source?.title != '鏡週刊') {
       return Container();
     }
-    return Column(
-      children: [
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'mmContactEmail'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
-            ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri params = Uri(
-                      scheme: 'mailto',
-                      path: 'MM-onlineservice@mirrormedia.mg',
-                    );
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'mmContactEmail'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 13),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri params = Uri(
+                        scheme: 'mailto',
+                        path: 'MM-onlineservice@mirrormedia.mg',
+                      );
 
-                    if (await canLaunchUrl(params)) {
-                      await launchUrl(params);
-                    } else {
-                      print('Could not launch ${params.toString()}');
-                    }
-                  },
-                  child: const Text(
-                    'MM-onlineservice@mirrormedia.mg',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+                      if (await canLaunchUrl(params)) {
+                        await launchUrl(params);
+                      } else {
+                        print('Could not launch ${params.toString()}');
+                      }
+                    },
+                    child: Text(
+                      'MM-onlineservice@mirrormedia.mg',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'mmCustomerServiceNumber'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
+              ],
             ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    String url = 'tel://0266333966';
-                    if (await canLaunchUrlString(url)) {
-                      await launchUrlString(url);
-                    } else {
-                      print('Could not launch $url');
-                    }
-                  },
-                  child: const Text(
-                    '（02）6633-3966',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'mmCustomerServiceNumber'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 13),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      String url = 'tel://0266333966';
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url);
+                      } else {
+                        print('Could not launch $url');
+                      }
+                    },
+                    child: Text(
+                      '（02）6633-3966',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

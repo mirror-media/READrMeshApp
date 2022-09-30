@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/personalFile/pickTabController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
@@ -50,17 +50,17 @@ class PickTabContent extends GetView<PickTabController> {
         if (!controller.isLoading) {
           if (controller.storyPickList.isEmpty &&
               controller.collecionPickList.isEmpty) {
-            return _emptyWidget();
+            return _emptyWidget(context);
           }
 
           return Obx(() {
             if (Get.find<PersonalFilePageController>(tag: viewMember.memberId)
                 .isBlock
                 .isTrue) {
-              return _emptyWidget();
+              return _emptyWidget(context);
             }
 
-            return _buildContent();
+            return _buildContent(context);
           });
         }
 
@@ -71,18 +71,18 @@ class PickTabContent extends GetView<PickTabController> {
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     bool isMine =
         Get.find<UserService>().currentUser.memberId == viewMember.memberId;
     return Container(
-      color: homeScreenBackgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: Text(
           isMine ? 'emptyPick'.tr : 'viewMemberEmptyPick'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: readrBlack30,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
           ),
           textAlign: TextAlign.center,
         ),
@@ -90,7 +90,7 @@ class PickTabContent extends GetView<PickTabController> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(0),
@@ -103,12 +103,13 @@ class PickTabContent extends GetView<PickTabController> {
             }
 
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 0),
               child: Text(
                 'pickedCollections'.tr,
                 style: TextStyle(
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 18,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -125,12 +126,13 @@ class PickTabContent extends GetView<PickTabController> {
             }
 
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
                 'pickedArticles'.tr,
                 style: TextStyle(
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 18,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -211,7 +213,6 @@ class PickTabContent extends GetView<PickTabController> {
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
             child: Divider(
-              color: readrBlack10,
               thickness: 1,
               height: 1,
             ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
@@ -45,9 +45,9 @@ class _PickCommentItemState extends State<PickCommentItem> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(0, 9, 40, 0.05),
+        color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
         border: Border.all(
-          color: readrBlack10,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           width: 0.5,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -58,7 +58,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
         children: [
           _time(context),
           const SizedBox(height: 12),
-          _content(),
+          _content(context),
         ],
       ),
     );
@@ -92,9 +92,10 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 height: 4,
                 margin: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: readrBlack20,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv5!,
                 ),
               );
             }
@@ -118,8 +119,10 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 },
                 child: Text(
                   'editComment'.tr,
-                  style: const TextStyle(
-                    color: readrBlack50,
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv3!,
                     fontSize: 13,
                   ),
                 ),
@@ -133,8 +136,8 @@ class _PickCommentItemState extends State<PickCommentItem> {
         Obx(
           () => Text(
             widget.controller.likeCount.toString(),
-            style: const TextStyle(
-              color: Color.fromRGBO(0, 9, 40, 0.66),
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
               fontSize: 12,
             ),
           ),
@@ -167,8 +170,8 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   ? Icons.favorite_outlined
                   : Icons.favorite_border_outlined,
               color: widget.controller.isLiked.value
-                  ? Colors.red
-                  : const Color.fromRGBO(0, 9, 40, 0.66),
+                  ? Theme.of(context).extension<CustomColors>()!.red!
+                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
             ),
           ),
         ),
@@ -176,7 +179,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
     );
   }
 
-  Widget _content() {
+  Widget _content(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (!_isExpanded) {
@@ -185,11 +188,11 @@ class _PickCommentItemState extends State<PickCommentItem> {
           });
         }
       },
-      child: _buildComment(),
+      child: _buildComment(context),
     );
   }
 
-  Widget _buildComment() {
+  Widget _buildComment(BuildContext context) {
     return SizedBox(
       width: double.maxFinite,
       child: Obx(() {
@@ -201,8 +204,9 @@ class _PickCommentItemState extends State<PickCommentItem> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
-              color:
-                  validate.isEmoji(contentChar[0]) ? readrBlack : readrBlack66,
+              color: validate.isEmoji(contentChar[0])
+                  ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
             ),
             children: [
               for (int i = 1; i < contentChar.length; i++)
@@ -210,8 +214,12 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   text: contentChar[i],
                   style: TextStyle(
                     color: validate.isEmoji(contentChar[i])
-                        ? readrBlack
-                        : readrBlack66,
+                        ? Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!
+                        : Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv2!,
                   ),
                 )
             ],
@@ -238,14 +246,17 @@ class _PickCommentItemState extends State<PickCommentItem> {
               ),
               text: TextSpan(
                 text: '... ',
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
                 ),
                 children: [
                   TextSpan(
                     text: 'displayMore'.tr,
-                    style: const TextStyle(
-                      color: readrBlack50,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv3!,
                     ),
                   )
                 ],

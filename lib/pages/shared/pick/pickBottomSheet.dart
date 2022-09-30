@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/shared/pick/pickBottomSheetWidget.dart';
 
 Future<dynamic> showPickBottomSheet({
@@ -32,25 +33,23 @@ Future<dynamic> showPickBottomSheet({
         builder: (_) => PlatformAlertDialog(
           title: Text(
             'deleteAlertTitle'.tr,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(fontSize: 17),
           ),
           content: Text(
             'leaveAlertContent'.tr,
-            style: const TextStyle(
-              fontSize: 13,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           actions: [
             PlatformDialogAction(
               onPressed: () => Navigator.pop(context),
               child: PlatformText(
                 'deleteComment'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
-                  color: Colors.red,
+                  color: Theme.of(context).extension<CustomColors>()!.red,
                 ),
               ),
             ),
@@ -65,9 +64,9 @@ Future<dynamic> showPickBottomSheet({
               },
               child: PlatformText(
                 'continueInput'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
-                  color: Colors.blue,
+                  color: Theme.of(context).extension<CustomColors>()!.blue,
                 ),
               ),
             ),

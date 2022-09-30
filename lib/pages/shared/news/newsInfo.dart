@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 
@@ -22,10 +22,10 @@ class NewsInfo extends StatelessWidget {
           children.add(Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 CupertinoIcons.bubble_left,
                 size: 11,
-                color: readrBlack50,
+                color: Theme.of(context).primaryColorLight,
               ),
               const SizedBox(width: 3),
               Text(
@@ -34,10 +34,10 @@ class NewsInfo extends StatelessWidget {
                   forceStrutHeight: true,
                   leading: 0.5,
                 ),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: readrBlack50,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 12),
               ),
             ],
           ));
@@ -46,9 +46,9 @@ class NewsInfo extends StatelessWidget {
             height: 2,
             margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: readrBlack20,
+              color: Theme.of(context).dividerColor,
             ),
           ));
         }
@@ -64,9 +64,9 @@ class NewsInfo extends StatelessWidget {
             height: 2,
             margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: readrBlack20,
+              color: Theme.of(context).dividerColor,
             ),
           ));
           children.add(Text(
@@ -75,10 +75,8 @@ class NewsInfo extends StatelessWidget {
               forceStrutHeight: true,
               leading: 0.5,
             ),
-            style: const TextStyle(
-              fontSize: 12,
-              color: readrBlack50,
-            ),
+            style:
+                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
           ));
         }
 
@@ -88,9 +86,9 @@ class NewsInfo extends StatelessWidget {
             height: 2,
             margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: readrBlack20,
+              color: Theme.of(context).dividerColor,
             ),
           ));
           children.add(Text(
@@ -99,10 +97,8 @@ class NewsInfo extends StatelessWidget {
               forceStrutHeight: true,
               leading: 0.5,
             ),
-            style: const TextStyle(
-              fontSize: 12,
-              color: readrBlack50,
-            ),
+            style:
+                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
           ));
         }
 

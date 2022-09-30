@@ -26,6 +26,14 @@ import UIKit
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+       if #available(iOS 13.0, *) {
+           if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+               layer.borderColor = UIColor(named: "meshColor30")?.cgColor
+           }
+       }
+    }
+    
     /// 外框顏色
     @IBInspectable var labelBorderColor: UIColor? {
         get {

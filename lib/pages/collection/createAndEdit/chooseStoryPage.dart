@@ -1,12 +1,12 @@
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/folderCollectionPick.dart';
@@ -49,7 +49,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).backgroundColor,
           appBar: _buildBar(context),
           body: Obx(
             () {
@@ -90,21 +90,18 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                                     }
                                     return Text(
                                       text,
-                                      style: TextStyle(
-                                        color: readrBlack87,
-                                        fontSize: 18,
-                                        fontWeight: GetPlatform.isIOS
-                                            ? FontWeight.w500
-                                            : FontWeight.w600,
-                                        fontFamily: 'PingFang TC',
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
                                     );
                                   },
                                 ),
                                 const SizedBox(width: 6),
-                                const Icon(
+                                Icon(
                                   CupertinoIcons.chevron_down,
-                                  color: readrBlack30,
+                                  color: Theme.of(context)
+                                      .extension<CustomColors>()
+                                      ?.primaryLv4,
                                   size: 20,
                                 ),
                               ],
@@ -118,7 +115,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                               CupertinoIcons.search,
                             ),
                             iconSize: 26,
-                            color: readrBlack30,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primaryLv4,
                           ),
                         ],
                       ),
@@ -137,35 +136,34 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 8),
                                 hintText: 'searchAllNews'.tr,
-                                hintStyle: const TextStyle(
-                                  color: readrBlack30,
-                                  fontSize: 14,
-                                ),
+                                hintStyle:
+                                    Theme.of(context).textTheme.labelMedium,
                                 filled: true,
-                                fillColor: const Color(0xffF6F6FB),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffF6F6FB)),
+                                fillColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(6.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
                                 ),
-                                border: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffF6F6FB)),
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(6.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
                                 ),
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffF6F6FB)),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(6.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
                                 ),
                               ),
-                              style: const TextStyle(
-                                color: readrBlack87,
-                                fontSize: 14,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                               keyboardType: TextInputType.text,
                             ),
                           );
@@ -199,14 +197,12 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
       elevation: 0.5,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: readrBlack87,
+          color: Theme.of(context).appBarTheme.foregroundColor,
         ),
         onPressed: () async {
           if (controller.selectedList.isNotEmpty) {
@@ -225,10 +221,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
           }
           return Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 18,
-              color: readrBlack,
+              color: Theme.of(context).appBarTheme.foregroundColor,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -242,10 +238,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
               return TextButton(
                 child: Text(
                   isEdit ? 'finish'.tr : 'nextStep'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
-                    color: Colors.blue,
+                    color: Theme.of(context).extension<CustomColors>()?.blue,
                   ),
                 ),
                 onPressed: () {
@@ -312,15 +308,17 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
       builder: (_) => PlatformAlertDialog(
         title: Text(
           'chooseStoryPageLeaveAlertTitle'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
         ),
         content: Text(
           'chooseStoryPageLeaveAlertContent'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
         ),
         actions: [
@@ -331,9 +329,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
             },
             child: PlatformText(
               'quit'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.red,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
               ),
             ),
           ),
@@ -341,9 +339,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
             onPressed: () => Get.back(),
             child: PlatformText(
               'continueEditing'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.blue,
+                color: Theme.of(context).extension<CustomColors>()?.blue,
               ),
             ),
           ),
@@ -373,7 +371,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
         }
 
         if (showList.isEmpty && controller.searchMode.isTrue) {
-          return _noResultWidget();
+          return _noResultWidget(context);
         }
 
         return ListView.separated(
@@ -398,14 +396,13 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
               );
             }
 
-            return _buildListItem(showList[index]);
+            return _buildListItem(context, showList[index]);
           },
           separatorBuilder: (context, index) {
             if (index == showList.length - 1) {
               return Container();
             }
             return const Divider(
-              color: readrBlack10,
               thickness: 1,
               height: 1,
               indent: 44,
@@ -417,40 +414,41 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
     );
   }
 
-  Widget _noResultWidget() {
+  Widget _noResultWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
       child: ExtendedText.rich(
         TextSpan(
           text: 'noNewsResultPrefix'.tr,
-          style: const TextStyle(
-            color: readrBlack50,
+          style: TextStyle(
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
           ),
           children: [
             TextSpan(
               text: controller.searchWord,
-              style: const TextStyle(
-                color: readrBlack87,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               ),
             ),
             TextSpan(
               text: 'noNewsResultSuffix'.tr,
-              style: const TextStyle(
-                color: readrBlack50,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
           ],
         ),
         joinZeroWidthSpace: true,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
         ),
       ),
     );
   }
 
-  Widget _buildListItem(CollectionPick collectionStory) {
+  Widget _buildListItem(BuildContext context, CollectionPick collectionStory) {
     return Obx(
       () => CheckboxListTile(
         value: controller.selectedList
@@ -464,7 +462,8 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                 (element) => element.pickNewsId == collectionStory.pickNewsId);
           }
         },
-        activeColor: readrBlack87,
+        activeColor: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        checkColor: Theme.of(context).backgroundColor,
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
         title: CollectionStoryItem(collectionStory.newsListItem!),
@@ -483,25 +482,27 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return Material(
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   height: 4,
                   width: 48,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                   ),
                   margin: const EdgeInsets.only(top: 16),
                   child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: readrBlack20,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv5,
                     ),
                   ),
                 ),
@@ -510,8 +511,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'newsSource'.tr,
-                    style: const TextStyle(
-                      color: readrBlack50,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv3,
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                     ),
@@ -525,13 +528,17 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       showPicked = value!;
                     });
                   },
-                  activeColor: readrBlack87,
+                  activeColor:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                  checkColor: Theme.of(context).backgroundColor,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
                   title: Text(
                     'pickedArticles'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       fontSize: 16,
                     ),
                   ),
@@ -544,13 +551,17 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       showBookmark = value!;
                     });
                   },
-                  activeColor: readrBlack87,
+                  activeColor:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                  checkColor: Theme.of(context).backgroundColor,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
                   title: Text(
                     'bookmarks'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       fontSize: 16,
                     ),
                   ),
@@ -559,7 +570,6 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                   height: 16,
                 ),
                 const Divider(
-                  color: readrBlack10,
                   height: 0.5,
                   thickness: 0.5,
                 ),
@@ -588,7 +598,9 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                             Navigator.pop(context);
                           },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: readrBlack87,
+                      backgroundColor: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,
@@ -601,10 +613,10 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     ),
                     child: Text(
                       'filter'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                       ),
                     ),
                   ),

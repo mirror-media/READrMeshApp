@@ -1,9 +1,8 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/readr/readrPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/editorChoice/editorChoiceCarousel.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
@@ -16,12 +15,10 @@ class ReadrPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.white,
         toolbarHeight: 0,
         elevation: 0,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: GetBuilder<ReadrPageController>(
           init: ReadrPageController(
@@ -49,13 +46,13 @@ class ReadrPage extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 4),
                         child: EditorChoiceCarousel(
                           editorChoiceList: controller.editorChoiceList,
-                          width: Get.width,
+                          width: context.width,
                         ),
                       ),
                     ),
                     SliverToBoxAdapter(
                       child: Container(
-                        color: const Color.fromRGBO(246, 246, 251, 1),
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         height: 8,
                       ),
                     ),
@@ -63,24 +60,33 @@ class ReadrPage extends StatelessWidget {
                       pinned: true,
                       primary: false,
                       elevation: 0,
-                      backgroundColor: Colors.white,
                       flexibleSpace: Stack(
                         fit: StackFit.passthrough,
                         alignment: Alignment.bottomCenter,
                         children: [
                           Container(
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               border: Border(
-                                bottom:
-                                    BorderSide(color: readrBlack10, width: 1.0),
+                                bottom: BorderSide(
+                                  color: Theme.of(context)
+                                      .extension<CustomColors>()!
+                                      .primaryLv6!,
+                                  width: 1.0,
+                                ),
                               ),
                             ),
                           ),
                           TabBar(
                             isScrollable: true,
-                            indicatorColor: tabBarSelectedColor,
-                            labelColor: readrBlack87,
-                            unselectedLabelColor: readrBlack20,
+                            indicatorColor: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
+                            labelColor: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
+                            unselectedLabelColor: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv5!,
                             tabs: controller.tabs.toList(),
                             controller: controller.tabController,
                             indicatorWeight: 1,

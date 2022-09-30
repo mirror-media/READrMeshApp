@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PersonalFileSkeletonScreen extends StatelessWidget {
@@ -11,21 +11,23 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 20),
-        const Icon(
+        Icon(
           CupertinoIcons.person_crop_circle_fill,
-          color: Color.fromRGBO(224, 224, 224, 1),
+          color: Theme.of(context).extension<CustomColors>()!.grayLight!,
           size: 80,
         ),
         const SizedBox(height: 12),
         Shimmer.fromColors(
-          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+          baseColor:
+              Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
+          highlightColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(2.0),
             child: Container(
               height: 24,
               width: 120,
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
             ),
           ),
         ),
@@ -36,30 +38,28 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
-                child: _rowItem(),
+                child: _rowItem(context),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 20,
               child: const VerticalDivider(
-                color: readrBlack10,
                 thickness: 0.5,
               ),
             ),
-            _rowItem(),
+            _rowItem(context),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 20,
               child: const VerticalDivider(
-                color: readrBlack10,
                 thickness: 0.5,
               ),
             ),
             Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: _rowItem(),
+                child: _rowItem(context),
               ),
             )
           ],
@@ -68,27 +68,29 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
     );
   }
 
-  Widget _rowItem() {
+  Widget _rowItem(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        Text(
           '0',
           style: TextStyle(
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 4),
         Shimmer.fromColors(
-          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+          baseColor:
+              Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
+          highlightColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(2.0),
             child: Container(
               height: 12,
               width: 60,
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
             ),
           ),
         ),

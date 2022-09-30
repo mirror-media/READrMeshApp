@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/exceptions.dart';
+import 'package:readr/helpers/themes.dart';
 
 class ErrorPage extends StatelessWidget {
   final dynamic error;
@@ -40,6 +40,7 @@ class ErrorPage extends StatelessWidget {
 
     if (hideAppbar) {
       return _errorWidget(
+        context: context,
         title: title,
         description: description,
         imagePath: imagePath,
@@ -49,16 +50,13 @@ class ErrorPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.white,
         centerTitle: false,
-        elevation: 0,
         actions: [
           IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(
+            icon: Icon(
               Icons.close_outlined,
-              color: readrBlack87,
+              color: Theme.of(context).appBarTheme.foregroundColor,
               size: 26,
             ),
             tooltip: 'back'.tr,
@@ -66,6 +64,7 @@ class ErrorPage extends StatelessWidget {
         ],
       ),
       body: _errorWidget(
+        context: context,
         title: title,
         description: description,
         imagePath: imagePath,
@@ -75,13 +74,14 @@ class ErrorPage extends StatelessWidget {
   }
 
   Widget _errorWidget({
+    required BuildContext context,
     required String title,
     required String description,
     required String imagePath,
     required void Function() onPressedFunction,
   }) {
     return Container(
-      color: const Color.fromRGBO(246, 246, 251, 1),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
@@ -96,12 +96,7 @@ class ErrorPage extends StatelessWidget {
           ),
           Text(
             title,
-            style: const TextStyle(
-              color: readrBlack87,
-              fontWeight: FontWeight.w600,
-              decoration: TextDecoration.none,
-              fontSize: 22,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -109,11 +104,7 @@ class ErrorPage extends StatelessWidget {
           ),
           Text(
             description,
-            style: const TextStyle(
-              color: Color.fromRGBO(0, 9, 40, 0.66),
-              decoration: TextDecoration.none,
-              fontSize: 15,
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -125,16 +116,18 @@ class ErrorPage extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                side: const BorderSide(color: readrBlack30),
+                side: BorderSide(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!),
               ),
               onPressed: onPressedFunction,
               child: Text(
                 'retry'.tr,
-                style: const TextStyle(
-                  color: readrBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontSize: 16),
               ),
             ),
           ),

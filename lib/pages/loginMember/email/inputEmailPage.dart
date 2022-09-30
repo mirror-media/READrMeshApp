@@ -4,7 +4,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
 
 class InputEmailPage extends StatefulWidget {
@@ -22,21 +22,18 @@ class _InputEmailPageState extends State<InputEmailPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        shadowColor: Colors.white,
-        backgroundColor: Colors.white,
-        elevation: 0,
         title: Text(
           'email'.tr,
-          style: const TextStyle(
-            color: readrBlack,
+          style: TextStyle(
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -65,8 +62,8 @@ class _InputEmailPageState extends State<InputEmailPage> {
             },
             child: Text(
               'send'.tr,
-              style: const TextStyle(
-                color: Colors.blue,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.blue!,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
@@ -78,7 +75,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: _buildBody(context),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
     );
   }
 
@@ -105,16 +102,28 @@ class _InputEmailPageState extends State<InputEmailPage> {
               }
               return null;
             },
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(12.0),
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(12.0),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack87, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  width: 1.0,
+                ),
               ),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack10, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                  width: 1.0,
+                ),
               ),
               border: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack10, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                  width: 1.0,
+                ),
               ),
             ),
           ),
@@ -124,9 +133,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
         ),
         Text(
           'inputEmailPageBodyText'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
-            color: readrBlack50,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
             fontWeight: FontWeight.w400,
           ),
         )

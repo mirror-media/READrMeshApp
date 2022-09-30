@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/readr/editorChoice/carouselDisplayWidget.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
@@ -70,7 +70,6 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
           ),
         ),
         const Divider(
-          color: readrBlack10,
           thickness: 0.5,
           height: 0.5,
         ),
@@ -89,9 +88,15 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                     right: 4.0,
                   ),
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color:
-                          _current == entry.key ? readrBlack87 : readrBlack10),
+                    shape: BoxShape.circle,
+                    color: _current == entry.key
+                        ? Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!
+                        : Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv6!,
+                  ),
                 ),
               );
             }).toList(),

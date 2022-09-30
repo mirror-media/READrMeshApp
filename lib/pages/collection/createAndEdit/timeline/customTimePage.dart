@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:readr/controller/collection/createAndEdit/editTimelinePageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 
@@ -29,9 +30,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: meshGray,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           centerTitle: true,
           elevation: 0.5,
@@ -39,27 +38,24 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           leading: TextButton(
             child: Text(
               'cancel'.tr,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 18,
-                color: readrBlack50,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onPressed: () => Get.back(),
           ),
           title: Text(
             'customTime'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
-              color: readrBlack,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              fontWeight: FontWeight.w400,
             ),
           ),
           actions: [
             TextButton(
               child: Text(
                 'save'.tr,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                   fontSize: 18,
                 ),
               ),
@@ -104,10 +100,10 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
     return Container(
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: const Color.fromRGBO(218, 220, 227, 1),
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
         ),
       ),
       child: Column(
@@ -120,8 +116,8 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
               inCustomTime: true,
             ),
           ),
-          const Divider(
-            color: Color.fromRGBO(218, 220, 227, 1),
+          Divider(
+            color: Theme.of(context).extension<CustomColors>()!.grayLight!,
             thickness: 1,
             height: 1,
           ),
@@ -157,10 +153,10 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
       margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: const Color.fromRGBO(218, 220, 227, 1),
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
         ),
       ),
       child: Column(
@@ -169,20 +165,15 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         children: [
           Text(
             'blockTitle'.tr,
-            style: const TextStyle(
-              fontSize: 16,
-              color: readrBlack87,
-            ),
+            style:
+                Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 16),
           ),
           const SizedBox(
             height: 4,
           ),
           Text(
             'blockTitleDescription'.tr,
-            style: const TextStyle(
-              fontSize: 14,
-              color: readrBlack50,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(
             height: 20,
@@ -191,27 +182,31 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             () => TextField(
               controller: controller.sectionTitleController,
               focusNode: controller.sectionTitleFocusNode,
-              style: const TextStyle(
-                fontSize: 16,
-                color: readrBlack87,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 16),
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(
                   bottom: 8,
                 ),
                 hintText: 'blockTitleHint'.tr,
-                hintStyle: const TextStyle(
-                  color: readrBlack30,
-                  fontSize: 16,
-                ),
-                focusedBorder: const UnderlineInputBorder(
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: readrBlack66,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv2!,
                   ),
                 ),
-                border: const UnderlineInputBorder(
+                border: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white10,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv2!,
                   ),
                 ),
                 suffix: (controller.showClearTextButton.isFalse)
@@ -221,9 +216,11 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                           controller.sectionTitleController.clear();
                           controller.showClearTextButton.value = false;
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.cancel,
-                          color: readrBlack87,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                           size: 16,
                         ),
                       ),
@@ -280,6 +277,10 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             }
             break;
         }
+        Color disableColor = Theme.of(context).brightness == Brightness.light
+            ? const Color(0xffE0E0E0)
+            : const Color(0xffCBCBCB);
+
         return GestureDetector(
           onTap: () async {
             FocusManager.instance.primaryFocus?.unfocus();
@@ -291,9 +292,13 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             width: double.maxFinite,
             height: 40,
             decoration: BoxDecoration(
-              color: isActive ? Colors.white : const Color(0xffE0E0E0),
-              border: const Border(
-                bottom: BorderSide(color: readrBlack10),
+              color:
+                  isActive ? Theme.of(context).backgroundColor : disableColor,
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv6!),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -303,7 +308,11 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   label,
                   style: TextStyle(
                     fontSize: 16,
-                    color: isActive ? readrBlack87 : readrBlack20,
+                    color: isActive
+                        ? Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!
+                        : meshBlack20,
                   ),
                 ),
                 const Spacer(),
@@ -311,7 +320,11 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   contentText,
                   style: TextStyle(
                     fontSize: 16,
-                    color: isActive ? readrBlack87 : readrBlack20,
+                    color: isActive
+                        ? Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!
+                        : meshBlack20,
                   ),
                   maxLines: 1,
                 ),
@@ -321,7 +334,9 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 Icon(
                   CupertinoIcons.chevron_right,
                   size: 13,
-                  color: isActive ? readrBlack30 : readrBlack20,
+                  color: isActive
+                      ? Theme.of(context).extension<CustomColors>()!.primaryLv4!
+                      : meshBlack20,
                 ),
               ],
             ),
@@ -408,11 +423,13 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           Expanded(
             child: CupertinoPicker.builder(
               itemExtent: 35,
+              backgroundColor: Theme.of(context).backgroundColor,
               onSelectedItemChanged: (index) => hourIndex = index,
               scrollController:
                   FixedExtentScrollController(initialItem: hourIndex),
-              selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
-                background: readrBlack10,
+              selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+                background:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -423,30 +440,33 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 }
                 return Text(
                   text,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 23,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                 );
               },
               childCount: hour.length,
             ),
           ),
-          const Text(
+          Text(
             ':',
             style: TextStyle(
               fontSize: 30,
-              color: readrBlack,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             ),
           ),
           Expanded(
             child: CupertinoPicker.builder(
               itemExtent: 35,
               onSelectedItemChanged: (index) => minutesIndex = index,
+              backgroundColor: Theme.of(context).backgroundColor,
               scrollController:
                   FixedExtentScrollController(initialItem: minutesIndex),
-              selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
-                background: readrBlack10,
+              selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+                background:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -457,9 +477,10 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 }
                 return Text(
                   text,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 23,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                 );
               },
@@ -472,15 +493,16 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
       picker = CupertinoPicker.builder(
         itemExtent: 35,
         onSelectedItemChanged: (index) => chooseIndex = index,
-        selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
-          background: readrBlack10,
+        selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+          background: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
         scrollController: FixedExtentScrollController(initialItem: chooseIndex),
         itemBuilder: (context, index) => Text(
           timeRange[index].toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 23,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         childCount: timeRange.length,
@@ -489,8 +511,11 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
 
     await showDialog(
       context: context,
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) => Dialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+        backgroundColor: Theme.of(context).backgroundColor,
+        clipBehavior: Clip.antiAlias,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(6.0),
@@ -507,9 +532,8 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
               child: AppBar(
                 toolbarHeight: 52,
                 centerTitle: true,
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
                 elevation: 0,
+                automaticallyImplyLeading: false,
                 leading: level == TimeLevel.year
                     ? null
                     : TextButton(
@@ -525,17 +549,22 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                         ),
                         child: Text(
                           'clear'.tr,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: Colors.red,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .redText!,
                           ),
                         ),
                       ),
                 title: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
-                    color: readrBlack,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 actions: [
@@ -552,9 +581,10 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     ),
                     child: Text(
                       'setUp'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue,
+                        color:
+                            Theme.of(context).extension<CustomColors>()!.blue!,
                       ),
                     ),
                   ),

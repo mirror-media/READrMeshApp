@@ -48,7 +48,7 @@ class PubsubService extends GetxService {
       "'objective'": "'${objective.toString().split('.').last}'",
       "'targetId'": "'$targetId'",
       "'state'": "'${state.toString().split('.').last}'",
-      "'content'": "'$commentContent'",
+      "'content'": "'${_escapeString(commentContent)}'",
     });
   }
 
@@ -104,7 +104,7 @@ class PubsubService extends GetxService {
       "'objective'": "'${objective.toString().split('.').last}'",
       "'targetId'": "'$targetId'",
       "'state'": "'${state.toString().split('.').last}'",
-      "'content'": "'$commentContent'",
+      "'content'": "'${_escapeString(commentContent)}'",
     });
   }
 
@@ -115,7 +115,7 @@ class PubsubService extends GetxService {
     return await _publishRequest({
       "'action'": "'edit_comment'",
       "'commentId'": "'$commentId'",
-      "'content'": "'$newContent'",
+      "'content'": "'${_escapeString(newContent)}'",
     });
   }
 
@@ -238,6 +238,7 @@ class PubsubService extends GetxService {
       uuid = iosInfo.identifierForVendor ?? '';
       osVersion = iosInfo.systemVersion ?? '';
       deviceModel = iosInfo.name ?? '';
+      deviceModel = _escapeString(deviceModel);
     }
 
     requestJson.addAll({
@@ -246,6 +247,7 @@ class PubsubService extends GetxService {
       "'version'": "'$osVersion'",
       "'device'": "'$deviceModel'",
     });
+
     var messages = {
       'messages': [
         {
@@ -267,5 +269,12 @@ class PubsubService extends GetxService {
         return false;
       },
     );
+  }
+
+  String _escapeString(String value) {
+    String escaped = value.replaceAll(RegExp(r"'"), "‘");
+    String jsonString = jsonEncode(escaped);
+    String jsonEscape = jsonString.substring(1, jsonString.length - 1);
+    return jsonEscape;
   }
 }

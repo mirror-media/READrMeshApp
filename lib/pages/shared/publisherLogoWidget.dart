@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/publisher.dart';
 
 class PublisherLogoWidget extends StatelessWidget {
@@ -39,7 +40,10 @@ class PublisherLogoWidget extends StatelessWidget {
     if (publisher.logoUrl == null || publisher.logoUrl! == '') {
       child = background;
     } else if (publisher.logoUrl!.contains('svg')) {
-      child = SvgPicture.network(publisher.logoUrl!);
+      child = Container(
+        color: Colors.white,
+        child: SvgPicture.network(publisher.logoUrl!),
+      );
     } else {
       child = CachedNetworkImage(
         imageUrl: publisher.logoUrl!,
@@ -57,7 +61,7 @@ class PublisherLogoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         border: Border.all(
-          color: readrBlack10,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           width: 0.5,
         ),
       ),

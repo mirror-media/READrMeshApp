@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/followingListController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -38,23 +38,21 @@ class FollowingListPage extends GetView<FollowingListController> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         centerTitle: Platform.isIOS,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
         title: Text(
           viewMember.customId,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -73,10 +71,10 @@ class FollowingListPage extends GetView<FollowingListController> {
           if (!controller.isLoading) {
             if (controller.followingMemberList.isEmpty &&
                 controller.followingPublisherList.isEmpty) {
-              return _emptyWidget();
+              return _emptyWidget(context);
             }
 
-            return _buildContent();
+            return _buildContent(context);
           }
 
           return const FollowSkeletonScreen();
@@ -85,18 +83,18 @@ class FollowingListPage extends GetView<FollowingListController> {
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     bool isMine =
         Get.find<UserService>().currentUser.memberId == viewMember.memberId;
     return Container(
-      color: homeScreenBackgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: Text(
           isMine ? 'noFollowing'.tr : 'viewMemberNoFollowing'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: readrBlack30,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
           ),
           textAlign: TextAlign.center,
         ),
@@ -104,7 +102,7 @@ class FollowingListPage extends GetView<FollowingListController> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
@@ -119,7 +117,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                 controller.isExpanded.toggle();
               },
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                 child: Row(
                   children: [
@@ -129,7 +127,9 @@ class FollowingListPage extends GetView<FollowingListController> {
                           '${'media'.tr}  (${controller.followingPublisherList.length})',
                           style: TextStyle(
                             fontSize: 18,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                             fontWeight: GetPlatform.isIOS
                                 ? FontWeight.w500
                                 : FontWeight.w600,
@@ -142,7 +142,9 @@ class FollowingListPage extends GetView<FollowingListController> {
                         controller.isExpanded.value
                             ? Icons.expand_less_outlined
                             : Icons.expand_more_outlined,
-                        color: readrBlack30,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv4!,
                       ),
                     ),
                   ],
@@ -159,7 +161,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                 return Container();
               }
 
-              return _buildPublisherList();
+              return _buildPublisherList(context);
             },
           ),
         ),
@@ -170,14 +172,16 @@ class FollowingListPage extends GetView<FollowingListController> {
             }
 
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Obx(
                 () => Text(
                   '${'figure'.tr}  (${controller.followingMemberCount.value})',
                   style: TextStyle(
                     fontSize: 18,
-                    color: readrBlack87,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     fontWeight:
                         GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   ),
@@ -193,7 +197,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                 return Container();
               }
 
-              return _buildFollowingMemberList();
+              return _buildFollowingMemberList(context);
             },
           ),
         ),
@@ -201,7 +205,7 @@ class FollowingListPage extends GetView<FollowingListController> {
     );
   }
 
-  Widget _buildPublisherList() {
+  Widget _buildPublisherList(BuildContext context) {
     return ImplicitlyAnimatedList<Publisher>(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: const NeverScrollableScrollPhysics(),
@@ -215,9 +219,13 @@ class FollowingListPage extends GetView<FollowingListController> {
           animation: animation,
           child: Container(
             key: Key(item.id + index.toString()),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(width: 0.5, color: Colors.black12),
+                bottom: BorderSide(
+                  width: 0.5,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                ),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -233,7 +241,7 @@ class FollowingListPage extends GetView<FollowingListController> {
     );
   }
 
-  Widget _buildFollowingMemberList() {
+  Widget _buildFollowingMemberList(BuildContext context) {
     return ImplicitlyAnimatedList<Member>(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       physics: const NeverScrollableScrollPhysics(),
@@ -252,9 +260,13 @@ class FollowingListPage extends GetView<FollowingListController> {
           animation: animation,
           child: Container(
             key: Key(item.memberId + index.toString()),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(width: 0.5, color: Colors.black12),
+                bottom: BorderSide(
+                  width: 0.5,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                ),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 20),

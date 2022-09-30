@@ -11,6 +11,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/personalFile/editPersonalFilePageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -25,8 +26,8 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
     return WillPopScope(
         onWillPop: () async => controller.isSaving.isFalse,
         child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: _buildBar(),
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: _buildBar(context),
           body: SafeArea(
             child: GetBuilder<EditPersonalFilePageController>(
               builder: (controller) {
@@ -45,7 +46,6 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                       const Divider(
                         thickness: 1,
                         height: 1,
-                        color: Colors.black12,
                       ),
                       Expanded(
                         child: _buildForm(context),
@@ -63,11 +63,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
         ));
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      elevation: 0.5,
       leading: Obx(
         () {
           if (controller.isSaving.isTrue) {
@@ -82,14 +80,18 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
               child: GetPlatform.isIOS
                   ? Text(
                       'cancel'.tr,
-                      style: const TextStyle(
-                        color: readrBlack50,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv3!,
                         fontSize: 18,
                       ),
                     )
-                  : const Icon(
+                  : Icon(
                       Icons.close,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
             ),
           );
@@ -98,9 +100,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
       leadingWidth: 80,
       centerTitle: GetPlatform.isIOS,
       title: Text('editPersonalFile'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontWeight: FontWeight.w400,
           )),
       actions: [
@@ -115,8 +117,8 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                       },
                 child: Text(
                   controller.isSaving.value ? 'updating'.tr : 'save'.tr,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color: Theme.of(context).extension<CustomColors>()!.blue!,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -153,24 +155,33 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   controller.nicknameError.value = false;
                   controller.checkIsEdited();
                 },
-                style: const TextStyle(
-                  color: readrBlack87,
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
                 decoration: InputDecoration(
                   labelText: 'name'.tr,
-                  labelStyle: const TextStyle(
-                    color: readrBlack50,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv3!,
                     fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
                   ),
-                  border: const UnderlineInputBorder(
+                  border: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.white10,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
                     ),
                   ),
                   counterText: '',
@@ -182,9 +193,11 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                           onTap: () {
                             controller.nicknameController.clear();
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.cancel,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                             size: 16,
                           ),
                         ),
@@ -216,24 +229,33 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   controller.customIdError.value = false;
                   controller.checkIsEdited();
                 },
-                style: const TextStyle(
-                  color: readrBlack87,
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
                 decoration: InputDecoration(
                   labelText: 'ID',
-                  labelStyle: const TextStyle(
-                    color: readrBlack50,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv3!,
                     fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
-                  focusedBorder: const UnderlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
                   ),
-                  border: const UnderlineInputBorder(
+                  border: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.white10,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
                     ),
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -244,9 +266,11 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                           onTap: () {
                             controller.customIdController.clear();
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.cancel,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                             size: 16,
                           ),
                         ),
@@ -269,9 +293,12 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 Expanded(
                   child: Text(
                     'introduction'.tr,
-                    style: const TextStyle(
-                      color: readrBlack50,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv3!,
                       fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -280,9 +307,12 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   child: Obx(
                     () => Text(
                       '${controller.introLength}/250 ${'characters'.tr}',
-                      style: const TextStyle(
-                        color: readrBlack50,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv3!,
                         fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
@@ -306,24 +336,34 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   onChanged: (value) {
                     controller.checkIsEdited();
                   },
-                  style: const TextStyle(
-                    color: readrBlack87,
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                   decoration: InputDecoration(
                     hintText: 'introductionHint'.tr,
-                    hintStyle: const TextStyle(
-                      color: readrBlack30,
+                    hintStyle: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv4!,
                       fontSize: 16,
+                      fontWeight: FontWeight.w400,
                     ),
-                    focusedBorder: const OutlineInputBorder(
+                    focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                     ),
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.white10,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv6!,
                       ),
                     ),
                     contentPadding: const EdgeInsets.all(12),
@@ -368,7 +408,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         alignment: Alignment.center,
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -394,7 +434,11 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             ),
             Text(
               'changeAvatar'.tr,
-              style: const TextStyle(color: Colors.blue, fontSize: 16),
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.blue!,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
             )
           ],
         ),
@@ -413,9 +457,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
               onPressed: () => Navigator.of(context).pop('camera'),
               child: Text(
                 'openCamera'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
+                  color: Theme.of(context).extension<CustomColors>()!.blue!,
                 ),
               ),
             ),
@@ -423,9 +468,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
               onPressed: () => Navigator.of(context).pop('photo'),
               child: Text(
                 'choosePhoto'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
+                  color: Theme.of(context).extension<CustomColors>()!.blue!,
                 ),
               ),
             ),
@@ -435,10 +481,11 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 onPressed: () => Navigator.of(context).pop('delete'),
                 child: Text(
                   'deleteAvatar'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 20,
-                    color: Colors.red,
+                    color:
+                        Theme.of(context).extension<CustomColors>()!.redText!,
                   ),
                 ),
               ),
@@ -447,9 +494,10 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             onPressed: () => Navigator.of(context).pop('cancel'),
             child: Text(
               'cancel'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
+                color: Theme.of(context).extension<CustomColors>()!.blue!,
               ),
             ),
           ),
@@ -461,7 +509,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
         backgroundColor: Colors.transparent,
         topRadius: const Radius.circular(24),
         builder: (context) => Material(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           child: SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -471,33 +519,40 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   child: Container(
                     height: 4,
                     width: 48,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                     ),
                     margin: const EdgeInsets.symmetric(vertical: 16),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: readrBlack20,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv5!,
                       ),
                     ),
                   ),
                 ),
                 TextButton.icon(
                   onPressed: () => Navigator.of(context).pop('camera'),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.photo_camera_outlined,
-                    color: readrBlack87,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     size: 18,
                   ),
                   label: Text(
                     'openCamera'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -509,15 +564,19 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 ),
                 TextButton.icon(
                   onPressed: () => Navigator.of(context).pop('photo'),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.photo_library_outlined,
-                    color: readrBlack87,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     size: 18,
                   ),
                   label: Text(
                     'choosePhoto'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -531,15 +590,17 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     controller.avatarImagePath.isNotEmpty)
                   TextButton.icon(
                     onPressed: () => Navigator.of(context).pop('delete'),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.delete_outlined,
-                      color: Colors.red,
+                      color: Theme.of(context).extension<CustomColors>()!.red!,
                       size: 18,
                     ),
                     label: Text(
                       'deleteAvatar'.tr,
-                      style: const TextStyle(
-                        color: Colors.red,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .redText!,
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),
@@ -568,12 +629,15 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             uiSettings: [
               AndroidUiSettings(
                 toolbarTitle: 'crop'.tr,
-                toolbarColor: Colors.white,
-                toolbarWidgetColor: readrBlack87,
-                statusBarColor: readrBlack87,
+                toolbarColor: Theme.of(context).backgroundColor,
+                toolbarWidgetColor:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                statusBarColor:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 initAspectRatio: CropAspectRatioPreset.original,
-                backgroundColor: Colors.white,
-                activeControlsWidgetColor: Colors.blue,
+                backgroundColor: Theme.of(context).backgroundColor,
+                activeControlsWidgetColor:
+                    Theme.of(context).extension<CustomColors>()!.blue!,
                 lockAspectRatio: false,
               ),
               IOSUiSettings(

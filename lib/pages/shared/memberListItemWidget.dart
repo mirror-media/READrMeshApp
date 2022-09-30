@@ -2,7 +2,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
@@ -31,7 +31,8 @@ class MemberListItemWidget extends StatelessWidget {
                   fontSize: 16,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
               ),
               ExtendedText(
@@ -39,10 +40,11 @@ class MemberListItemWidget extends StatelessWidget {
                 maxLines: 1,
                 joinZeroWidthSpace: true,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
                 ),
               )
             ],

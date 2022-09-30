@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/annotation.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -67,21 +68,24 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
         newHtml = newHtml + _annotationList![i];
       }
     }
+    String textColor = Theme.of(context).brightness == Brightness.light
+        ? '#DE000928'
+        : '#F6F6FB ';
     return HtmlWidget(
       newHtml,
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           if (element.id == 'annotation') {
             return {
-              'text-decoration-color': 'black',
-              'color': 'black',
+              'text-decoration-color': textColor,
+              'color': textColor,
               'text-decoration-thickness': '100%',
               'font-weight': '500',
             };
           }
           return {
-            'text-decoration-color': '#ebf02c',
-            'color': 'black',
+            'text-decoration-color': textColor,
+            'color': textColor,
             'text-decoration-thickness': '100%',
           };
         } else if (element.localName == 'h1') {
@@ -99,7 +103,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
         } else if (element.id == 'annotationNumber') {
           return {
             'font-size': '12px',
-            'color': '#04295E',
+            'color': textColor,
           };
         }
         return null;
@@ -107,6 +111,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
       textStyle: TextStyle(
         fontSize: textSize,
         height: 1.8,
+        color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
       ),
       onTapUrl: (url) async {
         if (url == 'annotation') {

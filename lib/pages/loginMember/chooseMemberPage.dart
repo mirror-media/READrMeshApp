@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/login/chooseMemberController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/rootPage.dart';
 import 'package:readr/pages/shared/meshToast.dart';
@@ -17,25 +17,25 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         centerTitle: Platform.isIOS,
         elevation: 0,
         title: Text(
           'chooseMemberPageAppbarTitle'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
         leading: isFromPublisher
             ? IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_ios,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               )
@@ -45,12 +45,13 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
         child: Column(
           children: [
             Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.all(20),
               child: Text(
                 'chooseMemberPageBodyText'.tr,
-                style: const TextStyle(
-                  color: readrBlack87,
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 16,
                 ),
               ),
@@ -78,7 +79,6 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                       separatorBuilder: (context, index) => const Padding(
                         padding: EdgeInsets.symmetric(vertical: 20),
                         child: Divider(
-                          color: readrBlack10,
                           thickness: 1,
                           height: 1,
                         ),
@@ -96,11 +96,13 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
             Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
                 border: Border(
                   top: BorderSide(
-                    color: readrBlack20,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv5!,
                     width: 0.5,
                   ),
                 ),
@@ -122,7 +124,8 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: readrBlack87,
+                  backgroundColor:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   padding: const EdgeInsets.symmetric(
                     vertical: 12,
                     horizontal: 24,
@@ -130,9 +133,9 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 ),
                 child: Text(
                   'finish'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                   ),
                 ),
               ),

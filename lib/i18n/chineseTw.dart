@@ -260,6 +260,7 @@ const Map<String, String> chineseTwMap = {
   'readrCustomerServiceNumber': 'READr客服電話：',
   'mmContactEmail': '鏡週刊聯絡信箱：',
   'mmCustomerServiceNumber': '鏡週刊客服電話：',
+  'relatedNews': '相關報導',
 
   //welcomePage
   'item1Title': '看朋友推哪篇新聞',
@@ -328,8 +329,11 @@ const Map<String, String> chineseTwMap = {
   'about': '關於',
   'version': '版本',
   'logOut': '登出',
-  'setLanguage': '設定語言',
+  'setLanguage': '語言',
   'systemSetting': '系統設定',
+  'appearance': '外觀',
+  'lightMode': '淺色模式',
+  'darkMode': '深色模式',
 
   //search
   'contain': '包含 ',

@@ -8,7 +8,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/login/loginPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/loginMember/email/inputEmailPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/memberService.dart';
@@ -36,16 +36,14 @@ class LoginPage extends GetView<LoginPageController> {
     }
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           centerTitle: true,
-          shadowColor: Colors.white,
-          backgroundColor: Colors.white,
-          elevation: 0,
+          automaticallyImplyLeading: false,
           title: Text(
             appBarTitle,
-            style: const TextStyle(
-              color: readrBlack,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
@@ -59,9 +57,11 @@ class LoginPage extends GetView<LoginPageController> {
                   }
 
                   return IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close_outlined,
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   );
@@ -87,20 +87,24 @@ class LoginPage extends GetView<LoginPageController> {
           () {
             if (controller.isLoading.isTrue) {
               return Container(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SpinKitWanderingCubes(
-                      color: readrBlack,
+                    SpinKitWanderingCubes(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Text(
                         'loggingIn'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
-                          color: readrBlack,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.primaryLv1,
                         ),
                       ),
                     ),
@@ -108,7 +112,7 @@ class LoginPage extends GetView<LoginPageController> {
                 ),
               );
             }
-            return _buildContent();
+            return _buildContent(context);
           },
         ),
       ),
@@ -137,7 +141,7 @@ class LoginPage extends GetView<LoginPageController> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.only(top: 20, left: 40, right: 40),
       physics: const NeverScrollableScrollPhysics(),
@@ -153,8 +157,8 @@ class LoginPage extends GetView<LoginPageController> {
               fromComment
                   ? 'loginPageContentFromComment'.tr
                   : 'loginPageContent'.tr,
-              style: const TextStyle(
-                color: readrBlack87,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -165,6 +169,15 @@ class LoginPage extends GetView<LoginPageController> {
           LoginButton(
             type: LoginType.apple,
             buttonText: 'continueWithApple'.tr,
+            buttonBackgroundColor: Theme.of(context).backgroundColor,
+            buttonBorderColor:
+                Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            loadingAnimationColor:
+                Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+            iconColor: Theme.of(context).brightness == Brightness.light
+                ? null
+                : Colors.white,
             onFinished: (result, isNewUser, error) async {
               if (result == FirebaseLoginStatus.success) {
                 controller.login(LoginType.apple, isNewUser);
@@ -180,6 +193,15 @@ class LoginPage extends GetView<LoginPageController> {
         LoginButton(
           type: LoginType.facebook,
           buttonText: 'continueWithFacebook'.tr,
+          buttonBackgroundColor: Theme.of(context).backgroundColor,
+          buttonBorderColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          loadingAnimationColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          iconColor: Theme.of(context).brightness == Brightness.light
+              ? null
+              : Colors.white,
           onFinished: (result, isNewUser, error) async {
             if (result == FirebaseLoginStatus.success) {
               controller.login(LoginType.facebook, isNewUser);
@@ -194,6 +216,15 @@ class LoginPage extends GetView<LoginPageController> {
         LoginButton(
           type: LoginType.google,
           buttonText: 'continueWithGoogle'.tr,
+          buttonBackgroundColor: Theme.of(context).backgroundColor,
+          buttonBorderColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          loadingAnimationColor:
+              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          iconColor: Theme.of(context).brightness == Brightness.light
+              ? null
+              : Colors.white,
           onFinished: (result, isNewUser, error) async {
             if (result == FirebaseLoginStatus.success) {
               controller.login(LoginType.google, isNewUser);
@@ -209,21 +240,21 @@ class LoginPage extends GetView<LoginPageController> {
           onPressed: () => Get.to(InputEmailPage()),
           label: Text(
             'continueWithEmail'.tr,
-            style: const TextStyle(
-              color: readrBlack,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
           ),
-          icon: const Icon(
+          icon: Icon(
             Icons.email_outlined,
             size: 18,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: const BorderSide(
-              color: readrBlack,
+            backgroundColor: Theme.of(context).backgroundColor,
+            side: BorderSide(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               width: 1,
             ),
             fixedSize: const Size(double.infinity, 48),
@@ -232,29 +263,33 @@ class LoginPage extends GetView<LoginPageController> {
         const SizedBox(
           height: 24,
         ),
-        _statement(),
+        _statement(context),
       ],
     );
   }
 
-  Widget _statement() {
+  Widget _statement(BuildContext context) {
     String html = "loginStatementHtml".tr;
+    String urlColor = Theme.of(context).brightness == Brightness.light
+        ? 'rgba(0, 9, 40, 0.87)'
+        : 'rgba(246, 246, 251, 1)';
     return HtmlWidget(
       html,
+      key: Key(Theme.of(context).brightness.toString()),
       customStylesBuilder: (element) {
         if (element.localName == 'a') {
           return {
-            'text-decoration-color': 'rgba(0, 9, 40, 1)',
-            'color': 'rgba(0, 9, 40, 1)',
+            'text-decoration-color': urlColor,
+            'color': urlColor,
             'text-decoration-thickness': '100%',
             'text-align': 'center',
           };
         }
         return null;
       },
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 13,
-        color: readrBlack30,
+        color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
       ),
     );
   }

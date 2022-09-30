@@ -5,6 +5,7 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
@@ -19,14 +20,13 @@ class CarouselDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      highlightColor: Colors.grey[100],
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: readrBlack,
+              color: meshBlack87,
               child: Stack(
                 alignment: AlignmentDirectional.topEnd,
                 children: [
@@ -34,15 +34,15 @@ class CarouselDisplayWidget extends StatelessWidget {
                     key: UniqueKey(),
                     duration: const Duration(milliseconds: 500),
                     child: Container(
-                      color: readrBlack,
-                      child: _displayImage(context.width, editorChoiceItem),
+                      color: meshBlack87,
+                      child: _displayImage(context, editorChoiceItem),
                     ),
                   ),
                   if (editorChoiceItem.isProject) _displayTag(),
                 ],
               ),
             ),
-            _displayTitle(),
+            _displayTitle(context),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: NewsInfo(editorChoiceItem.newsListItem!),
@@ -66,17 +66,17 @@ class CarouselDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _displayTitle() {
+  Widget _displayTitle(BuildContext context) {
     return Container(
-      color: editorChoiceBackgroundColor,
+      color: Theme.of(context).backgroundColor,
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: AutoSizeText(
         editorChoiceItem.newsListItem!.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         minFontSize: 20,
-        style: const TextStyle(
-          color: readrBlack87,
+        style: TextStyle(
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           fontSize: 20.0,
           fontWeight: FontWeight.w600,
         ),
@@ -84,21 +84,22 @@ class CarouselDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _displayImage(double width, EditorChoiceItem editorChoiceItem) {
+  Widget _displayImage(
+      BuildContext context, EditorChoiceItem editorChoiceItem) {
     return editorChoiceItem.newsListItem!.heroImageUrl == null
         ? SvgPicture.asset(defaultImageSvg)
         : CachedNetworkImage(
-            height: width / 2,
-            width: width,
+            height: context.width / 2,
+            width: context.width,
             imageUrl: editorChoiceItem.newsListItem!.heroImageUrl!,
             placeholder: (context, url) => Container(
-              height: width / 2,
-              width: width,
+              height: context.width / 2,
+              width: context.width,
               color: Colors.grey,
             ),
             errorWidget: (context, url, error) => Container(
-              height: width / 2,
-              width: width,
+              height: context.width / 2,
+              width: context.width,
               color: Colors.grey,
               child: const Icon(Icons.error),
             ),
@@ -111,7 +112,7 @@ class CarouselDisplayWidget extends StatelessWidget {
       fit: BoxFit.fitWidth,
       child: Container(
         decoration: BoxDecoration(
-          color: editorChoiceTagColor,
+          color: meshBlack66,
           borderRadius: BorderRadiusDirectional.circular(6),
         ),
         margin: const EdgeInsets.only(

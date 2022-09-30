@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/collectionStoryItem.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
@@ -28,12 +28,7 @@ class TimelineItemWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16, bottom: 12),
             child: Text(
               timelineStory.summary!,
-              style: TextStyle(
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                fontSize: 18,
-                color: readrBlack87,
-              ),
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
         Flexible(
@@ -43,7 +38,7 @@ class TimelineItemWidget extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 48,
-                  child: _buildTimestamp(),
+                  child: _buildTimestamp(context),
                 ),
                 const SizedBox(
                   width: 8,
@@ -51,11 +46,13 @@ class TimelineItemWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(6.0)),
                       border: Border.all(
-                        color: readrBlack10,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv6!,
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -81,7 +78,7 @@ class TimelineItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTimestamp() {
+  Widget _buildTimestamp(BuildContext context) {
     List<Widget> children = [];
 
     switch (_compareTwoStory()) {
@@ -91,18 +88,18 @@ class TimelineItemWidget extends StatelessWidget {
         if (timelineStory.customTime != null) {
           children.add(Text(
             DateFormat('HH:mm').format(timelineStory.customTime!),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: readrBlack50,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
             ),
           ));
         } else {
           children.add(
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -114,9 +111,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.addAll([
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -125,9 +122,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               DateFormat('HH:mm').format(timelineStory.customTime!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
           ]);
@@ -135,9 +132,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -146,9 +143,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               _getMonthText(timelineStory.customMonth!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -160,9 +157,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.addAll([
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -171,9 +168,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               DateFormat('HH:mm').format(timelineStory.customTime!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
           ]);
@@ -181,9 +178,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -192,9 +189,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               _getMonthText(timelineStory.customMonth!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -203,9 +200,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               timelineStory.customYear.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -218,9 +215,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.addAll([
             Text(
               timelineStory.customYear.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
             const SizedBox(
@@ -228,9 +225,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -239,9 +236,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               DateFormat('HH:mm').format(timelineStory.customTime!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
           ]);
@@ -249,9 +246,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.addAll([
             Text(
               timelineStory.customYear.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
             const SizedBox(
@@ -259,9 +256,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               '${timelineStory.customMonth!}/${timelineStory.customDay!}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -270,9 +267,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.addAll([
             Text(
               timelineStory.customYear.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
               ),
             ),
             const SizedBox(
@@ -280,9 +277,9 @@ class TimelineItemWidget extends StatelessWidget {
             ),
             Text(
               _getMonthText(timelineStory.customMonth!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -291,9 +288,9 @@ class TimelineItemWidget extends StatelessWidget {
           children.add(
             Text(
               timelineStory.customYear.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -310,9 +307,9 @@ class TimelineItemWidget extends StatelessWidget {
       }
       children.add(Text(
         'edit'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
-          color: Colors.blue,
+          color: Theme.of(context).extension<CustomColors>()?.blue,
         ),
       ));
     } else {
@@ -323,7 +320,7 @@ class TimelineItemWidget extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            _customTimeTag(),
+            _customTimeTag(context),
           ]);
         }
         children.add(const SizedBox(
@@ -334,7 +331,6 @@ class TimelineItemWidget extends StatelessWidget {
       children.add(
         const Expanded(
           child: VerticalDivider(
-            color: readrBlack10,
             thickness: 1,
           ),
         ),
@@ -412,18 +408,18 @@ class TimelineItemWidget extends StatelessWidget {
     return false;
   }
 
-  Widget _customTimeTag() {
+  Widget _customTimeTag(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: readrBlack10,
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
       ),
       padding: const EdgeInsets.all(4),
       child: Text(
         'customization'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11,
-          color: readrBlack30,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
         ),
       ),
     );

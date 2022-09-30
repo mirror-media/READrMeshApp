@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/announcement.dart';
 import 'package:readr/pages/notify/notifyItem.dart';
 
@@ -16,22 +16,21 @@ class NotifyPage extends GetView<NotifyPageController> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
           elevation: 0,
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
             'notifications'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: readrBlack,
-              fontSize: 18,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.w400),
           ),
           actions: [
             IconButton(
               icon: Icon(
                 PlatformIcons(context).clear,
-                color: readrBlack87,
+                color: Theme.of(context).appBarTheme.foregroundColor,
                 size: 26,
               ),
               tooltip: 'close'.tr,
@@ -43,7 +42,6 @@ class NotifyPage extends GetView<NotifyPageController> {
           ],
         ),
         body: _buildBody(context),
-        backgroundColor: Colors.white,
       ),
     );
   }
@@ -52,7 +50,7 @@ class NotifyPage extends GetView<NotifyPageController> {
     return ListView(
       children: [
         _announcementBlock(),
-        _buildUnreadNotifies(),
+        _buildUnreadNotifies(context),
         _buildReadNotifies(),
         Obx(
           () {
@@ -65,24 +63,14 @@ class NotifyPage extends GetView<NotifyPageController> {
                     padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                     child: Text(
                       'newNotifications'.tr,
-                      style: TextStyle(
-                        fontWeight: GetPlatform.isIOS
-                            ? FontWeight.w500
-                            : FontWeight.w600,
-                        fontSize: 18,
-                        color: readrBlack87,
-                        fontFamily: 'PingFang TC',
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: Text(
                       'noNewNotification'.tr,
-                      style: const TextStyle(
-                        color: readrBlack66,
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                   ),
                 ],
@@ -102,30 +90,29 @@ class NotifyPage extends GetView<NotifyPageController> {
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(0),
         itemBuilder: (context, index) =>
-            _announcementItem(controller.announcementList[index]),
+            _announcementItem(context, controller.announcementList[index]),
         separatorBuilder: (context, index) => const Divider(
-          height: 0.5,
-          thickness: 0.5,
           indent: 20,
           endIndent: 20,
-          color: Colors.black12,
         ),
         itemCount: controller.announcementList.length,
       ),
     );
   }
 
-  Widget _announcementItem(Announcement announcement) {
+  Widget _announcementItem(BuildContext context, Announcement announcement) {
     String title;
     Color backgroundColor;
     switch (announcement.type) {
       case AnnouncementType.maintain:
         title = 'maintainAnnouncement'.tr;
-        backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
+        backgroundColor =
+            Theme.of(context).extension<CustomColors>()!.highlightRed!;
         break;
       case AnnouncementType.newFeature:
         title = 'newFeatureAnnouncement'.tr;
-        backgroundColor = const Color.fromRGBO(242, 253, 255, 1);
+        backgroundColor =
+            Theme.of(context).extension<CustomColors>()!.highlightBlue!;
         break;
     }
 
@@ -138,29 +125,22 @@ class NotifyPage extends GetView<NotifyPageController> {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              fontSize: 14,
-              color: readrBlack87,
-              fontFamily: 'PingFang TC',
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontSize: 14),
           ),
           const SizedBox(height: 4),
           Text(
             announcement.content,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: readrBlack66,
-              fontFamily: 'PingFang TC',
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildUnreadNotifies() {
+  Widget _buildUnreadNotifies(BuildContext context) {
     return Obx(
       () {
         if (controller.unReadNotifyList.isEmpty) {
@@ -173,30 +153,24 @@ class NotifyPage extends GetView<NotifyPageController> {
           itemBuilder: (context, index) {
             if (index == 0) {
               return Container(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'newNotifications'.tr,
-                      style: TextStyle(
-                        fontWeight: GetPlatform.isIOS
-                            ? FontWeight.w500
-                            : FontWeight.w600,
-                        fontSize: 18,
-                        color: readrBlack87,
-                        fontFamily: 'PingFang TC',
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextButton(
                       onPressed: () => controller.readAll(),
                       child: Text(
                         'markAllAsRead'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
-                          color: Colors.blue,
+                          color:
+                              Theme.of(context).extension<CustomColors>()?.blue,
                         ),
                       ),
                     ),
@@ -217,11 +191,8 @@ class NotifyPage extends GetView<NotifyPageController> {
             }
 
             return const Divider(
-              height: 0.5,
-              thickness: 0.5,
               indent: 20,
               endIndent: 20,
-              color: Colors.black12,
             );
           },
           itemCount: controller.unReadNotifyList.length + 1,
@@ -243,17 +214,11 @@ class NotifyPage extends GetView<NotifyPageController> {
           itemBuilder: (context, index) {
             if (index == 0) {
               return Container(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                 child: Text(
                   'previousNotifications'.tr,
-                  style: TextStyle(
-                    fontWeight:
-                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    fontSize: 18,
-                    color: readrBlack87,
-                    fontFamily: 'PingFang TC',
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               );
             }
@@ -269,11 +234,8 @@ class NotifyPage extends GetView<NotifyPageController> {
             }
 
             return const Divider(
-              height: 0.5,
-              thickness: 0.5,
               indent: 20,
               endIndent: 20,
-              color: Colors.black12,
             );
           },
           itemCount: controller.readNotifyList.length + 1,

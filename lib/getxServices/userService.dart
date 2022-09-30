@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
@@ -177,6 +176,20 @@ class UserService extends GetxService {
         return const Locale('zh', 'CN');
       default:
         return Get.deviceLocale ?? const Locale('en', 'US');
+    }
+  }
+
+  ThemeMode get appearanceSetting {
+    String? appearanceCode = Get.find<SharedPreferencesService>()
+        .prefs
+        .getString('appearanceSetting');
+    switch (appearanceCode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
     }
   }
 }

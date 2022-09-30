@@ -7,6 +7,7 @@ import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:readr/controller/collection/createAndEdit/editTimelinePageController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
@@ -52,12 +53,13 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
         () {
           if (controller.isUpdating.isTrue) {
             return Scaffold(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).backgroundColor,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SpinKitWanderingCubes(
-                    color: readrBlack,
+                  SpinKitWanderingCubes(
+                    color:
+                        Theme.of(context).extension<CustomColors>()!.primaryLv1,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
@@ -65,9 +67,11 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                       (isEdit || isChangeFormat || isAddToEmpty)
                           ? 'updatingCollection'.tr
                           : 'creatingCollection'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
-                        color: readrBlack,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                     ),
                   ),
@@ -76,9 +80,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
             );
           }
           return Scaffold(
-            backgroundColor: meshGray,
             appBar: AppBar(
-              backgroundColor: Colors.white,
               automaticallyImplyLeading: false,
               centerTitle: true,
               elevation: 0.5,
@@ -86,10 +88,12 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                   ? TextButton(
                       child: Text(
                         'cancel'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                       onPressed: () async {
@@ -101,18 +105,19 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                       },
                     )
                   : IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back_ios_new_outlined,
-                        color: readrBlack87,
+                        color: Theme.of(context).appBarTheme.foregroundColor,
                       ),
                       onPressed: () => Get.back(),
                     ),
               leadingWidth: 75,
               title: Text(
                 'customTime'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
-                  color: readrBlack,
+                  color: Theme.of(context).appBarTheme.foregroundColor,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               actions: [
@@ -127,8 +132,9 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                         (isEdit || isChangeFormat || isAddToEmpty)
                             ? 'save'.tr
                             : 'create'.tr,
-                        style: const TextStyle(
-                          color: Colors.blue,
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).extension<CustomColors>()?.blue,
                           fontSize: 18,
                         ),
                       ),
@@ -166,7 +172,8 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                               ),
                             ),
                           ),
-                          backgroundColor: const Color(0xFF007AFF),
+                          backgroundColor:
+                              Theme.of(context).extension<CustomColors>()?.blue,
                           preferredDirection: AxisDirection.up,
                           margin: const EdgeInsets.only(left: 20),
                           tailLength: 8,
@@ -194,8 +201,11 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff04295E),
-                              shadowColor: readrBlack30,
+                              backgroundColor: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? const Color(0xff04295E)
+                                  : const Color(0xffEBF02C),
+                              shadowColor: meshBlack30,
                               padding: const EdgeInsets.all(12),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -204,9 +214,12 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                               ),
                               elevation: 6,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               CupertinoIcons.arrow_right_arrow_left,
-                              color: Colors.white,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : meshBlackDefault,
                               size: 13,
                             ),
                           ),
@@ -236,12 +249,14 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                           controller.sortListByTime();
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: readrBlack,
+                          backgroundColor: Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.primaryLv1,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 16,
                           ),
-                          shadowColor: readrBlack30,
+                          shadowColor: meshBlack30,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(16.0),
@@ -249,15 +264,19 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                           ),
                           elevation: 6,
                         ),
-                        icon: const Icon(
+                        icon: Icon(
                           CupertinoIcons.add,
                           size: 17,
-                          color: Colors.white,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.backgroundSingleLayer,
                         ),
                         label: Text(
                           'add'.tr,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.backgroundSingleLayer,
                             fontSize: 16,
                           ),
                         ),
@@ -284,7 +303,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
           direction: DismissDirection.endToStart,
           background: Container(
             alignment: AlignmentDirectional.centerEnd,
-            color: Colors.red,
+            color: Theme.of(context).extension<CustomColors>()?.red,
             margin: const EdgeInsets.only(bottom: 8),
             child: const Padding(
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
@@ -326,25 +345,20 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
       builder: (_) => PlatformAlertDialog(
         title: Text(
           'editLeaveAlertTitle'.tr,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         content: Text(
           'editLeaveAlertContent2'.tr,
-          style: const TextStyle(
-            fontSize: 13,
-          ),
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         actions: [
           PlatformDialogAction(
             onPressed: () => Get.back(),
             child: PlatformText(
               'continueEditing'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.blue,
+                color: Theme.of(context).extension<CustomColors>()?.blue,
               ),
             ),
           ),
@@ -355,9 +369,9 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
             },
             child: PlatformText(
               'discardChanges'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.red,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
               ),
             ),
           ),

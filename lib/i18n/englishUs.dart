@@ -268,6 +268,7 @@ const Map<String, String> englishUsMap = {
   'readrCustomerServiceNumber': 'READr customer service number: ',
   'mmContactEmail': 'Mirror Media contact email: ',
   'mmCustomerServiceNumber': 'Mirror Media customer service number: ',
+  'relatedNews': 'Related news',
 
   //welcomePage
   'item1Title': 'See which news your friends upvoted',
@@ -339,8 +340,11 @@ const Map<String, String> englishUsMap = {
   'about': 'About',
   'version': 'Version',
   'logOut': 'Log out',
-  'setLanguage': 'Set language',
+  'setLanguage': 'Language',
   'systemSetting': 'System setting',
+  'appearance': 'Appearance',
+  'lightMode': 'Light mode',
+  'darkMode': 'Dark mode',
 
   //search
   'contain': 'Collections that contain ',

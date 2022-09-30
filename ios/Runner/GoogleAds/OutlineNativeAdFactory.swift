@@ -33,7 +33,7 @@ class OutlineNativeAdFactory : FLTNativeAdFactory {
         nativeAdView.mediaView?.layer.cornerRadius = 6
         nativeAdView.mediaView?.clipsToBounds = true
         nativeAdView.mediaView?.layer.borderWidth = 0.5
-        nativeAdView.mediaView?.layer.borderColor = UIColor(red: 0, green: 9, blue: 40, alpha: 0.1).cgColor
+        nativeAdView.mediaView?.layer.borderColor = UIColor(named: "meshColor10")?.cgColor
         
         nativeAdView.callToActionView?.isUserInteractionEnabled = false
 

@@ -6,7 +6,7 @@ class TabContentNoResultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -18,8 +18,8 @@ class TabContentNoResultWidget extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'tabContentNoResult'.tr,
-            style: const TextStyle(
-                color: Color.fromRGBO(0, 9, 40, 0.3), fontSize: 15),
+            style:
+                Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 15),
           ),
         ],
       ),

@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/changeOgPage.dart';
@@ -38,20 +38,23 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
       () {
         if (controller.isUpdating.isTrue) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).backgroundColor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SpinKitWanderingCubes(
-                  color: readrBlack,
+                SpinKitWanderingCubes(
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'updatingCollection'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                     ),
                   ),
                 ),
@@ -60,47 +63,46 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           );
         }
         return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: _buildBar(),
-          body: _buildBody(),
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: _buildBar(context),
+          body: _buildBody(context),
         );
       },
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
       elevation: 0.5,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
       leadingWidth: 75,
       leading: isEdit
           ? TextButton(
               child: Text(
                 'cancel'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 ),
               ),
               onPressed: () => Get.back(),
             )
           : IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               ),
               onPressed: () => Get.back(),
             ),
       title: Text(
         isEdit ? 'editCollectionTitle'.tr : 'title'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: readrBlack,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -119,10 +121,10 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
             return TextButton(
               child: Text(
                 isEdit ? 'save'.tr : 'nextStep'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
-                  color: Colors.blue,
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                 ),
               ),
               onPressed: () {
@@ -139,16 +141,16 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Column(
       children: [
-        _ogImage(),
-        _title(),
+        _ogImage(context),
+        _title(context),
       ],
     );
   }
 
-  Widget _ogImage() {
+  Widget _ogImage(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         controller.collectionOgUrlOrPath.value =
@@ -160,21 +162,21 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
             () {
               if (controller.collectionOgUrlOrPath.value.contains('http')) {
                 return CachedNetworkImage(
-                  width: Get.width,
-                  height: Get.width / 2,
+                  width: context.width,
+                  height: context.width / 2,
                   imageUrl: controller.collectionOgUrlOrPath.value,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
-                    color: readrBlack66,
+                    color: meshBlack66,
                     child: const Icon(
                       Icons.image_outlined,
                       color: Colors.white,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
-                    color: readrBlack66,
+                    color: meshBlack66,
                     child: const Icon(
-                      Icons.image_outlined,
+                      Icons.error_outline,
                       color: Colors.white,
                     ),
                   ),
@@ -183,8 +185,8 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
 
               return Image.file(
                 File(controller.collectionOgUrlOrPath.value),
-                width: Get.width,
-                height: Get.width / 2,
+                width: context.width,
+                height: context.width / 2,
                 fit: BoxFit.cover,
               );
             },
@@ -194,8 +196,8 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           ),
           Text(
             'changeCollectionOg'.tr,
-            style: const TextStyle(
-              color: Colors.blue,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()?.blue,
               fontSize: 16,
             ),
           ),
@@ -204,27 +206,33 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
     );
   }
 
-  Widget _title() {
+  Widget _title(BuildContext context) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.fromLTRB(20, 32, 20, 0),
       child: Obx(
         () => TextField(
-          style: const TextStyle(color: readrBlack87),
+          style: TextStyle(
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            fontWeight: FontWeight.w400,
+          ),
           controller: controller.titleTextController,
           decoration: InputDecoration(
-            focusedBorder: const UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: readrBlack66,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
               ),
             ),
-            border: const UnderlineInputBorder(
+            border: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.white10,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               ),
             ),
             hintText: 'collectionTitleHint'.tr,
-            hintStyle: const TextStyle(color: readrBlack30),
+            hintStyle: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              fontWeight: FontWeight.w400,
+            ),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
             suffix: (controller.collectionTitle.value.isEmpty)
                 ? null
@@ -233,9 +241,11 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                       controller.titleTextController.clear();
                       controller.collectionTitle.value = '';
                     },
-                    child: const Icon(
+                    child: Icon(
                       Icons.cancel,
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       size: 16,
                     ),
                   ),

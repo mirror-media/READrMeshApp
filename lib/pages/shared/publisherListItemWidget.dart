@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/followableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/publisher.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
@@ -41,7 +41,8 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
                   fontSize: 16,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
               ),
               Obx(
@@ -60,10 +61,12 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
 
                   return Text(
                     '${followCount.toString()} ${'followerConunt'.tr}$s',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: readrBlack50,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv3!,
                     ),
                   );
                 },

@@ -4,6 +4,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class SentEmailPage extends StatelessWidget {
   final String email;
@@ -11,24 +12,21 @@ class SentEmailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        shadowColor: Colors.white,
-        backgroundColor: Colors.white,
-        elevation: 0,
         title: Text(
           'sentEmailPageAppbarTitle'.tr,
-          style: const TextStyle(
-            color: readrBlack,
+          style: TextStyle(
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontSize: 20,
             fontWeight: FontWeight.w400,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -53,8 +51,8 @@ class SentEmailPage extends StatelessWidget {
           child: Text(
             '${'sentEmailPagePrefix'.tr}\n $email${'sentEmailPageSuffix'.tr}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Color.fromRGBO(0, 9, 40, 0.66),
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
@@ -121,10 +119,17 @@ class SentEmailPage extends StatelessWidget {
               backgroundColor: Colors.white,
               minimumSize: const Size(double.infinity, 48),
               side: const BorderSide(
-                color: readrBlack,
+                color: meshBlack87,
               ),
             ),
-            child: Text('openEmailApp'.tr),
+            child: Text(
+              'openEmailApp'.tr,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: meshBlack87,
+              ),
+            ),
           ),
         ),
         const SizedBox(
@@ -133,8 +138,8 @@ class SentEmailPage extends StatelessWidget {
         Center(
           child: Text(
             'notReceiveText'.tr,
-            style: const TextStyle(
-              color: readrBlack30,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -145,8 +150,8 @@ class SentEmailPage extends StatelessWidget {
           children: [
             Text(
               'or'.tr,
-              style: const TextStyle(
-                color: readrBlack30,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),
@@ -158,12 +163,14 @@ class SentEmailPage extends StatelessWidget {
               child: Text(
                 'tryOtherLoginMethod'.tr,
                 softWrap: true,
-                style: const TextStyle(
-                  color: readrBlack87,
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   decoration: TextDecoration.underline,
-                  decorationColor: readrBlack87,
+                  decorationColor:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
               ),
             ),
