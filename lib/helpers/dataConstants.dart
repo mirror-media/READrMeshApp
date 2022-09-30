@@ -29,6 +29,10 @@ const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
 const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
 const String onboard3Svg = 'assets/image/onboard/onboard3.svg';
 const String onboard4Svg = 'assets/image/onboard/onboard4.svg';
+const String onboard1DarkSvg = 'assets/image/onboard/onboard1_dark.svg';
+const String onboard2DarkSvg = 'assets/image/onboard/onboard2_dark.svg';
+const String onboard3DarkSvg = 'assets/image/onboard/onboard3_dark.svg';
+const String onboard4DarkSvg = 'assets/image/onboard/onboard4_dark.svg';
 // collection image
 const String collectionDeleteHintSvg =
     'assets/image/collection/collectionDeleteHint.svg';
