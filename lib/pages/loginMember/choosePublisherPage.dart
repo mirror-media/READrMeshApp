@@ -4,6 +4,7 @@ import 'package:readr/controller/login/choosePublisherController.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/loginMember/chooseMemberPage.dart';
 import 'package:readr/pages/rootPage.dart';
@@ -16,17 +17,16 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
     Get.put<ChoosePublisherController>(
         ChoosePublisherController(RecommendService()));
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
         title: Text(
           'choosePublisherPageAppbarTitle'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
         ),
       ),
@@ -43,15 +43,18 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
     } else {
       buttonText = 'nextStep'.tr;
     }
+    Color disableColor = Theme.of(context).brightness == Brightness.light
+        ? meshBlack20
+        : const Color.fromRGBO(203, 203, 203, 1);
     return Column(
       children: [
         Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           padding: const EdgeInsets.all(20),
           child: Text(
             'choosePublisherPageBodyText'.tr,
-            style: const TextStyle(
-              color: readrBlack87,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               fontSize: 16,
             ),
           ),
@@ -62,11 +65,11 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
         Container(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
             border: Border(
               top: BorderSide(
-                color: readrBlack20,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
                 width: 0.5,
               ),
             ),
@@ -88,8 +91,8 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
               style: OutlinedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: controller.followedCount.value == 0
-                    ? const Color.fromRGBO(224, 224, 224, 1)
-                    : readrBlack87,
+                    ? disableColor
+                    : Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
                   horizontal: 24,
@@ -102,8 +105,8 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
                 style: TextStyle(
                   fontSize: 16,
                   color: controller.followedCount.value == 0
-                      ? readrBlack20
-                      : Colors.white,
+                      ? meshBlack20
+                      : Theme.of(context).backgroundColor,
                 ),
               ),
             ),
@@ -145,7 +148,6 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
       separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Divider(
-          color: readrBlack10,
           thickness: 1,
           height: 1,
         ),
