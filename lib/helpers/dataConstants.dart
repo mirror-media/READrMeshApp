@@ -18,6 +18,7 @@ const String defaultImageSvg = 'assets/image/defaultImage.svg';
 const String tabNoContentPng = 'assets/image/tabNoContent.png';
 const String googleLogoSvg = 'assets/icon/googleLogo.svg';
 const String noFollowingSvg = 'assets/image/noFollowing.svg';
+const String noFollowingDarkSvg = 'assets/image/noFollowing_dark.svg';
 const String latestNewsEmptySvg = 'assets/image/latestNewsEmpty.svg';
 const String splashIconPng = 'assets/icon/splashIcon.png';
 const String welcomeScreenLogoSvg = 'assets/image/welcomeScreenLogo.svg';

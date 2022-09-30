@@ -165,7 +165,11 @@ class CommunityPage extends GetView<CommunityPageController> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(87.5, 22, 87.5, 26),
-            child: SvgPicture.asset(noFollowingSvg),
+            child: SvgPicture.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? noFollowingSvg
+                  : noFollowingDarkSvg,
+            ),
           ),
           Text(
             'communityEmptyTitle'.tr,
