@@ -133,6 +133,85 @@ class SettingPage extends GetView<SettingPageController> {
     );
   }
 
+  Widget _newsCoverageSettingButton(BuildContext context) => _settingButton(
+        text: 'newsCoverageSettingPageTitle'.tr,
+        onPressed: () {
+          Get.to(() => NewsCoverageSettingPage());
+        },
+        context: context,
+      );
+
+  Widget _initialSettingButton(BuildContext context) => _settingButton(
+        text: 'initialSettingPageTitle'.tr,
+        onPressed: () {
+          Get.to(() => InitialSettingPage());
+        },
+        context: context,
+      );
+
+  Widget _appearanceSettingsButton(BuildContext context) => _settingButton(
+        text: 'appearance'.tr,
+        onPressed: () {
+          Get.to(() => AppearanceSettingPage());
+        },
+        context: context,
+      );
+
+  Widget _languageSettingButton(BuildContext context) => _settingButton(
+        text: 'setLanguage'.tr,
+        onPressed: () {
+          Get.to(() => SetLanguagePage());
+        },
+        context: context,
+      );
+
+  Widget _contactUsButton(BuildContext context) => _settingButton(
+        text: 'contactUs'.tr,
+        onPressed: () {
+          Get.to(() => ContactUsPage(
+                appVersion: controller.versionAndBuildNumber.value,
+                platform: controller.platform,
+                device: controller.device,
+              ));
+        },
+        context: context,
+      );
+
+  Widget _aboutButton(BuildContext context) => _settingButton(
+        context: context,
+        text: 'about'.tr,
+        onPressed: () => Get.to(() => AboutPage()),
+        hideArrow: true,
+      );
+
+  Widget _version(BuildContext context) => SizedBox(
+        height: 56,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'version'.tr,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              ),
+            ),
+            Obx(
+              () => Text(
+                controller.versionAndBuildNumber.value,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
   Widget _visitorSettingTile(BuildContext context) {
     return Column(
       children: [
@@ -141,43 +220,19 @@ class SettingPage extends GetView<SettingPageController> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              _settingButton(
-                text: 'newsCoverageSettingPageTitle'.tr,
-                onPressed: () {
-                  Get.to(() => NewsCoverageSettingPage());
-                },
-                context: context,
-              ),
+              _newsCoverageSettingButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                text: 'initialSettingPageTitle'.tr,
-                onPressed: () {
-                  Get.to(() => InitialSettingPage());
-                },
-                context: context,
-              ),
+              _initialSettingButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                text: 'appearance'.tr,
-                onPressed: () {
-                  Get.to(() => AppearanceSettingPage());
-                },
-                context: context,
-              ),
+              _appearanceSettingsButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                text: 'setLanguage'.tr,
-                onPressed: () {
-                  Get.to(() => SetLanguagePage());
-                },
-                context: context,
-              ),
+              _languageSettingButton(context),
             ],
           ),
         ),
@@ -189,59 +244,15 @@ class SettingPage extends GetView<SettingPageController> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              _settingButton(
-                text: 'contactUs'.tr,
-                onPressed: () {
-                  Get.to(() => ContactUsPage(
-                        appVersion: controller.versionAndBuildNumber.value,
-                        platform: controller.platform,
-                        device: controller.device,
-                      ));
-                },
-                context: context,
-              ),
+              _contactUsButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                context: context,
-                text: 'about'.tr,
-                onPressed: () => Get.to(() => AboutPage()),
-                hideArrow: true,
-              ),
+              _aboutButton(context),
               const Divider(
                 height: 1,
               ),
-              SizedBox(
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'version'.tr,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .primaryLv1!,
-                      ),
-                    ),
-                    Obx(
-                      () => Text(
-                        controller.versionAndBuildNumber.value,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context)
-                              .extension<CustomColors>()!
-                              .primaryLv3!,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _version(context),
             ],
           ),
         ),
@@ -258,23 +269,11 @@ class SettingPage extends GetView<SettingPageController> {
           margin: const EdgeInsets.only(bottom: 12),
           child: Column(
             children: [
-              _settingButton(
-                context: context,
-                text: 'newsCoverageSettingPageTitle'.tr,
-                onPressed: () {
-                  Get.to(() => NewsCoverageSettingPage());
-                },
-              ),
+              _newsCoverageSettingButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                context: context,
-                text: 'initialSettingPageTitle'.tr,
-                onPressed: () {
-                  Get.to(() => InitialSettingPage());
-                },
-              ),
+              _initialSettingButton(context),
               const Divider(
                 height: 1,
               ),
@@ -288,23 +287,11 @@ class SettingPage extends GetView<SettingPageController> {
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                context: context,
-                text: 'appearance'.tr,
-                onPressed: () {
-                  Get.to(() => AppearanceSettingPage());
-                },
-              ),
+              _appearanceSettingsButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                context: context,
-                text: 'setLanguage'.tr,
-                onPressed: () {
-                  Get.to(() => SetLanguagePage());
-                },
-              ),
+              _languageSettingButton(context),
             ],
           ),
         ),
@@ -314,59 +301,15 @@ class SettingPage extends GetView<SettingPageController> {
           margin: const EdgeInsets.only(bottom: 12),
           child: Column(
             children: [
-              _settingButton(
-                context: context,
-                text: 'contactUs'.tr,
-                onPressed: () {
-                  Get.to(() => ContactUsPage(
-                        appVersion: controller.versionAndBuildNumber.value,
-                        platform: controller.platform,
-                        device: controller.device,
-                      ));
-                },
-              ),
+              _contactUsButton(context),
               const Divider(
                 height: 1,
               ),
-              _settingButton(
-                context: context,
-                text: 'about'.tr,
-                onPressed: () => Get.to(() => AboutPage()),
-                hideArrow: true,
-              ),
+              _aboutButton(context),
               const Divider(
                 height: 1,
               ),
-              SizedBox(
-                height: 56,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'version'.tr,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .primaryLv1!,
-                      ),
-                    ),
-                    Obx(
-                      () => Text(
-                        controller.versionAndBuildNumber.value,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context)
-                              .extension<CustomColors>()!
-                              .primaryLv3!,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _version(context),
             ],
           ),
         ),
