@@ -682,7 +682,7 @@ class CommunityPage extends GetView<CommunityPageController> {
         if (controller.isNoMore.isTrue) {
           return Container(
             alignment: Alignment.center,
-            color: homeScreenBackgroundColor,
+            color: Theme.of(context).backgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: RichText(
               text: TextSpan(

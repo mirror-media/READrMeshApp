@@ -11,7 +11,7 @@ class CollectionTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: readrBlack66,
+        color: meshBlack66,
         borderRadius: BorderRadius.all(
           Radius.circular(6),
         ),

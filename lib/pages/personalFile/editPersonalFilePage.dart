@@ -386,7 +386,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
         int.parse(Get.find<UserService>().currentUser.memberId) %
             Colors.primaries.length];
     Color textColor =
-        randomColor.computeLuminance() > 0.5 ? readrBlack : Colors.white;
+        randomColor.computeLuminance() > 0.5 ? meshBlack87 : Colors.white;
     List<String> splitNickname =
         Get.find<UserService>().currentUser.nickname.split('');
     String firstLetter = '';

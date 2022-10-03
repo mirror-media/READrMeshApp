@@ -88,10 +88,10 @@ class NewsStoryWidget extends GetView<StoryPageController> {
           factoryId: 'outline',
           adHeight: context.width * 0.75,
           decoration: BoxDecoration(
-            color: readrBlack10,
+            color: meshBlack10,
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             border: Border.all(
-              color: readrBlack10,
+              color: meshBlack10,
             ),
           ),
           margin: const EdgeInsets.symmetric(horizontal: 20),

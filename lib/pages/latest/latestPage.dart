@@ -478,7 +478,6 @@ class LatestPage extends GetView<LatestPageController> {
                     height: 16,
                   ),
                   const Divider(
-                    color: readrBlack10,
                     height: 0.5,
                     thickness: 0.5,
                   ),

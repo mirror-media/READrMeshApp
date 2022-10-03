@@ -14,7 +14,7 @@ class DeletedMemberPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
+            color: meshBlack87,
           ),
           onPressed: () => Get.back(),
         ),
