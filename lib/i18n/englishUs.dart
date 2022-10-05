@@ -540,4 +540,5 @@ const Map<String, String> englishUsMap = {
       'We have received your report and thank you for the information.',
   'allRight': 'OK',
   'reportCollection': 'Report collection',
+  'report': 'Report',
 };

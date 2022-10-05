@@ -514,4 +514,5 @@ const Map<String, String> chineseTwMap = {
   'reportAlertBody': '我們已收到您的檢舉，感謝提供資訊。',
   'allRight': '好的',
   'reportCollection': '檢舉集錦',
+  'report': '檢舉',
 };

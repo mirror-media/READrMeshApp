@@ -514,4 +514,5 @@ const Map<String, String> chineseCnMap = {
   'reportAlertBody': '我们已经收到您的举报，感谢提供信息。',
   'allRight': '好',
   'reportCollection': '举报集锦',
+  'report': '举报',
 };
