@@ -6,12 +6,13 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
+import 'package:readr/pages/shared/comment/reportCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -41,57 +42,75 @@ class CommentItem extends GetView<CommentItemController> {
     }
     bool isVisible = false;
 
-    return Obx(
-      () {
-        if (controller.isMyNewComment.isTrue) {
-          Timer(const Duration(seconds: 5), () async {
-            if (isVisible) {
-              _fadeController.fadeIn();
-            }
-
-            await Future.delayed(const Duration(milliseconds: 255));
-            if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
-              controller.isMyNewComment(false);
-              controller.isExpanded(false);
-            }
-          });
-          return VisibilityDetector(
-              key: Key(comment.id),
-              onVisibilityChanged: (visibilityInfo) {
-                var visiblePercentage = visibilityInfo.visibleFraction * 100;
-                if (visiblePercentage > 80) {
-                  isVisible = true;
-                }
-              },
-              child: Container(
-                color: const Color.fromRGBO(255, 245, 245, 1),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: FadeIn(
-                        controller: _fadeController,
-                        child: Container(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    _commentItemContent(context),
-                  ],
-                ),
-              ));
+    return GestureDetector(
+      onLongPress: () async {
+        if (comment.member.memberId ==
+                Get.find<UserService>().currentUser.memberId &&
+            controller.isSending.isFalse) {
+          await showEditCommentMenu(
+            context,
+            controller.comment,
+            pickableItemControllerTag,
+          );
         } else {
-          return _commentItemContent(context);
+          await reportCommentMenu(context, comment);
         }
       },
+      child: Obx(
+        () {
+          if (controller.isMyNewComment.isTrue) {
+            Timer(const Duration(seconds: 5), () async {
+              if (isVisible) {
+                _fadeController.fadeIn();
+              }
+
+              await Future.delayed(const Duration(milliseconds: 255));
+              if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
+                controller.isMyNewComment(false);
+                controller.isExpanded(false);
+              }
+            });
+            return VisibilityDetector(
+                key: Key(comment.id),
+                onVisibilityChanged: (visibilityInfo) {
+                  var visiblePercentage = visibilityInfo.visibleFraction * 100;
+                  if (visiblePercentage > 80) {
+                    isVisible = true;
+                  }
+                },
+                child: Container(
+                  color: Theme.of(context)
+                      .extension<CustomColors>()
+                      ?.highlightBlue,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: FadeIn(
+                          controller: _fadeController,
+                          child: Container(
+                            color: Theme.of(context).backgroundColor,
+                          ),
+                        ),
+                      ),
+                      _commentItemContent(context),
+                    ],
+                  ),
+                ));
+          } else {
+            return _commentItemContent(context);
+          }
+        },
+      ),
     );
   }
 
   Widget _commentItemContent(BuildContext context) {
     return Obx(
       () {
-        Color backgroundColor = Colors.white;
+        Color backgroundColor = Theme.of(context).backgroundColor;
         if (controller.isSending.isTrue) {
-          backgroundColor = const Color.fromRGBO(255, 245, 245, 1);
+          backgroundColor =
+              Theme.of(context).extension<CustomColors>()!.highlightBlue!;
         } else if (controller.isMyNewComment.isTrue) {
           backgroundColor = Colors.transparent;
         }
@@ -103,9 +122,11 @@ class CommentItem extends GetView<CommentItemController> {
           decoration: BoxDecoration(
             color: backgroundColor,
             border: isFollowingMember
-                ? const Border(
+                ? Border(
                     left: BorderSide(
-                    color: readrBlack87,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     width: 4,
                   ))
                 : null,
@@ -135,7 +156,7 @@ class CommentItem extends GetView<CommentItemController> {
                   children: [
                     _nameAndTime(context),
                     const SizedBox(height: 5),
-                    _content(),
+                    _content(context),
                   ],
                 ),
               ),
@@ -156,12 +177,10 @@ class CommentItem extends GetView<CommentItemController> {
               builder: (ctx, constraints) {
                 var span = TextSpan(
                   text: comment.member.nickname,
-                  style: TextStyle(
-                    color: readrBlack87,
-                    fontSize: 14,
-                    fontWeight:
-                        GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontSize: 14),
                 );
                 final innerTextSpan = joinChar(
                   span,
@@ -198,9 +217,11 @@ class CommentItem extends GetView<CommentItemController> {
                         height: 2,
                         margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: readrBlack20,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv5!,
                         ),
                       ),
                     Obx(() {
@@ -208,10 +229,10 @@ class CommentItem extends GetView<CommentItemController> {
                         return Text(
                           'sendingComment'.tr,
                           softWrap: true,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: readrBlack50,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontSize: 12),
                         );
                       }
                       return Timestamp(
@@ -235,9 +256,11 @@ class CommentItem extends GetView<CommentItemController> {
                             margin:
                                 const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
                             alignment: Alignment.center,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: readrBlack20,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv5!,
                             ),
                           );
                         }
@@ -265,10 +288,10 @@ class CommentItem extends GetView<CommentItemController> {
                             child: Text(
                               'editComment'.tr,
                               softWrap: true,
-                              style: const TextStyle(
-                                color: readrBlack50,
-                                fontSize: 12,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(fontSize: 12),
                             ),
                           );
                         }
@@ -286,10 +309,10 @@ class CommentItem extends GetView<CommentItemController> {
             Obx(
               () => Text(
                 _convertNumberToString(controller.likeCount.value),
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
-                  fontSize: 12,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .displaySmall
+                    ?.copyWith(fontSize: 12),
               ),
             ),
             const SizedBox(width: 5),
@@ -320,8 +343,10 @@ class CommentItem extends GetView<CommentItemController> {
                       ? Icons.favorite_outlined
                       : Icons.favorite_border_outlined,
                   color: controller.isLiked.value
-                      ? Colors.red
-                      : const Color.fromRGBO(0, 9, 40, 0.66),
+                      ? Theme.of(context).extension<CustomColors>()!.red!
+                      : Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv2!,
                 ),
               ),
             ),
@@ -343,7 +368,7 @@ class CommentItem extends GetView<CommentItemController> {
     return '${temp.floor().toString()}K';
   }
 
-  Widget _content() {
+  Widget _content(BuildContext context) {
     return Obx(
       () => GestureDetector(
         onTap: () {
@@ -354,30 +379,18 @@ class CommentItem extends GetView<CommentItemController> {
         child: ExtendedText(
           controller.commentContent.value,
           maxLines: controller.isExpanded.value ? null : 2,
-          style: const TextStyle(
-            color: Color.fromRGBO(0, 9, 40, 0.66),
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.displaySmall,
           joinZeroWidthSpace: true,
           overflowWidget: TextOverflowWidget(
             position: TextOverflowPosition.end,
             child: RichText(
               text: TextSpan(
                 text: '.... ',
-                style: const TextStyle(
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context).textTheme.displaySmall,
                 children: [
                   TextSpan(
                     text: 'displayMore'.tr,
-                    style: const TextStyle(
-                      color: readrBlack50,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               ),

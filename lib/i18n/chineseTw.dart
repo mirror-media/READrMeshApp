@@ -260,6 +260,7 @@ const Map<String, String> chineseTwMap = {
   'readrCustomerServiceNumber': 'READr客服電話：',
   'mmContactEmail': '鏡週刊聯絡信箱：',
   'mmCustomerServiceNumber': '鏡週刊客服電話：',
+  'relatedNews': '相關報導',
 
   //welcomePage
   'item1Title': '看朋友推哪篇新聞',
@@ -328,8 +329,11 @@ const Map<String, String> chineseTwMap = {
   'about': '關於',
   'version': '版本',
   'logOut': '登出',
-  'setLanguage': '設定語言',
+  'setLanguage': '語言',
   'systemSetting': '系統設定',
+  'appearance': '外觀',
+  'lightMode': '淺色模式',
+  'darkMode': '深色模式',
 
   //search
   'contain': '包含 ',
@@ -503,4 +507,12 @@ const Map<String, String> chineseTwMap = {
   'personalFileShareLinkDescriptionPrefix': '快來看看',
   'personalFileShareLinkDescriptionSuffix':
       '在READr Mesh挑選了哪些新聞和集錦？做自己的新聞編輯台，加入READr Mesh建立專屬的個人頁面。',
+
+  //report
+  'reportComment': '檢舉留言',
+  'reportAlertTitle': '檢舉成功',
+  'reportAlertBody': '我們已收到您的檢舉，感謝提供資訊。',
+  'allRight': '好的',
+  'reportCollection': '檢舉集錦',
+  'report': '檢舉',
 };

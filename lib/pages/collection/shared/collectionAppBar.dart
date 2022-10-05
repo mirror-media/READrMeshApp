@@ -8,6 +8,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/models/timelineCollectionPick.dart';
@@ -15,6 +16,7 @@ import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
+import 'package:readr/pages/shared/reportAlertDialog.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController>
@@ -33,12 +35,10 @@ class CollectionAppBar extends GetView<CollectionPageController>
     return AppBar(
       centerTitle: GetPlatform.isIOS,
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      elevation: 0,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: readrBlack,
+          color: Theme.of(context).appBarTheme.foregroundColor,
         ),
         onPressed: () async {
           if (Get.isRegistered<CommentInputBoxController>(
@@ -51,15 +51,19 @@ class CollectionAppBar extends GetView<CollectionPageController>
               builder: (_) => PlatformAlertDialog(
                 title: Text(
                   'deleteAlertTitle'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                 ),
                 content: Text(
                   'leaveAlertContent'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                 ),
                 actions: [
@@ -70,9 +74,11 @@ class CollectionAppBar extends GetView<CollectionPageController>
                     },
                     child: PlatformText(
                       'deleteComment'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
-                        color: Colors.red,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.redText,
                       ),
                     ),
                   ),
@@ -80,9 +86,10 @@ class CollectionAppBar extends GetView<CollectionPageController>
                     onPressed: () => Get.back(),
                     child: PlatformText(
                       'continueInput'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
-                        color: Colors.blue,
+                        color:
+                            Theme.of(context).extension<CustomColors>()?.blue,
                       ),
                     ),
                   ),
@@ -96,9 +103,10 @@ class CollectionAppBar extends GetView<CollectionPageController>
       ),
       title: Text(
         'collection'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
-          color: readrBlack,
+          color: Theme.of(context).appBarTheme.foregroundColor,
+          fontWeight: FontWeight.w400,
         ),
       ),
       actions: [
@@ -109,7 +117,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
               return IconButton(
                 icon: Icon(
                   PlatformIcons(context).share,
-                  color: readrBlack87,
+                  color: Theme.of(context).appBarTheme.foregroundColor,
                   size: 26,
                 ),
                 tooltip: 'share'.tr,
@@ -139,7 +147,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                           Get.find<UserService>().currentUser.memberId) {
                     return _editCollectionOptionButton(context);
                   }
-                  return Container();
+                  return _reportCollectionOptionButton(context);
                 },
               );
             }
@@ -157,7 +165,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
         padding: const EdgeInsets.only(right: 12, top: 8, left: 10),
         child: Icon(
           PlatformIcons(context).ellipsis,
-          color: readrBlack87,
+          color: Theme.of(context).appBarTheme.foregroundColor,
           size: 26,
         ),
       ),
@@ -241,7 +249,8 @@ class CollectionAppBar extends GetView<CollectionPageController>
           material: (context, platform) => MaterialPopupMenuOptionData(
             child: Text(
               'deleteCollection'.tr,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.redText),
             ),
           ),
           onTap: (option) async => await showPlatformDialog(
@@ -249,22 +258,29 @@ class CollectionAppBar extends GetView<CollectionPageController>
             builder: (context) => PlatformAlertDialog(
               title: Text(
                 'deleteCollectionAlertTitle'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
               ),
               content: Text(
                 'deleteCollectionAlertDescription'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
               ),
               actions: [
                 PlatformDialogAction(
                   child: Text(
                     'delete'.tr,
-                    style: const TextStyle(color: Colors.red),
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).extension<CustomColors>()?.redText,
+                    ),
                   ),
                   onPressed: () async {
                     controller.deleteCollection();
@@ -274,6 +290,9 @@ class CollectionAppBar extends GetView<CollectionPageController>
                 PlatformDialogAction(
                   child: Text(
                     'cancel'.tr,
+                    style: TextStyle(
+                      color: Theme.of(context).extension<CustomColors>()?.blue,
+                    ),
                   ),
                   onPressed: () => Get.back(),
                 ),
@@ -289,9 +308,55 @@ class CollectionAppBar extends GetView<CollectionPageController>
         cancelButtonData: CupertinoPopupMenuCancelButtonData(
           child: Text(
             'cancel'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 20,
+              color: Theme.of(context).extension<CustomColors>()?.blue,
+            ),
+          ),
+          isDefaultAction: true,
+        ),
+      ),
+    );
+  }
+
+  Widget _reportCollectionOptionButton(BuildContext context) {
+    return PlatformPopupMenu(
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 12, top: 8, left: 10),
+        child: Icon(
+          PlatformIcons(context).ellipsis,
+          color: Theme.of(context).appBarTheme.foregroundColor,
+          size: 26,
+        ),
+      ),
+      options: [
+        PopupMenuOption(
+          label: 'reportCollection'.tr,
+          onTap: (option) async => await showReportAlertDialog(context),
+          cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+            isDestructiveAction: true,
+          ),
+          material: (context, platform) => MaterialPopupMenuOptionData(
+            child: Text(
+              'reportCollection'.tr,
+              style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.redText),
+            ),
+          ),
+        ),
+      ],
+      material: (context, platform) => MaterialPopupMenuData(
+        padding: const EdgeInsets.only(right: 12, bottom: 8),
+      ),
+      cupertino: (context, platform) => CupertinoPopupMenuData(
+        cancelButtonData: CupertinoPopupMenuCancelButtonData(
+          child: Text(
+            'cancel'.tr,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+              color: Theme.of(context).extension<CustomColors>()?.blue,
             ),
           ),
           isDefaultAction: true,

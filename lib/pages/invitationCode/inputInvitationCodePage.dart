@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,15 +31,14 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           'invitationCode'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
         ),
         centerTitle: true,
@@ -67,10 +66,10 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
               },
               child: Text(
                 'send'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
-                  color: Colors.blue,
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                 ),
               ),
             )
@@ -83,35 +82,35 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    const defaultPinTheme = PinTheme(
+    final defaultPinTheme = PinTheme(
       width: 40,
       height: 32,
       textStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16,
-        color: readrBlack87,
+        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
       ),
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      padding: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color.fromRGBO(0, 9, 40, 0.66),
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
           ),
         ),
       ),
     );
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: const Border(
+      border: Border(
         bottom: BorderSide(
-          color: Color.fromRGBO(0, 9, 40, 0.1),
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
         ),
       ),
     );
     final errorPinTheme = defaultPinTheme.copyDecorationWith(
-      border: const Border(
+      border: Border(
         bottom: BorderSide(
-          color: Colors.red,
+          color: Theme.of(context).extension<CustomColors>()!.red!,
         ),
       ),
     );
@@ -147,8 +146,8 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                   _isComplete = true;
                 });
               },
-              errorTextStyle: const TextStyle(
-                color: Colors.red,
+              errorTextStyle: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()!.redText!,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               ),
@@ -172,10 +171,10 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
           child: RichText(
             text: TextSpan(
               text: 'inputInvitationCodeDescriptionPrefix'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
-                color: readrBlack50,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
               ),
               children: [
                 WidgetSpan(
@@ -195,24 +194,30 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                         print('Could not launch ${params.toString()}');
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       'readr@readr.tw',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 13,
-                        color: readrBlack50,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv3!,
                         decoration: TextDecoration.underline,
-                        decorationColor: readrBlack50,
+                        decorationColor: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv3!,
                       ),
                     ),
                   ),
                 ),
                 TextSpan(
                   text: 'inputInvitationCodeDescriptionSuffix'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
-                    color: readrBlack50,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv3!,
                   ),
                 ),
               ],

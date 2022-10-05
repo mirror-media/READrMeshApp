@@ -6,6 +6,7 @@ import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/comment/commentInputBoxController.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/community/comment/commentBottomSheetWidget.dart';
 import 'package:readr/services/commentService.dart';
@@ -34,6 +35,7 @@ class CommentBottomSheet {
 
     await showCupertinoModalBottomSheet(
       context: context,
+      barrierColor: Colors.black.withOpacity(0.3),
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(24),
       builder: (context) => Material(
@@ -56,18 +58,19 @@ class CommentBottomSheet {
         await showPlatformDialog(
           context: context,
           builder: (_) => PlatformAlertDialog(
-            title: const Text(
-              '確定要刪除留言？',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-              ),
+            title: Text(
+              'deleteAlertTitle'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontSize: 17),
             ),
-            content: const Text(
-              '系統將不會儲存您剛剛輸入的內容',
-              style: TextStyle(
-                fontSize: 13,
-              ),
+            content: Text(
+              'leaveAlertContent'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 13),
             ),
             actions: [
               PlatformDialogAction(
@@ -76,10 +79,10 @@ class CommentBottomSheet {
                   Navigator.pop(context);
                 },
                 child: PlatformText(
-                  '刪除留言',
-                  style: const TextStyle(
+                  'deleteComment'.tr,
+                  style: TextStyle(
                     fontSize: 17,
-                    color: Colors.red,
+                    color: Theme.of(context).extension<CustomColors>()?.redText,
                   ),
                 ),
               ),
@@ -99,10 +102,10 @@ class CommentBottomSheet {
                   );
                 },
                 child: PlatformText(
-                  '繼續輸入',
-                  style: const TextStyle(
+                  'continueInput'.tr,
+                  style: TextStyle(
                     fontSize: 17,
-                    color: Colors.blue,
+                    color: Theme.of(context).extension<CustomColors>()?.blue,
                   ),
                 ),
               ),

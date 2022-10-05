@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseFormatPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionPick.dart';
 import 'package:readr/models/folderCollectionPick.dart';
@@ -49,20 +50,23 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
       () {
         if (controller.isCreating.isTrue) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).backgroundColor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SpinKitWanderingCubes(
-                  color: readrBlack,
+                SpinKitWanderingCubes(
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'creatingCollection'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                     ),
                   ),
                 ),
@@ -71,7 +75,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           );
         }
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).backgroundColor,
           appBar: _buildBar(context),
           body: _buildBody(context),
         );
@@ -81,20 +85,20 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
       title: Text(
         'collectionType'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
-          color: readrBlack,
+          color: Theme.of(context).appBarTheme.foregroundColor,
+          fontWeight: FontWeight.w400,
         ),
       ),
       centerTitle: true,
       elevation: 0.5,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: readrBlack87,
+          color: Theme.of(context).appBarTheme.foregroundColor,
         ),
         onPressed: () => Get.back(),
       ),
@@ -106,8 +110,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                 controller.format.value == CollectionFormat.folder
                     ? 'create'.tr
                     : 'nextStep'.tr,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                   fontSize: 18,
                 ),
               ),
@@ -130,8 +134,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                 return TextButton(
                   child: Text(
                     'finish'.tr,
-                    style: const TextStyle(
-                      color: Colors.blue,
+                    style: TextStyle(
+                      color: Theme.of(context).extension<CustomColors>()?.blue,
                       fontSize: 18,
                     ),
                   ),
@@ -178,8 +182,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           TextButton(
             child: Text(
               'nextStep'.tr,
-              style: const TextStyle(
-                color: Colors.blue,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.blue,
                 fontSize: 18,
               ),
             ),
@@ -207,7 +211,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             previewWidget = _folderPreviewWidget();
             break;
           case CollectionFormat.timeline:
-            previewWidget = _timelinePreviewWidget();
+            previewWidget = _timelinePreviewWidget(context);
             break;
         }
 
@@ -275,7 +279,6 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
       itemBuilder: (context, index) =>
           NewsListItemWidget(folderCollectionPick[index].news),
       separatorBuilder: (context, index) => const Divider(
-        color: readrBlack10,
         thickness: 1,
         height: 36,
         indent: 20,
@@ -285,14 +288,14 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
     );
   }
 
-  Widget _timelinePreviewWidget() {
+  Widget _timelinePreviewWidget(BuildContext context) {
     List<TimelineCollectionPick> timelineStoryList = timelineCollectionPick;
     if (isEdit) {
       timelineStoryList
           .sort((a, b) => b.news.publishedDate.compareTo(a.news.publishedDate));
     }
     return Container(
-      color: meshGray,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemBuilder: (context, index) => TimelineItemWidget(
@@ -329,8 +332,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             break;
         }
         return InkWell(
-          hoverColor: readrBlack30,
-          splashColor: readrBlack30,
+          hoverColor: meshBlack30,
+          splashColor: meshBlack30,
           onTap: () => controller.format.value = format,
           child: Container(
             decoration: BoxDecoration(
@@ -343,11 +346,11 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                   ),
                 if (!isSelected) ...[
                   const BoxShadow(
-                    color: readrBlack20,
+                    color: meshBlack20,
                     blurRadius: 16,
                   ),
                   const BoxShadow(
-                    color: readrBlack30,
+                    color: meshBlack30,
                     blurRadius: 4,
                     offset: Offset(0, 2),
                   ),
@@ -372,7 +375,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                           iconImage,
                           color: isSelected
                               ? const Color.fromRGBO(0, 122, 255, 1)
-                              : readrBlack50,
+                              : meshBlack50,
                         ),
                       ),
                       const SizedBox(
@@ -381,7 +384,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       Text(
                         title,
                         style: TextStyle(
-                          color: readrBlack87,
+                          color: meshBlack87,
                           fontSize: 14,
                           fontWeight: GetPlatform.isIOS
                               ? FontWeight.w500
@@ -395,7 +398,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       Text(
                         description,
                         style: const TextStyle(
-                          color: readrBlack50,
+                          color: meshBlack50,
                           fontSize: 12,
                         ),
                       ),
@@ -427,15 +430,17 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
       builder: (_) => PlatformAlertDialog(
         title: Text(
           'changeCollectionTypeAlertTitle'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
         ),
         content: Text(
           'changeCollectionTypeAlertContent'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
         ),
         actions: [
@@ -443,9 +448,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             onPressed: () => Get.back<bool>(result: true),
             child: PlatformText(
               'comfirmChangeCollectionType'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.red,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
               ),
             ),
           ),
@@ -453,9 +458,9 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             onPressed: () => Get.back<bool>(result: false),
             child: PlatformText(
               'cancel'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
-                color: Colors.blue,
+                color: Theme.of(context).extension<CustomColors>()?.blue,
               ),
             ),
           ),

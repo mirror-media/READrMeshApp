@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -7,10 +6,12 @@ import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
@@ -23,7 +24,6 @@ class LatestPage extends GetView<LatestPageController> {
       controller.initPage();
     }
     return Scaffold(
-      backgroundColor: homeScreenBackgroundColor,
       body: GetBuilder<LatestPageController>(
         builder: (controller) {
           if (controller.isError) {
@@ -77,7 +77,7 @@ class LatestPage extends GetView<LatestPageController> {
             child: Obx(
               () {
                 if (controller.showLatestNews.isEmpty) {
-                  return _emptyWidget();
+                  return _emptyWidget(context);
                 }
 
                 int end = 5;
@@ -86,10 +86,13 @@ class LatestPage extends GetView<LatestPageController> {
                 }
 
                 return Container(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   padding: const EdgeInsets.only(top: 12),
                   child: _buildNewsList(
-                      context, controller.showLatestNews.sublist(0, end)),
+                    context,
+                    controller.showLatestNews.sublist(0, end),
+                    {2: 'listingnew_AT1'},
+                  ),
                 );
               },
             ),
@@ -103,10 +106,9 @@ class LatestPage extends GetView<LatestPageController> {
                     controller.showLatestNews.isEmpty) {
                   if (controller.showLatestNews.length >= 5) {
                     return Container(
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                       padding: const EdgeInsets.only(top: 16, bottom: 20),
                       child: const Divider(
-                        color: readrBlack10,
                         thickness: 1,
                         height: 1,
                         endIndent: 20,
@@ -118,7 +120,7 @@ class LatestPage extends GetView<LatestPageController> {
                 }
 
                 return Container(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   padding: const EdgeInsets.only(bottom: 8, top: 8),
                   child: RecommendFollowBlock(
                       Get.find<RecommendPublisherBlockController>()),
@@ -134,42 +136,50 @@ class LatestPage extends GetView<LatestPageController> {
                 }
 
                 return _buildNewsList(
-                    context,
-                    controller.showLatestNews
-                        .sublist(5, controller.showLength.value));
+                  context,
+                  controller.showLatestNews
+                      .sublist(5, controller.showLength.value),
+                  {
+                    2: 'listingnew_AT2',
+                    8: 'listingnew_AT3',
+                    12: 'listingnew_AT4',
+                  },
+                );
               },
             ),
           ),
           SliverToBoxAdapter(
-            child: _bottomWidget(),
+            child: _bottomWidget(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     final recommendPublisherBlockController =
         Get.find<RecommendPublisherBlockController>();
     if (Get.find<UserService>().currentUser.followingPublisher.isEmpty) {
       return Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           children: [
             const SizedBox(
               height: 20,
             ),
-            SvgPicture.asset(latestNewsEmptySvg, height: 91, width: 62),
+            SvgPicture.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? latestNewsEmptySvg
+                  : latestNewsEmptyDarkSvg,
+              height: 91,
+              width: 62,
+            ),
             const SizedBox(
               height: 24,
             ),
             Text(
               'latestPageEmptyTitle'.tr,
-              style: const TextStyle(
-                color: readrBlack87,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 8,
@@ -177,17 +187,13 @@ class LatestPage extends GetView<LatestPageController> {
             RichText(
               text: TextSpan(
                   text: 'latestPageEmptyDescription'.tr,
-                  style: const TextStyle(
-                    color: readrBlack50,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   children: const [
                     TextSpan(
                       text: ' 🗣',
                       style: TextStyle(
                         fontSize: 16,
-                        color: readrBlack,
+                        color: Colors.black,
                         fontWeight: FontWeight.w400,
                       ),
                     )
@@ -206,7 +212,7 @@ class LatestPage extends GetView<LatestPageController> {
       );
     } else {
       return Container(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           children: [
             const SizedBox(
@@ -218,11 +224,7 @@ class LatestPage extends GetView<LatestPageController> {
             ),
             Text(
               'noArticlesTitle'.tr,
-              style: const TextStyle(
-                color: readrBlack87,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 8,
@@ -230,17 +232,13 @@ class LatestPage extends GetView<LatestPageController> {
             RichText(
               text: TextSpan(
                   text: 'noArticlesDescription'.tr,
-                  style: const TextStyle(
-                    color: readrBlack50,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   children: const [
                     TextSpan(
                       text: ' 👇',
                       style: TextStyle(
                         fontSize: 16,
-                        color: readrBlack,
+                        color: Colors.black,
                         fontWeight: FontWeight.w400,
                       ),
                     )
@@ -262,8 +260,6 @@ class LatestPage extends GetView<LatestPageController> {
 
   Widget _latestNewsBar(BuildContext context) {
     return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 1,
       titleSpacing: 20,
@@ -273,18 +269,12 @@ class LatestPage extends GetView<LatestPageController> {
         },
         child: Row(
           children: [
-            Text(
-              'latestPageBar'.tr,
-              style: TextStyle(
-                  color: readrBlack87,
-                  fontSize: 18,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600),
-            ),
+            Text('latestPageBar'.tr,
+                style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(width: 6),
-            const Icon(
+            Icon(
               Icons.expand_more_outlined,
-              color: readrBlack30,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
               size: 30,
             ),
           ],
@@ -293,14 +283,39 @@ class LatestPage extends GetView<LatestPageController> {
     );
   }
 
-  Widget _buildNewsList(BuildContext context, List<NewsListItem> newsList) {
+  Widget _buildNewsList(
+    BuildContext context,
+    List<NewsListItem> newsList,
+    Map<int, String> adIndexAndId,
+  ) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          if (adIndexAndId.containsKey(index)) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                NewsListItemWidget(
+                  newsList[index],
+                  key: Key(newsList[index].id),
+                ),
+                NativeAdWidget(
+                  key: Key(adIndexAndId[index]!),
+                  factoryId: 'smallList',
+                  adHeight: 76,
+                  topWidget: const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 20),
+                    child: Divider(),
+                  ),
+                  adUnitIdKey: adIndexAndId[index]!,
+                ),
+              ],
+            );
+          }
           return NewsListItemWidget(
             newsList[index],
             showPickTooltip: index == 0,
@@ -310,11 +325,7 @@ class LatestPage extends GetView<LatestPageController> {
         separatorBuilder: (context, index) {
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
-            child: Divider(
-              color: readrBlack10,
-              thickness: 1,
-              height: 1,
-            ),
+            child: Divider(),
           );
         },
         itemCount: newsList.length,
@@ -322,7 +333,7 @@ class LatestPage extends GetView<LatestPageController> {
     );
   }
 
-  Widget _bottomWidget() {
+  Widget _bottomWidget(BuildContext context) {
     return Obx(
       () {
         if (controller.showLatestNews.isEmpty) {
@@ -330,7 +341,7 @@ class LatestPage extends GetView<LatestPageController> {
         } else if (controller.isNoMore.isTrue) {
           return Container(
             alignment: Alignment.center,
-            color: homeScreenBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: RichText(
               text: TextSpan(
@@ -341,10 +352,7 @@ class LatestPage extends GetView<LatestPageController> {
                 children: [
                   TextSpan(
                     text: 'latestPageBottomWidgetText'.tr,
-                    style: const TextStyle(
-                      color: readrBlack30,
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium,
                   )
                 ],
               ),
@@ -360,7 +368,7 @@ class LatestPage extends GetView<LatestPageController> {
               }
             },
             child: Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: const Center(
                 child: CircularProgressIndicator.adaptive(),
@@ -379,10 +387,11 @@ class LatestPage extends GetView<LatestPageController> {
       context: context,
       backgroundColor: Colors.transparent,
       topRadius: const Radius.circular(20),
+      barrierColor: Colors.black.withOpacity(0.3),
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return Material(
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
             child: SafeArea(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -390,18 +399,21 @@ class LatestPage extends GetView<LatestPageController> {
                   Container(
                     height: 4,
                     width: 48,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                     ),
                     margin: const EdgeInsets.only(top: 16),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: readrBlack20,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv4,
                       ),
                     ),
                   ),
@@ -410,11 +422,10 @@ class LatestPage extends GetView<LatestPageController> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'latestPageFilterTitle'.tr,
-                      style: const TextStyle(
-                        color: readrBlack50,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 13),
                     ),
                   ),
                   CheckboxListTile(
@@ -425,15 +436,19 @@ class LatestPage extends GetView<LatestPageController> {
                         showPaywall = value ?? controller.showPaywall;
                       });
                     },
-                    activeColor: readrBlack87,
+                    activeColor:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    checkColor: Theme.of(context)
+                        .extension<CustomColors>()
+                        ?.backgroundSingleLayer,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
                     title: Text(
                       'paidArticle'.tr,
-                      style: const TextStyle(
-                        color: readrBlack87,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontSize: 16),
                     ),
                   ),
                   CheckboxListTile(
@@ -444,22 +459,25 @@ class LatestPage extends GetView<LatestPageController> {
                         showFullScreenAd = value ?? controller.showFullScreenAd;
                       });
                     },
-                    activeColor: readrBlack87,
+                    activeColor:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    checkColor: Theme.of(context)
+                        .extension<CustomColors>()
+                        ?.backgroundSingleLayer,
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.only(left: 12),
                     title: Text(
                       'fullScreenAd'.tr,
-                      style: const TextStyle(
-                        color: readrBlack87,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontSize: 16),
                     ),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   const Divider(
-                    color: readrBlack10,
                     height: 0.5,
                     thickness: 0.5,
                   ),
@@ -473,7 +491,9 @@ class LatestPage extends GetView<LatestPageController> {
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: readrBlack87,
+                        backgroundColor: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,
@@ -486,10 +506,12 @@ class LatestPage extends GetView<LatestPageController> {
                       ),
                       child: Text(
                         'filter'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: Colors.white,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.backgroundSingleLayer,
                         ),
                       ),
                     ),

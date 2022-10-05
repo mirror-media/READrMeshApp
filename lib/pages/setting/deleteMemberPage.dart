@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/rootPage.dart';
 
 class DeleteMemberPage extends GetView<SettingPageController> {
@@ -11,17 +11,14 @@ class DeleteMemberPage extends GetView<SettingPageController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           centerTitle: true,
-          shadowColor: Colors.white,
-          backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          elevation: 0.5,
           title: Text(
             'deletePageTitle'.tr,
-            style: const TextStyle(
-              color: readrBlack,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               fontSize: 20,
               fontWeight: FontWeight.w400,
             ),
@@ -29,9 +26,10 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           leading: GetBuilder<SettingPageController>(builder: (controller) {
             if (controller.isInitial) {
               return IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_ios_new_outlined,
-                  color: readrBlack,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               );
@@ -41,24 +39,27 @@ class DeleteMemberPage extends GetView<SettingPageController> {
         ),
         body: Obx(() {
           if (controller.isDeleting.isFalse) {
-            return _buildContent();
+            return _buildContent(context);
           }
 
           return Container(
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SpinKitWanderingCubes(
-                  color: readrBlack,
+                SpinKitWanderingCubes(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'deletingAccount'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
                   ),
                 ),
@@ -71,7 +72,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     String discription;
     if (Get.find<UserService>().currentUser.email!.contains('[0x0001]')) {
       discription = 'noEmailDescription'.tr;
@@ -107,7 +108,8 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                   fontSize: 18,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
                 textAlign: TextAlign.center,
               );
@@ -130,10 +132,11 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                 discription,
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(0, 9, 40, 0.66),
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
                 ),
               );
             },
@@ -163,17 +166,21 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                 },
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
-                  side: const BorderSide(
-                    color: readrBlack,
+                  side: BorderSide(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                     width: 1,
                   ),
                 ),
                 child: Text(
                   buttonText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: readrBlack,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv1!,
                   ),
                 ),
               );
@@ -193,10 +200,11 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                 },
                 child: Text(
                   'confirmDeleteAccount'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: Colors.red,
+                    color:
+                        Theme.of(context).extension<CustomColors>()!.redText!,
                   ),
                 ),
               ),

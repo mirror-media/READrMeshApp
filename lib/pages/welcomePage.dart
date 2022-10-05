@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/invitationCode/inputInvitationCodePage.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -22,28 +23,36 @@ class _WelcomePageState extends State<WelcomePage> {
     _widgets = [
       _onboardItem(
         context: context,
-        svgPath: onboard1Svg,
+        svgPath: Theme.of(context).brightness == Brightness.light
+            ? onboard1Svg
+            : onboard1DarkSvg,
         title: 'item1Title'.tr,
         description: 'item1Description'.tr,
         widthPadding: 80,
       ),
       _onboardItem(
         context: context,
-        svgPath: onboard2Svg,
+        svgPath: Theme.of(context).brightness == Brightness.light
+            ? onboard2Svg
+            : onboard2DarkSvg,
         title: 'item2Title'.tr,
         description: 'item2Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: onboard3Svg,
+        svgPath: Theme.of(context).brightness == Brightness.light
+            ? onboard3Svg
+            : onboard3DarkSvg,
         title: 'item3Title'.tr,
         description: 'item3Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: onboard4Svg,
+        svgPath: Theme.of(context).brightness == Brightness.light
+            ? onboard4Svg
+            : onboard4DarkSvg,
         title: 'item4Title'.tr,
         description: 'item4Description'.tr,
         widthPadding: 40,
@@ -51,10 +60,8 @@ class _WelcomePageState extends State<WelcomePage> {
     ];
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          backgroundColor: Colors.white,
           elevation: 0,
           toolbarHeight: 0,
         ),
@@ -94,13 +101,15 @@ class _WelcomePageState extends State<WelcomePage> {
                         height: 12.0,
                         margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color:
-                                (Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.white
-                                        : readrBlack)
-                                    .withOpacity(
-                                        _current == entry.key ? 0.87 : 0.1)),
+                          shape: BoxShape.circle,
+                          color: _current == entry.key
+                              ? Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv1!
+                              : Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv6!,
+                        ),
                       ),
                     );
                   }).toList(),
@@ -110,7 +119,6 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 40,
               ),
               const Divider(
-                color: readrBlack10,
                 height: 0.5,
                 thickness: 0.5,
               ),
@@ -122,7 +130,8 @@ class _WelcomePageState extends State<WelcomePage> {
                   onPressed: () =>
                       Get.off(() => const InputInvitationCodePage()),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: readrBlack87,
+                    backgroundColor:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
                       horizontal: 24,
@@ -131,10 +140,10 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   child: Text(
                     'startToUse'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                     ),
                   ),
                 ),
@@ -170,10 +179,10 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
           ),
           textAlign: TextAlign.center,
         ),
@@ -182,10 +191,10 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         Text(
           description,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: readrBlack50,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
           ),
         ),
       ],

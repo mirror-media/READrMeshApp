@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readr/controller/login/inputNamePageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/services/memberService.dart';
 
 class InputNamePage extends GetView<InputNamePageController> {
@@ -23,24 +23,22 @@ class InputNamePage extends GetView<InputNamePageController> {
     ));
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           centerTitle: Platform.isIOS,
-          shadowColor: Colors.white,
-          backgroundColor: Colors.white,
           elevation: 0,
           title: Text(
             'inputNamePageAppbarTitle'.tr,
-            style: const TextStyle(
-              color: readrBlack,
+            style: TextStyle(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
           ),
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
-              color: readrBlack,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             ),
             onPressed: () async {
               if (controller.isCreating.isFalse) {
@@ -60,8 +58,8 @@ class InputNamePage extends GetView<InputNamePageController> {
                   },
                   child: Text(
                     'completeRegistration'.tr,
-                    style: const TextStyle(
-                      color: Colors.blue,
+                    style: TextStyle(
+                      color: Theme.of(context).extension<CustomColors>()!.blue!,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
@@ -81,20 +79,23 @@ class InputNamePage extends GetView<InputNamePageController> {
           }
 
           return Container(
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SpinKitWanderingCubes(
-                  color: readrBlack,
+                SpinKitWanderingCubes(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'creatingAnAccount'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
                   ),
                 ),
@@ -130,6 +131,11 @@ class InputNamePage extends GetView<InputNamePageController> {
             maxLength: 20,
             autovalidateMode: AutovalidateMode.disabled,
             controller: controller.textController,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'inputNamePageEmptyHint'.tr;
@@ -138,18 +144,41 @@ class InputNamePage extends GetView<InputNamePageController> {
               }
               return null;
             },
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(12.0),
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(12.0),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack87, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  width: 1.0,
+                ),
               ),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack10, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                  width: 1.0,
+                ),
               ),
               border: UnderlineInputBorder(
-                borderSide: BorderSide(color: readrBlack10, width: 1.0),
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                  width: 1.0,
+                ),
               ),
               counterText: '',
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).extension<CustomColors>()!.red!,
+                  width: 1.0,
+                ),
+              ),
+              errorStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).extension<CustomColors>()?.redText,
+              ),
             ),
           ),
         ),
@@ -158,9 +187,9 @@ class InputNamePage extends GetView<InputNamePageController> {
         ),
         Text(
           'inputNamePageDescription'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
-            color: readrBlack50,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
             fontWeight: FontWeight.w400,
           ),
         )

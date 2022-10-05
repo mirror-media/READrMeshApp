@@ -46,6 +46,10 @@ class SettingPageController extends GetxController {
   final languageSetting = LanguageSettings.system.obs;
   String languageCode = 'system';
 
+  //for appearanceSettingPage
+  final appearanceSetting = AppearanceSettings.system.obs;
+  String appearanceCode = 'system';
+
   @override
   void onInit() {
     super.onInit();
@@ -133,6 +137,19 @@ class SettingPageController extends GetxController {
         break;
       default:
         languageSetting.value = LanguageSettings.system;
+    }
+
+    // get appearance setting
+    appearanceCode = prefs.getString('appearanceSetting') ?? 'system';
+    switch (appearanceCode) {
+      case 'light':
+        appearanceSetting.value = AppearanceSettings.light;
+        break;
+      case 'dark':
+        appearanceSetting.value = AppearanceSettings.dark;
+        break;
+      default:
+        appearanceSetting.value = AppearanceSettings.system;
     }
   }
 
@@ -257,5 +274,25 @@ class SettingPageController extends GetxController {
           .updateTabs();
     }
     await prefs.setString('languageSetting', languageCode);
+  }
+
+  void updateAppearance(AppearanceSettings newAppearanceSetting) async {
+    appearanceSetting.value = newAppearanceSetting;
+    switch (newAppearanceSetting) {
+      case AppearanceSettings.system:
+        appearanceCode = 'system';
+        Get.changeThemeMode(ThemeMode.system);
+        break;
+      case AppearanceSettings.light:
+        appearanceCode = 'light';
+        Get.changeThemeMode(ThemeMode.light);
+        break;
+      case AppearanceSettings.dark:
+        appearanceCode = 'dark';
+        Get.changeThemeMode(ThemeMode.dark);
+        break;
+    }
+
+    await prefs.setString('appearanceSetting', appearanceCode);
   }
 }

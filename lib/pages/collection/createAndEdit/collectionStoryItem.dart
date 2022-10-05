@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:shimmer/shimmer.dart';
@@ -28,7 +28,7 @@ class CollectionStoryItem extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
@@ -45,7 +45,9 @@ class CollectionStoryItem extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       fontSize: 16,
                       fontWeight:
                           GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -55,14 +57,18 @@ class CollectionStoryItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Shimmer.fromColors(
-                    baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                    highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                    baseColor: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .shimmerBaseColor!,
+                    highlightColor: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv6!,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4.0),
                       child: Container(
                         width: inTimeline ? 48 : 96,
                         height: 48,
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                       ),
                     ),
                   ),
@@ -74,7 +80,7 @@ class CollectionStoryItem extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontSize: 16,
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -90,7 +96,9 @@ class CollectionStoryItem extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
                         fontSize: 16,
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500
@@ -122,7 +130,11 @@ class CollectionStoryItem extends StatelessWidget {
               if (story.source != null) ...[
                 Text(
                   story.source!.title,
-                  style: const TextStyle(color: readrBlack50, fontSize: 12),
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv3,
+                      fontSize: 12),
                 ),
                 if (!inCustomTime)
                   Container(
@@ -130,9 +142,11 @@ class CollectionStoryItem extends StatelessWidget {
                     height: 2,
                     margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: readrBlack20,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv5,
                     ),
                   ),
               ],

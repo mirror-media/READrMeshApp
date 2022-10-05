@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/chooseStoryPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/collectionPick.dart';
 import 'package:readr/pages/collection/createAndEdit/chooseFormatPage.dart';
@@ -32,20 +31,23 @@ class DescriptionPage extends GetView<DescriptionPageController> {
       () {
         if (controller.isUpdating.isTrue) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).backgroundColor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SpinKitWanderingCubes(
-                  color: readrBlack,
+                SpinKitWanderingCubes(
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'updatingCollection'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      color: readrBlack,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                     ),
                   ),
                 ),
@@ -54,34 +56,32 @@ class DescriptionPage extends GetView<DescriptionPageController> {
           );
         }
         return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: _buildBar(),
-          body: _buildBody(),
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: _buildBar(context),
+          body: _buildBody(context),
         );
       },
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
       elevation: 0.5,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: GetPlatform.isIOS,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: readrBlack87,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
         ),
         onPressed: () => Get.back(),
       ),
       title: Text(
         'narrative'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: readrBlack,
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -99,10 +99,10 @@ class DescriptionPage extends GetView<DescriptionPageController> {
             return TextButton(
               child: Text(
                 buttonText,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
-                  color: Colors.blue,
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                 ),
               ),
               onPressed: () {
@@ -133,7 +133,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 38),
       child: Column(
@@ -141,11 +141,15 @@ class DescriptionPage extends GetView<DescriptionPageController> {
         children: [
           Expanded(
             child: Obx(() {
-              Color focusBorderColor = readrBlack66;
-              Color borderColor = readrBlack10;
+              Color focusBorderColor =
+                  Theme.of(context).extension<CustomColors>()!.primaryLv2!;
+              Color borderColor =
+                  Theme.of(context).extension<CustomColors>()!.primaryLv6!;
               if (controller.collectionDescription.value.length >= 3000) {
-                focusBorderColor = Colors.red;
-                borderColor = Colors.red;
+                focusBorderColor =
+                    Theme.of(context).extension<CustomColors>()!.redText!;
+                borderColor =
+                    Theme.of(context).extension<CustomColors>()!.redText!;
               }
               return TextFormField(
                 keyboardType: TextInputType.multiline,
@@ -156,16 +160,20 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 initialValue: description,
                 textAlignVertical: TextAlignVertical.top,
                 onChanged: (value) => controller.collectionDescription(value),
-                style: const TextStyle(
-                  color: readrBlack87,
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
                 decoration: InputDecoration(
                   isDense: true,
                   hintText: 'collectionNarrativeHint'.tr,
-                  hintStyle: const TextStyle(
-                    color: readrBlack30,
+                  hintStyle: TextStyle(
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
                     fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -204,8 +212,8 @@ class DescriptionPage extends GetView<DescriptionPageController> {
             if (controller.collectionDescription.value.length >= 3000) {
               return Text(
                 'collectionNarrativeLengthAlert'.tr,
-                style: const TextStyle(
-                  color: Colors.red,
+                style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.redText,
                   fontSize: 14,
                 ),
               );

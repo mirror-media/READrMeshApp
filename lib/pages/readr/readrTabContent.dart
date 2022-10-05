@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/readr/readrTabController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/readr/readrProjectItemWidget.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/tabContentNoResultWidget.dart';
 import 'package:readr/services/tabStoryListService.dart';
 
 class ReadrTabContent extends GetView<ReadrTabController> {
   final String categorySlug;
+  static const Map<int, String> _adIndexAndId = {
+    2: 'listingREADr_AT1',
+    7: 'listingREADr_AT2',
+    13: 'listingREADr_AT3',
+    17: 'listingREADr_AT4',
+  };
   const ReadrTabContent({
     required this.categorySlug,
   });
@@ -53,14 +60,15 @@ class ReadrTabContent extends GetView<ReadrTabController> {
 
   Widget _tabStoryList(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Obx(
         () => ListView.separated(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.only(top: 20),
           separatorBuilder: (context, index) {
-            if (controller.readrMixedList[index].isProject) {
+            if (controller.readrMixedList[index].isProject &&
+                !_adIndexAndId.containsKey(index)) {
               return const SizedBox(
                 height: 36,
               );
@@ -81,35 +89,66 @@ class ReadrTabContent extends GetView<ReadrTabController> {
             return const Padding(
               padding: EdgeInsets.only(top: 16, bottom: 20),
               child: Divider(
-                color: readrBlack10,
                 thickness: 0.5,
                 height: 0.5,
-                indent: 20,
-                endIndent: 20,
               ),
             );
           },
           itemBuilder: (BuildContext context, int index) {
+            Widget content;
             if (index == controller.readrMixedList.length) {
-              return _loadMoreWidget();
+              return _loadMoreWidget(context);
             }
 
             if (controller.readrMixedList[index].isProject) {
+              content = ReadrProjectItemWidget(
+                controller.readrMixedList[index].newsListItem,
+              );
+            } else {
+              content = NewsListItemWidget(
+                controller.readrMixedList[index].newsListItem,
+                hidePublisher: true,
+                key: Key(controller.readrMixedList[index].newsListItem.id),
+              );
+            }
+
+            if (_adIndexAndId.containsKey(index)) {
+              Widget topWidget;
+              if (content is ReadrProjectItemWidget) {
+                topWidget = const SizedBox(
+                  height: 36,
+                );
+              } else {
+                topWidget = const Padding(
+                  padding: EdgeInsets.only(top: 16, bottom: 20),
+                  child: Divider(
+                    thickness: 0.5,
+                    height: 0.5,
+                  ),
+                );
+              }
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ReadrProjectItemWidget(
-                  controller.readrMixedList[index].newsListItem,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    content,
+                    NativeAdWidget(
+                      key: Key(_adIndexAndId[index]!),
+                      factoryId: 'smallList',
+                      adHeight: 76,
+                      topWidget: topWidget,
+                      bottomWidget: const SizedBox(height: 4),
+                      adUnitIdKey: _adIndexAndId[index]!,
+                    ),
+                  ],
                 ),
               );
             }
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: NewsListItemWidget(
-                controller.readrMixedList[index].newsListItem,
-                hidePublisher: true,
-                key: Key(controller.readrMixedList[index].newsListItem.id),
-              ),
+              child: content,
             );
           },
           itemCount: controller.readrMixedList.length + 1,
@@ -118,22 +157,22 @@ class ReadrTabContent extends GetView<ReadrTabController> {
     );
   }
 
-  Widget _loadMoreWidget() {
+  Widget _loadMoreWidget(BuildContext context) {
     return Obx(() {
       if (controller.noMore.isTrue) {
         return Column(
           children: [
             Container(
               height: 16,
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
             ),
             Container(
-              color: homeScreenBackgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
               height: 20,
             ),
             Container(
               alignment: Alignment.center,
-              color: homeScreenBackgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: RichText(
                 text: TextSpan(
                   text: '🎉 ',
@@ -143,8 +182,10 @@ class ReadrTabContent extends GetView<ReadrTabController> {
                   children: [
                     TextSpan(
                       text: 'readrNoMore'.tr,
-                      style: const TextStyle(
-                        color: readrBlack30,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv4!,
                         fontSize: 14,
                       ),
                     )
@@ -153,7 +194,7 @@ class ReadrTabContent extends GetView<ReadrTabController> {
               ),
             ),
             Container(
-              color: homeScreenBackgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
               height: 145,
             ),
           ],

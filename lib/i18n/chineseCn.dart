@@ -260,6 +260,7 @@ const Map<String, String> chineseCnMap = {
   'readrCustomerServiceNumber': 'READr客服电话：',
   'mmContactEmail': '镜周刊联络信箱：',
   'mmCustomerServiceNumber': '镜周刊客服电话：',
+  'relatedNews': '相关报导',
 
   //welcomePage
   'item1Title': '看朋友推哪篇新闻',
@@ -328,8 +329,11 @@ const Map<String, String> chineseCnMap = {
   'about': '关于',
   'version': '版本',
   'logOut': '退出登录',
-  'setLanguage': '设置语言',
+  'setLanguage': '语言',
   'systemSetting': '系统设置',
+  'appearance': '外观',
+  'lightMode': '浅色模式',
+  'darkMode': '深色模式',
 
   //search
   'contain': '包含 ',
@@ -503,4 +507,12 @@ const Map<String, String> chineseCnMap = {
   'personalFileShareLinkDescriptionPrefix': '快来看看',
   'personalFileShareLinkDescriptionSuffix':
       '在READr Mesh挑选了哪些新闻和集锦？成为您自己的新闻编辑室，加入READr Mesh创建您自己的个人页面。',
+
+  //report
+  'reportComment': '举报评论',
+  'reportAlertTitle': '举报成功',
+  'reportAlertBody': '我们已经收到您的举报，感谢提供信息。',
+  'allRight': '好',
+  'reportCollection': '举报集锦',
+  'report': '举报',
 };

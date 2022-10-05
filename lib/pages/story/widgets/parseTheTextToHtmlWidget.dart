@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:readr/helpers/themes.dart';
 
 class ParseTheTextToHtmlWidget extends StatelessWidget {
   final String? html;
@@ -19,18 +20,26 @@ class ParseTheTextToHtmlWidget extends StatelessWidget {
       return Container();
     }
 
+    String textColor = Theme.of(context).brightness == Brightness.light
+        ? '#DE000928'
+        : '#F6F6FB ';
+
+    if (color != null) {
+      textColor = '#${color!.value.toRadixString(16)}';
+    }
+
     return HtmlWidget(
       html!,
       customStylesBuilder: (element) {
         if (element.localName == 'a' && isCitation) {
           return {
             'text-decoration-line': 'none',
-            'color': 'black',
+            'color': textColor,
           };
         } else if (element.localName == 'a') {
           return {
-            'text-decoration-color': 'black',
-            'color': 'black',
+            'text-decoration-color': textColor,
+            'color': textColor,
             'text-decoration-thickness': '100%',
           };
         } else if (element.localName == 'h1') {
@@ -51,7 +60,7 @@ class ParseTheTextToHtmlWidget extends StatelessWidget {
       textStyle: TextStyle(
         fontSize: fontSize,
         height: 1.8,
-        color: color,
+        color: color ?? Theme.of(context).extension<CustomColors>()?.primaryLv1,
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/recommendItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/shared/recommendFollow/lookmoreItem.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowItem.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowPage.dart';
@@ -30,13 +29,7 @@ class RecommendFollowBlock extends StatelessWidget {
                   children: [
                     Text(
                       'recommendFollow'.tr,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: readrBlack87,
-                        fontWeight: GetPlatform.isIOS
-                            ? FontWeight.w500
-                            : FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextButton(
                       onPressed: () {
@@ -44,11 +37,7 @@ class RecommendFollowBlock extends StatelessWidget {
                       },
                       child: Text(
                         'viewAll'.tr,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: readrBlack50,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                   ],

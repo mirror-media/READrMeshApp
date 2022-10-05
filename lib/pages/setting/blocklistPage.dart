@@ -4,7 +4,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/settingPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -15,27 +15,24 @@ class BlocklistPage extends GetView<SettingPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        elevation: 0.5,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           ),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
         title: Text(
           'blockList'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             fontWeight: FontWeight.w400,
           ),
         ),
       ),
-      backgroundColor: meshGray,
       body: GetBuilder<SettingPageController>(
         initState: (state) {
           controller.fetchBlocklist();
@@ -53,40 +50,51 @@ class BlocklistPage extends GetView<SettingPageController> {
               return Center(
                 child: Text(
                   'emptyBlockList'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: readrBlack30,
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .primaryLv4!,
                   ),
                 ),
               );
             }
 
-            return ImplicitlyAnimatedList<Member>(
-              items: controller.blockMembers,
-              areItemsTheSame: (a, b) => a.memberId == b.memberId,
-              itemBuilder: (context, animation, item, index) {
-                return SizeFadeTransition(
-                  sizeFraction: 0.7,
-                  curve: Curves.easeInOut,
-                  animation: animation,
-                  child: Container(
-                    key: Key(item.memberId + index.toString()),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 0.5, color: Colors.black12),
+            return Container(
+              color: Theme.of(context).backgroundColor,
+              child: ImplicitlyAnimatedList<Member>(
+                items: controller.blockMembers,
+                shrinkWrap: true,
+                areItemsTheSame: (a, b) => a.memberId == b.memberId,
+                itemBuilder: (context, animation, item, index) {
+                  return SizeFadeTransition(
+                    sizeFraction: 0.7,
+                    curve: Curves.easeInOut,
+                    animation: animation,
+                    child: Container(
+                      key: Key(item.memberId + index.toString()),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 0.5,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv6!,
+                          ),
+                        ),
+                        color: Theme.of(context).backgroundColor,
                       ),
-                      color: Colors.white,
+                      padding: const EdgeInsets.all(20),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(() => PersonalFilePage(viewMember: item));
+                        },
+                        child: _buildListItem(context, item),
+                      ),
                     ),
-                    padding: const EdgeInsets.all(20),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => PersonalFilePage(viewMember: item));
-                      },
-                      child: _buildListItem(context, item),
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           }
 
@@ -115,7 +123,8 @@ class BlocklistPage extends GetView<SettingPageController> {
                   fontSize: 16,
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  color: readrBlack87,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 ),
               ),
               ExtendedText(
@@ -123,10 +132,11 @@ class BlocklistPage extends GetView<SettingPageController> {
                 maxLines: 1,
                 joinZeroWidthSpace: true,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: readrBlack50,
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
                 ),
               )
             ],
@@ -140,15 +150,18 @@ class BlocklistPage extends GetView<SettingPageController> {
             controller.unblockMember(member.memberId);
           },
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: readrBlack87, width: 1),
-            backgroundColor: Colors.white,
+            side: BorderSide(
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              width: 1,
+            ),
+            backgroundColor: Theme.of(context).backgroundColor,
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
           ),
           child: Text(
             'unBlock'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             ),
           ),
         ),

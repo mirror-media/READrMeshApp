@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
@@ -18,24 +19,38 @@ class NewsListItemWidget extends StatelessWidget {
   final bool isInMyPersonalFile;
   final bool showPickTooltip;
   final bool inTimeline;
+  final bool pushReplacement;
   const NewsListItemWidget(
     this.news, {
     this.hidePublisher = false,
     this.isInMyPersonalFile = false,
     this.showPickTooltip = false,
     this.inTimeline = false,
+    this.pushReplacement = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(
-        () => StoryPage(
-          news: news,
-        ),
-        fullscreenDialog: true,
-      ),
+      onTap: () {
+        if (pushReplacement) {
+          Get.off(
+            () => StoryPage(
+              news: news,
+            ),
+            fullscreenDialog: true,
+            preventDuplicates: false,
+          );
+        } else {
+          Get.to(
+            () => StoryPage(
+              news: news,
+            ),
+            fullscreenDialog: true,
+          );
+        }
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -54,8 +69,10 @@ class NewsListItemWidget extends StatelessWidget {
                       child: ExtendedText(
                         news.source!.title,
                         joinZeroWidthSpace: true,
-                        style:
-                            const TextStyle(color: readrBlack50, fontSize: 12),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(fontSize: 12),
                       ),
                     ),
                   const Spacer(),
@@ -70,9 +87,11 @@ class NewsListItemWidget extends StatelessWidget {
                       url: news.url,
                       newsListItem: news,
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       CupertinoIcons.ellipsis,
-                      color: readrBlack66,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv2,
                       size: 15,
                     ),
                   ),
@@ -85,12 +104,10 @@ class NewsListItemWidget extends StatelessWidget {
               joinZeroWidthSpace: true,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: readrBlack87,
-                fontSize: 16,
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 16),
             ),
           if (news.heroImageUrl != null)
             CachedNetworkImage(
@@ -104,13 +121,10 @@ class NewsListItemWidget extends StatelessWidget {
                       joinZeroWidthSpace: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: readrBlack87,
-                        fontSize: 16,
-                        fontWeight: GetPlatform.isIOS
-                            ? FontWeight.w500
-                            : FontWeight.w600,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontSize: 16),
                     ),
                   ),
                   Container(
@@ -118,14 +132,19 @@ class NewsListItemWidget extends StatelessWidget {
                     width: inTimeline ? 48 : 96,
                     height: 48,
                     child: Shimmer.fromColors(
-                      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                      baseColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!
+                          .withOpacity(0.15),
+                      highlightColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: Container(
                           width: inTimeline ? 48 : 96,
                           height: 48,
-                          color: Colors.white,
+                          color: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ),
@@ -137,12 +156,10 @@ class NewsListItemWidget extends StatelessWidget {
                 joinZeroWidthSpace: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: readrBlack87,
-                  fontSize: 16,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontSize: 16),
               ),
               imageBuilder: (context, imageProvider) {
                 return Row(
@@ -154,13 +171,10 @@ class NewsListItemWidget extends StatelessWidget {
                         joinZeroWidthSpace: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: readrBlack87,
-                          fontSize: 16,
-                          fontWeight: GetPlatform.isIOS
-                              ? FontWeight.w500
-                              : FontWeight.w600,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontSize: 16),
                       ),
                     ),
                     Padding(

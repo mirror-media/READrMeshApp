@@ -8,7 +8,7 @@ import 'package:readr/controller/personalFile/personalFilePageController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
@@ -57,17 +57,17 @@ class CollectionTabContent extends GetView<CollectionTabController> {
 
         if (!controller.isLoading) {
           if (controller.collectionList.isEmpty) {
-            return _emptyWidget();
+            return _emptyWidget(context);
           }
 
           return Obx(() {
             if (Get.find<PersonalFilePageController>(tag: viewMember.memberId)
                 .isBlock
                 .isTrue) {
-              return _emptyWidget();
+              return _emptyWidget(context);
             }
 
-            return _buildContent();
+            return _buildContent(context);
           });
         }
 
@@ -78,7 +78,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     return Obx(
       () {
         if (Get.find<UserService>().isMember.isTrue &&
@@ -95,7 +95,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
           bool hasPickOrBookmark = pickCount + bookmarkCount > 0;
 
           return Container(
-            color: homeScreenBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -104,8 +104,10 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     hasPickOrBookmark
                         ? 'emptyCollectionDescription'.tr
                         : 'emptyCollectionWithNoPickOrBookmarkDescription'.tr,
-                    style: const TextStyle(
-                      color: readrBlack30,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv4,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -125,7 +127,9 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      backgroundColor: readrBlack87,
+                      backgroundColor: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
                       shape: RoundedRectangleBorder(
@@ -136,8 +140,8 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                       hasPickOrBookmark
                           ? 'emptyCollectionButtonText'.tr
                           : 'emptyCollectionWithNoPickOrBookmarkButtonText'.tr,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).backgroundColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -149,12 +153,12 @@ class CollectionTabContent extends GetView<CollectionTabController> {
           );
         }
         return Container(
-          color: homeScreenBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: Center(
             child: Text(
               'viewMemberNoCollection'.tr,
-              style: const TextStyle(
-                color: readrBlack30,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -166,7 +170,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Obx(
       () => ListView.builder(
         padding: const EdgeInsets.only(bottom: 20),
@@ -177,7 +181,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                 if (Get.find<UserService>().isMember.isTrue &&
                     Get.find<UserService>().currentUser.memberId ==
                         viewMember.memberId) {
-                  return _createCollectionBar();
+                  return _createCollectionBar(context);
                 }
 
                 return Container();
@@ -189,21 +193,21 @@ class CollectionTabContent extends GetView<CollectionTabController> {
             return _loadMoreWidget();
           }
 
-          return _buildListItem(controller.collectionList[index - 1]);
+          return _buildListItem(context, controller.collectionList[index - 1]);
         },
         itemCount: controller.collectionList.length + 2,
       ),
     );
   }
 
-  Widget _createCollectionBar() {
+  Widget _createCollectionBar(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       padding: const EdgeInsets.fromLTRB(20, 16, 15, 16),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(0, 9, 40, 0.05),
+        color: Theme.of(context).extension<CustomColors>()?.primaryLv7,
         border: Border.all(
-          color: readrBlack10,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           width: 0.5,
         ),
         borderRadius: const BorderRadius.all(
@@ -215,8 +219,8 @@ class CollectionTabContent extends GetView<CollectionTabController> {
           Expanded(
             child: AutoSizeText(
               'createCollectionBarTitle'.tr,
-              style: const TextStyle(
-                color: readrBlack50,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
                 fontSize: 16,
               ),
               maxLines: 1,
@@ -229,15 +233,15 @@ class CollectionTabContent extends GetView<CollectionTabController> {
               children: [
                 Text(
                   'createCollectionBarButton'.tr,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color: Theme.of(context).extension<CustomColors>()?.blue,
                     fontSize: 16,
                   ),
                   maxLines: 1,
                 ),
-                const Icon(
+                Icon(
                   Icons.chevron_right_outlined,
-                  color: Colors.blue,
+                  color: Theme.of(context).extension<CustomColors>()?.blue,
                 )
               ],
             ),
@@ -266,14 +270,17 @@ class CollectionTabContent extends GetView<CollectionTabController> {
     );
   }
 
-  Widget _buildListItem(Collection collection) {
-    double width = Get.width - 40;
+  Widget _buildListItem(BuildContext context, Collection collection) {
+    double width = context.width - 40;
     return Card(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromRGBO(0, 9, 40, 0.1), width: 1),
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          width: 1,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(6.0)),
       ),
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -303,12 +310,16 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                           width: width,
                           height: width / 2,
                           child: Shimmer.fromColors(
-                            baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                            highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                            baseColor: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .shimmerBaseColor!,
+                            highlightColor: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv6!,
                             child: Container(
                               width: width,
                               height: width / 2,
-                              color: Colors.white,
+                              color: Theme.of(context).backgroundColor,
                             ),
                           ),
                         ),
@@ -340,7 +351,9 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                           collection.title,
                       joinZeroWidthSpace: true,
                       style: TextStyle(
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                         fontSize: 16,
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500

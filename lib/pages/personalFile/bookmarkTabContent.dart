@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/personalFile/bookmarkTabController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/services/personalFileService.dart';
@@ -26,7 +26,7 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
               if (controller.bookmarkList.isNotEmpty) {
                 return _buildContent();
               } else {
-                return _emptyWidget();
+                return _emptyWidget(context);
               }
             },
           );
@@ -39,16 +39,16 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
     );
   }
 
-  Widget _emptyWidget() {
+  Widget _emptyWidget(BuildContext context) {
     return Container(
-      color: homeScreenBackgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: Text(
           'emptyBookmark'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: readrBlack30,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
           ),
           textAlign: TextAlign.center,
         ),
@@ -90,7 +90,6 @@ class BookmarkTabContent extends GetView<BookmarkTabController> {
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
             child: Divider(
-              color: readrBlack10,
               thickness: 1,
               height: 1,
             ),

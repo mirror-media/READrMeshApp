@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/searchPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/collection/smallCollectionItem.dart';
 import 'package:readr/pages/search/allCollectionResultPage.dart';
@@ -21,15 +22,13 @@ class SearchPage extends GetView<SearchPageController> {
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           elevation: 0.5,
           leading: IconButton(
             padding: const EdgeInsets.only(left: 16),
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios_new_outlined,
-              color: readrBlack,
+              color: Theme.of(context).appBarTheme.foregroundColor,
             ),
             onPressed: () => Get.back(),
           ),
@@ -38,6 +37,7 @@ class SearchPage extends GetView<SearchPageController> {
           title: _searchBar(context),
           toolbarHeight: kToolbarHeight + 10,
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
         body: GetBuilder<SearchPageController>(
           builder: (controller) {
             if (controller.error != null) {
@@ -51,9 +51,9 @@ class SearchPage extends GetView<SearchPageController> {
                 child: CircularProgressIndicator.adaptive(),
               );
             } else if (controller.newsResultList.isNotEmpty) {
-              return _searchResult();
+              return _searchResult(context);
             } else if (controller.noResult) {
-              return _noResultWidget();
+              return _noResultWidget(context);
             }
             return _searchHistory(context);
           },
@@ -71,36 +71,40 @@ class SearchPage extends GetView<SearchPageController> {
         onSubmitted: (value) => controller.search(value),
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             CupertinoIcons.search,
             size: 22,
-            color: readrBlack30,
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
           ),
           contentPadding: const EdgeInsets.fromLTRB(5.5, 8, 12, 8),
           hintText: 'searchBarHintText'.tr,
-          hintStyle: const TextStyle(
-            color: readrBlack30,
-            fontSize: 14,
-          ),
+          hintStyle: Theme.of(context).textTheme.labelMedium,
           filled: true,
-          fillColor: const Color(0xffF6F6FB),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6.0)),
-            borderSide: BorderSide(color: Color(0xffF6F6FB)),
+          fillColor:
+              Theme.of(context).extension<CustomColors>()?.backgroundMultiLayer,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+            borderSide: BorderSide(
+                color: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .backgroundMultiLayer!),
           ),
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6.0)),
-            borderSide: BorderSide(color: Color(0xffF6F6FB)),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+            borderSide: BorderSide(
+                color: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .backgroundMultiLayer!),
           ),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6.0)),
-            borderSide: BorderSide(color: Color(0xffF6F6FB)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+            borderSide: BorderSide(
+                color: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .backgroundMultiLayer!),
           ),
         ),
-        style: const TextStyle(
-          color: readrBlack87,
-          fontSize: 14,
-        ),
+        style: Theme.of(context).textTheme.titleSmall,
         keyboardType: TextInputType.text,
       ),
     );
@@ -112,20 +116,14 @@ class SearchPage extends GetView<SearchPageController> {
         Obx(() {
           if (controller.searchHistoryList.isNotEmpty) {
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 2),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'searchHistory'.tr,
-                    style: TextStyle(
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                      fontSize: 18,
-                      color: readrBlack87,
-                      fontFamily: 'PingFang TC',
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   TextButton(
                     onPressed: () {
@@ -134,10 +132,11 @@ class SearchPage extends GetView<SearchPageController> {
                     },
                     child: Text(
                       'clearAllHistory'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
-                        color: Colors.blue,
+                        color:
+                            Theme.of(context).extension<CustomColors>()?.blue,
                       ),
                     ),
                   ),
@@ -161,9 +160,11 @@ class SearchPage extends GetView<SearchPageController> {
                 itemBuilder: (context, index, animation) => FadeTransition(
                   opacity: animation,
                   child: ListTile(
-                    tileColor: Colors.white,
-                    textColor: readrBlack87,
-                    iconColor: readrBlack30,
+                    tileColor: Theme.of(context).backgroundColor,
+                    textColor:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    iconColor:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     title: Text(
                       controller.searchHistoryList[index],
@@ -204,9 +205,9 @@ class SearchPage extends GetView<SearchPageController> {
         child: FadeTransition(
           opacity: animation,
           child: ListTile(
-            tileColor: Colors.white,
-            textColor: readrBlack87,
-            iconColor: readrBlack30,
+            tileColor: Theme.of(context).backgroundColor,
+            textColor: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            iconColor: Theme.of(context).extension<CustomColors>()?.primaryLv4,
             contentPadding: const EdgeInsets.symmetric(vertical: 10),
             title: Text(
               title,
@@ -223,27 +224,21 @@ class SearchPage extends GetView<SearchPageController> {
     controller.searchHistoryList.removeAt(index);
   }
 
-  Widget _noResultWidget() {
+  Widget _noResultWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
       child: ExtendedText.rich(
         TextSpan(
           text: 'noResultPrefix'.tr,
-          style: const TextStyle(
-            color: readrBlack50,
-          ),
+          style: Theme.of(context).textTheme.bodySmall,
           children: [
             TextSpan(
               text: controller.keyWord,
-              style: const TextStyle(
-                color: readrBlack87,
-              ),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             TextSpan(
               text: 'noResultSuffix'.tr,
-              style: const TextStyle(
-                color: readrBlack50,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
@@ -256,7 +251,7 @@ class SearchPage extends GetView<SearchPageController> {
     );
   }
 
-  Widget _searchResult() {
+  Widget _searchResult(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(0),
       children: [
@@ -267,20 +262,14 @@ class SearchPage extends GetView<SearchPageController> {
             }
 
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'allCollections'.tr,
-                    style: TextStyle(
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                      fontSize: 18,
-                      color: readrBlack87,
-                      fontFamily: 'PingFang TC',
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Obx(
                     () {
@@ -292,11 +281,7 @@ class SearchPage extends GetView<SearchPageController> {
                             Get.to(() => AllCollectionResultPage()),
                         child: Text(
                           'viewAll'.tr,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: readrBlack50,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       );
                     },
@@ -314,17 +299,11 @@ class SearchPage extends GetView<SearchPageController> {
             }
 
             return Container(
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
                 'allNews'.tr,
-                style: TextStyle(
-                  color: readrBlack87,
-                  fontSize: 18,
-                  fontWeight:
-                      GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                  fontFamily: 'PingFang TC',
-                ),
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             );
           },
@@ -374,11 +353,7 @@ class SearchPage extends GetView<SearchPageController> {
           }
           return const Padding(
             padding: EdgeInsets.only(top: 16, bottom: 20),
-            child: Divider(
-              color: readrBlack10,
-              thickness: 1,
-              height: 1,
-            ),
+            child: Divider(),
           );
         },
         itemCount: controller.newsResultList.length + 1,
@@ -409,14 +384,6 @@ class SearchPage extends GetView<SearchPageController> {
             itemBuilder: (context, index) {
               if (index == 4) {
                 return Card(
-                  color: Colors.white,
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: Color.fromRGBO(0, 9, 40, 0.1), width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                  ),
-                  clipBehavior: Clip.antiAlias,
                   child: Container(
                     width: 150,
                     padding: const EdgeInsets.fromLTRB(12, 31, 12, 16),
@@ -434,21 +401,15 @@ class SearchPage extends GetView<SearchPageController> {
                         ExtendedText.rich(
                           TextSpan(
                             text: 'viewAllCollectionResultPrefix'.tr,
-                            style: const TextStyle(
-                              color: readrBlack50,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                             children: [
                               TextSpan(
                                 text: controller.keyWord,
-                                style: const TextStyle(
-                                  color: readrBlack87,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               TextSpan(
                                 text: 'viewAllCollectionResultSuffix'.tr,
-                                style: const TextStyle(
-                                  color: readrBlack50,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -458,16 +419,15 @@ class SearchPage extends GetView<SearchPageController> {
                             fontWeight: FontWeight.w400,
                           ),
                           maxLines: 2,
-                          overflowWidget: const TextOverflowWidget(
+                          overflowWidget: TextOverflowWidget(
                             position: TextOverflowPosition.middle,
                             align: TextOverflowAlign.left,
                             child: Text(
                               '...',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: readrBlack87,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(fontSize: 12),
                             ),
                           ),
                         ),
@@ -478,18 +438,22 @@ class SearchPage extends GetView<SearchPageController> {
                             onPressed: () =>
                                 Get.to(() => AllCollectionResultPage()),
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  color: readrBlack87, width: 1),
-                              backgroundColor: Colors.white,
+                              side: BorderSide(
+                                  color: Theme.of(context)
+                                      .extension<CustomColors>()!
+                                      .primaryLv1!,
+                                  width: 1),
+                              backgroundColor:
+                                  Theme.of(context).backgroundColor,
                               padding: const EdgeInsets.symmetric(vertical: 8),
                             ),
                             child: Text(
                               'viewAll'.tr,
                               maxLines: 1,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: readrBlack87,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),

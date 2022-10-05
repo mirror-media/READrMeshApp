@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FollowSkeletonScreen extends StatelessWidget {
@@ -8,12 +8,12 @@ class FollowSkeletonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemBuilder: (context, index) => _listItem(),
-        separatorBuilder: (context, index) => const Divider(
-          color: readrBlack20,
+        itemBuilder: (context, index) => _listItem(context),
+        separatorBuilder: (context, index) => Divider(
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
           height: 1,
         ),
         itemCount: 3,
@@ -21,20 +21,22 @@ class FollowSkeletonScreen extends StatelessWidget {
     );
   }
 
-  Widget _listItem() {
+  Widget _listItem(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         children: [
           Shimmer.fromColors(
-            baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-            highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+            baseColor:
+                Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
+            highlightColor:
+                Theme.of(context).extension<CustomColors>()!.primaryLv6!,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100.0),
               child: Container(
                 height: 44,
                 width: 44,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
           ),
@@ -43,22 +45,28 @@ class FollowSkeletonScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                baseColor: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .shimmerBaseColor!,
+                highlightColor:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
                 child: Container(
                   height: 12,
                   width: 120,
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
               const SizedBox(height: 4),
               Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                baseColor: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .shimmerBaseColor!,
+                highlightColor:
+                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
                 child: Container(
                   height: 12,
                   width: 40,
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
             ],

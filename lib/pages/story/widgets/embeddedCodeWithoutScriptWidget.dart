@@ -33,8 +33,9 @@ class _EmbeddedCodeWithoutScriptWidgetState
     super.initState();
   }
 
-  _loadHtmlFromAssets(String embeddedCode, double width) {
-    String html = _getHtml(embeddedCode, width);
+  _loadHtmlFromAssets(
+      String embeddedCode, double width, String backgroundColor) {
+    String html = _getHtml(embeddedCode, width, backgroundColor);
     _webViewController.loadUrl(Uri.dataFromString(
       html,
       mimeType: 'text/html',
@@ -42,7 +43,7 @@ class _EmbeddedCodeWithoutScriptWidgetState
     ).toString());
   }
 
-  String _getHtml(String embeddedCode, double width) {
+  String _getHtml(String embeddedCode, double width, String backgroundColor) {
     double scale = 1.0001;
 
     return '''
@@ -59,7 +60,7 @@ class _EmbeddedCodeWithoutScriptWidgetState
     body {
       margin: 0;
       padding: 0; 
-      background: #F5F5F5;
+      background: $backgroundColor;
     }
     div.iframe-width {
       width: 100%;
@@ -99,6 +100,9 @@ class _EmbeddedCodeWithoutScriptWidgetState
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width - 40;
     var height = MediaQuery.of(context).size.height;
+    String backgroundColor = Theme.of(context).brightness == Brightness.light
+        ? '#FFFFFF'
+        : '#292A2D';
     super.build(context);
     return SizedBox(
       width: width,
@@ -111,7 +115,7 @@ class _EmbeddedCodeWithoutScriptWidgetState
       child: WebView(
         onWebViewCreated: (WebViewController webViewController) {
           _webViewController = webViewController;
-          _loadHtmlFromAssets(widget.embeddedCode, width);
+          _loadHtmlFromAssets(widget.embeddedCode, width, backgroundColor);
         },
         javascriptMode: JavascriptMode.unrestricted,
         gestureRecognizers: null,

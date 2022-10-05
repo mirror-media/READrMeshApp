@@ -4,6 +4,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
 
 class NewsStoryItem {
@@ -21,6 +22,7 @@ class NewsStoryItem {
   final String? content;
   final String? writer;
   final String controllerTag;
+  final List<NewsListItem> relatedStories;
 
   NewsStoryItem({
     required this.id,
@@ -37,6 +39,7 @@ class NewsStoryItem {
     this.content,
     this.writer,
     this.myPickCommentId,
+    required this.relatedStories,
   });
 
   factory NewsStoryItem.fromJson(Map<String, dynamic> json) {
@@ -51,6 +54,7 @@ class NewsStoryItem {
     bool fullContent = false;
     String? writer;
     String? myPickCommentId;
+    List<NewsListItem> relatedStories = [];
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -112,6 +116,13 @@ class NewsStoryItem {
       writer = json['writer'];
     }
 
+    if (BaseModel.checkJsonKeys(json, ['related']) &&
+        json['related'].isNotEmpty) {
+      for (var relateItem in json['related']) {
+        relatedStories.add(NewsListItem.fromJson(relateItem));
+      }
+    }
+
     List<Member> allPickedMember = [];
     allPickedMember.addAll(followingPickMembers);
     allPickedMember.addAll(otherPickMembers);
@@ -152,6 +163,7 @@ class NewsStoryItem {
       content: content,
       writer: writer,
       myPickCommentId: myPickCommentId,
+      relatedStories: relatedStories,
     );
   }
 }

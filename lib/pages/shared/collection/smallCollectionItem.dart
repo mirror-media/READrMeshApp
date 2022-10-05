@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -22,13 +22,6 @@ class SmallCollectionItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => Get.to(() => CollectionPage(collection)),
       child: Card(
-        color: Colors.white,
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(color: Color.fromRGBO(0, 9, 40, 0.1), width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        ),
-        clipBehavior: Clip.antiAlias,
         child: SizedBox(
           width: 150,
           child: Column(
@@ -51,12 +44,17 @@ class SmallCollectionItem extends StatelessWidget {
                         height: 75,
                         width: 150,
                         child: Shimmer.fromColors(
-                          baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                          highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                          baseColor: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv6!
+                              .withOpacity(0.15),
+                          highlightColor: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv6!,
                           child: Container(
                             height: 75,
                             width: 150,
-                            color: Colors.white,
+                            color: Theme.of(context).backgroundColor,
                           ),
                         ),
                       ),
@@ -91,11 +89,10 @@ class SmallCollectionItem extends StatelessWidget {
                       maxLines: 1,
                       joinZeroWidthSpace: true,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: readrBlack50,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12),
                     );
                   }),
                 ),
@@ -112,12 +109,10 @@ class SmallCollectionItem extends StatelessWidget {
                         collection.title,
                     joinZeroWidthSpace: true,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: readrBlack87,
-                      fontWeight:
-                          GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontSize: 14),
                     maxLines: 2,
                   ),
                 ),
@@ -134,8 +129,10 @@ class SmallCollectionItem extends StatelessWidget {
                     if (pickCountData <= 0) {
                       return Text(
                         'noPick'.tr,
-                        style:
-                            const TextStyle(fontSize: 13, color: readrBlack50),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(fontSize: 13),
                       );
                     }
                     return RichText(
@@ -143,30 +140,26 @@ class SmallCollectionItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
                         text: pickCountData.toString(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: readrBlack,
-                          fontWeight: GetPlatform.isIOS
-                              ? FontWeight.w500
-                              : FontWeight.w600,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontSize: 13),
                         children: [
                           TextSpan(
                             text: 'pickCount'.tr,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: readrBlack50,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(fontSize: 13),
                           ),
                           if (pickCountData > 1 &&
                               Get.locale?.languageCode == 'en')
-                            const TextSpan(
+                            TextSpan(
                               text: 's',
-                              style: TextStyle(
-                                color: readrBlack50,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(fontSize: 13),
                             ),
                         ],
                       ),

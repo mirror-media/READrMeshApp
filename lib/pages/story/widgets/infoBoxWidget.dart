@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class InfoBoxWidget extends StatelessWidget {
   final String title;
@@ -13,26 +13,28 @@ class InfoBoxWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    String textColor = Theme.of(context).brightness == Brightness.light
+        ? '#DE000928'
+        : '#F6F6FB ';
     return Container(
-      color: const Color.fromRGBO(246, 246, 251, 1),
+      color: Theme.of(context).scaffoldBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 32),
       margin: const EdgeInsets.symmetric(vertical: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: const Color.fromRGBO(4, 41, 94, 1),
+            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             padding: const EdgeInsets.only(left: 8),
             child: Container(
-              color: const Color.fromRGBO(246, 246, 251, 1),
+              color: Theme.of(context).scaffoldBackgroundColor,
               padding: const EdgeInsets.only(left: 24),
               child: Text(
                 title,
-                style: TextStyle(
-                  fontSize: textSize,
-                  color: readrBlack,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontSize: textSize),
               ),
             ),
           ),
@@ -44,8 +46,8 @@ class InfoBoxWidget extends StatelessWidget {
               customStylesBuilder: (element) {
                 if (element.localName == 'a') {
                   return {
-                    'text-decoration-color': '#ebf02c',
-                    'color': 'black',
+                    'text-decoration-color': textColor,
+                    'color': textColor,
                     'text-decoration-thickness': '100%',
                   };
                 } else if (element.localName == 'h1') {
@@ -62,7 +64,7 @@ class InfoBoxWidget extends StatelessWidget {
                   };
                 } else if (element.localName == 'strong') {
                   return {
-                    'color': 'black',
+                    'color': textColor,
                     'font-weight': '700',
                   };
                 } else if (element.localName == 'ul') {
@@ -75,7 +77,7 @@ class InfoBoxWidget extends StatelessWidget {
               textStyle: TextStyle(
                 fontSize: textSize,
                 height: 1.8,
-                //color: color,
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
               ),
             ),
           ),

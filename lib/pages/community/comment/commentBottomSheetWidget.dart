@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
 import 'package:readr/controller/comment/commentItemController.dart';
 import 'package:readr/controller/community/communityPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
 import 'package:readr/pages/shared/comment/commentItem.dart';
@@ -30,12 +30,12 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
       ),
       child: SafeArea(
         top: false,
@@ -46,10 +46,11 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
               onTap: () => Navigator.pop(context),
               child: Container(
                 height: 48,
-                color: Colors.white,
-                child: const Icon(
+                color: Theme.of(context).backgroundColor,
+                child: Icon(
                   Icons.expand_more_outlined,
-                  color: readrBlack30,
+                  color:
+                      Theme.of(context).extension<CustomColors>()?.primaryLv4,
                   size: 32,
                 ),
               ),
@@ -107,7 +108,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: SafeArea(
         top: false,
         child: Column(
@@ -132,21 +133,14 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                       );
                     },
                     separatorBuilder: (context, index) => const Divider(
-                      color: readrBlack10,
                       indent: 20,
                       endIndent: 20,
-                      thickness: 0.5,
-                      height: 0.5,
                     ),
                   ),
                 ),
               ),
             ),
-            const Divider(
-              color: readrBlack10,
-              thickness: 0.5,
-              height: 0.5,
-            ),
+            const Divider(),
             Padding(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),

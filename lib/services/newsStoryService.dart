@@ -172,6 +172,150 @@ class NewsStoryService implements NewsStoryRepos {
             }
           )
         }
+        related(
+          where:{
+            is_active:{
+              equals: true
+            }
+          }
+        ){
+          id
+          title
+          url
+          source{
+            id
+            title
+          }
+          full_content
+          full_screen_ad
+          paywall
+          published_date
+          createdAt
+          og_image
+          followingPicks: pick(
+            where:{
+              member:{
+                id:{
+                  in: \$followingMembers
+                }
+              }
+              state:{
+                equals: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          otherPicks:pick(
+            where:{
+              member:{
+                AND:[
+                  {
+                    id:{
+                      notIn: \$followingMembers
+                      not:{
+                        equals: \$myId
+                      }
+                    }
+                  }
+                  {
+                    id:{
+                      notIn: \$blockAndBlockedIds
+                    }
+                  }
+                  {
+                    is_active:{
+                      equals: true
+                    }
+                  }
+                ]
+              }
+              state:{
+                in: "public"
+              }
+              kind:{
+                equals: "read"
+              }
+              is_active:{
+                equals: true
+              }
+            }
+            orderBy:{
+              picked_date: desc
+            }
+            take: 4
+          ){
+            member{
+              id
+              nickname
+              avatar
+              customId
+              avatar_image{
+                id
+                resized{
+                  original
+                }
+              }
+            }
+          }
+          pickCount(
+            where:{
+              state:{
+                in: "public"
+              }
+              is_active:{
+                equals: true
+              }
+              member:{
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+                is_active:{
+                  equals: true
+                }
+              }
+            }
+          )
+          commentCount(
+            where:{
+              state:{
+                in: "public"
+              }
+              is_active:{
+                equals: true
+              }
+              member:{
+                id:{
+                  notIn: \$blockAndBlockedIds
+                }
+                is_active:{
+                  equals: true
+                }
+              }
+            }
+          )
+          }
       }
     }
     ''';

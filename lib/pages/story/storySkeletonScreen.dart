@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,7 +12,7 @@ class StorySkeletonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthWithPadding = MediaQuery.of(context).size.width - 40;
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         children: [
           StoryAppBar(news),
@@ -21,12 +22,15 @@ class StorySkeletonScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 Shimmer.fromColors(
-                  baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                  highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                  baseColor: Theme.of(context)
+                      .extension<CustomColors>()!
+                      .shimmerBaseColor!,
+                  highlightColor:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv7!,
                   child: Container(
                     height: 187.5,
                     width: double.infinity,
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -34,36 +38,44 @@ class StorySkeletonScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Shimmer.fromColors(
-                      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                      baseColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .shimmerBaseColor!,
+                      highlightColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv7!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.0),
                         child: Container(
                           height: 32,
                           margin: const EdgeInsets.symmetric(horizontal: 20),
-                          color: Colors.white,
+                          color: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     Shimmer.fromColors(
-                      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                      baseColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .shimmerBaseColor!,
+                      highlightColor: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv7!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.0),
                         child: Container(
                           height: 32,
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           width: widthWithPadding * 0.4,
-                          color: Colors.white,
+                          color: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ),
                   ],
                 ),
-                _lineItem(widthWithPadding * 0.8),
-                _lineItem(widthWithPadding * 0.6),
-                _lineItem(widthWithPadding * 0.6),
+                _lineItem(context, widthWithPadding * 0.8),
+                _lineItem(context, widthWithPadding * 0.6),
+                _lineItem(context, widthWithPadding * 0.6),
               ],
             ),
           )
@@ -72,10 +84,10 @@ class StorySkeletonScreen extends StatelessWidget {
     );
   }
 
-  Widget _lineItem(double lastLineWidth) {
+  Widget _lineItem(BuildContext context, double lastLineWidth) {
     return Shimmer.fromColors(
-      baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-      highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+      baseColor: Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
+      highlightColor: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
       child: Container(
         margin: const EdgeInsets.fromLTRB(20.0, 32.0, 20.0, 0.0),
         child: Column(
@@ -85,7 +97,7 @@ class StorySkeletonScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               child: Container(
                 height: 12,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
             Container(
@@ -96,7 +108,7 @@ class StorySkeletonScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               child: Container(
                 height: 12,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
             Container(
@@ -107,7 +119,7 @@ class StorySkeletonScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               child: Container(
                 height: 12,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
             Container(
@@ -118,7 +130,7 @@ class StorySkeletonScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.0),
               child: Container(
                 height: 12,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 width: lastLineWidth,
               ),
             ),

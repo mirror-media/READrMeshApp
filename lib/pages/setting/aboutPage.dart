@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AboutPage extends StatefulWidget {
@@ -18,7 +17,6 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildBar(context),
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: _buildBody(context),
       ),
@@ -27,16 +25,13 @@ class _AboutPageState extends State<AboutPage> {
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      shadowColor: Colors.white70,
       leading: IconButton(
         icon: Icon(
           Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-          color: readrBlack,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      backgroundColor: appBarColor,
     );
   }
 
@@ -45,7 +40,6 @@ class _AboutPageState extends State<AboutPage> {
       children: [
         WebView(
           initialUrl: 'https://www.readr.tw/about',
-          backgroundColor: Colors.white,
           javascriptMode: JavascriptMode.unrestricted,
           gestureNavigationEnabled: true,
           onWebViewCreated: (webViewController) =>
@@ -69,7 +63,7 @@ class _AboutPageState extends State<AboutPage> {
         ),
         _isLoading
             ? Container(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
                 child: const Center(
                   child: CircularProgressIndicator.adaptive(),
                 ),

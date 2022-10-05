@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 
@@ -22,7 +21,6 @@ class FolderCollectionWidget extends GetView<CollectionPageController> {
         itemBuilder: (context, index) =>
             NewsListItemWidget(controller.collectionPicks[index].newsListItem!),
         separatorBuilder: (context, index) => const Divider(
-          color: readrBlack10,
           thickness: 1,
           height: 36,
         ),

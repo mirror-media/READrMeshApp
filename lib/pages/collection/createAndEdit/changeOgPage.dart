@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 
 class ChangeOgPage extends StatelessWidget {
   final List<String> imageUrlList;
@@ -15,26 +15,24 @@ class ChangeOgPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         elevation: 0.5,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: GetPlatform.isIOS,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: readrBlack87,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
           onPressed: () => Get.back(),
         ),
         title: Text(
           'changeCollectionOg'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 18,
-            color: readrBlack,
+            color: Theme.of(context).appBarTheme.foregroundColor,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -52,9 +50,9 @@ class ChangeOgPage extends StatelessWidget {
           if (index == 0) {
             return InkWell(
               onTap: () async => await _showImageBottomSheet(context),
-              hoverColor: readrBlack50,
+              hoverColor: meshBlack50,
               child: Container(
-                color: readrBlack30,
+                color: meshBlack30,
                 child: const Icon(
                   CupertinoIcons.camera,
                   size: 26,
@@ -68,16 +66,16 @@ class ChangeOgPage extends StatelessWidget {
               imageUrl: imageUrlList[index - 1],
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: readrBlack66,
+                color: meshBlack66,
                 child: const Icon(
                   Icons.image_outlined,
                   color: Colors.white,
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: readrBlack66,
+                color: meshBlack66,
                 child: const Icon(
-                  Icons.image_outlined,
+                  Icons.error_outline,
                   color: Colors.white,
                 ),
               ),
@@ -136,7 +134,7 @@ class ChangeOgPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         topRadius: const Radius.circular(24),
         builder: (context) => Material(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           child: SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -146,33 +144,39 @@ class ChangeOgPage extends StatelessWidget {
                   child: Container(
                     height: 4,
                     width: 48,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).backgroundColor,
                     ),
                     margin: const EdgeInsets.symmetric(vertical: 16),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: readrBlack20,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv5,
                       ),
                     ),
                   ),
                 ),
                 TextButton.icon(
                   onPressed: () => Navigator.of(context).pop('camera'),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.photo_camera_outlined,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                     size: 18,
                   ),
                   label: Text(
                     'openCamera'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -184,15 +188,18 @@ class ChangeOgPage extends StatelessWidget {
                 ),
                 TextButton.icon(
                   onPressed: () => Navigator.of(context).pop('photo'),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.photo_library_outlined,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                     size: 18,
                   ),
                   label: Text(
                     'choosePhoto'.tr,
-                    style: const TextStyle(
-                      color: readrBlack87,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()
+                          ?.primaryLv1,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -221,12 +228,15 @@ class ChangeOgPage extends StatelessWidget {
             uiSettings: [
               AndroidUiSettings(
                 toolbarTitle: 'crop'.tr,
-                toolbarColor: Colors.white,
-                toolbarWidgetColor: readrBlack87,
-                statusBarColor: readrBlack87,
+                toolbarColor: Theme.of(context).backgroundColor,
+                toolbarWidgetColor:
+                    Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                statusBarColor:
+                    Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 initAspectRatio: CropAspectRatioPreset.original,
-                backgroundColor: Colors.white,
-                activeControlsWidgetColor: Colors.blue,
+                backgroundColor: Theme.of(context).backgroundColor,
+                activeControlsWidgetColor:
+                    Theme.of(context).extension<CustomColors>()?.blue,
                 lockAspectRatio: false,
               ),
               IOSUiSettings(

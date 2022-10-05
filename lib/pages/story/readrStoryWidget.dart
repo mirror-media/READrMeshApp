@@ -5,16 +5,19 @@ import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/paragraph.dart';
 import 'package:readr/models/people.dart';
 import 'package:readr/models/story.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/shared/bottomCard/bottomCardWidget.dart';
+import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/story/storyAppBar.dart';
 import 'package:readr/pages/story/storySkeletonScreen.dart';
 import 'package:readr/pages/story/widgets/imageViewerWidget.dart';
 import 'package:readr/pages/story/widgets/mNewsVideoPlayer.dart';
+import 'package:readr/pages/story/widgets/relatedStoriesWidget.dart';
 import 'package:readr/pages/story/widgets/youtubePlayer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,8 +39,6 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-
     return GetBuilder<StoryPageController>(
       tag: news.id,
       builder: (controller) {
@@ -59,7 +60,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                 children: [
                   StoryAppBar(news),
                   Expanded(
-                    child: _storyContent(width, story),
+                    child: _storyContent(context, story),
                   ),
                 ],
               ),
@@ -82,27 +83,43 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _storyContent(double width, Story story) {
+  Widget _storyContent(BuildContext context, Story story) {
     List contentList = [
-      _buildHeroWidget(width, story),
+      _buildHeroWidget(context, story),
       const SizedBox(height: 24),
-      _buildCategory(story),
+      _buildCategory(context, story),
       const SizedBox(height: 4),
-      _buildStoryTitle(story.name!),
+      _buildStoryTitle(context, story.name!),
       const SizedBox(height: 12),
-      _buildPublishedDate(story),
+      _buildPublishedDate(context, story),
       const SizedBox(height: 4),
-      _buildAuthors(story),
+      _buildAuthors(context, story),
       const SizedBox(height: 24),
-      _buildSummary(story),
-      _buildContent(story),
+      _buildSummary(context, story),
+      _buildContent(context, story),
       const SizedBox(height: 32),
-      _buildAnnotationBlock(story),
+      _buildAnnotationBlock(context, story),
       const SizedBox(height: 48),
-      _buildCitation(story),
+      _buildCitation(context, story),
       const SizedBox(height: 32),
-      _buildContact(),
-      const SizedBox(height: 160),
+      NativeAdWidget(
+        adUnitIdKey: 'READr_AT3',
+        factoryId: 'outline',
+        adHeight: context.width * 0.75,
+        decoration: BoxDecoration(
+          color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          border: Border.all(
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          ),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+        keepAlive: true,
+      ),
+      const SizedBox(height: 32),
+      RelatedStoriesWidget(controller.newsStoryItem.relatedStories),
+      _buildContact(context),
     ];
     return ScrollablePositionedList.builder(
       physics: const ClampingScrollPhysics(),
@@ -113,7 +130,8 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildHeroWidget(double width, Story story) {
+  Widget _buildHeroWidget(BuildContext context, Story story) {
+    double width = context.width;
     double height = width / 2;
 
     return Column(
@@ -146,7 +164,8 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             alignment: Alignment.centerLeft,
             child: Text(
               story.heroCaption!,
-              style: const TextStyle(fontSize: 13, color: readrBlack50),
+              style:
+                  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
             ),
           ),
       ],
@@ -166,13 +185,13 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildCategory(Story story) {
+  Widget _buildCategory(BuildContext context, Story story) {
     if (story.categoryList!.isEmpty) return Container();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       height: 25,
-      width: Get.width - 40,
+      width: context.width - 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
@@ -180,11 +199,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         itemBuilder: (BuildContext context, int index) {
           return Text(
             story.categoryList![index].name,
-            style: const TextStyle(
-              fontSize: 14,
-              color: readrBlack50,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           );
         },
         itemCount: story.categoryList!.length,
@@ -194,9 +209,9 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             height: 4,
             margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 5.0),
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: readrBlack20,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
             ),
           );
         },
@@ -204,36 +219,28 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildStoryTitle(String title) {
+  Widget _buildStoryTitle(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Text(
         title,
-        style: const TextStyle(
-          fontFamily: 'PingFang TC',
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.headlineLarge,
       ),
     );
   }
 
-  Widget _buildPublishedDate(Story story) {
+  Widget _buildPublishedDate(BuildContext context, Story story) {
     DateTimeFormat dateTimeFormat = DateTimeFormat();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
         '${'updateTime'.tr}${dateTimeFormat.changeStringToDisplayString(story.publishTime!, 'yyyy-MM-ddTHH:mm:ssZ', 'yyyy/MM/dd HH:mm')}',
-        style: const TextStyle(
-          color: readrBlack50,
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ),
     );
   }
 
-  Widget _buildAuthors(Story story) {
+  Widget _buildAuthors(BuildContext context, Story story) {
     List<Widget> authorItems = List.empty(growable: true);
     List<People> peopleList = [];
 
@@ -261,7 +268,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       peopleList.addAll(story.dataAnalysts!);
     }
 
-    authorItems.addAll(_addAuthorItems(peopleList));
+    authorItems.addAll(_addAuthorItems(context, peopleList));
 
     if (!_isNullOrEmpty(story.otherByline)) {
       if (authorItems.isNotEmpty) {
@@ -270,20 +277,16 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           height: 2,
           margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: readrBlack20,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
           ),
         ));
       }
       authorItems.add(Text(
         story.otherByline!,
         softWrap: true,
-        style: const TextStyle(
-          fontSize: 13,
-          color: readrBlack50,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ));
     }
 
@@ -293,18 +296,16 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-      width: Get.width - 40,
+      width: context.width - 40,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'journalist'.tr,
-            style: const TextStyle(
-              fontSize: 13,
-              color: readrBlack50,
-              fontWeight: FontWeight.w400,
-              height: 1.39,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontSize: 13,
+                  height: 1.39,
+                ),
           ),
           Expanded(
             child: Wrap(
@@ -317,17 +318,13 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  List<Widget> _addAuthorItems(List<People> peopleList) {
+  List<Widget> _addAuthorItems(BuildContext context, List<People> peopleList) {
     List<Widget> authorNameList = [];
 
     for (int i = 0; i < peopleList.length; i++) {
       authorNameList.add(Text(
         peopleList[i].name,
-        style: const TextStyle(
-          fontSize: 13,
-          color: readrBlack50,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ));
       if (i != peopleList.length - 1) {
         authorNameList.add(Container(
@@ -335,9 +332,9 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           height: 2,
           margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 0.0),
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: readrBlack20,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
           ),
         ));
       }
@@ -345,7 +342,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return authorNameList;
   }
 
-  Widget _buildSummary(Story story) {
+  Widget _buildSummary(BuildContext context, Story story) {
     List<Paragraph> articles = story.summaryApiData!;
     bool noData = false;
     if (articles.isNotEmpty) {
@@ -393,14 +390,14 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       return Container(
         padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 20.0),
         margin: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 32.0),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: readrBlack10,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               width: 1,
             ),
             bottom: BorderSide(
-              color: readrBlack10,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               width: 1,
             ),
           ),
@@ -415,8 +412,12 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return Container();
   }
 
-  Widget _buildContent(Story story) {
+  Widget _buildContent(BuildContext context, Story story) {
     List<Paragraph> storyContents = story.contentApiData!;
+    const Map<int, String> adUnitIdMap = {
+      0: 'READr_AT1',
+      4: 'READr_AT2',
+    };
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -429,8 +430,45 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           if (paragraph.contents != null &&
               paragraph.contents!.isNotEmpty &&
               !_isNullOrEmpty(paragraph.contents![0].data)) {
+            if (index == 0 || index == 4) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32.0),
+                    child: controller.paragraphFormat.parseTheParagraph(
+                      paragraph,
+                      context,
+                      _textSize,
+                      showAnnotations: true,
+                      annotationLength: story.contentAnnotationData!.length,
+                      itemScrollController: _itemScrollController,
+                    ),
+                  ),
+                  NativeAdWidget(
+                    adUnitIdKey: adUnitIdMap[index]!,
+                    factoryId: 'outline',
+                    adHeight: context.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10.0)),
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv6!,
+                      ),
+                    ),
+                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                  ),
+                ],
+              );
+            }
             return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.only(bottom: 32.0),
               child: controller.paragraphFormat.parseTheParagraph(
                 paragraph,
                 context,
@@ -448,8 +486,11 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     );
   }
 
-  Widget _buildAnnotationBlock(Story story) {
-    double width = Get.width;
+  Widget _buildAnnotationBlock(BuildContext context, Story story) {
+    double width = context.width;
+    String textColor = Theme.of(context).brightness == Brightness.light
+        ? '#DE000928'
+        : '#F6F6FB ';
     if (story.contentAnnotationData != null) {
       List<String> annotationDataList = story.contentAnnotationData!;
 
@@ -471,7 +512,9 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                     (index + 1).toString(),
                     textAlign: TextAlign.end,
                     style: TextStyle(
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                       fontSize: _textSize - 4,
                       height: 1.5,
                     ),
@@ -486,8 +529,8 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                       customStylesBuilder: (element) {
                         if (element.localName == 'a') {
                           return {
-                            'text-decoration-color': 'black',
-                            'color': 'black',
+                            'text-decoration-color': textColor,
+                            'color': textColor,
                             'text-decoration-thickness': '100%',
                           };
                         } else if (element.localName == 'h1') {
@@ -508,7 +551,9 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                       textStyle: TextStyle(
                         fontSize: _textSize - 4,
                         height: 1.5,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                     ),
                   ),
@@ -520,7 +565,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return Container();
   }
 
-  Widget _buildCitation(Story story) {
+  Widget _buildCitation(BuildContext context, Story story) {
     List<Paragraph> articles = story.citationApiData!;
     if (articles.isNotEmpty) {
       List<Widget> articleWidgets = List.empty(growable: true);
@@ -528,10 +573,10 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
       if (articles[0].contents!.isNotEmpty &&
           !_isNullOrEmpty(articles[0].contents![0].data)) {
         articleWidgets.add(Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
                 width: 8,
               ),
             ),
@@ -539,11 +584,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           padding: const EdgeInsets.only(left: 24.0),
           child: Text(
             'referenceData'.tr,
-            style: TextStyle(
-              color: readrBlack87,
-              fontSize: 18,
-              fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ));
         articleWidgets.add(
@@ -578,7 +619,6 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                           padding:
                               EdgeInsets.symmetric(horizontal: 32, vertical: 2),
                           child: Divider(
-                            color: Color.fromRGBO(0, 9, 40, 0.1),
                             thickness: 1,
                           ),
                         ),
@@ -617,7 +657,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         );
 
         return Container(
-          color: const Color.fromRGBO(0, 9, 40, 0.05),
+          color: Theme.of(context).scaffoldBackgroundColor,
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,84 +670,95 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
     return Container();
   }
 
-  Widget _buildContact() {
-    return Column(
-      children: [
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'readrContactEmail'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
-            ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri params = Uri(
-                      scheme: 'mailto',
-                      path: 'readr@readr.tw',
-                    );
+  Widget _buildContact(BuildContext context) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'readrContactEmail'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 13),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri params = Uri(
+                        scheme: 'mailto',
+                        path: 'readr@readr.tw',
+                      );
 
-                    if (await canLaunchUrl(params)) {
-                      await launchUrl(params);
-                    } else {
-                      print('Could not launch ${params.toString()}');
-                    }
-                  },
-                  child: const Text(
-                    'readr@readr.tw',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+                      if (await canLaunchUrl(params)) {
+                        await launchUrl(params);
+                      } else {
+                        print('Could not launch ${params.toString()}');
+                      }
+                    },
+                    child: Text(
+                      'readr@readr.tw',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'readrCustomerServiceNumber'.tr,
-            style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-              color: readrBlack87,
+              ],
             ),
-            children: [
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: () async {
-                    String url = 'tel://0266333890';
-                    if (await canLaunchUrlString(url)) {
-                      await launchUrlString(url);
-                    } else {
-                      print('Could not launch $url');
-                    }
-                  },
-                  child: const Text(
-                    '（02）6633-3890',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                      color: readrBlack87,
-                      decoration: TextDecoration.underline,
-                      decorationColor: readrBlack50,
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'readrCustomerServiceNumber'.tr,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 13),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () async {
+                      String url = 'tel://0266333890';
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url);
+                      } else {
+                        print('Could not launch $url');
+                      }
+                    },
+                    child: Text(
+                      '（02）6633-3890',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv1,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context)
+                            .extension<CustomColors>()
+                            ?.primaryLv3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

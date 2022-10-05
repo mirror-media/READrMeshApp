@@ -5,6 +5,12 @@ import 'package:shimmer/shimmer.dart';
 class HomeSkeletonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Color baseColor = Theme.of(context).brightness == Brightness.light
+        ? meshBlack10.withOpacity(0.15)
+        : meshGray20.withOpacity(0.25);
+    Color highlightColor = Theme.of(context).brightness == Brightness.light
+        ? meshBlack10
+        : meshGray20;
     return ListView.separated(
       padding: const EdgeInsets.only(top: 0),
       itemCount: 10,
@@ -14,17 +20,17 @@ class HomeSkeletonScreen extends StatelessWidget {
         height: 8,
         width: double.infinity,
         child: Container(
-          color: homeScreenBackgroundColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
       ),
       itemBuilder: (context, index) {
         return Container(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           child: Column(
             children: [
               Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                baseColor: baseColor,
+                highlightColor: highlightColor,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(2.0),
                   child: Container(
@@ -33,22 +39,22 @@ class HomeSkeletonScreen extends StatelessWidget {
                       horizontal: 20,
                     ),
                     height: 12,
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                   ),
                 ),
               ),
               Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                baseColor: baseColor,
+                highlightColor: highlightColor,
                 child: Container(
                   height: MediaQuery.of(context).size.width / 2,
                   width: double.infinity,
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                 ),
               ),
               Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+                baseColor: baseColor,
+                highlightColor: highlightColor,
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(20, 12, 20, 16),
                   child: Column(
@@ -58,7 +64,7 @@ class HomeSkeletonScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(2.0),
                         child: Container(
                           height: 32,
-                          color: Colors.white,
+                          color: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ],

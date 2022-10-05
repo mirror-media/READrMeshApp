@@ -50,7 +50,7 @@ class CollectionPage extends GetView<CollectionPageController> {
       builder: (controller) {
         if (controller.isError) {
           return Scaffold(
-            appBar: _buildBar(),
+            appBar: _buildBar(context),
             body: ErrorPage(
               error: controller.error,
               onPressed: () => controller.fetchCollectionData(),
@@ -68,7 +68,7 @@ class CollectionPage extends GetView<CollectionPageController> {
                   children: [
                     CollectionAppBar(collection),
                     Expanded(
-                      child: _buildBody(),
+                      child: _buildBody(context),
                     ),
                     SizedBox(
                       height: context.height * 0.12,
@@ -90,7 +90,7 @@ class CollectionPage extends GetView<CollectionPageController> {
         }
 
         return Scaffold(
-          appBar: _buildBar(),
+          appBar: _buildBar(context),
           body: const Center(
             child: CircularProgressIndicator.adaptive(),
           ),
@@ -99,30 +99,28 @@ class CollectionPage extends GetView<CollectionPageController> {
     );
   }
 
-  PreferredSizeWidget _buildBar() {
+  PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
       centerTitle: GetPlatform.isIOS,
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
-      elevation: 0,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: readrBlack,
+          color: Theme.of(context).appBarTheme.foregroundColor,
         ),
         onPressed: () => Get.back(),
       ),
       title: Text(
         'collection'.tr,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
-          color: readrBlack,
+          color: Theme.of(context).appBarTheme.foregroundColor,
         ),
       ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Obx(
       () {
         if (controller.collectionPicks.isEmpty) {
@@ -134,11 +132,11 @@ class CollectionPage extends GetView<CollectionPageController> {
         switch (controller.collectionFormat.value) {
           case CollectionFormat.folder:
             listWidget = FolderCollectionWidget(collection);
-            background = Colors.white;
+            background = Theme.of(context).backgroundColor;
             break;
           case CollectionFormat.timeline:
             listWidget = TimelineCollectionWidget(collection);
-            background = meshGray;
+            background = Colors.transparent;
             break;
         }
 
@@ -150,7 +148,6 @@ class CollectionPage extends GetView<CollectionPageController> {
               CollectionHeader(collection),
               if (controller.collectionFormat.value == CollectionFormat.folder)
                 const Divider(
-                  color: readrBlack10,
                   thickness: 1,
                   height: 1,
                 ),

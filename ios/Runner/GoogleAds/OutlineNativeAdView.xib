@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="GADNativeAdView">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="headline" text="Headline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="np3-X5-HsF">
+                    <rect key="frame" x="0.0" y="256.66666666666669" width="390" height="21.666666666666686"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                    <color key="textColor" name="meshColor87"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="advertiser" text="Advertiser" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bg-xJ-ecz">
+                    <rect key="frame" x="41" y="236.33333333333334" width="349" height="14.333333333333343"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                    <color key="textColor" name="meshColor50"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-WL-2KW" customClass="AdTagLabel" customModule="Runner" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="234.33333333333334" width="33" height="18.333333333333343"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="33" id="IAl-W5-BTv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" name="meshColor50"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingRight">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="labelBorderColor">
+                            <color key="value" name="meshColor30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="labelBorderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lie-F1-Lgc" customClass="GADMediaView">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="222.33333333333334"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Lie-F1-Lgc" secondAttribute="height" multiplier="1:0.57" id="0pL-Ix-xBx"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="body" text="body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="deK-LN-xHP">
+                    <rect key="frame" x="0.0" y="282.33333333333331" width="390" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" name="meshColor50"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="deK-LN-xHP" secondAttribute="trailing" id="0Zd-k8-EoQ"/>
+                <constraint firstItem="Lie-F1-Lgc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5st-dK-1kv"/>
+                <constraint firstItem="Lie-F1-Lgc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8rf-QY-Etk"/>
+                <constraint firstItem="np3-X5-HsF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9Fg-zh-3Ty"/>
+                <constraint firstItem="uTW-WL-2KW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9gf-81-HqS"/>
+                <constraint firstAttribute="trailing" secondItem="5Bg-xJ-ecz" secondAttribute="trailing" id="Eae-eK-nGF"/>
+                <constraint firstItem="np3-X5-HsF" firstAttribute="top" secondItem="uTW-WL-2KW" secondAttribute="bottom" constant="4" id="Grs-A7-VIy"/>
+                <constraint firstItem="uTW-WL-2KW" firstAttribute="bottom" secondItem="5Bg-xJ-ecz" secondAttribute="bottom" constant="2" id="HYN-96-Mm3"/>
+                <constraint firstItem="5Bg-xJ-ecz" firstAttribute="top" secondItem="uTW-WL-2KW" secondAttribute="top" constant="2" id="NGH-oE-c0X"/>
+                <constraint firstItem="deK-LN-xHP" firstAttribute="top" secondItem="np3-X5-HsF" secondAttribute="bottom" constant="4" id="Ybv-aJ-eBN"/>
+                <constraint firstItem="deK-LN-xHP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ygc-Tf-xO3"/>
+                <constraint firstItem="uTW-WL-2KW" firstAttribute="top" secondItem="Lie-F1-Lgc" secondAttribute="bottom" constant="12" id="dlZ-Ia-8uT"/>
+                <constraint firstItem="Lie-F1-Lgc" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="j7j-5d-qBM"/>
+                <constraint firstItem="5Bg-xJ-ecz" firstAttribute="leading" secondItem="uTW-WL-2KW" secondAttribute="trailing" constant="8" id="kkC-HH-uBs"/>
+                <constraint firstItem="5Bg-xJ-ecz" firstAttribute="centerY" secondItem="uTW-WL-2KW" secondAttribute="centerY" id="lgv-Ox-39a"/>
+                <constraint firstAttribute="trailing" secondItem="np3-X5-HsF" secondAttribute="trailing" id="r3l-Gx-REX"/>
+            </constraints>
+            <connections>
+                <outlet property="advertiserView" destination="5Bg-xJ-ecz" id="GAD-Out-Avt"/>
+                <outlet property="bodyView" destination="deK-LN-xHP" id="GAD-Out-Bdy"/>
+                <outlet property="headlineView" destination="np3-X5-HsF" id="GAD-Out-Hdl"/>
+                <outlet property="mediaView" destination="Lie-F1-Lgc" id="GAD-Out-Med"/>
+            </connections>
+            <point key="canvasLocation" x="-11" y="21"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="uTW-WL-2KW">
+            <size key="intrinsicContentSize" width="17" height="14.333333333333334"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="meshColor30">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="meshColor50">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="meshColor87">
+            <color red="0.0" green="0.035294117647058823" blue="0.15686274509803921" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

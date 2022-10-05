@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/shared/pick/pickButton.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
@@ -39,7 +38,8 @@ class PickBar extends StatelessWidget {
         if (pickCountData <= 0) {
           bottom.add(Text(
             'noPick'.tr,
-            style: const TextStyle(fontSize: 13, color: readrBlack50),
+            style:
+                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
           ));
         } else {
           bottom.add(ProfilePhotoStack(
@@ -53,29 +53,25 @@ class PickBar extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
               text: pickCountData.toString(),
-              style: TextStyle(
-                fontSize: 13,
-                color: readrBlack,
-                fontWeight:
-                    GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 13),
               children: [
                 TextSpan(
                   text: 'pickCount'.tr,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: readrBlack50,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 13),
                 ),
                 if (pickCountData > 1 && Get.locale?.languageCode == 'en')
-                  const TextSpan(
+                  TextSpan(
                     text: 's',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: readrBlack50,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontSize: 13),
                   ),
               ],
             ),

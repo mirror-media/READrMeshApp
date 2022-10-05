@@ -11,6 +11,7 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/analyticsHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/pages/errorPage.dart';
@@ -22,6 +23,7 @@ import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/pages/shared/meshToast.dart';
+import 'package:readr/pages/shared/reportAlertDialog.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:share_plus/share_plus.dart';
@@ -57,7 +59,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildBar(context),
       body: Obx(
         () {
@@ -70,7 +72,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           }
 
           if (controller.isLoading.isFalse) {
-            return _buildBody();
+            return _buildBody(context);
           }
 
           return const PersonalFileSkeletonScreen();
@@ -86,16 +88,16 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           ? IconButton(
               icon: Icon(
                 PlatformIcons(context).gearSolid,
-                color: readrBlack,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               ),
               onPressed: () {
                 Get.to(() => SettingPage());
               },
             )
           : IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: readrBlack87,
+                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               ),
               onPressed: () => Get.back(),
             ),
@@ -113,16 +115,15 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w400,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
             ),
           );
         },
       ),
       centerTitle: GetPlatform.isIOS,
-      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       actions: [
         _optionButton(context),
@@ -136,10 +137,12 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         String shareButtonText = 'sharePersonalFile'.tr;
         bool showBlock = Get.find<UserService>().isMember.value;
         bool isBlock = controller.isBlock.value;
+        bool showReport = true;
         if (viewMember.memberId ==
             Get.find<UserService>().currentUser.memberId) {
           shareButtonText = 'shareMyPersonalFile'.tr;
           showBlock = false;
+          showReport = false;
         }
 
         return PlatformPopupMenu(
@@ -147,7 +150,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             padding: const EdgeInsets.only(right: 16),
             child: Icon(
               PlatformIcons(context).ellipsis,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
               size: 26,
             ),
           ),
@@ -202,7 +205,10 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                 material: (context, platform) => MaterialPopupMenuOptionData(
                   child: Text(
                     'block'.tr,
-                    style: const TextStyle(color: Colors.red),
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).extension<CustomColors>()!.redText!,
+                    ),
                   ),
                 ),
                 onTap: (option) async {
@@ -218,16 +224,20 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                     builder: (context) => PlatformAlertDialog(
                       title: Text(
                         title,
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                           fontWeight: FontWeight.w600,
                           fontSize: 17,
                         ),
                       ),
                       content: Text(
                         'blockAlertContent'.tr,
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                           fontSize: 13,
                         ),
                       ),
@@ -235,7 +245,11 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         PlatformDialogAction(
                           child: Text(
                             'block'.tr,
-                            style: const TextStyle(color: Colors.red),
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .redText!,
+                            ),
                           ),
                           onPressed: () {
                             controller.blockMember();
@@ -245,6 +259,11 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         PlatformDialogAction(
                           child: Text(
                             'cancel'.tr,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .blue!,
+                            ),
                           ),
                           onPressed: () => Get.back(),
                         ),
@@ -258,14 +277,32 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                 label: 'unBlock'.tr,
                 onTap: (option) => controller.unblockMember(),
               ),
+            if (showReport)
+              PopupMenuOption(
+                label: 'report'.tr,
+                onTap: (option) async => await showReportAlertDialog(context),
+                cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+                  isDestructiveAction: true,
+                ),
+                material: (context, platform) => MaterialPopupMenuOptionData(
+                  child: Text(
+                    'report'.tr,
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).extension<CustomColors>()!.redText!,
+                    ),
+                  ),
+                ),
+              ),
           ],
           cupertino: (context, platform) => CupertinoPopupMenuData(
             cancelButtonData: CupertinoPopupMenuCancelButtonData(
               child: Text(
                 'cancel'.tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
+                  color: Theme.of(context).extension<CustomColors>()!.blue!,
                 ),
               ),
               isDefaultAction: true,
@@ -276,14 +313,14 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return ExtendedNestedScrollView(
       onlyOneScrollInBody: true,
       physics: const AlwaysScrollableScrollPhysics(),
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
           SliverToBoxAdapter(
-            child: _memberDataWidget(),
+            child: _memberDataWidget(context),
           ),
           SliverToBoxAdapter(
             child: JustTheTooltip(
@@ -298,7 +335,8 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   ),
                 ),
               ),
-              backgroundColor: const Color(0xFF007AFF),
+              backgroundColor:
+                  Theme.of(context).extension<CustomColors>()!.blue!,
               preferredDirection: AxisDirection.up,
               tailLength: 8,
               tailBaseWidth: 12,
@@ -314,7 +352,6 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               triggerMode: TooltipTriggerMode.manual,
               isModal: true,
               child: const Divider(
-                color: readrBlack10,
                 thickness: 0.5,
                 height: 0.5,
               ),
@@ -325,12 +362,15 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             primary: false,
             elevation: 0,
             toolbarHeight: 8,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).backgroundColor,
             bottom: TabBar(
-              indicatorColor: tabBarSelectedColor,
-              labelColor: readrBlack87,
-              unselectedLabelColor: readrBlack30,
-              indicatorWeight: 0.5,
+              indicatorColor:
+                  Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              labelColor:
+                  Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              unselectedLabelColor:
+                  Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+              indicatorWeight: 1,
               tabs: controller.tabs,
               controller: controller.tabController,
             ),
@@ -344,7 +384,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     );
   }
 
-  Widget _memberDataWidget() {
+  Widget _memberDataWidget(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -370,10 +410,12 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         maxLines: 1,
                         joinZeroWidthSpace: true,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: readrBlack87,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                         ),
                       ),
                     ),
@@ -381,12 +423,14 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   Obx(
                     () {
                       if (controller.viewMemberData.value.verified) {
-                        return const Padding(
-                          padding: EdgeInsets.only(left: 6),
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 6),
                           child: Icon(
                             Icons.verified,
                             size: 16,
-                            color: readrBlack87,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv1!,
                           ),
                         );
                       }
@@ -400,7 +444,8 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                 () {
                   if (controller.viewMemberData.value.intro != null &&
                       controller.viewMemberData.value.intro!.isNotEmpty) {
-                    return _buildIntro(controller.viewMemberData.value.intro!);
+                    return _buildIntro(
+                        context, controller.viewMemberData.value.intro!);
                   }
 
                   return Container();
@@ -412,9 +457,9 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   if (Get.find<UserService>().isMember.isTrue &&
                       controller.viewMemberData.value.memberId ==
                           Get.find<UserService>().currentUser.memberId) {
-                    return _editProfileButton();
+                    return _editProfileButton(context);
                   } else if (controller.isBlock.isTrue) {
-                    return _blockWidget();
+                    return _blockWidget(context);
                   }
 
                   return FollowButton(
@@ -437,28 +482,34 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   () => RichText(
                     text: TextSpan(
                       text: _convertNumberToString(controller.pickCount.value),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: readrBlack87,
+                        color: Theme.of(context)
+                            .extension<CustomColors>()!
+                            .primaryLv1!,
                       ),
                       children: [
                         TextSpan(
                           text: '\n${'pick'.tr}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: readrBlack50,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv3!,
                           ),
                         ),
                         if (controller.followerCount.value > 1 &&
                             Get.locale?.languageCode == 'en')
-                          const TextSpan(
+                          TextSpan(
                             text: 's',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: readrBlack50,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv3!,
                             ),
                           ),
                       ],
@@ -472,7 +523,6 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 20,
               child: const VerticalDivider(
-                color: readrBlack10,
                 thickness: 0.5,
               ),
             ),
@@ -487,42 +537,53 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                   text: TextSpan(
                     text:
                         _convertNumberToString(controller.followerCount.value),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: readrBlack87,
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv1!,
                     ),
                     children: [
                       TextSpan(
                         text: '\n${'follower'.tr}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                       if (controller.followerCount.value > 1 &&
                           Get.locale?.languageCode == 'en')
-                        const TextSpan(
+                        TextSpan(
                           text: 's',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: readrBlack50,
+                            color: Theme.of(context)
+                                .extension<CustomColors>()!
+                                .primaryLv3!,
                           ),
                         ),
-                      const TextSpan(
+                      TextSpan(
                         text: ' ',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: readrBlack50,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: SvgPicture.asset(
                           personalFileArrowSvg,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv3!,
                         ),
                       ),
                     ],
@@ -535,7 +596,6 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 20,
               child: const VerticalDivider(
-                color: readrBlack10,
                 thickness: 0.5,
               ),
             ),
@@ -553,24 +613,31 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                       text: TextSpan(
                         text: _convertNumberToString(
                             controller.followingCount.value),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: readrBlack87,
+                          color: Theme.of(context)
+                              .extension<CustomColors>()!
+                              .primaryLv1!,
                         ),
                         children: [
                           TextSpan(
                             text: '\n${'following'.tr} ',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: readrBlack50,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv3!,
                             ),
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: SvgPicture.asset(
                               personalFileArrowSvg,
+                              color: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .primaryLv3!,
                             ),
                           ),
                         ],
@@ -604,7 +671,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     }
   }
 
-  Widget _buildIntro(String intro) {
+  Widget _buildIntro(BuildContext context, String intro) {
     List<String> introChar = intro.characters.toList();
     return RichText(
       text: TextSpan(
@@ -612,7 +679,9 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: validate.isEmoji(introChar[0]) ? readrBlack : readrBlack50,
+          color: validate.isEmoji(introChar[0])
+              ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+              : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
         ),
         children: [
           for (int i = 1; i < introChar.length; i++)
@@ -621,8 +690,9 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color:
-                    validate.isEmoji(introChar[i]) ? readrBlack : readrBlack50,
+                color: validate.isEmoji(introChar[i])
+                    ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+                    : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
               ),
             )
         ],
@@ -631,7 +701,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
     );
   }
 
-  Widget _editProfileButton() {
+  Widget _editProfileButton(BuildContext context) {
     return OutlinedButton(
       onPressed: () async {
         final needReload = await Get.to(
@@ -644,40 +714,43 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         }
       },
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: readrBlack87, width: 1),
-        backgroundColor: Colors.white,
+        side: BorderSide(
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          width: 1,
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       ),
       child: Text(
         'editPersonalFile'.tr,
         softWrap: true,
         maxLines: 1,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 16,
-          color: readrBlack87,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
         ),
       ),
     );
   }
 
-  Widget _blockWidget() {
+  Widget _blockWidget(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.center,
       children: [
         Text(
           'blockWidgetText'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
-            color: readrBlack50,
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
           ),
         ),
         GestureDetector(
           onTap: () => controller.unblockMember(),
           child: Text(
             'unBlock'.tr,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.blue,
+              color: Theme.of(context).extension<CustomColors>()!.blue!,
             ),
           ),
         ),

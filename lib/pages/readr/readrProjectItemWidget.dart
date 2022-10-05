@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
@@ -29,12 +30,15 @@ class ReadrProjectItemWidget extends StatelessWidget {
             width: width,
             height: height,
             child: Shimmer.fromColors(
-              baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-              highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
+              baseColor: Theme.of(context)
+                  .extension<CustomColors>()!
+                  .shimmerBaseColor!,
+              highlightColor:
+                  Theme.of(context).extension<CustomColors>()!.primaryLv6!,
               child: Container(
                 width: width,
                 height: height,
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
             ),
           ),
@@ -73,7 +77,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
                 ],
               ),
             ),
-            _displayTitle(),
+            _displayTitle(context),
             const SizedBox(height: 8),
             NewsInfo(projectItem, key: key),
             const SizedBox(height: 18),
@@ -90,16 +94,16 @@ class ReadrProjectItemWidget extends StatelessWidget {
         });
   }
 
-  Widget _displayTitle() {
+  Widget _displayTitle(BuildContext context) {
     return Container(
-      color: editorChoiceBackgroundColor,
+      color: Theme.of(context).backgroundColor,
       child: ExtendedText(
         projectItem.title,
         joinZeroWidthSpace: true,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         style: TextStyle(
-          color: readrBlack87,
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
           fontSize: 20.0,
           fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
         ),
@@ -112,7 +116,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
       fit: BoxFit.fitWidth,
       child: Container(
         decoration: BoxDecoration(
-          color: editorChoiceTagColor,
+          color: meshBlack66,
           borderRadius: BorderRadiusDirectional.circular(6),
         ),
         margin: const EdgeInsets.only(

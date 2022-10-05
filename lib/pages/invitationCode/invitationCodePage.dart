@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/invitationCodePageController.dart';
-import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
@@ -15,16 +15,14 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        elevation: 0.5,
-        backgroundColor: Colors.white,
         title: Text(
           'invitationCode'.tr,
-          style: const TextStyle(
-            color: readrBlack,
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
             fontWeight: FontWeight.w400,
             fontSize: 18,
           ),
@@ -32,10 +30,10 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
         actions: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(
+            icon: Icon(
               Icons.close,
               size: 26,
-              color: readrBlack87,
+              color: Theme.of(context).appBarTheme.foregroundColor,
             ),
           )
         ],
@@ -75,20 +73,14 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
     );
   }
 
-  Widget _buildUsableCodeList(
-    BuildContext context,
-  ) {
+  Widget _buildUsableCodeList(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'availableInviteCodes'.tr,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-            color: readrBlack87,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
         if (controller.usableCodeList.isEmpty)
@@ -96,11 +88,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             padding: const EdgeInsets.only(bottom: 40),
             child: Text(
               'noAvailableInviteCodes'.tr,
-              style: const TextStyle(
-                color: readrBlack66,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: Theme.of(context).textTheme.displaySmall,
             ),
           ),
         Flexible(
@@ -109,10 +97,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
                 _usableCodeItem(context, controller.usableCodeList[index]),
-            separatorBuilder: (context, index) => const Divider(
-              color: readrBlack10,
-              height: 1,
-            ),
+            separatorBuilder: (context, index) => const Divider(),
             itemCount: controller.usableCodeList.length,
           ),
         ),
@@ -131,7 +116,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             ),
           ),
           OutlinedButton.icon(
@@ -146,23 +131,25 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
                 message: 'invitationCodeCopied'.tr,
               );
             },
-            icon: const FaIcon(
+            icon: FaIcon(
               FontAwesomeIcons.link,
               size: 11,
-              color: readrBlack87,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
             ),
             label: Text(
               'copyTheInvitationCode'.tr,
-              style: const TextStyle(
-                color: readrBlack87,
+              style: TextStyle(
+                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               ),
             ),
             style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).backgroundColor,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              side: const BorderSide(color: readrBlack87),
+              side: BorderSide(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!),
             ),
           )
         ],
@@ -177,11 +164,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
       children: [
         Text(
           'used'.tr,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-            color: readrBlack87,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
         Flexible(
@@ -190,10 +173,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => _activatedCodeItem(
                 context, controller.activatedCodeList[index]),
-            separatorBuilder: (context, index) => const Divider(
-              color: readrBlack10,
-              height: 1,
-            ),
+            separatorBuilder: (context, index) => const Divider(),
             itemCount: controller.activatedCodeList.length,
           ),
         ),
@@ -213,7 +193,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: readrBlack30,
+              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
             ),
           ),
           const SizedBox(width: 20),
@@ -229,10 +209,11 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
               children: [
                 Text(
                   invitationCode.activeMember!.nickname,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
-                    color: readrBlack87,
+                    color:
+                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

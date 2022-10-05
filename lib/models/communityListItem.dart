@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
@@ -12,10 +9,7 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
-import 'package:readr/pages/shared/collection/collectionInfo.dart';
-import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/story/storyPage.dart';
-import 'package:shimmer/shimmer.dart';
 
 enum CommunityListItemType {
   pickStory,
@@ -29,13 +23,12 @@ enum CommunityListItemType {
 class CommunityListItem {
   final CommunityListItemType type;
   final DateTime orderByTime;
-  final Widget titleWidget;
+  final RxString titleText;
   final String controllerTag;
-  final Widget heroImageWidget;
-  final Widget authorTextWidget;
+  final RxnString heroImageUrl;
+  final RxnString authorText;
   final VoidCallback tapItem;
   final VoidCallback tapAuthor;
-  final Widget infoWidget;
   final Comment? showComment;
   final String itemId;
   final NewsListItem? newsListItem;
@@ -46,13 +39,12 @@ class CommunityListItem {
   const CommunityListItem({
     required this.orderByTime,
     required this.type,
-    required this.titleWidget,
+    required this.titleText,
     required this.controllerTag,
-    required this.heroImageWidget,
-    required this.authorTextWidget,
+    required this.heroImageUrl,
+    required this.authorText,
     required this.tapItem,
     required this.tapAuthor,
-    required this.infoWidget,
     required this.itemId,
     required this.showComment,
     required this.itemBarMember,
@@ -96,12 +88,11 @@ class CommunityListItem {
       orderByTime = collection!.updateTime;
     }
 
-    Widget heroImageWidget;
-    Widget authorTextWidget;
+    RxnString heroImageUrl = RxnString();
+    RxnString authorText = RxnString();
     VoidCallback tapItem;
     VoidCallback tapAuthor;
-    Widget titleWidget;
-    Widget infoWidget;
+    RxString titleText = RxString('');
     String controllerTag;
     Comment? showComment;
     String itemId;
@@ -111,43 +102,13 @@ class CommunityListItem {
     switch (type) {
       case CommunityListItemType.pickStory:
       case CommunityListItemType.commentStory:
-        heroImageWidget = CachedNetworkImage(
-          imageUrl: newsListItem!.heroImageUrl ?? '',
-          placeholder: (context, url) => SizedBox(
-            width: Get.width,
-            height: Get.width / 2,
-            child: Shimmer.fromColors(
-              baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-              highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-              child: Container(
-                width: Get.width,
-                height: Get.width / 2,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          errorWidget: (context, url, error) => Container(),
-          imageBuilder: (context, imageProvider) {
-            return Image(
-              image: imageProvider,
-              width: Get.width,
-              height: Get.width / 2,
-              fit: BoxFit.cover,
-            );
-          },
-        );
+        heroImageUrl.value = newsListItem!.heroImageUrl ?? '';
         tapItem = () => Get.to(
               () => StoryPage(news: newsListItem!),
               fullscreenDialog: true,
             );
 
-        authorTextWidget = newsListItem.source != null
-            ? ExtendedText(
-                newsListItem.source!.title,
-                joinZeroWidthSpace: true,
-                style: const TextStyle(color: readrBlack50, fontSize: 14),
-              )
-            : Container();
+        authorText.value = newsListItem.source?.title;
         tapAuthor = () {
           if (newsListItem!.source != null) {
             Get.to(() => PublisherPage(
@@ -155,18 +116,8 @@ class CommunityListItem {
                 ));
           }
         };
-        titleWidget = ExtendedText(
-          newsListItem.title,
-          joinZeroWidthSpace: true,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: readrBlack87,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        );
-        infoWidget = NewsInfo(newsListItem);
+        titleText.value = newsListItem.title;
+
         controllerTag = newsListItem.controllerTag;
         showComment = newsListItem.showComment;
         itemId = newsListItem.id;
@@ -186,74 +137,25 @@ class CommunityListItem {
       case CommunityListItemType.commentCollection:
       case CommunityListItemType.createCollection:
       case CommunityListItemType.updateCollection:
-        heroImageWidget = Obx(
-          () => CachedNetworkImage(
-            imageUrl:
-                Get.find<PickableItemController>(tag: collection!.controllerTag)
-                    .collectionHeroImageUrl
-                    .value!,
-            placeholder: (context, url) => SizedBox(
-              width: Get.width,
-              height: Get.width / 2,
-              child: Shimmer.fromColors(
-                baseColor: const Color.fromRGBO(0, 9, 40, 0.15),
-                highlightColor: const Color.fromRGBO(0, 9, 40, 0.1),
-                child: Container(
-                  width: Get.width,
-                  height: Get.width / 2,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            errorWidget: (context, url, error) => Container(),
-            imageBuilder: (context, imageProvider) {
-              return Image(
-                image: imageProvider,
-                width: Get.width,
-                height: Get.width / 2,
-                fit: BoxFit.cover,
-              );
-            },
-          ),
-        );
+        heroImageUrl =
+            Get.find<PickableItemController>(tag: collection!.controllerTag)
+                .collectionHeroImageUrl;
         tapItem = () => Get.to(
               () => CollectionPage(collection!),
             );
-        authorTextWidget = Obx(
-          () {
-            String author = collection!.creator.customId;
-            if (Get.find<UserService>().isMember.isTrue &&
-                Get.find<UserService>().currentUser.memberId ==
-                    collection.creator.memberId) {
-              author = Get.find<UserService>().currentUser.customId;
-            }
 
-            return ExtendedText(
-              '@$author',
-              joinZeroWidthSpace: true,
-              style: const TextStyle(color: readrBlack50, fontSize: 14),
-            );
-          },
-        );
+        if (Get.find<UserService>().isMember.isTrue &&
+            Get.find<UserService>().currentUser.memberId ==
+                collection.creator.memberId) {
+          authorText.value = Get.find<UserService>().currentUser.customId;
+        } else {
+          authorText.value = collection.creator.customId;
+        }
+
         tapAuthor = () =>
             Get.to(() => PersonalFilePage(viewMember: collection!.creator));
-        titleWidget = Obx(
-          () => ExtendedText(
-            Get.find<PickableItemController>(tag: collection!.controllerTag)
-                    .collectionTitle
-                    .value ??
-                collection.title,
-            joinZeroWidthSpace: true,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: readrBlack87,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        );
-        infoWidget = CollectionInfo(collection!, key: Key(collection.id));
+        titleText.value = collection.title;
+
         controllerTag = collection.controllerTag;
         showComment = collection.showComment;
         itemId = collection.id;
@@ -279,13 +181,12 @@ class CommunityListItem {
       newsListItem: newsListItem,
       collection: collection,
       type: type,
-      authorTextWidget: authorTextWidget,
+      authorText: authorText,
       controllerTag: controllerTag,
-      titleWidget: titleWidget,
-      heroImageWidget: heroImageWidget,
+      titleText: titleText,
+      heroImageUrl: heroImageUrl,
       tapAuthor: tapAuthor,
       tapItem: tapItem,
-      infoWidget: infoWidget,
       showComment: showComment,
       itemId: itemId,
       itemBarMember: itemBarMember,

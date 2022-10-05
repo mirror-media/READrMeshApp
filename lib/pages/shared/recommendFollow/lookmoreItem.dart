@@ -2,7 +2,6 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/recommendItemController.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowPage.dart';
 
@@ -13,13 +12,6 @@ class LookmoreItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      elevation: 0,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromRGBO(0, 9, 40, 0.1), width: 1),
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      ),
-      clipBehavior: Clip.antiAlias,
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
         width: 150,
@@ -37,11 +29,10 @@ class LookmoreItem extends StatelessWidget {
               child: ExtendedText(
                 controller.recommendItems.first.lookmoreText,
                 joinZeroWidthSpace: true,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: readrBlack50,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 12),
                 maxLines: 2,
               ),
             ),
@@ -54,17 +45,18 @@ class LookmoreItem extends StatelessWidget {
                   Get.to(() => RecommendFollowPage(controller));
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: readrBlack87, width: 1),
-                  backgroundColor: Colors.white,
+                  side: BorderSide(
+                      color: Theme.of(context).primaryColorDark, width: 1),
+                  backgroundColor: Colors.transparent,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
                 child: Text(
                   'viewAll'.tr,
                   maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: readrBlack87,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(fontSize: 16),
                 ),
               ),
             ),

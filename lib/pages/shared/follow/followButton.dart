@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/followableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/helpers/dataConstants.dart';
 
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
@@ -52,9 +51,10 @@ class FollowButton extends GetView<FollowableItemController> {
           }
         },
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: readrBlack87, width: 1),
-          backgroundColor:
-              controller.isFollowed.value ? readrBlack87 : Colors.white,
+          side: BorderSide(color: Theme.of(context).primaryColorDark, width: 1),
+          backgroundColor: controller.isFollowed.value
+              ? Theme.of(context).primaryColorDark
+              : Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         ),
         child: Text(
@@ -62,7 +62,9 @@ class FollowButton extends GetView<FollowableItemController> {
           maxLines: 1,
           style: TextStyle(
             fontSize: textSize,
-            color: controller.isFollowed.value ? Colors.white : readrBlack87,
+            color: controller.isFollowed.value
+                ? Theme.of(context).backgroundColor
+                : Theme.of(context).primaryColorDark,
           ),
         ),
       ),
