@@ -40,17 +40,18 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 }
 
                 if (!controller.isLoading) {
-                  return Column(
-                    children: [
-                      _buildAvatar(context),
-                      const Divider(
-                        thickness: 1,
-                        height: 1,
-                      ),
-                      Expanded(
-                        child: _buildForm(context),
-                      ),
-                    ],
+                  return GestureDetector(
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                    child: ListView(
+                      children: [
+                        _buildAvatar(context),
+                        const Divider(
+                          thickness: 1,
+                          height: 1,
+                        ),
+                        _buildForm(context),
+                      ],
+                    ),
                   );
                 }
 
@@ -138,7 +139,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
       child: Form(
         autovalidateMode: AutovalidateMode.always,
         key: controller.formKey,
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             const SizedBox(
               height: 20,
@@ -322,53 +325,49 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             const SizedBox(
               height: 8,
             ),
-            Expanded(
-              child: Obx(
-                () => TextFormField(
-                  controller: controller.introController,
-                  focusNode: controller.introFocusNode,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  maxLength: 250,
-                  readOnly: controller.isSaving.isTrue,
-                  expands: true,
-                  textAlignVertical: TextAlignVertical.top,
-                  onChanged: (value) {
-                    controller.checkIsEdited();
-                  },
-                  style: TextStyle(
+            Obx(
+              () => TextFormField(
+                controller: controller.introController,
+                focusNode: controller.introFocusNode,
+                keyboardType: TextInputType.multiline,
+                maxLines: 17,
+                maxLength: 250,
+                readOnly: controller.isSaving.isTrue,
+                textAlignVertical: TextAlignVertical.top,
+                onChanged: (value) {
+                  controller.checkIsEdited();
+                },
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'introductionHint'.tr,
+                  hintStyle: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primaryLv4!,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
-                  decoration: InputDecoration(
-                    hintText: 'introductionHint'.tr,
-                    hintStyle: TextStyle(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv4!,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                          .primaryLv1!,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .primaryLv1!,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context)
-                            .extension<CustomColors>()!
-                            .primaryLv6!,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.all(12),
-                    counterText: '',
                   ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context)
+                          .extension<CustomColors>()!
+                          .primaryLv6!,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
+                  counterText: '',
                 ),
               ),
             ),
@@ -409,8 +408,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         alignment: Alignment.center,
         color: Theme.of(context).backgroundColor,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             Obx(
               () {
@@ -434,6 +434,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
             ),
             Text(
               'changeAvatar'.tr,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).extension<CustomColors>()!.blue!,
                 fontSize: 16,
