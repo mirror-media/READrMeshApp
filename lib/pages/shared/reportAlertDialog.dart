@@ -9,11 +9,11 @@ Future<void> showReportAlertDialog(BuildContext context) async {
     builder: (context) => PlatformAlertDialog(
       title: Text(
         'reportAlertTitle'.tr,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 17),
       ),
       content: Text(
         'reportAlertBody'.tr,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 16),
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 13),
       ),
       actions: [
         PlatformDialogAction(
