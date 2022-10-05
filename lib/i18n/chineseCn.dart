@@ -507,4 +507,10 @@ const Map<String, String> chineseCnMap = {
   'personalFileShareLinkDescriptionPrefix': '快来看看',
   'personalFileShareLinkDescriptionSuffix':
       '在READr Mesh挑选了哪些新闻和集锦？成为您自己的新闻编辑室，加入READr Mesh创建您自己的个人页面。',
+
+  //report
+  'reportComment': '举报评论',
+  'reportAlertTitle': '举报成功',
+  'reportAlertBody': '我们已经收到您的举报，感谢提供信息。',
+  'allRight': '好',
 };

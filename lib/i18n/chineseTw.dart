@@ -507,4 +507,10 @@ const Map<String, String> chineseTwMap = {
   'personalFileShareLinkDescriptionPrefix': '快來看看',
   'personalFileShareLinkDescriptionSuffix':
       '在READr Mesh挑選了哪些新聞和集錦？做自己的新聞編輯台，加入READr Mesh建立專屬的個人頁面。',
+
+  //report
+  'reportComment': '檢舉留言',
+  'reportAlertTitle': '檢舉成功',
+  'reportAlertBody': '我們已收到您的檢舉，感謝提供資訊。',
+  'allRight': '好的',
 };

@@ -12,6 +12,7 @@ import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
+import 'package:readr/pages/shared/comment/reportCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -41,49 +42,65 @@ class CommentItem extends GetView<CommentItemController> {
     }
     bool isVisible = false;
 
-    return Obx(
-      () {
-        if (controller.isMyNewComment.isTrue) {
-          Timer(const Duration(seconds: 5), () async {
-            if (isVisible) {
-              _fadeController.fadeIn();
-            }
-
-            await Future.delayed(const Duration(milliseconds: 255));
-            if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
-              controller.isMyNewComment(false);
-              controller.isExpanded(false);
-            }
-          });
-          return VisibilityDetector(
-              key: Key(comment.id),
-              onVisibilityChanged: (visibilityInfo) {
-                var visiblePercentage = visibilityInfo.visibleFraction * 100;
-                if (visiblePercentage > 80) {
-                  isVisible = true;
-                }
-              },
-              child: Container(
-                color:
-                    Theme.of(context).extension<CustomColors>()?.highlightBlue,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: FadeIn(
-                        controller: _fadeController,
-                        child: Container(
-                          color: Theme.of(context).backgroundColor,
-                        ),
-                      ),
-                    ),
-                    _commentItemContent(context),
-                  ],
-                ),
-              ));
+    return GestureDetector(
+      onLongPress: () async {
+        if (comment.member.memberId ==
+                Get.find<UserService>().currentUser.memberId &&
+            controller.isSending.isFalse) {
+          await showEditCommentMenu(
+            context,
+            controller.comment,
+            pickableItemControllerTag,
+          );
         } else {
-          return _commentItemContent(context);
+          await reportCommentMenu(context, comment);
         }
       },
+      child: Obx(
+        () {
+          if (controller.isMyNewComment.isTrue) {
+            Timer(const Duration(seconds: 5), () async {
+              if (isVisible) {
+                _fadeController.fadeIn();
+              }
+
+              await Future.delayed(const Duration(milliseconds: 255));
+              if (Get.isRegistered<CommentItemController>(tag: comment.id)) {
+                controller.isMyNewComment(false);
+                controller.isExpanded(false);
+              }
+            });
+            return VisibilityDetector(
+                key: Key(comment.id),
+                onVisibilityChanged: (visibilityInfo) {
+                  var visiblePercentage = visibilityInfo.visibleFraction * 100;
+                  if (visiblePercentage > 80) {
+                    isVisible = true;
+                  }
+                },
+                child: Container(
+                  color: Theme.of(context)
+                      .extension<CustomColors>()
+                      ?.highlightBlue,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: FadeIn(
+                          controller: _fadeController,
+                          child: Container(
+                            color: Theme.of(context).backgroundColor,
+                          ),
+                        ),
+                      ),
+                      _commentItemContent(context),
+                    ],
+                  ),
+                ));
+          } else {
+            return _commentItemContent(context);
+          }
+        },
+      ),
     );
   }
 
