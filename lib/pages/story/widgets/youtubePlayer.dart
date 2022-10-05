@@ -53,12 +53,12 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                         placeholder: (context, url) => Container(
                           width: imageWidth,
                           height: imageHeight,
-                          color: readrBlack,
+                          color: meshBlack87,
                         ),
                         errorWidget: (context, url, error) => Container(
                           width: imageWidth,
                           height: imageHeight,
-                          color: readrBlack,
+                          color: meshBlack87,
                         ),
                         fit: BoxFit.fitWidth,
                       ),

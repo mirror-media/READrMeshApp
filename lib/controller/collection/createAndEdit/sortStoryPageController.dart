@@ -205,7 +205,7 @@ class SortStoryPageController extends GetxController {
                   'iGotIt'.tr,
                   style: const TextStyle(
                     fontSize: 16,
-                    color: readrBlack87,
+                    color: meshBlack87,
                   ),
                 ),
               )

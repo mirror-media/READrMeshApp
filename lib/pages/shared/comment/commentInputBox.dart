@@ -137,7 +137,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                                 tag: commentControllerTag)
                             .isSending
                             .isTrue) {
-                          sendTextColor = readrBlack20;
+                          sendTextColor = meshBlack20;
                         }
                         return Text(
                           'sendComment'.tr,

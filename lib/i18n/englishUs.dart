@@ -532,4 +532,13 @@ const Map<String, String> englishUsMap = {
       'Come see what news and collections',
   'personalFileShareLinkDescriptionSuffix':
       ' has picked up at READr Mesh? Be your own newsroom and join READr Mesh to create your own personal page.',
+
+  //report
+  'reportComment': 'Report comment',
+  'reportAlertTitle': 'Report successful',
+  'reportAlertBody':
+      'We have received your report and thank you for the information.',
+  'allRight': 'OK',
+  'reportCollection': 'Report collection',
+  'report': 'Report',
 };

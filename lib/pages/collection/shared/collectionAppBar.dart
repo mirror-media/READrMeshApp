@@ -16,6 +16,7 @@ import 'package:readr/pages/collection/createAndEdit/descriptionPage.dart';
 import 'package:readr/pages/collection/createAndEdit/timeline/editTimelinePage.dart';
 import 'package:readr/pages/collection/createAndEdit/titleAndOgPage.dart';
 import 'package:readr/pages/collection/createAndEdit/folder/sortStoryPage.dart';
+import 'package:readr/pages/shared/reportAlertDialog.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CollectionAppBar extends GetView<CollectionPageController>
@@ -146,7 +147,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                           Get.find<UserService>().currentUser.memberId) {
                     return _editCollectionOptionButton(context);
                   }
-                  return Container();
+                  return _reportCollectionOptionButton(context);
                 },
               );
             }
@@ -296,6 +297,51 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   onPressed: () => Get.back(),
                 ),
               ],
+            ),
+          ),
+        ),
+      ],
+      material: (context, platform) => MaterialPopupMenuData(
+        padding: const EdgeInsets.only(right: 12, bottom: 8),
+      ),
+      cupertino: (context, platform) => CupertinoPopupMenuData(
+        cancelButtonData: CupertinoPopupMenuCancelButtonData(
+          child: Text(
+            'cancel'.tr,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+              color: Theme.of(context).extension<CustomColors>()?.blue,
+            ),
+          ),
+          isDefaultAction: true,
+        ),
+      ),
+    );
+  }
+
+  Widget _reportCollectionOptionButton(BuildContext context) {
+    return PlatformPopupMenu(
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 12, top: 8, left: 10),
+        child: Icon(
+          PlatformIcons(context).ellipsis,
+          color: Theme.of(context).appBarTheme.foregroundColor,
+          size: 26,
+        ),
+      ),
+      options: [
+        PopupMenuOption(
+          label: 'reportCollection'.tr,
+          onTap: (option) async => await showReportAlertDialog(context),
+          cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+            isDestructiveAction: true,
+          ),
+          material: (context, platform) => MaterialPopupMenuOptionData(
+            child: Text(
+              'reportCollection'.tr,
+              style: TextStyle(
+                  color: Theme.of(context).extension<CustomColors>()?.redText),
             ),
           ),
         ),

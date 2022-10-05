@@ -8,6 +8,7 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/pages/loginMember/loginPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/comment/editCommentMenu.dart';
+import 'package:readr/pages/shared/comment/reportCommentMenu.dart';
 import 'package:readr/pages/shared/timestamp.dart';
 import 'package:readr/services/commentService.dart';
 import 'package:validated/validated.dart' as validate;
@@ -42,24 +43,40 @@ class _PickCommentItemState extends State<PickCommentItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
-        border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
-          width: 0.5,
+    return GestureDetector(
+      onLongPress: () async {
+        if (Get.find<UserService>().isMember.isTrue &&
+            Get.find<UserService>().currentUser.memberId ==
+                widget.comment.member.memberId) {
+          await showEditCommentMenu(
+            context,
+            widget.controller.comment,
+            widget.pickControllerTag,
+            isFromPickTab: true,
+          );
+        } else {
+          await reportCommentMenu(context, widget.comment);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
+          border: Border.all(
+            color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+            width: 0.5,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-      ),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _time(context),
-          const SizedBox(height: 12),
-          _content(context),
-        ],
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _time(context),
+            const SizedBox(height: 12),
+            _content(context),
+          ],
+        ),
       ),
     );
   }

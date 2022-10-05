@@ -23,6 +23,7 @@ import 'package:readr/pages/setting/settingPage.dart';
 import 'package:readr/pages/shared/ProfilePhotoWidget.dart';
 import 'package:readr/pages/shared/follow/followButton.dart';
 import 'package:readr/pages/shared/meshToast.dart';
+import 'package:readr/pages/shared/reportAlertDialog.dart';
 import 'package:readr/services/memberService.dart';
 import 'package:readr/services/personalFileService.dart';
 import 'package:share_plus/share_plus.dart';
@@ -136,10 +137,12 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         String shareButtonText = 'sharePersonalFile'.tr;
         bool showBlock = Get.find<UserService>().isMember.value;
         bool isBlock = controller.isBlock.value;
+        bool showReport = true;
         if (viewMember.memberId ==
             Get.find<UserService>().currentUser.memberId) {
           shareButtonText = 'shareMyPersonalFile'.tr;
           showBlock = false;
+          showReport = false;
         }
 
         return PlatformPopupMenu(
@@ -273,6 +276,23 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               PopupMenuOption(
                 label: 'unBlock'.tr,
                 onTap: (option) => controller.unblockMember(),
+              ),
+            if (showReport)
+              PopupMenuOption(
+                label: 'report'.tr,
+                onTap: (option) async => await showReportAlertDialog(context),
+                cupertino: (context, platform) => CupertinoPopupMenuOptionData(
+                  isDestructiveAction: true,
+                ),
+                material: (context, platform) => MaterialPopupMenuOptionData(
+                  child: Text(
+                    'report'.tr,
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).extension<CustomColors>()!.redText!,
+                    ),
+                  ),
+                ),
               ),
           ],
           cupertino: (context, platform) => CupertinoPopupMenuData(

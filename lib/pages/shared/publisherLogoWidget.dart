@@ -17,7 +17,7 @@ class PublisherLogoWidget extends StatelessWidget {
     Color randomColor =
         Colors.primaries[int.parse(publisher.id) % Colors.primaries.length];
     Color textColor =
-        randomColor.computeLuminance() > 0.5 ? readrBlack : Colors.white;
+        randomColor.computeLuminance() > 0.5 ? meshBlack87 : Colors.white;
     List<String> splitTitle = publisher.title.split('');
     String firstLetter = '';
     for (int i = 0; i < splitTitle.length; i++) {

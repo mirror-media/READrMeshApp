@@ -332,8 +332,8 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
             break;
         }
         return InkWell(
-          hoverColor: readrBlack30,
-          splashColor: readrBlack30,
+          hoverColor: meshBlack30,
+          splashColor: meshBlack30,
           onTap: () => controller.format.value = format,
           child: Container(
             decoration: BoxDecoration(
@@ -346,11 +346,11 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                   ),
                 if (!isSelected) ...[
                   const BoxShadow(
-                    color: readrBlack20,
+                    color: meshBlack20,
                     blurRadius: 16,
                   ),
                   const BoxShadow(
-                    color: readrBlack30,
+                    color: meshBlack30,
                     blurRadius: 4,
                     offset: Offset(0, 2),
                   ),
@@ -375,7 +375,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                           iconImage,
                           color: isSelected
                               ? const Color.fromRGBO(0, 122, 255, 1)
-                              : readrBlack50,
+                              : meshBlack50,
                         ),
                       ),
                       const SizedBox(
@@ -384,7 +384,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       Text(
                         title,
                         style: TextStyle(
-                          color: readrBlack87,
+                          color: meshBlack87,
                           fontSize: 14,
                           fontWeight: GetPlatform.isIOS
                               ? FontWeight.w500
@@ -398,7 +398,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       Text(
                         description,
                         style: const TextStyle(
-                          color: readrBlack50,
+                          color: meshBlack50,
                           fontSize: 12,
                         ),
                       ),
