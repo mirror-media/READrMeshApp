@@ -633,8 +633,9 @@ class CommunityPage extends GetView<CommunityPageController> {
                     ),
                   ],
                 ),
-                Padding(
+                Container(
                   padding: const EdgeInsets.only(top: 8.5, bottom: 20),
+                  width: double.maxFinite,
                   child: ExtendedText(
                     comment.content,
                     maxLines: 2,

@@ -86,14 +86,14 @@ class GraphQLService extends GetxService {
     required String queryBody,
     Map<String, dynamic>? variables,
     bool throwException = true,
-    FetchPolicy fetchPolicy = FetchPolicy.cacheFirst,
+    FetchPolicy fetchPolicy = FetchPolicy.networkOnly,
     Duration? cacheDuration,
   }) async {
     final QueryOptions options = QueryOptions(
       document: gql(queryBody),
       variables: variables ?? {},
       fetchPolicy: fetchPolicy,
-      pollInterval: cacheDuration ?? 1.minutes,
+      pollInterval: cacheDuration ?? 30.seconds,
       cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
     );
 

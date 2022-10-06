@@ -376,23 +376,26 @@ class CommentItem extends GetView<CommentItemController> {
             controller.isExpanded.value = true;
           }
         },
-        child: ExtendedText(
-          controller.commentContent.value,
-          maxLines: controller.isExpanded.value ? null : 2,
-          style: Theme.of(context).textTheme.displaySmall,
-          joinZeroWidthSpace: true,
-          overflowWidget: TextOverflowWidget(
-            position: TextOverflowPosition.end,
-            child: RichText(
-              text: TextSpan(
-                text: '.... ',
-                style: Theme.of(context).textTheme.displaySmall,
-                children: [
-                  TextSpan(
-                    text: 'displayMore'.tr,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  )
-                ],
+        child: SizedBox(
+          width: double.maxFinite,
+          child: ExtendedText(
+            controller.commentContent.value,
+            maxLines: controller.isExpanded.value ? null : 2,
+            style: Theme.of(context).textTheme.displaySmall,
+            joinZeroWidthSpace: true,
+            overflowWidget: TextOverflowWidget(
+              position: TextOverflowPosition.end,
+              child: RichText(
+                text: TextSpan(
+                  text: '.... ',
+                  style: Theme.of(context).textTheme.displaySmall,
+                  children: [
+                    TextSpan(
+                      text: 'displayMore'.tr,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
