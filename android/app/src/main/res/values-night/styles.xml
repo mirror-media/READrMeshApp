@@ -19,5 +19,6 @@
         <item name="android:textColor">#A8F6F6FB</item>
         <item name="android:strokeColor">#80F6F6FB</item>
         <item name="android:colorEdgeEffect">#33F6F6FB</item>
+        <item name="android:textFontWeight">500</item>
     </style>
 </resources>
