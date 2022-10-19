@@ -75,11 +75,7 @@ class CarouselDisplayWidget extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         minFontSize: 20,
-        style: TextStyle(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
   }
