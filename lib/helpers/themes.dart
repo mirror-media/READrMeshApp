@@ -252,7 +252,7 @@ ThemeData darkTheme = ThemeData(
     ),
     headlineMedium: const TextStyle(
       color: meshGray,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
     headlineSmall: TextStyle(
