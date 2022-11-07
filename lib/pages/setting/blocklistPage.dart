@@ -79,7 +79,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                             width: 0.5,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv6!,
+                                .primary200!,
                           ),
                         ),
                         color: Theme.of(context).backgroundColor,

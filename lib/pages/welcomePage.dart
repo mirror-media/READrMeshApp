@@ -108,7 +108,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                   .primary700!
                               : Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv6!,
+                                  .primary200!,
                         ),
                       ),
                     );

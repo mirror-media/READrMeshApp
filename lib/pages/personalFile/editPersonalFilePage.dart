@@ -184,7 +184,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                     ),
                   ),
                   counterText: '',
@@ -258,7 +258,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                     ),
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -363,7 +363,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                     ),
                   ),
                   contentPadding: const EdgeInsets.all(12),

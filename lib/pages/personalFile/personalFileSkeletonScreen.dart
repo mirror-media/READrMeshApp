@@ -21,7 +21,7 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
           baseColor:
               Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
           highlightColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              Theme.of(context).extension<CustomColors>()!.primary200!,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(2.0),
             child: Container(
@@ -84,7 +84,7 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
           baseColor:
               Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
           highlightColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              Theme.of(context).extension<CustomColors>()!.primary200!,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(2.0),
             child: Container(

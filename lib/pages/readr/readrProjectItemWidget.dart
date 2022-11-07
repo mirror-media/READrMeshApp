@@ -34,7 +34,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
                   .extension<CustomColors>()!
                   .shimmerBaseColor!,
               highlightColor:
-                  Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                  Theme.of(context).extension<CustomColors>()!.primary200!,
               child: Container(
                 width: width,
                 height: height,

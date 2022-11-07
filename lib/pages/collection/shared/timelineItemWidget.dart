@@ -52,7 +52,7 @@ class TimelineItemWidget extends StatelessWidget {
                       border: Border.all(
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv6!,
+                            .primary200!,
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -411,7 +411,7 @@ class TimelineItemWidget extends StatelessWidget {
   Widget _customTimeTag(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+        color: Theme.of(context).extension<CustomColors>()?.primary200,
         borderRadius: const BorderRadius.all(Radius.circular(4.0)),
       ),
       padding: const EdgeInsets.all(4),

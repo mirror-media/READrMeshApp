@@ -19,7 +19,7 @@ class BlockQuoteWidget extends StatelessWidget {
           child: Icon(
             Icons.format_quote,
             size: 60,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+            color: Theme.of(context).extension<CustomColors>()?.primary200,
           ),
         ),
         const SizedBox(width: 8),
@@ -34,7 +34,7 @@ class BlockQuoteWidget extends StatelessWidget {
         Icon(
           Icons.format_quote,
           size: 60,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+          color: Theme.of(context).extension<CustomColors>()?.primary200,
         ),
       ],
     );

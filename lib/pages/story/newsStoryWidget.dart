@@ -218,12 +218,12 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 adHeight: context.width * 0.75,
                 decoration: BoxDecoration(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv6,
+                      Theme.of(context).extension<CustomColors>()?.primary200,
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   border: Border.all(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv6!,
+                        .primary200!,
                   ),
                 ),
                 margin:

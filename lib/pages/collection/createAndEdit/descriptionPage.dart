@@ -144,7 +144,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
               Color focusBorderColor =
                   Theme.of(context).extension<CustomColors>()!.primary600!;
               Color borderColor =
-                  Theme.of(context).extension<CustomColors>()!.primaryLv6!;
+                  Theme.of(context).extension<CustomColors>()!.primary200!;
               if (controller.collectionDescription.value.length >= 3000) {
                 focusBorderColor =
                     Theme.of(context).extension<CustomColors>()!.redText!;

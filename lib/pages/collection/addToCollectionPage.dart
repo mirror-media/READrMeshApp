@@ -51,7 +51,7 @@ class AddToCollectionPage extends StatelessWidget {
           border: Border(
             top: BorderSide(
               width: 0.5,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              color: Theme.of(context).extension<CustomColors>()!.primary200!,
             ),
           ),
         ),
@@ -312,7 +312,7 @@ class AddToCollectionPage extends StatelessWidget {
                                       .shimmerBaseColor!,
                                   highlightColor: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv6!,
+                                      .primary200!,
                                   child: Container(
                                     width: 96,
                                     height: 48,

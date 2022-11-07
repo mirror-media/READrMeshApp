@@ -187,7 +187,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                             : BorderSide(
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv6!,
+                                    .primary200!,
                                 width: 1),
                       ),
                     ),

@@ -103,7 +103,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border(
         bottom: BorderSide(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
     );

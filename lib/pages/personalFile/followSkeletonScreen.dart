@@ -30,7 +30,7 @@ class FollowSkeletonScreen extends StatelessWidget {
             baseColor:
                 Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
             highlightColor:
-                Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                Theme.of(context).extension<CustomColors>()!.primary200!,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100.0),
               child: Container(
@@ -49,7 +49,7 @@ class FollowSkeletonScreen extends StatelessWidget {
                     .extension<CustomColors>()!
                     .shimmerBaseColor!,
                 highlightColor:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
                 child: Container(
                   height: 12,
                   width: 120,
@@ -62,7 +62,7 @@ class FollowSkeletonScreen extends StatelessWidget {
                     .extension<CustomColors>()!
                     .shimmerBaseColor!,
                 highlightColor:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
                 child: Container(
                   height: 12,
                   width: 40,

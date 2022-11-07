@@ -174,7 +174,7 @@ class LoginPage extends GetView<LoginPageController> {
                 Theme.of(context).extension<CustomColors>()!.primary700!,
             textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
             loadingAnimationColor:
-                Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                Theme.of(context).extension<CustomColors>()!.primary200!,
             iconColor: Theme.of(context).brightness == Brightness.light
                 ? null
                 : Colors.white,
@@ -198,7 +198,7 @@ class LoginPage extends GetView<LoginPageController> {
               Theme.of(context).extension<CustomColors>()!.primary700!,
           textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
           loadingAnimationColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              Theme.of(context).extension<CustomColors>()!.primary200!,
           iconColor: Theme.of(context).brightness == Brightness.light
               ? null
               : Colors.white,
@@ -221,7 +221,7 @@ class LoginPage extends GetView<LoginPageController> {
               Theme.of(context).extension<CustomColors>()!.primary700!,
           textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
           loadingAnimationColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              Theme.of(context).extension<CustomColors>()!.primary200!,
           iconColor: Theme.of(context).brightness == Brightness.light
               ? null
               : Colors.white,

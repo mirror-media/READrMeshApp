@@ -92,13 +92,13 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                     BoxShadow(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       blurRadius: 8,
                     ),
                     BoxShadow(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       offset: const Offset(0, -8),
                       blurRadius: 20,
                     ),

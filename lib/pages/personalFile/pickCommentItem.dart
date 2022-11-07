@@ -63,7 +63,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
         decoration: BoxDecoration(
           color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
           border: Border.all(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+            color: Theme.of(context).extension<CustomColors>()!.primary200!,
             width: 0.5,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(6.0)),

@@ -77,7 +77,7 @@ class PublisherPage extends GetView<PublisherPageController> {
           decoration: BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
                 width: 0.5,
               ),
             ),

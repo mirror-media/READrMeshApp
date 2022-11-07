@@ -224,7 +224,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                 bottom: BorderSide(
                   width: 0.5,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                 ),
               ),
             ),
@@ -265,7 +265,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                 bottom: BorderSide(
                   width: 0.5,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                 ),
               ),
             ),

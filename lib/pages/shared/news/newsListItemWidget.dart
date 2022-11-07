@@ -134,11 +134,11 @@ class NewsListItemWidget extends StatelessWidget {
                     child: Shimmer.fromColors(
                       baseColor: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!
+                          .primary200!
                           .withOpacity(0.15),
                       highlightColor: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: Container(

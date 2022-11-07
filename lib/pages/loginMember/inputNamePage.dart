@@ -156,14 +156,14 @@ class InputNamePage extends GetView<InputNamePageController> {
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                   width: 1.0,
                 ),
               ),
               border: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                   width: 1.0,
                 ),
               ),

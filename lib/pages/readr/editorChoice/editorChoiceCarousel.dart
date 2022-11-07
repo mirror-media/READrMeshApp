@@ -95,7 +95,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                             .primary700!
                         : Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv6!,
+                            .primary200!,
                   ),
                 ),
               );

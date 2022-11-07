@@ -103,7 +103,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
       child: Column(
@@ -156,7 +156,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
       child: Column(
@@ -298,7 +298,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 bottom: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv6!),
+                        .primary200!),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -429,7 +429,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   FixedExtentScrollController(initialItem: hourIndex),
               selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
                 background:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -466,7 +466,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   FixedExtentScrollController(initialItem: minutesIndex),
               selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
                 background:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -494,7 +494,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         itemExtent: 35,
         onSelectedItemChanged: (index) => chooseIndex = index,
         selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
-          background: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          background: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         scrollController: FixedExtentScrollController(initialItem: chooseIndex),

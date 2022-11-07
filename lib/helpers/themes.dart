@@ -14,7 +14,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? primary500;
   final Color? primary400;
   final Color? primary300;
-  final Color? primaryLv6;
+  final Color? primary200;
   final Color? primaryLv7;
   final Color? backgroundMultiLayer;
   final Color? backgroundSingleLayer;
@@ -32,7 +32,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.primary500,
     required this.primary400,
     required this.primary300,
-    required this.primaryLv6,
+    required this.primary200,
     required this.primaryLv7,
     required this.backgroundMultiLayer,
     required this.backgroundSingleLayer,
@@ -53,7 +53,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? primary500,
     Color? primary400,
     Color? primary300,
-    Color? primaryLv6,
+    Color? primary200,
     Color? primaryLv7,
     Color? backgroundMultiLayer,
     Color? backgroundSingleLayer,
@@ -72,7 +72,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       primary500: primary500 ?? this.primary500,
       primary400: primary400 ?? this.primary400,
       primary300: primary300 ?? this.primary300,
-      primaryLv6: primaryLv6 ?? this.primaryLv6,
+      primary200: primary200 ?? this.primary200,
       primaryLv7: primaryLv7 ?? this.primaryLv7,
       backgroundMultiLayer: backgroundMultiLayer ?? this.backgroundMultiLayer,
       backgroundSingleLayer:
@@ -100,7 +100,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       primary500: Color.lerp(primary500, other.primary500, t),
       primary400: Color.lerp(primary400, other.primary400, t),
       primary300: Color.lerp(primary300, other.primary300, t),
-      primaryLv6: Color.lerp(primaryLv6, other.primaryLv6, t),
+      primary200: Color.lerp(primary200, other.primary200, t),
       primaryLv7: Color.lerp(primaryLv7, other.primaryLv7, t),
       backgroundMultiLayer:
           Color.lerp(backgroundMultiLayer, other.backgroundMultiLayer, t),
@@ -213,7 +213,7 @@ ThemeData lightTheme = ThemeData(
       primary500: meshBlack50,
       primary400: meshBlack30,
       primary300: meshBlack20,
-      primaryLv6: meshBlack10,
+      primary200: meshBlack10,
       primaryLv7: meshBlack05,
       backgroundMultiLayer: meshGray,
       backgroundSingleLayer: Colors.white,
@@ -333,7 +333,7 @@ ThemeData darkTheme = ThemeData(
       primary500: meshGray66,
       primary400: meshGray50,
       primary300: meshGray30,
-      primaryLv6: meshGray20,
+      primary200: meshGray20,
       primaryLv7: meshGray10,
       backgroundMultiLayer: meshBlackLight,
       backgroundSingleLayer: meshBlackDefault,

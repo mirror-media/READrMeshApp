@@ -70,7 +70,7 @@ class ReadrPage extends StatelessWidget {
                                 bottom: BorderSide(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv6!,
+                                      .primary200!,
                                   width: 1.0,
                                 ),
                               ),

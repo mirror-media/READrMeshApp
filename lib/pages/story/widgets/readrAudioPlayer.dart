@@ -235,7 +235,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 VerticalDivider(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv6!,
+                                      .primary200!,
                                   thickness: 1,
                                   width: 17,
                                 ),

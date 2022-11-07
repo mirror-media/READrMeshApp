@@ -225,7 +225,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
             ),
             border: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
             ),
             hintText: 'collectionTitleHint'.tr,

@@ -207,7 +207,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
       decoration: BoxDecoration(
         color: Theme.of(context).extension<CustomColors>()?.primaryLv7,
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
           width: 0.5,
         ),
         borderRadius: const BorderRadius.all(
@@ -277,7 +277,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
           width: 1,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -315,7 +315,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                                 .shimmerBaseColor!,
                             highlightColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv6!,
+                                .primary200!,
                             child: Container(
                               width: width,
                               height: width / 2,
