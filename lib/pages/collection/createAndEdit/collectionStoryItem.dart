@@ -28,7 +28,7 @@ class CollectionStoryItem extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
@@ -47,7 +47,7 @@ class CollectionStoryItem extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontSize: 16,
                       fontWeight:
                           GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -80,7 +80,7 @@ class CollectionStoryItem extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
                 fontSize: 16,
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -98,7 +98,7 @@ class CollectionStoryItem extends StatelessWidget {
                       style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         fontSize: 16,
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500

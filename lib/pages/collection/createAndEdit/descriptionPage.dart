@@ -37,7 +37,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -47,7 +47,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                   ),
                 ),
@@ -72,7 +72,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back_ios_new_outlined,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+          color: Theme.of(context).extension<CustomColors>()?.primary700,
         ),
         onPressed: () => Get.back(),
       ),
@@ -81,7 +81,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+          color: Theme.of(context).extension<CustomColors>()?.primary700,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -162,7 +162,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                 onChanged: (value) => controller.collectionDescription(value),
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),

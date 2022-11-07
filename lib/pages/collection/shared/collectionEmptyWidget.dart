@@ -65,7 +65,7 @@ class CollectionEmptyWidget extends StatelessWidget {
                               elevation: 0,
                               backgroundColor: Theme.of(context)
                                   .extension<CustomColors>()
-                                  ?.primaryLv1,
+                                  ?.primary700,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 8),
                               shape: RoundedRectangleBorder(

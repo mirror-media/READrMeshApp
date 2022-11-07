@@ -46,13 +46,13 @@ class FollowingListPage extends GetView<FollowingListController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -129,7 +129,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                             fontSize: 18,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             fontWeight: GetPlatform.isIOS
                                 ? FontWeight.w500
                                 : FontWeight.w600,
@@ -181,7 +181,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                     fontSize: 18,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     fontWeight:
                         GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   ),

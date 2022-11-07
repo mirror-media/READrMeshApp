@@ -88,7 +88,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
       textStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16,
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        color: Theme.of(context).extension<CustomColors>()?.primary700,
       ),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.only(bottom: 8),

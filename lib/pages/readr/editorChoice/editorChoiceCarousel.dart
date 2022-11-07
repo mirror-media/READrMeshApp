@@ -92,7 +92,7 @@ class _EditorChoiceCarouselState extends State<EditorChoiceCarousel> {
                     color: _current == entry.key
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : Theme.of(context)
                             .extension<CustomColors>()!
                             .primaryLv6!,

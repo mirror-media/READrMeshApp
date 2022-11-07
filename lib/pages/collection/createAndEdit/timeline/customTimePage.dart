@@ -46,7 +46,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             'customTime'.tr,
             style: TextStyle(
               fontSize: 18,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -220,7 +220,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                           Icons.cancel,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                           size: 16,
                         ),
                       ),
@@ -311,7 +311,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     color: isActive
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : meshBlack20,
                   ),
                 ),
@@ -323,7 +323,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     color: isActive
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : meshBlack20,
                   ),
                   maxLines: 1,
@@ -443,7 +443,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   style: TextStyle(
                     fontSize: 23,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 );
               },
@@ -454,7 +454,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             ':',
             style: TextStyle(
               fontSize: 30,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             ),
           ),
           Expanded(
@@ -480,7 +480,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   style: TextStyle(
                     fontSize: 23,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 );
               },
@@ -502,7 +502,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           timeRange[index].toString(),
           style: TextStyle(
             fontSize: 23,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         childCount: timeRange.length,
@@ -563,7 +563,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     fontSize: 18,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

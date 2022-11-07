@@ -514,7 +514,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                       fontSize: _textSize - 4,
                       height: 1.5,
                     ),
@@ -553,7 +553,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         height: 1.5,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!,
+                            .primary700!,
                       ),
                     ),
                   ),
@@ -576,7 +576,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
                 width: 8,
               ),
             ),
@@ -707,7 +707,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
@@ -745,7 +745,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()

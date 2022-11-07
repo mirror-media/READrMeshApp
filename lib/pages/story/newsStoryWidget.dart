@@ -208,7 +208,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                     fontSize: 18,
                     height: 2,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 ),
               ),
@@ -270,7 +270,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
       textStyle: TextStyle(
         fontSize: 18,
         height: 2,
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        color: Theme.of(context).extension<CustomColors>()?.primary700,
       ),
     );
   }
@@ -315,7 +315,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
@@ -353,7 +353,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()

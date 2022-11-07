@@ -44,7 +44,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -54,7 +54,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                   ),
                 ),
@@ -93,7 +93,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           : IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
               ),
               onPressed: () => Get.back(),
             ),
@@ -102,7 +102,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+          color: Theme.of(context).extension<CustomColors>()?.primary700,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -213,7 +213,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
       child: Obx(
         () => TextField(
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
             fontWeight: FontWeight.w400,
           ),
           controller: controller.titleTextController,
@@ -245,7 +245,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                       Icons.cancel,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       size: 16,
                     ),
                   ),

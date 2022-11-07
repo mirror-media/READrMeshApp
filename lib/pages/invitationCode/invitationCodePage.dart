@@ -116,7 +116,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             ),
           ),
           OutlinedButton.icon(
@@ -134,12 +134,12 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             icon: FaIcon(
               FontAwesomeIcons.link,
               size: 11,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             ),
             label: Text(
               'copyTheInvitationCode'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               ),
@@ -149,7 +149,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               side: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!),
+                      Theme.of(context).extension<CustomColors>()!.primary700!),
             ),
           )
         ],
@@ -213,7 +213,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

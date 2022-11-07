@@ -25,7 +25,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
         title: Text(
           'email'.tr,
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
@@ -33,7 +33,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -107,7 +107,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   width: 1.0,
                 ),
               ),

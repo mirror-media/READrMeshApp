@@ -43,7 +43,7 @@ class LoginPage extends GetView<LoginPageController> {
           title: Text(
             appBarTitle,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
@@ -61,7 +61,7 @@ class LoginPage extends GetView<LoginPageController> {
                       Icons.close_outlined,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   );
@@ -94,7 +94,7 @@ class LoginPage extends GetView<LoginPageController> {
                     SpinKitWanderingCubes(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
@@ -104,7 +104,7 @@ class LoginPage extends GetView<LoginPageController> {
                           fontSize: 20,
                           color: Theme.of(context)
                               .extension<CustomColors>()
-                              ?.primaryLv1,
+                              ?.primary700,
                         ),
                       ),
                     ),
@@ -158,7 +158,7 @@ class LoginPage extends GetView<LoginPageController> {
                   ? 'loginPageContentFromComment'.tr
                   : 'loginPageContent'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -171,8 +171,8 @@ class LoginPage extends GetView<LoginPageController> {
             buttonText: 'continueWithApple'.tr,
             buttonBackgroundColor: Theme.of(context).backgroundColor,
             buttonBorderColor:
-                Theme.of(context).extension<CustomColors>()!.primaryLv1!,
-            textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                Theme.of(context).extension<CustomColors>()!.primary700!,
+            textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
             loadingAnimationColor:
                 Theme.of(context).extension<CustomColors>()!.primaryLv6!,
             iconColor: Theme.of(context).brightness == Brightness.light
@@ -195,8 +195,8 @@ class LoginPage extends GetView<LoginPageController> {
           buttonText: 'continueWithFacebook'.tr,
           buttonBackgroundColor: Theme.of(context).backgroundColor,
           buttonBorderColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv1!,
-          textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              Theme.of(context).extension<CustomColors>()!.primary700!,
+          textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
           loadingAnimationColor:
               Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           iconColor: Theme.of(context).brightness == Brightness.light
@@ -218,8 +218,8 @@ class LoginPage extends GetView<LoginPageController> {
           buttonText: 'continueWithGoogle'.tr,
           buttonBackgroundColor: Theme.of(context).backgroundColor,
           buttonBorderColor:
-              Theme.of(context).extension<CustomColors>()!.primaryLv1!,
-          textColor: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              Theme.of(context).extension<CustomColors>()!.primary700!,
+          textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
           loadingAnimationColor:
               Theme.of(context).extension<CustomColors>()!.primaryLv6!,
           iconColor: Theme.of(context).brightness == Brightness.light
@@ -241,7 +241,7 @@ class LoginPage extends GetView<LoginPageController> {
           label: Text(
             'continueWithEmail'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
@@ -249,12 +249,12 @@ class LoginPage extends GetView<LoginPageController> {
           icon: Icon(
             Icons.email_outlined,
             size: 18,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           style: OutlinedButton.styleFrom(
             backgroundColor: Theme.of(context).backgroundColor,
             side: BorderSide(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               width: 1,
             ),
             fixedSize: const Size(double.infinity, 48),

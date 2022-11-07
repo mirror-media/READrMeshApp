@@ -88,7 +88,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           ? IconButton(
               icon: Icon(
                 PlatformIcons(context).gearSolid,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
               ),
               onPressed: () {
                 Get.to(() => SettingPage());
@@ -97,7 +97,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           : IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
               ),
               onPressed: () => Get.back(),
             ),
@@ -118,7 +118,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
             ),
           );
         },
@@ -150,7 +150,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             padding: const EdgeInsets.only(right: 16),
             child: Icon(
               PlatformIcons(context).ellipsis,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               size: 26,
             ),
           ),
@@ -227,7 +227,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         style: TextStyle(
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                           fontWeight: FontWeight.w600,
                           fontSize: 17,
                         ),
@@ -237,7 +237,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         style: TextStyle(
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                           fontSize: 13,
                         ),
                       ),
@@ -365,9 +365,9 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
             backgroundColor: Theme.of(context).backgroundColor,
             bottom: TabBar(
               indicatorColor:
-                  Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  Theme.of(context).extension<CustomColors>()!.primary700!,
               labelColor:
-                  Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  Theme.of(context).extension<CustomColors>()!.primary700!,
               unselectedLabelColor:
                   Theme.of(context).extension<CustomColors>()!.primaryLv4!,
               indicatorWeight: 1,
@@ -415,7 +415,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                         ),
                       ),
                     ),
@@ -430,7 +430,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                             size: 16,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                           ),
                         );
                       }
@@ -487,7 +487,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!,
+                            .primary700!,
                       ),
                       children: [
                         TextSpan(
@@ -542,7 +542,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                     children: [
                       TextSpan(
@@ -618,7 +618,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                         ),
                         children: [
                           TextSpan(
@@ -680,7 +680,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: validate.isEmoji(introChar[0])
-              ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+              ? Theme.of(context).extension<CustomColors>()!.primary700!
               : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
         ),
         children: [
@@ -691,7 +691,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: validate.isEmoji(introChar[i])
-                    ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+                    ? Theme.of(context).extension<CustomColors>()!.primary700!
                     : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
               ),
             )
@@ -715,7 +715,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
       },
       style: OutlinedButton.styleFrom(
         side: BorderSide(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          color: Theme.of(context).extension<CustomColors>()!.primary700!,
           width: 1,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -727,7 +727,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
         maxLines: 1,
         style: TextStyle(
           fontSize: 16,
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          color: Theme.of(context).extension<CustomColors>()!.primary700!,
         ),
       ),
     );

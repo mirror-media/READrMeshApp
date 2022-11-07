@@ -343,7 +343,7 @@ class ParagraphFormat {
                   html: dataList[index],
                   fontSize: 16,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   isCitation: true,
                 ),
                 const Divider(),
@@ -353,7 +353,7 @@ class ParagraphFormat {
           return ParseTheTextToHtmlWidget(
             html: dataList[index],
             fontSize: 16,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
             isCitation: true,
           );
         }
@@ -377,7 +377,7 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
               html: dataList[index],
               fontSize: textSize,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             )),
           ],
         );

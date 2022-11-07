@@ -74,7 +74,7 @@ class PersonalFileSkeletonScreen extends StatelessWidget {
         Text(
           '0',
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

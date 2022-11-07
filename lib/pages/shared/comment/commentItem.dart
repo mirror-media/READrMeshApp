@@ -126,7 +126,7 @@ class CommentItem extends GetView<CommentItemController> {
                     left: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     width: 4,
                   ))
                 : null,

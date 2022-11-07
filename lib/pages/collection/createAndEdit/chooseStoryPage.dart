@@ -311,14 +311,14 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
           style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
         ),
         content: Text(
           'chooseStoryPageLeaveAlertContent'.tr,
           style: TextStyle(
             fontSize: 13,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
         ),
         actions: [
@@ -427,7 +427,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
             TextSpan(
               text: controller.searchWord,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
               ),
             ),
             TextSpan(
@@ -442,7 +442,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+          color: Theme.of(context).extension<CustomColors>()?.primary700,
         ),
       ),
     );
@@ -462,7 +462,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                 (element) => element.pickNewsId == collectionStory.pickNewsId);
           }
         },
-        activeColor: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        activeColor: Theme.of(context).extension<CustomColors>()?.primary700,
         checkColor: Theme.of(context).backgroundColor,
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: const EdgeInsets.only(left: 0, top: 16, bottom: 20),
@@ -529,7 +529,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     });
                   },
                   activeColor:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   checkColor: Theme.of(context).backgroundColor,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
@@ -538,7 +538,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontSize: 16,
                     ),
                   ),
@@ -552,7 +552,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     });
                   },
                   activeColor:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   checkColor: Theme.of(context).backgroundColor,
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: const EdgeInsets.only(left: 12),
@@ -561,7 +561,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontSize: 16,
                     ),
                   ),
@@ -600,7 +600,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,

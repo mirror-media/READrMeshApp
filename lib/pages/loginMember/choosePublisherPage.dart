@@ -26,7 +26,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
       ),
@@ -54,7 +54,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
           child: Text(
             'choosePublisherPageBodyText'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 16,
             ),
           ),
@@ -92,7 +92,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
                 elevation: 0,
                 backgroundColor: controller.followedCount.value == 0
                     ? disableColor
-                    : Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                    : Theme.of(context).extension<CustomColors>()!.primary700!,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
                   horizontal: 24,

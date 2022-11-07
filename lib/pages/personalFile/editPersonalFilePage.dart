@@ -92,7 +92,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                       Icons.close,
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
             ),
           );
@@ -103,7 +103,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
       title: Text('editPersonalFile'.tr,
           style: TextStyle(
             fontSize: 18,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontWeight: FontWeight.w400,
           )),
       actions: [
@@ -160,7 +160,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 },
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -177,7 +177,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                   ),
                   border: UnderlineInputBorder(
@@ -200,7 +200,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                             Icons.cancel,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             size: 16,
                           ),
                         ),
@@ -234,7 +234,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 },
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -251,7 +251,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                   ),
                   border: UnderlineInputBorder(
@@ -273,7 +273,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                             Icons.cancel,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             size: 16,
                           ),
                         ),
@@ -339,7 +339,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 },
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -356,7 +356,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     borderSide: BorderSide(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                   ),
                   border: OutlineInputBorder(
@@ -545,7 +545,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     Icons.photo_camera_outlined,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     size: 18,
                   ),
                   label: Text(
@@ -553,7 +553,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -569,7 +569,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     Icons.photo_library_outlined,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     size: 18,
                   ),
                   label: Text(
@@ -577,7 +577,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -632,9 +632,9 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                 toolbarTitle: 'crop'.tr,
                 toolbarColor: Theme.of(context).backgroundColor,
                 toolbarWidgetColor:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                    Theme.of(context).extension<CustomColors>()!.primary700!,
                 statusBarColor:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                    Theme.of(context).extension<CustomColors>()!.primary700!,
                 initAspectRatio: CropAspectRatioPreset.original,
                 backgroundColor: Theme.of(context).backgroundColor,
                 activeControlsWidgetColor:

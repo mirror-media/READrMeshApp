@@ -111,7 +111,7 @@ class _AnnotationWidgetState extends State<AnnotationWidget> {
       textStyle: TextStyle(
         fontSize: textSize,
         height: 1.8,
-        color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+        color: Theme.of(context).extension<CustomColors>()!.primary700!,
       ),
       onTapUrl: (url) async {
         if (url == 'annotation') {

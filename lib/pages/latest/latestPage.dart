@@ -437,7 +437,7 @@ class LatestPage extends GetView<LatestPageController> {
                       });
                     },
                     activeColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     checkColor: Theme.of(context)
                         .extension<CustomColors>()
                         ?.backgroundSingleLayer,
@@ -460,7 +460,7 @@ class LatestPage extends GetView<LatestPageController> {
                       });
                     },
                     activeColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     checkColor: Theme.of(context)
                         .extension<CustomColors>()
                         ?.backgroundSingleLayer,
@@ -493,7 +493,7 @@ class LatestPage extends GetView<LatestPageController> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,

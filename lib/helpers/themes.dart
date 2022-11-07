@@ -9,7 +9,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? red;
   final Color? highlightRed;
   final Color? highlightBlue;
-  final Color? primaryLv1;
+  final Color? primary700;
   final Color? primaryLv2;
   final Color? primaryLv3;
   final Color? primaryLv4;
@@ -27,7 +27,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.red,
     required this.highlightRed,
     required this.highlightBlue,
-    required this.primaryLv1,
+    required this.primary700,
     required this.primaryLv2,
     required this.primaryLv3,
     required this.primaryLv4,
@@ -48,7 +48,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? red,
     Color? highlightRed,
     Color? highlightBlue,
-    Color? primaryLv1,
+    Color? primary700,
     Color? primaryLv2,
     Color? primaryLv3,
     Color? primaryLv4,
@@ -67,7 +67,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       red: red ?? this.red,
       highlightRed: highlightRed ?? this.highlightRed,
       highlightBlue: highlightBlue ?? this.highlightBlue,
-      primaryLv1: primaryLv1 ?? this.primaryLv1,
+      primary700: primary700 ?? this.primary700,
       primaryLv2: primaryLv2 ?? this.primaryLv2,
       primaryLv3: primaryLv3 ?? this.primaryLv3,
       primaryLv4: primaryLv4 ?? this.primaryLv4,
@@ -95,7 +95,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       red: Color.lerp(red, other.red, t),
       highlightRed: Color.lerp(highlightRed, other.highlightRed, t),
       highlightBlue: Color.lerp(highlightBlue, other.highlightBlue, t),
-      primaryLv1: Color.lerp(primaryLv1, other.primaryLv1, t),
+      primary700: Color.lerp(primary700, other.primary700, t),
       primaryLv2: Color.lerp(primaryLv2, other.primaryLv2, t),
       primaryLv3: Color.lerp(primaryLv3, other.primaryLv3, t),
       primaryLv4: Color.lerp(primaryLv4, other.primaryLv4, t),
@@ -208,7 +208,7 @@ ThemeData lightTheme = ThemeData(
       red: meshRed,
       highlightRed: meshHighlightRed,
       highlightBlue: meshHighlightBlue,
-      primaryLv1: meshBlack87,
+      primary700: meshBlack87,
       primaryLv2: meshBlack66,
       primaryLv3: meshBlack50,
       primaryLv4: meshBlack30,
@@ -328,7 +328,7 @@ ThemeData darkTheme = ThemeData(
       red: meshRedDarkMode,
       highlightRed: meshHighlightRedDarkMode,
       highlightBlue: meshHighlightBlueDarkMode,
-      primaryLv1: meshGray,
+      primary700: meshGray,
       primaryLv2: meshGray87,
       primaryLv3: meshGray66,
       primaryLv4: meshGray50,

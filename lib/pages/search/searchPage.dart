@@ -162,7 +162,7 @@ class SearchPage extends GetView<SearchPageController> {
                   child: ListTile(
                     tileColor: Theme.of(context).backgroundColor,
                     textColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     iconColor:
                         Theme.of(context).extension<CustomColors>()?.primaryLv4,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -206,7 +206,7 @@ class SearchPage extends GetView<SearchPageController> {
           opacity: animation,
           child: ListTile(
             tileColor: Theme.of(context).backgroundColor,
-            textColor: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            textColor: Theme.of(context).extension<CustomColors>()?.primary700,
             iconColor: Theme.of(context).extension<CustomColors>()?.primaryLv4,
             contentPadding: const EdgeInsets.symmetric(vertical: 10),
             title: Text(
@@ -441,7 +441,7 @@ class SearchPage extends GetView<SearchPageController> {
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv1!,
+                                      .primary700!,
                                   width: 1),
                               backgroundColor:
                                   Theme.of(context).backgroundColor,

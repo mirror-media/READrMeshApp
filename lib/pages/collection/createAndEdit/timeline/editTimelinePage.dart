@@ -59,7 +59,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                 children: [
                   SpinKitWanderingCubes(
                     color:
-                        Theme.of(context).extension<CustomColors>()!.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()!.primary700,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
@@ -71,7 +71,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                         fontSize: 20,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!,
+                            .primary700!,
                       ),
                     ),
                   ),
@@ -251,7 +251,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                         style: TextButton.styleFrom(
                           backgroundColor: Theme.of(context)
                               .extension<CustomColors>()
-                              ?.primaryLv1,
+                              ?.primary700,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 16,

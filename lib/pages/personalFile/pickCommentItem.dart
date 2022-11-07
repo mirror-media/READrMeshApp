@@ -222,7 +222,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: validate.isEmoji(contentChar[0])
-                  ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
+                  ? Theme.of(context).extension<CustomColors>()!.primary700!
                   : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
             ),
             children: [
@@ -233,7 +233,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     color: validate.isEmoji(contentChar[i])
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : Theme.of(context)
                             .extension<CustomColors>()!
                             .primaryLv2!,

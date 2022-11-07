@@ -168,7 +168,7 @@ class ChangeOgPage extends StatelessWidget {
                   icon: Icon(
                     Icons.photo_camera_outlined,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     size: 18,
                   ),
                   label: Text(
@@ -176,7 +176,7 @@ class ChangeOgPage extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -191,7 +191,7 @@ class ChangeOgPage extends StatelessWidget {
                   icon: Icon(
                     Icons.photo_library_outlined,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     size: 18,
                   ),
                   label: Text(
@@ -199,7 +199,7 @@ class ChangeOgPage extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),
@@ -230,9 +230,9 @@ class ChangeOgPage extends StatelessWidget {
                 toolbarTitle: 'crop'.tr,
                 toolbarColor: Theme.of(context).backgroundColor,
                 toolbarWidgetColor:
-                    Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    Theme.of(context).extension<CustomColors>()?.primary700,
                 statusBarColor:
-                    Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    Theme.of(context).extension<CustomColors>()?.primary700,
                 initAspectRatio: CropAspectRatioPreset.original,
                 backgroundColor: Theme.of(context).backgroundColor,
                 activeControlsWidgetColor:

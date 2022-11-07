@@ -50,7 +50,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                    Theme.of(context).extension<CustomColors>()?.primary700,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
@@ -90,7 +90,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                     child: Obx(() {
                       Color textFieldTextColor = Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!;
+                          .primary700!;
                       if (Get.find<CommentController>(tag: commentControllerTag)
                           .isSending
                           .isTrue) {

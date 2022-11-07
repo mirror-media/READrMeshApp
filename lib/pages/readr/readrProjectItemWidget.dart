@@ -103,7 +103,7 @@ class ReadrProjectItemWidget extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         style: TextStyle(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+          color: Theme.of(context).extension<CustomColors>()!.primary700!,
           fontSize: 20.0,
           fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
         ),
