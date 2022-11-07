@@ -348,7 +348,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   hintStyle: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv4!,
+                        .primary400!,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),

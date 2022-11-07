@@ -40,7 +40,7 @@ class CollectionEmptyWidget extends StatelessWidget {
                             fontSize: 16,
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv4,
+                                ?.primary400,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -91,7 +91,7 @@ class CollectionEmptyWidget extends StatelessWidget {
                       fontSize: 16,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv4,
+                          ?.primary400,
                     ),
                     textAlign: TextAlign.center,
                   );

@@ -54,7 +54,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                     fontSize: 16,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv4!,
+                        .primary400!,
                   ),
                 ),
               );

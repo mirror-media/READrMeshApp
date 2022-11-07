@@ -139,7 +139,7 @@ class SentEmailPage extends StatelessWidget {
           child: Text(
             'notReceiveText'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+              color: Theme.of(context).extension<CustomColors>()!.primary400!,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -151,7 +151,7 @@ class SentEmailPage extends StatelessWidget {
             Text(
               'or'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+                color: Theme.of(context).extension<CustomColors>()!.primary400!,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),

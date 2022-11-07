@@ -274,7 +274,7 @@ class LatestPage extends GetView<LatestPageController> {
             const SizedBox(width: 6),
             Icon(
               Icons.expand_more_outlined,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              color: Theme.of(context).extension<CustomColors>()?.primary400,
               size: 30,
             ),
           ],
@@ -413,7 +413,7 @@ class LatestPage extends GetView<LatestPageController> {
                             const BorderRadius.all(Radius.circular(20)),
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv4,
+                            ?.primary400,
                       ),
                     ),
                   ),

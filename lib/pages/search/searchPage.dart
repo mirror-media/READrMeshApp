@@ -74,7 +74,7 @@ class SearchPage extends GetView<SearchPageController> {
           prefixIcon: Icon(
             CupertinoIcons.search,
             size: 22,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+            color: Theme.of(context).extension<CustomColors>()?.primary400,
           ),
           contentPadding: const EdgeInsets.fromLTRB(5.5, 8, 12, 8),
           hintText: 'searchBarHintText'.tr,
@@ -164,7 +164,7 @@ class SearchPage extends GetView<SearchPageController> {
                     textColor:
                         Theme.of(context).extension<CustomColors>()?.primary700,
                     iconColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                        Theme.of(context).extension<CustomColors>()?.primary400,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     title: Text(
                       controller.searchHistoryList[index],
@@ -207,7 +207,7 @@ class SearchPage extends GetView<SearchPageController> {
           child: ListTile(
             tileColor: Theme.of(context).backgroundColor,
             textColor: Theme.of(context).extension<CustomColors>()?.primary700,
-            iconColor: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+            iconColor: Theme.of(context).extension<CustomColors>()?.primary400,
             contentPadding: const EdgeInsets.symmetric(vertical: 10),
             title: Text(
               title,

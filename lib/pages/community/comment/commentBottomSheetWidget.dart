@@ -50,7 +50,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                 child: Icon(
                   Icons.expand_more_outlined,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                      Theme.of(context).extension<CustomColors>()?.primary400,
                   size: 32,
                 ),
               ),

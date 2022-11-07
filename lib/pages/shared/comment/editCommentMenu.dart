@@ -89,7 +89,7 @@ Future<void> showEditCommentMenu(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv4,
+                          ?.primary400,
                     ),
                   ),
                 ),

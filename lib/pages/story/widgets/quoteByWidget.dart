@@ -20,7 +20,7 @@ class QuoteByWidget extends StatelessWidget {
             child: Icon(
               Icons.format_quote,
               size: 60,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              color: Theme.of(context).extension<CustomColors>()?.primary400,
             ),
           ),
           const SizedBox(

@@ -289,7 +289,7 @@ class LoginPage extends GetView<LoginPageController> {
       },
       textStyle: TextStyle(
         fontSize: 13,
-        color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+        color: Theme.of(context).extension<CustomColors>()!.primary400!,
       ),
     );
   }

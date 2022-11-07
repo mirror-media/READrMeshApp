@@ -335,7 +335,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   CupertinoIcons.chevron_right,
                   size: 13,
                   color: isActive
-                      ? Theme.of(context).extension<CustomColors>()!.primaryLv4!
+                      ? Theme.of(context).extension<CustomColors>()!.primary400!
                       : meshBlack20,
                 ),
               ],

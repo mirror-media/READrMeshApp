@@ -193,7 +193,7 @@ class InvitationCodePage extends GetView<InvitationCodePageController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              color: Theme.of(context).extension<CustomColors>()?.primary400,
             ),
           ),
           const SizedBox(width: 20),

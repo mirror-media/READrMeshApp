@@ -230,7 +230,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
             ),
             hintText: 'collectionTitleHint'.tr,
             hintStyle: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              color: Theme.of(context).extension<CustomColors>()?.primary400,
               fontWeight: FontWeight.w400,
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),

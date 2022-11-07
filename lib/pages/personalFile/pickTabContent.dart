@@ -82,7 +82,7 @@ class PickTabContent extends GetView<PickTabController> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+            color: Theme.of(context).extension<CustomColors>()!.primary400!,
           ),
           textAlign: TextAlign.center,
         ),

@@ -171,7 +171,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
                   hintText: 'collectionNarrativeHint'.tr,
                   hintStyle: TextStyle(
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                        Theme.of(context).extension<CustomColors>()?.primary400,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),

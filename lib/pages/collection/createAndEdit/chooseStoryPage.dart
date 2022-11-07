@@ -101,7 +101,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                                   CupertinoIcons.chevron_down,
                                   color: Theme.of(context)
                                       .extension<CustomColors>()
-                                      ?.primaryLv4,
+                                      ?.primary400,
                                   size: 20,
                                 ),
                               ],
@@ -117,7 +117,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                             iconSize: 26,
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv4,
+                                ?.primary400,
                           ),
                         ],
                       ),

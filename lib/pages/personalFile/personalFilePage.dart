@@ -369,7 +369,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
               labelColor:
                   Theme.of(context).extension<CustomColors>()!.primary700!,
               unselectedLabelColor:
-                  Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+                  Theme.of(context).extension<CustomColors>()!.primary400!,
               indicatorWeight: 1,
               tabs: controller.tabs,
               controller: controller.tabController,

@@ -131,7 +131,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                             Icons.expand_more_outlined,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv4!,
+                                .primary400!,
                             size: 32,
                           ),
                         ),

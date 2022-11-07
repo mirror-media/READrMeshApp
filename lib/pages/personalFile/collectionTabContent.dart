@@ -107,7 +107,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv4,
+                          ?.primary400,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -158,7 +158,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
             child: Text(
               'viewMemberNoCollection'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                color: Theme.of(context).extension<CustomColors>()?.primary400,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),

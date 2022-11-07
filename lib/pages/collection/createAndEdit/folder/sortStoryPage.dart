@@ -179,7 +179,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         Icons.reorder_outlined,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv4,
+                            ?.primary400,
                       ),
                       shape: BorderDirectional(
                         top: index == 0

@@ -419,7 +419,7 @@ class TimelineItemWidget extends StatelessWidget {
         'customization'.tr,
         style: TextStyle(
           fontSize: 11,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+          color: Theme.of(context).extension<CustomColors>()?.primary400,
         ),
       ),
     );

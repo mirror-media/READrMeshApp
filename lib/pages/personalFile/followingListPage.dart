@@ -94,7 +94,7 @@ class FollowingListPage extends GetView<FollowingListController> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+            color: Theme.of(context).extension<CustomColors>()!.primary400!,
           ),
           textAlign: TextAlign.center,
         ),
@@ -144,7 +144,7 @@ class FollowingListPage extends GetView<FollowingListController> {
                             : Icons.expand_more_outlined,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv4!,
+                            .primary400!,
                       ),
                     ),
                   ],
