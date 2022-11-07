@@ -61,7 +61,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
+          color: Theme.of(context).extension<CustomColors>()!.primary100!,
           border: Border.all(
             color: Theme.of(context).extension<CustomColors>()!.primary200!,
             width: 0.5,
