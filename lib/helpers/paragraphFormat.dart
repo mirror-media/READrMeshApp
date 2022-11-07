@@ -79,7 +79,7 @@ class ParagraphFormat {
                       fontSize: 14,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                     )
                   ],
                 ),
@@ -167,7 +167,7 @@ class ParagraphFormat {
                   html: paragraph.contents![0].data,
                   fontSize: 14,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               );
             }
@@ -312,7 +312,7 @@ class ParagraphFormat {
                   fontSize: textSize,
                   height: 1.7,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
             ),
@@ -367,7 +367,7 @@ class ParagraphFormat {
                 height: 6,
                 decoration: BoxDecoration(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                   shape: BoxShape.circle,
                 ),
               ),

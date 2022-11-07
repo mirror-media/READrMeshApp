@@ -319,7 +319,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),
@@ -357,7 +357,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),

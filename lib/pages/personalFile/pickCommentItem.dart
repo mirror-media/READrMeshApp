@@ -139,7 +139,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   style: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                     fontSize: 13,
                   ),
                 ),
@@ -273,7 +273,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv3!,
+                          .primary500!,
                     ),
                   )
                 ],

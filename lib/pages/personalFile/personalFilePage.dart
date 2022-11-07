@@ -497,7 +497,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv3!,
+                                .primary500!,
                           ),
                         ),
                         if (controller.followerCount.value > 1 &&
@@ -509,7 +509,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv3!,
+                                  .primary500!,
                             ),
                           ),
                       ],
@@ -552,7 +552,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv3!,
+                              .primary500!,
                         ),
                       ),
                       if (controller.followerCount.value > 1 &&
@@ -564,7 +564,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv3!,
+                                .primary500!,
                           ),
                         ),
                       TextSpan(
@@ -574,7 +574,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv3!,
+                              .primary500!,
                         ),
                       ),
                       WidgetSpan(
@@ -583,7 +583,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                           personalFileArrowSvg,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv3!,
+                              .primary500!,
                         ),
                       ),
                     ],
@@ -628,7 +628,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv3!,
+                                  .primary500!,
                             ),
                           ),
                           WidgetSpan(
@@ -637,7 +637,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                               personalFileArrowSvg,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv3!,
+                                  .primary500!,
                             ),
                           ),
                         ],
@@ -681,7 +681,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           fontWeight: FontWeight.w400,
           color: validate.isEmoji(introChar[0])
               ? Theme.of(context).extension<CustomColors>()!.primary700!
-              : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+              : Theme.of(context).extension<CustomColors>()!.primary500!,
         ),
         children: [
           for (int i = 1; i < introChar.length; i++)
@@ -692,7 +692,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
                 fontWeight: FontWeight.w400,
                 color: validate.isEmoji(introChar[i])
                     ? Theme.of(context).extension<CustomColors>()!.primary700!
-                    : Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                    : Theme.of(context).extension<CustomColors>()!.primary500!,
               ),
             )
         ],
@@ -741,7 +741,7 @@ class PersonalFilePage extends GetView<PersonalFilePageController> {
           'blockWidgetText'.tr,
           style: TextStyle(
             fontSize: 14,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+            color: Theme.of(context).extension<CustomColors>()!.primary500!,
           ),
         ),
         GestureDetector(

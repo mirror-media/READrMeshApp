@@ -84,7 +84,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                       style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                         fontSize: 18,
                       ),
                     )
@@ -169,7 +169,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   labelStyle: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -243,7 +243,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                   labelStyle: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                   ),
@@ -299,7 +299,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv3!,
+                          .primary500!,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
@@ -313,7 +313,7 @@ class EditPersonalFilePage extends GetView<EditPersonalFilePageController> {
                       style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),

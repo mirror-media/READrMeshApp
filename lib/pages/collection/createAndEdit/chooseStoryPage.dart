@@ -421,7 +421,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
         TextSpan(
           text: 'noNewsResultPrefix'.tr,
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
+            color: Theme.of(context).extension<CustomColors>()?.primary500,
           ),
           children: [
             TextSpan(
@@ -433,7 +433,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
             TextSpan(
               text: 'noNewsResultSuffix'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                color: Theme.of(context).extension<CustomColors>()?.primary500,
               ),
             ),
           ],
@@ -514,7 +514,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                     ),

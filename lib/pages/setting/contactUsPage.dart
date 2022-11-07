@@ -240,7 +240,7 @@ class ContactUsPage extends StatelessWidget {
               content,
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                color: Theme.of(context).extension<CustomColors>()!.primary500!,
               ),
             ),
           ],

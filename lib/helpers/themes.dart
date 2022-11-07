@@ -11,7 +11,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? highlightBlue;
   final Color? primary700;
   final Color? primary600;
-  final Color? primaryLv3;
+  final Color? primary500;
   final Color? primaryLv4;
   final Color? primaryLv5;
   final Color? primaryLv6;
@@ -29,7 +29,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.highlightBlue,
     required this.primary700,
     required this.primary600,
-    required this.primaryLv3,
+    required this.primary500,
     required this.primaryLv4,
     required this.primaryLv5,
     required this.primaryLv6,
@@ -50,7 +50,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? highlightBlue,
     Color? primary700,
     Color? primary600,
-    Color? primaryLv3,
+    Color? primary500,
     Color? primaryLv4,
     Color? primaryLv5,
     Color? primaryLv6,
@@ -69,7 +69,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       highlightBlue: highlightBlue ?? this.highlightBlue,
       primary700: primary700 ?? this.primary700,
       primary600: primary600 ?? this.primary600,
-      primaryLv3: primaryLv3 ?? this.primaryLv3,
+      primary500: primary500 ?? this.primary500,
       primaryLv4: primaryLv4 ?? this.primaryLv4,
       primaryLv5: primaryLv5 ?? this.primaryLv5,
       primaryLv6: primaryLv6 ?? this.primaryLv6,
@@ -97,7 +97,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       highlightBlue: Color.lerp(highlightBlue, other.highlightBlue, t),
       primary700: Color.lerp(primary700, other.primary700, t),
       primary600: Color.lerp(primary600, other.primary600, t),
-      primaryLv3: Color.lerp(primaryLv3, other.primaryLv3, t),
+      primary500: Color.lerp(primary500, other.primary500, t),
       primaryLv4: Color.lerp(primaryLv4, other.primaryLv4, t),
       primaryLv5: Color.lerp(primaryLv5, other.primaryLv5, t),
       primaryLv6: Color.lerp(primaryLv6, other.primaryLv6, t),
@@ -210,7 +210,7 @@ ThemeData lightTheme = ThemeData(
       highlightBlue: meshHighlightBlue,
       primary700: meshBlack87,
       primary600: meshBlack66,
-      primaryLv3: meshBlack50,
+      primary500: meshBlack50,
       primaryLv4: meshBlack30,
       primaryLv5: meshBlack20,
       primaryLv6: meshBlack10,
@@ -330,7 +330,7 @@ ThemeData darkTheme = ThemeData(
       highlightBlue: meshHighlightBlueDarkMode,
       primary700: meshGray,
       primary600: meshGray87,
-      primaryLv3: meshGray66,
+      primary500: meshGray66,
       primaryLv4: meshGray50,
       primaryLv5: meshGray30,
       primaryLv6: meshGray20,

@@ -204,7 +204,7 @@ class SettingPage extends GetView<SettingPageController> {
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                      Theme.of(context).extension<CustomColors>()!.primary500!,
                 ),
               ),
             ),
@@ -341,7 +341,7 @@ class SettingPage extends GetView<SettingPageController> {
             if (!hideArrow)
               Icon(
                 Icons.arrow_forward_ios_outlined,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                color: Theme.of(context).extension<CustomColors>()!.primary500!,
                 size: 16,
               ),
           ],

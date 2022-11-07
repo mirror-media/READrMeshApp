@@ -61,7 +61,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   style: TextStyle(
                     fontSize: 14,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                        Theme.of(context).extension<CustomColors>()?.primary500,
                   ),
                 );
               }),
@@ -123,7 +123,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .extension<CustomColors>()
-                                    ?.primaryLv3,
+                                    ?.primary500,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -157,7 +157,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                       fontSize: 13,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                     ),
                     strutStyle: const StrutStyle(
                       forceStrutHeight: true,

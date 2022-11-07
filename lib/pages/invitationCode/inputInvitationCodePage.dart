@@ -174,7 +174,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                color: Theme.of(context).extension<CustomColors>()!.primary500!,
               ),
               children: [
                 WidgetSpan(
@@ -201,11 +201,11 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                       ),
                     ),
                   ),
@@ -217,7 +217,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                     fontSize: 13,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                   ),
                 ),
               ],

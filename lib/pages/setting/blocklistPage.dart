@@ -136,7 +136,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                      Theme.of(context).extension<CustomColors>()!.primary500!,
                 ),
               )
             ],

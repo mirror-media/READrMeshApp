@@ -85,7 +85,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
               onPressed: () => Get.back(),

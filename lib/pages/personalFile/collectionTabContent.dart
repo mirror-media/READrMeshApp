@@ -220,7 +220,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
             child: AutoSizeText(
               'createCollectionBarTitle'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                color: Theme.of(context).extension<CustomColors>()?.primary500,
                 fontSize: 16,
               ),
               maxLines: 1,

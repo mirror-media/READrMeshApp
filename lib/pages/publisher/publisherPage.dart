@@ -116,7 +116,7 @@ class PublisherPage extends GetView<PublisherPageController> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv3!,
+                                  .primary500!,
                             ),
                           ),
                           if (controller.followerCount.value > 1 &&
@@ -128,7 +128,7 @@ class PublisherPage extends GetView<PublisherPageController> {
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv3!,
+                                    .primary500!,
                               ),
                             ),
                         ],

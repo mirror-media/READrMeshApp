@@ -93,7 +93,7 @@ class EditTimelinePage extends GetView<EditTimelinePageController> {
                           fontSize: 18,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv3!,
+                              .primary500!,
                         ),
                       ),
                       onPressed: () async {

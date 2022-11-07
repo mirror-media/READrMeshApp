@@ -135,7 +135,7 @@ class _InputEmailPageState extends State<InputEmailPage> {
           'inputEmailPageBodyText'.tr,
           style: TextStyle(
             fontSize: 13,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+            color: Theme.of(context).extension<CustomColors>()!.primary500!,
             fontWeight: FontWeight.w400,
           ),
         )

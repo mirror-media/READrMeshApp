@@ -110,7 +110,7 @@ class AddToCollectionPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
             );
@@ -122,7 +122,7 @@ class AddToCollectionPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
             );
@@ -135,7 +135,7 @@ class AddToCollectionPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                        Theme.of(context).extension<CustomColors>()?.primary500,
                   ),
                   children: [
                     TextSpan(
@@ -153,7 +153,7 @@ class AddToCollectionPage extends StatelessWidget {
                         fontSize: 14,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     )
                   ],
@@ -177,7 +177,7 @@ class AddToCollectionPage extends StatelessWidget {
                             fontSize: 14,
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv3,
+                                ?.primary500,
                           ),
                         )
                       ],
@@ -196,7 +196,7 @@ class AddToCollectionPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                        Theme.of(context).extension<CustomColors>()?.primary500,
                   ),
                   children: [
                     for (int i = 0;
@@ -208,7 +208,7 @@ class AddToCollectionPage extends StatelessWidget {
                           fontSize: 14,
                           color: Theme.of(context)
                               .extension<CustomColors>()
-                              ?.primaryLv3,
+                              ?.primary500,
                         ),
                         children: [
                           TextSpan(
@@ -226,7 +226,7 @@ class AddToCollectionPage extends StatelessWidget {
                               fontSize: 14,
                               color: Theme.of(context)
                                   .extension<CustomColors>()
-                                  ?.primaryLv3,
+                                  ?.primary500,
                             ),
                           ),
                           if (i < controller.alreadyPickCollections.length - 1)
@@ -236,7 +236,7 @@ class AddToCollectionPage extends StatelessWidget {
                                 fontSize: 14,
                                 color: Theme.of(context)
                                     .extension<CustomColors>()
-                                    ?.primaryLv3,
+                                    ?.primary500,
                               ),
                             ),
                         ],
@@ -248,7 +248,7 @@ class AddToCollectionPage extends StatelessWidget {
                         fontSize: 14,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ],
@@ -273,7 +273,7 @@ class AddToCollectionPage extends StatelessWidget {
                             fontSize: 14,
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv3,
+                                ?.primary500,
                           ),
                         ),
                       ],
