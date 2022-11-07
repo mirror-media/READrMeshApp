@@ -142,7 +142,7 @@ class DescriptionPage extends GetView<DescriptionPageController> {
           Expanded(
             child: Obx(() {
               Color focusBorderColor =
-                  Theme.of(context).extension<CustomColors>()!.primaryLv2!;
+                  Theme.of(context).extension<CustomColors>()!.primary600!;
               Color borderColor =
                   Theme.of(context).extension<CustomColors>()!.primaryLv6!;
               if (controller.collectionDescription.value.length >= 3000) {

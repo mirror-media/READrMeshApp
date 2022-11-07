@@ -154,7 +154,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
           () => Text(
             widget.controller.likeCount.toString(),
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
               fontSize: 12,
             ),
           ),
@@ -188,7 +188,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   : Icons.favorite_border_outlined,
               color: widget.controller.isLiked.value
                   ? Theme.of(context).extension<CustomColors>()!.red!
-                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                  : Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
           ),
         ),
@@ -223,7 +223,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
               fontWeight: FontWeight.w400,
               color: validate.isEmoji(contentChar[0])
                   ? Theme.of(context).extension<CustomColors>()!.primary700!
-                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                  : Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
             children: [
               for (int i = 1; i < contentChar.length; i++)
@@ -236,7 +236,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                             .primary700!
                         : Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv2!,
+                            .primary600!,
                   ),
                 )
             ],
@@ -265,7 +265,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 text: '... ',
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                      Theme.of(context).extension<CustomColors>()!.primary600!,
                 ),
                 children: [
                   TextSpan(

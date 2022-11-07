@@ -178,7 +178,7 @@ class ContactUsPage extends StatelessWidget {
             'contactUsContent'.tr,
             style: TextStyle(
               fontSize: 14,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
           )
         ],

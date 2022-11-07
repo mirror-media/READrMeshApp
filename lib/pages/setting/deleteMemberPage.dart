@@ -136,7 +136,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                      Theme.of(context).extension<CustomColors>()!.primary600!,
                 ),
               );
             },

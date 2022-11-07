@@ -91,7 +91,7 @@ class NewsListItemWidget extends StatelessWidget {
                       CupertinoIcons.ellipsis,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv2,
+                          ?.primary600,
                       size: 15,
                     ),
                   ),

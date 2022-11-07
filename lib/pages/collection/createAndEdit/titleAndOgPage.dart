@@ -220,7 +220,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                color: Theme.of(context).extension<CustomColors>()!.primary600!,
               ),
             ),
             border: UnderlineInputBorder(

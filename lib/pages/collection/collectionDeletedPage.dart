@@ -53,7 +53,7 @@ class CollectionDeletedPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv2,
+                color: Theme.of(context).extension<CustomColors>()?.primary600,
               ),
             ),
           ],

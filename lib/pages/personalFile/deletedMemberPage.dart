@@ -46,7 +46,7 @@ class DeletedMemberPage extends StatelessWidget {
             Text(
               'deletedMemberDescription'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                color: Theme.of(context).extension<CustomColors>()!.primary600!,
                 fontSize: 14,
               ),
             ),

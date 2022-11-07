@@ -100,7 +100,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv2,
+                          ?.primary600,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
@@ -113,7 +113,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                           style: TextStyle(
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv2,
+                                ?.primary600,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),

@@ -95,7 +95,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+            color: Theme.of(context).extension<CustomColors>()!.primary600!,
           ),
         ),
       ),

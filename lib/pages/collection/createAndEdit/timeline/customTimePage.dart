@@ -199,14 +199,14 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   borderSide: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv2!,
+                        .primary600!,
                   ),
                 ),
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv2!,
+                        .primary600!,
                   ),
                 ),
                 suffix: (controller.showClearTextButton.isFalse)

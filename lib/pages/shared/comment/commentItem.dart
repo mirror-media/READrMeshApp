@@ -346,7 +346,7 @@ class CommentItem extends GetView<CommentItemController> {
                       ? Theme.of(context).extension<CustomColors>()!.red!
                       : Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv2!,
+                          .primary600!,
                 ),
               ),
             ),

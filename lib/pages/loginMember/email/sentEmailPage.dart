@@ -52,7 +52,7 @@ class SentEmailPage extends StatelessWidget {
             '${'sentEmailPagePrefix'.tr}\n $email${'sentEmailPageSuffix'.tr}',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
