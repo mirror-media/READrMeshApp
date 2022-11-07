@@ -96,7 +96,7 @@ class CommentInputBox extends GetView<CommentInputBoxController> {
                           .isTrue) {
                         textFieldTextColor = Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv5!;
+                            .primary300!;
                       }
                       return TextField(
                         minLines: 1,

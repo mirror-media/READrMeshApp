@@ -193,7 +193,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                     value: 0,
                                     inactiveColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv5!,
+                                        .primary300!,
                                     thumbColor: Theme.of(context)
                                         .extension<CustomColors>()!
                                         .primary700!,
@@ -208,7 +208,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                         .primary700!,
                                     inactiveColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv5!,
+                                        .primary300!,
                                     thumbColor: Theme.of(context)
                                         .extension<CustomColors>()!
                                         .primary700!,

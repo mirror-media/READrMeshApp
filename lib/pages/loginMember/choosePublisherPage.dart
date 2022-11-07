@@ -69,7 +69,7 @@ class ChoosePublisherPage extends GetView<ChoosePublisherController> {
             color: Theme.of(context).backgroundColor,
             border: Border(
               top: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+                color: Theme.of(context).extension<CustomColors>()!.primary300!,
                 width: 0.5,
               ),
             ),

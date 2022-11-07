@@ -211,7 +211,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
             constraints: const BoxConstraints(maxHeight: 1),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+              color: Theme.of(context).extension<CustomColors>()!.primary300!,
             ),
           ),
         ),

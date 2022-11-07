@@ -86,7 +86,7 @@ class ReadrPage extends StatelessWidget {
                                 .primary700!,
                             unselectedLabelColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv5!,
+                                .primary300!,
                             tabs: controller.tabs.toList(),
                             controller: controller.tabController,
                             indicatorWeight: 1,

@@ -211,7 +211,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+              color: Theme.of(context).extension<CustomColors>()!.primary300!,
             ),
           );
         },
@@ -279,7 +279,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+            color: Theme.of(context).extension<CustomColors>()!.primary300!,
           ),
         ));
       }
@@ -334,7 +334,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+            color: Theme.of(context).extension<CustomColors>()!.primary300!,
           ),
         ));
       }

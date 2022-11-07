@@ -112,7 +112,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+                      Theme.of(context).extension<CustomColors>()!.primary300!,
                 ),
               );
             }

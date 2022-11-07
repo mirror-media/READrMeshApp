@@ -221,7 +221,7 @@ class CommentItem extends GetView<CommentItemController> {
                           shape: BoxShape.circle,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv5!,
+                              .primary300!,
                         ),
                       ),
                     Obx(() {
@@ -260,7 +260,7 @@ class CommentItem extends GetView<CommentItemController> {
                               shape: BoxShape.circle,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv5!,
+                                  .primary300!,
                             ),
                           );
                         }

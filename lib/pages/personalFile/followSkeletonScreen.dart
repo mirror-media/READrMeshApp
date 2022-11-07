@@ -13,7 +13,7 @@ class FollowSkeletonScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         itemBuilder: (context, index) => _listItem(context),
         separatorBuilder: (context, index) => Divider(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+          color: Theme.of(context).extension<CustomColors>()!.primary300!,
           height: 1,
         ),
         itemCount: 3,

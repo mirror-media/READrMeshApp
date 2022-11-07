@@ -502,7 +502,7 @@ class ChooseStoryPage extends GetView<ChooseStoryPageController> {
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv5,
+                          ?.primary300,
                     ),
                   ),
                 ),

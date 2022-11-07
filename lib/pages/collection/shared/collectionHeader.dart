@@ -173,7 +173,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv5,
+                        Theme.of(context).extension<CustomColors>()?.primary300,
                   ),
                 ),
                 Obx(

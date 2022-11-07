@@ -102,7 +102,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                   top: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv5!,
+                        .primary300!,
                     width: 0.5,
                   ),
                 ),

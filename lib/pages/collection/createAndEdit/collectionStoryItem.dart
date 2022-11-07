@@ -146,7 +146,7 @@ class CollectionStoryItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv5,
+                          ?.primary300,
                     ),
                   ),
               ],

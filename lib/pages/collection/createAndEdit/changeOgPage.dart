@@ -158,7 +158,7 @@ class ChangeOgPage extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(20)),
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv5,
+                            ?.primary300,
                       ),
                     ),
                   ),

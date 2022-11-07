@@ -51,7 +51,7 @@ class CollapsePickBar extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+            color: Theme.of(context).extension<CustomColors>()!.primary300!,
           ),
         ),
         Obx(
