@@ -56,6 +56,16 @@
                 android:host="@string/dynamiclink_host" />
             </intent-filter>
         </activity>
+       <activity
+           android:name="com.portto.fcl.webview.WebViewActivity"
+           android:theme="@style/FCLTheme"
+           android:launchMode="singleTop"/>
+
+       <provider 
+          android:authorities="${applicationId}.com.portto.fcl.context"
+          android:name="com.portto.fcl.lifecycle.FCLContentProvider" 
+          android:exported="false" />
+          
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
