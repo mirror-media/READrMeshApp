@@ -35,9 +35,14 @@ class LoginPageController extends GetxController {
   void login(LoginType type, bool isNewUser) async {
     try {
       Member? result;
+
+      ///isNewUser is from Firebase, but sometimes may happen that the user is
+      ///already logged in Firebase before, but no member data in our db.
+      ///so still need to check whether db has data.
       if (!isNewUser) {
         isLoading.value = true;
 
+        //return null if no member data that isActive with Firebase id
         result = await memberRepos.fetchMemberData().timeout(
           const Duration(minutes: 1),
           onTimeout: () {
@@ -48,7 +53,10 @@ class LoginPageController extends GetxController {
       }
 
       if (result != null) {
+        //use above result to update member data in UserService
         await Get.find<UserService>().fetchUserData(member: result);
+
+        //check followingPublisherIds and update member data in CMS when is not empty
         final List<String> followingPublisherIds =
             prefs.getStringList('followingPublisherIds') ?? [];
         bool syncFollowingPublisherSuccess = true;
@@ -63,17 +71,20 @@ class LoginPageController extends GetxController {
           );
         }
 
+        //link linkInvitationCode with current member when invitationCodeId is not empty
         final String invitationCodeId =
             prefs.getString('invitationCodeId') ?? '';
         if (invitationCodeId.isNotEmpty) {
           invitationCodeRepos.linkInvitationCode(invitationCodeId);
         }
 
+        //set isFirstTime to false when is true or null
         final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
         if (isFirstTime) {
           await prefs.setBool('isFirstTime', false);
         }
 
+        //save login type for determine logo in setting page
         switch (type) {
           case LoginType.facebook:
             await prefs.setString('loginType', 'facebook');
@@ -97,6 +108,7 @@ class LoginPageController extends GetxController {
         );
 
         if (isFirstTime) {
+          //restart app
           Get.offAll(RootPage());
         } else {
           Get.back();
@@ -105,6 +117,7 @@ class LoginPageController extends GetxController {
             showFollowingSyncToast();
           } else if (followingPublisherIds.isNotEmpty &&
               !syncFollowingPublisherSuccess) {
+            //try again later when update failed above
             Get.find<UserService>()
                 .addVisitorFollowing(followingPublisherIds)
                 .then((value) {
@@ -132,6 +145,7 @@ class LoginPageController extends GetxController {
     }
   }
 
+  //fetch to pass and use in inputNamePage
   void _fetchPublisherTitles() async {
     var publisherList = await personalFileRepos.fetchAllPublishers();
     publisherTitleList.clear();
