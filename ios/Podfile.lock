@@ -73,34 +73,34 @@ PODS:
   - Firebase/RemoteConfig (9.6.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 9.6.0)
-  - firebase_analytics (9.3.7):
+  - firebase_analytics (9.3.8):
     - Firebase/Analytics (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_auth (3.11.0):
+  - firebase_auth (3.11.2):
     - Firebase/Auth (= 9.6.0)
     - firebase_core
     - Flutter
   - firebase_core (1.24.0):
     - Firebase/CoreOnly (= 9.6.0)
     - Flutter
-  - firebase_crashlytics (2.8.12):
+  - firebase_crashlytics (2.9.0):
     - Firebase/Crashlytics (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_dynamic_links (4.3.9):
+  - firebase_dynamic_links (4.3.11):
     - Firebase/DynamicLinks (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (13.0.4):
+  - firebase_messaging (13.1.0):
     - Firebase/Messaging (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_performance (0.8.3-2):
+  - firebase_performance (0.8.3-3):
     - Firebase/Performance (= 9.6.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (2.0.19):
+  - firebase_remote_config (2.0.20):
     - Firebase/RemoteConfig (= 9.6.0)
     - firebase_core
     - Flutter
@@ -199,12 +199,12 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - Google-Mobile-Ads-SDK (9.6.0):
+  - Google-Mobile-Ads-SDK (9.10.0):
     - GoogleAppMeasurement (< 10.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
   - google_mobile_ads (0.0.1):
     - Flutter
-    - Google-Mobile-Ads-SDK (= 9.6.0)
+    - Google-Mobile-Ads-SDK (= 9.10.0)
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
@@ -651,14 +651,14 @@ SPEC CHECKSUMS:
   FCL-SDK: 633db19d816a3045b01051fe750064deec73a18c
   fcl_flutter: 71e3a78b64f26541998d15ecf258de7676a94589
   Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
-  firebase_analytics: 80b63bd6ff50095e908feba5070aa8dd75ccdfbc
-  firebase_auth: 659d792742e05dc223afc033f008e2f335f8f276
+  firebase_analytics: 9937a91df25cce5b0ee19eaf65277ff8bf0f88e5
+  firebase_auth: 07a4db69cfa447ac42cb7faa560fc100708b707c
   firebase_core: 7c28ecc1e5dd74e03829ac3e9ff5ba3314e737a9
-  firebase_crashlytics: 87cd7e0d55dede8d8ad7a81f999b0e4873c49eed
-  firebase_dynamic_links: be59a79b16ed7630811d9c9a9d4ca3d430f21ac7
-  firebase_messaging: a42787dea8e7a8f96458ef8b1c159495f8aa1c97
-  firebase_performance: e78bffb7d1f5ad4976829e8c951e36921c2fe1f0
-  firebase_remote_config: 8f69d4c2cdda7e5582f31ce0d8dd64a297871517
+  firebase_crashlytics: 520a59314eaaadb34f9be4c2a285d99cfa88ebdb
+  firebase_dynamic_links: 8fc870871acfbbd39172cb430e4a04c0fe2be4c7
+  firebase_messaging: a2a8c6db6d799c7f59b1c0d7c68a2f0027bfa2c4
+  firebase_performance: 3ae9ae3142d5d0bf8782e1e7a73dde2267bc4415
+  firebase_remote_config: df81462997f4d1582113c543e5a39ef832cebb92
   FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
   FirebaseAnalytics: 89ad762c6c3852a685794174757e2c60a36b6a82
   FirebaseAuth: e4a5d3c36e778e41141b91cc861103a441d80bcc
@@ -677,8 +677,8 @@ SPEC CHECKSUMS:
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  Google-Mobile-Ads-SDK: bdf13d37aa77e368510687b5305d4972b4f9e9c7
-  google_mobile_ads: 8d52c91890e95afc0718f810860b25e55394a327
+  Google-Mobile-Ads-SDK: eb398023f0d97cdd259b171052f1eb433de00c87
+  google_mobile_ads: f75c0a851119350bae87dc06aac86102a7e690a0
   google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
   GoogleAppMeasurement: 6de2b1a69e4326eb82ee05d138f6a5cb7311bcb1
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
