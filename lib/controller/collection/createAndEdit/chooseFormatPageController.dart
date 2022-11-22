@@ -35,6 +35,7 @@ class ChooseFormatPageController extends GetxController {
     isCreating.value = true;
 
     try {
+      // create Photo in CMS first to link when create collection
       String imageId = await collectionRepos
           .createOgPhoto(
               ogImageUrlOrPath: Get.find<TitleAndOgPageController>()
@@ -56,11 +57,13 @@ class ChooseFormatPageController extends GetxController {
             const Duration(minutes: 1),
           );
 
+      // send pub/sub to create notifies
       Get.find<PubsubService>().addCollection(
         memberId: Get.find<UserService>().currentUser.memberId,
         collectionId: newCollection.id,
       );
 
+      // if current member's collection tab controller is exist, refetch to update collection list
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
