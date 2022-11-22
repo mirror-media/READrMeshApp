@@ -14,10 +14,14 @@ class WalletService extends GetxService {
   }
 
   Future<String?> login() async {
-    return await _fclFlutter.simpleLogin();
+    return await _fclFlutter.accountProofLogin('readrMeshDev');
   }
 
   Future<void> unauthenticate() async {
     await _fclFlutter.unauthenticate();
+  }
+
+  Future<String?> getAddress() async {
+    return await _fclFlutter.getAddress();
   }
 }
