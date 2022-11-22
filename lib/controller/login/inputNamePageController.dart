@@ -35,6 +35,7 @@ class InputNamePageController extends GetxController {
         await InvitationCodeService().linkInvitationCode(invitationCodeId);
       }
 
+      //check followingPublisherIds whether is empty to know where to go next
       final List<String> followingPublisherIds =
           prefs.getStringList('followingPublisherIds') ?? [];
       if (followingPublisherIds.isNotEmpty) {
