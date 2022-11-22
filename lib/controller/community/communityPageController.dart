@@ -95,6 +95,7 @@ class CommunityPageController extends GetxController {
         }),
       ]);
 
+      //sort again after combined to one list
       pickedList.sort((a, b) => b.orderByTime.compareTo(a.orderByTime));
       communityList.assignAll(pickedList);
       isNoMore.value = _noMorePicked && _noMoreComment && _noMoreNewCollection;
@@ -107,6 +108,7 @@ class CommunityPageController extends GetxController {
     }
   }
 
+  //call when user tap button in bottomNavigationBar
   void scrollToTopAndRefresh() async {
     if (isInitialized) {
       await Future.doWhile(() async {
@@ -183,6 +185,7 @@ class CommunityPageController extends GetxController {
 
       newPickedList.addAll(newCommentList);
       newPickedList.addAll(newCollectionList);
+      //sort again after combined to one list
       newPickedList.sort((a, b) => b.orderByTime.compareTo(a.orderByTime));
       communityList.addAll(newPickedList);
       isNoMore.value = _noMorePicked && _noMoreComment && _noMoreNewCollection;
