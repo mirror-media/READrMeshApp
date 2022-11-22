@@ -177,7 +177,7 @@ dependencies:
   # splash screen
   flutter_native_splash: ^2.2.7
   # google ads
-  google_mobile_ads: ^2.0.1
+  google_mobile_ads: ^2.1.0
   # blocto flow sdk
   fcl_flutter:
     git:
