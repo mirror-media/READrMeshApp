@@ -13,7 +13,7 @@ class WalletPage extends GetView<WalletPageController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
       ),
