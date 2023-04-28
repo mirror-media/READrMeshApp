@@ -77,7 +77,7 @@ class _EditCommentWidgetState extends State<EditCommentWidget> {
               autofocus: true,
               controller: _controller,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),

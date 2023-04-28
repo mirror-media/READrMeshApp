@@ -15,6 +15,7 @@ import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/dynamicLinkService.dart';
+import 'package:readr/getxServices/walletService.dart';
 
 Future<void> appInitial(BuildFlavor buildFlavor) async {
   print('App starting ...');
@@ -39,7 +40,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => PickAndBookmarkService().init());
   await Get.putAsync(() => PubsubService().init());
   await Get.putAsync(() => AdService().init());
-
+  await Get.putAsync(() => WalletService().init());
   print('All services started...');
 }
 

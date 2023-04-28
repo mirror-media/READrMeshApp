@@ -46,11 +46,11 @@ class SmallCollectionItem extends StatelessWidget {
                         child: Shimmer.fromColors(
                           baseColor: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv6!
+                              .primary200!
                               .withOpacity(0.15),
                           highlightColor: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv6!,
+                              .primary200!,
                           child: Container(
                             height: 75,
                             width: 150,

@@ -79,7 +79,7 @@ class ParagraphFormat {
                       fontSize: 14,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                     )
                   ],
                 ),
@@ -167,7 +167,7 @@ class ParagraphFormat {
                   html: paragraph.contents![0].data,
                   fontSize: 14,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               );
             }
@@ -312,7 +312,7 @@ class ParagraphFormat {
                   fontSize: textSize,
                   height: 1.7,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
             ),
@@ -343,7 +343,7 @@ class ParagraphFormat {
                   html: dataList[index],
                   fontSize: 16,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   isCitation: true,
                 ),
                 const Divider(),
@@ -353,7 +353,7 @@ class ParagraphFormat {
           return ParseTheTextToHtmlWidget(
             html: dataList[index],
             fontSize: 16,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
             isCitation: true,
           );
         }
@@ -367,7 +367,7 @@ class ParagraphFormat {
                 height: 6,
                 decoration: BoxDecoration(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -377,7 +377,7 @@ class ParagraphFormat {
                 child: ParseTheTextToHtmlWidget(
               html: dataList[index],
               fontSize: textSize,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             )),
           ],
         );

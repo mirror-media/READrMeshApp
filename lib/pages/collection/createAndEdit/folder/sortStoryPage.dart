@@ -58,7 +58,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                 children: [
                   SpinKitWanderingCubes(
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
@@ -179,7 +179,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         Icons.reorder_outlined,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv4,
+                            ?.primary400,
                       ),
                       shape: BorderDirectional(
                         top: index == 0
@@ -187,7 +187,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                             : BorderSide(
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv6!,
+                                    .primary200!,
                                 width: 1),
                       ),
                     ),
@@ -300,7 +300,7 @@ class SortStoryPage extends GetView<SortStoryPageController> {
                         style: TextButton.styleFrom(
                           backgroundColor: Theme.of(context)
                               .extension<CustomColors>()
-                              ?.primaryLv1,
+                              ?.primary700,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 16,

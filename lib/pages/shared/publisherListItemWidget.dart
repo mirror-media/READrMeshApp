@@ -42,7 +42,7 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
               ),
               Obx(
@@ -66,7 +66,7 @@ class PublisherListItemWidget extends GetView<FollowableItemController> {
                       fontWeight: FontWeight.w400,
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv3!,
+                          .primary500!,
                     ),
                   );
                 },

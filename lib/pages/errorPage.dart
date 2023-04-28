@@ -119,7 +119,7 @@ class ErrorPage extends StatelessWidget {
                 side: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!),
+                        .primary700!),
               ),
               onPressed: onPressedFunction,
               child: Text(

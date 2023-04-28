@@ -135,6 +135,9 @@ class NewsListItem {
     List<Member> allPickedMember = [];
     allPickedMember.addAll(followingPickMembers);
     allPickedMember.addAll(otherPickMembers);
+
+    /// update value if controller exists
+    /// otherwise create one
     if (updateController) {
       if (Get.isRegistered<PickableItemController>(tag: 'News${json['id']}') ||
           Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {

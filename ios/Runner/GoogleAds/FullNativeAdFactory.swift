@@ -9,6 +9,13 @@ class FullNativeAdFactory : FLTNativeAdFactory {
         let nativeAdView = nibView as! GADNativeAdView
 
         (nativeAdView.headlineView as! UILabel).text = nativeAd.headline
+        if #available(iOS 13.0, *){
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                (nativeAdView.headlineView as! UILabel).font = UIFont.systemFont(ofSize: (nativeAdView.headlineView as! UILabel).font!.pointSize, weight: .medium)
+            }
+        }
+        
+        
 
         (nativeAdView.bodyView as! UILabel).text = nativeAd.body
         nativeAdView.bodyView!.isHidden = nativeAd.body == nil

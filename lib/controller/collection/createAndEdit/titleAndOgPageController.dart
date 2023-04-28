@@ -28,17 +28,17 @@ class TitleAndOgPageController extends GetxController {
     isUpdating.value = true;
 
     try {
-      await collectionRepos
-          .updateOgPhoto(
+      await Future.wait(
+        [
+          collectionRepos.updateOgPhoto(
               photoId: collection!.ogImageId,
-              ogImageUrlOrPath: collectionOgUrlOrPath.value)
-          .timeout(const Duration(minutes: 1));
-      await collectionRepos
-          .updateTitle(
+              ogImageUrlOrPath: collectionOgUrlOrPath.value),
+          collectionRepos.updateTitle(
             collectionId: collection!.id,
             newTitle: collectionTitle.value,
           )
-          .timeout(const Duration(minutes: 1));
+        ],
+      ).timeout(const Duration(minutes: 1));
 
       Get.back();
     } catch (e) {

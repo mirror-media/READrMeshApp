@@ -107,10 +107,10 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         factoryId: 'outline',
         adHeight: context.width * 0.75,
         decoration: BoxDecoration(
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv6,
+          color: Theme.of(context).extension<CustomColors>()?.primary200,
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
           border: Border.all(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+            color: Theme.of(context).extension<CustomColors>()!.primary200!,
           ),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -211,7 +211,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+              color: Theme.of(context).extension<CustomColors>()!.primary300!,
             ),
           );
         },
@@ -279,7 +279,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+            color: Theme.of(context).extension<CustomColors>()!.primary300!,
           ),
         ));
       }
@@ -334,7 +334,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+            color: Theme.of(context).extension<CustomColors>()!.primary300!,
           ),
         ));
       }
@@ -393,11 +393,11 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              color: Theme.of(context).extension<CustomColors>()!.primary200!,
               width: 1,
             ),
             bottom: BorderSide(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+              color: Theme.of(context).extension<CustomColors>()!.primary200!,
               width: 1,
             ),
           ),
@@ -452,13 +452,13 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10.0)),
                       border: Border.all(
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv6!,
+                            .primary200!,
                       ),
                     ),
                     margin: const EdgeInsets.fromLTRB(20, 0, 20, 32),
@@ -514,7 +514,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                       fontSize: _textSize - 4,
                       height: 1.5,
                     ),
@@ -553,7 +553,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         height: 1.5,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!,
+                            .primary700!,
                       ),
                     ),
                   ),
@@ -576,7 +576,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
                 width: 8,
               ),
             ),
@@ -707,11 +707,11 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),
@@ -745,11 +745,11 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),

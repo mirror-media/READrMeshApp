@@ -19,7 +19,7 @@ class BlocklistPage extends GetView<SettingPageController> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Get.back(),
         ),
@@ -28,7 +28,7 @@ class BlocklistPage extends GetView<SettingPageController> {
           'blockList'.tr,
           style: TextStyle(
             fontSize: 18,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -54,7 +54,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                     fontSize: 16,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv4!,
+                        .primary400!,
                   ),
                 ),
               );
@@ -79,7 +79,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                             width: 0.5,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv6!,
+                                .primary200!,
                           ),
                         ),
                         color: Theme.of(context).backgroundColor,
@@ -124,7 +124,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
               ),
               ExtendedText(
@@ -136,7 +136,7 @@ class BlocklistPage extends GetView<SettingPageController> {
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                      Theme.of(context).extension<CustomColors>()!.primary500!,
                 ),
               )
             ],
@@ -151,7 +151,7 @@ class BlocklistPage extends GetView<SettingPageController> {
           },
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               width: 1,
             ),
             backgroundColor: Theme.of(context).backgroundColor,
@@ -161,7 +161,7 @@ class BlocklistPage extends GetView<SettingPageController> {
             'unBlock'.tr,
             style: TextStyle(
               fontSize: 14,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
             ),
           ),
         ),

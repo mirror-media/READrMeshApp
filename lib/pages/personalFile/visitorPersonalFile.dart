@@ -16,7 +16,7 @@ class VisitorPersonalFile extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.settings,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () {
             Get.to(() => SettingPage());
@@ -29,7 +29,7 @@ class VisitorPersonalFile extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         centerTitle: GetPlatform.isIOS,
@@ -47,7 +47,7 @@ class VisitorPersonalFile extends StatelessWidget {
           child: Text(
             'visitorContentTitle'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
@@ -65,7 +65,7 @@ class VisitorPersonalFile extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                  Theme.of(context).extension<CustomColors>()!.primary700!,
               elevation: 0,
               padding: const EdgeInsets.symmetric(
                 vertical: 12,

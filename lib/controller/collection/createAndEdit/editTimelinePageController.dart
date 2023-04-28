@@ -179,6 +179,7 @@ class EditTimelinePageController extends GetxController {
     isUpdating.value = true;
 
     try {
+      // create Photo in CMS first to link when create collection
       String imageId = await collectionRepos
           .createOgPhoto(
               ogImageUrlOrPath: Get.find<TitleAndOgPageController>()
@@ -187,9 +188,12 @@ class EditTimelinePageController extends GetxController {
           .timeout(
             const Duration(minutes: 1),
           );
+
+      //update sortOrder in TimelineCollectionPick
       for (int i = 0; i < timelineStoryList.length; i++) {
         timelineStoryList[i].sortOrder = i;
       }
+
       Collection newCollection = await collectionRepos
           .createCollection(
             title: Get.find<TitleAndOgPageController>().collectionTitle.value,
@@ -204,11 +208,13 @@ class EditTimelinePageController extends GetxController {
             const Duration(minutes: 1),
           );
 
+      // send pub/sub to create notifies
       Get.find<PubsubService>().addCollection(
         memberId: Get.find<UserService>().currentUser.memberId,
         collectionId: newCollection.id,
       );
 
+      // if current member's collection tab controller is exist, refetch to update collection list
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
@@ -216,6 +222,9 @@ class EditTimelinePageController extends GetxController {
             .fetchCollecitionList(useCache: false);
       }
 
+      ///check where user come from
+      ///if from addToCollectionPage, go back to previous page of addToCollectionPage
+      ///else pop all create collection related pages and push to collection page
       if (Get.isRegistered<AddToCollectionPageController>()) {
         Get.until(
           (route) {
@@ -261,6 +270,7 @@ class EditTimelinePageController extends GetxController {
     isUpdating.value = false;
   }
 
+  //edit collection's collectionPicks
   void updateCollectionPicks() async {
     isUpdating.value = true;
 
@@ -289,6 +299,7 @@ class EditTimelinePageController extends GetxController {
     }
   }
 
+  //show when first time edit
   void _showDeleteHint() async {
     await showGeneralDialog(
       context: Get.overlayContext!,

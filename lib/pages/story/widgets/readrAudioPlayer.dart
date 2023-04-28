@@ -113,13 +113,13 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 width: 3,
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv1!,
+                                    .primary700!,
                               )),
                           child: Icon(
                             Icons.pause,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             size: 40,
                           ),
                         )
@@ -131,13 +131,13 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 width: 3,
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv1!,
+                                    .primary700!,
                               )),
                           child: Icon(
                             Icons.play_arrow_rounded,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             size: 40,
                           ),
                         ),
@@ -193,10 +193,10 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                     value: 0,
                                     inactiveColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv5!,
+                                        .primary300!,
                                     thumbColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv1!,
+                                        .primary700!,
                                     onChanged: (v) {},
                                   )
                                 : Slider(
@@ -205,13 +205,13 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                     value: sliderPosition,
                                     activeColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv1!,
+                                        .primary700!,
                                     inactiveColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv5!,
+                                        .primary300!,
                                     thumbColor: Theme.of(context)
                                         .extension<CustomColors>()!
-                                        .primaryLv1!,
+                                        .primary700!,
                                     onChanged: (v) {
                                       _audioPlayer.seek(
                                           Duration(milliseconds: v.toInt()));
@@ -235,7 +235,7 @@ class _READrAudioPlayerState extends State<READrAudioPlayer>
                                 VerticalDivider(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv6!,
+                                      .primary200!,
                                   thickness: 1,
                                   width: 17,
                                 ),

@@ -19,6 +19,7 @@ class RecommendMemberBlockController extends RecommendItemController {
       for (var member in recommendMemberList) {
         recommendMembers.add(MemberFollowableItem(member));
       }
+      //show recommended members randomly
       recommendMembers.shuffle();
       isLoading.value = false;
     } catch (e) {

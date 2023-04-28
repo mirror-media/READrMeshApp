@@ -88,6 +88,8 @@ class Collection {
       updateTime = DateTime.parse(json['createdAt']);
     }
 
+    /// update value if controller exists
+    /// otherwise create one
     if (Get.isRegistered<PickableItemController>(
             tag: 'Collection${json['id']}') ||
         Get.isPrepared<PickableItemController>(
@@ -228,6 +230,8 @@ class Collection {
       updateTime = DateTime.parse(json['createdAt']);
     }
 
+    /// update value if controller exists
+    /// otherwise create one
     if (Get.isRegistered<PickableItemController>(
             tag: 'Collection${json['id']}') ||
         Get.isPrepared<PickableItemController>(

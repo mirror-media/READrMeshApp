@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import google_mobile_ads
+import FCL_SDK
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -25,4 +26,22 @@ import google_mobile_ads
       
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+
+  override func application(
+    _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        fcl.application(open: url)
+        return true
+    }
+        
+  override func application(
+    _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        fcl.continueForLinks(userActivity)
+        return true
+    }
 }
