@@ -16,14 +16,14 @@ class EditorChoiceService implements EditorChoiceRepos {
     String query = """
     query(
       \$where: EditorChoiceWhereInput, 
-      \$first: Int){
-      allEditorChoices(
+      \$take: Int){
+      editorChoices(
         where: \$where, 
-        first: \$first, 
-        sortBy: [sortOrder_ASC, createdAt_DESC]
+        take: \$take, 
+        orderBy: [ { sortOrder: asc}, { createdAt: desc }]
       ) {
         link
-        choice {
+        choices {
           id
           style
         }
@@ -32,8 +32,10 @@ class EditorChoiceService implements EditorChoiceRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "where": {"state": "published"},
-      "first": 3
+      "where": {
+        "state": {"equals": "published"}
+      },
+      "take": 3
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -44,9 +46,9 @@ class EditorChoiceService implements EditorChoiceRepos {
     );
 
     List<EditorChoiceItem> editorChoiceList = [];
-    for (int i = 0; i < jsonResponse.data!['allEditorChoices'].length; i++) {
+    for (int i = 0; i < jsonResponse.data!['editorChoices'].length; i++) {
       editorChoiceList.add(
-          EditorChoiceItem.fromJson(jsonResponse.data!['allEditorChoices'][i]));
+          EditorChoiceItem.fromJson(jsonResponse.data!['editorChoices'][i]));
     }
     return editorChoiceList;
   }
