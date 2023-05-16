@@ -12,18 +12,18 @@ class CategoryServices implements CategoryRepos {
     String query = """
     query(
       \$where: CategoryWhereInput){
-      allCategories(
+      categories(
         where: \$where, 
       ) {
         id
-        name
+        title
         slug
         relatedPost(
           where:{
-            state: published
+            state: {equals: "published" }
           }
-          sortBy: [ publishTime_DESC ], 
-          first: 1
+          orderBy: [ { publishTime: desc } ], 
+          take: 1
         ){
           publishTime
         }
@@ -32,7 +32,9 @@ class CategoryServices implements CategoryRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "where": {"state": "active"}
+      "where": {
+        "state": {"equals": "active"}
+      }
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -43,7 +45,7 @@ class CategoryServices implements CategoryRepos {
     );
 
     List<Category> categoryList = List<Category>.from(jsonResponse
-        .data!['allCategories']
+        .data!['categories']
         .map((item) => Category.fromJson(item)));
 
     categoryList.sort((a, b) => b.latestPostTime!.compareTo(a.latestPostTime!));

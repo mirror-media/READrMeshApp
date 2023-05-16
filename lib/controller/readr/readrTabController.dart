@@ -71,14 +71,14 @@ class ReadrTabController extends GetxController {
         result = await tabStoryListRepos.fetchStoryList(
           storySkip: _storySkip,
           projectSkip: _projectSkip,
-          storyFirst: 12,
+          storyTake: 12,
         );
       } else {
         result = await tabStoryListRepos.fetchStoryListByCategorySlug(
           categorySlug,
           storySkip: _storySkip,
           projectSkip: _projectSkip,
-          storyFirst: 12,
+          storyTake: 12,
         );
       }
       await Get.find<PickAndBookmarkService>().fetchPickIds();
