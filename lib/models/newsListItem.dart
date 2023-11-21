@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'dart:developer';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
@@ -57,6 +58,7 @@ class NewsListItem {
     List<Comment> allComments = [];
     String? content;
     List<Member>? commentMembers;
+    String? ogImage;
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
@@ -72,6 +74,15 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['full_content'])) {
       fullContent = json['full_content'];
+    }
+
+    if (BaseModel.checkJsonKeys(json, ['og_image'])) {
+      ogImage = json['og_image'];
+      if (ogImage == '') {
+        ogImage =
+            'https://storage.googleapis.com/statics-readr-tw-prod/assets/icons/readr-logo-backstage.png';
+        log('og: $ogImage');
+      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -177,7 +188,7 @@ class NewsListItem {
       source: source,
       category: category,
       publishedDate: publishDate,
-      heroImageUrl: json["og_image"],
+      heroImageUrl: ogImage,
       payWall: payWall,
       fullScreenAd: fullScreenAd,
       showComment: showComment,

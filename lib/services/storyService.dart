@@ -13,31 +13,36 @@ class StoryServices implements StoryRepos {
     query (
       \$where: PostWhereInput,
     ) {
-      allPosts(
+      posts(
         where: \$where
       ) {
         style
         name
         readingTime
         summaryApiData
-        contentApiData
+        apiData
         citationApiData
         publishTime
         updatedAt
         heroImage {
-          mobile: urlMobileSized
-          desktop: urlDesktopSized
+          resized {
+            w480
+            w1200
+          }
         }
         heroVideo {
           coverPhoto {
-            tiny: urlTinySized
-            mobile: urlMobileSized
-            tablet: urlTabletSized
-            desktop: urlDesktopSized
-            original: urlOriginal
+            resized {
+              original
+              w480
+              w800
+              w1200
+              w1600
+              w2400
+            }
           }
           file {
-            publicUrl
+            url
           }
           url
         }
@@ -45,55 +50,65 @@ class StoryServices implements StoryRepos {
         categories {
           id
           slug
-          name
+          title
         }
         writers {
           name
-          slug
+          id
           bio
           image{
-            urlMobileSized
+            resized {
+              w480
+            }
           }
         }
         photographers {
           name
-          slug
+          id
           bio
           image{
-            urlMobileSized
+            resized {
+              w480
+            }
           }
         }
         cameraOperators {
           name
-          slug
+          id
           bio
           image{
-            urlMobileSized
+            resized {
+              w480
+            }
           }
         }
         designers {
           name
-          slug
+          id
           bio
           image{
-            urlMobileSized
+            resized {
+              w480
+            }
           }
         }
         engineers {
           name 
-          slug
+          id
           bio
           image{
-            urlMobileSized
-          }
+            resized {
+              w480
+            }          }
         }
         dataAnalysts{
           name
-          slug
+          id
           bio
           image{
-            urlMobileSized
-          }
+            resized {
+              w480
+            }          }
         }
         otherByline
       }
@@ -101,7 +116,10 @@ class StoryServices implements StoryRepos {
     """;
 
     Map<String, dynamic> variables = {
-      "where": {"state": "published", "id": id},
+      "where": {
+        "state": {"equals": "published"},
+        "id": {"equals": id}
+      },
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -111,6 +129,6 @@ class StoryServices implements StoryRepos {
       cacheDuration: 30.minutes,
     );
 
-    return Story.fromJson(jsonResponse.data!['allPosts'][0]);
+    return Story.fromJson(jsonResponse.data!['posts'][0]);
   }
 }
