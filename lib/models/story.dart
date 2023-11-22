@@ -65,15 +65,23 @@ class Story {
     }
 
     if (BaseModel.hasKey(json, 'summaryApiData') &&
-        json["summaryApiData"] != 'NaN') {
-      summaryApiData = Paragraph.parseResponseBody(json['summaryApiData']);
+        json["summaryApiData"] != 'NaN' &&
+        json["summaryApiData"] != null) {
+      if (json["summaryApiData"] is String) {
+        summaryApiData = Paragraph.parseResponseBody(json['summaryApiData']);
+      } else if (json["summaryApiData"] is List<dynamic>) {
+        summaryApiData = Paragraph.parseListFromJson(json["summaryApiData"]);
+      }
     }
 
     List<Paragraph> contentApiData = [];
     List<String>? contentAnnotationData = [];
-    if (BaseModel.hasKey(json, 'contentApiData') &&
-        json["contentApiData"] != 'NaN') {
-      contentApiData = Paragraph.parseResponseBody(json["contentApiData"]);
+    if (BaseModel.hasKey(json, 'apiData') && json["apiData"] != 'NaN') {
+      if (json['apiData'] is String) {
+        contentApiData = Paragraph.parseResponseBody(json["apiData"]);
+      } else if (json['apiData'] is List<dynamic>) {
+        contentApiData = Paragraph.parseListFromJson(json['apiData']);
+      }
       for (var paragraph in contentApiData) {
         if (paragraph.type == 'annotation' && paragraph.contents!.isNotEmpty) {
           List<String> sourceData =
@@ -96,7 +104,11 @@ class Story {
     List<Paragraph> citationApiData = [];
     if (BaseModel.hasKey(json, 'citationApiData') &&
         json["citationApiData"] != 'NaN') {
-      citationApiData = Paragraph.parseResponseBody(json["citationApiData"]);
+      if (json['citationApiData'] is List<dynamic>) {
+        citationApiData = Paragraph.parseListFromJson(json["citationApiData"]);
+      } else if (json['citationApiData'] is String) {
+        citationApiData = Paragraph.parseResponseBody(json["citationApiData"]);
+      }
     }
 
     String? videoUrl;
