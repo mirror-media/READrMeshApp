@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/storyPageController.dart';
+import 'package:readr/core/value/strings.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dateTimeFormat.dart';
 import 'package:readr/helpers/themes.dart';
@@ -28,6 +29,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
   final double _textSize = 18;
   final ItemScrollController _itemScrollController = ItemScrollController();
   final NewsListItem news;
+
   ReadrStoryWidget(this.news);
 
   @override
@@ -323,7 +325,7 @@ class ReadrStoryWidget extends GetView<StoryPageController> {
 
     for (int i = 0; i < peopleList.length; i++) {
       authorNameList.add(Text(
-        peopleList[i].name,
+        peopleList[i].name ?? StringDefault.stringNullDefault,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
       ));
       if (i != peopleList.length - 1) {

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:readr/models/baseModel.dart';
 
 class People {
-  String slug;
-  String name;
+  String? slug;
+  String? name;
   String? bio;
   String? photoUrl;
 
