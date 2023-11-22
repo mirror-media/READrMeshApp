@@ -23,7 +23,7 @@ class Category {
           DateTime.parse(json['relatedPost'][0]['publishTime']).toLocal();
     }
 
-    String name = json[BaseModel.nameKey];
+    String name = json[BaseModel.slugKey];
 
     if (Get.locale != const Locale('zh', 'TW') ||
         Get.locale != const Locale('zh', 'HK')) {
