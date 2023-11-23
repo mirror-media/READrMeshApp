@@ -35,8 +35,6 @@ import 'package:visibility_detector/visibility_detector.dart';
 class CommunityPage extends GetView<CommunityPageController> {
   @override
   Widget build(BuildContext context) {
-    final service = Get.find<EnvironmentService>();
-
     if (!controller.isInitialized) {
       controller.initPage();
     }
@@ -60,7 +58,11 @@ class CommunityPage extends GetView<CommunityPageController> {
           }
 
           if (controller.isInitialized) {
-            return Text(service.config.readrApi);
+            return ScrollsToTop(
+              onScrollsToTop: (event) async =>
+                  controller.scrollToTopAndRefresh(),
+              child: _buildBody(context),
+            );
           }
 
           return CustomScrollView(
