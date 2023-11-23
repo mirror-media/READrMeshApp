@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
@@ -18,8 +19,8 @@ import 'package:readr/pages/errorPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/collection/collectionInfo.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
-import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/homeSkeletonScreen.dart';
+import 'package:readr/pages/shared/mainAppBar.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
@@ -28,13 +29,14 @@ import 'package:readr/pages/shared/profilePhotoStack.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/pages/shared/timestamp.dart';
-import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CommunityPage extends GetView<CommunityPageController> {
   @override
   Widget build(BuildContext context) {
+    final service = Get.find<EnvironmentService>();
+
     if (!controller.isInitialized) {
       controller.initPage();
     }
@@ -58,11 +60,7 @@ class CommunityPage extends GetView<CommunityPageController> {
           }
 
           if (controller.isInitialized) {
-            return ScrollsToTop(
-              onScrollsToTop: (event) async =>
-                  controller.scrollToTopAndRefresh(),
-              child: _buildBody(context),
-            );
+            return Text(service.config.readrApi);
           }
 
           return CustomScrollView(
