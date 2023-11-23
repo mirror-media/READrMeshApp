@@ -7,16 +7,16 @@ import 'package:readr/models/newsListItem.dart';
 abstract class TabStoryListRepos {
   Future<Map<String, List<NewsListItem>>> fetchStoryList({
     int storySkip = 0,
-    int storyFirst = 18,
+    int storyTake = 18,
     int projectSkip = 0,
-    int projectFirst = 2,
+    int projectTake = 2,
   });
   Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
-    int storyFirst = 18,
+    int storyTake = 18,
     int projectSkip = 0,
-    int projectFirst = 2,
+    int projectTake = 2,
   });
   Future<List<NewsListItem>> fetchMeshStoryList(List<String> storyIdList);
 }
@@ -30,23 +30,23 @@ class TabStoryListServices implements TabStoryListRepos {
     \$storyWhere: PostWhereInput,
     \$projectWhere: PostWhereInput,
     \$storySkip: Int,
-    \$storyFirst: Int,
+    \$storyTake: Int,
     \$projectSkip: Int,
-    \$projectFirst: Int,
+    \$projectTake: Int,
   ) {
-    story: allPosts(
+    story: posts(
       where: \$storyWhere, 
       skip: \$storySkip, 
-      first: \$storyFirst, 
-      sortBy: [ publishTime_DESC ]
+      take: \$storyTake, 
+      orderBy: [ { publishTime: desc } ]
     ) {
       id
     }
-    project:allPosts(
+    project: posts(
       where: \$projectWhere, 
       skip: \$projectSkip, 
-      first: \$projectFirst, 
-      sortBy: [ publishTime_DESC ]
+      take: \$projectTake, 
+      orderBy: [ { publishTime: desc } ]
     ) {
       id
     }
@@ -56,25 +56,29 @@ class TabStoryListServices implements TabStoryListRepos {
   @override
   Future<Map<String, List<NewsListItem>>> fetchStoryList({
     int storySkip = 0,
-    int storyFirst = 18,
+    int storyTake = 18,
     int projectSkip = 0,
-    int projectFirst = 2,
+    int projectTake = 2,
   }) async {
     Map<String, dynamic> variables = {
       "storyWhere": {
-        "state": "published",
-        "style_in": ["news", "scrollablevideo"],
-        "id_not_in": _fetchedStoryIdList,
+        "state": {"equals": "published"},
+        "style": {
+          "in": ["news", "scrollablevideo"]
+        },
+        "id": {"notIn": _fetchedStoryIdList},
       },
       "projectWhere": {
-        "state": "published",
-        "style_in": ["project3", "embedded", "report"],
-        "id_not_in": _fetchedProjectIdList,
+        "state": {"equals": "published"},
+        "style": {
+          "in": ["project3", "embedded", "report"]
+        },
+        "id": {"notIn": _fetchedProjectIdList},
       },
       "storySkip": storySkip,
-      "storyFirst": storyFirst,
+      "storyTake": storyTake,
       "projectSkip": projectSkip,
-      "projectFirst": projectFirst
+      "projectTake": projectTake
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
@@ -113,27 +117,39 @@ class TabStoryListServices implements TabStoryListRepos {
   Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
-    int storyFirst = 18,
+    int storyTake = 18,
     int projectSkip = 0,
-    int projectFirst = 2,
+    int projectTake = 2,
   }) async {
     Map<String, dynamic> variables = {
       "storyWhere": {
-        "state": "published",
-        "style_in": ["news"],
-        "categories_some": {"slug": slug},
-        "id_not_in": _fetchedStoryIdList,
+        "state": {"equals": "published"},
+        "style": {
+          "in": ["news"]
+        },
+        "categories": {
+          "some": {
+            "slug": {"equals": slug}
+          }
+        },
+        "id": {"notIn": _fetchedStoryIdList},
       },
       "projectWhere": {
         "state": "published",
-        "style_in": ["project3", "embedded", "report"],
-        "categories_some": {"slug": slug},
-        "id_not_in": _fetchedProjectIdList,
+        "style": {
+          "in": ["project3", "embedded", "report"]
+        },
+        "categories": {
+          "some": {
+            "slug": {"equals": slug}
+          }
+        },
+        "id": {"notIn": _fetchedProjectIdList},
       },
       "storySkip": storySkip,
-      "storyFirst": storyFirst,
+      "storyTake": storyTake,
       "projectSkip": projectSkip,
-      "projectFirst": projectFirst,
+      "projectTake": projectTake,
     };
 
     final jsonResponse = await Get.find<GraphQLService>().query(
