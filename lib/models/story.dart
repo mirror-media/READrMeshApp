@@ -59,8 +59,8 @@ class Story {
     List<Paragraph> summaryApiData = [];
     List<String> imageUrlList = [];
     String? photoUrl;
-    if (BaseModel.checkJsonKeys(json, ['heroImage', 'mobile'])) {
-      photoUrl = json['heroImage']['mobile'];
+    if (BaseModel.checkJsonKeys(json, ['heroImage'])) {
+      photoUrl = json['heroImage']['resized']['w480'];
       imageUrlList.add(photoUrl!);
     }
 
