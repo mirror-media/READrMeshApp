@@ -60,7 +60,7 @@ class ParseTheTextToHtmlWidget extends StatelessWidget {
       textStyle: TextStyle(
         fontSize: fontSize,
         height: 1.8,
-        color: color ?? Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        color: color ?? Theme.of(context).extension<CustomColors>()?.primary700,
       ),
     );
   }

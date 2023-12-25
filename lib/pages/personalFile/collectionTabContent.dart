@@ -107,7 +107,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv4,
+                          ?.primary400,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -129,7 +129,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                       elevation: 0,
                       backgroundColor: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
                       shape: RoundedRectangleBorder(
@@ -158,7 +158,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
             child: Text(
               'viewMemberNoCollection'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                color: Theme.of(context).extension<CustomColors>()?.primary400,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -205,9 +205,9 @@ class CollectionTabContent extends GetView<CollectionTabController> {
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       padding: const EdgeInsets.fromLTRB(20, 16, 15, 16),
       decoration: BoxDecoration(
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv7,
+        color: Theme.of(context).extension<CustomColors>()?.primary100,
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
           width: 0.5,
         ),
         borderRadius: const BorderRadius.all(
@@ -220,7 +220,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
             child: AutoSizeText(
               'createCollectionBarTitle'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                color: Theme.of(context).extension<CustomColors>()?.primary500,
                 fontSize: 16,
               ),
               maxLines: 1,
@@ -277,7 +277,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
           width: 1,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -315,7 +315,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                                 .shimmerBaseColor!,
                             highlightColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv6!,
+                                .primary200!,
                             child: Container(
                               width: width,
                               height: width / 2,
@@ -353,7 +353,7 @@ class CollectionTabContent extends GetView<CollectionTabController> {
                       style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!,
+                            .primary700!,
                         fontSize: 16,
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500

@@ -66,6 +66,7 @@ class CollectionPageController extends GetxController {
       await collectionPageRepos
           .fetchCollectionData(collection.id, useCache: useCache)
           .then((value) {
+        //if collection deleted, replace to deleted page
         if (value['status'] == CollectionStatus.delete) {
           Get.off(() => const CollectionDeletedPage());
         } else {
@@ -77,6 +78,7 @@ class CollectionPageController extends GetxController {
           collectionFormat(value['format']);
         }
       });
+      //update pick id list to ensure pick state is correct
       await Get.find<PickAndBookmarkService>().fetchPickIds();
     } catch (e) {
       print('Fetch collection data failed: $e');
@@ -108,6 +110,7 @@ class CollectionPageController extends GetxController {
         fontSize: 16.0,
       );
     } else {
+      // if current member's collection tab is exists, refetch to update after deleted
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
@@ -124,6 +127,7 @@ class CollectionPageController extends GetxController {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      //send pub/sub to delete related notifies
       Get.find<PubsubService>().removeCollection(
         memberId: Get.find<UserService>().currentUser.memberId,
         collectionId: collection.id,

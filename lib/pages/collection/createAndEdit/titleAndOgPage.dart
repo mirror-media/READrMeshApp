@@ -44,7 +44,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -54,7 +54,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                   ),
                 ),
@@ -85,7 +85,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                      Theme.of(context).extension<CustomColors>()?.primary500,
                 ),
               ),
               onPressed: () => Get.back(),
@@ -93,7 +93,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
           : IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
               ),
               onPressed: () => Get.back(),
             ),
@@ -102,7 +102,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 18,
-          color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+          color: Theme.of(context).extension<CustomColors>()?.primary700,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -213,24 +213,24 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
       child: Obx(
         () => TextField(
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
             fontWeight: FontWeight.w400,
           ),
           controller: controller.titleTextController,
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                color: Theme.of(context).extension<CustomColors>()!.primary600!,
               ),
             ),
             border: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
             ),
             hintText: 'collectionTitleHint'.tr,
             hintStyle: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+              color: Theme.of(context).extension<CustomColors>()?.primary400,
               fontWeight: FontWeight.w400,
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -245,7 +245,7 @@ class TitleAndOgPage extends GetView<TitleAndOgPageController> {
                       Icons.cancel,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       size: 16,
                     ),
                   ),

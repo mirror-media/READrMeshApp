@@ -208,7 +208,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                     fontSize: 18,
                     height: 2,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 ),
               ),
@@ -218,12 +218,12 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                 adHeight: context.width * 0.75,
                 decoration: BoxDecoration(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv6,
+                      Theme.of(context).extension<CustomColors>()?.primary200,
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   border: Border.all(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv6!,
+                        .primary200!,
                   ),
                 ),
                 margin:
@@ -270,7 +270,7 @@ class NewsStoryWidget extends GetView<StoryPageController> {
       textStyle: TextStyle(
         fontSize: 18,
         height: 2,
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        color: Theme.of(context).extension<CustomColors>()?.primary700,
       ),
     );
   }
@@ -315,11 +315,11 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),
@@ -353,11 +353,11 @@ class NewsStoryWidget extends GetView<StoryPageController> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                       ),
                     ),
                   ),

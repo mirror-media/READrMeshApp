@@ -61,7 +61,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   style: TextStyle(
                     fontSize: 14,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv3,
+                        Theme.of(context).extension<CustomColors>()?.primary500,
                   ),
                 );
               }),
@@ -76,12 +76,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                         .value ??
                     collection.title,
                 joinZeroWidthSpace: true,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
           ),
@@ -105,7 +100,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv2,
+                          ?.primary600,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
@@ -118,7 +113,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                           style: TextStyle(
                             color: Theme.of(context)
                                 .extension<CustomColors>()
-                                ?.primaryLv2,
+                                ?.primary600,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
@@ -128,7 +123,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .extension<CustomColors>()
-                                    ?.primaryLv3,
+                                    ?.primary500,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -162,7 +157,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                       fontSize: 13,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                     ),
                     strutStyle: const StrutStyle(
                       forceStrutHeight: true,
@@ -178,7 +173,7 @@ class CollectionHeader extends GetView<CollectionPageController> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv5,
+                        Theme.of(context).extension<CustomColors>()?.primary300,
                   ),
                 ),
                 Obx(

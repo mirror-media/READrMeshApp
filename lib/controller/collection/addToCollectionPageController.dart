@@ -46,6 +46,7 @@ class AddToCollectionPageController extends GetxController {
     try {
       switch (addToCollectionItem.format) {
         case CollectionFormat.folder:
+          // add new item to last
           await collectionRepos.addSingleStoryToCollection(
             collectionId: addToCollectionItem.id!,
             storyId: news.id,
@@ -56,6 +57,7 @@ class AddToCollectionPageController extends GetxController {
           List<CollectionPick> needUpdateList = [];
           CollectionPick newPick = CollectionPick.fromNewsListItem(news);
           addToCollectionItem.collectionPicks!.add(newPick);
+          //sort new list by custom time
           addToCollectionItem.collectionPicks!.sort((a, b) {
             DateTime aDateTime;
             if (a.customTime != null) {
@@ -82,6 +84,7 @@ class AddToCollectionPageController extends GetxController {
             return bDateTime.compareTo(aDateTime);
           });
 
+          //find out which item needs update, include new item
           for (int i = 0;
               i < addToCollectionItem.collectionPicks!.length;
               i++) {
@@ -96,6 +99,7 @@ class AddToCollectionPageController extends GetxController {
           }
 
           await Future.wait([
+            //create new item
             collectionRepos.addSingleStoryToCollection(
               collectionId: addToCollectionItem.id!,
               storyId: news.id,
@@ -104,6 +108,7 @@ class AddToCollectionPageController extends GetxController {
               customMonth: newPick.customMonth,
               customDay: newPick.customDay,
             ),
+            // update original item if need
             if (needUpdateList.isNotEmpty)
               collectionRepos.updateCollectionPicksData(
                   collectionPicks: needUpdateList),

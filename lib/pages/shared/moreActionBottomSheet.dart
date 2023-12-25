@@ -52,7 +52,7 @@ Future<void> showMoreActionSheet({
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                        Theme.of(context).extension<CustomColors>()?.primary400,
                   ),
                 ),
               ),
@@ -76,7 +76,7 @@ Future<void> showMoreActionSheet({
                 icon: Icon(
                   PlatformIcons(context).folderOpen,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   size: 18,
                 ),
                 label: Text(
@@ -112,7 +112,7 @@ Future<void> showMoreActionSheet({
                       ? PlatformIcons(context).bookmarkSolid
                       : PlatformIcons(context).bookmarkOutline,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   size: 18,
                 ),
                 label: Text(
@@ -145,7 +145,7 @@ Future<void> showMoreActionSheet({
                   GetPlatform.isAndroid ? Icons.link : CupertinoIcons.link,
                   size: 19,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
                 label: Text(
                   'copyLink'.tr,
@@ -170,7 +170,7 @@ Future<void> showMoreActionSheet({
                 icon: Icon(
                   PlatformIcons(context).share,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   size: 18,
                 ),
                 label: Text(

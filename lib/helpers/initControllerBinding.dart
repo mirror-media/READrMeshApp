@@ -6,6 +6,7 @@ import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
 import 'package:readr/controller/mainAppBarController.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
 import 'package:readr/controller/rootPageController.dart';
+import 'package:readr/controller/wallet/walletPageController.dart';
 import 'package:readr/services/communityService.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/latestService.dart';
@@ -23,5 +24,6 @@ class InitControllerBinding implements Bindings {
     Get.put(LatestPageController(LatestService()), permanent: true);
     Get.put(MainAppBarController(InvitationCodeService()), permanent: true);
     Get.put(NotifyPageController(NotifyService()), permanent: true);
+    Get.put(WalletPageController(), permanent: true);
   }
 }

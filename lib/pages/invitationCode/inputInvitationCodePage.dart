@@ -88,14 +88,14 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
       textStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16,
-        color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+        color: Theme.of(context).extension<CustomColors>()?.primary700,
       ),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+            color: Theme.of(context).extension<CustomColors>()!.primary600!,
           ),
         ),
       ),
@@ -103,7 +103,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border(
         bottom: BorderSide(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
     );
@@ -174,7 +174,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                color: Theme.of(context).extension<CustomColors>()!.primary500!,
               ),
               children: [
                 WidgetSpan(
@@ -201,11 +201,11 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                         fontSize: 13,
                         color: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                         decoration: TextDecoration.underline,
                         decorationColor: Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv3!,
+                            .primary500!,
                       ),
                     ),
                   ),
@@ -217,7 +217,7 @@ class _InputInvitationCodePageState extends State<InputInvitationCodePage> {
                     fontSize: 13,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                   ),
                 ),
               ],

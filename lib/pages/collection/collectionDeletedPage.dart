@@ -42,7 +42,7 @@ class CollectionDeletedPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
               ),
             ),
             const SizedBox(
@@ -53,7 +53,7 @@ class CollectionDeletedPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv2,
+                color: Theme.of(context).extension<CustomColors>()?.primary600,
               ),
             ),
           ],

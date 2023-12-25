@@ -5,7 +5,6 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
@@ -75,11 +74,7 @@ class CarouselDisplayWidget extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         minFontSize: 20,
-        style: TextStyle(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
   }

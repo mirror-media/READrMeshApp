@@ -56,7 +56,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -66,7 +66,7 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                     ),
                   ),
                 ),
@@ -433,14 +433,14 @@ class ChooseFormatPage extends GetView<ChooseFormatPageController> {
           style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
         ),
         content: Text(
           'changeCollectionTypeAlertContent'.tr,
           style: TextStyle(
             fontSize: 13,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
         ),
         actions: [

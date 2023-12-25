@@ -126,7 +126,7 @@ class CommentItem extends GetView<CommentItemController> {
                     left: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     width: 4,
                   ))
                 : null,
@@ -221,7 +221,7 @@ class CommentItem extends GetView<CommentItemController> {
                           shape: BoxShape.circle,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv5!,
+                              .primary300!,
                         ),
                       ),
                     Obx(() {
@@ -260,7 +260,7 @@ class CommentItem extends GetView<CommentItemController> {
                               shape: BoxShape.circle,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv5!,
+                                  .primary300!,
                             ),
                           );
                         }
@@ -346,7 +346,7 @@ class CommentItem extends GetView<CommentItemController> {
                       ? Theme.of(context).extension<CustomColors>()!.red!
                       : Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv2!,
+                          .primary600!,
                 ),
               ),
             ),

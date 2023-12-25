@@ -89,7 +89,7 @@ Future<void> showEditCommentMenu(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv4,
+                          ?.primary400,
                     ),
                   ),
                 ),
@@ -99,7 +99,7 @@ Future<void> showEditCommentMenu(
                 icon: Icon(
                   Icons.edit_outlined,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                   size: 18,
                 ),
                 label: Text(

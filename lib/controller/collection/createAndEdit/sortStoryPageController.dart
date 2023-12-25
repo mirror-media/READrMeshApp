@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:readr/controller/collection/addToCollectionPageController.dart';
 import 'package:readr/controller/collection/collectionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/descriptionPageController.dart';
 import 'package:readr/controller/collection/createAndEdit/titleAndOgPageController.dart';
@@ -14,6 +15,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/folderCollectionPick.dart';
 import 'package:readr/pages/collection/collectionPage.dart';
+import 'package:readr/pages/shared/meshToast.dart';
 import 'package:readr/services/collectionService.dart';
 
 class SortStoryPageController extends GetxController {
@@ -71,6 +73,7 @@ class SortStoryPageController extends GetxController {
     isUpdating.value = true;
 
     try {
+      // create Photo in CMS first to link when create collection
       String imageId = await collectionRepos
           .createOgPhoto(
               ogImageUrlOrPath: Get.find<TitleAndOgPageController>()
@@ -92,29 +95,52 @@ class SortStoryPageController extends GetxController {
             const Duration(minutes: 1),
           );
 
+      // send pub/sub to create notifies
       Get.find<PubsubService>().addCollection(
         memberId: Get.find<UserService>().currentUser.memberId,
         collectionId: newCollection.id,
       );
 
+      // if current member's collection tab controller is exist, refetch to update collection list
       if (Get.isRegistered<CollectionTabController>(
           tag: Get.find<UserService>().currentUser.memberId)) {
         Get.find<CollectionTabController>(
                 tag: Get.find<UserService>().currentUser.memberId)
             .fetchCollecitionList(useCache: false);
       }
-      Get.offUntil<GetPageRoute>(
-        GetPageRoute(
-          routeName: '/CollectionPage',
-          page: () => CollectionPage(
-            newCollection,
-            isNewCollection: true,
+
+      ///check where user come from
+      ///if from addToCollectionPage, go back to previous page of addToCollectionPage
+      ///else pop all create collection related pages and push to collection page
+      if (Get.isRegistered<AddToCollectionPageController>()) {
+        Get.until(
+          (route) {
+            return route.settings.name == '/AddToCollectionPage';
+          },
+        );
+        Get.back();
+        showMeshToast(
+          icon: const Icon(
+            Icons.check_circle,
+            size: 16,
+            color: Colors.white,
           ),
-        ),
-        (route) {
-          return route.settings.name == '/PersonalFilePage' || route.isFirst;
-        },
-      );
+          message: 'addToCollectionSuccessToast'.tr,
+        );
+      } else {
+        Get.offUntil<GetPageRoute>(
+          GetPageRoute(
+            routeName: '/CollectionPage',
+            page: () => CollectionPage(
+              newCollection,
+              isNewCollection: true,
+            ),
+          ),
+          (route) {
+            return route.settings.name == '/PersonalFilePage' || route.isFirst;
+          },
+        );
+      }
     } catch (e) {
       print('Create collection error: $e');
       isUpdating.value = false;
@@ -131,6 +157,7 @@ class SortStoryPageController extends GetxController {
     isUpdating.value = false;
   }
 
+  //edit collection's collectionPicks
   void updateCollectionPicks() async {
     isUpdating.value = true;
 
@@ -159,6 +186,7 @@ class SortStoryPageController extends GetxController {
     }
   }
 
+  //show when first time edit
   void _showDeleteHint() async {
     await showGeneralDialog(
       context: Get.overlayContext!,

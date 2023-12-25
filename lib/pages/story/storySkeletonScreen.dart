@@ -26,7 +26,7 @@ class StorySkeletonScreen extends StatelessWidget {
                       .extension<CustomColors>()!
                       .shimmerBaseColor!,
                   highlightColor:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv7!,
+                      Theme.of(context).extension<CustomColors>()!.primary100!,
                   child: Container(
                     height: 187.5,
                     width: double.infinity,
@@ -43,7 +43,7 @@ class StorySkeletonScreen extends StatelessWidget {
                           .shimmerBaseColor!,
                       highlightColor: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv7!,
+                          .primary100!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.0),
                         child: Container(
@@ -60,7 +60,7 @@ class StorySkeletonScreen extends StatelessWidget {
                           .shimmerBaseColor!,
                       highlightColor: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv7!,
+                          .primary100!,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.0),
                         child: Container(
@@ -87,7 +87,7 @@ class StorySkeletonScreen extends StatelessWidget {
   Widget _lineItem(BuildContext context, double lastLineWidth) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).extension<CustomColors>()!.shimmerBaseColor!,
-      highlightColor: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
+      highlightColor: Theme.of(context).extension<CustomColors>()!.primary100!,
       child: Container(
         margin: const EdgeInsets.fromLTRB(20.0, 32.0, 20.0, 0.0),
         child: Column(

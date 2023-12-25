@@ -28,7 +28,7 @@ class CollectionStoryItem extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
               fontSize: 16,
               fontWeight: GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
             ),
@@ -47,7 +47,7 @@ class CollectionStoryItem extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv1,
+                          ?.primary700,
                       fontSize: 16,
                       fontWeight:
                           GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -62,7 +62,7 @@ class CollectionStoryItem extends StatelessWidget {
                         .shimmerBaseColor!,
                     highlightColor: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv6!,
+                        .primary200!,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4.0),
                       child: Container(
@@ -80,7 +80,7 @@ class CollectionStoryItem extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
                 fontSize: 16,
                 fontWeight:
                     GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
@@ -98,7 +98,7 @@ class CollectionStoryItem extends StatelessWidget {
                       style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv1,
+                            ?.primary700,
                         fontSize: 16,
                         fontWeight: GetPlatform.isIOS
                             ? FontWeight.w500
@@ -133,7 +133,7 @@ class CollectionStoryItem extends StatelessWidget {
                   style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv3,
+                          ?.primary500,
                       fontSize: 12),
                 ),
                 if (!inCustomTime)
@@ -146,7 +146,7 @@ class CollectionStoryItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Theme.of(context)
                           .extension<CustomColors>()
-                          ?.primaryLv5,
+                          ?.primary300,
                     ),
                   ),
               ],

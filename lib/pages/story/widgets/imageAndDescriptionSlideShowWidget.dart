@@ -75,7 +75,7 @@ class _ImageAndDescriptionSlideShowWidgetState
                     style: TextStyle(
                         color: Theme.of(context)
                             .extension<CustomColors>()
-                            ?.primaryLv3,
+                            ?.primary500,
                         fontSize: textSize - 4,
                         fontWeight: FontWeight.w400),
                     text: content.description,

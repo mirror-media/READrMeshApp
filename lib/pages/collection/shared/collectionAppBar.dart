@@ -55,7 +55,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 ),
                 content: Text(
@@ -63,7 +63,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   style: TextStyle(
                     fontSize: 13,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 ),
                 actions: [
@@ -262,7 +262,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
               ),
               content: Text(
@@ -270,7 +270,7 @@ class CollectionAppBar extends GetView<CollectionPageController>
                 style: TextStyle(
                   fontSize: 13,
                   color:
-                      Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                      Theme.of(context).extension<CustomColors>()?.primary700,
                 ),
               ),
               actions: [

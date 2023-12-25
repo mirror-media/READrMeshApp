@@ -28,14 +28,14 @@ class ContactUsPage extends StatelessWidget {
           'contactUs'.tr,
           style: TextStyle(
             fontSize: 18,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontWeight: FontWeight.w400,
           ),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -169,7 +169,7 @@ class ContactUsPage extends StatelessWidget {
             welcomeScreenLogoSvg,
             width: 96,
             height: 40,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
           const SizedBox(
             height: 24,
@@ -178,7 +178,7 @@ class ContactUsPage extends StatelessWidget {
             'contactUsContent'.tr,
             style: TextStyle(
               fontSize: 14,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
           )
         ],
@@ -230,7 +230,7 @@ class ContactUsPage extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
               ),
             ),
             const SizedBox(
@@ -240,7 +240,7 @@ class ContactUsPage extends StatelessWidget {
               content,
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                color: Theme.of(context).extension<CustomColors>()!.primary500!,
               ),
             ),
           ],

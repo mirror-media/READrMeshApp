@@ -18,7 +18,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
           title: Text(
             'deletePageTitle'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 20,
               fontWeight: FontWeight.w400,
             ),
@@ -29,7 +29,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                 icon: Icon(
                   Icons.arrow_back_ios_new_outlined,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               );
@@ -49,7 +49,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -59,7 +59,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                   ),
                 ),
@@ -109,7 +109,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
                 textAlign: TextAlign.center,
               );
@@ -136,7 +136,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                      Theme.of(context).extension<CustomColors>()!.primary600!,
                 ),
               );
             },
@@ -169,7 +169,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                   side: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     width: 1,
                   ),
                 ),
@@ -180,7 +180,7 @@ class DeleteMemberPage extends GetView<SettingPageController> {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                   ),
                 ),
               );
