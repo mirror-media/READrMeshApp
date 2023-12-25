@@ -60,7 +60,7 @@ class Story {
     List<String> imageUrlList = [];
     String? photoUrl;
     if (BaseModel.checkJsonKeys(json, ['heroImage'])) {
-      photoUrl = json['heroImage']['resized']['w480'];
+      photoUrl = json['heroImage']['resized']['w800'];
       imageUrlList.add(photoUrl!);
     }
 
