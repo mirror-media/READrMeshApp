@@ -75,7 +75,7 @@ class Content {
         return Content(
           data: json['resized']['w800'],
           aspectRatio: null,
-          description: null,
+          description: json['desc'],
         );
       }
     }
