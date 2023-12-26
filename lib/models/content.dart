@@ -71,6 +71,12 @@ class Content {
           aspectRatio: null,
           description: json['quoteBy'],
         );
+      } else if (BaseModel.checkJsonKeys(json, ['resized'])) {
+        return Content(
+          data: json['resized']['w800'],
+          aspectRatio: null,
+          description: null,
+        );
       }
     }
 
