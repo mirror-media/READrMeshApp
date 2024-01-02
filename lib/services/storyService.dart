@@ -27,6 +27,7 @@ class StoryServices implements StoryRepos {
         heroImage {
           resized {
             w480
+            w800
             w1200
           }
         }
