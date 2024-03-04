@@ -135,7 +135,7 @@ class TabStoryListServices implements TabStoryListRepos {
         "id": {"notIn": _fetchedStoryIdList},
       },
       "projectWhere": {
-        "state": "published",
+        "state": {"equals": "published"},
         "style": {
           "in": ["project3", "embedded", "report"]
         },
