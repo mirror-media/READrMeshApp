@@ -33,7 +33,7 @@ class CategoryServices implements CategoryRepos {
 
     Map<String, dynamic> variables = {
       "where": {
-        "state": {"equals": "active"}
+        "state": {"equals": "true"}
       }
     };
 
