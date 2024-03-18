@@ -78,11 +78,6 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['og_image'])) {
       ogImage = json['og_image'];
-      if (ogImage == '') {
-        ogImage =
-            'https://storage.googleapis.com/statics-readr-tw-prod/assets/icons/readr-logo-backstage.png';
-        log('og: $ogImage');
-      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {

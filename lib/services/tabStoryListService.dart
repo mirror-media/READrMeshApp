@@ -135,7 +135,7 @@ class TabStoryListServices implements TabStoryListRepos {
         "id": {"notIn": _fetchedStoryIdList},
       },
       "projectWhere": {
-        "state": "published",
+        "state": {"equals": "published"},
         "style": {
           "in": ["project3", "embedded", "report"]
         },
@@ -192,7 +192,6 @@ class TabStoryListServices implements TabStoryListRepos {
       \$storyIdList: [String!]
       \$followingMembers: [ID!]
       \$myId: ID
-      \$urlFilter: String!
       \$readrId: ID
       \$blockAndBlockedIds: [ID!]
     ){
@@ -206,9 +205,7 @@ class TabStoryListServices implements TabStoryListRepos {
           content:{
             in: \$storyIdList
           }
-          url:{
-            contains: \$urlFilter
-          }
+       
           is_active:{
             equals: true
           }
