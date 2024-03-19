@@ -140,7 +140,7 @@ dependencies:
   # photo view
   photo_view: ^0.14.0
   # for invitation code input
-  pinput: ^3.0.1
+  pinput: ^2.2.9
   # app tracking transparency
   app_tracking_transparency: ^2.0.2+2
   # getx
