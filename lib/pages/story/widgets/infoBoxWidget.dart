@@ -24,7 +24,7 @@ class InfoBoxWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
             padding: const EdgeInsets.only(left: 8),
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -77,7 +77,7 @@ class InfoBoxWidget extends StatelessWidget {
               textStyle: TextStyle(
                 fontSize: textSize,
                 height: 1.8,
-                color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                color: Theme.of(context).extension<CustomColors>()?.primary700,
               ),
             ),
           ),

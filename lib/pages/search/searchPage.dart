@@ -74,7 +74,7 @@ class SearchPage extends GetView<SearchPageController> {
           prefixIcon: Icon(
             CupertinoIcons.search,
             size: 22,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+            color: Theme.of(context).extension<CustomColors>()?.primary400,
           ),
           contentPadding: const EdgeInsets.fromLTRB(5.5, 8, 12, 8),
           hintText: 'searchBarHintText'.tr,
@@ -162,9 +162,9 @@ class SearchPage extends GetView<SearchPageController> {
                   child: ListTile(
                     tileColor: Theme.of(context).backgroundColor,
                     textColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     iconColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv4,
+                        Theme.of(context).extension<CustomColors>()?.primary400,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     title: Text(
                       controller.searchHistoryList[index],
@@ -206,8 +206,8 @@ class SearchPage extends GetView<SearchPageController> {
           opacity: animation,
           child: ListTile(
             tileColor: Theme.of(context).backgroundColor,
-            textColor: Theme.of(context).extension<CustomColors>()?.primaryLv1,
-            iconColor: Theme.of(context).extension<CustomColors>()?.primaryLv4,
+            textColor: Theme.of(context).extension<CustomColors>()?.primary700,
+            iconColor: Theme.of(context).extension<CustomColors>()?.primary400,
             contentPadding: const EdgeInsets.symmetric(vertical: 10),
             title: Text(
               title,
@@ -441,7 +441,7 @@ class SearchPage extends GetView<SearchPageController> {
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv1!,
+                                      .primary700!,
                                   width: 1),
                               backgroundColor:
                                   Theme.of(context).backgroundColor,

@@ -55,7 +55,7 @@ class ImageDescriptionWidget extends StatelessWidget {
                     fontSize: textSize,
                     color: Theme.of(context)
                         .extension<CustomColors>()
-                        ?.primaryLv3),
+                        ?.primary500),
               ),
             ),
         ],

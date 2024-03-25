@@ -26,7 +26,7 @@ class PublisherPage extends GetView<PublisherPageController> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -37,7 +37,7 @@ class PublisherPage extends GetView<PublisherPageController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         elevation: 0,
@@ -77,7 +77,7 @@ class PublisherPage extends GetView<PublisherPageController> {
           decoration: BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
                 width: 0.5,
               ),
             ),
@@ -106,7 +106,7 @@ class PublisherPage extends GetView<PublisherPageController> {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                         ),
                         children: [
                           TextSpan(
@@ -116,7 +116,7 @@ class PublisherPage extends GetView<PublisherPageController> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv3!,
+                                  .primary500!,
                             ),
                           ),
                           if (controller.followerCount.value > 1 &&
@@ -128,7 +128,7 @@ class PublisherPage extends GetView<PublisherPageController> {
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
                                     .extension<CustomColors>()!
-                                    .primaryLv3!,
+                                    .primary500!,
                               ),
                             ),
                         ],

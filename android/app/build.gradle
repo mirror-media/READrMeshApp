@@ -143,6 +143,7 @@ android {
             productFlavors.prod.signingConfig signingConfigs.prod
             shrinkResources true
             minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -155,6 +156,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.gms:play-services-ads:21.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    configurations.implementation.exclude(group: 'com.google.firebase', module: 'protolite-well-known-types')
+    configurations.implementation.exclude(group: 'com.google.protobuf', module: 'protobuf-javalite') 
 }
 
 apply plugin: 'com.google.gms.google-services'

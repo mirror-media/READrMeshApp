@@ -92,13 +92,13 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                     BoxShadow(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       blurRadius: 8,
                     ),
                     BoxShadow(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv6!,
+                          .primary200!,
                       offset: const Offset(0, -8),
                       blurRadius: 20,
                     ),
@@ -131,7 +131,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
                             Icons.expand_more_outlined,
                             color: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv4!,
+                                .primary400!,
                             size: 32,
                           ),
                         ),
@@ -211,7 +211,7 @@ class BottomCardWidget extends GetWidget<BottomCardWidgetController> {
             constraints: const BoxConstraints(maxHeight: 1),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+              color: Theme.of(context).extension<CustomColors>()!.primary300!,
             ),
           ),
         ),

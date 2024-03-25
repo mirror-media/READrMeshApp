@@ -30,7 +30,7 @@ class InputNamePage extends GetView<InputNamePageController> {
           title: Text(
             'inputNamePageAppbarTitle'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
@@ -38,7 +38,7 @@ class InputNamePage extends GetView<InputNamePageController> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
             ),
             onPressed: () async {
               if (controller.isCreating.isFalse) {
@@ -85,7 +85,7 @@ class InputNamePage extends GetView<InputNamePageController> {
               children: [
                 SpinKitWanderingCubes(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -95,7 +95,7 @@ class InputNamePage extends GetView<InputNamePageController> {
                       fontSize: 20,
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv1!,
+                          .primary700!,
                     ),
                   ),
                 ),
@@ -134,7 +134,7 @@ class InputNamePage extends GetView<InputNamePageController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
@@ -149,21 +149,21 @@ class InputNamePage extends GetView<InputNamePageController> {
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   width: 1.0,
                 ),
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                   width: 1.0,
                 ),
               ),
               border: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                      Theme.of(context).extension<CustomColors>()!.primary200!,
                   width: 1.0,
                 ),
               ),
@@ -189,7 +189,7 @@ class InputNamePage extends GetView<InputNamePageController> {
           'inputNamePageDescription'.tr,
           style: TextStyle(
             fontSize: 13,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+            color: Theme.of(context).extension<CustomColors>()!.primary500!,
             fontWeight: FontWeight.w400,
           ),
         )

@@ -9,13 +9,13 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? red;
   final Color? highlightRed;
   final Color? highlightBlue;
-  final Color? primaryLv1;
-  final Color? primaryLv2;
-  final Color? primaryLv3;
-  final Color? primaryLv4;
-  final Color? primaryLv5;
-  final Color? primaryLv6;
-  final Color? primaryLv7;
+  final Color? primary700;
+  final Color? primary600;
+  final Color? primary500;
+  final Color? primary400;
+  final Color? primary300;
+  final Color? primary200;
+  final Color? primary100;
   final Color? backgroundMultiLayer;
   final Color? backgroundSingleLayer;
   final Color? grayLight;
@@ -27,13 +27,13 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.red,
     required this.highlightRed,
     required this.highlightBlue,
-    required this.primaryLv1,
-    required this.primaryLv2,
-    required this.primaryLv3,
-    required this.primaryLv4,
-    required this.primaryLv5,
-    required this.primaryLv6,
-    required this.primaryLv7,
+    required this.primary700,
+    required this.primary600,
+    required this.primary500,
+    required this.primary400,
+    required this.primary300,
+    required this.primary200,
+    required this.primary100,
     required this.backgroundMultiLayer,
     required this.backgroundSingleLayer,
     required this.grayLight,
@@ -48,13 +48,13 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? red,
     Color? highlightRed,
     Color? highlightBlue,
-    Color? primaryLv1,
-    Color? primaryLv2,
-    Color? primaryLv3,
-    Color? primaryLv4,
-    Color? primaryLv5,
-    Color? primaryLv6,
-    Color? primaryLv7,
+    Color? primary700,
+    Color? primary600,
+    Color? primary500,
+    Color? primary400,
+    Color? primary300,
+    Color? primary200,
+    Color? primary100,
     Color? backgroundMultiLayer,
     Color? backgroundSingleLayer,
     Color? grayLight,
@@ -67,13 +67,13 @@ class CustomColors extends ThemeExtension<CustomColors> {
       red: red ?? this.red,
       highlightRed: highlightRed ?? this.highlightRed,
       highlightBlue: highlightBlue ?? this.highlightBlue,
-      primaryLv1: primaryLv1 ?? this.primaryLv1,
-      primaryLv2: primaryLv2 ?? this.primaryLv2,
-      primaryLv3: primaryLv3 ?? this.primaryLv3,
-      primaryLv4: primaryLv4 ?? this.primaryLv4,
-      primaryLv5: primaryLv5 ?? this.primaryLv5,
-      primaryLv6: primaryLv6 ?? this.primaryLv6,
-      primaryLv7: primaryLv7 ?? this.primaryLv7,
+      primary700: primary700 ?? this.primary700,
+      primary600: primary600 ?? this.primary600,
+      primary500: primary500 ?? this.primary500,
+      primary400: primary400 ?? this.primary400,
+      primary300: primary300 ?? this.primary300,
+      primary200: primary200 ?? this.primary200,
+      primary100: primary100 ?? this.primary100,
       backgroundMultiLayer: backgroundMultiLayer ?? this.backgroundMultiLayer,
       backgroundSingleLayer:
           backgroundSingleLayer ?? this.backgroundSingleLayer,
@@ -95,13 +95,13 @@ class CustomColors extends ThemeExtension<CustomColors> {
       red: Color.lerp(red, other.red, t),
       highlightRed: Color.lerp(highlightRed, other.highlightRed, t),
       highlightBlue: Color.lerp(highlightBlue, other.highlightBlue, t),
-      primaryLv1: Color.lerp(primaryLv1, other.primaryLv1, t),
-      primaryLv2: Color.lerp(primaryLv2, other.primaryLv2, t),
-      primaryLv3: Color.lerp(primaryLv3, other.primaryLv3, t),
-      primaryLv4: Color.lerp(primaryLv4, other.primaryLv4, t),
-      primaryLv5: Color.lerp(primaryLv5, other.primaryLv5, t),
-      primaryLv6: Color.lerp(primaryLv6, other.primaryLv6, t),
-      primaryLv7: Color.lerp(primaryLv7, other.primaryLv7, t),
+      primary700: Color.lerp(primary700, other.primary700, t),
+      primary600: Color.lerp(primary600, other.primary600, t),
+      primary500: Color.lerp(primary500, other.primary500, t),
+      primary400: Color.lerp(primary400, other.primary400, t),
+      primary300: Color.lerp(primary300, other.primary300, t),
+      primary200: Color.lerp(primary200, other.primary200, t),
+      primary100: Color.lerp(primary100, other.primary100, t),
       backgroundMultiLayer:
           Color.lerp(backgroundMultiLayer, other.backgroundMultiLayer, t),
       backgroundSingleLayer:
@@ -208,13 +208,13 @@ ThemeData lightTheme = ThemeData(
       red: meshRed,
       highlightRed: meshHighlightRed,
       highlightBlue: meshHighlightBlue,
-      primaryLv1: meshBlack87,
-      primaryLv2: meshBlack66,
-      primaryLv3: meshBlack50,
-      primaryLv4: meshBlack30,
-      primaryLv5: meshBlack20,
-      primaryLv6: meshBlack10,
-      primaryLv7: meshBlack05,
+      primary700: meshBlack87,
+      primary600: meshBlack66,
+      primary500: meshBlack50,
+      primary400: meshBlack30,
+      primary300: meshBlack20,
+      primary200: meshBlack10,
+      primary100: meshBlack05,
       backgroundMultiLayer: meshGray,
       backgroundSingleLayer: Colors.white,
       grayLight: meshGrayLight,
@@ -247,12 +247,12 @@ ThemeData darkTheme = ThemeData(
   textTheme: TextTheme(
     headlineLarge: const TextStyle(
       color: meshGray,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       fontSize: 24,
     ),
     headlineMedium: const TextStyle(
       color: meshGray,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
     headlineSmall: TextStyle(
@@ -328,13 +328,13 @@ ThemeData darkTheme = ThemeData(
       red: meshRedDarkMode,
       highlightRed: meshHighlightRedDarkMode,
       highlightBlue: meshHighlightBlueDarkMode,
-      primaryLv1: meshGray,
-      primaryLv2: meshGray87,
-      primaryLv3: meshGray66,
-      primaryLv4: meshGray50,
-      primaryLv5: meshGray30,
-      primaryLv6: meshGray20,
-      primaryLv7: meshGray10,
+      primary700: meshGray,
+      primary600: meshGray87,
+      primary500: meshGray66,
+      primary400: meshGray50,
+      primary300: meshGray30,
+      primary200: meshGray20,
+      primary100: meshGray10,
       backgroundMultiLayer: meshBlackLight,
       backgroundSingleLayer: meshBlackDefault,
       grayLight: meshGrayLightDarkMode,

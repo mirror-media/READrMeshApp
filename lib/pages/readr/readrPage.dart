@@ -70,7 +70,7 @@ class ReadrPage extends StatelessWidget {
                                 bottom: BorderSide(
                                   color: Theme.of(context)
                                       .extension<CustomColors>()!
-                                      .primaryLv6!,
+                                      .primary200!,
                                   width: 1.0,
                                 ),
                               ),
@@ -80,13 +80,13 @@ class ReadrPage extends StatelessWidget {
                             isScrollable: true,
                             indicatorColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             labelColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv1!,
+                                .primary700!,
                             unselectedLabelColor: Theme.of(context)
                                 .extension<CustomColors>()!
-                                .primaryLv5!,
+                                .primary300!,
                             tabs: controller.tabs.toList(),
                             controller: controller.tabController,
                             indicatorWeight: 1,

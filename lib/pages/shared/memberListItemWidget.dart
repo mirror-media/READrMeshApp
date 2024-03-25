@@ -32,7 +32,7 @@ class MemberListItemWidget extends StatelessWidget {
                   fontWeight:
                       GetPlatform.isIOS ? FontWeight.w500 : FontWeight.w600,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
               ),
               ExtendedText(
@@ -44,7 +44,7 @@ class MemberListItemWidget extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv3!,
+                      Theme.of(context).extension<CustomColors>()!.primary500!,
                 ),
               )
             ],

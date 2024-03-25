@@ -20,5 +20,10 @@
         <item name="android:textColor">#80000928</item>
         <item name="android:strokeColor">#4D000928</item>
         <item name="android:colorEdgeEffect">#1A000928</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="FCLTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 </resources>

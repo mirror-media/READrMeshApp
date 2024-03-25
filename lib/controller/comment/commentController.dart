@@ -64,6 +64,7 @@ class CommentController extends GetxController {
     }
   }
 
+  //call when user tap send
   Future<bool> addComment(String commentContent) async {
     commentSending(commentContent);
     return await Get.find<PubsubService>()
@@ -100,6 +101,7 @@ class CommentController extends GetxController {
     });
   }
 
+  //add sending comment to list to show in UI
   void commentSending(String commentContent) {
     isSending.value = true;
     sendingComment = Comment(
@@ -118,6 +120,9 @@ class CommentController extends GetxController {
     allComments.insert(0, sendingComment!);
   }
 
+  /// because can't know when pub/sub update db finished
+  /// so try to fetch new comment list and check whether it has new comment
+  /// after try 5 times still not found, regard it send failed
   Future<bool> commentSendFinish(Comment newSendingComment) async {
     int retryCount = 0;
     do {
@@ -155,6 +160,7 @@ class CommentController extends GetxController {
     }
   }
 
+  //remove loading temp comment and controller when failed
   void commentSendFailed() {
     String sendingCommentId = allComments[0].id;
     allComments.removeAt(0);
@@ -163,6 +169,7 @@ class CommentController extends GetxController {
     sendingComment = null;
   }
 
+  //call when unPick with pickComment
   void deletePickComment(String commentId) {
     allComments.removeWhere((element) => element.id == commentId);
     _updatePopularCommentList();
@@ -171,10 +178,13 @@ class CommentController extends GetxController {
   void deleteComment(String commentId) async {
     int allCommentIndex =
         allComments.indexWhere((element) => element.id == commentId);
+    //backup first to recover when failed
     Comment backupComment = allComments[allCommentIndex];
     allComments.removeAt(allCommentIndex);
     pickableItemController.commentCount.value = allComments.length;
 
+    //check whether the comment is in popularComments
+    //remove the comment when is in popularComments
     int popularCommentIndex =
         popularComments.indexWhere((element) => element.id == commentId);
     if (popularCommentIndex != -1) {

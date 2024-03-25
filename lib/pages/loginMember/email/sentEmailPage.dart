@@ -18,7 +18,7 @@ class SentEmailPage extends StatelessWidget {
         title: Text(
           'sentEmailPageAppbarTitle'.tr,
           style: TextStyle(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
             fontSize: 20,
             fontWeight: FontWeight.w400,
           ),
@@ -26,7 +26,7 @@ class SentEmailPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -52,7 +52,7 @@ class SentEmailPage extends StatelessWidget {
             '${'sentEmailPagePrefix'.tr}\n $email${'sentEmailPageSuffix'.tr}',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
@@ -139,7 +139,7 @@ class SentEmailPage extends StatelessWidget {
           child: Text(
             'notReceiveText'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+              color: Theme.of(context).extension<CustomColors>()!.primary400!,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
@@ -151,7 +151,7 @@ class SentEmailPage extends StatelessWidget {
             Text(
               'or'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.primaryLv4!,
+                color: Theme.of(context).extension<CustomColors>()!.primary400!,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),
@@ -165,12 +165,12 @@ class SentEmailPage extends StatelessWidget {
                 softWrap: true,
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   decoration: TextDecoration.underline,
                   decorationColor:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
               ),
             ),

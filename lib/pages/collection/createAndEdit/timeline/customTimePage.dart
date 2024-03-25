@@ -46,7 +46,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             'customTime'.tr,
             style: TextStyle(
               fontSize: 18,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -103,7 +103,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
       child: Column(
@@ -156,7 +156,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(6.0)),
         border: Border.all(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          color: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
       ),
       child: Column(
@@ -199,14 +199,14 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   borderSide: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv2!,
+                        .primary600!,
                   ),
                 ),
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv2!,
+                        .primary600!,
                   ),
                 ),
                 suffix: (controller.showClearTextButton.isFalse)
@@ -220,7 +220,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                           Icons.cancel,
                           color: Theme.of(context)
                               .extension<CustomColors>()!
-                              .primaryLv1!,
+                              .primary700!,
                           size: 16,
                         ),
                       ),
@@ -298,7 +298,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                 bottom: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv6!),
+                        .primary200!),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -311,7 +311,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     color: isActive
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : meshBlack20,
                   ),
                 ),
@@ -323,7 +323,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     color: isActive
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : meshBlack20,
                   ),
                   maxLines: 1,
@@ -335,7 +335,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   CupertinoIcons.chevron_right,
                   size: 13,
                   color: isActive
-                      ? Theme.of(context).extension<CustomColors>()!.primaryLv4!
+                      ? Theme.of(context).extension<CustomColors>()!.primary400!
                       : meshBlack20,
                 ),
               ],
@@ -429,7 +429,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   FixedExtentScrollController(initialItem: hourIndex),
               selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
                 background:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -443,7 +443,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   style: TextStyle(
                     fontSize: 23,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 );
               },
@@ -454,7 +454,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
             ':',
             style: TextStyle(
               fontSize: 30,
-              color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+              color: Theme.of(context).extension<CustomColors>()?.primary700,
             ),
           ),
           Expanded(
@@ -466,7 +466,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   FixedExtentScrollController(initialItem: minutesIndex),
               selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
                 background:
-                    Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+                    Theme.of(context).extension<CustomColors>()!.primary200!,
               ),
               itemBuilder: (context, index) {
                 String text;
@@ -480,7 +480,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                   style: TextStyle(
                     fontSize: 23,
                     color:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                   ),
                 );
               },
@@ -494,7 +494,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
         itemExtent: 35,
         onSelectedItemChanged: (index) => chooseIndex = index,
         selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
-          background: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+          background: Theme.of(context).extension<CustomColors>()!.primary200!,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         scrollController: FixedExtentScrollController(initialItem: chooseIndex),
@@ -502,7 +502,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
           timeRange[index].toString(),
           style: TextStyle(
             fontSize: 23,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         childCount: timeRange.length,
@@ -563,7 +563,7 @@ class CustomTimePage extends GetView<EditTimelinePageController> {
                     fontSize: 18,
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv1!,
+                        .primary700!,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

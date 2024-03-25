@@ -24,10 +24,12 @@ class NotifyPageController extends GetxController {
   void onInit() {
     fetchNotifies();
     fetchAnnouncements();
+    //auto refetch every 10 minutes
     _notifyTimer = Timer.periodic(const Duration(minutes: 10), (timer) {
       fetchNotifies();
       fetchAnnouncements();
     });
+    //delete notifies when user logged out
     ever<bool>(Get.find<UserService>().isMember, (callback) {
       if (callback) {
         fetchNotifies();
@@ -64,6 +66,7 @@ class NotifyPageController extends GetxController {
 
   Future<void> fetchNotifies() async {
     List<Notify> localNotifies = Get.find<HiveService>().localNotifies;
+    //remove notifies older than a week
     localNotifies.removeWhere((element) => element.actionTime
         .isBefore(DateTime.now().subtract(const Duration(days: 7))));
     List<Notify> newNotifies = await notifyRepos
@@ -71,13 +74,18 @@ class NotifyPageController extends GetxController {
         .timeout(const Duration(seconds: 10), onTimeout: () => []);
 
     _allNotifies.assignAll(newNotifies);
+
+    //update notifies that still exist
     for (var notify in localNotifies) {
       int index = _allNotifies.indexWhere((element) => element.id == notify.id);
       if (index != -1) {
         _allNotifies[index] = notify;
       }
     }
+
+    //update notify local db with new list
     Get.find<HiveService>().updateNotifyList(_allNotifies);
+
     List<NotifyPageItem> allPageItems =
         _generatePageItemFromNotifies(_allNotifies);
     allPageItems = await notifyRepos.fetchNotifyRelatedItems(allPageItems);
@@ -92,6 +100,7 @@ class NotifyPageController extends GetxController {
     }
   }
 
+  //combine notifies that type and objectId is same
   List<NotifyPageItem> _generatePageItemFromNotifies(List<Notify> notifyList) {
     List<NotifyPageItem> pageItemList = [];
     for (var notify in notifyList) {

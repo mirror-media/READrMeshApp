@@ -126,6 +126,7 @@ class PersonalFilePageController extends GetxController
       viewMember: viewMemberData.value,
     ));
 
+    //show tooltip when first time user get into personal file tab
     if (Get.find<UserService>().showCollectionTooltip &&
         viewMemberData.value.memberId ==
             Get.find<UserService>().currentUser.memberId) {
@@ -155,6 +156,7 @@ class PersonalFilePageController extends GetxController
       viewMember: viewMemberData.value,
     ));
 
+    //only show bookmark tab in own personal file
     if (viewMemberData.value.memberId ==
         Get.find<UserService>().currentUser.memberId) {
       tabs.add(
@@ -179,6 +181,7 @@ class PersonalFilePageController extends GetxController
       length: tabs.length,
     );
 
+    //hide tooltip when user tap collection tab
     tabController.addListener(() {
       if (tabController.index == 1) {
         tooltipController.hideTooltip();
@@ -188,6 +191,7 @@ class PersonalFilePageController extends GetxController
     });
   }
 
+  //update tab text when language changes
   void updateTabs() {
     pickTabText.value = 'picks'.tr;
     collectionTabText.value = 'collections'.tr;
@@ -205,6 +209,7 @@ class PersonalFilePageController extends GetxController
           .value = false;
       isBlock.value = true;
       _showResultToast('blockSuccess'.tr);
+      //update blocked list when SettingPageController is in memory
       if (Get.isRegistered<SettingPageController>()) {
         Get.find<SettingPageController>().fetchBlocklist();
       }
@@ -219,6 +224,7 @@ class PersonalFilePageController extends GetxController
       Get.find<UserService>().removeBlockMember(viewMember.memberId);
       isBlock.value = false;
       _showResultToast('unBlockSuccess'.tr);
+      //update blocked list when SettingPageController is in memory
       if (Get.isRegistered<SettingPageController>()) {
         final settingPageController = Get.find<SettingPageController>();
         settingPageController.blockMembers

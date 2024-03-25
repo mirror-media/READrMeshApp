@@ -32,6 +32,7 @@ class DescriptionPageController extends GetxController {
         description: collectionDescription.value,
       );
 
+      //refetch data to update UI
       await Get.find<CollectionPageController>(tag: collection!.id)
           .fetchCollectionData(useCache: false);
 

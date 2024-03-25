@@ -78,11 +78,6 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['og_image'])) {
       ogImage = json['og_image'];
-      if (ogImage == '') {
-        ogImage =
-            'https://storage.googleapis.com/statics-readr-tw-prod/assets/icons/readr-logo-backstage.png';
-        log('og: $ogImage');
-      }
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -146,6 +141,9 @@ class NewsListItem {
     List<Member> allPickedMember = [];
     allPickedMember.addAll(followingPickMembers);
     allPickedMember.addAll(otherPickMembers);
+
+    /// update value if controller exists
+    /// otherwise create one
     if (updateController) {
       if (Get.isRegistered<PickableItemController>(tag: 'News${json['id']}') ||
           Get.isPrepared<PickableItemController>(tag: 'News${json['id']}')) {

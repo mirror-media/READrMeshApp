@@ -61,9 +61,9 @@ class _PickCommentItemState extends State<PickCommentItem> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).extension<CustomColors>()!.primaryLv7!,
+          color: Theme.of(context).extension<CustomColors>()!.primary100!,
           border: Border.all(
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv6!,
+            color: Theme.of(context).extension<CustomColors>()!.primary200!,
             width: 0.5,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(6.0)),
@@ -112,7 +112,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv5!,
+                      Theme.of(context).extension<CustomColors>()!.primary300!,
                 ),
               );
             }
@@ -139,7 +139,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   style: TextStyle(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv3!,
+                        .primary500!,
                     fontSize: 13,
                   ),
                 ),
@@ -154,7 +154,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
           () => Text(
             widget.controller.likeCount.toString(),
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+              color: Theme.of(context).extension<CustomColors>()!.primary600!,
               fontSize: 12,
             ),
           ),
@@ -188,7 +188,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                   : Icons.favorite_border_outlined,
               color: widget.controller.isLiked.value
                   ? Theme.of(context).extension<CustomColors>()!.red!
-                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                  : Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
           ),
         ),
@@ -222,8 +222,8 @@ class _PickCommentItemState extends State<PickCommentItem> {
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: validate.isEmoji(contentChar[0])
-                  ? Theme.of(context).extension<CustomColors>()!.primaryLv1!
-                  : Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                  ? Theme.of(context).extension<CustomColors>()!.primary700!
+                  : Theme.of(context).extension<CustomColors>()!.primary600!,
             ),
             children: [
               for (int i = 1; i < contentChar.length; i++)
@@ -233,10 +233,10 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     color: validate.isEmoji(contentChar[i])
                         ? Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv1!
+                            .primary700!
                         : Theme.of(context)
                             .extension<CustomColors>()!
-                            .primaryLv2!,
+                            .primary600!,
                   ),
                 )
             ],
@@ -265,7 +265,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                 text: '... ',
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv2!,
+                      Theme.of(context).extension<CustomColors>()!.primary600!,
                 ),
                 children: [
                   TextSpan(
@@ -273,7 +273,7 @@ class _PickCommentItemState extends State<PickCommentItem> {
                     style: TextStyle(
                       color: Theme.of(context)
                           .extension<CustomColors>()!
-                          .primaryLv3!,
+                          .primary500!,
                     ),
                   )
                 ],

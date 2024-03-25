@@ -32,6 +32,7 @@ class ChooseStoryPageController extends GetxController {
   final noMorePick = false.obs;
   final noMoreBookmark = false.obs;
   //search
+  //currently only functionality in prod
   final searchMode = false.obs;
   final keyWord = ''.obs;
   String searchWord = '';
@@ -46,6 +47,7 @@ class ChooseStoryPageController extends GetxController {
   void onInit() {
     _index = _client.index('mesh');
     fetchPickAndBookmark();
+    // when leave searchMode, reset list to initial state
     ever<bool>(searchMode, (callback) {
       if (!callback) {
         fetchPickAndBookmark();
@@ -54,6 +56,7 @@ class ChooseStoryPageController extends GetxController {
       }
       keyWord.value = '';
     });
+    //auto search keyword in picks and bookmarks with debounce 1 second
     debounce<String>(
       keyWord,
       (callback) {
@@ -137,6 +140,7 @@ class ChooseStoryPageController extends GetxController {
     isLoadingMore.value = false;
   }
 
+  // search all news with MeiliSearch
   void searchAllNews() async {
     isLoading(true);
     isError(false);
@@ -151,6 +155,7 @@ class ChooseStoryPageController extends GetxController {
         limit: 50,
       )
           .then((value) async {
+        // if result id list is not empty, use id to fetch news' other data
         if (value.hits?.isNotEmpty ?? false) {
           List<int> newsIdList =
               List<int>.from((value.hits!).map((e) => e['id']));
@@ -184,6 +189,7 @@ class ChooseStoryPageController extends GetxController {
         limit: 50,
       )
           .then((value) async {
+        // if result id list is not empty, use id to fetch news' other data
         if (value.hits?.isNotEmpty ?? false) {
           List<int> newsIdList =
               List<int>.from((value.hits!).map((e) => e['id']));

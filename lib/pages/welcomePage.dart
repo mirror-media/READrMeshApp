@@ -105,10 +105,10 @@ class _WelcomePageState extends State<WelcomePage> {
                           color: _current == entry.key
                               ? Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv1!
+                                  .primary700!
                               : Theme.of(context)
                                   .extension<CustomColors>()!
-                                  .primaryLv6!,
+                                  .primary200!,
                         ),
                       ),
                     );
@@ -131,7 +131,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       Get.off(() => const InputInvitationCodePage()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        Theme.of(context).extension<CustomColors>()?.primaryLv1,
+                        Theme.of(context).extension<CustomColors>()?.primary700,
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
                       horizontal: 24,
@@ -182,7 +182,7 @@ class _WelcomePageState extends State<WelcomePage> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv1,
+            color: Theme.of(context).extension<CustomColors>()?.primary700,
           ),
           textAlign: TextAlign.center,
         ),
@@ -194,7 +194,7 @@ class _WelcomePageState extends State<WelcomePage> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()?.primaryLv3,
+            color: Theme.of(context).extension<CustomColors>()?.primary500,
           ),
         ),
       ],

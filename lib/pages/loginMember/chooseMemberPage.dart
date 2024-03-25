@@ -27,7 +27,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+            color: Theme.of(context).extension<CustomColors>()!.primary700!,
           ),
         ),
         leading: isFromPublisher
@@ -35,7 +35,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 icon: Icon(
                   Icons.arrow_back_ios,
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               )
@@ -51,7 +51,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 'chooseMemberPageBodyText'.tr,
                 style: TextStyle(
                   color:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   fontSize: 16,
                 ),
               ),
@@ -102,7 +102,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                   top: BorderSide(
                     color: Theme.of(context)
                         .extension<CustomColors>()!
-                        .primaryLv5!,
+                        .primary300!,
                     width: 0.5,
                   ),
                 ),
@@ -125,7 +125,7 @@ class ChooseMemberPage extends GetView<ChooseMemberController> {
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor:
-                      Theme.of(context).extension<CustomColors>()!.primaryLv1!,
+                      Theme.of(context).extension<CustomColors>()!.primary700!,
                   padding: const EdgeInsets.symmetric(
                     vertical: 12,
                     horizontal: 24,

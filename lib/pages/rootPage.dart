@@ -12,6 +12,7 @@ import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/personalFile/visitorPersonalFile.dart';
 import 'package:readr/pages/readr/readrPage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
+import 'package:readr/pages/wallet/walletPage.dart';
 import 'package:upgrader/upgrader.dart';
 
 class RootPage extends GetView<RootPageController> {
@@ -59,6 +60,7 @@ class RootPage extends GetView<RootPageController> {
           return const VisitorPersonalFile();
         },
       ),
+      WalletPage(),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -200,6 +202,27 @@ class RootPage extends GetView<RootPageController> {
                 ),
               ),
               label: 'personalFileTab'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 24,
+                child: Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .unselectedItemColor,
+                ),
+              ),
+              activeIcon: SizedBox(
+                height: 24,
+                child: Icon(
+                  Icons.account_balance_wallet,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
+                ),
+              ),
+              label: '錢包',
             ),
           ],
         ),

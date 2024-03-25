@@ -115,6 +115,9 @@ class EditPersonalFilePageController extends GetxController {
         formKey.currentState!.validate();
       } else {
         bool result;
+
+        /// avatarImagePath is local image file path
+        /// if not empty mean user choose local image to be avatar
         if (avatarImagePath.isNotEmpty) {
           await _deleteOldAvatar();
           result = await memberRepos
@@ -127,6 +130,7 @@ class EditPersonalFilePageController extends GetxController {
               )
               .timeout(const Duration(seconds: 90));
         } else {
+          // if avatarImageUrl is empty mean user delete avatar
           if (avatarImageUrl.isEmpty) {
             await _deleteOldAvatar();
           }
@@ -178,6 +182,7 @@ class EditPersonalFilePageController extends GetxController {
     }
   }
 
+  //check nickname whether is same with any publisher name
   bool _validateNickname(List<Publisher> publisherList, String nickname) {
     for (var publisher in publisherList) {
       if (_equalsIgnoreCase(publisher.title, nickname)) {
@@ -193,6 +198,7 @@ class EditPersonalFilePageController extends GetxController {
 
   Future<void> _deleteOldAvatar() async {
     bool deleteImageResult;
+    //use avatarImageId to determine whether remove photo item in CMS
     if (Get.find<UserService>().currentUser.avatarImageId != null) {
       deleteImageResult = await memberRepos
           .deleteAvatarPhoto(Get.find<UserService>().currentUser.avatarImageId!)

@@ -12,4 +12,5 @@ abstract class BaseConfig {
   String get pubSubTopic;
   String get searchSeverUrl;
   String? get meiliMasterKey;
+  String get bloctoAppId;
 }
