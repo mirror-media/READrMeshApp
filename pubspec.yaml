@@ -180,7 +180,7 @@ dependencies:
   # search engine
   meilisearch: ^0.6.0
   # animate list
-  animated_list_plus: ^0.4.3
+  animated_list_plus: ^0.5.2
   # splash screen
   flutter_native_splash: ^2.2.7
   # google ads
