@@ -182,11 +182,7 @@ class CommentItem extends GetView<CommentItemController> {
                       .headlineSmall
                       ?.copyWith(fontSize: 14),
                 );
-                final innerTextSpan = joinChar(
-                  span,
-                  Accumulator(),
-                  zeroWidthSpace,
-                );
+                final innerTextSpan =span;
 
                 final painter = TextPainter(
                   text: innerTextSpan,
