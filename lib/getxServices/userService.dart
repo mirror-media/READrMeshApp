@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readr/controller/settingPageController.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
@@ -50,9 +51,11 @@ class UserService extends GetxService {
       currentUser = member;
     } else if (_isMember) {
       await Future.wait([
-        _memberService.fetchMemberData().then((memberData) {
+        _memberService.fetchMemberData().then((memberData) async {
           if (memberData != null) {
             currentUser = memberData;
+          } else {
+            await FirebaseAuth.instance.currentUser!.delete();
           }
         }).catchError((error) {
           print('Fetch user data failed: $error');
