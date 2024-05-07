@@ -190,29 +190,29 @@ class LoginPage extends GetView<LoginPageController> {
             height: 12,
           ),
         ],
-        LoginButton(
-          type: LoginType.facebook,
-          buttonText: 'continueWithFacebook'.tr,
-          buttonBackgroundColor: Theme.of(context).backgroundColor,
-          buttonBorderColor:
-              Theme.of(context).extension<CustomColors>()!.primary700!,
-          textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
-          loadingAnimationColor:
-              Theme.of(context).extension<CustomColors>()!.primary200!,
-          iconColor: Theme.of(context).brightness == Brightness.light
-              ? null
-              : Colors.white,
-          onFinished: (result, isNewUser, error) async {
-            if (result == FirebaseLoginStatus.success) {
-              controller.login(LoginType.facebook, isNewUser);
-            } else if (result == FirebaseLoginStatus.error) {
-              showToast("loginFailed".tr);
-            }
-          },
-        ),
-        const SizedBox(
-          height: 12,
-        ),
+        // LoginButton(
+        //   type: LoginType.facebook,
+        //   buttonText: 'continueWithFacebook'.tr,
+        //   buttonBackgroundColor: Theme.of(context).backgroundColor,
+        //   buttonBorderColor:
+        //       Theme.of(context).extension<CustomColors>()!.primary700!,
+        //   textColor: Theme.of(context).extension<CustomColors>()!.primary700!,
+        //   loadingAnimationColor:
+        //       Theme.of(context).extension<CustomColors>()!.primary200!,
+        //   iconColor: Theme.of(context).brightness == Brightness.light
+        //       ? null
+        //       : Colors.white,
+        //   onFinished: (result, isNewUser, error) async {
+        //     if (result == FirebaseLoginStatus.success) {
+        //       controller.login(LoginType.facebook, isNewUser);
+        //     } else if (result == FirebaseLoginStatus.error) {
+        //       showToast("loginFailed".tr);
+        //     }
+        //   },
+        // ),
+        // const SizedBox(
+        //   height: 12,
+        // ),
         LoginButton(
           type: LoginType.google,
           buttonText: 'continueWithGoogle'.tr,
