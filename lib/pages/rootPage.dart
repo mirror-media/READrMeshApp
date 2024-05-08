@@ -203,27 +203,27 @@ class RootPage extends GetView<RootPageController> {
               ),
               label: 'personalFileTab'.tr,
             ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 24,
-                child: Icon(
-                  Icons.account_balance_wallet_outlined,
-                  color: Theme.of(context)
-                      .bottomNavigationBarTheme
-                      .unselectedItemColor,
-                ),
-              ),
-              activeIcon: SizedBox(
-                height: 24,
-                child: Icon(
-                  Icons.account_balance_wallet,
-                  color: Theme.of(context)
-                      .bottomNavigationBarTheme
-                      .selectedItemColor,
-                ),
-              ),
-              label: '錢包',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: SizedBox(
+            //     height: 24,
+            //     child: Icon(
+            //       Icons.account_balance_wallet_outlined,
+            //       color: Theme.of(context)
+            //           .bottomNavigationBarTheme
+            //           .unselectedItemColor,
+            //     ),
+            //   ),
+            //   activeIcon: SizedBox(
+            //     height: 24,
+            //     child: Icon(
+            //       Icons.account_balance_wallet,
+            //       color: Theme.of(context)
+            //           .bottomNavigationBarTheme
+            //           .selectedItemColor,
+            //     ),
+            //   ),
+            //   label: '錢包',
+            // ),
           ],
         ),
       ),
