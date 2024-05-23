@@ -48,7 +48,7 @@ class CategoryServices implements CategoryRepos {
         .data!['categories']
         .map((item) => Category.fromJson(item)));
 
-    categoryList.sort((a, b) => b.latestPostTime!.compareTo(a.latestPostTime!));
+    // categoryList.sort((a, b) => b.latestPostTime!.compareTo(a.latestPostTime!));
     categoryList.insert(
         0,
         Category(
