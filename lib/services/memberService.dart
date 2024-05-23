@@ -683,8 +683,7 @@ query(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    if (jsonResponse['member'] != null &&
-        jsonResponse['member']['is_active']) {
+    if (jsonResponse['member'] != null && jsonResponse['member']['is_active']) {
       return Member.fromJson(jsonResponse['member']);
     } else {
       return null;
