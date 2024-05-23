@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
@@ -8,15 +8,20 @@ abstract class CommunityRepos {
   Future<List<CommunityListItem>> fetchFollowingPicked(
       {List<String>? alreadyFetchStoryIds,
       List<String>? alreadyFetchCollectionIds});
+
   Future<List<CommunityListItem>> fetchFollowingComment(
       {List<String>? alreadyFetchStoryIds,
       List<String>? alreadyFetchCollectionIds});
+
   Future<List<Member>> fetchRecommendMembers();
+
   Future<List<CommunityListItem>> fetchCollections(
       {List<String>? alreadyFetchCollectionIds});
 }
 
 class CommunityService implements CommunityRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<CommunityListItem>> fetchFollowingPicked(
       {List<String>? alreadyFetchStoryIds,
@@ -491,11 +496,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<CommunityListItem> followingPicked = [];
     for (var item in jsonResponse.data!['storyPicks']) {
@@ -1003,12 +1005,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
-
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
     List<CommunityListItem> followingComment = [];
     for (var item in jsonResponse.data!['storyComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
@@ -1288,11 +1286,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> recommendMembers = [];
     if (jsonResponse.data!['followedFollowing'].isNotEmpty) {
@@ -1529,11 +1524,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<CommunityListItem> newCollection = [];
     for (var item in jsonResponse.data!['collections']) {

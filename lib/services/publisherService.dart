@@ -1,15 +1,18 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class PublisherRepos {
   Future<List<NewsListItem>> fetchPublisherNews(
       String publisherId, DateTime newsFilterTime);
+
   Future<int> fetchPublisherFollowerCount(String publisherId);
 }
 
 class PublisherService implements PublisherRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<NewsListItem>> fetchPublisherNews(
       String publisherId, DateTime newsFilterTime) async {
@@ -205,11 +208,8 @@ class PublisherService implements PublisherRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allNews = [];
     if (jsonResponse.data!['stories'].isNotEmpty) {
@@ -245,12 +245,8 @@ class PublisherService implements PublisherRepos {
 
     Map<String, dynamic> variables = {"publisherId": publisherId};
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-      throwException: false,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     if (jsonResponse.hasException) {
       return 0;

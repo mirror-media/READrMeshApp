@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/announcement.dart';
@@ -11,12 +11,16 @@ import 'package:readr/models/notifyPageItem.dart';
 
 abstract class NotifyRepos {
   Future<List<Notify>> fetchNotifies({List<String>? alreadyFetchNotifyIds});
+
   Future<List<NotifyPageItem>> fetchNotifyRelatedItems(
       List<NotifyPageItem> pageItemList);
+
   Future<List<Announcement>> fetchAnnouncements();
 }
 
 class NotifyService implements NotifyRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<Notify>> fetchNotifies(
       {List<String>? alreadyFetchNotifyIds}) async {
@@ -80,11 +84,8 @@ query(
       "alreadyFetchedIds": alreadyFetchNotifyIds ?? [],
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Notify> notifications = [];
 
@@ -120,8 +121,8 @@ query{
     List<Announcement> announcements = [];
 
     try {
-      final jsonResponse = await Get.find<GraphQLService>()
-          .query(api: Api.mesh, queryBody: query);
+      final jsonResponse =
+          await proxyServerService.gql(query: query, variables: {});
 
       for (var item in jsonResponse.data!['announcements']) {
         announcements.add(Announcement.fromJson(item));
@@ -316,11 +317,8 @@ query(
       "storyIds": storyIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     for (var collectionItem in jsonResponse.data!['collections']) {
       Collection collection = Collection.fromJson(collectionItem);

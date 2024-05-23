@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/member.dart';
@@ -12,15 +13,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class MemberRepos {
   Future<Member?> fetchMemberData();
+
   Future<Member?> createMember(String nickname, {int? tryTimes});
+
   Future<bool> deleteMember(String memberId);
+
   Future<List<Publisher>?> addFollowPublisher(String publisherId);
+
   Future<bool> updateMember({
     required String memberId,
     required String nickname,
     required String customId,
     String? intro,
   });
+
   Future<bool> updateMemberAndAvatar({
     required String memberId,
     required String nickname,
@@ -28,16 +34,25 @@ abstract class MemberRepos {
     String? intro,
     required String imagePath,
   });
+
   Future<bool> deleteAvatarPhoto(String imageId);
+
   Future<bool> deleteAvatarUrl(String memberId);
+
   Future<List<PickIdItem>> fetchAllPicksAndBookmarks();
+
   Future<Member?> fetchMemberDataById(String id);
+
   Future<void> addBlockMember(String blockMemberId);
+
   Future<void> removeBlockMember(String blockMemberId);
+
   Future<List<Member>> fetchBlockMembers(List<String> blockMemberIds);
 }
 
 class MemberService implements MemberRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<Member?> fetchMemberData() async {
     const String query = """
@@ -145,12 +160,13 @@ class MemberService implements MemberRepos {
     Map<String, dynamic> variables = {
       "firebaseId": FirebaseAuth.instance.currentUser!.uid,
     };
+    final ProxyServerService proxyServerService = Get.find();
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    // final test =await proxyServerService.test();
+    // final jsonResponse2 =
+    //     await proxyServerService.gql(query: query, variables: variables);
 
     // create new member when firebase is signed in but member is not created
     if (jsonResponse.data!['members'].isEmpty) {
@@ -611,11 +627,8 @@ query(
       "memberId": Get.find<UserService>().currentUser.memberId,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<PickIdItem> pickIdList = [];
     for (var item in jsonResponse.data!['member']['storyPicks']) {
@@ -667,11 +680,8 @@ query(
       "memberId": id,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     if (jsonResponse.data!['member'] != null &&
         jsonResponse.data!['member']['is_active']) {
@@ -813,11 +823,8 @@ query(
       "blockIds": blockMemberIds,
     };
 
-    final response = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final response =
+        await proxyServerService.gql(query: query, variables: variables);
 
     return List<Member>.from(
         response.data!['members'].map((element) => Member.fromJson(element)));

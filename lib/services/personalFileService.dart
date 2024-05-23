@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:graphql/client.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/member.dart';
@@ -9,28 +8,39 @@ import 'package:readr/models/publisher.dart';
 
 abstract class PersonalFileRepos {
   Future<Member> fetchMemberData(Member member);
+
   Future<List<Pick>> fetchStoryPicks(Member targetMember,
       {DateTime? pickFilterTime});
+
   Future<List<Pick>> fetchBookmark({DateTime? pickFilterTime});
+
   Future<List<Member>> fetchFollowerList(Member viewMember, {int skip = 0});
+
   Future<Map<String, dynamic>> fetchFollowingList(Member viewMember,
       {int skip = 0});
+
   Future<List<Publisher>> fetchFollowPublisher(Member viewMember);
+
   Future<List<Publisher>> fetchAllPublishers();
+
   Future<List<Collection>> fetchCollectionList(
     Member viewMember, {
     List<String>? fetchedCollectionIds,
     bool useCache = true,
   });
+
   Future<List<Collection>> fetchMoreCollectionList(
     Member viewMember,
     List<String> fetchedCollectionIds,
   );
+
   Future<List<Pick>> fetchCollectionPicks(Member targetMember,
       {DateTime? pickFilterTime});
 }
 
 class PersonalFileService implements PersonalFileRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<Member> fetchMemberData(Member member) async {
     const String query = """
@@ -113,11 +123,8 @@ class PersonalFileService implements PersonalFileRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     return Member.fromJson(jsonResponse.data!['member']);
   }
@@ -365,11 +372,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> storyPickList = [];
     if (jsonResponse.data!['picks'].isNotEmpty) {
@@ -582,11 +586,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> bookmarkList = [];
     if (jsonResponse.data!['member']['bookmark'].isNotEmpty) {
@@ -660,11 +661,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> followerList = [];
     for (var member in jsonResponse.data!['members']) {
@@ -754,11 +752,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> followingList = [];
     for (var member in jsonResponse.data!['members']) {
@@ -802,11 +797,8 @@ query(
 
     Map<String, dynamic> variables = {"viewMemberId": viewMember.memberId};
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> followPublisherList = [];
     for (var publisher in jsonResponse.data!['member']['follow_publisher']) {
@@ -828,10 +820,7 @@ query(
     }
     """;
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-    );
+    final jsonResponse = await proxyServerService.gql(query: query);
 
     List<Publisher> allPublisherList = [];
     for (var publisher in jsonResponse.data!['publishers']) {
@@ -1026,12 +1015,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-      fetchPolicy: useCache ? FetchPolicy.cacheFirst : FetchPolicy.networkOnly,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Collection> collectionList = List<Collection>.from(jsonResponse
         .data!['collections']
@@ -1165,11 +1150,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> collectionPickList = [];
     if (jsonResponse.data!['picks'].isNotEmpty) {

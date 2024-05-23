@@ -1,15 +1,18 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class SearchRepos {
   Future<List<NewsListItem>> fetchNewsByIdList(List<int> idList);
+
   Future<List<Collection>> fetchCollectionsByIdList(List<int> idList);
 }
 
 class SearchService implements SearchRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<NewsListItem>> fetchNewsByIdList(List<int> idList) async {
     const String query = """
@@ -185,11 +188,8 @@ class SearchService implements SearchRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final response = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final response =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allNewsResult = [];
     for (var item in response.data!['stories']) {
@@ -394,11 +394,8 @@ class SearchService implements SearchRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Collection> allCollectionResult = List<Collection>.from(jsonResponse
         .data!['collections']

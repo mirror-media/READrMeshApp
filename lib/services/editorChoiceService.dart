@@ -1,16 +1,20 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/editorChoiceItem.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class EditorChoiceRepos {
   Future<List<EditorChoiceItem>> fetchEditorChoiceList();
+
   Future<List<EditorChoiceItem>> fetchNewsListItemList();
 }
 
 class EditorChoiceService implements EditorChoiceRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<EditorChoiceItem>> fetchEditorChoiceList() async {
     String query = """
@@ -272,11 +276,8 @@ class EditorChoiceService implements EditorChoiceRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     if (jsonResponse.data!['stories'].isNotEmpty) {
       for (var item in jsonResponse.data!['stories']) {
