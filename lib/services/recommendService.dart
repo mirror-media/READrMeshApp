@@ -51,7 +51,7 @@ class RecommendService implements RecommendRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> allPublisherList = [];
-    for (var publisher in jsonResponse.data!['publishers']) {
+    for (var publisher in jsonResponse['publishers']) {
       allPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -137,12 +137,12 @@ class RecommendService implements RecommendRepos {
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
     List<Member> recommedMembers = [];
-    for (var member in jsonResponse.data!['recommendMember']) {
+    for (var member in jsonResponse['recommendMember']) {
       recommedMembers.add(Member.fromJson(member));
     }
 
     if (recommedMembers.length < 20) {
-      for (var item in jsonResponse.data!['otherMember']) {
+      for (var item in jsonResponse['otherMember']) {
         Member member = Member.fromJson(item);
         if (!recommedMembers
             .any((element) => element.memberId == member.memberId)) {

@@ -229,8 +229,8 @@ class LatestService implements LatestRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allLatestNews = [];
-    if (jsonResponse.data!['stories'].isNotEmpty) {
-      for (var item in jsonResponse.data!['stories']) {
+    if (jsonResponse['stories'].isNotEmpty) {
+      for (var item in jsonResponse['stories']) {
         allLatestNews.add(NewsListItem.fromJson(item));
       }
       _earliestNewsPublishTime = allLatestNews.last.publishedDate;
@@ -325,8 +325,8 @@ class LatestService implements LatestRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> recommendedPublishers = [];
-    if (jsonResponse.data!['publishers'].isNotEmpty) {
-      for (var publisher in jsonResponse.data!['publishers']) {
+    if (jsonResponse['publishers'].isNotEmpty) {
+      for (var publisher in jsonResponse['publishers']) {
         recommendedPublishers.add(Publisher.fromJson(publisher));
       }
     }

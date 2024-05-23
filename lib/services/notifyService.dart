@@ -90,7 +90,7 @@ query(
     List<Notify> notifications = [];
 
     try {
-      notifications = List<Notify>.from(jsonResponse.data!['notifies']
+      notifications = List<Notify>.from(jsonResponse['notifies']
           .map((element) => Notify.fromJson(element)));
     } catch (e) {
       print('Fetch notify error: $e');
@@ -124,7 +124,7 @@ query{
       final jsonResponse =
           await proxyServerService.gql(query: query, variables: {});
 
-      for (var item in jsonResponse.data!['announcements']) {
+      for (var item in jsonResponse['announcements']) {
         announcements.add(Announcement.fromJson(item));
       }
     } catch (e) {
@@ -317,11 +317,12 @@ query(
       "storyIds": storyIds,
     };
 
-    final jsonResponse =
-        await proxyServerService.gql(query: query, variables: variables);
+    final jsonResponse = await proxyServerService.gql(
+        query: query, variables: variables);
 
-    for (var collectionItem in jsonResponse.data!['collections']) {
+    for (var collectionItem in jsonResponse['collections']) {
       Collection collection = Collection.fromJson(collectionItem);
+
       pageItemList
           .firstWhereOrNull((element) =>
               (element.type == NotifyType.pickCollection ||
@@ -330,7 +331,7 @@ query(
           ?.collection = collection;
     }
 
-    for (var storyItem in jsonResponse.data!['stories']) {
+    for (var storyItem in jsonResponse['stories']) {
       NewsListItem news = NewsListItem.fromJson(storyItem);
       pageItemList
           .firstWhereOrNull((element) =>
@@ -338,7 +339,7 @@ query(
           ?.newsListItem = news;
     }
 
-    for (var commentItem in jsonResponse.data!['comments']) {
+    for (var commentItem in jsonResponse['comments']) {
       Comment comment = Comment.fromJson(commentItem);
       int index = pageItemList.indexWhere((element) =>
           element.objectId == comment.id && element.type == NotifyType.like);

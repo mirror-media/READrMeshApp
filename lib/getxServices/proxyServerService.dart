@@ -118,7 +118,9 @@ query{
           "Content-Type": "application/json",
           "Bearer": authToken,
         }) as Map<String, dynamic>;
-    if (jsonResponse.containsKey('data')) return jsonResponse['data'];
+    if (jsonResponse.containsKey('data'))
+      return jsonResponse['data'];
+
     return null;
   }
 }

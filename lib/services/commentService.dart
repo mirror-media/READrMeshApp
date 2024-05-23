@@ -91,7 +91,7 @@ class CommentService implements CommentRepos {
           await proxyServerService.gql(query: query, variables: variables);
 
       List<Comment> allComments = [];
-      for (var item in jsonResponse.data!['comments']) {
+      for (var item in jsonResponse['comments']) {
         allComments.add(Comment.fromJson(item));
       }
 
@@ -177,7 +177,7 @@ class CommentService implements CommentRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Comment> allComments = [];
-    for (var item in jsonResponse.data!['comments']) {
+    for (var item in jsonResponse['comments']) {
       allComments.add(Comment.fromJson(item));
     }
 
