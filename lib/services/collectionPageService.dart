@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:graphql/client.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/baseModel.dart';
@@ -17,6 +18,8 @@ abstract class CollectionPageRepos {
 }
 
 class CollectionPageService implements CollectionPageRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<Map<String, dynamic>> fetchCollectionData(String collectionId,
       {bool useCache = true}) async {
@@ -364,12 +367,8 @@ query(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-      fetchPolicy: useCache ? FetchPolicy.cacheFirst : FetchPolicy.networkOnly,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Comment> allComments = [];
     List<Comment> popularComments = [];

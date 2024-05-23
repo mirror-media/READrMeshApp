@@ -13,4 +13,5 @@ abstract class BaseConfig {
   String get searchSeverUrl;
   String? get meiliMasterKey;
   String get bloctoAppId;
+  String get proxyServerApi;
 }

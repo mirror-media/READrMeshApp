@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/invitationCode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,12 +14,17 @@ enum InvitationCodeStatus {
 
 abstract class InvitationCodeRepos {
   Future<List<InvitationCode>> fetchMyInvitationCode();
+
   Future<bool> checkUsableInvitationCode(String memberId);
+
   Future<InvitationCodeStatus> checkInvitationCode(String code);
+
   Future<void> linkInvitationCode(String codeId);
 }
 
 class InvitationCodeService implements InvitationCodeRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<InvitationCode>> fetchMyInvitationCode() async {
     const String query = '''
@@ -55,11 +61,8 @@ class InvitationCodeService implements InvitationCodeRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<InvitationCode> allInvitationCode = [];
     for (var item in jsonResponse.data!['invitationCodes']) {
@@ -94,11 +97,8 @@ class InvitationCodeService implements InvitationCodeRepos {
     };
 
     try {
-      final jsonResponse = await Get.find<GraphQLService>().query(
-        api: Api.mesh,
-        queryBody: query,
-        variables: variables,
-      );
+      final jsonResponse =
+          await proxyServerService.gql(query: query, variables: variables);
 
       if (jsonResponse.data!['invitationCodesCount'] != 0) {
         return true;
@@ -141,11 +141,8 @@ class InvitationCodeService implements InvitationCodeRepos {
     };
 
     try {
-      final jsonResponse = await Get.find<GraphQLService>().query(
-        api: Api.mesh,
-        queryBody: query,
-        variables: variables,
-      );
+      final jsonResponse =
+          await proxyServerService.gql(query: query, variables: variables);
 
       if (jsonResponse.data!['invitationCodes'].isEmpty) {
         return InvitationCodeStatus.invalid;

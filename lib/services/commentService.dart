@@ -1,15 +1,19 @@
 import 'package:get/get.dart';
 import 'package:graphql/client.dart';
 import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/comment.dart';
 
 abstract class CommentRepos {
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId);
+
   Future<List<Comment>> fetchCommentsByCollectionId(String collectionId);
 }
 
 class CommentService implements CommentRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<Comment>?> fetchCommentsByStoryId(String storyId) async {
     String query = """
@@ -83,12 +87,8 @@ class CommentService implements CommentRepos {
     };
 
     try {
-      final jsonResponse = await Get.find<GraphQLService>().query(
-        api: Api.mesh,
-        queryBody: query,
-        variables: variables,
-        fetchPolicy: FetchPolicy.noCache,
-      );
+      final jsonResponse =
+          await proxyServerService.gql(query: query, variables: variables);
 
       List<Comment> allComments = [];
       for (var item in jsonResponse.data!['comments']) {
@@ -173,12 +173,8 @@ class CommentService implements CommentRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-      fetchPolicy: FetchPolicy.noCache,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Comment> allComments = [];
     for (var item in jsonResponse.data!['comments']) {

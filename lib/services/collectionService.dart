@@ -3,6 +3,7 @@ import 'package:graphql/client.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/addToCollectionItem.dart';
@@ -18,7 +19,9 @@ abstract class CollectionRepos {
     List<String>? fetchedPickStoryIds,
     String? keyWord,
   });
+
   Future<String> createOgPhoto({required String ogImageUrlOrPath});
+
   Future<Collection> createCollection({
     required String title,
     required String ogImageId,
@@ -28,29 +31,39 @@ abstract class CollectionRepos {
     String? slug,
     required String description,
   });
+
   Future<void> createCollectionPicks({
     required String collectionId,
     required List<CollectionPick> collectionPicks,
   });
+
   Future<void> updateTitle({
     required String collectionId,
     required String newTitle,
   });
+
   Future<void> updateOgPhoto(
       {required String photoId, required String ogImageUrlOrPath});
+
   Future<void> updateCollectionPicksData({
     required List<CollectionPick> collectionPicks,
   });
+
   Future<void> removeCollectionPicks(
       {required List<CollectionPick> collectionPicks});
+
   Future<bool> deleteCollection(String collectionId, String ogImageId);
+
   Future<Collection?> fetchCollectionById(String id);
+
   Future<void> updateDescription({
     required String collectionId,
     required String description,
   });
+
   Future<Map<String, List<AddToCollectionItem>>> fetchAndCheckOwnCollections(
       String tapStoryId);
+
   Future<void> addSingleStoryToCollection({
     required String storyId,
     required String collectionId,
@@ -60,17 +73,21 @@ abstract class CollectionRepos {
     int? customDay,
     DateTime? customTime,
   });
+
   Future<void> updateCollectionPicks({
     required String collectionId,
     required List<CollectionPick> originList,
     required List<CollectionPick> newList,
     required CollectionFormat format,
   });
+
   Future<void> updateCollectionFormat(
       {required String collectionId, required CollectionFormat format});
 }
 
 class CollectionService implements CollectionRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<Map<String, List<CollectionPick>>> fetchPickAndBookmark({
     List<String>? fetchedBookmarkStoryIds,
@@ -446,11 +463,8 @@ class CollectionService implements CollectionRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<CollectionPick> pickAndBookmarkList = [];
     List<CollectionPick> pickList = [];
@@ -1368,11 +1382,8 @@ mutation(
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     if (jsonResponse.data!['collection'] != null) {
       return Collection.fromJson(jsonResponse.data!['collection']);
@@ -1514,12 +1525,8 @@ query(
       "tapStoryId": tapStoryId,
     };
 
-    final result = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-      fetchPolicy: FetchPolicy.noCache,
-    );
+    final result =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<AddToCollectionItem> alreadyPickCollections = [];
     List<AddToCollectionItem> notPickCollections = [];
