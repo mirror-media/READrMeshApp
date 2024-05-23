@@ -763,7 +763,7 @@ query(
 
     return {
       'followingList': followingList,
-      'followingMemberCount': jsonResponse.data!['membersCount'],
+      'followingMemberCount': jsonResponse['membersCount'],
     };
   }
 
