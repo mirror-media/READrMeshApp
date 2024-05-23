@@ -12,6 +12,8 @@ import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/latestService.dart';
 import 'package:readr/services/notifyService.dart';
 
+import 'proxyServerApiHelper.dart';
+
 class InitControllerBinding implements Bindings {
   @override
   void dependencies() {
@@ -25,5 +27,6 @@ class InitControllerBinding implements Bindings {
     Get.put(MainAppBarController(InvitationCodeService()), permanent: true);
     Get.put(NotifyPageController(NotifyService()), permanent: true);
     Get.put(WalletPageController(), permanent: true);
+    Get.put(ProxyServerApiHelper.instance);
   }
 }

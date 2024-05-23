@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:readr/getxServices/adService.dart';
+import 'package:readr/getxServices/dynamicLinkService.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/getxServices/firebaseMessagingService.dart';
 import 'package:readr/getxServices/graphQLService.dart';
 import 'package:readr/getxServices/hiveService.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/pubsubService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
-import 'package:readr/getxServices/dynamicLinkService.dart';
 import 'package:readr/getxServices/walletService.dart';
 
 Future<void> appInitial(BuildFlavor buildFlavor) async {
@@ -36,6 +37,7 @@ Future<void> appInitial(BuildFlavor buildFlavor) async {
   await Get.putAsync(() => FirebaseMessagingService().init());
   await Get.putAsync(() => HiveService().init());
   await Get.putAsync(() => GraphQLService().init());
+  await Get.putAsync(() => ProxyServerService().init());
   await Get.putAsync(() => UserService().init());
   await Get.putAsync(() => PickAndBookmarkService().init());
   await Get.putAsync(() => PubsubService().init());

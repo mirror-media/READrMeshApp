@@ -1,16 +1,19 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/publisher.dart';
 
 abstract class RecommendRepos {
   Future<List<Publisher>> fetchAllPublishers();
+
   Future<List<Member>> fetchRecommendedMembers();
 }
 
 class RecommendService implements RecommendRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<List<Publisher>> fetchAllPublishers() async {
     const String query = """
@@ -44,11 +47,8 @@ class RecommendService implements RecommendRepos {
       "readrId": Get.find<EnvironmentService>().config.readrPublisherId
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> allPublisherList = [];
     for (var publisher in jsonResponse.data!['publishers']) {
@@ -134,12 +134,8 @@ class RecommendService implements RecommendRepos {
       "myId": Get.find<UserService>().currentUser.memberId,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
-
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
     List<Member> recommedMembers = [];
     for (var member in jsonResponse.data!['recommendMember']) {
       recommedMembers.add(Member.fromJson(member));

@@ -19,6 +19,8 @@ class GraphQLService extends GetxService {
   Future<GraphQLService> init() async {
     final meshHttpLink =
         HttpLink(Get.find<EnvironmentService>().config.readrMeshApi);
+    print(
+        'ReadrMeshApi :${Get.find<EnvironmentService>().config.readrMeshApi}');
     final readrHttpLink =
         HttpLink(Get.find<EnvironmentService>().config.readrApi);
     final meshToken = await _fetchCMSUserToken(
@@ -128,7 +130,7 @@ class GraphQLService extends GetxService {
     );
 
     final QueryResult result = await _meshClient.mutate(options);
-
+    print(Get.find<EnvironmentService>().config.readrMeshApi.toString());
     if (result.hasException && throwException) {
       throw Exception('Mutation error: ${result.exception.toString()}');
     }

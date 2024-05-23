@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsStoryItem.dart';
 
@@ -8,6 +8,8 @@ abstract class NewsStoryRepos {
 }
 
 class NewsStoryService implements NewsStoryRepos {
+  final ProxyServerService proxyServerService = Get.find();
+
   @override
   Future<NewsStoryItem> fetchNewsData(String storyId) async {
     const String query = '''
@@ -332,11 +334,8 @@ class NewsStoryService implements NewsStoryRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     return NewsStoryItem.fromJson(jsonResponse.data!['story']);
   }

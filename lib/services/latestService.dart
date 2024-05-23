@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
-import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/sharedPreferencesService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
@@ -8,12 +8,15 @@ import 'package:readr/models/publisher.dart';
 
 abstract class LatestRepos {
   Future<List<NewsListItem>> fetchLatestNews({DateTime? lastNewsPublishTime});
+
   Future<List<NewsListItem>> fetchMoreLatestNews();
+
   Future<List<Publisher>> fetchRecommendPublishers();
 }
 
 class LatestService implements LatestRepos {
   DateTime _earliestNewsPublishTime = DateTime.now();
+  final ProxyServerService proxyServerService = Get.find();
 
   @override
   Future<List<NewsListItem>> fetchLatestNews(
@@ -222,11 +225,8 @@ class LatestService implements LatestRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allLatestNews = [];
     if (jsonResponse.data!['stories'].isNotEmpty) {
@@ -321,11 +321,8 @@ class LatestService implements LatestRepos {
       "readrId": Get.find<EnvironmentService>().config.readrPublisherId,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> recommendedPublishers = [];
     if (jsonResponse.data!['publishers'].isNotEmpty) {

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:readr/getxServices/graphQLService.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/getxServices/graphQLService.dart';
+import 'package:readr/getxServices/proxyServerService.dart';
+import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class TabStoryListRepos {
@@ -11,6 +12,7 @@ abstract class TabStoryListRepos {
     int projectSkip = 0,
     int projectTake = 2,
   });
+
   Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
@@ -18,12 +20,14 @@ abstract class TabStoryListRepos {
     int projectSkip = 0,
     int projectTake = 2,
   });
+
   Future<List<NewsListItem>> fetchMeshStoryList(List<String> storyIdList);
 }
 
 class TabStoryListServices implements TabStoryListRepos {
   final List<String> _fetchedStoryIdList = [];
   final List<String> _fetchedProjectIdList = [];
+  final ProxyServerService proxyServerService = Get.find();
 
   final String query = """
   query (
@@ -376,11 +380,8 @@ class TabStoryListServices implements TabStoryListRepos {
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
     };
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.mesh,
-      queryBody: query,
-      variables: variables,
-    );
+    final jsonResponse =
+        await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> newsList = [];
     for (var item in jsonResponse.data!['stories']) {
