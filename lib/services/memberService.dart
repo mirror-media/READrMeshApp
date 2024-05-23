@@ -169,10 +169,10 @@ class MemberService implements MemberRepos {
     //     await proxyServerService.gql(query: query, variables: variables);
 
     // create new member when firebase is signed in but member is not created
-    if (jsonResponse.data!['members'].isEmpty) {
+    if (jsonResponse['members'].isEmpty) {
       return null;
     } else {
-      return Member.fromJson(jsonResponse.data!['members'][0]);
+      return Member.fromJson(jsonResponse['members'][0]);
     }
   }
 
@@ -631,17 +631,17 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<PickIdItem> pickIdList = [];
-    for (var item in jsonResponse.data!['member']['storyPicks']) {
+    for (var item in jsonResponse['member']['storyPicks']) {
       pickIdList
           .add(PickIdItem.fromJson(item, PickObjective.story, PickKind.read));
     }
 
-    for (var item in jsonResponse.data!['member']['collectionPicks']) {
+    for (var item in jsonResponse['member']['collectionPicks']) {
       pickIdList.add(
           PickIdItem.fromJson(item, PickObjective.collection, PickKind.read));
     }
 
-    for (var item in jsonResponse.data!['member']['bookmarks']) {
+    for (var item in jsonResponse['member']['bookmarks']) {
       pickIdList.add(
           PickIdItem.fromJson(item, PickObjective.story, PickKind.bookmark));
     }
@@ -683,9 +683,9 @@ query(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    if (jsonResponse.data!['member'] != null &&
-        jsonResponse.data!['member']['is_active']) {
-      return Member.fromJson(jsonResponse.data!['member']);
+    if (jsonResponse['member'] != null &&
+        jsonResponse['member']['is_active']) {
+      return Member.fromJson(jsonResponse['member']);
     } else {
       return null;
     }
@@ -827,6 +827,6 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     return List<Member>.from(
-        response.data!['members'].map((element) => Member.fromJson(element)));
+        response['members'].map((element) => Member.fromJson(element)));
   }
 }

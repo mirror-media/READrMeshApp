@@ -373,7 +373,7 @@ query(
     List<Comment> allComments = [];
     List<Comment> popularComments = [];
 
-    var collection = jsonResponse.data!['collection'];
+    var collection = jsonResponse['collection'];
 
     if (collection['comment'].isNotEmpty) {
       allComments = List<Comment>.from(
@@ -390,17 +390,17 @@ query(
     }
 
     List<CollectionPick> collectionPicks = [];
-    if (jsonResponse.data!['collectionPicks'].isNotEmpty) {
+    if (jsonResponse['collectionPicks'].isNotEmpty) {
       switch (format) {
         case CollectionFormat.folder:
-          collectionPicks = List<FolderCollectionPick>.from(jsonResponse
-              .data!['collectionPicks']
-              .map((element) => FolderCollectionPick.fromJson(element)));
+          collectionPicks = List<FolderCollectionPick>.from(
+              jsonResponse['collectionPicks']
+                  .map((element) => FolderCollectionPick.fromJson(element)));
           break;
         case CollectionFormat.timeline:
-          collectionPicks = List<TimelineCollectionPick>.from(jsonResponse
-              .data!['collectionPicks']
-              .map((element) => TimelineCollectionPick.fromJson(element)));
+          collectionPicks = List<TimelineCollectionPick>.from(
+              jsonResponse['collectionPicks']
+                  .map((element) => TimelineCollectionPick.fromJson(element)));
           break;
       }
     }

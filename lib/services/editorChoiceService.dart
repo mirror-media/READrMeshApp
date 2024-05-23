@@ -279,8 +279,8 @@ class EditorChoiceService implements EditorChoiceRepos {
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    if (jsonResponse.data!['stories'].isNotEmpty) {
-      for (var item in jsonResponse.data!['stories']) {
+    if (jsonResponse['stories'].isNotEmpty) {
+      for (var item in jsonResponse['stories']) {
         NewsListItem news = NewsListItem.fromJson(item);
         int index = editorChoiceList.indexWhere((element) {
           if (element.id != null) {

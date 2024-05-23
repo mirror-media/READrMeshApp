@@ -384,7 +384,7 @@ class TabStoryListServices implements TabStoryListRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> newsList = [];
-    for (var item in jsonResponse.data!['stories']) {
+    for (var item in jsonResponse['stories']) {
       newsList.add(NewsListItem.fromJson(item));
     }
 

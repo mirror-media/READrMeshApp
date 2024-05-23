@@ -192,7 +192,7 @@ class SearchService implements SearchRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allNewsResult = [];
-    for (var item in response.data!['stories']) {
+    for (var item in response['stories']) {
       allNewsResult.add(NewsListItem.fromJson(item));
     }
 
@@ -398,7 +398,7 @@ class SearchService implements SearchRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Collection> allCollectionResult = List<Collection>.from(jsonResponse
-        .data!['collections']
+        ['collections']
         .map((element) => Collection.fromJson(element)));
     allCollectionResult.sort((a, b) => idList
         .indexWhere((element) => element.toString() == a.id)

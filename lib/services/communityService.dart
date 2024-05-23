@@ -500,7 +500,7 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<CommunityListItem> followingPicked = [];
-    for (var item in jsonResponse.data!['storyPicks']) {
+    for (var item in jsonResponse['storyPicks']) {
       CommunityListItem pickItem = CommunityListItem.fromJson(item);
       followingPicked.addIf(
         !followingPicked.any(
@@ -508,7 +508,7 @@ query(
         pickItem,
       );
     }
-    for (var item in jsonResponse.data!['collectionPicks']) {
+    for (var item in jsonResponse['collectionPicks']) {
       CommunityListItem pickItem = CommunityListItem.fromJson(item);
       followingPicked.addIf(
         !followingPicked.any(
@@ -1008,7 +1008,7 @@ query(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
     List<CommunityListItem> followingComment = [];
-    for (var item in jsonResponse.data!['storyComments']) {
+    for (var item in jsonResponse['storyComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       followingComment.addIf(
         !followingComment.any((element) =>
@@ -1016,7 +1016,7 @@ query(
         commentItem,
       );
     }
-    for (var item in jsonResponse.data!['collectionComments']) {
+    for (var item in jsonResponse['collectionComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       followingComment.addIf(
         !followingComment.any(
@@ -1290,8 +1290,8 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> recommendMembers = [];
-    if (jsonResponse.data!['followedFollowing'].isNotEmpty) {
-      for (var member in jsonResponse.data!['followedFollowing']) {
+    if (jsonResponse['followedFollowing'].isNotEmpty) {
+      for (var member in jsonResponse['followedFollowing']) {
         Member recommendMember = Member.followedFollowing(member);
         recommendMembers.addIf(
             !recommendMembers
@@ -1300,10 +1300,10 @@ query(
       }
     }
 
-    if (jsonResponse.data!['otherRecommendMembers'].isNotEmpty &&
+    if (jsonResponse['otherRecommendMembers'].isNotEmpty &&
         recommendMembers.length < 20) {
       List<Member> otherRecommendMembers = [];
-      for (var otherRecommend in jsonResponse.data!['otherRecommendMembers']) {
+      for (var otherRecommend in jsonResponse['otherRecommendMembers']) {
         otherRecommendMembers.add(Member.otherRecommend(otherRecommend));
       }
       // sort by amount of comments and picks in last 24 hours
@@ -1324,8 +1324,8 @@ query(
       }
     }
 
-    if (jsonResponse.data!['otherMembers'].isNotEmpty) {
-      for (var item in jsonResponse.data!['otherMembers']) {
+    if (jsonResponse['otherMembers'].isNotEmpty) {
+      for (var item in jsonResponse['otherMembers']) {
         Member member = Member.otherRecommend(item);
         if (!recommendMembers
             .any((element) => element.memberId == member.memberId)) {
@@ -1528,7 +1528,7 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<CommunityListItem> newCollection = [];
-    for (var item in jsonResponse.data!['collections']) {
+    for (var item in jsonResponse['collections']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       newCollection.addIf(
         !newCollection.any(
