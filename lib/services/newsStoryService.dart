@@ -337,6 +337,6 @@ class NewsStoryService implements NewsStoryRepos {
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    return NewsStoryItem.fromJson(jsonResponse.data!['story']);
+    return NewsStoryItem.fromJson(jsonResponse['story']);
   }
 }

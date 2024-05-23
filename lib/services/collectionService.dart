@@ -470,12 +470,12 @@ class CollectionService implements CollectionRepos {
     List<CollectionPick> pickList = [];
     List<CollectionPick> bookmarkList = [];
 
-    for (var bookmark in jsonResponse.data!['bookmarks']) {
+    for (var bookmark in jsonResponse['bookmarks']) {
       CollectionPick collectionStory = CollectionPick.fromPick(bookmark);
       pickAndBookmarkList.add(collectionStory);
       bookmarkList.add(collectionStory);
     }
-    for (var pick in jsonResponse.data!['picks']) {
+    for (var pick in jsonResponse['picks']) {
       CollectionPick collectionStory = CollectionPick.fromPick(pick);
       pickList.add(collectionStory);
       int index = pickAndBookmarkList.indexWhere((element) =>
@@ -1385,8 +1385,8 @@ mutation(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    if (jsonResponse.data!['collection'] != null) {
-      return Collection.fromJson(jsonResponse.data!['collection']);
+    if (jsonResponse['collection'] != null) {
+      return Collection.fromJson(jsonResponse['collection']);
     }
 
     return null;
@@ -1531,12 +1531,12 @@ query(
     List<AddToCollectionItem> alreadyPickCollections = [];
     List<AddToCollectionItem> notPickCollections = [];
 
-    for (var item in result.data!['alreadyPickCollections']) {
+    for (var item in result['alreadyPickCollections']) {
       alreadyPickCollections
           .add(AddToCollectionItem.fromAlreadyPickedCollection(item));
     }
 
-    for (var item in result.data!['notPickCollections']) {
+    for (var item in result['notPickCollections']) {
       notPickCollections.add(AddToCollectionItem.fromNotPickedCollection(item));
     }
 

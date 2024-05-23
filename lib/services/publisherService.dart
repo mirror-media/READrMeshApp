@@ -212,8 +212,8 @@ class PublisherService implements PublisherRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<NewsListItem> allNews = [];
-    if (jsonResponse.data!['stories'].isNotEmpty) {
-      for (var item in jsonResponse.data!['stories']) {
+    if (jsonResponse['stories'].isNotEmpty) {
+      for (var item in jsonResponse['stories']) {
         allNews.add(NewsListItem.fromJson(item));
       }
     }
@@ -251,7 +251,7 @@ class PublisherService implements PublisherRepos {
     if (jsonResponse.hasException) {
       return 0;
     } else {
-      return jsonResponse.data?['publisher']['followerCount'] ?? 0;
+      return jsonResponse['publisher']['followerCount'] ?? 0;
     }
   }
 }

@@ -126,7 +126,7 @@ class PersonalFileService implements PersonalFileRepos {
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    return Member.fromJson(jsonResponse.data!['member']);
+    return Member.fromJson(jsonResponse['member']);
   }
 
   @override
@@ -376,8 +376,8 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> storyPickList = [];
-    if (jsonResponse.data!['picks'].isNotEmpty) {
-      for (var pick in jsonResponse.data!['picks']) {
+    if (jsonResponse['picks'].isNotEmpty) {
+      for (var pick in jsonResponse['picks']) {
         storyPickList.add(Pick.fromJson(pick));
       }
     }
@@ -590,8 +590,8 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> bookmarkList = [];
-    if (jsonResponse.data!['member']['bookmark'].isNotEmpty) {
-      for (var pick in jsonResponse.data!['member']['bookmark']) {
+    if (jsonResponse['member']['bookmark'].isNotEmpty) {
+      for (var pick in jsonResponse['member']['bookmark']) {
         bookmarkList.add(Pick.fromJson(pick));
       }
     }
@@ -665,7 +665,7 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> followerList = [];
-    for (var member in jsonResponse.data!['members']) {
+    for (var member in jsonResponse['members']) {
       Member follower = Member.fromJson(member);
       followerList.add(follower);
     }
@@ -756,7 +756,7 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Member> followingList = [];
-    for (var member in jsonResponse.data!['members']) {
+    for (var member in jsonResponse['members']) {
       Member followingMember = Member.fromJson(member);
       followingList.add(followingMember);
     }
@@ -801,7 +801,7 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Publisher> followPublisherList = [];
-    for (var publisher in jsonResponse.data!['member']['follow_publisher']) {
+    for (var publisher in jsonResponse['member']['follow_publisher']) {
       followPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -823,7 +823,7 @@ query(
     final jsonResponse = await proxyServerService.gql(query: query);
 
     List<Publisher> allPublisherList = [];
-    for (var publisher in jsonResponse.data!['publishers']) {
+    for (var publisher in jsonResponse['publishers']) {
       allPublisherList.add(Publisher.fromJson(publisher));
     }
 
@@ -1018,9 +1018,9 @@ query(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
 
-    List<Collection> collectionList = List<Collection>.from(jsonResponse
-        .data!['collections']
-        .map((element) => Collection.fromJsonWithMember(element, viewMember)));
+    List<Collection> collectionList = List<Collection>.from(
+        jsonResponse['collections'].map(
+            (element) => Collection.fromJsonWithMember(element, viewMember)));
 
     collectionList.sort((a, b) => b.updateTime.compareTo(a.updateTime));
 
@@ -1154,8 +1154,8 @@ query(
         await proxyServerService.gql(query: query, variables: variables);
 
     List<Pick> collectionPickList = [];
-    if (jsonResponse.data!['picks'].isNotEmpty) {
-      for (var pick in jsonResponse.data!['picks']) {
+    if (jsonResponse['picks'].isNotEmpty) {
+      for (var pick in jsonResponse['picks']) {
         collectionPickList.add(Pick.fromJson(pick));
       }
     }

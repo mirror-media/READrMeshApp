@@ -65,7 +65,7 @@ class InvitationCodeService implements InvitationCodeRepos {
         await proxyServerService.gql(query: query, variables: variables);
 
     List<InvitationCode> allInvitationCode = [];
-    for (var item in jsonResponse.data!['invitationCodes']) {
+    for (var item in jsonResponse['invitationCodes']) {
       allInvitationCode.add(InvitationCode.fromJson(item));
     }
     return allInvitationCode;
@@ -100,7 +100,7 @@ class InvitationCodeService implements InvitationCodeRepos {
       final jsonResponse =
           await proxyServerService.gql(query: query, variables: variables);
 
-      if (jsonResponse.data!['invitationCodesCount'] != 0) {
+      if (jsonResponse['invitationCodesCount'] != 0) {
         return true;
       } else {
         return false;
@@ -144,14 +144,14 @@ class InvitationCodeService implements InvitationCodeRepos {
       final jsonResponse =
           await proxyServerService.gql(query: query, variables: variables);
 
-      if (jsonResponse.data!['invitationCodes'].isEmpty) {
+      if (jsonResponse['invitationCodes'].isEmpty) {
         return InvitationCodeStatus.invalid;
-      } else if (jsonResponse.data!['invitationCodes'][0]['receive'] != null) {
+      } else if (jsonResponse['invitationCodes'][0]['receive'] != null) {
         return InvitationCodeStatus.activated;
       } else {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(
-            'invitationCodeId', jsonResponse.data!['invitationCodes'][0]['id']);
+            'invitationCodeId', jsonResponse['invitationCodes'][0]['id']);
         return InvitationCodeStatus.valid;
       }
     } catch (e) {
