@@ -5,11 +5,16 @@ import 'package:get/get.dart';
 import 'package:googleapis/pubsub/v1.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
 class PubsubService extends GetxService {
   late final PubsubApi _pubSubClient;
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+
+  final String url =
+      'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app/pubsub';
+  final ApiBaseHelper apiBaseHelper = ApiBaseHelper();
 
   Future<PubsubService> init() async {
     var jsonText = await rootBundle.loadString(serviceAccountCredentialsJson);
@@ -255,6 +260,19 @@ class PubsubService extends GetxService {
         },
       ]
     };
+
+
+    final result = await apiBaseHelper.postByUrl(
+        url,
+        jsonEncode({
+          'json_payload': base64Encode(utf8.encode(requestJson.toString()))
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        });
+
+    return false;
+
     return await _pubSubClient.projects.topics
         .publish(PublishRequest.fromJson(messages),
             Get.find<EnvironmentService>().config.pubSubTopic)
