@@ -261,12 +261,8 @@ class PubsubService extends GetxService {
       ]
     };
 
-
     final result = await apiBaseHelper.postByUrl(
-        url,
-        jsonEncode({
-          'json_payload': base64Encode(utf8.encode(requestJson.toString()))
-        }),
+        url, jsonEncode({'json_payload': requestJson.toString()}),
         headers: {
           "Content-Type": "application/json",
         });
