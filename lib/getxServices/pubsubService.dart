@@ -1,10 +1,10 @@
 import 'dart:convert';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/pubsub/v1.dart';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/apiBaseHelper.dart';
 import 'package:readr/helpers/dataConstants.dart';
 
@@ -253,36 +253,20 @@ class PubsubService extends GetxService {
       "'device'": "'$deviceModel'",
     });
 
-    var messages = {
-      'messages': [
-        {
-          'data': base64Encode(utf8.encode(requestJson.toString())),
-        },
-      ]
-    };
-
-    final result = await apiBaseHelper.postByUrl(
-        url, jsonEncode({'json_payload': requestJson.toString()}),
-        headers: {
-          "Content-Type": "application/json",
-        });
-
-    return false;
-
-    return await _pubSubClient.projects.topics
-        .publish(PublishRequest.fromJson(messages),
-            Get.find<EnvironmentService>().config.pubSubTopic)
+    return await apiBaseHelper
+        .postByUrl(url, jsonEncode({'json_payload': requestJson.toString()}),
+            headers: {
+              "Content-Type": "application/json",
+            })
         .then((value) => true)
         .catchError((error) {
-      print('Pub/Sub error: $error');
-      return false;
-    }).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () {
-        print('Pub/Sub timeout');
-        return false;
-      },
-    );
+          print('Pub/Sub error: $error');
+          return false;
+        })
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+          print('Pub/Sub timeout');
+          return false;
+        });
   }
 
   String _escapeString(String value) {
