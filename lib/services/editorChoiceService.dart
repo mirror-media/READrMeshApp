@@ -66,14 +66,13 @@ class EditorChoiceService implements EditorChoiceRepos {
       \$myId: ID
       \$urlList: [String!]
       \$urlFilter: String
-      \$readrId: ID
       \$blockAndBlockedIds: [ID!]
     ){
       stories(
         where:{
           source:{
-            id:{
-              equals: \$readrId
+            title:{
+              equals: "READr"
             }
           }
           url:{

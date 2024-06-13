@@ -6,19 +6,15 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/newsListItem.dart';
 
 abstract class TabStoryListRepos {
-  Future<Map<String, List<NewsListItem>>> fetchStoryList({
+  Future<List<NewsListItem>> fetchStoryList({
     int storySkip = 0,
     int storyTake = 18,
-    int projectSkip = 0,
-    int projectTake = 2,
   });
 
-  Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
+  Future<List<NewsListItem>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
     int storyTake = 18,
-    int projectSkip = 0,
-    int projectTake = 2,
   });
 
   Future<List<NewsListItem>> fetchMeshStoryList(List<String> storyIdList);
@@ -58,134 +54,96 @@ class TabStoryListServices implements TabStoryListRepos {
   """;
 
   @override
-  Future<Map<String, List<NewsListItem>>> fetchStoryList({
+  Future<List<NewsListItem>> fetchStoryList({
     int storySkip = 0,
     int storyTake = 18,
-    int projectSkip = 0,
-    int projectTake = 2,
   }) async {
-    Map<String, dynamic> variables = {
-      "storyWhere": {
-        "state": {"equals": "published"},
-        "style": {
-          "in": ["news", "scrollablevideo"]
-        },
-        "id": {"notIn": _fetchedStoryIdList},
-      },
-      "projectWhere": {
-        "state": {"equals": "published"},
-        "style": {
-          "in": ["project3", "embedded", "report"]
-        },
-        "id": {"notIn": _fetchedProjectIdList},
-      },
-      "storySkip": storySkip,
-      "storyTake": storyTake,
-      "projectSkip": projectSkip,
-      "projectTake": projectTake
-    };
+    const query = '''
+          query(
+            \$skip: Int,
+            \$take: Int,
+          ){
+            stories(
+              take:\$take,
+              skip:\$skip,
+              orderBy:{
+                published_date:desc
+              }
+              where:{
+                source:{
+                  title:{
+                    equals:"READr"
+                  }
+                }
+              }
+            ){
+              id
+              title
+        }
+      }
+    ''';
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.readr,
-      queryBody: query,
-      variables: variables,
-      cacheDuration: 30.minutes,
-    );
+    final jsonResponse = await proxyServerService.gql(query: query, variables: {
+      'skip': storySkip,
+      'take': storyTake,
+    });
 
-    List<String> storyList = [];
-    List<String> projectList = [];
-    for (var item in jsonResponse.data!['story']) {
-      _fetchedStoryIdList.add(item['id']);
-      storyList.add(item['id']);
-    }
+    final storiesList = jsonResponse['stories'] as List<dynamic>;
 
-    for (var item in jsonResponse.data!['project']) {
-      _fetchedProjectIdList.add(item['id']);
-      projectList.add(item['id']);
-    }
-
-    var futureList = await Future.wait([
-      fetchMeshStoryList(storyList),
-      fetchMeshStoryList(projectList),
-    ]);
-
-    Map<String, List<NewsListItem>> mixedStoryList = {
-      'story': futureList[0],
-      'project': futureList[1],
-    };
-
-    return mixedStoryList;
+    List<String> storyList =
+        storiesList.map((e) => e['id'].toString()).toList();
+    return await fetchMeshStoryList(storyList);
   }
 
   @override
-  Future<Map<String, List<NewsListItem>>> fetchStoryListByCategorySlug(
+  Future<List<NewsListItem>> fetchStoryListByCategorySlug(
     String slug, {
     int storySkip = 0,
     int storyTake = 18,
-    int projectSkip = 0,
-    int projectTake = 2,
   }) async {
-    Map<String, dynamic> variables = {
-      "storyWhere": {
-        "state": {"equals": "published"},
-        "style": {
-          "in": ["news"]
-        },
-        "categories": {
-          "some": {
-            "slug": {"equals": slug}
-          }
-        },
-        "id": {"notIn": _fetchedStoryIdList},
-      },
-      "projectWhere": {
-        "state": {"equals": "published"},
-        "style": {
-          "in": ["project3", "embedded", "report"]
-        },
-        "categories": {
-          "some": {
-            "slug": {"equals": slug}
-          }
-        },
-        "id": {"notIn": _fetchedProjectIdList},
-      },
-      "storySkip": storySkip,
-      "storyTake": storyTake,
-      "projectSkip": projectSkip,
-      "projectTake": projectTake,
-    };
+    const query = '''
+        query(
+          \$skip: Int,
+          \$take: Int,
+          \$slug: String,
+        ){
+          stories(
+            take:\$take,
+            skip:\$skip,
+            orderBy:{
+              published_date:desc
+            }
+            where:{
+              source:{
+                title:{
+                  equals:"READr"
+                }
+              }
+              category:{
+                slug:{
+                  equals:\$slug
+                }
+              }
+            }
+          ){
+            id
+            title
+        }
+      }
+    
+    ''';
 
-    final jsonResponse = await Get.find<GraphQLService>().query(
-      api: Api.readr,
-      queryBody: query,
-      variables: variables,
-      cacheDuration: 30.minutes,
-    );
+    final jsonResponse = await proxyServerService.gql(query: query, variables: {
+      'skip': storySkip,
+      'take': storyTake,
+      'slug': slug,
+    });
 
-    List<String> storyList = [];
-    List<String> projectList = [];
-    for (var item in jsonResponse.data!['story']) {
-      _fetchedStoryIdList.add(item['id']);
-      storyList.add(item['id']);
-    }
+    final storiesList = jsonResponse['stories'] as List<dynamic>;
 
-    for (var item in jsonResponse.data!['project']) {
-      _fetchedProjectIdList.add(item['id']);
-      projectList.add(item['id']);
-    }
-
-    var futureList = await Future.wait([
-      fetchMeshStoryList(storyList),
-      fetchMeshStoryList(projectList),
-    ]);
-
-    Map<String, List<NewsListItem>> mixedStoryList = {
-      'story': futureList[0],
-      'project': futureList[1],
-    };
-
-    return mixedStoryList;
+    List<String> storyList =
+        storiesList.map((e) => e['id'].toString()).toList();
+    return await fetchMeshStoryList(storyList);
   }
 
   @override
@@ -193,20 +151,19 @@ class TabStoryListServices implements TabStoryListRepos {
       List<String> storyIdList) async {
     const String query = '''
     query(
-      \$storyIdList: [String!]
+      \$storyIdList: [ID!]
       \$followingMembers: [ID!]
       \$myId: ID
-      \$readrId: ID
       \$blockAndBlockedIds: [ID!]
     ){
       stories(
         where:{
           source:{
-            id:{
-              equals: \$readrId
+            title:{
+              equals: "READr"
             }
           }
-          content:{
+          id:{
             in: \$storyIdList
           }
        

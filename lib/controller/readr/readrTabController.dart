@@ -36,10 +36,7 @@ class ReadrTabController extends GetxController {
     _projectSkip = 0;
     update();
     try {
-      Map<String, List<NewsListItem>> result = {
-        'story': [],
-        'project': [],
-      };
+      List<NewsListItem>result =[];
       if (categorySlug == 'latest') {
         result = await tabStoryListRepos.fetchStoryList();
       } else {
@@ -48,8 +45,8 @@ class ReadrTabController extends GetxController {
       }
       await Get.find<PickAndBookmarkService>().fetchPickIds();
       readrMixedList.assignAll(_mixTwoList(
-        storyList: result['story']!,
-        projectList: result['project']!,
+        storyList: result,
+        projectList: [],
       ));
     } catch (e) {
       print('Fetch READr $categorySlug story list error: $e');
@@ -63,35 +60,30 @@ class ReadrTabController extends GetxController {
   void fetchMoreStory() async {
     isLoadingMore.value = true;
     try {
-      Map<String, List<NewsListItem>> result = {
-        'story': [],
-        'project': [],
-      };
+      List<NewsListItem> result=[];
       if (categorySlug == 'latest') {
         result = await tabStoryListRepos.fetchStoryList(
           storySkip: _storySkip,
-          projectSkip: _projectSkip,
           storyTake: 12,
         );
       } else {
         result = await tabStoryListRepos.fetchStoryListByCategorySlug(
           categorySlug,
           storySkip: _storySkip,
-          projectSkip: _projectSkip,
           storyTake: 12,
         );
       }
       await Get.find<PickAndBookmarkService>().fetchPickIds();
 
-      if (result['story']!.isEmpty && result['project']!.isEmpty) {
+      if (result.isEmpty ) {
         noMore.value = true;
       }
-      _storySkip = _storySkip + result['story']!.length;
-      _projectSkip = _projectSkip + result['project']!.length;
+      _storySkip = _storySkip + result.length;
+
 
       readrMixedList.addAll(_mixTwoList(
-        storyList: result['story']!,
-        projectList: result['project']!,
+        storyList: result,
+        projectList: [],
         loadMore: true,
       ));
     } catch (e) {
