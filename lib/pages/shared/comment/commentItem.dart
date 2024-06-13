@@ -22,6 +22,7 @@ class CommentItem extends GetView<CommentItemController> {
   final bool isExpanded;
   final FadeInController _fadeController = FadeInController();
   final String pickableItemControllerTag;
+
   CommentItem({
     required this.comment,
     required this.pickableItemControllerTag,
@@ -182,7 +183,7 @@ class CommentItem extends GetView<CommentItemController> {
                       .headlineSmall
                       ?.copyWith(fontSize: 14),
                 );
-                final innerTextSpan =span;
+                final innerTextSpan = span;
 
                 final painter = TextPainter(
                   text: innerTextSpan,
@@ -231,11 +232,13 @@ class CommentItem extends GetView<CommentItemController> {
                               ?.copyWith(fontSize: 12),
                         );
                       }
-                      return Timestamp(
-                        comment.publishDate,
-                        isEdited: controller.isEdited.value,
-                        key: Key(comment.id),
-                      );
+                      return comment.publishDate != null
+                          ? Timestamp(
+                              comment.publishDate!,
+                              isEdited: controller.isEdited.value,
+                              key: Key(comment.id),
+                            )
+                          : const SizedBox.shrink();
                     }),
                     Obx(
                       () {

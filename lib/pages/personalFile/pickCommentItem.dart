@@ -18,6 +18,7 @@ class PickCommentItem extends StatefulWidget {
   final bool isExpanded;
   final String pickControllerTag;
   late final CommentItemController controller;
+
   PickCommentItem({
     required this.comment,
     required this.pickControllerTag,
@@ -92,12 +93,14 @@ class _PickCommentItemState extends State<PickCommentItem> {
         ),
         const SizedBox(width: 8),
         Obx(
-          () => Timestamp(
-            widget.comment.publishDate,
-            textSize: 13,
-            isEdited: widget.controller.isEdited.value,
-            key: Key(widget.comment.id),
-          ),
+          () => widget.comment.publishDate != null
+              ? Timestamp(
+                  widget.comment.publishDate!,
+                  textSize: 13,
+                  isEdited: widget.controller.isEdited.value,
+                  key: Key(widget.comment.id),
+                )
+              : const SizedBox.shrink(),
         ),
         Obx(
           () {

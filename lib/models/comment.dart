@@ -8,7 +8,7 @@ class Comment {
   final Comment? parent;
   final Comment? root;
   final String state;
-  final DateTime publishDate;
+  final DateTime? publishDate;
   int likedCount;
   bool isLiked;
   bool isEdited;
@@ -20,7 +20,7 @@ class Comment {
     this.parent,
     this.root,
     required this.state,
-    required this.publishDate,
+    this.publishDate,
     this.likedCount = 0,
     this.isLiked = false,
     this.isEdited = false,
@@ -46,13 +46,18 @@ class Comment {
     if (BaseModel.checkJsonKeys(json, ['is_edited'])) {
       isEdited = json['is_edited'];
     }
+    if (json["published_date"] == null) {
+      print("published date is null" + json['id']);
+    }
 
     return Comment(
       id: json['id'],
       member: Member.fromJson(json['member']),
       content: json['content'],
       state: json['state'] ?? "public",
-      publishDate: DateTime.parse(json["published_date"]).toLocal(),
+      publishDate: json["published_date"] != null
+          ? DateTime.parse(json["published_date"]).toLocal()
+          : null,
       likedCount: likedCount,
       isLiked: isLiked,
       isEdited: isEdited,
