@@ -90,7 +90,9 @@ class CommunityListItem {
       } else {
         type = CommunityListItemType.createCollection;
       }
-      orderByTime = collection!.updateTime;
+      if (collection != null) {
+        orderByTime = collection.updateTime;
+      }
     }
 
     RxnString heroImageUrl = RxnString();
