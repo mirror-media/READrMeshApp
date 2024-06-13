@@ -501,12 +501,14 @@ query(
 
     List<CommunityListItem> followingPicked = [];
     for (var item in jsonResponse['storyPicks']) {
-      CommunityListItem pickItem = CommunityListItem.fromJson(item);
-      followingPicked.addIf(
-        !followingPicked.any(
-            (element) => element.newsListItem?.id == pickItem.newsListItem!.id),
-        pickItem,
-      );
+      if (item['picked_date'] != null) {
+        CommunityListItem pickItem = CommunityListItem.fromJson(item);
+        followingPicked.addIf(
+          !followingPicked.any((element) =>
+              element.newsListItem?.id == pickItem.newsListItem!.id),
+          pickItem,
+        );
+      }
     }
     for (var item in jsonResponse['collectionPicks']) {
       CommunityListItem pickItem = CommunityListItem.fromJson(item);
@@ -1008,6 +1010,7 @@ query(
     final jsonResponse =
         await proxyServerService.gql(query: query, variables: variables);
     List<CommunityListItem> followingComment = [];
+
     for (var item in jsonResponse['storyComments']) {
       CommunityListItem commentItem = CommunityListItem.fromJson(item);
       followingComment.addIf(
