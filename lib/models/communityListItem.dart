@@ -66,13 +66,18 @@ class CommunityListItem {
       collection = Collection.fromJson(json);
     }
 
+    if (json.containsKey('published_date') && json['published_date'] == null) {
+      json['published_date'] = DateTime.now().toIso8601String();
+    }
+
     DateTime orderByTime = DateTime.now().subtract(const Duration(days: 30));
     if (json.containsKey('picked_date')) {
       orderByTime = DateTime.parse(json['picked_date']);
       if (collection != null) {
         type = CommunityListItemType.pickCollection;
       }
-    } else if (json.containsKey('published_date')) {
+    } else if (json.containsKey('published_date') &&
+        json['published_date'] != null) {
       orderByTime = DateTime.parse(json['published_date']);
       if (newsListItem != null) {
         type = CommunityListItemType.commentStory;

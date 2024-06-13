@@ -77,21 +77,21 @@ class ProxyServerService extends GetxService {
 
   Future<void> test() async {
     String query = """
-query{
-  announcements(
-    orderBy:{
-      createdAt: desc
-    }
-    where:{
-      status:{
-        equals: "published"
-      }
-    }
-  ){
-    name
-    type
-  }
-}
+        query{
+          announcements(
+            orderBy:{
+              createdAt: desc
+            }
+            where:{
+              status:{
+                equals: "published"
+              }
+            }
+          ){
+            name
+            type
+          }
+        }
     """;
     GraphqlBody graphqlBody = GraphqlBody(
       operationName: null,
@@ -118,9 +118,10 @@ query{
           "Content-Type": "application/json",
           "Bearer": authToken,
         }) as Map<String, dynamic>;
-    if (jsonResponse.containsKey('data'))
+    if (jsonResponse.containsKey('data')) {
       return jsonResponse['data'];
+    }
 
-    return null;
+    return jsonResponse;
   }
 }

@@ -628,10 +628,12 @@ class CommunityPage extends GetView<CommunityPageController> {
                         color: Theme.of(context).dividerColor,
                       ),
                     ),
-                    Timestamp(
-                      comment.publishDate,
-                      key: ObjectKey(comment),
-                    ),
+                    comment.publishDate != null
+                        ? Timestamp(
+                            comment.publishDate!,
+                            key: ObjectKey(comment),
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
                 Container(
