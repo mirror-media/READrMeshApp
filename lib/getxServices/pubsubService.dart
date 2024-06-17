@@ -179,6 +179,30 @@ class PubsubService extends GetxService {
     });
   }
 
+  // Future<bool> addCategory({
+  //   required String memberId,
+  //   required String categoryId,
+  // }) async {
+  //   return await _publishRequest({
+  //     "'action'": "'add_category'",
+  //     "'memberId'": "'$memberId'",
+  //     "'commentId'": "'$collectionId'",
+  //   });
+  // }
+  //
+  // Future<bool> removeCategory({
+  //   required String memberId,
+  //   required String categoryId,
+  // }) async {
+  //   return await _publishRequest({
+  //     "'action'": "'remove_collection'",
+  //     "'memberId'": "'$memberId'",
+  //     "'commentId'": "'$collectionId'",
+  //   });
+  // }
+
+
+
   Future<bool> addCollection({
     required String memberId,
     required String collectionId,
@@ -254,7 +278,7 @@ class PubsubService extends GetxService {
     });
 
     return await apiBaseHelper
-        .postByUrl(url, jsonEncode({'json_payload': requestJson}),
+        .postByUrl(url, jsonEncode(requestJson),
             headers: {
               "Content-Type": "application/json",
             })
