@@ -32,11 +32,11 @@ class PubsubService extends GetxService {
     PickState state = PickState.public,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_pick'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
-      "'state'": "'${state.toString().split('.').last}'",
+      "action": "add_pick",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
+      "state": state.toString().split('.').last,
     });
   }
 
@@ -48,12 +48,12 @@ class PubsubService extends GetxService {
     PickState state = PickState.public,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_pick_and_comment'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
-      "'state'": "'${state.toString().split('.').last}'",
-      "'content'": "'${_escapeString(commentContent)}'",
+      "action": "add_pick_and_comment",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
+      "state": state.toString().split('.').last,
+      "content": _escapeString(commentContent),
     });
   }
 
@@ -63,10 +63,10 @@ class PubsubService extends GetxService {
     required PickObjective objective,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_pick'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
+      "action": "remove_pick",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
     });
   }
 
@@ -76,10 +76,10 @@ class PubsubService extends GetxService {
     required FollowObjective objective,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_follow'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
+      "action": "add_follow",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
     });
   }
 
@@ -89,10 +89,10 @@ class PubsubService extends GetxService {
     required FollowObjective objective,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_follow'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
+      "action": "remove_follow",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
     });
   }
 
@@ -104,12 +104,12 @@ class PubsubService extends GetxService {
     PickState state = PickState.public,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_comment'",
-      "'memberId'": "'$memberId'",
-      "'objective'": "'${objective.toString().split('.').last}'",
-      "'targetId'": "'$targetId'",
-      "'state'": "'${state.toString().split('.').last}'",
-      "'content'": "'${_escapeString(commentContent)}'",
+      "action": "add_comment",
+      "memberId": memberId,
+      "objective": objective.toString().split('.').last,
+      "targetId": targetId,
+      "state": state.toString().split('.').last,
+      "content": _escapeString(commentContent),
     });
   }
 
@@ -118,9 +118,9 @@ class PubsubService extends GetxService {
     required String newContent,
   }) async {
     return await _publishRequest({
-      "'action'": "'edit_comment'",
-      "'commentId'": "'$commentId'",
-      "'content'": "'${_escapeString(newContent)}'",
+      "action": "edit_comment",
+      "commentId": commentId,
+      "content": _escapeString(newContent),
     });
   }
 
@@ -129,9 +129,9 @@ class PubsubService extends GetxService {
     required String commentId,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_comment'",
-      "'commentId'": "'$commentId'",
-      "'memberId'": "'$memberId'",
+      "action": "remove_comment",
+      "commentId": commentId,
+      "memberId": memberId,
     });
   }
 
@@ -140,9 +140,9 @@ class PubsubService extends GetxService {
     required String storyId,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_bookmark'",
-      "'memberId'": "'$memberId'",
-      "'storyId'": "'$storyId'",
+      "action": "add_bookmark",
+      "memberId": memberId,
+      "storyId": storyId,
     });
   }
 
@@ -151,9 +151,9 @@ class PubsubService extends GetxService {
     required String storyId,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_bookmark'",
-      "'memberId'": "'$memberId'",
-      "'storyId'": "'$storyId'",
+      "action": "remove_bookmark",
+      "memberId": memberId,
+      "storyId": storyId,
     });
   }
 
@@ -162,9 +162,9 @@ class PubsubService extends GetxService {
     required String commentId,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_like'",
-      "'memberId'": "'$memberId'",
-      "'commentId'": "'$commentId'",
+      "action": "add_like",
+      "memberId": memberId,
+      "commentId": commentId,
     });
   }
 
@@ -173,20 +173,42 @@ class PubsubService extends GetxService {
     required String commentId,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_like'",
-      "'memberId'": "'$memberId'",
-      "'commentId'": "'$commentId'",
+      "action": "remove_like",
+      "memberId": memberId,
+      "commentId": commentId,
     });
   }
+
+  // Future<bool> addCategory({
+  //   required String memberId,
+  //   required String categoryId,
+  // }) async {
+  //   return await _publishRequest({
+  //     "'action'": "'add_category'",
+  //     "'memberId'": "'$memberId'",
+  //     "'commentId'": "'$collectionId'",
+  //   });
+  // }
+  //
+  // Future<bool> removeCategory({
+  //   required String memberId,
+  //   required String categoryId,
+  // }) async {
+  //   return await _publishRequest({
+  //     "'action'": "'remove_collection'",
+  //     "'memberId'": "'$memberId'",
+  //     "'commentId'": "'$collectionId'",
+  //   });
+  // }
 
   Future<bool> addCollection({
     required String memberId,
     required String collectionId,
   }) async {
     return await _publishRequest({
-      "'action'": "'add_collection'",
-      "'memberId'": "'$memberId'",
-      "'commentId'": "'$collectionId'",
+      "action": "add_collection",
+      "memberId": memberId,
+      "commentId": collectionId,
     });
   }
 
@@ -195,9 +217,9 @@ class PubsubService extends GetxService {
     required String collectionId,
   }) async {
     return await _publishRequest({
-      "'action'": "'remove_collection'",
-      "'memberId'": "'$memberId'",
-      "'commentId'": "'$collectionId'",
+      "action": "remove_collection",
+      "memberId": memberId,
+      "commentId": collectionId,
     });
   }
 
@@ -206,9 +228,9 @@ class PubsubService extends GetxService {
     required String storyId,
   }) {
     _publishRequest({
-      "'action'": "'read_story'",
-      "'memberId'": "'$memberId'",
-      "'storyId'": "'$storyId'",
+      "action": "read_story",
+      "memberId": memberId,
+      "storyId": storyId,
     });
   }
 
@@ -217,9 +239,9 @@ class PubsubService extends GetxService {
     required String collectionId,
   }) {
     _publishRequest({
-      "'action'": "'read_collection'",
-      "'memberId'": "'$memberId'",
-      "'collectionId'": "'$collectionId'",
+      "action": "read_collection",
+      "memberId": memberId,
+      "collectionId": collectionId,
     });
   }
 
@@ -247,17 +269,16 @@ class PubsubService extends GetxService {
     }
 
     requestJson.addAll({
-      "'UUID'": "'$uuid'",
-      "'os'": "'$os'",
-      "'version'": "'$osVersion'",
-      "'device'": "'$deviceModel'",
+      "UUID": uuid,
+      "os": os,
+      "version": osVersion,
+      "device": deviceModel,
     });
 
     return await apiBaseHelper
-        .postByUrl(url, jsonEncode({'json_payload': requestJson}),
-            headers: {
-              "Content-Type": "application/json",
-            })
+        .postByUrl(url, jsonEncode(requestJson), headers: {
+          "Content-Type": "application/json",
+        })
         .then((value) => true)
         .catchError((error) {
           print('Pub/Sub error: $error');
