@@ -116,10 +116,12 @@ class PubsubService extends GetxService {
   Future<bool> editComment({
     required String commentId,
     required String newContent,
+    required String memberId,
   }) async {
     return await _publishRequest({
       "action": "edit_comment",
       "commentId": commentId,
+      "memberId": memberId,
       "content": _escapeString(newContent),
     });
   }
@@ -189,17 +191,28 @@ class PubsubService extends GetxService {
   //     "'commentId'": "'$collectionId'",
   //   });
   // }
-  //
-  // Future<bool> removeCategory({
-  //   required String memberId,
-  //   required String categoryId,
-  // }) async {
-  //   return await _publishRequest({
-  //     "'action'": "'remove_collection'",
-  //     "'memberId'": "'$memberId'",
-  //     "'commentId'": "'$collectionId'",
-  //   });
-  // }
+
+  Future<bool> addCategoryList({
+    required String memberId,
+    required List<String> categoryList,
+  }) async {
+    return await _publishRequest({
+      "action": "add_category",
+      "memberId": memberId,
+      "commentId": categoryList,
+    });
+  }
+
+  Future<bool> removeCategoryList({
+    required String memberId,
+    required List<String> categoryList,
+  }) async {
+    return await _publishRequest({
+      "action": "remove_category",
+      "memberId": memberId,
+      "commentId": categoryList,
+    });
+  }
 
   Future<bool> addCollection({
     required String memberId,
