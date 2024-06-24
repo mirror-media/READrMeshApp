@@ -629,7 +629,7 @@ class CommunityPage extends GetView<CommunityPageController> {
                       ),
                     ),
                     Timestamp(
-                      comment.publishDate,
+                      comment.publishDate!,
                       key: ObjectKey(comment),
                     ),
                   ],
