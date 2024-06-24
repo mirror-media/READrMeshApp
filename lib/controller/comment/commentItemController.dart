@@ -68,8 +68,10 @@ class CommentItemController extends GetxController {
     String oldContent = commentContent.value;
     commentContent.value = newComment.content;
     isEdited.value = true;
-    bool result = await Get.find<PubsubService>()
-        .editComment(commentId: newComment.id, newContent: newComment.content);
+    bool result = await Get.find<PubsubService>().editComment(
+        commentId: newComment.id,
+        newContent: newComment.content,
+        memberId: Get.find<UserService>().currentUser.memberId);
     if (!result) {
       commentContent.value = oldContent;
       isEdited.value = comment.isEdited;

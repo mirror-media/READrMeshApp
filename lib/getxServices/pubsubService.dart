@@ -181,16 +181,7 @@ class PubsubService extends GetxService {
     });
   }
 
-  // Future<bool> addCategory({
-  //   required String memberId,
-  //   required String categoryId,
-  // }) async {
-  //   return await _publishRequest({
-  //     "'action'": "'add_category'",
-  //     "'memberId'": "'$memberId'",
-  //     "'commentId'": "'$collectionId'",
-  //   });
-  // }
+
 
   Future<bool> addCategoryList({
     required String memberId,
