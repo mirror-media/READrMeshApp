@@ -185,9 +185,9 @@ dynamic returnResponse(http.Response response, {bool skipCheck = false}) {
             responseJson.containsKey('allShows');
       }
 
-      if (!hasData && !skipCheck) {
-        throw FormatException(response.body.toString());
-      }
+      // if (!hasData && !skipCheck) {
+      //   throw FormatException(response.body.toString());
+      // }
 
       return responseJson;
     case 400:
