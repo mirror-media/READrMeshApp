@@ -117,6 +117,7 @@ class ProxyServerService extends GetxService {
         headers: {
           "Content-Type": "application/json",
           "Bearer": authToken,
+          "token":authToken,
         }) as Map<String, dynamic>;
     if (jsonResponse.containsKey('data')) {
       return jsonResponse['data'];
