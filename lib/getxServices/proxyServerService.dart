@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:graphql/client.dart';
 import 'package:readr/getxServices/environmentService.dart';
@@ -112,13 +113,19 @@ class ProxyServerService extends GetxService {
       variables: variables ?? {},
     );
 
+    final headers = {
+      "Content-Type": "application/json",
+      "Bearer": authToken,
+    };
+    final firebaseAuthToken =
+        await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (firebaseAuthToken != null) {
+      headers.addAll({'token': firebaseAuthToken});
+    }
+
     final jsonResponse = await _helper.postByUrl(
         '$proxyServerApiPath/gql', jsonEncode(graphqlBody.toJson()),
-        headers: {
-          "Content-Type": "application/json",
-          "Bearer": authToken,
-          "token":authToken,
-        }) as Map<String, dynamic>;
+        headers: headers);
     if (jsonResponse.containsKey('data')) {
       return jsonResponse['data'];
     }

@@ -9,6 +9,8 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/invitationCode/invitationCodePage.dart';
 import 'package:readr/pages/notify/notifyPage.dart';
+import 'package:readr/pages/search/searchPage.dart';
+import 'package:readr/routers/routers.dart';
 
 class MainAppBar extends GetView<MainAppBarController> {
   @override
@@ -26,10 +28,7 @@ class MainAppBar extends GetView<MainAppBarController> {
           height: 30,
           margin: const EdgeInsets.symmetric(horizontal: 10.5),
           child: IconButton(
-            onPressed: () async {
-              ProxyServerService gqlTest = Get.find();
-              await gqlTest.test();
-            },
+            onPressed: () => Get.to(() => SearchPage()),
             padding: const EdgeInsets.all(0),
             tooltip: 'searchButtonTooltip'.tr,
             alignment: Alignment.centerRight,
