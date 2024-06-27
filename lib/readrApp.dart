@@ -8,6 +8,8 @@ import 'package:readr/helpers/themes.dart';
 import 'package:readr/i18n/i18nHelper.dart';
 import 'package:readr/pages/rootPage.dart';
 
+import 'routers/pages.dart';
+
 class ReadrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,7 @@ class ReadrApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'READr Mesh',
       theme: lightTheme,
+      getPages: Pages.pages,
       darkTheme: darkTheme,
       initialBinding: InitControllerBinding(),
       home: RootPage(),

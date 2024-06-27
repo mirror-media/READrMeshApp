@@ -7,12 +7,14 @@ class Category {
   String id;
   String name;
   String slug;
+  String? title;
   DateTime? latestPostTime;
 
   Category({
     required this.id,
     required this.name,
     required this.slug,
+    this.title,
     this.latestPostTime,
   });
 
@@ -67,6 +69,7 @@ class Category {
     return Category(
       id: json[BaseModel.idKey],
       name: name,
+      title: json['title'],
       slug: json[BaseModel.slugKey],
       latestPostTime: latestPostTime,
     );
