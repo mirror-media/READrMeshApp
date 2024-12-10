@@ -29,6 +29,7 @@ const Map<String, String> englishUsMap = {
   'iGotIt': 'Got it',
 
   //bottom tab
+  /* 在此新增首頁 */
   'communityTab': 'Community',
   'latestTab': 'Latest',
   'personalFileTab': 'Profile',

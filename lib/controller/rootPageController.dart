@@ -48,6 +48,7 @@ class RootPageController extends GetxController {
   }
 
   void changeTabIndex(int index) {
+    /* 在此新增首頁 tab */
     tabIndex.value = index;
     if (index == 0) {
       Get.find<CommunityPageController>().scrollToTopAndRefresh();

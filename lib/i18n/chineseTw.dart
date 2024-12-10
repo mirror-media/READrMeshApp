@@ -29,6 +29,7 @@ const Map<String, String> chineseTwMap = {
   'iGotIt': '我知道了',
 
   //bottom tab
+  /* 在此新增首頁 */
   'communityTab': '社群',
   'latestTab': '最新',
   'personalFileTab': '個人檔案',

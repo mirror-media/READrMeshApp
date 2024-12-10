@@ -45,6 +45,7 @@ class RootPage extends GetView<RootPageController> {
 
   Widget _buildBody(BuildContext context) {
     List<Widget> bodyList = [
+      /* 在此新增首頁 */
       CommunityPage(),
       LatestPage(),
       ReadrPage(),
