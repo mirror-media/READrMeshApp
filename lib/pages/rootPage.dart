@@ -6,7 +6,7 @@ import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/updateMessages.dart';
-import 'package:readr/pages/community/communityPage.dart';
+import 'package:readr/pages/community/community_page.dart';
 import 'package:readr/pages/latest/latestPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/personalFile/visitorPersonalFile.dart';
@@ -14,8 +14,13 @@ import 'package:readr/pages/readr/readrPage.dart';
 import 'package:readr/pages/shared/profilePhotoWidget.dart';
 import 'package:readr/pages/wallet/walletPage.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:readr/pages/community/community_binding.dart';
 
 class RootPage extends GetView<RootPageController> {
+  RootPage() {
+    CommunityBinding().dependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RootPageController>(
