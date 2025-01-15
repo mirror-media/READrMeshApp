@@ -24,7 +24,9 @@ class CommunityService extends GetxService {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
         body: jsonEncode({
           'member_id': memberId,
           'index': index,
@@ -33,7 +35,8 @@ class CommunityService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        final data = CommunityModel.fromJson(jsonDecode(response.body));
+        final decodedResponse = utf8.decode(response.bodyBytes);
+        final data = CommunityModel.fromJson(jsonDecode(decodedResponse));
 
         _cache[cacheKey] = CacheData(
           data: data,
