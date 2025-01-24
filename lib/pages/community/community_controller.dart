@@ -29,9 +29,11 @@ class CommunityController extends GetxController {
       );
 
       if (data != null) {
-        communityList.assignAll(data.stories.map((item) => CommunityListItem.fromJson(item)).toList());
+        final mappedItems = data.stories.map((story) => CommunityListItem.fromJson(story)).toList();
+        communityList.assignAll(mappedItems);
         _currentPage++;
       }
+
       isInitialized.value = true;
     } catch (e) {
       isError.value = true;

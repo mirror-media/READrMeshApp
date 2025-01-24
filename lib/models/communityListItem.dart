@@ -55,9 +55,6 @@ class CommunityListItem {
 
   factory CommunityListItem.fromJson(Map<String, dynamic> json) {
     try {
-      print('1. Start mapping CommunityListItem');
-      print('2. Processing story/collection type');
-
       final newsListItem = NewsListItem.fromJson({
         'id': json['id']?.toString() ?? '',
         'url': json['url'] ?? '',
@@ -66,9 +63,6 @@ class CommunityListItem {
         'source': json['publisher'],
         'published_date': json['published_date'],
       });
-
-      print('3. Successfully created NewsListItem');
-
       return CommunityListItem(
         orderByTime: DateTime.parse(json['published_date']),
         type: CommunityListItemType.pickStory,
