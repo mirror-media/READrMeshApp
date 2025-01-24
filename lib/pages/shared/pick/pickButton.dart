@@ -171,15 +171,16 @@ class PickButton extends GetView<PickableItemController> {
               ? Theme.of(context).primaryColorDark
               : Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              controller.isPicked.value
-                  ? Icons.done_outlined
-                  : Icons.add_outlined,
+              controller.isPicked.value ? Icons.star : Icons.star_outline,
               size: textSize + 4,
               color: controller.isPicked.value
                   ? Theme.of(context).backgroundColor
