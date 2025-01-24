@@ -2,9 +2,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:readr/models/community_model.dart';
+import 'package:readr/getxServices/environmentService.dart';
 
 class CommunityService extends GetxService {
-  final String baseUrl = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app/socialpage';
+  final String communityUrl = Get.find<EnvironmentService>().config.communityPageApi;
   final _cache = <String, CacheData>{};
   static const _cacheTimeout = Duration(minutes: 5);
 
@@ -23,7 +24,7 @@ class CommunityService extends GetxService {
 
     try {
       final response = await http.post(
-        Uri.parse(baseUrl),
+        Uri.parse(communityUrl),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
         },
