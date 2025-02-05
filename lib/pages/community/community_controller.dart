@@ -5,6 +5,12 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/communityListItem.dart';
 
 class CommunityController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    initPage();
+  }
+
   final CommunityService _communityService;
   final scrollController = ScrollController();
 
@@ -29,7 +35,9 @@ class CommunityController extends GetxController {
       );
 
       if (data != null) {
-        final mappedItems = data.stories.map((story) => CommunityListItem.fromJson(story)).toList();
+        final mappedItems = data.stories
+            .map((story) => CommunityListItem.fromJson(story))
+            .toList();
         communityList.assignAll(mappedItems);
         _currentPage++;
       }
@@ -51,7 +59,9 @@ class CommunityController extends GetxController {
       );
 
       if (data != null) {
-        communityList.assignAll(data.stories.map((item) => CommunityListItem.fromJson(item)).toList());
+        communityList.assignAll(data.stories
+            .map((item) => CommunityListItem.fromJson(item))
+            .toList());
         _currentPage++;
       }
     } catch (e) {
@@ -71,7 +81,9 @@ class CommunityController extends GetxController {
       );
 
       if (data != null) {
-        communityList.addAll(data.stories.map((item) => CommunityListItem.fromJson(item)).toList());
+        communityList.addAll(data.stories
+            .map((item) => CommunityListItem.fromJson(item))
+            .toList());
         _currentPage++;
       }
     } finally {

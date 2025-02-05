@@ -35,35 +35,9 @@ import 'package:readr/pages/community/community_controller.dart';
 class CommunityPage extends GetView<CommunityController> {
   @override
   Widget build(BuildContext context) {
-    if (!controller.isInitialized.value) {
-      controller.initPage();
-    }
     return Scaffold(
-      body: GetBuilder<CommunityController>(
-        builder: (controller) {
-          if (controller.isError.value) {
-            return CustomScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              slivers: [
-                MainAppBar(),
-                SliverFillRemaining(
-                  child: ErrorPage(
-                    error: controller.error.value,
-                    onPressed: () => controller.initPage(),
-                    hideAppbar: true,
-                  ),
-                ),
-              ],
-            );
-          }
-
-          if (controller.isInitialized.value) {
-            return ScrollsToTop(
-              onScrollsToTop: (event) async => controller.scrollToTopAndRefresh(),
-              child: _buildBody(context),
-            );
-          }
-
+      body: Obx(() {
+        if (!controller.isInitialized.value) {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
@@ -73,8 +47,29 @@ class CommunityPage extends GetView<CommunityController> {
               ),
             ],
           );
-        },
-      ),
+        }
+
+        if (controller.isError.value) {
+          return CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            slivers: [
+              MainAppBar(),
+              SliverFillRemaining(
+                child: ErrorPage(
+                  error: controller.error.value,
+                  onPressed: () => controller.initPage(),
+                  hideAppbar: true,
+                ),
+              ),
+            ],
+          );
+        }
+
+        return ScrollsToTop(
+          onScrollsToTop: (event) async => controller.scrollToTopAndRefresh(),
+          child: _buildBody(context),
+        );
+      }),
     );
   }
 
@@ -112,7 +107,9 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (Get.find<RecommendMemberBlockController>().recommendMembers.isEmpty ||
+                if (Get.find<RecommendMemberBlockController>()
+                        .recommendMembers
+                        .isEmpty ||
                     controller.communityList.isEmpty) {
                   return Container();
                 }
@@ -120,7 +117,8 @@ class CommunityPage extends GetView<CommunityController> {
                 return Container(
                   color: Theme.of(context).backgroundColor,
                   margin: const EdgeInsets.only(bottom: 8),
-                  child: RecommendFollowBlock(Get.find<RecommendMemberBlockController>()),
+                  child: RecommendFollowBlock(
+                      Get.find<RecommendMemberBlockController>()),
                 );
               },
             ),
@@ -153,7 +151,8 @@ class CommunityPage extends GetView<CommunityController> {
   }
 
   Widget _emptyWidget(BuildContext context) {
-    final recommendMemberBlockController = Get.find<RecommendMemberBlockController>();
+    final recommendMemberBlockController =
+        Get.find<RecommendMemberBlockController>();
     return Container(
       color: Theme.of(context).backgroundColor,
       child: Column(
@@ -161,7 +160,9 @@ class CommunityPage extends GetView<CommunityController> {
           Padding(
             padding: const EdgeInsets.fromLTRB(87.5, 22, 87.5, 26),
             child: SvgPicture.asset(
-              Theme.of(context).brightness == Brightness.light ? noFollowingSvg : noFollowingDarkSvg,
+              Theme.of(context).brightness == Brightness.light
+                  ? noFollowingSvg
+                  : noFollowingDarkSvg,
             ),
           ),
           Text(
@@ -277,7 +278,8 @@ class CommunityPage extends GetView<CommunityController> {
                         },
                       ),
                     ),
-                    if (item.type != CommunityListItemType.commentStory && item.type != CommunityListItemType.pickStory)
+                    if (item.type != CommunityListItemType.commentStory &&
+                        item.type != CommunityListItemType.pickStory)
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
@@ -295,8 +297,10 @@ class CommunityPage extends GetView<CommunityController> {
                             item.type == CommunityListItemType.pickStory) {
                           author = item.authorText.value ?? '';
                         } else if (Get.find<UserService>().isMember.isTrue &&
-                            Get.find<UserService>().currentUser.memberId == item.collection!.creator.memberId) {
-                          author = '@${Get.find<UserService>().currentUser.customId}';
+                            Get.find<UserService>().currentUser.memberId ==
+                                item.collection!.creator.memberId) {
+                          author =
+                              '@${Get.find<UserService>().currentUser.customId}';
                         } else {
                           author = '@${item.authorText.value ?? ''}';
                         }
@@ -311,13 +315,15 @@ class CommunityPage extends GetView<CommunityController> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 4, left: 20, right: 20, bottom: 8),
+                  padding: const EdgeInsets.only(
+                      top: 4, left: 20, right: 20, bottom: 8),
                   child: Obx(
                     () {
                       String title = item.titleText.value;
                       if (item.type != CommunityListItemType.commentStory &&
                           item.type != CommunityListItemType.pickStory) {
-                        title = Get.find<PickableItemController>(tag: item.collection!.controllerTag)
+                        title = Get.find<PickableItemController>(
+                                    tag: item.collection!.controllerTag)
                                 .collectionTitle
                                 .value ??
                             item.titleText.value;
@@ -333,17 +339,18 @@ class CommunityPage extends GetView<CommunityController> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
-                  child:
-                      (item.type == CommunityListItemType.commentStory || item.type == CommunityListItemType.pickStory)
-                          ? NewsInfo(
-                              item.newsListItem!,
-                              key: Key(item.newsListItem!.id),
-                            )
-                          : CollectionInfo(
-                              item.collection!,
-                              key: Key(item.collection!.id),
-                            ),
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 16),
+                  child: (item.type == CommunityListItemType.commentStory ||
+                          item.type == CommunityListItemType.pickStory)
+                      ? NewsInfo(
+                          item.newsListItem!,
+                          key: Key(item.newsListItem!.id),
+                        )
+                      : CollectionInfo(
+                          item.collection!,
+                          key: Key(item.collection!.id),
+                        ),
                 ),
               ],
             ),
@@ -352,7 +359,8 @@ class CommunityPage extends GetView<CommunityController> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
             child: PickBar(
               item.controllerTag,
-              showPickTooltip: item.itemId == controller.communityList.first.itemId,
+              showPickTooltip:
+                  item.itemId == controller.communityList.first.itemId,
             ),
           ),
           if (item.showComment != null) ...[
@@ -398,7 +406,9 @@ class CommunityPage extends GetView<CommunityController> {
     List<Member> firstTwoMember = [];
     for (int i = 0; i < item.itemBarMember.length; i++) {
       firstTwoMember.addIf(
-          !firstTwoMember.any((element) => element.memberId == item.itemBarMember[i].memberId), item.itemBarMember[i]);
+          !firstTwoMember.any(
+              (element) => element.memberId == item.itemBarMember[i].memberId),
+          item.itemBarMember[i]);
       if (firstTwoMember.length == 2) {
         break;
       }
@@ -516,12 +526,14 @@ class CommunityPage extends GetView<CommunityController> {
               PickObjective objective;
               String? url;
 
-              if (item.type == CommunityListItemType.pickStory || item.type == CommunityListItemType.commentStory) {
+              if (item.type == CommunityListItemType.pickStory ||
+                  item.type == CommunityListItemType.commentStory) {
                 objective = PickObjective.story;
                 url = item.newsListItem!.url;
               } else {
                 objective = PickObjective.collection;
-                url = await DynamicLinkHelper.createCollectionLink(item.collection!);
+                url = await DynamicLinkHelper.createCollectionLink(
+                    item.collection!);
               }
               await showMoreActionSheet(
                 context: context,
@@ -588,7 +600,10 @@ class CommunityPage extends GetView<CommunityController> {
                           maxLines: 1,
                           joinZeroWidthSpace: true,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 14),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontSize: 14),
                           strutStyle: const StrutStyle(
                             forceStrutHeight: true,
                             leading: 0.5,
