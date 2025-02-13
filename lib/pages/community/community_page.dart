@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
@@ -31,6 +30,8 @@ import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:readr/pages/community/community_controller.dart';
+import 'package:readr/controller/community/recommendMemberBlockController.dart';
+import 'package:readr/models/followableItem.dart';
 
 class CommunityPage extends GetView<CommunityController> {
   @override
@@ -107,9 +108,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (Get.find<RecommendMemberBlockController>()
-                        .recommendMembers
-                        .isEmpty ||
+                if (controller.recommendMembers.isEmpty ||
                     controller.communityList.isEmpty) {
                   return Container();
                 }
@@ -118,7 +117,12 @@ class CommunityPage extends GetView<CommunityController> {
                   color: Theme.of(context).backgroundColor,
                   margin: const EdgeInsets.only(bottom: 8),
                   child: RecommendFollowBlock(
-                      Get.find<RecommendMemberBlockController>()),
+                    RecommendMemberBlockController()
+                      ..recommendMembers.assignAll(controller.recommendMembers
+                          .map((m) => MemberFollowableItem(m))
+                          .toList()),
+                    showTitleBar: true,
+                  ),
                 );
               },
             ),
@@ -151,8 +155,6 @@ class CommunityPage extends GetView<CommunityController> {
   }
 
   Widget _emptyWidget(BuildContext context) {
-    final recommendMemberBlockController =
-        Get.find<RecommendMemberBlockController>();
     return Container(
       color: Theme.of(context).backgroundColor,
       child: Column(
@@ -193,10 +195,15 @@ class CommunityPage extends GetView<CommunityController> {
           const SizedBox(
             height: 32,
           ),
-          RecommendFollowBlock(
-            recommendMemberBlockController,
-            showTitleBar: false,
-          ),
+          Obx(() => controller.recommendMembers.isEmpty
+              ? Container()
+              : RecommendFollowBlock(
+                  RecommendMemberBlockController()
+                    ..recommendMembers.assignAll(controller.recommendMembers
+                        .map((m) => MemberFollowableItem(m))
+                        .toList()),
+                  showTitleBar: false,
+                )),
         ],
       ),
     );

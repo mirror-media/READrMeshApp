@@ -160,11 +160,11 @@ class FollowableItemController extends GetxController {
         Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce(
           'updateCommunityPage', const Duration(milliseconds: 300), () {
-        Get.find<CommunityPageController>().fetchFollowingStoryAndCollection();
+        Get.find<CommunityPageController>().updateCommunityPage();
       });
       EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
           () {
-        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
+        Get.find<RecommendMemberBlockController>().updateRecommendMembers();
       });
     } else if (Get.find<RootPageController>().tabIndex.value == 1) {
       EasyDebounce.debounce(
@@ -179,7 +179,7 @@ class FollowableItemController extends GetxController {
     } else if (Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
           () {
-        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
+        Get.find<RecommendMemberBlockController>().updateRecommendMembers();
       });
     }
   }

@@ -3,9 +3,25 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:readr/models/community_model.dart';
 import 'package:readr/getxServices/environmentService.dart';
+import 'package:readr/models/communityListItem.dart';
 
-class CommunityService extends GetxService {
-  final String communityUrl = Get.find<EnvironmentService>().config.communityPageApi;
+abstract class CommunityRepos {
+  Future<List<CommunityListItem>> fetchFollowingPicked({
+    List<String>? alreadyFetchStoryIds,
+    List<String>? alreadyFetchCollectionIds,
+  });
+  Future<List<CommunityListItem>> fetchFollowingComment({
+    List<String>? alreadyFetchStoryIds,
+    List<String>? alreadyFetchCollectionIds,
+  });
+  Future<List<CommunityListItem>> fetchCollections({
+    List<String>? alreadyFetchCollectionIds,
+  });
+}
+
+class CommunityService extends GetxService implements CommunityRepos {
+  final String communityUrl =
+      Get.find<EnvironmentService>().config.communityPageApi;
   final _cache = <String, CacheData>{};
   static const _cacheTimeout = Duration(minutes: 5);
 
@@ -51,6 +67,32 @@ class CommunityService extends GetxService {
       print('Error fetching social page: $e');
       return null;
     }
+  }
+
+  @override
+  Future<List<CommunityListItem>> fetchFollowingPicked({
+    List<String>? alreadyFetchStoryIds,
+    List<String>? alreadyFetchCollectionIds,
+  }) {
+    // Implementation needed
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CommunityListItem>> fetchFollowingComment({
+    List<String>? alreadyFetchStoryIds,
+    List<String>? alreadyFetchCollectionIds,
+  }) {
+    // Implementation needed
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CommunityListItem>> fetchCollections({
+    List<String>? alreadyFetchCollectionIds,
+  }) {
+    // Implementation needed
+    throw UnimplementedError();
   }
 }
 

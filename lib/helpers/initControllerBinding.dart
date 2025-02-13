@@ -7,7 +7,7 @@ import 'package:readr/controller/mainAppBarController.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/controller/wallet/walletPageController.dart';
-import 'package:readr/services/communityService.dart';
+import 'package:readr/services/community_service.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/latestService.dart';
 import 'package:readr/services/notifyService.dart';
@@ -19,8 +19,7 @@ class InitControllerBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(RootPageController(), permanent: true);
-    Get.put(RecommendMemberBlockController(CommunityService()),
-        permanent: true);
+    Get.put(RecommendMemberBlockController(), permanent: true);
     Get.put(CommunityPageController(CommunityService()), permanent: true);
     Get.put(RecommendPublisherBlockController(LatestService()),
         permanent: true);

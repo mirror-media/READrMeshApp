@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/collection/collectionPage.dart';
-import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
 import 'package:readr/pages/story/storyPage.dart';
 
@@ -62,7 +58,29 @@ class CommunityListItem {
         'og_image': json['og_image'] ?? '',
         'source': json['publisher'],
         'published_date': json['published_date'],
+        'readCount': json['readCount'],
+        'commentCount': json['commentCount'],
       });
+
+      List<Member> itemBarMembers = [];
+      if (json['following_actions'] != null) {
+        itemBarMembers = (json['following_actions'] as List)
+            .map((action) => Member.fromJson(action['member']))
+            .toList();
+      }
+
+      String itemBarText = '';
+      if (json['kind'] != null) {
+        switch (json['kind']) {
+          case 'pick':
+            itemBarText = 'picked'.tr;
+            break;
+          case 'comment':
+            itemBarText = 'commented'.tr;
+            break;
+        }
+      }
+
       return CommunityListItem(
         orderByTime: DateTime.parse(json['published_date']),
         type: CommunityListItemType.pickStory,
@@ -71,12 +89,12 @@ class CommunityListItem {
         controllerTag: 'News${json['id']}',
         heroImageUrl: RxnString(json['og_image']),
         authorText: RxnString(json['publisher']?['title']),
-        tapItem: () => {},
-        tapAuthor: () => {},
+        tapItem: () => Get.to(() => StoryPage(news: newsListItem)),
+        tapAuthor: () => Get.to(() => PublisherPage(json['publisher'])),
         showComment: null,
         itemId: json['id']?.toString() ?? '',
-        itemBarMember: [],
-        itemBarText: '',
+        itemBarMember: itemBarMembers,
+        itemBarText: itemBarText,
       );
     } catch (e, stackTrace) {
       print('Error in CommunityListItem.fromJson: $e');

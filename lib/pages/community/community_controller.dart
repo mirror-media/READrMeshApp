@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:readr/services/community_service.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/communityListItem.dart';
+import 'package:readr/models/member.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -26,6 +27,19 @@ class CommunityController extends GetxController {
   int _currentPage = 0;
   static const int _pageSize = 10;
 
+  final recommendMembers = <Member>[].obs;
+
+  Future<void> _fetchRecommendMembers(List<dynamic> membersJson) async {
+    try {
+      final members =
+          membersJson.map((memberJson) => Member.fromJson(memberJson)).toList();
+      recommendMembers.assignAll(members);
+    } catch (e) {
+      print('Error fetching recommend members: $e');
+    }
+    return;
+  }
+
   void initPage() async {
     try {
       final data = await _communityService.fetchSocialPage(
@@ -39,6 +53,11 @@ class CommunityController extends GetxController {
             .map((story) => CommunityListItem.fromJson(story))
             .toList();
         communityList.assignAll(mappedItems);
+
+        if (data.members.isNotEmpty) {
+          await _fetchRecommendMembers(data.members);
+        }
+
         _currentPage++;
       }
 

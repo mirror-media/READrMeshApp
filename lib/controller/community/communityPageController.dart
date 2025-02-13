@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:readr/controller/community/recommendMemberBlockController.dart';
 import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/pickAndBookmarkService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/errorHelper.dart';
 import 'package:readr/models/communityListItem.dart';
-import 'package:readr/services/communityService.dart';
+import 'package:readr/services/community_service.dart';
 
 class CommunityPageController extends GetxController {
   final CommunityRepos repository;
@@ -43,7 +42,6 @@ class CommunityPageController extends GetxController {
     update();
     await Future.wait([
       fetchFollowingStoryAndCollection().then((value) => isError = !value),
-      Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
     await Get.find<PickAndBookmarkService>().fetchPickIds();
     isInitialized = true;
@@ -126,7 +124,6 @@ class CommunityPageController extends GetxController {
   Future<void> updateCommunityPage() async {
     await Future.wait([
       fetchFollowingStoryAndCollection(),
-      Get.find<RecommendMemberBlockController>().fetchRecommendMembers(),
     ]);
     await Get.find<PickAndBookmarkService>().fetchPickIds();
   }
