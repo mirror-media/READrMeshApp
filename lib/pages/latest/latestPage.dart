@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readr/controller/latest/latestPageController.dart';
 import 'package:readr/controller/latest/recommendPublisherBlockController.dart';
+import 'package:readr/data/enum/page_status.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
@@ -14,13 +15,14 @@ import 'package:readr/pages/shared/homeSkeletonScreen.dart';
 import 'package:readr/pages/shared/nativeAdWidget.dart';
 import 'package:readr/pages/shared/news/newsListItemWidget.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
+import 'package:readr/routers/routers.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class LatestPage extends GetView<LatestPageController> {
   @override
   Widget build(BuildContext context) {
-    if (!controller.isInitialized) {
+    if (!controller.isInitialized.value) {
       controller.initPage();
     }
     return Scaffold(
@@ -42,117 +44,158 @@ class LatestPage extends GetView<LatestPageController> {
             );
           }
 
-          if (controller.isInitialized) {
-            return ScrollsToTop(
-              onScrollsToTop: (event) async =>
-                  controller.scrollToTopAndRefresh(),
-              child: _buildBody(context),
-            );
-          }
-
-          return CustomScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            slivers: [
-              MainAppBar(),
-              SliverFillRemaining(
-                child: HomeSkeletonScreen(),
-              ),
-            ],
-          );
+          return Obx(() {
+            final isInit = controller.isInitialized.value;
+            return isInit
+                ? ScrollsToTop(
+                    onScrollsToTop: (event) async =>
+                        controller.scrollToTopAndRefresh(),
+                    child: _buildBody(context),
+                  )
+                : CustomScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    slivers: [
+                      MainAppBar(),
+                      SliverFillRemaining(
+                        child: HomeSkeletonScreen(),
+                      ),
+                    ],
+                  );
+          });
         },
       ),
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async => await controller.updateLatestNewsPage(),
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        controller: controller.scrollController,
-        slivers: [
-          MainAppBar(),
-          _latestNewsBar(context),
-          SliverToBoxAdapter(
-            child: Obx(
-              () {
-                if (controller.showLatestNews.isEmpty) {
-                  return _emptyWidget(context);
-                }
-
-                int end = 5;
-                if (controller.showLatestNews.length < 5) {
-                  end = controller.showLatestNews.length;
-                }
-
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: () async => await controller.updateLatestNewsPage(),
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: controller.scrollController,
+            slivers: [
+              MainAppBar(),
+              SliverToBoxAdapter(child: Obx(() {
+                final tabController = controller.rxnTabController.value;
+                final tabList = controller.rxTabList.value;
                 return Container(
-                  color: Theme.of(context).backgroundColor,
-                  padding: const EdgeInsets.only(top: 12),
-                  child: _buildNewsList(
-                    context,
-                    controller.showLatestNews.sublist(0, end),
-                    {2: 'listingnew_AT1'},
+                  color: Colors.white,
+                  child: TabBar(
+                    controller: tabController,
+                    tabAlignment: TabAlignment.start,
+                    isScrollable: true,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: const Color(0xFF1A1A40),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                    tabs: tabList,
+                    indicator: const BoxDecoration(
+                      color: Color(0xFF1A1A40),
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                    ),
                   ),
                 );
-              },
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Obx(
-              () {
-                if (Get.find<RecommendPublisherBlockController>()
-                        .recommendPublishers
-                        .isEmpty ||
-                    controller.showLatestNews.isEmpty) {
-                  if (controller.showLatestNews.length >= 5) {
+              })),
+              _latestNewsBar(context),
+              SliverToBoxAdapter(
+                child: Obx(
+                  () {
+                    if (controller.showLatestNews.isEmpty) {
+                      return _emptyWidget(context);
+                    }
+
+                    int end = 5;
+                    if (controller.showLatestNews.length < 5) {
+                      end = controller.showLatestNews.length;
+                    }
                     return Container(
                       color: Theme.of(context).backgroundColor,
-                      padding: const EdgeInsets.only(top: 16, bottom: 20),
-                      child: const Divider(
-                        thickness: 1,
-                        height: 1,
-                        endIndent: 20,
-                        indent: 20,
+                      padding: const EdgeInsets.only(top: 12),
+                      child: _buildNewsList(
+                        context,
+                        controller.showLatestNews.sublist(0, end),
+                        {2: 'listingnew_AT1'},
                       ),
                     );
-                  }
-                  return Container();
-                }
-
-                return Container(
-                  color: Theme.of(context).backgroundColor,
-                  padding: const EdgeInsets.only(bottom: 8, top: 8),
-                  child: RecommendFollowBlock(
-                      Get.find<RecommendPublisherBlockController>()),
-                );
-              },
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Obx(
-              () {
-                if (controller.showLatestNews.length < 5) {
-                  return Container();
-                }
-
-                return _buildNewsList(
-                  context,
-                  controller.showLatestNews
-                      .sublist(5, controller.showLength.value),
-                  {
-                    2: 'listingnew_AT2',
-                    8: 'listingnew_AT3',
-                    12: 'listingnew_AT4',
                   },
-                );
-              },
-            ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Obx(
+                  () {
+                    if (Get.find<RecommendPublisherBlockController>()
+                            .recommendPublishers
+                            .isEmpty ||
+                        controller.showLatestNews.isEmpty) {
+                      if (controller.showLatestNews.length >= 5) {
+                        return Container(
+                          color: Theme.of(context).backgroundColor,
+                          padding: const EdgeInsets.only(top: 16, bottom: 20),
+                          child: const Divider(
+                            thickness: 1,
+                            height: 1,
+                            endIndent: 20,
+                            indent: 20,
+                          ),
+                        );
+                      }
+                      return Container();
+                    }
+
+                    return Container(
+                      color: Theme.of(context).backgroundColor,
+                      padding: const EdgeInsets.only(bottom: 8, top: 8),
+                      child: RecommendFollowBlock(
+                          Get.find<RecommendPublisherBlockController>()),
+                    );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Obx(
+                  () {
+                    if (controller.showLatestNews.length < 5) {
+                      return Container();
+                    }
+
+                    return _buildNewsList(
+                      context,
+                      controller.showLatestNews
+                          .sublist(5, controller.showLength.value),
+                      {
+                        2: 'listingnew_AT2',
+                        8: 'listingnew_AT3',
+                        12: 'listingnew_AT4',
+                      },
+                    );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _bottomWidget(context),
+              ),
+            ],
           ),
-          SliverToBoxAdapter(
-            child: _bottomWidget(context),
-          ),
-        ],
-      ),
+        ),
+        Obx(() {
+          // 若 isLoading 為 true，就顯示 CircularProgressIndicator
+          // 若 false，顯示一個空的容器以避免佔位
+          return controller.rxPageStatus.value == PageStatus.loading
+              ? Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: Colors.grey.withOpacity(0.4),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF1A1A40),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink();
+        }),
+      ],
     );
   }
 

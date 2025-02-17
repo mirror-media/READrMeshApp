@@ -43,9 +43,10 @@ class CategoryEditPage extends GetView<CategoryEditController> {
               height: 20,
             ),
             Obx(() {
-              final categoryList = controller.rxAllCategoryList.value;
+              final categoryList =
+                  controller.userCacheService.rxAllCategoryList.value;
               final followCategoryList =
-                  controller.rxUserFollowCategoryList.value;
+                  controller.rxUserSelectCacheCategoryList.value;
               return Wrap(
                 spacing: 12, // 子项之间的水平间距
                 runSpacing: 12,
@@ -85,7 +86,8 @@ class CategoryEditPage extends GetView<CategoryEditController> {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Center(
                 child: Obx(() {
-                  final canSelect =controller.rxUserFollowCategoryList.isEmpty;
+                  final canSelect = controller
+                      .userCacheService.rxUserFollowCategoryList.isEmpty;
                   return SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -105,11 +107,9 @@ class CategoryEditPage extends GetView<CategoryEditController> {
                               controller.saveButtonClick();
                             },
                       child: Text(
-                        canSelect? '至少選 1 個' : '儲存',
+                        canSelect ? '至少選 1 個' : '儲存',
                         style: TextStyle(
-                            color: canSelect
-                                ? Colors.grey
-                                : Colors.white),
+                            color: canSelect ? Colors.grey : Colors.white),
                       ),
                     ),
                   );

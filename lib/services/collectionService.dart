@@ -22,6 +22,8 @@ abstract class CollectionRepos {
 
   Future<String> createOgPhoto({required String ogImageUrlOrPath});
 
+
+
   Future<Collection> createCollection({
     required String title,
     required String ogImageId,
@@ -453,6 +455,7 @@ class CollectionService implements CollectionRepos {
       }
     }
     """;
+
 
     Map<String, dynamic> variables = {
       "myId": Get.find<UserService>().currentUser.memberId,
