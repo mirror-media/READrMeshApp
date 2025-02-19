@@ -63,21 +63,34 @@ class CommunityListItem {
       });
 
       List<Member> itemBarMembers = [];
-      if (json['following_actions'] != null) {
-        itemBarMembers = (json['following_actions'] as List)
-            .map((action) => Member.fromJson(action['member']))
-            .toList();
-      }
-
+      Comment? showComment;
       String itemBarText = '';
-      if (json['kind'] != null) {
-        switch (json['kind']) {
-          case 'pick':
-            itemBarText = 'picked'.tr;
-            break;
-          case 'comment':
-            itemBarText = 'commented'.tr;
-            break;
+
+      if (json['following_actions'] != null) {
+        for (var action in json['following_actions'] as List) {
+          itemBarMembers.add(Member.fromJson(action['member']));
+
+          if (action['kind'] == 'comment' && action['content'] != null) {
+            showComment = Comment(
+              id: '',
+              content: action['content'],
+              member: Member.fromJson(action['member']),
+              publishDate: DateTime.parse(action['createdAt']),
+              state: 'active',
+            );
+          }
+
+          switch (action['kind']) {
+            case 'pick':
+              itemBarText = 'picked'.tr;
+              break;
+            case 'comment':
+              itemBarText = 'commented'.tr;
+              break;
+            case 'read':
+              itemBarText = 'read'.tr;
+              break;
+          }
         }
       }
 
@@ -91,7 +104,7 @@ class CommunityListItem {
         authorText: RxnString(json['publisher']?['title']),
         tapItem: () => Get.to(() => StoryPage(news: newsListItem)),
         tapAuthor: () => Get.to(() => PublisherPage(json['publisher'])),
-        showComment: null,
+        showComment: showComment,
         itemId: json['id']?.toString() ?? '',
         itemBarMember: itemBarMembers,
         itemBarText: itemBarText,
