@@ -44,7 +44,7 @@ class CommunityController extends GetxController {
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: Get.find<UserService>().currentUser.memberId,
-        index: _currentPage,
+        index: _currentPage * _pageSize,
         take: _pageSize,
       );
 
@@ -70,10 +70,11 @@ class CommunityController extends GetxController {
 
   Future<void> updateCommunityPage() async {
     _currentPage = 0;
+    isNoMore.value = false;
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: Get.find<UserService>().currentUser.memberId,
-        index: _currentPage,
+        index: _currentPage * _pageSize,
         take: _pageSize,
       );
 
@@ -89,21 +90,28 @@ class CommunityController extends GetxController {
   }
 
   Future<void> fetchMoreFollowingPickedNews() async {
-    if (isLoadingMore.value) return;
+    if (isLoadingMore.value || isNoMore.value) return;
 
     isLoadingMore.value = true;
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: Get.find<UserService>().currentUser.memberId,
-        index: _currentPage,
+        index: _currentPage * _pageSize,
         take: _pageSize,
       );
 
-      if (data != null) {
-        communityList.addAll(data.stories
+      if (data != null && data.stories.isNotEmpty) {
+        final newItems = data.stories
             .map((item) => CommunityListItem.fromJson(item))
-            .toList());
+            .toList();
+        communityList.addAll(newItems);
         _currentPage++;
+
+        if (newItems.length < _pageSize) {
+          isNoMore.value = true;
+        }
+      } else {
+        isNoMore.value = true;
       }
     } finally {
       isLoadingMore.value = false;

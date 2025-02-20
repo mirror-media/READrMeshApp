@@ -708,7 +708,7 @@ class CommunityPage extends GetView<CommunityController> {
             key: const Key('communityBottomWidget'),
             onVisibilityChanged: (visibilityInfo) {
               var visiblePercentage = visibilityInfo.visibleFraction * 100;
-              if (visiblePercentage > 50 && controller.isLoadingMore.value) {
+              if (visiblePercentage > 50 && !controller.isLoadingMore.value) {
                 controller.fetchMoreFollowingPickedNews();
               }
             },
