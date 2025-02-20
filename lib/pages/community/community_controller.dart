@@ -82,6 +82,12 @@ class CommunityController extends GetxController {
         communityList.assignAll(data.stories
             .map((item) => CommunityListItem.fromJson(item))
             .toList());
+
+        // 重新獲取推薦會員
+        if (data.members.isNotEmpty) {
+          await _fetchRecommendMembers(data.members);
+        }
+
         _currentPage++;
       }
     } catch (e) {

@@ -76,7 +76,10 @@ class CommunityPage extends GetView<CommunityController> {
 
   Widget _buildBody(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => await controller.updateCommunityPage(),
+      onRefresh: () async {
+        await controller.updateCommunityPage();
+        return;
+      },
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         controller: controller.scrollController,
@@ -140,7 +143,10 @@ class CommunityPage extends GetView<CommunityController> {
                   {
                     4: 'social_AT2',
                     10: 'social_AT3',
-                    14: 'social_AT4',
+                    16: 'social_AT4',
+                    22: 'social_AT5',
+                    28: 'social_AT6',
+                    34: 'social_AT7',
                   },
                 );
               },
