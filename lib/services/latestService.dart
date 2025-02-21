@@ -7,9 +7,9 @@ import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/publisher.dart';
 
 abstract class LatestRepos {
-  Future<List<NewsListItem>> fetchLatestNews({DateTime? lastNewsPublishTime});
+  Future<List<NewsListItem>> fetchLatestNews({DateTime? lastNewsPublishTime,required String categoryId});
 
-  Future<List<NewsListItem>> fetchMoreLatestNews();
+  Future<List<NewsListItem>> fetchMoreLatestNews({required String categoryId});
 
   Future<List<Publisher>> fetchRecommendPublishers();
 }
@@ -20,7 +20,7 @@ class LatestService implements LatestRepos {
 
   @override
   Future<List<NewsListItem>> fetchLatestNews(
-      {DateTime? lastNewsPublishTime}) async {
+      {DateTime? lastNewsPublishTime,required String categoryId}) async {
     const String query = """
     query(
       \$followingPublisherIds: [ID!]
@@ -29,6 +29,7 @@ class LatestService implements LatestRepos {
       \$myId: ID
       \$lastNewsPublishTime: DateTime
       \$blockAndBlockedIds: [ID!]
+      \$categoryId:ID
     ){
       stories(
         take: 60
@@ -41,6 +42,13 @@ class LatestService implements LatestRepos {
           },
         ]
         where:{
+        
+           category:{
+            id:{
+              equals:\$categoryId
+            }
+          }
+        
           is_active:{
             equals: true
           }
@@ -223,6 +231,7 @@ class LatestService implements LatestRepos {
       "lastNewsPublishTime": lastNewsPublishTime?.toUtc().toIso8601String() ??
           DateTime.now().toUtc().toIso8601String(),
       "blockAndBlockedIds": Get.find<UserService>().blockAndBlockedIds,
+      'categoryId':categoryId
     };
 
     final jsonResponse =
@@ -252,8 +261,11 @@ class LatestService implements LatestRepos {
   }
 
   @override
-  Future<List<NewsListItem>> fetchMoreLatestNews() async {
-    return await fetchLatestNews(lastNewsPublishTime: _earliestNewsPublishTime);
+  Future<List<NewsListItem>> fetchMoreLatestNews({required String categoryId}) async {
+    return await fetchLatestNews(
+      lastNewsPublishTime: _earliestNewsPublishTime,
+      categoryId: categoryId,
+    );
   }
 
   @override

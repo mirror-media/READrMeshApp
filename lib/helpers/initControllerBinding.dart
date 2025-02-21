@@ -11,6 +11,7 @@ import 'package:readr/services/communityService.dart';
 import 'package:readr/services/invitationCodeService.dart';
 import 'package:readr/services/latestService.dart';
 import 'package:readr/services/notifyService.dart';
+import 'package:readr/services/user_cache_service.dart';
 
 import 'proxyServerApiHelper.dart';
 
@@ -23,10 +24,12 @@ class InitControllerBinding implements Bindings {
     Get.put(CommunityPageController(CommunityService()), permanent: true);
     Get.put(RecommendPublisherBlockController(LatestService()),
         permanent: true);
+    Get.put(UserCacheService());
     Get.put(LatestPageController(LatestService()), permanent: true);
     Get.put(MainAppBarController(InvitationCodeService()), permanent: true);
     Get.put(NotifyPageController(NotifyService()), permanent: true);
     Get.put(WalletPageController(), permanent: true);
     Get.put(ProxyServerApiHelper.instance);
+
   }
 }

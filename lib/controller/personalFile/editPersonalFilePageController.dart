@@ -89,6 +89,7 @@ class EditPersonalFilePageController extends GetxController {
       introLength.value =
           Get.find<UserService>().currentUser.intro?.length ?? 0;
       avatarImageUrl.value = Get.find<UserService>().currentUser.avatar ?? '';
+
     } catch (e) {
       print('EditPersonalFilePage error: $e');
       error = determineException(e);
@@ -129,6 +130,7 @@ class EditPersonalFilePageController extends GetxController {
                 imagePath: avatarImagePath.value,
               )
               .timeout(const Duration(seconds: 90));
+
         } else {
           // if avatarImageUrl is empty mean user delete avatar
           if (avatarImageUrl.isEmpty) {
@@ -224,6 +226,7 @@ class EditPersonalFilePageController extends GetxController {
         introController.text != Get.find<UserService>().currentUser.intro ||
         avatarImageUrl.isEmpty ||
         avatarImagePath.isNotEmpty) {
+
       isEdited.value = true;
     } else {
       isEdited.value = false;

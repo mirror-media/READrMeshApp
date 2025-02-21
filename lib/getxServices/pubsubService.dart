@@ -181,8 +181,6 @@ class PubsubService extends GetxService {
     });
   }
 
-
-
   Future<bool> addCategoryList({
     required String memberId,
     required List<String> categoryList,
@@ -190,7 +188,7 @@ class PubsubService extends GetxService {
     return await _publishRequest({
       "action": "add_category",
       "memberId": memberId,
-      "commentId": categoryList,
+      "categoryIds": categoryList,
     });
   }
 
@@ -201,7 +199,7 @@ class PubsubService extends GetxService {
     return await _publishRequest({
       "action": "remove_category",
       "memberId": memberId,
-      "commentId": categoryList,
+      "categoryIds": categoryList,
     });
   }
 

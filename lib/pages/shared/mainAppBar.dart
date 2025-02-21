@@ -4,12 +4,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/mainAppBarController.dart';
 import 'package:readr/controller/notify/notifyPageController.dart';
-import 'package:readr/getxServices/proxyServerService.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/pages/invitationCode/invitationCodePage.dart';
 import 'package:readr/pages/notify/notifyPage.dart';
-import 'package:readr/pages/search/searchPage.dart';
 import 'package:readr/routers/routers.dart';
 
 class MainAppBar extends GetView<MainAppBarController> {
@@ -28,7 +26,9 @@ class MainAppBar extends GetView<MainAppBarController> {
           height: 30,
           margin: const EdgeInsets.symmetric(horizontal: 10.5),
           child: IconButton(
-            onPressed: () => Get.to(() => SearchPage()),
+            onPressed: () async {
+              Get.toNamed(Routes.categoryEditPage);
+            },
             padding: const EdgeInsets.all(0),
             tooltip: 'searchButtonTooltip'.tr,
             alignment: Alignment.centerRight,
