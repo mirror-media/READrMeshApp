@@ -56,6 +56,9 @@ class FollowButton extends GetView<FollowableItemController> {
               ? Theme.of(context).primaryColorDark
               : Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
         child: Text(
           controller.isFollowed.value ? 'following'.tr : 'follow'.tr,

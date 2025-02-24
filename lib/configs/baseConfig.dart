@@ -28,4 +28,6 @@ abstract class BaseConfig {
   String get bloctoAppId;
 
   String get proxyServerApi;
+
+  String get communityPageApi;
 }
