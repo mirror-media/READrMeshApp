@@ -44,8 +44,9 @@ class CommunityController extends GetxController {
 
   void initPage() async {
     try {
+      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: Get.find<UserService>().currentUser.memberId,
+        memberId: userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
@@ -74,8 +75,9 @@ class CommunityController extends GetxController {
     _currentPage = 0;
     isNoMore.value = false;
     try {
+      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: Get.find<UserService>().currentUser.memberId,
+        memberId: userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
@@ -96,8 +98,9 @@ class CommunityController extends GetxController {
 
     isLoadingMore.value = true;
     try {
+      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: Get.find<UserService>().currentUser.memberId,
+        memberId: userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
