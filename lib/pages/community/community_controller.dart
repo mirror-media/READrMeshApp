@@ -21,7 +21,7 @@ class CommunityController extends GetxController {
 
   final isInitialized = false.obs;
   final isError = false.obs;
-  final error = ''.obs;
+  final rxError = Rxn<String>();
   final isLoadingMore = false.obs;
   final communityList = <CommunityListItem>[].obs;
   final isNoMore = false.obs;
@@ -66,7 +66,7 @@ class CommunityController extends GetxController {
       isInitialized.value = true;
     } catch (e) {
       isError.value = true;
-      error.value = e.toString();
+      rxError.value = e.toString();
     }
   }
 

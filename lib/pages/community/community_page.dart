@@ -57,7 +57,7 @@ class CommunityPage extends GetView<CommunityController> {
               MainAppBar(),
               SliverFillRemaining(
                 child: ErrorPage(
-                  error: controller.error.value,
+                  error: controller.rxError.value,
                   onPressed: () => controller.initPage(),
                   hideAppbar: true,
                 ),
@@ -455,16 +455,19 @@ class CommunityPage extends GetView<CommunityController> {
           ),
         ),
       ));
-      children.add(Text(
-        item.itemBarText,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-        strutStyle: const StrutStyle(
-          forceStrutHeight: true,
-          leading: 0.5,
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ));
+      children.add(item.itemBarText != null
+          ? Text(
+              item.itemBarText!,
+              style:
+                  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+              strutStyle: const StrutStyle(
+                forceStrutHeight: true,
+                leading: 0.5,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          : Container());
     } else {
       children.add(Flexible(
         child: GestureDetector(
@@ -511,15 +514,18 @@ class CommunityPage extends GetView<CommunityController> {
           ),
         ),
       ));
-      children.add(Text(
-        '${'both'.tr}${item.itemBarText}',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-        strutStyle: const StrutStyle(
-          forceStrutHeight: true,
-          leading: 0.5,
-        ),
-        maxLines: 1,
-      ));
+      children.add(item.itemBarText != null
+          ? Text(
+              '${'both'.tr}${item.itemBarText!}',
+              style:
+                  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+              strutStyle: const StrutStyle(
+                forceStrutHeight: true,
+                leading: 0.5,
+              ),
+              maxLines: 1,
+            )
+          : Container());
     }
 
     return Container(
