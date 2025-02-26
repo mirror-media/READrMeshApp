@@ -171,31 +171,31 @@ class PickButton extends GetView<PickableItemController> {
               ? Theme.of(context).primaryColorDark
               : Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(6)),
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              controller.isPicked.value ? Icons.star : Icons.star_outline,
-              size: textSize + 4,
-              color: controller.isPicked.value
-                  ? Theme.of(context).backgroundColor
-                  : Theme.of(context).primaryColorDark,
-            ),
+            Obx(() => Icon(
+                  controller.isPicked.value ? Icons.star : Icons.star_outline,
+                  size: textSize + 4,
+                  color: controller.isPicked.value
+                      ? Theme.of(context).backgroundColor
+                      : Theme.of(context).primaryColorDark,
+                )),
             const SizedBox(width: 3),
-            Text(
-              controller.isPicked.value ? 'picked'.tr : 'pick'.tr,
-              style: TextStyle(
-                fontSize: textSize,
-                color: controller.isPicked.value
-                    ? Theme.of(context).backgroundColor
-                    : Theme.of(context).primaryColorDark,
-              ),
-            ),
+            Obx(() => Text(
+                  controller.isPicked.value ? 'picked'.tr : 'pick'.tr,
+                  style: TextStyle(
+                    fontSize: textSize,
+                    color: controller.isPicked.value
+                        ? Theme.of(context).backgroundColor
+                        : Theme.of(context).primaryColorDark,
+                  ),
+                )),
           ],
         ),
       ),
