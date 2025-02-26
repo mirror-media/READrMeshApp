@@ -12,10 +12,12 @@ class CommunityController extends GetxController {
     initPage();
   }
 
-  final CommunityService _communityService;
+  late final CommunityService _communityService;
   final scrollController = ScrollController();
 
-  CommunityController(this._communityService);
+  CommunityController() {
+    _communityService = Get.find<CommunityService>();
+  }
 
   final isInitialized = false.obs;
   final isError = false.obs;

@@ -6,6 +6,6 @@ class CommunityBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => CommunityService());
-    Get.lazyPut(() => CommunityController(Get.find<CommunityService>()));
+    Get.lazyPut(() => CommunityController());
   }
 }
