@@ -30,7 +30,7 @@ class CommunityListItem {
   final NewsListItem? newsListItem;
   final Collection? collection;
   final List<Member> itemBarMember;
-  final String itemBarText;
+  final String? itemBarText;
 
   const CommunityListItem({
     required this.orderByTime,
@@ -52,10 +52,10 @@ class CommunityListItem {
   factory CommunityListItem.fromJson(Map<String, dynamic> json) {
     try {
       final newsListItem = NewsListItem.fromJson({
-        'id': json['id']?.toString() ?? '',
-        'url': json['url'] ?? '',
-        'title': json['og_title'] ?? '',
-        'og_image': json['og_image'] ?? '',
+        'id': json['id']?.toString(),
+        'url': json['url'],
+        'title': json['og_title'],
+        'og_image': json['og_image'],
         'source': json['publisher'],
         'published_date': json['published_date'],
         'readCount': json['readCount'],
@@ -64,7 +64,7 @@ class CommunityListItem {
 
       List<Member> itemBarMembers = [];
       Comment? showComment;
-      String itemBarText = '';
+      String? itemBarText;
 
       if (json['following_actions'] != null) {
         for (var action in json['following_actions'] as List) {
@@ -82,13 +82,15 @@ class CommunityListItem {
 
           switch (action['kind']) {
             case 'pick':
-              itemBarText = 'picked'.tr;
+              itemBarText = 'pickNews'.tr;
               break;
             case 'comment':
-              itemBarText = 'commented'.tr;
+              if (itemBarText == null || itemBarText == 'readNews'.tr) {
+                itemBarText = 'commentNews'.tr;
+              }
               break;
             case 'read':
-              itemBarText = 'read'.tr;
+              itemBarText ??= 'readNews'.tr;
               break;
           }
         }
