@@ -319,7 +319,7 @@ class CommunityPage extends GetView<CommunityController> {
                     child: Obx(
                       () {
                         final authorTextValue = item.authorText.value;
-                        final userService = Get.find<UserService>();
+                        final userService = controller.userService;
                         final isMember = userService.isMember;
 
                         String author = '';
@@ -353,8 +353,8 @@ class CommunityPage extends GetView<CommunityController> {
                       if (item.type != CommunityListItemType.commentStory &&
                           item.type != CommunityListItemType.pickStory) {
                         final pickableController =
-                            Get.find<PickableItemController>(
-                                tag: item.collection!.controllerTag);
+                            controller.getPickableItemController(
+                                item.collection!.controllerTag);
                         final collectionTitleValue =
                             pickableController.collectionTitle.value;
                         title = collectionTitleValue ?? titleTextValue;
@@ -710,11 +710,10 @@ class CommunityPage extends GetView<CommunityController> {
   Widget _bottomWidget(BuildContext context) {
     return Obx(
       () {
-        final isMember = Get.find<UserService>().isMember;
         final isNoMore = controller.isNoMore.value;
         final isLoadingMore = controller.isLoadingMore.value;
 
-        if (isMember.isFalse) {
+        if (!controller.isMember) {
           return Container();
         }
         if (isNoMore) {

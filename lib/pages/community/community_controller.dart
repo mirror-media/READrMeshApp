@@ -4,6 +4,7 @@ import 'package:readr/services/community_service.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -13,10 +14,19 @@ class CommunityController extends GetxController {
   }
 
   late final CommunityService _communityService;
+  late final UserService _userService;
   final scrollController = ScrollController();
 
   CommunityController() {
     _communityService = Get.find<CommunityService>();
+    _userService = Get.find<UserService>();
+  }
+
+  UserService get userService => _userService;
+  bool get isMember => _userService.isMember.value;
+
+  getPickableItemController(String tag) {
+    return Get.find<PickableItemController>(tag: tag);
   }
 
   final isInitialized = false.obs;
@@ -44,9 +54,8 @@ class CommunityController extends GetxController {
 
   void initPage() async {
     try {
-      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: userService.currentUser.memberId,
+        memberId: _userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
@@ -75,9 +84,8 @@ class CommunityController extends GetxController {
     _currentPage = 0;
     isNoMore.value = false;
     try {
-      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: userService.currentUser.memberId,
+        memberId: _userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
@@ -98,9 +106,8 @@ class CommunityController extends GetxController {
 
     isLoadingMore.value = true;
     try {
-      final userService = Get.find<UserService>();
       final data = await _communityService.fetchSocialPage(
-        memberId: userService.currentUser.memberId,
+        memberId: _userService.currentUser.memberId,
         index: _currentPage * _pageSize,
         take: _pageSize,
       );
