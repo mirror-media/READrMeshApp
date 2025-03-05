@@ -15,13 +15,10 @@ class BottomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        final isNoMore = controller.isNoMore.value;
-        final isLoadingMore = controller.isLoadingMore.value;
-
-        if (!controller.isMember) {
+        if (!controller.shouldShowBottomWidget()) {
           return Container();
         }
-        if (isNoMore) {
+        if (controller.shouldShowNoMoreContent()) {
           return Container(
             alignment: Alignment.center,
             color: Theme.of(context).backgroundColor,
@@ -45,10 +42,8 @@ class BottomWidget extends StatelessWidget {
           return VisibilityDetector(
             key: const Key('communityBottomWidget'),
             onVisibilityChanged: (visibilityInfo) {
-              var visiblePercentage = visibilityInfo.visibleFraction * 100;
-              if (visiblePercentage > 50 && !isLoadingMore) {
-                controller.fetchMoreFollowingPickedNews();
-              }
+              controller.handleVisibilityChanged(
+                  visibilityInfo.visibleFraction * 100);
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 20),

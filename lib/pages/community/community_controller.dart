@@ -5,6 +5,9 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/helpers/dynamicLinkHelper.dart';
+import 'package:readr/models/followableItem.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -139,6 +142,111 @@ class CommunityController extends GetxController {
       );
     }
     await updateCommunityPage();
+  }
+
+  String getAuthorText(CommunityListItem item) {
+    final authorTextValue = item.authorText.value;
+    final isMember = userService.isMember;
+
+    if (item.type == CommunityListItemType.commentStory ||
+        item.type == CommunityListItemType.pickStory) {
+      return authorTextValue ?? '';
+    } else if (isMember.isTrue &&
+        userService.currentUser.memberId == item.collection!.creator.memberId) {
+      return '@${userService.currentUser.customId}';
+    } else {
+      return '@${authorTextValue ?? ''}';
+    }
+  }
+
+  String getItemTitle(CommunityListItem item) {
+    final titleTextValue = item.titleText.value;
+
+    if (item.type != CommunityListItemType.commentStory &&
+        item.type != CommunityListItemType.pickStory) {
+      final pickableController =
+          getPickableItemController(item.collection!.controllerTag);
+      final collectionTitleValue = pickableController.collectionTitle.value;
+      return collectionTitleValue ?? titleTextValue;
+    }
+
+    return titleTextValue;
+  }
+
+  bool shouldShowCollectionTag(CommunityListItem item) {
+    return item.type != CommunityListItemType.commentStory &&
+        item.type != CommunityListItemType.pickStory;
+  }
+
+  PickObjective getCommentObjective(CommunityListItem item) {
+    switch (item.type) {
+      case CommunityListItemType.commentStory:
+      case CommunityListItemType.pickStory:
+        return PickObjective.story;
+      case CommunityListItemType.pickCollection:
+      case CommunityListItemType.commentCollection:
+      case CommunityListItemType.createCollection:
+      case CommunityListItemType.updateCollection:
+        return PickObjective.collection;
+      default:
+        throw Exception('未知的項目類型');
+    }
+  }
+
+  List<Member> getFirstTwoMembers(CommunityListItem item) {
+    List<Member> firstTwoMember = [];
+    for (int i = 0; i < item.itemBarMember.length; i++) {
+      if (!firstTwoMember.any(
+          (element) => element.memberId == item.itemBarMember[i].memberId)) {
+        firstTwoMember.add(item.itemBarMember[i]);
+      }
+      if (firstTwoMember.length == 2) {
+        break;
+      }
+    }
+    return firstTwoMember;
+  }
+
+  Future<Map<String, dynamic>> getMoreActionSheetInfo(
+      CommunityListItem item) async {
+    PickObjective objective;
+    String? url;
+
+    if (item.type == CommunityListItemType.pickStory ||
+        item.type == CommunityListItemType.commentStory) {
+      objective = PickObjective.story;
+      url = item.newsListItem!.url;
+    } else {
+      objective = PickObjective.collection;
+      url = await DynamicLinkHelper.createCollectionLink(item.collection!);
+    }
+
+    return {
+      'objective': objective,
+      'url': url,
+    };
+  }
+
+  bool shouldShowBottomWidget() {
+    return isMember;
+  }
+
+  bool shouldShowNoMoreContent() {
+    return isNoMore.value;
+  }
+
+  void handleVisibilityChanged(double visiblePercentage) {
+    if (visiblePercentage > 50 && !isLoadingMore.value) {
+      fetchMoreFollowingPickedNews();
+    }
+  }
+
+  List<MemberFollowableItem> getRecommendMemberFollowableItems() {
+    return recommendMembers.map((m) => MemberFollowableItem(m)).toList();
+  }
+
+  bool hasRecommendMembers() {
+    return recommendMembers.isNotEmpty;
   }
 
   @override

@@ -2,20 +2,21 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
-import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
+import 'package:readr/pages/community/community_controller.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 
 class ItemBar extends StatelessWidget {
   final CommunityListItem item;
+  final CommunityController controller;
 
   const ItemBar({
     Key? key,
     required this.item,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -23,16 +24,8 @@ class ItemBar extends StatelessWidget {
     if (item.itemBarMember.isEmpty) {
       return Container();
     }
-    List<Member> firstTwoMember = [];
-    for (int i = 0; i < item.itemBarMember.length; i++) {
-      firstTwoMember.addIf(
-          !firstTwoMember.any(
-              (element) => element.memberId == item.itemBarMember[i].memberId),
-          item.itemBarMember[i]);
-      if (firstTwoMember.length == 2) {
-        break;
-      }
-    }
+
+    List<Member> firstTwoMember = controller.getFirstTwoMembers(item);
 
     List<Widget> children = [
       ProfilePhotoStack(
@@ -149,24 +142,13 @@ class ItemBar extends StatelessWidget {
           const SizedBox(width: 8),
           IconButton(
             onPressed: () async {
-              PickObjective objective;
-              String? url;
-
-              if (item.type == CommunityListItemType.pickStory ||
-                  item.type == CommunityListItemType.commentStory) {
-                objective = PickObjective.story;
-                url = item.newsListItem!.url;
-              } else {
-                objective = PickObjective.collection;
-                url = await DynamicLinkHelper.createCollectionLink(
-                    item.collection!);
-              }
+              final info = await controller.getMoreActionSheetInfo(item);
               await showMoreActionSheet(
                 context: context,
-                objective: objective,
+                objective: info['objective'],
                 id: item.itemId,
                 controllerTag: item.controllerTag,
-                url: url,
+                url: info['url'],
                 heroImageUrl: item.newsListItem?.heroImageUrl,
                 newsListItem: item.newsListItem,
               );

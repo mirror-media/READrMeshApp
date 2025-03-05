@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/community/community_controller.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
@@ -58,16 +57,14 @@ class EmptyWidget extends StatelessWidget {
             height: 32,
           ),
           Obx(() {
-            final recommendMembers = controller.recommendMembers;
-            return recommendMembers.isEmpty
-                ? Container()
-                : RecommendFollowBlock(
+            return controller.hasRecommendMembers()
+                ? RecommendFollowBlock(
                     RecommendMemberBlockController()
-                      ..recommendMembers.assignAll(recommendMembers
-                          .map((m) => MemberFollowableItem(m))
-                          .toList()),
+                      ..recommendMembers.assignAll(
+                          controller.getRecommendMemberFollowableItems()),
                     showTitleBar: false,
-                  );
+                  )
+                : Container();
           }),
         ],
       ),

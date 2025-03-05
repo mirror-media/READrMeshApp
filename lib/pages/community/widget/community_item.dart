@@ -11,7 +11,6 @@ import 'package:readr/pages/shared/collection/collectionInfo.dart';
 import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
-import 'package:readr/helpers/dataConstants.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CommunityItem extends StatelessWidget {
@@ -31,7 +30,10 @@ class CommunityItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ItemBar(item: item),
+          ItemBar(
+            item: item,
+            controller: controller,
+          ),
           InkWell(
             onTap: item.tapItem,
             child: Column(
@@ -70,8 +72,7 @@ class CommunityItem extends StatelessWidget {
                         );
                       },
                     ),
-                    if (item.type != CommunityListItemType.commentStory &&
-                        item.type != CommunityListItemType.pickStory)
+                    if (controller.shouldShowCollectionTag(item))
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
@@ -84,24 +85,8 @@ class CommunityItem extends StatelessWidget {
                     onTap: item.tapAuthor,
                     child: Obx(
                       () {
-                        final authorTextValue = item.authorText.value;
-                        final userService = controller.userService;
-                        final isMember = userService.isMember;
-
-                        String author = '';
-                        if (item.type == CommunityListItemType.commentStory ||
-                            item.type == CommunityListItemType.pickStory) {
-                          author = authorTextValue ?? '';
-                        } else if (isMember.isTrue &&
-                            userService.currentUser.memberId ==
-                                item.collection!.creator.memberId) {
-                          author = '@${userService.currentUser.customId}';
-                        } else {
-                          author = '@${authorTextValue ?? ''}';
-                        }
-
                         return ExtendedText(
-                          author,
+                          controller.getAuthorText(item),
                           joinZeroWidthSpace: true,
                           style: Theme.of(context).textTheme.bodySmall,
                         );
@@ -114,19 +99,8 @@ class CommunityItem extends StatelessWidget {
                       top: 4, left: 20, right: 20, bottom: 8),
                   child: Obx(
                     () {
-                      final titleTextValue = item.titleText.value;
-                      String title = titleTextValue;
-                      if (item.type != CommunityListItemType.commentStory &&
-                          item.type != CommunityListItemType.pickStory) {
-                        final pickableController =
-                            controller.getPickableItemController(
-                                item.collection!.controllerTag);
-                        final collectionTitleValue =
-                            pickableController.collectionTitle.value;
-                        title = collectionTitleValue ?? titleTextValue;
-                      }
                       return ExtendedText(
-                        title,
+                        controller.getItemTitle(item),
                         joinZeroWidthSpace: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -167,19 +141,7 @@ class CommunityItem extends StatelessWidget {
             ),
             InkWell(
               onTap: () async {
-                PickObjective objective;
-                switch (item.type) {
-                  case CommunityListItemType.commentStory:
-                  case CommunityListItemType.pickStory:
-                    objective = PickObjective.story;
-                    break;
-                  case CommunityListItemType.pickCollection:
-                  case CommunityListItemType.commentCollection:
-                  case CommunityListItemType.createCollection:
-                  case CommunityListItemType.updateCollection:
-                    objective = PickObjective.collection;
-                    break;
-                }
+                final objective = controller.getCommentObjective(item);
                 await CommentBottomSheet.showCommentBottomSheet(
                   context: context,
                   clickComment: item.showComment!,
