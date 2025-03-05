@@ -38,7 +38,11 @@ class CommunityPage extends GetView<CommunityController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        if (!controller.isInitialized.value) {
+        final isInitialized = controller.isInitialized.value;
+        final isError = controller.isError.value;
+        final errorValue = controller.rxError.value;
+
+        if (!isInitialized) {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
@@ -50,14 +54,14 @@ class CommunityPage extends GetView<CommunityController> {
           );
         }
 
-        if (controller.isError.value) {
+        if (isError) {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
               MainAppBar(),
               SliverFillRemaining(
                 child: ErrorPage(
-                  error: controller.rxError.value,
+                  error: errorValue,
                   onPressed: () => controller.initPage(),
                   hideAppbar: true,
                 ),
@@ -88,18 +92,19 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.communityList.isEmpty) {
+                final communityList = controller.communityList;
+                if (communityList.isEmpty) {
                   return _emptyWidget(context);
                 }
 
                 int end = 3;
-                if (controller.communityList.length < 3) {
-                  end = controller.communityList.length;
+                if (communityList.length < 3) {
+                  end = communityList.length;
                 }
 
                 return _buildList(
                   context,
-                  controller.communityList.sublist(0, end),
+                  communityList.sublist(0, end),
                   {2: 'social_AT1'},
                 );
               },
@@ -111,8 +116,9 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.recommendMembers.isEmpty ||
-                    controller.communityList.isEmpty) {
+                final recommendMembers = controller.recommendMembers;
+                final communityList = controller.communityList;
+                if (recommendMembers.isEmpty || communityList.isEmpty) {
                   return Container();
                 }
 
@@ -121,7 +127,7 @@ class CommunityPage extends GetView<CommunityController> {
                   margin: const EdgeInsets.only(bottom: 8),
                   child: RecommendFollowBlock(
                     RecommendMemberBlockController()
-                      ..recommendMembers.assignAll(controller.recommendMembers
+                      ..recommendMembers.assignAll(recommendMembers
                           .map((m) => MemberFollowableItem(m))
                           .toList()),
                     showTitleBar: true,
@@ -133,13 +139,14 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.communityList.length < 3) {
+                final communityList = controller.communityList;
+                if (communityList.length < 3) {
                   return Container();
                 }
 
                 return _buildList(
                   context,
-                  controller.communityList.sublist(3),
+                  communityList.sublist(3),
                   {
                     4: 'social_AT2',
                     10: 'social_AT3',
@@ -201,15 +208,18 @@ class CommunityPage extends GetView<CommunityController> {
           const SizedBox(
             height: 32,
           ),
-          Obx(() => controller.recommendMembers.isEmpty
-              ? Container()
-              : RecommendFollowBlock(
-                  RecommendMemberBlockController()
-                    ..recommendMembers.assignAll(controller.recommendMembers
-                        .map((m) => MemberFollowableItem(m))
-                        .toList()),
-                  showTitleBar: false,
-                )),
+          Obx(() {
+            final recommendMembers = controller.recommendMembers;
+            return recommendMembers.isEmpty
+                ? Container()
+                : RecommendFollowBlock(
+                    RecommendMemberBlockController()
+                      ..recommendMembers.assignAll(recommendMembers
+                          .map((m) => MemberFollowableItem(m))
+                          .toList()),
+                    showTitleBar: false,
+                  );
+          }),
         ],
       ),
     );
@@ -265,31 +275,34 @@ class CommunityPage extends GetView<CommunityController> {
                   alignment: Alignment.topRight,
                   children: [
                     Obx(
-                      () => CachedNetworkImage(
-                        imageUrl: item.heroImageUrl.value ?? '',
-                        placeholder: (context, url) => SizedBox(
-                          width: Get.width,
-                          height: Get.width / 2,
-                          child: Shimmer.fromColors(
-                            baseColor: Theme.of(context).dividerColor,
-                            highlightColor: Theme.of(context).shadowColor,
-                            child: Container(
-                              width: Get.width,
-                              height: Get.width / 2,
-                              color: Theme.of(context).backgroundColor,
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Container(),
-                        imageBuilder: (context, imageProvider) {
-                          return Image(
-                            image: imageProvider,
+                      () {
+                        final heroImageUrl = item.heroImageUrl.value;
+                        return CachedNetworkImage(
+                          imageUrl: heroImageUrl ?? '',
+                          placeholder: (context, url) => SizedBox(
                             width: Get.width,
                             height: Get.width / 2,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
+                            child: Shimmer.fromColors(
+                              baseColor: Theme.of(context).dividerColor,
+                              highlightColor: Theme.of(context).shadowColor,
+                              child: Container(
+                                width: Get.width,
+                                height: Get.width / 2,
+                                color: Theme.of(context).backgroundColor,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(),
+                          imageBuilder: (context, imageProvider) {
+                            return Image(
+                              image: imageProvider,
+                              width: Get.width,
+                              height: Get.width / 2,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        );
+                      },
                     ),
                     if (item.type != CommunityListItemType.commentStory &&
                         item.type != CommunityListItemType.pickStory)
@@ -305,17 +318,20 @@ class CommunityPage extends GetView<CommunityController> {
                     onTap: item.tapAuthor,
                     child: Obx(
                       () {
+                        final authorTextValue = item.authorText.value;
+                        final userService = Get.find<UserService>();
+                        final isMember = userService.isMember;
+
                         String author = '';
                         if (item.type == CommunityListItemType.commentStory ||
                             item.type == CommunityListItemType.pickStory) {
-                          author = item.authorText.value ?? '';
-                        } else if (Get.find<UserService>().isMember.isTrue &&
-                            Get.find<UserService>().currentUser.memberId ==
+                          author = authorTextValue ?? '';
+                        } else if (isMember.isTrue &&
+                            userService.currentUser.memberId ==
                                 item.collection!.creator.memberId) {
-                          author =
-                              '@${Get.find<UserService>().currentUser.customId}';
+                          author = '@${userService.currentUser.customId}';
                         } else {
-                          author = '@${item.authorText.value ?? ''}';
+                          author = '@${authorTextValue ?? ''}';
                         }
 
                         return ExtendedText(
@@ -332,14 +348,16 @@ class CommunityPage extends GetView<CommunityController> {
                       top: 4, left: 20, right: 20, bottom: 8),
                   child: Obx(
                     () {
-                      String title = item.titleText.value;
+                      final titleTextValue = item.titleText.value;
+                      String title = titleTextValue;
                       if (item.type != CommunityListItemType.commentStory &&
                           item.type != CommunityListItemType.pickStory) {
-                        title = Get.find<PickableItemController>(
-                                    tag: item.collection!.controllerTag)
-                                .collectionTitle
-                                .value ??
-                            item.titleText.value;
+                        final pickableController =
+                            Get.find<PickableItemController>(
+                                tag: item.collection!.controllerTag);
+                        final collectionTitleValue =
+                            pickableController.collectionTitle.value;
+                        title = collectionTitleValue ?? titleTextValue;
                       }
                       return ExtendedText(
                         title,
@@ -692,10 +710,14 @@ class CommunityPage extends GetView<CommunityController> {
   Widget _bottomWidget(BuildContext context) {
     return Obx(
       () {
-        if (Get.find<UserService>().isMember.isFalse) {
+        final isMember = Get.find<UserService>().isMember;
+        final isNoMore = controller.isNoMore.value;
+        final isLoadingMore = controller.isLoadingMore.value;
+
+        if (isMember.isFalse) {
           return Container();
         }
-        if (controller.isNoMore.value) {
+        if (isNoMore) {
           return Container(
             alignment: Alignment.center,
             color: Theme.of(context).backgroundColor,
@@ -720,7 +742,7 @@ class CommunityPage extends GetView<CommunityController> {
             key: const Key('communityBottomWidget'),
             onVisibilityChanged: (visibilityInfo) {
               var visiblePercentage = visibilityInfo.visibleFraction * 100;
-              if (visiblePercentage > 50 && !controller.isLoadingMore.value) {
+              if (visiblePercentage > 50 && !isLoadingMore) {
                 controller.fetchMoreFollowingPickedNews();
               }
             },
