@@ -62,6 +62,8 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['source'])) {
       source = Publisher.fromJson(json['source']);
+    } else if (BaseModel.checkJsonKeys(json, ['publisher'])) {
+      source = Publisher.fromJson(json['publisher']);
     }
 
     if (BaseModel.checkJsonKeys(json, ['category'])) {
@@ -78,6 +80,8 @@ class NewsListItem {
 
     if (BaseModel.checkJsonKeys(json, ['og_image'])) {
       ogImage = json['og_image'];
+    } else if (BaseModel.checkJsonKeys(json, ['heroImageUrl'])) {
+      ogImage = json['heroImageUrl'];
     }
 
     if (BaseModel.checkJsonKeys(json, ['pickCount'])) {
@@ -171,13 +175,15 @@ class NewsListItem {
     DateTime publishDate = DateTime.now();
     if (BaseModel.checkJsonKeys(json, ['createdAt'])) {
       publishDate = DateTime.parse(json["createdAt"]).toLocal();
-    } else {
+    } else if (BaseModel.checkJsonKeys(json, ['published_date'])) {
       publishDate = DateTime.parse(json["published_date"]).toLocal();
     }
 
+    String title = json["title"] ?? json["og_title"] ?? "";
+
     return NewsListItem(
       id: json["id"],
-      title: json["title"],
+      title: title,
       url: json["url"],
       controllerTag: 'News${json['id']}',
       source: source,

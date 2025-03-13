@@ -51,16 +51,7 @@ class CommunityListItem {
 
   factory CommunityListItem.fromJson(Map<String, dynamic> json) {
     try {
-      final newsListItem = NewsListItem.fromJson({
-        'id': json['id']?.toString(),
-        'url': json['url'],
-        'title': json['og_title'],
-        'og_image': json['og_image'],
-        'source': json['publisher'],
-        'published_date': json['published_date'],
-        'readCount': json['readCount'],
-        'commentCount': json['commentCount'],
-      });
+      final newsListItem = NewsListItem.fromJson(json);
 
       List<Member> itemBarMembers = [];
       Comment? showComment;
