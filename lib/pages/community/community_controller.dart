@@ -16,14 +16,9 @@ class CommunityController extends GetxController {
     initPage();
   }
 
-  late final CommunityService _communityService;
-  late final UserService _userService;
+  final CommunityService _communityService = Get.find<CommunityService>();
+  final UserService _userService = Get.find<UserService>();
   final scrollController = ScrollController();
-
-  CommunityController() {
-    _communityService = Get.find<CommunityService>();
-    _userService = Get.find<UserService>();
-  }
 
   UserService get userService => _userService;
   bool get isMember => _userService.isMember.value;
