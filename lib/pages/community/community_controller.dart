@@ -23,27 +23,27 @@ class CommunityController extends GetxController {
   UserService get userService => _userService;
   bool get isMember => _userService.isMember.value;
 
-  getPickableItemController(String tag) {
+  PickableItemController getPickableItemController(String tag) {
     return Get.find<PickableItemController>(tag: tag);
   }
 
-  final isInitialized = false.obs;
-  final isError = false.obs;
-  final rxError = Rxn<String>();
-  final isLoadingMore = false.obs;
-  final communityList = <CommunityListItem>[].obs;
-  final isNoMore = false.obs;
+  final RxBool rxIsInitialized = RxBool(false);
+  final RxBool rxIsError = RxBool(false);
+  final RxnString rxError = RxnString();
+  final RxBool rxIsLoadingMore = RxBool(false);
+  final RxList<CommunityListItem> rxCommunityList = <CommunityListItem>[].obs;
+  final RxBool rxIsNoMore = RxBool(false);
 
   int _currentPage = 0;
   static const int _pageSize = 10;
 
-  final recommendMembers = <Member>[].obs;
+  final RxList<Member> rxRecommendMembers = <Member>[].obs;
 
   Future<void> _fetchRecommendMembers(List<dynamic> membersJson) async {
     try {
       final members =
           membersJson.map((memberJson) => Member.fromJson(memberJson)).toList();
-      recommendMembers.assignAll(members);
+      rxRecommendMembers.assignAll(members);
     } catch (e) {
       print('Error fetching recommend members: $e');
     }
@@ -62,7 +62,7 @@ class CommunityController extends GetxController {
         final mappedItems = data.stories
             .map((story) => CommunityListItem.fromJson(story))
             .toList();
-        communityList.assignAll(mappedItems);
+        rxCommunityList.assignAll(mappedItems);
 
         if (data.members.isNotEmpty) {
           await _fetchRecommendMembers(data.members);
@@ -71,16 +71,16 @@ class CommunityController extends GetxController {
         _currentPage++;
       }
 
-      isInitialized.value = true;
+      rxIsInitialized.value = true;
     } catch (e) {
-      isError.value = true;
+      rxIsError.value = true;
       rxError.value = e.toString();
     }
   }
 
   Future<void> updateCommunityPage() async {
     _currentPage = 0;
-    isNoMore.value = false;
+    rxIsNoMore.value = false;
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: _userService.currentUser.memberId,
@@ -89,7 +89,7 @@ class CommunityController extends GetxController {
       );
 
       if (data != null) {
-        communityList.assignAll(data.stories
+        rxCommunityList.assignAll(data.stories
             .map((item) => CommunityListItem.fromJson(item))
             .toList());
         _currentPage++;
@@ -100,9 +100,9 @@ class CommunityController extends GetxController {
   }
 
   Future<void> fetchMoreFollowingPickedNews() async {
-    if (isLoadingMore.value || isNoMore.value) return;
+    if (rxIsLoadingMore.value || rxIsNoMore.value) return;
 
-    isLoadingMore.value = true;
+    rxIsLoadingMore.value = true;
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: _userService.currentUser.memberId,
@@ -114,17 +114,17 @@ class CommunityController extends GetxController {
         final newItems = data.stories
             .map((item) => CommunityListItem.fromJson(item))
             .toList();
-        communityList.addAll(newItems);
+        rxCommunityList.addAll(newItems);
         _currentPage++;
 
         if (newItems.length < _pageSize) {
-          isNoMore.value = true;
+          rxIsNoMore.value = true;
         }
       } else {
-        isNoMore.value = true;
+        rxIsNoMore.value = true;
       }
     } finally {
-      isLoadingMore.value = false;
+      rxIsLoadingMore.value = false;
     }
   }
 
@@ -227,21 +227,21 @@ class CommunityController extends GetxController {
   }
 
   bool shouldShowNoMoreContent() {
-    return isNoMore.value;
+    return rxIsNoMore.value;
   }
 
   void handleVisibilityChanged(double visiblePercentage) {
-    if (visiblePercentage > 50 && !isLoadingMore.value) {
+    if (visiblePercentage > 50 && !rxIsLoadingMore.value) {
       fetchMoreFollowingPickedNews();
     }
   }
 
   List<MemberFollowableItem> getRecommendMemberFollowableItems() {
-    return recommendMembers.map((m) => MemberFollowableItem(m)).toList();
+    return rxRecommendMembers.map((m) => MemberFollowableItem(m)).toList();
   }
 
   bool hasRecommendMembers() {
-    return recommendMembers.isNotEmpty;
+    return rxRecommendMembers.isNotEmpty;
   }
 
   @override

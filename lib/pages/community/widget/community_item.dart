@@ -131,7 +131,7 @@ class CommunityItem extends StatelessWidget {
             child: PickBar(
               item.controllerTag,
               showPickTooltip:
-                  item.itemId == controller.communityList.first.itemId,
+                  item.itemId == controller.rxCommunityList.first.itemId,
             ),
           ),
           if (item.showComment != null) ...[

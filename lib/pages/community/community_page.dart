@@ -19,8 +19,8 @@ class CommunityPage extends GetView<CommunityController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        final isInitialized = controller.isInitialized.value;
-        final isError = controller.isError.value;
+        final isInitialized = controller.rxIsInitialized.value;
+        final isError = controller.rxIsError.value;
         final errorValue = controller.rxError.value;
 
         if (!isInitialized) {
@@ -73,7 +73,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final communityList = controller.communityList;
+                final communityList = controller.rxCommunityList;
                 if (communityList.isEmpty) {
                   return EmptyWidget(controller: controller);
                 }
@@ -97,8 +97,8 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final recommendMembers = controller.recommendMembers;
-                final communityList = controller.communityList;
+                final recommendMembers = controller.rxRecommendMembers;
+                final communityList = controller.rxCommunityList;
                 if (recommendMembers.isEmpty || communityList.isEmpty) {
                   return Container();
                 }
@@ -120,7 +120,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final communityList = controller.communityList;
+                final communityList = controller.rxCommunityList;
                 if (communityList.length < 3) {
                   return Container();
                 }
