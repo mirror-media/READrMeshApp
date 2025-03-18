@@ -8,6 +8,7 @@ import 'package:readr/controller/pick/pickableItemController.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
+import 'package:readr/data/enum/page_status.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -33,6 +34,10 @@ class CommunityController extends GetxController {
   final RxBool rxIsLoadingMore = RxBool(false);
   final RxList<CommunityListItem> rxCommunityList = <CommunityListItem>[].obs;
   final RxBool rxIsNoMore = RxBool(false);
+  final Rx<PageStatus> rxPageStatus = Rx<PageStatus>(PageStatus.normal);
+
+  bool get isError => rxIsError.value;
+  String? get error => rxError.value;
 
   int _currentPage = 0;
   static const int _pageSize = 10;
@@ -51,6 +56,7 @@ class CommunityController extends GetxController {
   }
 
   void initPage() async {
+    rxPageStatus.value = PageStatus.loading;
     try {
       final data = await _communityService.fetchSocialPage(
         memberId: _userService.currentUser.memberId,
@@ -72,9 +78,11 @@ class CommunityController extends GetxController {
       }
 
       rxIsInitialized.value = true;
+      rxPageStatus.value = PageStatus.normal;
     } catch (e) {
       rxIsError.value = true;
       rxError.value = e.toString();
+      rxPageStatus.value = PageStatus.normal;
     }
   }
 
@@ -242,6 +250,39 @@ class CommunityController extends GetxController {
 
   bool hasRecommendMembers() {
     return rxRecommendMembers.isNotEmpty;
+  }
+
+  List<CommunityListItem> getHeaderCommunityList() {
+    if (rxCommunityList.isEmpty) {
+      return [];
+    }
+
+    int end = 3;
+    if (rxCommunityList.length < 3) {
+      end = rxCommunityList.length;
+    }
+
+    return rxCommunityList.sublist(0, end);
+  }
+
+  List<CommunityListItem> getRemainingCommunityList() {
+    if (rxCommunityList.length <= 3) {
+      return [];
+    }
+
+    return rxCommunityList.sublist(3);
+  }
+
+  bool shouldShowRecommendMembers() {
+    return rxRecommendMembers.isNotEmpty && rxCommunityList.isNotEmpty;
+  }
+
+  bool isHeaderEmpty() {
+    return rxCommunityList.isEmpty;
+  }
+
+  bool shouldShowRemainingList() {
+    return rxCommunityList.length > 3;
   }
 
   @override

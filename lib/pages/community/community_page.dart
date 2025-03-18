@@ -9,21 +9,17 @@ import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:readr/pages/community/community_controller.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
-import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/community/widget/community_item.dart';
 import 'package:readr/pages/community/widget/bottom_widget.dart';
 import 'package:readr/pages/community/widget/empty_widget.dart';
+import 'package:readr/data/enum/page_status.dart';
 
 class CommunityPage extends GetView<CommunityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        final isInitialized = controller.rxIsInitialized.value;
-        final isError = controller.rxIsError.value;
-        final errorValue = controller.rxError.value;
-
-        if (!isInitialized) {
+        if (!controller.rxIsInitialized.value) {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
@@ -35,14 +31,14 @@ class CommunityPage extends GetView<CommunityController> {
           );
         }
 
-        if (isError) {
+        if (controller.isError) {
           return CustomScrollView(
             physics: const NeverScrollableScrollPhysics(),
             slivers: [
               MainAppBar(),
               SliverFillRemaining(
                 child: ErrorPage(
-                  error: errorValue,
+                  error: controller.error,
                   onPressed: () => controller.initPage(),
                   hideAppbar: true,
                 ),
@@ -51,9 +47,28 @@ class CommunityPage extends GetView<CommunityController> {
           );
         }
 
-        return ScrollsToTop(
-          onScrollsToTop: (event) async => controller.scrollToTopAndRefresh(),
-          child: _buildBody(context),
+        return Stack(
+          children: [
+            ScrollsToTop(
+              onScrollsToTop: (event) async =>
+                  controller.scrollToTopAndRefresh(),
+              child: _buildBody(context),
+            ),
+            Obx(() {
+              return controller.rxPageStatus.value == PageStatus.loading
+                  ? Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: Colors.grey.withOpacity(0.4),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF1A1A40),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink();
+            }),
+          ],
         );
       }),
     );
@@ -73,19 +88,13 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final communityList = controller.rxCommunityList;
-                if (communityList.isEmpty) {
+                if (controller.isHeaderEmpty()) {
                   return EmptyWidget(controller: controller);
-                }
-
-                int end = 3;
-                if (communityList.length < 3) {
-                  end = communityList.length;
                 }
 
                 return _buildList(
                   context,
-                  communityList.sublist(0, end),
+                  controller.getHeaderCommunityList(),
                   {2: 'social_AT1'},
                 );
               },
@@ -97,9 +106,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final recommendMembers = controller.rxRecommendMembers;
-                final communityList = controller.rxCommunityList;
-                if (recommendMembers.isEmpty || communityList.isEmpty) {
+                if (!controller.shouldShowRecommendMembers()) {
                   return Container();
                 }
 
@@ -108,9 +115,8 @@ class CommunityPage extends GetView<CommunityController> {
                   margin: const EdgeInsets.only(bottom: 8),
                   child: RecommendFollowBlock(
                     RecommendMemberBlockController()
-                      ..recommendMembers.assignAll(recommendMembers
-                          .map((m) => MemberFollowableItem(m))
-                          .toList()),
+                      ..recommendMembers.assignAll(
+                          controller.getRecommendMemberFollowableItems()),
                     showTitleBar: true,
                   ),
                 );
@@ -120,14 +126,13 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                final communityList = controller.rxCommunityList;
-                if (communityList.length < 3) {
+                if (!controller.shouldShowRemainingList()) {
                   return Container();
                 }
 
                 return _buildList(
                   context,
-                  communityList.sublist(3),
+                  controller.getRemainingCommunityList(),
                   {
                     4: 'social_AT2',
                     10: 'social_AT3',
