@@ -2,7 +2,7 @@ import 'package:readr/models/baseModel.dart';
 import 'package:readr/models/member.dart';
 
 class Comment {
-  final String? id;
+  final String id;
   final Member member;
   final String content;
   final Comment? parent;
@@ -14,7 +14,7 @@ class Comment {
   bool isEdited;
 
   Comment({
-    this.id,
+    required this.id,
     required this.member,
     required this.content,
     this.parent,

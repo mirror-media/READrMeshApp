@@ -63,7 +63,7 @@ class CommunityListItem {
 
           if (action['kind'] == 'comment' && action['content'] != null) {
             showComment = Comment(
-              id: null,
+              id: 'temp-${action['createdAt']}-${Member.fromJson(action['member']).memberId}',
               content: action['content'],
               member: Member.fromJson(action['member']),
               publishDate: DateTime.parse(action['createdAt']),
