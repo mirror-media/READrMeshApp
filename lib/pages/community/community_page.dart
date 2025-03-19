@@ -95,13 +95,34 @@ class CommunityPage extends GetView<CommunityController> {
                 return _buildList(
                   context,
                   controller.getHeaderCommunityList(),
-                  {2: 'social_AT1'},
+                  {},
                 );
               },
             ),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 8),
+          SliverToBoxAdapter(
+            child: Obx(
+              () {
+                if (controller.rxCommunityList.isEmpty) {
+                  return Container();
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    NativeAdWidget(
+                      key: const Key('social_AT1'),
+                      adHeight: context.width * 0.82,
+                      topWidget: const SizedBox(height: 8),
+                      adBgColor: Theme.of(context).backgroundColor,
+                      factoryId: 'full',
+                      adUnitIdKey: 'social_AT1',
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                );
+              },
+            ),
           ),
           SliverToBoxAdapter(
             child: Obx(
@@ -136,11 +157,11 @@ class CommunityPage extends GetView<CommunityController> {
                   controller.getRemainingCommunityList(),
                   {
                     4: 'social_AT2',
-                    10: 'social_AT3',
-                    16: 'social_AT4',
-                    22: 'social_AT5',
-                    28: 'social_AT6',
-                    34: 'social_AT7',
+                    9: 'social_AT3',
+                    14: 'social_AT4',
+                    19: 'social_AT5',
+                    24: 'social_AT6',
+                    29: 'social_AT7',
                   },
                 );
               },
@@ -164,14 +185,16 @@ class CommunityPage extends GetView<CommunityController> {
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        return CommunityItem(
+          item: communityList[index],
+          controller: controller,
+        );
+      },
+      separatorBuilder: (context, index) {
         if (adIndexAndId.containsKey(index)) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CommunityItem(
-                item: communityList[index],
-                controller: controller,
-              ),
               NativeAdWidget(
                 key: Key(adIndexAndId[index]!),
                 adHeight: context.width * 0.82,
@@ -180,16 +203,12 @@ class CommunityPage extends GetView<CommunityController> {
                 factoryId: 'full',
                 adUnitIdKey: adIndexAndId[index]!,
               ),
+              const SizedBox(height: 8),
             ],
           );
         }
-
-        return CommunityItem(
-          item: communityList[index],
-          controller: controller,
-        );
+        return const SizedBox(height: 8);
       },
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: communityList.length,
     );
   }
