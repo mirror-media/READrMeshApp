@@ -4,19 +4,19 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get/get.dart';
 import 'package:readr/models/communityListItem.dart';
 import 'package:readr/models/member.dart';
-import 'package:readr/pages/community/community_controller.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
-import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/shared/profilePhotoStack.dart';
 
 class ItemBar extends StatelessWidget {
   final CommunityListItem item;
-  final CommunityController controller;
+  final List<Member> firstTwoMembers;
+  final Function(CommunityListItem) onMoreAction;
 
   const ItemBar({
     super.key,
     required this.item,
-    required this.controller,
+    required this.firstTwoMembers,
+    required this.onMoreAction,
   });
 
   @override
@@ -24,8 +24,6 @@ class ItemBar extends StatelessWidget {
     if (item.itemBarMember.isEmpty) {
       return Container();
     }
-
-    List<Member> firstTwoMember = controller.getFirstTwoMembers(item);
 
     return Container(
       color: Theme.of(context).backgroundColor,
@@ -35,23 +33,12 @@ class ItemBar extends StatelessWidget {
         children: [
           Expanded(
             child: Row(
-              children: _buildItemBarContent(context, firstTwoMember),
+              children: _buildItemBarContent(context, firstTwoMembers),
             ),
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: () async {
-              final info = await controller.getMoreActionSheetInfo(item);
-              await showMoreActionSheet(
-                context: context,
-                objective: info['objective'],
-                id: item.itemId,
-                controllerTag: item.controllerTag,
-                url: info['url'],
-                heroImageUrl: item.newsListItem?.heroImageUrl,
-                newsListItem: item.newsListItem,
-              );
-            },
+            onPressed: () => onMoreAction(item),
             splashColor: Colors.transparent,
             hoverColor: Colors.transparent,
             focusColor: Colors.transparent,

@@ -3,8 +3,9 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/models/communityListItem.dart';
+import 'package:readr/helpers/dataConstants.dart';
+import 'package:readr/models/member.dart';
 import 'package:readr/pages/community/comment/commentBottomSheet.dart';
-import 'package:readr/pages/community/community_controller.dart';
 import 'package:readr/pages/community/widget/comments_widget.dart';
 import 'package:readr/pages/community/widget/item_bar.dart';
 import 'package:readr/pages/shared/collection/collectionInfo.dart';
@@ -15,12 +16,26 @@ import 'package:shimmer/shimmer.dart';
 
 class CommunityItem extends StatelessWidget {
   final CommunityListItem item;
-  final CommunityController controller;
+  final String authorText;
+  final String titleText;
+  final bool showCollectionTag;
+  final String? firstItemId;
+  final List<Member> firstTwoMembers;
+  final Function(CommunityListItem) onMoreAction;
+  final Function? onCommentTap;
+  final PickObjective Function(CommunityListItem)? getCommentObjective;
 
   const CommunityItem({
     Key? key,
     required this.item,
-    required this.controller,
+    required this.authorText,
+    required this.titleText,
+    required this.showCollectionTag,
+    this.firstItemId,
+    required this.firstTwoMembers,
+    required this.onMoreAction,
+    this.onCommentTap,
+    this.getCommentObjective,
   }) : super(key: key);
 
   @override
@@ -32,7 +47,8 @@ class CommunityItem extends StatelessWidget {
         children: [
           ItemBar(
             item: item,
-            controller: controller,
+            firstTwoMembers: firstTwoMembers,
+            onMoreAction: onMoreAction,
           ),
           InkWell(
             onTap: item.tapItem,
@@ -72,7 +88,7 @@ class CommunityItem extends StatelessWidget {
                         );
                       },
                     ),
-                    if (controller.shouldShowCollectionTag(item))
+                    if (showCollectionTag)
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
@@ -83,30 +99,22 @@ class CommunityItem extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                   child: GestureDetector(
                     onTap: item.tapAuthor,
-                    child: Obx(
-                      () {
-                        return ExtendedText(
-                          controller.getAuthorText(item),
-                          joinZeroWidthSpace: true,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        );
-                      },
+                    child: ExtendedText(
+                      authorText,
+                      joinZeroWidthSpace: true,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, left: 20, right: 20, bottom: 8),
-                  child: Obx(
-                    () {
-                      return ExtendedText(
-                        controller.getItemTitle(item),
-                        joinZeroWidthSpace: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      );
-                    },
+                  child: ExtendedText(
+                    titleText,
+                    joinZeroWidthSpace: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
                 Padding(
@@ -131,7 +139,7 @@ class CommunityItem extends StatelessWidget {
             child: PickBar(
               item.controllerTag,
               showPickTooltip:
-                  item.itemId == controller.rxCommunityList.first.itemId,
+                  firstItemId != null && item.itemId == firstItemId,
             ),
           ),
           if (item.showComment != null) ...[
@@ -141,14 +149,18 @@ class CommunityItem extends StatelessWidget {
             ),
             InkWell(
               onTap: () async {
-                final objective = controller.getCommentObjective(item);
-                await CommentBottomSheet.showCommentBottomSheet(
-                  context: context,
-                  clickComment: item.showComment!,
-                  objective: objective,
-                  id: item.itemId,
-                  controllerTag: item.controllerTag,
-                );
+                if (onCommentTap != null) {
+                  onCommentTap!();
+                } else if (getCommentObjective != null) {
+                  final objective = getCommentObjective!(item);
+                  await CommentBottomSheet.showCommentBottomSheet(
+                    context: context,
+                    clickComment: item.showComment!,
+                    objective: objective,
+                    id: item.itemId,
+                    controllerTag: item.controllerTag,
+                  );
+                }
               },
               child: CommentsWidget(comment: item.showComment!),
             ),

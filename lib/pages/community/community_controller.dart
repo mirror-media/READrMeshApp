@@ -9,6 +9,7 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/data/enum/page_status.dart';
+import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -259,6 +260,20 @@ class CommunityController extends GetxController {
     if (visiblePercentage > 50 && !rxIsLoadingMore.value) {
       fetchMoreFollowingPickedNews();
     }
+  }
+
+  Future<void> handleMoreAction(
+      BuildContext context, CommunityListItem item) async {
+    final info = await getMoreActionSheetInfo(item);
+    await showMoreActionSheet(
+      context: context,
+      objective: info['objective'],
+      id: item.itemId,
+      controllerTag: item.controllerTag,
+      url: info['url'],
+      heroImageUrl: item.newsListItem?.heroImageUrl,
+      newsListItem: item.newsListItem,
+    );
   }
 
   @override

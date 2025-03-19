@@ -185,9 +185,18 @@ class CommunityPage extends GetView<CommunityController> {
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        final item = communityList[index];
         return CommunityItem(
-          item: communityList[index],
-          controller: controller,
+          item: item,
+          authorText: controller.getAuthorText(item),
+          titleText: controller.getItemTitle(item),
+          showCollectionTag: controller.shouldShowCollectionTag(item),
+          firstItemId: controller.rxCommunityList.isNotEmpty
+              ? controller.rxCommunityList.first.itemId
+              : null,
+          firstTwoMembers: controller.getFirstTwoMembers(item),
+          onMoreAction: (item) => controller.handleMoreAction(context, item),
+          getCommentObjective: controller.getCommentObjective,
         );
       },
       separatorBuilder: (context, index) {
