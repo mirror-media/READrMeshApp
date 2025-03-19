@@ -89,7 +89,10 @@ class CommunityPage extends GetView<CommunityController> {
             child: Obx(
               () {
                 if (controller.rxCommunityList.isEmpty) {
-                  return EmptyWidget(controller: controller);
+                  return EmptyWidget(
+                    recommendMembers:
+                        controller.getRecommendMemberFollowableItems(),
+                  );
                 }
 
                 return _buildList(

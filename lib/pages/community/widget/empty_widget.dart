@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/pages/community/community_controller.dart';
+import 'package:readr/models/followableItem.dart';
 import 'package:readr/pages/shared/recommendFollow/recommendFollowBlock.dart';
 import 'package:readr/controller/community/recommendMemberBlockController.dart';
 
 class EmptyWidget extends StatelessWidget {
-  final CommunityController controller;
+  final List<FollowableItem> recommendMembers;
 
   const EmptyWidget({
     Key? key,
-    required this.controller,
+    required this.recommendMembers,
   }) : super(key: key);
 
   @override
@@ -56,16 +56,13 @@ class EmptyWidget extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          Obx(() {
-            return controller.rxRecommendMembers.isNotEmpty
-                ? RecommendFollowBlock(
-                    RecommendMemberBlockController()
-                      ..recommendMembers.assignAll(
-                          controller.getRecommendMemberFollowableItems()),
-                    showTitleBar: false,
-                  )
-                : Container();
-          }),
+          recommendMembers.isNotEmpty
+              ? RecommendFollowBlock(
+                  RecommendMemberBlockController()
+                    ..recommendMembers.assignAll(recommendMembers),
+                  showTitleBar: false,
+                )
+              : Container(),
         ],
       ),
     );
