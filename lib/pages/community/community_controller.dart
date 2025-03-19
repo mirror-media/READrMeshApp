@@ -285,6 +285,26 @@ class CommunityController extends GetxController {
     return rxCommunityList.length > 3;
   }
 
+  // ItemBar 邏輯方法
+  bool hasItemBarMembers(CommunityListItem item) {
+    return item.itemBarMember.isNotEmpty;
+  }
+
+  String getItemBarTextForSingleMember(CommunityListItem item) {
+    return item.itemBarText ?? '';
+  }
+
+  String getItemBarTextForMultipleMembers(CommunityListItem item) {
+    if (item.itemBarText != null) {
+      return '${'both'.tr}${item.itemBarText!}';
+    }
+    return '';
+  }
+
+  bool shouldShowItemBarText(CommunityListItem item) {
+    return item.itemBarText != null;
+  }
+
   @override
   void onClose() {
     scrollController.dispose();

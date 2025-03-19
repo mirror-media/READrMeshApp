@@ -14,119 +14,18 @@ class ItemBar extends StatelessWidget {
   final CommunityController controller;
 
   const ItemBar({
-    Key? key,
+    super.key,
     required this.item,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (item.itemBarMember.isEmpty) {
+    if (!controller.hasItemBarMembers(item)) {
       return Container();
     }
 
     List<Member> firstTwoMember = controller.getFirstTwoMembers(item);
-
-    List<Widget> children = [
-      ProfilePhotoStack(
-        firstTwoMember,
-        14,
-        key: ObjectKey(firstTwoMember),
-      ),
-      const SizedBox(width: 8),
-    ];
-
-    if (firstTwoMember.length == 1) {
-      children.add(Flexible(
-        child: GestureDetector(
-          onTap: () {
-            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[0]));
-          },
-          child: ExtendedText(
-            firstTwoMember[0].nickname,
-            joinZeroWidthSpace: true,
-            strutStyle: const StrutStyle(
-              forceStrutHeight: true,
-              leading: 0.5,
-            ),
-            style: Theme.of(context).textTheme.titleSmall,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ));
-      children.add(item.itemBarText != null
-          ? Text(
-              item.itemBarText!,
-              style:
-                  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-              strutStyle: const StrutStyle(
-                forceStrutHeight: true,
-                leading: 0.5,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          : Container());
-    } else {
-      children.add(Flexible(
-        child: GestureDetector(
-          onTap: () {
-            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[0]));
-          },
-          child: ExtendedText(
-            firstTwoMember[0].nickname,
-            joinZeroWidthSpace: true,
-            style: Theme.of(context).textTheme.titleSmall,
-            strutStyle: const StrutStyle(
-              forceStrutHeight: true,
-              leading: 0.5,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ));
-      children.add(Text(
-        'and'.tr,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-        strutStyle: const StrutStyle(
-          forceStrutHeight: true,
-          leading: 0.5,
-        ),
-        maxLines: 1,
-      ));
-      children.add(Flexible(
-        child: GestureDetector(
-          onTap: () {
-            Get.to(() => PersonalFilePage(viewMember: firstTwoMember[1]));
-          },
-          child: ExtendedText(
-            firstTwoMember[1].nickname,
-            joinZeroWidthSpace: true,
-            style: Theme.of(context).textTheme.titleSmall,
-            strutStyle: const StrutStyle(
-              forceStrutHeight: true,
-              leading: 0.5,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ));
-      children.add(item.itemBarText != null
-          ? Text(
-              '${'both'.tr}${item.itemBarText!}',
-              style:
-                  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
-              strutStyle: const StrutStyle(
-                forceStrutHeight: true,
-                leading: 0.5,
-              ),
-              maxLines: 1,
-            )
-          : Container());
-    }
 
     return Container(
       color: Theme.of(context).backgroundColor,
@@ -136,7 +35,7 @@ class ItemBar extends StatelessWidget {
         children: [
           Expanded(
             child: Row(
-              children: children,
+              children: _buildItemBarContent(context, firstTwoMember),
             ),
           ),
           const SizedBox(width: 8),
@@ -169,5 +68,133 @@ class ItemBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildItemBarContent(
+      BuildContext context, List<Member> members) {
+    List<Widget> children = [
+      ProfilePhotoStack(
+        members,
+        14,
+        key: ObjectKey(members),
+      ),
+      const SizedBox(width: 8),
+    ];
+
+    if (members.length == 1) {
+      children.addAll(_buildSingleMemberContent(context, members[0]));
+    } else {
+      children.addAll(_buildMultipleMembersContent(context, members));
+    }
+
+    return children;
+  }
+
+  List<Widget> _buildSingleMemberContent(BuildContext context, Member member) {
+    List<Widget> widgets = [
+      Flexible(
+        child: GestureDetector(
+          onTap: () {
+            Get.to(() => PersonalFilePage(viewMember: member));
+          },
+          child: ExtendedText(
+            member.nickname,
+            joinZeroWidthSpace: true,
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
+            style: Theme.of(context).textTheme.titleSmall,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+    ];
+
+    if (controller.shouldShowItemBarText(item)) {
+      widgets.add(
+        Text(
+          controller.getItemBarTextForSingleMember(item),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+          strutStyle: const StrutStyle(
+            forceStrutHeight: true,
+            leading: 0.5,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+    }
+
+    return widgets;
+  }
+
+  List<Widget> _buildMultipleMembersContent(
+      BuildContext context, List<Member> members) {
+    List<Widget> widgets = [
+      Flexible(
+        child: GestureDetector(
+          onTap: () {
+            Get.to(() => PersonalFilePage(viewMember: members[0]));
+          },
+          child: ExtendedText(
+            members[0].nickname,
+            joinZeroWidthSpace: true,
+            style: Theme.of(context).textTheme.titleSmall,
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      Text(
+        'and'.tr,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+        strutStyle: const StrutStyle(
+          forceStrutHeight: true,
+          leading: 0.5,
+        ),
+        maxLines: 1,
+      ),
+      Flexible(
+        child: GestureDetector(
+          onTap: () {
+            Get.to(() => PersonalFilePage(viewMember: members[1]));
+          },
+          child: ExtendedText(
+            members[1].nickname,
+            joinZeroWidthSpace: true,
+            style: Theme.of(context).textTheme.titleSmall,
+            strutStyle: const StrutStyle(
+              forceStrutHeight: true,
+              leading: 0.5,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+    ];
+
+    final itemBarText = controller.getItemBarTextForMultipleMembers(item);
+    if (itemBarText.isNotEmpty) {
+      widgets.add(
+        Text(
+          itemBarText,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
+          strutStyle: const StrutStyle(
+            forceStrutHeight: true,
+            leading: 0.5,
+          ),
+          maxLines: 1,
+        ),
+      );
+    }
+
+    return widgets;
   }
 }
