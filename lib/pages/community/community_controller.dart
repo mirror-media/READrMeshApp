@@ -10,6 +10,8 @@ import 'package:readr/helpers/dynamicLinkHelper.dart';
 import 'package:readr/models/followableItem.dart';
 import 'package:readr/data/enum/page_status.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
+import 'package:readr/pages/story/storyPage.dart';
+import 'package:readr/pages/publisher/publisherPage.dart';
 
 class CommunityController extends GetxController {
   @override
@@ -149,7 +151,7 @@ class CommunityController extends GetxController {
   }
 
   String getAuthorText(CommunityListItem item) {
-    final authorTextValue = item.authorText.value;
+    final authorTextValue = item.authorText.value as String?;
     final isMember = userService.isMember;
 
     if (item.type == CommunityListItemType.commentStory ||
@@ -170,7 +172,7 @@ class CommunityController extends GetxController {
         item.type != CommunityListItemType.pickStory) {
       final pickableController =
           getPickableItemController(item.collection!.controllerTag);
-      final collectionTitleValue = pickableController.collectionTitle.value;
+      final collectionTitleValue = pickableController.collectionTitle?.value;
       return collectionTitleValue ?? titleTextValue;
     }
 
@@ -274,6 +276,21 @@ class CommunityController extends GetxController {
       heroImageUrl: item.newsListItem?.heroImageUrl,
       newsListItem: item.newsListItem,
     );
+  }
+
+  void handleTapItem(CommunityListItem item) {
+    if (item.newsListItem != null) {
+      Get.to(() => StoryPage(news: item.newsListItem!));
+    }
+  }
+
+  void handleTapAuthor(CommunityListItem item) {
+    if (item.type == CommunityListItemType.commentStory ||
+        item.type == CommunityListItemType.pickStory) {
+      if (item.newsListItem?.source != null) {
+        Get.to(() => PublisherPage(item.newsListItem!.source!));
+      }
+    }
   }
 
   @override

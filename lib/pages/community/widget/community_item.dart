@@ -24,6 +24,8 @@ class CommunityItem extends StatelessWidget {
   final Function(CommunityListItem) onMoreAction;
   final Function? onCommentTap;
   final PickObjective Function(CommunityListItem)? getCommentObjective;
+  final Function(CommunityListItem)? onTapItem;
+  final Function(CommunityListItem)? onTapAuthor;
 
   const CommunityItem({
     Key? key,
@@ -36,6 +38,8 @@ class CommunityItem extends StatelessWidget {
     required this.onMoreAction,
     this.onCommentTap,
     this.getCommentObjective,
+    this.onTapItem,
+    this.onTapAuthor,
   }) : super(key: key);
 
   @override
@@ -51,7 +55,7 @@ class CommunityItem extends StatelessWidget {
             onMoreAction: onMoreAction,
           ),
           InkWell(
-            onTap: item.tapItem,
+            onTap: onTapItem != null ? () => onTapItem!(item) : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -98,7 +102,8 @@ class CommunityItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                   child: GestureDetector(
-                    onTap: item.tapAuthor,
+                    onTap:
+                        onTapAuthor != null ? () => onTapAuthor!(item) : null,
                     child: ExtendedText(
                       authorText,
                       joinZeroWidthSpace: true,

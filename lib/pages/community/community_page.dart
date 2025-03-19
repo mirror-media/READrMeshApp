@@ -199,6 +199,8 @@ class CommunityPage extends GetView<CommunityController> {
               : null,
           firstTwoMembers: controller.getFirstTwoMembers(item),
           onMoreAction: (item) => controller.handleMoreAction(context, item),
+          onTapItem: controller.handleTapItem,
+          onTapAuthor: controller.handleTapAuthor,
           getCommentObjective: controller.getCommentObjective,
         );
       },

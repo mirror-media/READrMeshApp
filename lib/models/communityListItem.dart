@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/publisher/publisherPage.dart';
-import 'package:readr/pages/story/storyPage.dart';
 
 enum CommunityListItemType {
   pickStory,
@@ -23,8 +20,6 @@ class CommunityListItem {
   final String controllerTag;
   final RxnString heroImageUrl;
   final RxnString authorText;
-  final VoidCallback tapItem;
-  final VoidCallback tapAuthor;
   final Comment? showComment;
   final String itemId;
   final NewsListItem? newsListItem;
@@ -39,12 +34,10 @@ class CommunityListItem {
     required this.controllerTag,
     required this.heroImageUrl,
     required this.authorText,
-    required this.tapItem,
-    required this.tapAuthor,
     required this.itemId,
-    required this.showComment,
     required this.itemBarMember,
-    required this.itemBarText,
+    this.showComment,
+    this.itemBarText,
     this.newsListItem,
     this.collection,
   });
@@ -95,8 +88,6 @@ class CommunityListItem {
         controllerTag: 'News${json['id']}',
         heroImageUrl: RxnString(json['og_image']),
         authorText: RxnString(json['publisher']?['title']),
-        tapItem: () => Get.to(() => StoryPage(news: newsListItem)),
-        tapAuthor: () => Get.to(() => PublisherPage(json['publisher'])),
         showComment: showComment,
         itemId: json['id']?.toString() ?? '',
         itemBarMember: itemBarMembers,
