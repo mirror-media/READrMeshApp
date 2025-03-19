@@ -230,26 +230,8 @@ class CommunityController extends GetxController {
     };
   }
 
-  bool shouldShowBottomWidget() {
-    return isMember;
-  }
-
-  bool shouldShowNoMoreContent() {
-    return rxIsNoMore.value;
-  }
-
-  void handleVisibilityChanged(double visiblePercentage) {
-    if (visiblePercentage > 50 && !rxIsLoadingMore.value) {
-      fetchMoreFollowingPickedNews();
-    }
-  }
-
   List<MemberFollowableItem> getRecommendMemberFollowableItems() {
     return rxRecommendMembers.map((m) => MemberFollowableItem(m)).toList();
-  }
-
-  bool hasRecommendMembers() {
-    return rxRecommendMembers.isNotEmpty;
   }
 
   List<CommunityListItem> getHeaderCommunityList() {
@@ -273,36 +255,10 @@ class CommunityController extends GetxController {
     return rxCommunityList.sublist(3);
   }
 
-  bool shouldShowRecommendMembers() {
-    return rxRecommendMembers.isNotEmpty && rxCommunityList.isNotEmpty;
-  }
-
-  bool isHeaderEmpty() {
-    return rxCommunityList.isEmpty;
-  }
-
-  bool shouldShowRemainingList() {
-    return rxCommunityList.length > 3;
-  }
-
-  // ItemBar 邏輯方法
-  bool hasItemBarMembers(CommunityListItem item) {
-    return item.itemBarMember.isNotEmpty;
-  }
-
-  String getItemBarTextForSingleMember(CommunityListItem item) {
-    return item.itemBarText ?? '';
-  }
-
-  String getItemBarTextForMultipleMembers(CommunityListItem item) {
-    if (item.itemBarText != null) {
-      return '${'both'.tr}${item.itemBarText!}';
+  void handleVisibilityChanged(double visiblePercentage) {
+    if (visiblePercentage > 50 && !rxIsLoadingMore.value) {
+      fetchMoreFollowingPickedNews();
     }
-    return '';
-  }
-
-  bool shouldShowItemBarText(CommunityListItem item) {
-    return item.itemBarText != null;
   }
 
   @override

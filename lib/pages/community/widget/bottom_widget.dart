@@ -15,10 +15,10 @@ class BottomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        if (!controller.shouldShowBottomWidget()) {
+        if (!controller.isMember) {
           return Container();
         }
-        if (controller.shouldShowNoMoreContent()) {
+        if (controller.rxIsNoMore.value) {
           return Container(
             alignment: Alignment.center,
             color: Theme.of(context).backgroundColor,

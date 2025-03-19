@@ -57,7 +57,7 @@ class EmptyWidget extends StatelessWidget {
             height: 32,
           ),
           Obx(() {
-            return controller.hasRecommendMembers()
+            return controller.rxRecommendMembers.isNotEmpty
                 ? RecommendFollowBlock(
                     RecommendMemberBlockController()
                       ..recommendMembers.assignAll(

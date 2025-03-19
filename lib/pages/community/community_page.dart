@@ -88,7 +88,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (controller.isHeaderEmpty()) {
+                if (controller.rxCommunityList.isEmpty) {
                   return EmptyWidget(controller: controller);
                 }
 
@@ -106,7 +106,8 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (!controller.shouldShowRecommendMembers()) {
+                if (!(controller.rxRecommendMembers.isNotEmpty &&
+                    controller.rxCommunityList.isNotEmpty)) {
                   return Container();
                 }
 
@@ -126,7 +127,7 @@ class CommunityPage extends GetView<CommunityController> {
           SliverToBoxAdapter(
             child: Obx(
               () {
-                if (!controller.shouldShowRemainingList()) {
+                if (!(controller.rxCommunityList.length > 3)) {
                   return Container();
                 }
 

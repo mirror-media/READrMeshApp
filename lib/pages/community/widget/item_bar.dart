@@ -21,7 +21,7 @@ class ItemBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.hasItemBarMembers(item)) {
+    if (item.itemBarMember.isEmpty) {
       return Container();
     }
 
@@ -112,10 +112,10 @@ class ItemBar extends StatelessWidget {
       ),
     ];
 
-    if (controller.shouldShowItemBarText(item)) {
+    if (item.itemBarText != null) {
       widgets.add(
         Text(
-          controller.getItemBarTextForSingleMember(item),
+          item.itemBarText!,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
           strutStyle: const StrutStyle(
             forceStrutHeight: true,
@@ -180,11 +180,10 @@ class ItemBar extends StatelessWidget {
       ),
     ];
 
-    final itemBarText = controller.getItemBarTextForMultipleMembers(item);
-    if (itemBarText.isNotEmpty) {
+    if (item.itemBarText != null) {
       widgets.add(
         Text(
-          itemBarText,
+          '${'both'.tr}${item.itemBarText!}',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
           strutStyle: const StrutStyle(
             forceStrutHeight: true,
