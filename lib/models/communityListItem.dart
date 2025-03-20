@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
@@ -16,12 +15,12 @@ enum CommunityListItemType {
 class CommunityListItem {
   final CommunityListItemType type;
   final DateTime orderByTime;
-  final RxString titleText;
+  final String? titleText;
   final String controllerTag;
-  final RxnString heroImageUrl;
-  final RxnString authorText;
+  final String? heroImageUrl;
+  final String? authorText;
   final Comment? showComment;
-  final String itemId;
+  final String? itemId;
   final NewsListItem? newsListItem;
   final Collection? collection;
   final List<Member> itemBarMember;
@@ -66,15 +65,15 @@ class CommunityListItem {
 
           switch (action['kind']) {
             case 'pick':
-              itemBarText = 'pickNews'.tr;
+              itemBarText = 'pickNews';
               break;
             case 'comment':
-              if (itemBarText == null || itemBarText == 'readNews'.tr) {
-                itemBarText = 'commentNews'.tr;
+              if (itemBarText == null || itemBarText == 'readNews') {
+                itemBarText = 'commentNews';
               }
               break;
             case 'read':
-              itemBarText ??= 'readNews'.tr;
+              itemBarText ??= 'readNews';
               break;
           }
         }
@@ -84,12 +83,12 @@ class CommunityListItem {
         orderByTime: DateTime.parse(json['published_date']),
         type: CommunityListItemType.pickStory,
         newsListItem: newsListItem,
-        titleText: RxString(json['og_title'] ?? ''),
+        titleText: json['og_title'],
         controllerTag: 'News${json['id']}',
-        heroImageUrl: RxnString(json['og_image']),
-        authorText: RxnString(json['publisher']?['title']),
+        heroImageUrl: json['og_image'],
+        authorText: json['publisher']?['title'],
         showComment: showComment,
-        itemId: json['id']?.toString() ?? '',
+        itemId: json['id']?.toString(),
         itemBarMember: itemBarMembers,
         itemBarText: itemBarText,
       );

@@ -102,7 +102,7 @@ class ItemBar extends StatelessWidget {
     if (item.itemBarText != null) {
       widgets.add(
         Text(
-          item.itemBarText!,
+          item.itemBarText!.tr,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
           strutStyle: const StrutStyle(
             forceStrutHeight: true,
@@ -170,7 +170,7 @@ class ItemBar extends StatelessWidget {
     if (item.itemBarText != null) {
       widgets.add(
         Text(
-          '${'both'.tr}${item.itemBarText!}',
+          '${'both'.tr}${item.itemBarText!.tr}',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
           strutStyle: const StrutStyle(
             forceStrutHeight: true,

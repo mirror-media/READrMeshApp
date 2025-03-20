@@ -150,33 +150,34 @@ class CommunityController extends GetxController {
     await updateCommunityPage();
   }
 
-  String getAuthorText(CommunityListItem item) {
-    final authorTextValue = item.authorText.value as String?;
+  String? getAuthorText(CommunityListItem item) {
     final isMember = userService.isMember;
 
     if (item.type == CommunityListItemType.commentStory ||
         item.type == CommunityListItemType.pickStory) {
-      return authorTextValue ?? '';
+      return item.authorText;
     } else if (isMember.isTrue &&
         userService.currentUser.memberId == item.collection!.creator.memberId) {
       return '@${userService.currentUser.customId}';
-    } else {
-      return '@${authorTextValue ?? ''}';
+    } else if (item.authorText != null) {
+      return '@${item.authorText!}';
     }
+
+    return null;
   }
 
-  String getItemTitle(CommunityListItem item) {
-    final titleTextValue = item.titleText.value;
-
+  String? getItemTitle(CommunityListItem item) {
     if (item.type != CommunityListItemType.commentStory &&
         item.type != CommunityListItemType.pickStory) {
       final pickableController =
           getPickableItemController(item.collection!.controllerTag);
-      final collectionTitleValue = pickableController.collectionTitle?.value;
-      return collectionTitleValue ?? titleTextValue;
+      final collectionTitleValue = pickableController.collectionTitle.value;
+      if (collectionTitleValue != null) {
+        return collectionTitleValue;
+      }
     }
 
-    return titleTextValue;
+    return item.titleText;
   }
 
   bool shouldShowCollectionTag(CommunityListItem item) {
@@ -267,6 +268,7 @@ class CommunityController extends GetxController {
   Future<void> handleMoreAction(
       BuildContext context, CommunityListItem item) async {
     final info = await getMoreActionSheetInfo(item);
+
     await showMoreActionSheet(
       context: context,
       objective: info['objective'],

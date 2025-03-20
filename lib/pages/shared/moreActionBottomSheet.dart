@@ -18,12 +18,17 @@ import 'package:share_plus/share_plus.dart';
 Future<void> showMoreActionSheet({
   required BuildContext context,
   required PickObjective objective,
-  required String id,
+  required String? id,
   required String controllerTag,
   String? url,
   String? heroImageUrl,
   NewsListItem? newsListItem,
 }) async {
+  if (id == null) {
+    print('Warning: showMoreActionSheet called with null id');
+    return;
+  }
+
   await showCupertinoModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,

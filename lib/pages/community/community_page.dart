@@ -189,10 +189,13 @@ class CommunityPage extends GetView<CommunityController> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final item = communityList[index];
+        final String? authorText = controller.getAuthorText(item);
+        final String? titleText = controller.getItemTitle(item);
+
         return CommunityItem(
           item: item,
-          authorText: controller.getAuthorText(item),
-          titleText: controller.getItemTitle(item),
+          authorText: authorText,
+          titleText: titleText,
           showCollectionTag: controller.shouldShowCollectionTag(item),
           firstItemId: controller.rxCommunityList.isNotEmpty
               ? controller.rxCommunityList.first.itemId
