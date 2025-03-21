@@ -39,6 +39,7 @@ const Map<String, String> englishUsMap = {
       'Follow your favorite people\nSee what news they have picked',
   'both': ' both',
   'pickNews': ' picked this',
+  'readNews': ' read this',
   'showFullComment': 'more',
   'communityNoMore': "You're all caught up",
   'commentNews': ' commented on this',
