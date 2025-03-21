@@ -80,6 +80,7 @@ const Map<String, String> englishUsMap = {
   'addBookmarkFailedToast': 'Failed to add bookmark',
   'removeBookmarkSuccessToast': 'Bookmark removed successfully',
   'removeBookmarkFailedToast': 'Failed to remove bookmark',
+  'commentDeleted': 'The comment seems to have been deleted...',
 
   //bookmark
   'addBookmark': 'Bookmark',

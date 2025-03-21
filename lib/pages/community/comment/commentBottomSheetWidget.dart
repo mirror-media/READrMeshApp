@@ -69,8 +69,18 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
 
                   Timer.periodic(const Duration(microseconds: 1), (timer) {
                     if (_itemScrollController.isAttached) {
-                      int index = controller.allComments.indexWhere(
+                      int indexById = controller.allComments.indexWhere(
                           (comment) => comment.id == clickComment.id);
+
+                      int indexByContent = -1;
+                      if (indexById == -1 && clickComment.content.isNotEmpty) {
+                        indexByContent = controller.allComments.indexWhere(
+                            (comment) =>
+                                comment.content == clickComment.content);
+                      }
+
+                      int index = indexById != -1 ? indexById : indexByContent;
+
                       if (index != -1) {
                         _itemScrollController.scrollTo(
                             index: index,
@@ -81,7 +91,7 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                             .isExpanded(true);
                       } else {
                         Fluttertoast.showToast(
-                          msg: "留言好像被刪除了...",
+                          msg: 'commentDeleted'.tr,
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -92,8 +102,8 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                         Get.find<CommunityPageController>()
                             .fetchFollowingStoryAndCollection();
                       }
-                      timer.cancel();
                     }
+                    timer.cancel();
                   });
 
                   return _buildContent(context);

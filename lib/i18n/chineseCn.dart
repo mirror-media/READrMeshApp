@@ -79,6 +79,7 @@ const Map<String, String> chineseCnMap = {
   'addBookmarkFailedToast': '添加书签失败',
   'removeBookmarkSuccessToast': '书签已成功删除',
   'removeBookmarkFailedToast': '删除书签失败',
+  'commentDeleted': '评论好像被删除了...',
 
   //bookmark
   'addBookmark': '添加书签',

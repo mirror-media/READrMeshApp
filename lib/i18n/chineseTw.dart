@@ -79,6 +79,7 @@ const Map<String, String> chineseTwMap = {
   'addBookmarkFailedToast': '加入書籤失敗',
   'removeBookmarkSuccessToast': '成功移除書籤',
   'removeBookmarkFailedToast': '移除書籤失敗',
+  'commentDeleted': '留言好像被刪除了...',
 
   //bookmark
   'addBookmark': '加入書籤',
