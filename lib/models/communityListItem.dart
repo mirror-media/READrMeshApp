@@ -2,15 +2,7 @@ import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-
-enum CommunityListItemType {
-  pickStory,
-  pickCollection,
-  commentStory,
-  commentCollection,
-  createCollection,
-  updateCollection,
-}
+import 'package:readr/models/communityListItemType.dart';
 
 class CommunityListItem {
   final CommunityListItemType type;

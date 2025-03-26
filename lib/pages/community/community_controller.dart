@@ -12,6 +12,7 @@ import 'package:readr/data/enum/page_status.dart';
 import 'package:readr/pages/shared/moreActionBottomSheet.dart';
 import 'package:readr/pages/story/storyPage.dart';
 import 'package:readr/pages/publisher/publisherPage.dart';
+import 'package:readr/models/communityListItemType.dart';
 
 class CommunityController extends GetxController {
   @override

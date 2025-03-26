@@ -13,6 +13,7 @@ import 'package:readr/pages/shared/collection/collectionTag.dart';
 import 'package:readr/pages/shared/news/newsInfo.dart';
 import 'package:readr/pages/shared/pick/pickBar.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:readr/models/communityListItemType.dart';
 
 class CommunityItem extends StatelessWidget {
   final CommunityListItem item;
