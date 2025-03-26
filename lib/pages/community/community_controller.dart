@@ -151,36 +151,6 @@ class CommunityController extends GetxController {
     await updateCommunityPage();
   }
 
-  String? getAuthorText(CommunityListItem item) {
-    final isMember = userService.isMember;
-
-    if (item.type == CommunityListItemType.commentStory ||
-        item.type == CommunityListItemType.pickStory) {
-      return item.authorText;
-    } else if (isMember.isTrue &&
-        userService.currentUser.memberId == item.collection!.creator.memberId) {
-      return '@${userService.currentUser.customId}';
-    } else if (item.authorText != null) {
-      return '@${item.authorText!}';
-    }
-
-    return null;
-  }
-
-  String? getItemTitle(CommunityListItem item) {
-    if (item.type != CommunityListItemType.commentStory &&
-        item.type != CommunityListItemType.pickStory) {
-      final pickableController =
-          getPickableItemController(item.collection!.controllerTag);
-      final collectionTitleValue = pickableController.collectionTitle.value;
-      if (collectionTitleValue != null) {
-        return collectionTitleValue;
-      }
-    }
-
-    return item.titleText;
-  }
-
   bool shouldShowCollectionTag(CommunityListItem item) {
     return item.type != CommunityListItemType.commentStory &&
         item.type != CommunityListItemType.pickStory;
@@ -213,26 +183,6 @@ class CommunityController extends GetxController {
       }
     }
     return firstTwoMember;
-  }
-
-  Future<Map<String, dynamic>> getMoreActionSheetInfo(
-      CommunityListItem item) async {
-    PickObjective objective;
-    String? url;
-
-    if (item.type == CommunityListItemType.pickStory ||
-        item.type == CommunityListItemType.commentStory) {
-      objective = PickObjective.story;
-      url = item.newsListItem!.url;
-    } else {
-      objective = PickObjective.collection;
-      url = await DynamicLinkHelper.createCollectionLink(item.collection!);
-    }
-
-    return {
-      'objective': objective,
-      'url': url,
-    };
   }
 
   List<MemberFollowableItem> getRecommendMemberFollowableItems() {
@@ -294,6 +244,26 @@ class CommunityController extends GetxController {
         Get.to(() => PublisherPage(item.newsListItem!.source!));
       }
     }
+  }
+
+  Future<Map<String, dynamic>> getMoreActionSheetInfo(
+      CommunityListItem item) async {
+    PickObjective objective;
+    String? url;
+
+    if (item.type == CommunityListItemType.pickStory ||
+        item.type == CommunityListItemType.commentStory) {
+      objective = PickObjective.story;
+      url = item.newsListItem!.url;
+    } else {
+      objective = PickObjective.collection;
+      url = await DynamicLinkHelper.createCollectionLink(item.collection!);
+    }
+
+    return {
+      'objective': objective,
+      'url': url,
+    };
   }
 
   @override

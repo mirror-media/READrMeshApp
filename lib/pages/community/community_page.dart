@@ -193,22 +193,14 @@ class CommunityPage extends GetView<CommunityController> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final item = communityList[index];
-        final String? authorText = controller.getAuthorText(item);
-        final String? titleText = controller.getItemTitle(item);
-
         return CommunityItem(
           item: item,
-          authorText: authorText,
-          titleText: titleText,
-          showCollectionTag: controller.shouldShowCollectionTag(item),
           firstItemId: controller.rxCommunityList.isNotEmpty
               ? controller.rxCommunityList.first.itemId
               : null,
-          firstTwoMembers: controller.getFirstTwoMembers(item),
           onMoreAction: (item) => controller.handleMoreAction(context, item),
           onTapItem: controller.handleTapItem,
           onTapAuthor: controller.handleTapAuthor,
-          getCommentObjective: controller.getCommentObjective,
         );
       },
       separatorBuilder: (context, index) {

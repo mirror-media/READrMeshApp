@@ -3,6 +3,10 @@ import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
 import 'package:readr/models/communityListItemType.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class CommunityListItem {
   final CommunityListItemType type;
@@ -32,6 +36,74 @@ class CommunityListItem {
     this.newsListItem,
     this.collection,
   });
+
+  String? get displayAuthorText {
+    final userService = Get.find<UserService>();
+    final isMember = userService.isMember;
+
+    if (type == CommunityListItemType.commentStory ||
+        type == CommunityListItemType.pickStory) {
+      return authorText;
+    } else if (isMember.isTrue &&
+        userService.currentUser.memberId == collection?.creator.memberId) {
+      return '@${userService.currentUser.customId}';
+    } else if (authorText != null) {
+      return '@$authorText';
+    }
+
+    return null;
+  }
+
+  String? get displayTitleText {
+    if (type != CommunityListItemType.commentStory &&
+        type != CommunityListItemType.pickStory) {
+      try {
+        final pickableController =
+            Get.find<PickableItemController>(tag: collection!.controllerTag);
+        final collectionTitleValue = pickableController.collectionTitle.value;
+        if (collectionTitleValue != null) {
+          return collectionTitleValue;
+        }
+      } catch (e) {
+        // 如果找不到 controller，則使用默認標題
+      }
+    }
+
+    return titleText;
+  }
+
+  bool get shouldShowCollectionTag =>
+      type != CommunityListItemType.commentStory &&
+      type != CommunityListItemType.pickStory;
+
+  PickObjective get commentObjective {
+    switch (type) {
+      case CommunityListItemType.commentStory:
+      case CommunityListItemType.pickStory:
+        return PickObjective.story;
+      case CommunityListItemType.pickCollection:
+      case CommunityListItemType.commentCollection:
+      case CommunityListItemType.createCollection:
+      case CommunityListItemType.updateCollection:
+        return PickObjective.collection;
+      default:
+        throw Exception('未知的項目類型');
+    }
+  }
+
+  List<Member> get firstTwoMembers {
+    List<Member> firstTwoMember = [];
+    for (int i = 0; i < itemBarMember.length; i++) {
+      if (!firstTwoMember
+          .any((element) => element.memberId == itemBarMember[i].memberId)) {
+        firstTwoMember.add(itemBarMember[i]);
+      }
+      if (firstTwoMember.length == 2) {
+        break;
+      }
+    }
+    return firstTwoMember;
+  }
 
   factory CommunityListItem.fromJson(Map<String, dynamic> json) {
     try {

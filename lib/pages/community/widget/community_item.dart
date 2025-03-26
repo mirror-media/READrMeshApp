@@ -3,8 +3,6 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readr/models/communityListItem.dart';
-import 'package:readr/helpers/dataConstants.dart';
-import 'package:readr/models/member.dart';
 import 'package:readr/pages/community/comment/commentBottomSheet.dart';
 import 'package:readr/pages/community/widget/comments_widget.dart';
 import 'package:readr/pages/community/widget/item_bar.dart';
@@ -17,31 +15,21 @@ import 'package:readr/models/communityListItemType.dart';
 
 class CommunityItem extends StatelessWidget {
   final CommunityListItem item;
-  final String? authorText;
-  final String? titleText;
-  final bool showCollectionTag;
-  final String? firstItemId;
-  final List<Member> firstTwoMembers;
   final Function(CommunityListItem) onMoreAction;
   final Function? onCommentTap;
-  final PickObjective Function(CommunityListItem)? getCommentObjective;
   final Function(CommunityListItem)? onTapItem;
   final Function(CommunityListItem)? onTapAuthor;
+  final String? firstItemId;
 
   const CommunityItem({
-    Key? key,
+    super.key,
     required this.item,
-    required this.authorText,
-    required this.titleText,
-    required this.showCollectionTag,
-    this.firstItemId,
-    required this.firstTwoMembers,
     required this.onMoreAction,
     this.onCommentTap,
-    this.getCommentObjective,
     this.onTapItem,
     this.onTapAuthor,
-  }) : super(key: key);
+    this.firstItemId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +40,7 @@ class CommunityItem extends StatelessWidget {
         children: [
           ItemBar(
             item: item,
-            firstTwoMembers: firstTwoMembers,
+            firstTwoMembers: item.firstTwoMembers,
             onMoreAction: onMoreAction,
           ),
           InkWell(
@@ -89,7 +77,7 @@ class CommunityItem extends StatelessWidget {
                           );
                         },
                       ),
-                    if (showCollectionTag)
+                    if (item.shouldShowCollectionTag)
                       const Padding(
                         padding: EdgeInsets.only(top: 8, right: 8),
                         child: CollectionTag(),
@@ -101,21 +89,21 @@ class CommunityItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap:
                         onTapAuthor != null ? () => onTapAuthor!(item) : null,
-                    child: authorText != null
+                    child: item.displayAuthorText != null
                         ? ExtendedText(
-                            authorText!,
+                            item.displayAuthorText!,
                             joinZeroWidthSpace: true,
                             style: Theme.of(context).textTheme.bodySmall,
                           )
                         : const SizedBox.shrink(),
                   ),
                 ),
-                if (titleText != null)
+                if (item.displayTitleText != null)
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 4, left: 20, right: 20, bottom: 8),
                     child: ExtendedText(
-                      titleText!,
+                      item.displayTitleText!,
                       joinZeroWidthSpace: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -156,13 +144,11 @@ class CommunityItem extends StatelessWidget {
               onTap: () async {
                 if (onCommentTap != null) {
                   onCommentTap!();
-                } else if (getCommentObjective != null) {
-                  final objective = getCommentObjective!(item);
-
+                } else {
                   await CommentBottomSheet.showCommentBottomSheet(
                     context: context,
                     clickComment: item.showComment!,
-                    objective: objective,
+                    objective: item.commentObjective,
                     id: item.itemId,
                     controllerTag: item.controllerTag,
                   );
