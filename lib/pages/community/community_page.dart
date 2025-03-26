@@ -171,7 +171,11 @@ class CommunityPage extends GetView<CommunityController> {
             ),
           ),
           SliverToBoxAdapter(
-            child: BottomWidget(controller: controller),
+            child: BottomWidget(
+              isMember: controller.userService.isMember,
+              isNoMore: controller.rxIsNoMore,
+              onVisibilityChanged: controller.handleVisibilityChanged,
+            ),
           ),
         ],
       ),
