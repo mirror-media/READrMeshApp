@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:readr/controller/comment/commentController.dart';
-import 'package:readr/controller/comment/commentItemController.dart';
-import 'package:readr/controller/community/communityPageController.dart';
 import 'package:readr/helpers/themes.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/pages/shared/comment/commentInputBox.dart';
@@ -67,34 +62,9 @@ class CommentBottomSheetWidget extends GetView<CommentController> {
                     );
                   }
 
-                  Timer.periodic(const Duration(microseconds: 1), (timer) {
-                    if (_itemScrollController.isAttached) {
-                      int index = controller.allComments.indexWhere(
-                          (comment) => comment.id == clickComment.id);
-                      if (index != -1) {
-                        _itemScrollController.scrollTo(
-                            index: index,
-                            duration: const Duration(
-                              microseconds: 1,
-                            ));
-                        Get.find<CommentItemController>(tag: clickComment.id)
-                            .isExpanded(true);
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: "留言好像被刪除了...",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.grey,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
-                        Get.find<CommunityPageController>()
-                            .fetchFollowingStoryAndCollection();
-                      }
-                      timer.cancel();
-                    }
-                  });
+                  // 使用 controller 中的方法處理滾動到留言並展開的邏輯
+                  controller.scrollToComment(
+                      clickComment, _itemScrollController);
 
                   return _buildContent(context);
                 },

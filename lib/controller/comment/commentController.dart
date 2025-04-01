@@ -8,6 +8,9 @@ import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/services/commentService.dart';
+import 'package:readr/controller/community/communityPageController.dart';
+import 'dart:async';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //controller for comments in popup dialog and bottom card
 class CommentController extends GetxController {
@@ -233,6 +236,66 @@ class CommentController extends GetxController {
         popularComments.add(tempList[i]);
       }
     }
+  }
+
+  // 查找留言索引，先嘗試通過ID匹配，如果失敗則通過內容匹配
+  int findCommentIndex(Comment clickComment) {
+    // 先嘗試用ID查找
+    int indexById =
+        allComments.indexWhere((comment) => comment.id == clickComment.id);
+
+    // 嘗試用內容匹配
+    int indexByContent = -1;
+    if (indexById == -1 && clickComment.content.isNotEmpty) {
+      indexByContent = allComments
+          .indexWhere((comment) => comment.content == clickComment.content);
+    }
+    // 選擇有效ID
+    return indexById != -1 ? indexById : indexByContent;
+  }
+
+  // 處理找不到留言的情況
+  void handleCommentNotFound() {
+    Fluttertoast.showToast(
+      msg: 'commentDeleted'.tr,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    Get.find<CommunityPageController>().fetchFollowingStoryAndCollection();
+  }
+
+  void scrollToComment(
+      Comment clickComment, ItemScrollController scrollController) {
+    Timer.periodic(const Duration(milliseconds: 1), (timer) {
+      if (isLoading.value) {
+        return;
+      }
+
+      if (scrollController.isAttached) {
+        int index = findCommentIndex(clickComment);
+
+        if (index != -1) {
+          scrollController.scrollTo(
+            index: index,
+            duration: const Duration(microseconds: 1),
+          );
+
+          try {
+            String commentId = allComments[index].id;
+            Get.find<CommentItemController>(tag: commentId).isExpanded(true);
+          } catch (e) {
+            // 忽略找不到控制器的異常
+          }
+        } else {
+          handleCommentNotFound();
+        }
+      }
+      timer.cancel();
+    });
   }
 
   Future<List<Comment>?> _fetchCommentsById() async {
