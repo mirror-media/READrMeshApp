@@ -16,10 +16,15 @@ class CommentBottomSheet {
     required BuildContext context,
     required Comment clickComment,
     required PickObjective objective,
-    required String id,
+    required String? id,
     required String controllerTag,
     String? oldContent,
   }) async {
+    if (id == null) {
+      print('Warning: commentBottomSheet called with null id');
+      return;
+    }
+
     if (!Get.isRegistered<CommentController>(tag: controllerTag)) {
       Get.put<CommentController>(
         CommentController(

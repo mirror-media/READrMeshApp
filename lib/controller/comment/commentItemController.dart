@@ -9,7 +9,7 @@ class CommentItemController extends GetxController {
   final RxString commentContent = ''.obs;
   final RxBool isLiked = false.obs;
   final RxInt likeCount = 0.obs;
-  late final String commentId;
+  late final String? commentId;
   final RxBool isEdited = false.obs;
   Comment comment;
   final isSending = false.obs;

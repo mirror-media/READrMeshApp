@@ -1,40 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:readr/controller/pick/pickableItemController.dart';
-import 'package:readr/getxServices/userService.dart';
 import 'package:readr/models/collection.dart';
 import 'package:readr/models/comment.dart';
 import 'package:readr/models/member.dart';
 import 'package:readr/models/newsListItem.dart';
-import 'package:readr/pages/collection/collectionPage.dart';
-import 'package:readr/pages/personalFile/personalFilePage.dart';
-import 'package:readr/pages/publisher/publisherPage.dart';
-import 'package:readr/pages/story/storyPage.dart';
-
-enum CommunityListItemType {
-  pickStory,
-  pickCollection,
-  commentStory,
-  commentCollection,
-  createCollection,
-  updateCollection,
-}
+import 'package:readr/models/communityListItemType.dart';
+import 'package:get/get.dart';
+import 'package:readr/getxServices/userService.dart';
+import 'package:readr/controller/pick/pickableItemController.dart';
+import 'package:readr/helpers/dataConstants.dart';
 
 class CommunityListItem {
   final CommunityListItemType type;
   final DateTime orderByTime;
-  final RxString titleText;
+  final String? titleText;
   final String controllerTag;
-  final RxnString heroImageUrl;
-  final RxnString authorText;
-  final VoidCallback tapItem;
-  final VoidCallback tapAuthor;
+  final String? heroImageUrl;
+  final String? authorText;
   final Comment? showComment;
-  final String itemId;
+  final String? itemId;
   final NewsListItem? newsListItem;
   final Collection? collection;
   final List<Member> itemBarMember;
-  final String itemBarText;
+  final String? itemBarText;
 
   const CommunityListItem({
     required this.orderByTime,
@@ -43,161 +29,137 @@ class CommunityListItem {
     required this.controllerTag,
     required this.heroImageUrl,
     required this.authorText,
-    required this.tapItem,
-    required this.tapAuthor,
     required this.itemId,
-    required this.showComment,
     required this.itemBarMember,
-    required this.itemBarText,
+    this.showComment,
+    this.itemBarText,
     this.newsListItem,
     this.collection,
   });
 
-  factory CommunityListItem.fromJson(Map<String, dynamic> json) {
-    CommunityListItemType type = CommunityListItemType.pickStory;
-    NewsListItem? newsListItem;
-    Collection? collection;
+  String? get displayAuthorText {
+    final userService = Get.find<UserService>();
+    final isMember = userService.isMember;
 
-    if (json.containsKey('story') && json['story'] != null) {
-      newsListItem = NewsListItem.fromJson(json['story']);
-    } else if (json.containsKey('collection') && json['collection'] != null) {
-      collection = Collection.fromJson(json['collection']);
-    } else {
-      collection = Collection.fromJson(json);
+    if (type == CommunityListItemType.commentStory ||
+        type == CommunityListItemType.pickStory) {
+      return authorText;
+    } else if (isMember.isTrue &&
+        userService.currentUser.memberId == collection?.creator.memberId) {
+      return '@${userService.currentUser.customId}';
+    } else if (authorText != null) {
+      return '@$authorText';
     }
 
-    if (json.containsKey('published_date') && json['published_date'] == null) {
-      json['published_date'] = DateTime.now().toIso8601String();
-    }
+    return null;
+  }
 
-    DateTime orderByTime = DateTime.now().subtract(const Duration(days: 30));
-    if (json.containsKey('picked_date')) {
-      orderByTime = DateTime.parse(json['picked_date']);
-      if (collection != null) {
-        type = CommunityListItemType.pickCollection;
-      }
-    } else if (json.containsKey('published_date') &&
-        json['published_date'] != null) {
-      orderByTime = DateTime.parse(json['published_date']);
-      if (newsListItem != null) {
-        type = CommunityListItemType.commentStory;
-      } else {
-        type = CommunityListItemType.commentCollection;
-      }
-    } else {
-      if (json['updatedAt'] != null) {
-        type = CommunityListItemType.updateCollection;
-      } else {
-        type = CommunityListItemType.createCollection;
-      }
-      if (collection != null) {
-        orderByTime = collection.updateTime;
-      }
-    }
-
-    RxnString heroImageUrl = RxnString();
-    RxnString authorText = RxnString();
-    VoidCallback tapItem;
-    VoidCallback tapAuthor;
-    RxString titleText = RxString('');
-    String controllerTag;
-    Comment? showComment;
-    String itemId;
-    List<Member> itemBarMember = [];
-    String itemBarText;
-
-    switch (type) {
-      case CommunityListItemType.pickStory:
-      case CommunityListItemType.commentStory:
-        heroImageUrl.value = newsListItem!.heroImageUrl ?? '';
-        tapItem = () => Get.to(
-              () => StoryPage(news: newsListItem!),
-              fullscreenDialog: true,
-            );
-
-        authorText.value = newsListItem.source?.title;
-        tapAuthor = () {
-          if (newsListItem!.source != null) {
-            Get.to(() => PublisherPage(
-                  newsListItem!.source!,
-                ));
-          }
-        };
-        titleText.value = newsListItem.title;
-
-        controllerTag = newsListItem.controllerTag;
-        showComment = newsListItem.showComment;
-        itemId = newsListItem.id;
-
-        if (newsListItem.commentMembers != null &&
-            newsListItem.commentMembers!.isNotEmpty) {
-          itemBarMember.assignAll(newsListItem.commentMembers!);
-          itemBarText = 'commentNews'.tr;
-        } else {
-          itemBarMember.assignAll(
-              Get.find<PickableItemController>(tag: newsListItem.controllerTag)
-                  .pickedMembers);
-          itemBarText = 'pickNews'.tr;
+  String? get displayTitleText {
+    if (type != CommunityListItemType.commentStory &&
+        type != CommunityListItemType.pickStory) {
+      try {
+        final pickableController =
+            Get.find<PickableItemController>(tag: collection!.controllerTag);
+        final collectionTitleValue = pickableController.collectionTitle.value;
+        if (collectionTitleValue != null) {
+          return collectionTitleValue;
         }
-        break;
+      } catch (e) {
+        // 如果找不到 controller，則使用默認標題
+      }
+    }
+
+    return titleText;
+  }
+
+  bool get shouldShowCollectionTag =>
+      type != CommunityListItemType.commentStory &&
+      type != CommunityListItemType.pickStory;
+
+  PickObjective get commentObjective {
+    switch (type) {
+      case CommunityListItemType.commentStory:
+      case CommunityListItemType.pickStory:
+        return PickObjective.story;
       case CommunityListItemType.pickCollection:
       case CommunityListItemType.commentCollection:
       case CommunityListItemType.createCollection:
       case CommunityListItemType.updateCollection:
-        heroImageUrl =
-            Get.find<PickableItemController>(tag: collection!.controllerTag)
-                .collectionHeroImageUrl;
-        tapItem = () => Get.to(
-              () => CollectionPage(collection!),
-            );
-
-        if (Get.find<UserService>().isMember.isTrue &&
-            Get.find<UserService>().currentUser.memberId ==
-                collection.creator.memberId) {
-          authorText.value = Get.find<UserService>().currentUser.customId;
-        } else {
-          authorText.value = collection.creator.customId;
-        }
-
-        tapAuthor = () =>
-            Get.to(() => PersonalFilePage(viewMember: collection!.creator));
-        titleText.value = collection.title;
-
-        controllerTag = collection.controllerTag;
-        showComment = collection.showComment;
-        itemId = collection.id;
-        if (type == CommunityListItemType.updateCollection) {
-          itemBarMember.assign(collection.creator);
-          itemBarText = 'updateCollection'.tr;
-        } else if (type == CommunityListItemType.createCollection) {
-          itemBarMember.assign(collection.creator);
-          itemBarText = 'createANewCollection'.tr;
-        } else if (collection.commentMembers != null &&
-            collection.commentMembers!.isNotEmpty) {
-          itemBarMember.assignAll(collection.commentMembers!);
-          itemBarText = 'commentCollection'.tr;
-        } else {
-          itemBarMember.assignAll(collection.followingPickMembers!);
-          itemBarText = 'pickCollection'.tr;
-        }
-        break;
+        return PickObjective.collection;
+      default:
+        throw Exception('未知的項目類型');
     }
+  }
 
-    return CommunityListItem(
-      orderByTime: orderByTime,
-      newsListItem: newsListItem,
-      collection: collection,
-      type: type,
-      authorText: authorText,
-      controllerTag: controllerTag,
-      titleText: titleText,
-      heroImageUrl: heroImageUrl,
-      tapAuthor: tapAuthor,
-      tapItem: tapItem,
-      showComment: showComment,
-      itemId: itemId,
-      itemBarMember: itemBarMember,
-      itemBarText: itemBarText,
-    );
+  List<Member> get firstTwoMembers {
+    List<Member> firstTwoMember = [];
+    for (int i = 0; i < itemBarMember.length; i++) {
+      if (!firstTwoMember
+          .any((element) => element.memberId == itemBarMember[i].memberId)) {
+        firstTwoMember.add(itemBarMember[i]);
+      }
+      if (firstTwoMember.length == 2) {
+        break;
+      }
+    }
+    return firstTwoMember;
+  }
+
+  factory CommunityListItem.fromJson(Map<String, dynamic> json) {
+    try {
+      final newsListItem = NewsListItem.fromJson(json);
+
+      List<Member> itemBarMembers = [];
+      Comment? showComment;
+      String? itemBarText;
+
+      if (json['following_actions'] != null) {
+        for (var action in json['following_actions'] as List) {
+          itemBarMembers.add(Member.fromJson(action['member']));
+
+          if (action['kind'] == 'comment' && action['content'] != null) {
+            showComment = Comment(
+              id: 'temp-${action['createdAt']}-${Member.fromJson(action['member']).memberId}',
+              content: action['content'],
+              member: Member.fromJson(action['member']),
+              publishDate: DateTime.parse(action['createdAt']),
+              state: 'active',
+            );
+          }
+
+          switch (action['kind']) {
+            case 'pick':
+              itemBarText = 'pickNews';
+              break;
+            case 'comment':
+              if (itemBarText == null || itemBarText == 'readNews') {
+                itemBarText = 'commentNews';
+              }
+              break;
+            case 'read':
+              itemBarText ??= 'readNews';
+              break;
+          }
+        }
+      }
+
+      return CommunityListItem(
+        orderByTime: DateTime.parse(json['published_date']),
+        type: CommunityListItemType.pickStory,
+        newsListItem: newsListItem,
+        titleText: json['og_title'],
+        controllerTag: 'News${json['id']}',
+        heroImageUrl: json['og_image'],
+        authorText: json['publisher']?['title'],
+        showComment: showComment,
+        itemId: json['id']?.toString(),
+        itemBarMember: itemBarMembers,
+        itemBarText: itemBarText,
+      );
+    } catch (e, stackTrace) {
+      print('Error in CommunityListItem.fromJson: $e');
+      print('Stack trace: $stackTrace');
+      rethrow;
+    }
   }
 }

@@ -160,26 +160,33 @@ class FollowableItemController extends GetxController {
         Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce(
           'updateCommunityPage', const Duration(milliseconds: 300), () {
-        Get.find<CommunityPageController>().fetchFollowingStoryAndCollection();
+        final controller = Get.find<CommunityPageController>();
+        controller.updateCommunityPage();
       });
+
       EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
           () {
-        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
+        final recommendController = Get.find<RecommendMemberBlockController>();
+        recommendController.updateRecommendMembers();
       });
     } else if (Get.find<RootPageController>().tabIndex.value == 1) {
       EasyDebounce.debounce(
           'updateLatestPage', const Duration(milliseconds: 300), () {
-        Get.find<LatestPageController>().fetchLatestNews();
+        final latestController = Get.find<LatestPageController>();
+        latestController.fetchLatestNews();
       });
+
       EasyDebounce.debounce(
           'updateRecommendPublisher', const Duration(seconds: 2), () {
-        Get.find<RecommendPublisherBlockController>()
-            .fetchRecommendPublishers();
+        final publisherController =
+            Get.find<RecommendPublisherBlockController>();
+        publisherController.fetchRecommendPublishers();
       });
     } else if (Get.find<RootPageController>().tabIndex.value == 0) {
       EasyDebounce.debounce('updateRecommendMember', const Duration(seconds: 2),
           () {
-        Get.find<RecommendMemberBlockController>().fetchRecommendMembers();
+        final recommendController = Get.find<RecommendMemberBlockController>();
+        recommendController.updateRecommendMembers();
       });
     }
   }

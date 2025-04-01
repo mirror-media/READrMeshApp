@@ -6,7 +6,9 @@ import 'package:readr/controller/rootPageController.dart';
 import 'package:readr/getxServices/userService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/updateMessages.dart';
-import 'package:readr/pages/community/communityPage.dart';
+import 'package:readr/pages/community/community_page.dart';
+import 'package:readr/pages/community/community_controller.dart';
+import 'package:readr/services/community_service.dart';
 import 'package:readr/pages/latest/latestPage.dart';
 import 'package:readr/pages/personalFile/personalFilePage.dart';
 import 'package:readr/pages/personalFile/visitorPersonalFile.dart';
@@ -16,6 +18,8 @@ import 'package:readr/pages/wallet/walletPage.dart';
 import 'package:upgrader/upgrader.dart';
 
 class RootPage extends GetView<RootPageController> {
+  const RootPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RootPageController>(
@@ -44,6 +48,13 @@ class RootPage extends GetView<RootPageController> {
   }
 
   Widget _buildBody(BuildContext context) {
+    if (!Get.isRegistered<CommunityService>()) {
+      Get.put(CommunityService());
+    }
+    if (!Get.isRegistered<CommunityController>()) {
+      Get.put(CommunityController());
+    }
+
     List<Widget> bodyList = [
       CommunityPage(),
       LatestPage(),
