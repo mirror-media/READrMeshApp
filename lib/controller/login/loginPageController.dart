@@ -71,12 +71,15 @@ class LoginPageController extends GetxController {
           );
         }
 
+        // 不再需要邀請碼功能
+        /*
         //link linkInvitationCode with current member when invitationCodeId is not empty
         final String invitationCodeId =
             prefs.getString('invitationCodeId') ?? '';
         if (invitationCodeId.isNotEmpty) {
           invitationCodeRepos.linkInvitationCode(invitationCodeId);
         }
+        */
 
         //set isFirstTime to false when is true or null
         final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;

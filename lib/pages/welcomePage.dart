@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
-import 'package:readr/pages/invitationCode/inputInvitationCodePage.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -128,7 +128,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                 child: ElevatedButton(
                   onPressed: () =>
-                      Get.off(() => const InputInvitationCodePage()),
+                      Get.off(() => const LoginPage(fromOnboard: true)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                         Theme.of(context).extension<CustomColors>()?.primary700,
