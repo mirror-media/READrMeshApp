@@ -470,6 +470,7 @@ const Map<String, String> chineseTwMap = {
   'inputEmailPageEmptyHint': '請輸入您的 Email 地址',
   'inputEmailPageErrorHint': '請輸入有效的 Email 地址',
   'inputEmailPageBodyText': '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩',
+  'emailFormatValid': 'Email 符合格式',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': '確認收件匣',

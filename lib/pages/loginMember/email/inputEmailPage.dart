@@ -14,8 +14,30 @@ class InputEmailPage extends StatefulWidget {
 
 class _InputEmailPageState extends State<InputEmailPage> {
   final TextEditingController _controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   bool _isSending = false;
+  bool _isEmailValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_checkEmailValidity);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_checkEmailValidity);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _checkEmailValidity() {
+    final isValid = isEmail(_controller.text);
+    if (isValid != _isEmailValid) {
+      setState(() {
+        _isEmailValid = isValid;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,31 +61,37 @@ class _InputEmailPageState extends State<InputEmailPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate() && !_isSending) {
-                _isSending = true;
-                bool isSuccess = await LoginHelper().signInWithEmailAndLink(
-                  _controller.text,
-                  Get.find<EnvironmentService>().config.authlink,
-                );
-                if (isSuccess) {
-                  Get.off(() => SentEmailPage(_controller.text));
-                } else {
-                  Fluttertoast.showToast(
-                    msg: "emailDeliveryFailed".tr,
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    fontSize: 16.0,
-                  );
-                }
-                _isSending = false;
-              }
-            },
+            onPressed: _isEmailValid && !_isSending
+                ? () async {
+                    setState(() {
+                      _isSending = true;
+                    });
+                    bool isSuccess = await LoginHelper().signInWithEmailAndLink(
+                      _controller.text,
+                      Get.find<EnvironmentService>().config.authlink,
+                    );
+                    if (isSuccess) {
+                      Get.off(() => SentEmailPage(_controller.text));
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "emailDeliveryFailed".tr,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        fontSize: 16.0,
+                      );
+                    }
+                    setState(() {
+                      _isSending = false;
+                    });
+                  }
+                : null,
             child: Text(
               'send'.tr,
               style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.blue!,
+                color: _isEmailValid
+                    ? Theme.of(context).extension<CustomColors>()!.blue!
+                    : Theme.of(context).extension<CustomColors>()!.primary300!,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
@@ -85,51 +113,60 @@ class _InputEmailPageState extends State<InputEmailPage> {
         const SizedBox(
           height: 24,
         ),
-        Form(
-          key: _formKey,
-          child: TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            autovalidateMode: AutovalidateMode.disabled,
-            controller: _controller,
-            autocorrect: false,
-            validator: (value) {
-              if (value != null) {
-                if (value.isEmpty) {
-                  return 'inputEmailPageEmptyHint'.tr;
-                } else if (!isEmail(value)) {
-                  return 'inputEmailPageErrorHint'.tr;
-                }
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(12.0),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color:
-                      Theme.of(context).extension<CustomColors>()!.primary700!,
-                  width: 1.0,
-                ),
+        TextFormField(
+          keyboardType: TextInputType.emailAddress,
+          controller: _controller,
+          autocorrect: false,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(12.0),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).extension<CustomColors>()!.primary700!,
+                width: 1.0,
               ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color:
-                      Theme.of(context).extension<CustomColors>()!.primary200!,
-                  width: 1.0,
-                ),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
+                width: 1.0,
               ),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color:
-                      Theme.of(context).extension<CustomColors>()!.primary200!,
-                  width: 1.0,
-                ),
+            ),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).extension<CustomColors>()!.primary200!,
+                width: 1.0,
               ),
             ),
           ),
         ),
         const SizedBox(
           height: 12,
+        ),
+        // 電子郵件格式驗證提示
+        Row(
+          children: [
+            Icon(
+              Icons.check_circle,
+              size: 18,
+              color: _isEmailValid
+                  ? Colors.blue
+                  : Theme.of(context).extension<CustomColors>()!.primary400!,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'emailFormatValid'.tr,
+              style: TextStyle(
+                fontSize: 13,
+                color: _isEmailValid
+                    ? Colors.blue
+                    : Theme.of(context).extension<CustomColors>()!.primary500!,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 16,
         ),
         Text(
           'inputEmailPageBodyText'.tr,
