@@ -228,10 +228,10 @@ class SettingPage extends GetView<SettingPageController> {
               const Divider(
                 height: 1,
               ),
-              _appearanceSettingsButton(context),
-              const Divider(
-                height: 1,
-              ),
+              // _appearanceSettingsButton(context),
+              // const Divider(
+              //   height: 1,
+              // ),
               _languageSettingButton(context),
             ],
           ),
@@ -287,10 +287,10 @@ class SettingPage extends GetView<SettingPageController> {
               const Divider(
                 height: 1,
               ),
-              _appearanceSettingsButton(context),
-              const Divider(
-                height: 1,
-              ),
+              // _appearanceSettingsButton(context),
+              // const Divider(
+              //   height: 1,
+              // ),
               _languageSettingButton(context),
             ],
           ),
