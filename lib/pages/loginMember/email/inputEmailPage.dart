@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/themes.dart';
 import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
+import 'package:readr/pages/loginMember/serviceTermsPage.dart';
 
 class InputEmailPage extends StatefulWidget {
   @override
@@ -43,6 +44,9 @@ class _InputEmailPageState extends State<InputEmailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
           'email'.tr,
@@ -66,21 +70,25 @@ class _InputEmailPageState extends State<InputEmailPage> {
                     setState(() {
                       _isSending = true;
                     });
-                    bool isSuccess = await LoginHelper().signInWithEmailAndLink(
-                      _controller.text,
-                      Get.find<EnvironmentService>().config.authlink,
-                    );
-                    if (isSuccess) {
-                      Get.off(() => SentEmailPage(_controller.text));
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "emailDeliveryFailed".tr,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        fontSize: 16.0,
-                      );
-                    }
+                    // bool isSuccess = await LoginHelper().signInWithEmailAndLink(
+                    //   _controller.text,
+                    //   Get.find<EnvironmentService>().config.authlink,
+                    // );
+                    // if (isSuccess) {
+                    //   Get.off(() => SentEmailPage(_controller.text));
+                    // } else {
+                    //   Fluttertoast.showToast(
+                    //     msg: "emailDeliveryFailed".tr,
+                    //     toastLength: Toast.LENGTH_SHORT,
+                    //     gravity: ToastGravity.BOTTOM,
+                    //     timeInSecForIosWeb: 1,
+                    //     fontSize: 16.0,
+                    //   );
+                    // }
+                    // Navigate to ServiceTermsPage, passing the email
+                    Get.to(() => ServiceTermsPage(), arguments: {
+                      'email': _controller.text,
+                    });
                     setState(() {
                       _isSending = false;
                     });

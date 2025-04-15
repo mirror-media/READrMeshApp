@@ -53,6 +53,8 @@ class _WelcomePageState extends State<WelcomePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          scrolledUnderElevation: 0,
           elevation: 0,
           toolbarHeight: 0,
         ),
