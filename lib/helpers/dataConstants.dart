@@ -27,10 +27,10 @@ const String personalFileArrowSvg = 'assets/icon/personalFileArrow.svg';
 const String threeStarSvg = 'assets/image/threeStar.svg';
 const String deletedMemberSvg = 'assets/image/deletedMember.svg';
 //onboard image
-const String onboard1Svg = 'assets/image/onboard/onboard1.svg';
-const String onboard2Svg = 'assets/image/onboard/onboard2.svg';
-const String onboard3Svg = 'assets/image/onboard/onboard3.svg';
-const String onboard4Svg = 'assets/image/onboard/onboard4.svg';
+const String onboard1Png = 'assets/image/onboard/onboard1.png';
+const String onboard2Png = 'assets/image/onboard/onboard2.png';
+const String onboard3Png = 'assets/image/onboard/onboard3.png';
+const String onboard4Png = 'assets/image/onboard/onboard4.png';
 const String onboard1DarkSvg = 'assets/image/onboard/onboard1_dark.svg';
 const String onboard2DarkSvg = 'assets/image/onboard/onboard2_dark.svg';
 const String onboard3DarkSvg = 'assets/image/onboard/onboard3_dark.svg';

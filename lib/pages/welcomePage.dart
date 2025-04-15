@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
@@ -23,36 +22,28 @@ class _WelcomePageState extends State<WelcomePage> {
     _widgets = [
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard1Svg
-            : onboard1DarkSvg,
+        imagePath: onboard1Png,
         title: 'item1Title'.tr,
         description: 'item1Description'.tr,
         widthPadding: 80,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard2Svg
-            : onboard2DarkSvg,
+        imagePath: onboard2Png,
         title: 'item2Title'.tr,
         description: 'item2Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard3Svg
-            : onboard3DarkSvg,
+        imagePath: onboard3Png,
         title: 'item3Title'.tr,
         description: 'item3Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard4Svg
-            : onboard4DarkSvg,
+        imagePath: onboard4Png,
         title: 'item4Title'.tr,
         description: 'item4Description'.tr,
         widthPadding: 40,
@@ -163,7 +154,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Widget _onboardItem({
     required BuildContext context,
-    required String svgPath,
+    required String imagePath,
     required String title,
     required String description,
     required double widthPadding,
@@ -172,8 +163,8 @@ class _WelcomePageState extends State<WelcomePage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
-          child: SvgPicture.asset(
-            svgPath,
+          child: Image.asset(
+            imagePath,
             width: context.width - widthPadding * 2,
           ),
         ),
