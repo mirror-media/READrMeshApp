@@ -1,99 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/themes.dart';
-import 'package:readr/pages/loginMember/email/sentEmailPage.dart';
+import 'package:readr/controller/login/serviceTermsController.dart';
 
-class ServiceTermsPage extends StatefulWidget {
+class ServiceTermsPage extends GetView<ServiceTermsController> {
   const ServiceTermsPage({super.key});
 
   @override
-  State<ServiceTermsPage> createState() => _ServiceTermsPageState();
-}
-
-class _ServiceTermsPageState extends State<ServiceTermsPage> {
-  bool _agreed = false;
-  bool _isSending = false;
-  bool _isLoading = true;
-  String? _termsContent;
-  String? _error;
-  late final String email;
-
-  @override
-  void initState() {
-    super.initState();
-    email = Get.arguments['email'];
-    _fetchTermsContent();
-  }
-
-  Future<void> _fetchTermsContent() async {
-    const termsUrl =
-        'https://storage.googleapis.com/statics-mesh-tw-dev/policies/terms-of-service.html';
-    const policyUrl =
-        'https://storage.googleapis.com/statics-mesh-tw-dev/policies/privacy-policy.html';
-
-    try {
-      final responses = await Future.wait([
-        http.get(Uri.parse(termsUrl)),
-        http.get(Uri.parse(policyUrl)),
-      ]);
-
-      final termsResponse = responses[0];
-      final policyResponse = responses[1];
-
-      if (termsResponse.statusCode == 200 && policyResponse.statusCode == 200) {
-        String decodedTermsHtml = utf8.decode(termsResponse.bodyBytes);
-        const termsStartMarker = '精鏡傳媒股份有限公司';
-        int termsStartIndex = decodedTermsHtml.indexOf(termsStartMarker);
-        String processedTermsContent;
-        if (termsStartIndex != -1) {
-          processedTermsContent =
-              '<h2>服務條款</h2>\n\n' + decodedTermsHtml.substring(termsStartIndex);
-        } else {
-          print('Warning: Terms start marker not found.');
-          processedTermsContent = '<h2>服務條款</h2>\n\n' + decodedTermsHtml;
-        }
-
-        String decodedPolicyHtml = utf8.decode(policyResponse.bodyBytes);
-        const policyStartMarker = '歡迎您光臨';
-        int policyStartIndex = decodedPolicyHtml.indexOf(policyStartMarker);
-        String processedPolicyContent;
-        if (policyStartIndex != -1) {
-          processedPolicyContent = '<h2>隱私權政策</h2>\n\n' +
-              decodedPolicyHtml.substring(policyStartIndex);
-        } else {
-          print('Warning: Policy start marker not found.');
-          processedPolicyContent = '<h2>隱私權政策</h2>\n\n' + decodedPolicyHtml;
-        }
-
-        String combinedContent = processedTermsContent +
-            '\n\n<hr style="height:1px;border-width:0;color:gray;background-color:gray">\n\n' +
-            processedPolicyContent;
-
-        setState(() {
-          _termsContent = combinedContent;
-          _isLoading = false;
-        });
-      } else {
-        throw Exception(
-            'Failed to load content - Terms: ${termsResponse.statusCode}, Policy: ${policyResponse.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching terms/policy: $e');
-      setState(() {
-        _error = '無法載入服務條款，請稍後再試。';
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Get.put(ServiceTermsController(), permanent: false);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -138,86 +55,123 @@ class _ServiceTermsPageState extends State<ServiceTermsPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: _buildTermsContent(),
+                child: _buildTermsContent(context),
               ),
             ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _agreed = !_agreed;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(
-                      value: _agreed,
-                      side: !_agreed
-                          ? BorderSide(
-                              color: Theme.of(context)
-                                      .extension<CustomColors>()
-                                      ?.primary200 ??
-                                  Colors.grey,
-                              width: 2,
-                            )
-                          : null,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _agreed = value ?? false;
-                        });
-                      },
-                      activeColor: Theme.of(context)
-                          .extension<CustomColors>()
-                          ?.primary700,
-                    ),
-                    Text(
-                      '我同意以上條款',
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .extension<CustomColors>()
-                            ?.primary700,
-                        fontSize: 17,
+              child: Obx(() => Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          '請滑動到最後再勾選',
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primary500,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                      GestureDetector(
+                        onTap: controller.rxCanAgree.value
+                            ? () {
+                                controller.toggleAgreed();
+                              }
+                            : null,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Checkbox(
+                              value: controller.rxAgreed.value,
+                              visualDensity: VisualDensity.compact,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              side: !controller.rxAgreed.value
+                                  ? BorderSide(
+                                      color: controller.rxCanAgree.value
+                                          ? Theme.of(context)
+                                                  .extension<CustomColors>()
+                                                  ?.primary400 ??
+                                              Colors.grey
+                                          : Theme.of(context)
+                                                  .extension<CustomColors>()
+                                                  ?.primary300 ??
+                                              Colors.grey[400]!,
+                                      width: 1.5,
+                                    )
+                                  : null,
+                              onChanged: controller.rxCanAgree.value
+                                  ? (bool? value) {
+                                      controller.rxAgreed.value =
+                                          value ?? false;
+                                    }
+                                  : null,
+                              activeColor: controller.rxCanAgree.value
+                                  ? Theme.of(context)
+                                      .extension<CustomColors>()
+                                      ?.primary700
+                                  : Theme.of(context)
+                                      .extension<CustomColors>()
+                                      ?.primary300,
+                            ),
+                            Text(
+                              '我同意以上條款',
+                              style: TextStyle(
+                                color: controller.rxCanAgree.value
+                                    ? Theme.of(context)
+                                        .extension<CustomColors>()
+                                        ?.primary700
+                                    : Theme.of(context)
+                                        .extension<CustomColors>()
+                                        ?.primary400,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
             ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: ElevatedButton(
-                onPressed: _agreed
-                    ? () {
-                        _handleNextStep();
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _agreed
-                      ? Theme.of(context).extension<CustomColors>()?.primary700
-                      : Theme.of(context).extension<CustomColors>()?.primary200,
-                  minimumSize: const Size(double.infinity, 48),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                ),
-                child: Text(
-                  '下一步',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: _agreed
-                        ? Theme.of(context).backgroundColor
-                        : Theme.of(context)
-                            .extension<CustomColors>()
-                            ?.primary400,
-                  ),
-                ),
-              ),
+              child: Obx(() => ElevatedButton(
+                    onPressed: controller.rxAgreed.value
+                        ? () {
+                            controller.handleNextStep();
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: controller.rxAgreed.value
+                          ? Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.primary700
+                          : Theme.of(context)
+                              .extension<CustomColors>()
+                              ?.primary200,
+                      minimumSize: const Size(double.infinity, 48),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                    ),
+                    child: Text(
+                      '下一步',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: controller.rxAgreed.value
+                            ? Theme.of(context).colorScheme.background
+                            : Theme.of(context)
+                                .extension<CustomColors>()
+                                ?.primary400,
+                      ),
+                    ),
+                  )),
             ),
           ],
         ),
@@ -225,60 +179,39 @@ class _ServiceTermsPageState extends State<ServiceTermsPage> {
     );
   }
 
-  Widget _buildTermsContent() {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator.adaptive());
-    }
-    if (_error != null) {
-      return Center(child: Text(_error!));
-    }
-    if (_termsContent != null) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).extension<CustomColors>()?.primary200 ??
-                Colors.grey,
+  Widget _buildTermsContent(BuildContext context) {
+    return Obx(() {
+      if (controller.rxIsLoading.value) {
+        return const Center(child: CircularProgressIndicator.adaptive());
+      }
+      if (controller.rxError.value != null) {
+        return Center(child: Text(controller.rxError.value!));
+      }
+      if (controller.rxTermsContent.value != null) {
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).extension<CustomColors>()?.primary200 ??
+                  Colors.grey,
+            ),
+            borderRadius: BorderRadius.circular(4.0),
           ),
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        child: Scrollbar(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: DefaultTextStyle.merge(
-              style: const TextStyle(color: Colors.black, fontSize: 14),
-              child: HtmlWidget(
-                _termsContent!,
+          child: Scrollbar(
+            controller: controller.scrollController,
+            child: SingleChildScrollView(
+              controller: controller.scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: DefaultTextStyle.merge(
+                style: const TextStyle(color: Colors.black, fontSize: 14),
+                child: HtmlWidget(
+                  controller.rxTermsContent.value!,
+                ),
               ),
             ),
           ),
-        ),
-      );
-    }
-    return const Center(child: Text('無法載入服務條款內容。')); // Fallback
-  }
-
-  Future<void> _handleNextStep() async {
-    if (_isSending) return;
-    setState(() {
-      _isSending = true;
+        );
+      }
+      return const Center(child: Text('無法載入服務條款內容。'));
     });
-    bool isSuccess = await LoginHelper().signInWithEmailAndLink(
-      email,
-      Get.find<EnvironmentService>().config.authlink,
-    );
-    if (isSuccess) {
-      Get.off(() => SentEmailPage(email));
-    } else {
-      Fluttertoast.showToast(
-        msg: "emailDeliveryFailed".tr,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        fontSize: 16.0,
-      );
-      setState(() {
-        _isSending = false;
-      });
-    }
   }
 }
