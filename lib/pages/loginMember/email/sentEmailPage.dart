@@ -1,14 +1,120 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:open_mail_app/open_mail_app.dart';
+import 'package:readr/getxServices/environmentService.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
 
-class SentEmailPage extends StatelessWidget {
+class SentEmailPage extends StatefulWidget {
   final String email;
-  const SentEmailPage(this.email);
+  const SentEmailPage(this.email, {super.key});
+
+  @override
+  State<SentEmailPage> createState() => _SentEmailPageState();
+}
+
+class _SentEmailPageState extends State<SentEmailPage> {
+  late Timer _timer;
+  int _countdownSeconds = 60;
+  bool _canResend = false;
+  bool _isResending = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _countdownSeconds = 60;
+    _canResend = false;
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer timer) {
+        if (_countdownSeconds == 0) {
+          if (mounted) {
+            setState(() {
+              timer.cancel();
+              _canResend = true;
+            });
+          } else {
+            timer.cancel();
+          }
+        } else {
+          if (mounted) {
+            setState(() {
+              _countdownSeconds--;
+            });
+          } else {
+            timer.cancel();
+          }
+        }
+      },
+    );
+  }
+
+  void resendEmail() async {
+    if (_isResending) return;
+
+    setState(() {
+      _isResending = true;
+    });
+
+    try {
+      bool isSuccess = await LoginHelper().signInWithEmailAndLink(
+        widget.email,
+        Get.find<EnvironmentService>().config.authlink,
+      );
+      if (isSuccess) {
+        Fluttertoast.showToast(
+          msg: "驗證信已重新發送",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0,
+        );
+        // Restart timer after successful resend
+        startTimer();
+      } else {
+        Fluttertoast.showToast(
+          msg: "Email寄送失敗",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print('Error resending email: $e');
+      Fluttertoast.showToast(
+        msg: "發生錯誤: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0,
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isResending = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +155,11 @@ class SentEmailPage extends StatelessWidget {
       children: [
         Center(
           child: Text(
-            '${'sentEmailPagePrefix'.tr}\n $email${'sentEmailPageSuffix'.tr}',
+            '${'sentEmailPagePrefix'.tr}\n ${widget.email}${'sentEmailPageSuffix'.tr}',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).extension<CustomColors>()!.primary600!,
-              fontSize: 15,
+              fontSize: 17,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -121,6 +227,9 @@ class SentEmailPage extends StatelessWidget {
               side: const BorderSide(
                 color: meshBlack87,
               ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
             ),
             child: Text(
               'openEmailApp'.tr,
@@ -136,47 +245,60 @@ class SentEmailPage extends StatelessWidget {
           height: 24,
         ),
         Center(
+          child: _buildResendHint(context),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back(); // Go back to the login options page
+          },
           child: Text(
-            'notReceiveText'.tr,
+            'tryOtherLoginMethod'.tr,
             style: TextStyle(
-              color: Theme.of(context).extension<CustomColors>()!.primary400!,
+              color: Theme.of(context).extension<CustomColors>()!.primary700!,
               fontSize: 13,
               fontWeight: FontWeight.w400,
+              decoration: TextDecoration.underline,
+              decorationColor:
+                  Theme.of(context).extension<CustomColors>()!.primary700!,
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'or'.tr,
-              style: TextStyle(
-                color: Theme.of(context).extension<CustomColors>()!.primary400!,
-                fontSize: 13,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'tryOtherLoginMethod'.tr,
-                softWrap: true,
-                style: TextStyle(
-                  color:
-                      Theme.of(context).extension<CustomColors>()!.primary700!,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  decoration: TextDecoration.underline,
-                  decorationColor:
-                      Theme.of(context).extension<CustomColors>()!.primary700!,
-                ),
-              ),
-            ),
-          ],
-        ),
       ],
+    );
+  }
+
+  Widget _buildResendHint(BuildContext context) {
+    final resendStyle = TextStyle(
+      color: _canResend && !_isResending
+          ? Theme.of(context).extension<CustomColors>()!.primary700!
+          : Theme.of(context).extension<CustomColors>()!.primary400!,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      decoration: _canResend && !_isResending ? TextDecoration.underline : null,
+      decorationColor: Theme.of(context).extension<CustomColors>()!.primary700!,
+    );
+
+    final defaultStyle = TextStyle(
+      color: Theme.of(context).extension<CustomColors>()!.primary400!,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+    );
+
+    return RichText(
+      text: TextSpan(
+        style: defaultStyle,
+        children: [
+          const TextSpan(text: '沒收到信件？ 請檢查垃圾信件匣\n 或 '),
+          TextSpan(
+            text: '重新發送信件',
+            style: resendStyle,
+            recognizer: TapGestureRecognizer()
+              ..onTap = _canResend && !_isResending ? resendEmail : null,
+          ),
+          if (!_canResend) TextSpan(text: ' ($_countdownSeconds秒)'),
+        ],
+      ),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -184,7 +306,7 @@ class SentEmailPage extends StatelessWidget {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: Text("noMailAppsDialogTitle".tr),
+        title: const Text("找不到信件 APP"),
         actions: <Widget>[
           PlatformDialogAction(
             child: Text("ok".tr),

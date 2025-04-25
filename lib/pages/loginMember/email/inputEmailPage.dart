@@ -70,23 +70,8 @@ class _InputEmailPageState extends State<InputEmailPage> {
                     setState(() {
                       _isSending = true;
                     });
-                    // bool isSuccess = await LoginHelper().signInWithEmailAndLink(
-                    //   _controller.text,
-                    //   Get.find<EnvironmentService>().config.authlink,
-                    // );
-                    // if (isSuccess) {
-                    //   Get.off(() => SentEmailPage(_controller.text));
-                    // } else {
-                    //   Fluttertoast.showToast(
-                    //     msg: "emailDeliveryFailed".tr,
-                    //     toastLength: Toast.LENGTH_SHORT,
-                    //     gravity: ToastGravity.BOTTOM,
-                    //     timeInSecForIosWeb: 1,
-                    //     fontSize: 16.0,
-                    //   );
-                    // }
                     // Navigate to ServiceTermsPage, passing the email
-                    Get.to(() => ServiceTermsPage(), arguments: {
+                    Get.to(() => const ServiceTermsPage(), arguments: {
                       'email': _controller.text,
                     });
                     setState(() {
