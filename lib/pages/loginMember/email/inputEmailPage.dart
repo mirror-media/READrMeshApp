@@ -1,4 +1,5 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -70,13 +71,47 @@ class _InputEmailPageState extends State<InputEmailPage> {
                     setState(() {
                       _isSending = true;
                     });
-                    // Navigate to ServiceTermsPage, passing the email
-                    Get.to(() => const ServiceTermsPage(), arguments: {
-                      'email': _controller.text,
-                    });
-                    setState(() {
-                      _isSending = false;
-                    });
+                    final email = _controller.text;
+                    try {
+                      // Check if email exists in Firebase Auth
+                      List<String> signInMethods = await FirebaseAuth.instance
+                          .fetchSignInMethodsForEmail(email);
+
+                      if (signInMethods.isEmpty) {
+                        // New user: Navigate to ServiceTermsPage
+                        Get.to(() => const ServiceTermsPage(), arguments: {
+                          'email': email,
+                        });
+                      } else {
+                        // Existing user: Send email directly and go to SentEmailPage
+                        bool isSuccess =
+                            await LoginHelper().signInWithEmailAndLink(
+                          email,
+                          Get.find<EnvironmentService>().config.authlink,
+                        );
+                        if (isSuccess && mounted) {
+                          // Use off to replace current page
+                          Get.off(() => SentEmailPage(email));
+                        } else if (mounted) {
+                          Fluttertoast.showToast(msg: "Email寄送失敗");
+                        }
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      // Handle Firebase specific errors (e.g., invalid-email)
+                      print('Firebase Auth Error checking email: $e');
+                      Fluttertoast.showToast(
+                          msg: "檢查 Email 時發生錯誤: ${e.message}");
+                    } catch (e) {
+                      // Handle other errors (e.g., network)
+                      print('Error checking/sending email: $e');
+                      Fluttertoast.showToast(msg: "發生錯誤，請稍後再試");
+                    } finally {
+                      if (mounted) {
+                        setState(() {
+                          _isSending = false;
+                        });
+                      }
+                    }
                   }
                 : null,
             child: Text(
