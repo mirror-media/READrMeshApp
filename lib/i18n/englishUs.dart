@@ -496,8 +496,17 @@ const Map<String, String> englishUsMap = {
   'sentEmailPagePrefix': 'We have sent a login link to',
   'sentEmailPageSuffix': ', please click the link in the letter to log in',
   'openEmailApp': 'Open Email APP',
-  'notReceiveText': "Didn't get the letter? Please check your spam box",
   'tryOtherLoginMethod': 'try another login method',
+  'resendEmailSuccessToast': 'Verification email resent',
+  'resendEmailFailedToast': 'Failed to send email',
+  'resendEmailErrorToast': 'An error occurred: ',
+  'sentEmailPageResendHint1':
+      "Didn't receive the email? Please check your spam folder\n",
+  'sentEmailPageResendHint2': "or ",
+  'sentEmailPageResendHint3': "Resend email",
+  'sentEmailPageResendHint4Prefix': " (",
+  'sentEmailPageResendHint4Suffix': "s)",
+  'noMailAppDialogTitle': 'Can\'t find email APP',
 
   //latestPage
   'latestPageEmptyTitle': "Oh no...it's empty",

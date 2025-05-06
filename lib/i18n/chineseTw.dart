@@ -477,8 +477,16 @@ const Map<String, String> chineseTwMap = {
   'sentEmailPagePrefix': '我們已將登入連結寄到',
   'sentEmailPageSuffix': '，請點擊信件中的連結登入',
   'openEmailApp': '打開信件 APP',
-  'notReceiveText': '沒收到信件？請檢查垃圾信件匣',
   'tryOtherLoginMethod': '嘗試其他登入方式',
+  'resendEmailSuccessToast': '驗證信已重新發送',
+  'resendEmailFailedToast': 'Email寄送失敗',
+  'resendEmailErrorToast': '發生錯誤：',
+  'sentEmailPageResendHint1': '沒收到信件？ 請檢查垃圾信件匣\n',
+  'sentEmailPageResendHint2': '或 ',
+  'sentEmailPageResendHint3': '重新發送信件',
+  'sentEmailPageResendHint4Prefix': ' (',
+  'sentEmailPageResendHint4Suffix': '秒)',
+  'noMailAppDialogTitle': '找不到信件 APP',
 
   //latestPage
   'latestPageEmptyTitle': '喔不...這裡空空的',

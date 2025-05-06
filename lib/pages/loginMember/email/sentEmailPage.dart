@@ -164,37 +164,36 @@ class SentEmailPage extends GetView<SentEmailPageController> {
       final bool isResending = controller.rxIsResending.value;
       final int countdown = controller.rxCountdownSeconds.value;
 
-      final resendStyle = TextStyle(
+      final defaultStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).extension<CustomColors>()!.primary400!,
+          );
+
+      final resendStyle = defaultStyle?.copyWith(
         color: canResend && !isResending
             ? Theme.of(context).extension<CustomColors>()!.primary700!
             : Theme.of(context).extension<CustomColors>()!.primary400!,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
         decoration: canResend && !isResending ? TextDecoration.underline : null,
         decorationColor:
             Theme.of(context).extension<CustomColors>()!.primary700!,
-      );
-
-      final defaultStyle = TextStyle(
-        color: Theme.of(context).extension<CustomColors>()!.primary400!,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
       );
 
       return RichText(
         text: TextSpan(
           style: defaultStyle,
           children: [
-            const TextSpan(text: '沒收到信件？ 請檢查垃圾信件匣\n'),
-            const TextSpan(text: '或 '),
+            TextSpan(text: 'sentEmailPageResendHint1'.tr),
+            TextSpan(text: 'sentEmailPageResendHint2'.tr),
             TextSpan(
-              text: '重新發送信件',
+              text: 'sentEmailPageResendHint3'.tr,
               style: resendStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap =
                     canResend && !isResending ? controller.resendEmail : null,
             ),
-            if (!canResend) TextSpan(text: ' ($countdown秒)'),
+            if (!canResend)
+              TextSpan(
+                  text:
+                      '${'sentEmailPageResendHint4Prefix'.tr}$countdown${'sentEmailPageResendHint4Suffix'.tr}'),
           ],
         ),
         textAlign: TextAlign.center,
@@ -206,10 +205,13 @@ class SentEmailPage extends GetView<SentEmailPageController> {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
-        title: const Text("找不到信件 APP"),
+        title: Text('noMailAppDialogTitle'.tr,
+            style: Theme.of(context).textTheme.titleLarge),
         actions: <Widget>[
           PlatformDialogAction(
-            child: Text("ok".tr),
+            child: Text("ok".tr,
+                style: TextStyle(
+                    color: Theme.of(context).extension<CustomColors>()!.blue!)),
             onPressed: () {
               Navigator.pop(context);
             },

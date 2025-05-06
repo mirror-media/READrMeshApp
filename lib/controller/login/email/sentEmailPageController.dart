@@ -55,7 +55,7 @@ class SentEmailPageController extends GetxController {
       );
       if (isSuccess) {
         Fluttertoast.showToast(
-          msg: "驗證信已重新發送", // Hardcoded string
+          msg: 'resendEmailSuccessToast'.tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -65,7 +65,7 @@ class SentEmailPageController extends GetxController {
         startTimer();
       } else {
         Fluttertoast.showToast(
-          msg: "Email寄送失敗", // Hardcoded string
+          msg: 'resendEmailFailedToast'.tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -75,7 +75,7 @@ class SentEmailPageController extends GetxController {
     } catch (e) {
       print('Error resending email: $e');
       Fluttertoast.showToast(
-        msg: "發生錯誤: $e", // Hardcoded string
+        msg: 'resendEmailErrorToast'.tr + e.toString(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
