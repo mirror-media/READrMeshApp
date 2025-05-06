@@ -160,9 +160,9 @@ class SentEmailPage extends GetView<SentEmailPageController> {
 
   Widget _buildResendHint(BuildContext context) {
     return Obx(() {
-      final bool canResend = controller.canResend.value;
-      final bool isResending = controller.isResending.value;
-      final int countdown = controller.countdownSeconds.value;
+      final bool canResend = controller.rxCanResend.value;
+      final bool isResending = controller.rxIsResending.value;
+      final int countdown = controller.rxCountdownSeconds.value;
 
       final resendStyle = TextStyle(
         color: canResend && !isResending

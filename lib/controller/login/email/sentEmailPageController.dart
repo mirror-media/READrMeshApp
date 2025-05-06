@@ -10,9 +10,9 @@ class SentEmailPageController extends GetxController {
   SentEmailPageController({required this.email});
 
   Timer? _timer;
-  final countdownSeconds = 60.obs;
-  final canResend = false.obs;
-  final isResending = false.obs;
+  final rxCountdownSeconds = 60.obs;
+  final rxCanResend = false.obs;
+  final rxIsResending = false.obs;
 
   @override
   void onInit() {
@@ -28,25 +28,25 @@ class SentEmailPageController extends GetxController {
 
   void startTimer() {
     _timer?.cancel(); // Cancel any existing timer
-    countdownSeconds.value = 60;
-    canResend.value = false;
+    rxCountdownSeconds.value = 60;
+    rxCanResend.value = false;
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (Timer timer) {
-        if (countdownSeconds.value == 0) {
+        if (rxCountdownSeconds.value == 0) {
           timer.cancel();
-          canResend.value = true;
+          rxCanResend.value = true;
         } else {
-          countdownSeconds.value--;
+          rxCountdownSeconds.value--;
         }
       },
     );
   }
 
   void resendEmail() async {
-    if (isResending.value) return;
+    if (rxIsResending.value) return;
 
-    isResending.value = true;
+    rxIsResending.value = true;
 
     try {
       bool isSuccess = await LoginHelper().signInWithEmailAndLink(
@@ -82,7 +82,7 @@ class SentEmailPageController extends GetxController {
         fontSize: 16.0,
       );
     } finally {
-      isResending.value = false;
+      rxIsResending.value = false;
     }
   }
 }
