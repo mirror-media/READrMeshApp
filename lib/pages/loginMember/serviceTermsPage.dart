@@ -184,10 +184,10 @@ class ServiceTermsPage extends GetView<ServiceTermsController> {
       if (controller.rxIsLoading.value) {
         return const Center(child: CircularProgressIndicator.adaptive());
       }
-      if (controller.rxError.value != null) {
-        return Center(child: Text(controller.rxError.value!));
+      if (controller.rxnError.value != null) {
+        return Center(child: Text(controller.rxnError.value!));
       }
-      if (controller.rxTermsContent.value != null) {
+      if (controller.rxnTermsContent.value != null) {
         return Container(
           decoration: BoxDecoration(
             border: Border.all(
@@ -204,7 +204,7 @@ class ServiceTermsPage extends GetView<ServiceTermsController> {
               child: DefaultTextStyle.merge(
                 style: const TextStyle(color: Colors.black, fontSize: 14),
                 child: HtmlWidget(
-                  controller.rxTermsContent.value!,
+                  controller.rxnTermsContent.value!,
                 ),
               ),
             ),

@@ -13,8 +13,8 @@ class ServiceTermsController extends GetxController {
   final rxIsSending = false.obs;
   final rxIsLoading = true.obs;
   final rxCanAgree = false.obs;
-  final rxTermsContent = RxnString();
-  final rxError = RxnString();
+  final rxnTermsContent = RxnString();
+  final rxnError = RxnString();
 
   final ScrollController scrollController = ScrollController();
 
@@ -47,7 +47,7 @@ class ServiceTermsController extends GetxController {
 
   Future<void> _fetchTermsContent() async {
     rxIsLoading.value = true;
-    rxError.value = null;
+    rxnError.value = null;
 
     try {
       final responses = await Future.wait([
@@ -83,7 +83,7 @@ class ServiceTermsController extends GetxController {
           processedPolicyContent = '<h2>隱私權政策</h2>\n\n$decodedPolicyHtml';
         }
 
-        rxTermsContent.value =
+        rxnTermsContent.value =
             '$processedTermsContent\n\n<hr style="height:1px;border-width:0;color:gray;background-color:gray">\n\n$processedPolicyContent';
       } else {
         throw Exception(
@@ -91,7 +91,7 @@ class ServiceTermsController extends GetxController {
       }
     } catch (e) {
       print('Error fetching terms/policy: $e');
-      rxError.value = '無法載入服務條款，請稍後再試。';
+      rxnError.value = '無法載入服務條款，請稍後再試。';
     } finally {
       rxIsLoading.value = false;
     }
