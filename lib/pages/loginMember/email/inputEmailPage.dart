@@ -91,7 +91,8 @@ class _InputEmailPageState extends State<InputEmailPage> {
                         );
                         if (isSuccess && mounted) {
                           // Use off to replace current page
-                          Get.off(() => SentEmailPage(email));
+                          Get.off(() => const SentEmailPage(),
+                              arguments: email);
                         } else if (mounted) {
                           Fluttertoast.showToast(msg: "Email寄送失敗");
                         }

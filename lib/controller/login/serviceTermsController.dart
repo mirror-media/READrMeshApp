@@ -114,7 +114,7 @@ class ServiceTermsController extends GetxController {
         Get.find<EnvironmentService>().config.authlink,
       );
       if (isSuccess) {
-        Get.off(() => SentEmailPage(email));
+        Get.off(() => const SentEmailPage(), arguments: email);
       } else {
         Fluttertoast.showToast(
           msg: "emailDeliveryFailed".tr,

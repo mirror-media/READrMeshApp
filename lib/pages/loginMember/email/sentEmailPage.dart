@@ -9,12 +9,11 @@ import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
 
 class SentEmailPage extends GetView<SentEmailPageController> {
-  final String email;
-  const SentEmailPage(this.email, {super.key});
+  const SentEmailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SentEmailPageController(email: email));
+    Get.put(SentEmailPageController());
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,

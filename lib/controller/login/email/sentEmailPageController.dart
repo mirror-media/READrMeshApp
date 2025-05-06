@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:readr/getxServices/environmentService.dart';
 
 class SentEmailPageController extends GetxController {
-  final String email;
-  SentEmailPageController({required this.email});
+  final String email = Get.arguments as String;
+  SentEmailPageController();
 
   Timer? _timer;
   final rxCountdownSeconds = 60.obs;
