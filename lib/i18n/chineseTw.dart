@@ -45,6 +45,7 @@ const Map<String, String> chineseTwMap = {
   'createANewCollection': '建立了一個新的集錦',
   'commentCollection': '在這個集錦留言',
   'pickCollection': '精選了這個集錦',
+  'readNews': '閱讀了這篇',
 
   //main AppBar tooltip
   'searchButtonTooltip': '搜尋',
@@ -78,6 +79,7 @@ const Map<String, String> chineseTwMap = {
   'addBookmarkFailedToast': '加入書籤失敗',
   'removeBookmarkSuccessToast': '成功移除書籤',
   'removeBookmarkFailedToast': '移除書籤失敗',
+  'commentDeleted': '留言好像被刪除了...',
 
   //bookmark
   'addBookmark': '加入書籤',
@@ -515,4 +517,9 @@ const Map<String, String> chineseTwMap = {
   'allRight': '好的',
   'reportCollection': '檢舉集錦',
   'report': '檢舉',
+
+  //createPickBottomSheet
+  'createPickBottomSheetDescription':
+      '按下「精選」按鈕，將這則報導新增至你的精選新聞中，之後也能串聯這些精選報導以建立精選集錦',
+  'continueReading': '繼續閱讀',
 };

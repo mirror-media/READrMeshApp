@@ -38,6 +38,7 @@ const Map<String, String> chineseCnMap = {
   'communityEmptyDescription': '关注您喜爱的人\n看看他们都精选了什么新闻',
   'both': '都',
   'pickNews': '精选了这篇',
+  'readNews': '阅读了这篇',
   'showFullComment': '看完整评论',
   'communityNoMore': '你已追完所有更新啰',
   'commentNews': '在这篇评论',
@@ -78,6 +79,7 @@ const Map<String, String> chineseCnMap = {
   'addBookmarkFailedToast': '添加书签失败',
   'removeBookmarkSuccessToast': '书签已成功删除',
   'removeBookmarkFailedToast': '删除书签失败',
+  'commentDeleted': '评论好像被删除了...',
 
   //bookmark
   'addBookmark': '添加书签',
@@ -140,11 +142,11 @@ const Map<String, String> chineseCnMap = {
   'createNewCollection': '创建新集锦',
   'userNoCollection': '你还没有任何集锦...',
   'alreadyAddToAllCollections': '您以前已将此新闻添加到所有集锦中',
-  'alreadyAddToACollectionPrefix': '您以前已将此新闻添加到“',
-  'alreadyAddToACollectionSuffix': '”集锦',
+  'alreadyAddToACollectionPrefix': '您以前已将此新闻添加到"',
+  'alreadyAddToACollectionSuffix': '"集锦',
   'alreadyAddToCollectionsPrefix': '您以前已将此新闻添加到',
-  'upperQuotationMarks': '“',
-  'lowerQuotationMarks': '”',
+  'upperQuotationMarks': '"',
+  'lowerQuotationMarks': '"',
   'comma': '、',
   'alreadyAddToCollectionsSuffix1': '等',
   'alreadyAddToCollectionsSuffix2': '个集锦',
@@ -341,14 +343,14 @@ const Map<String, String> chineseCnMap = {
   'searchBarHintText': '搜索所有新闻和集锦...',
   'searchHistory': '搜索历史',
   'clearAllHistory': '清除所有记录',
-  'noResultPrefix': '找不到包含“',
-  'noResultSuffix': '”的新闻或集锦，请换个关键字，再试一次。',
-  'noNewsResultPrefix': '找不到包含“',
-  'noNewsResultSuffix': '”的新闻，请换个关键字，再试一次。',
+  'noResultPrefix': '找不到包含"',
+  'noResultSuffix': '"的新闻或集锦，请换个关键字，再试一次。',
+  'noNewsResultPrefix': '找不到包含"',
+  'noNewsResultSuffix': '"的新闻，请换个关键字，再试一次。',
   'allCollections': '所有集锦',
   'allNews': '所有新闻',
-  'viewAllCollectionResultPrefix': '查看所有包含“',
-  'viewAllCollectionResultSuffix': '”的集锦',
+  'viewAllCollectionResultPrefix': '查看所有包含"',
+  'viewAllCollectionResultSuffix': '"的集锦',
 
   //readr
   'topic': '专题',
@@ -424,13 +426,13 @@ const Map<String, String> chineseCnMap = {
   'commentNewsPrefix': '也在',
   'commentNewsSuffix': '的新闻下评论。',
   'startFollowingYou': '开始关注你。',
-  'likeCommentPrefix': '喜欢你的评论“',
-  'likeCommentSuffix': '”。',
-  'pickCollectionPrefix': '精选了你的集锦“',
-  'pickCollectionSuffix': '”。',
+  'likeCommentPrefix': '喜欢你的评论"',
+  'likeCommentSuffix': '"。',
+  'pickCollectionPrefix': '精选了你的集锦"',
+  'pickCollectionSuffix': '"。',
   'commentYourCollection': '在你的集锦下评论。',
-  'createCollectionPrefix': '创建了新的集锦“',
-  'createCollectionSuffix': '”。',
+  'createCollectionPrefix': '创建了新的集锦"',
+  'createCollectionSuffix': '"。',
 
   //loginPage
   'loginOnboardAppbarTitle': '开始使用',
@@ -515,4 +517,9 @@ const Map<String, String> chineseCnMap = {
   'allRight': '好',
   'reportCollection': '举报集锦',
   'report': '举报',
+
+  //createPickBottomSheet
+  'createPickBottomSheetDescription':
+      '点按「精选」按钮，将这则报导新增至你的精选新闻中，之后也能串联这些精选报导以建立精选集锦',
+  'continueReading': '继续阅读',
 };
