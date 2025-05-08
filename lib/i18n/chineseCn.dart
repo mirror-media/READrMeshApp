@@ -481,11 +481,10 @@ const Map<String, String> chineseCnMap = {
   'resendEmailSuccessToast': '验证邮件已重新发送',
   'resendEmailFailedToast': '邮件发送失败',
   'resendEmailErrorToast': '发生错误：',
-  'sentEmailPageResendHint1': '没收到邮件？ 请检查您的垃圾邮件文件夹\n',
-  'sentEmailPageResendHint2': '或 ',
-  'sentEmailPageResendHint3': '重新发送邮件',
-  'sentEmailPageResendHint4Prefix': ' (',
-  'sentEmailPageResendHint4Suffix': '秒)',
+  'notReceiveText': '没收到邮件？ 请检查您的垃圾邮件文件夹\n或 ',
+  'resendEmail': '重新发送邮件',
+  'resendPrefix': ' (',
+  'resendSuffix': '秒)',
   'noMailAppDialogTitle': '找不到邮箱 APP',
 
   //latestPage

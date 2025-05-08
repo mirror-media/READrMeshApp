@@ -500,12 +500,11 @@ const Map<String, String> englishUsMap = {
   'resendEmailSuccessToast': 'Verification email resent',
   'resendEmailFailedToast': 'Failed to send email',
   'resendEmailErrorToast': 'An error occurred: ',
-  'sentEmailPageResendHint1':
-      "Didn't receive the email? Please check your spam folder\n",
-  'sentEmailPageResendHint2': "or ",
-  'sentEmailPageResendHint3': "Resend email",
-  'sentEmailPageResendHint4Prefix': " (",
-  'sentEmailPageResendHint4Suffix': "s)",
+  'notReceiveText':
+      "Didn't receive the email? Please check your spam folder\nor ",
+  'resendEmail': 'Resend email',
+  'resendPrefix': ' (',
+  'resendSuffix': 's)',
   'noMailAppDialogTitle': 'Can\'t find email APP',
 
   //latestPage

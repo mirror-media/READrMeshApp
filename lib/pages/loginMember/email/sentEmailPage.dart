@@ -180,10 +180,9 @@ class SentEmailPage extends GetView<SentEmailPageController> {
         text: TextSpan(
           style: defaultStyle,
           children: [
-            TextSpan(text: 'sentEmailPageResendHint1'.tr),
-            TextSpan(text: 'sentEmailPageResendHint2'.tr),
+            TextSpan(text: 'notReceiveText'.tr),
             TextSpan(
-              text: 'sentEmailPageResendHint3'.tr,
+              text: 'resendEmail'.tr,
               style: resendStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap =
@@ -191,8 +190,7 @@ class SentEmailPage extends GetView<SentEmailPageController> {
             ),
             if (!canResend)
               TextSpan(
-                  text:
-                      '${'sentEmailPageResendHint4Prefix'.tr}$countdown${'sentEmailPageResendHint4Suffix'.tr}'),
+                  text: '${'resendPrefix'.tr}$countdown${'resendSuffix'.tr}'),
           ],
         ),
         textAlign: TextAlign.center,
