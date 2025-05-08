@@ -472,14 +472,22 @@ const Map<String, String> chineseCnMap = {
   'inputEmailPageEmptyHint': '请输入您的邮箱地址',
   'inputEmailPageErrorHint': '请输入有效的邮箱地址',
   'inputEmailPageBodyText': '我们将向此邮箱发送登录链接，以省去您设置密码的麻烦',
+  'emailFormatValid': 'Email 符合格式',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': '确认邮箱',
   'sentEmailPagePrefix': '我们已将登录链接发送到',
   'sentEmailPageSuffix': '，请点击信中的链接登录',
   'openEmailApp': '打开邮箱应用程序',
-  'notReceiveText': '没收到信吗？请检查您的垃圾邮件匣',
   'tryOtherLoginMethod': '尝试其他登录方法',
+  'resendEmailSuccessToast': '验证邮件已重新发送',
+  'resendEmailFailedToast': '邮件发送失败',
+  'resendEmailErrorToast': '发生错误：',
+  'notReceiveText': '没收到邮件？ 请检查您的垃圾邮件文件夹\n或 ',
+  'resendEmail': '重新发送邮件',
+  'resendPrefix': ' (',
+  'resendSuffix': '秒)',
+  'noMailAppDialogTitle': '找不到邮箱 APP',
 
   //latestPage
   'latestPageEmptyTitle': '喔不...这里是空的',
