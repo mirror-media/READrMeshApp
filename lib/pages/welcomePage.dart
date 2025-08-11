@@ -2,11 +2,10 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readr/helpers/dataConstants.dart';
 import 'package:readr/helpers/themes.dart';
-import 'package:readr/pages/invitationCode/inputInvitationCodePage.dart';
+import 'package:readr/pages/loginMember/loginPage.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -23,36 +22,28 @@ class _WelcomePageState extends State<WelcomePage> {
     _widgets = [
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard1Svg
-            : onboard1DarkSvg,
+        imagePath: onboard1Png,
         title: 'item1Title'.tr,
         description: 'item1Description'.tr,
         widthPadding: 80,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard2Svg
-            : onboard2DarkSvg,
+        imagePath: onboard2Png,
         title: 'item2Title'.tr,
         description: 'item2Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard3Svg
-            : onboard3DarkSvg,
+        imagePath: onboard3Png,
         title: 'item3Title'.tr,
         description: 'item3Description'.tr,
         widthPadding: 40,
       ),
       _onboardItem(
         context: context,
-        svgPath: Theme.of(context).brightness == Brightness.light
-            ? onboard4Svg
-            : onboard4DarkSvg,
+        imagePath: onboard4Png,
         title: 'item4Title'.tr,
         description: 'item4Description'.tr,
         widthPadding: 40,
@@ -62,6 +53,8 @@ class _WelcomePageState extends State<WelcomePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          scrolledUnderElevation: 0,
           elevation: 0,
           toolbarHeight: 0,
         ),
@@ -128,7 +121,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                 child: ElevatedButton(
                   onPressed: () =>
-                      Get.off(() => const InputInvitationCodePage()),
+                      Get.off(() => const LoginPage(fromOnboard: true)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                         Theme.of(context).extension<CustomColors>()?.primary700,
@@ -163,7 +156,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Widget _onboardItem({
     required BuildContext context,
-    required String svgPath,
+    required String imagePath,
     required String title,
     required String description,
     required double widthPadding,
@@ -172,8 +165,8 @@ class _WelcomePageState extends State<WelcomePage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
-          child: SvgPicture.asset(
-            svgPath,
+          child: Image.asset(
+            imagePath,
             width: context.width - widthPadding * 2,
           ),
         ),

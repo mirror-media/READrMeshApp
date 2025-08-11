@@ -146,11 +146,11 @@ const Map<String, String> englishUsMap = {
   'alreadyAddToAllCollections':
       'You have added this news to all your collections before',
   'alreadyAddToACollectionPrefix':
-      'You have previously added this news to collection “',
-  'alreadyAddToACollectionSuffix': '”',
+      'You have previously added this news to collection "',
+  'alreadyAddToACollectionSuffix': '"',
   'alreadyAddToCollectionsPrefix': 'You have previously added this news to ',
-  'upperQuotationMarks': '“',
-  'lowerQuotationMarks': '”',
+  'upperQuotationMarks': '"',
+  'lowerQuotationMarks': '"',
   'comma': ', ',
   'alreadyAddToCollectionsSuffix1': ' etc. ',
   'alreadyAddToCollectionsSuffix2': ' collections',
@@ -276,7 +276,7 @@ const Map<String, String> englishUsMap = {
   'item1Title': 'See which news your friends upvoted',
   'item1Description': 'Humans pick better than AI',
   'item2Title': 'Pick your favorite stories',
-  'item2Description': 'I can’t be the only one to see this',
+  'item2Description': 'I can\'t be the only one to see this',
   'item3Title': 'Discuss anytime',
   'item3Description': 'See what everyone is thinking',
   'item4Title': 'Collection function help classification',
@@ -354,14 +354,14 @@ const Map<String, String> englishUsMap = {
   'searchBarHintText': 'Search all news and collections...',
   'searchHistory': 'Search history',
   'clearAllHistory': 'Clear all records',
-  'noResultPrefix': 'No news or collections found containing “',
-  'noResultSuffix': '”, please try again with another keyword.',
-  'noNewsResultPrefix': 'No news found containing “',
-  'noNewsResultSuffix': '”, please try again with another keyword.',
+  'noResultPrefix': 'No news or collections found containing "',
+  'noResultSuffix': '"',
+  'noNewsResultPrefix': 'No news found containing "',
+  'noNewsResultSuffix': '"',
   'allCollections': 'All collections',
   'allNews': 'All news',
-  'viewAllCollectionResultPrefix': 'View all collections containing “',
-  'viewAllCollectionResultSuffix': '”',
+  'viewAllCollectionResultPrefix': 'View all collections containing "',
+  'viewAllCollectionResultSuffix': '"',
 
   //readr
   'topic': 'Feature',
@@ -438,15 +438,15 @@ const Map<String, String> englishUsMap = {
 
   //notifyItem
   'commentNewsPrefix': ' comment under ',
-  'commentNewsSuffix': "'s news.",
+  'commentNewsSuffix': '\'s news.',
   'startFollowingYou': ' start following you.',
-  'likeCommentPrefix': ' like your message “',
-  'likeCommentSuffix': '”.',
-  'pickCollectionPrefix': ' pick your collection “',
-  'pickCollectionSuffix': '”.',
+  'likeCommentPrefix': ' like your message "',
+  'likeCommentSuffix': '"',
+  'pickCollectionPrefix': ' pick your collection "',
+  'pickCollectionSuffix': '"',
   'commentYourCollection': ' leave a comment under your collection.',
-  'createCollectionPrefix': 'create a new collection “',
-  'createCollectionSuffix': '”.',
+  'createCollectionPrefix': 'create a new collection "',
+  'createCollectionSuffix': '"',
 
   //loginPage
   'loginOnboardAppbarTitle': 'Start using',
@@ -491,14 +491,23 @@ const Map<String, String> englishUsMap = {
   'inputEmailPageErrorHint': 'Please enter a valid email address',
   'inputEmailPageBodyText':
       'We will send a login link to this email to save you the trouble of setting a password',
+  'emailFormatValid': 'Email format valid',
 
   //sentEmailPage
   'sentEmailPageAppbarTitle': 'Confirm inbox',
   'sentEmailPagePrefix': 'We have sent a login link to',
   'sentEmailPageSuffix': ', please click the link in the letter to log in',
   'openEmailApp': 'Open Email APP',
-  'notReceiveText': "Didn't get the letter? Please check your spam box",
   'tryOtherLoginMethod': 'try another login method',
+  'resendEmailSuccessToast': 'Verification email resent',
+  'resendEmailFailedToast': 'Failed to send email',
+  'resendEmailErrorToast': 'An error occurred: ',
+  'notReceiveText':
+      "Didn't receive the email? Please check your spam folder\nor ",
+  'resendEmail': 'Resend email',
+  'resendPrefix': ' (',
+  'resendSuffix': 's)',
+  'noMailAppDialogTitle': 'Can\'t find email APP',
 
   //latestPage
   'latestPageEmptyTitle': "Oh no...it's empty",

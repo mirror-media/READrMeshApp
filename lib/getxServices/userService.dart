@@ -183,6 +183,10 @@ class UserService extends GetxService {
   }
 
   ThemeMode get appearanceSetting {
+    // 暫時關閉深色模式，總是回傳淺色模式
+    return ThemeMode.light;
+
+    /*
     String? appearanceCode = Get.find<SharedPreferencesService>()
         .prefs
         .getString('appearanceSetting');
@@ -194,5 +198,6 @@ class UserService extends GetxService {
       default:
         return ThemeMode.system;
     }
+    */
   }
 }

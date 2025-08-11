@@ -30,4 +30,8 @@ abstract class BaseConfig {
   String get proxyServerApi;
 
   String get communityPageApi;
+
+  String get termsOfServiceUrl;
+
+  String get privacyPolicyUrl;
 }
